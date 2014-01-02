@@ -1,0 +1,29 @@
+{
+  "src_folders" : ["examples/tests"],
+  "output_folder" : "examples/reports",
+  "custom_commands_path" : "",
+  
+  "selenium" : {
+    "start_process" : false,
+    "server_path" : "",
+    "log_path" : ""  
+  },
+  
+  "test_settings" : {
+    "default" : {
+      "launch_url" : "http://localhost",
+      "port"  : 4445,
+      "silent": true,
+      "firefox_profile": false,
+      "screenshots" : {
+        "enabled" : false,
+        "path" : ""
+      },
+      "desiredCapabilities": {
+        "browserName": "firefox",
+        "javascriptEnabled": true,
+        "acceptSslCerts": true
+      }
+    }
+  }
+}

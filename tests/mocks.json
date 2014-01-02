@@ -1,0 +1,36 @@
+{
+  "port" : 9999,
+  "mocks" : [
+    {
+      "url" : "/wd/hub/session",
+      "postdata" : "{\"desiredCapabilities\":{\"browserName\":\"firefox\",\"version\":\"\",\"javascriptEnabled\":true,\"platform\":\"ANY\"},\"sessionId\":null}",
+      "response" : "{\"status\": 0, \"sessionId\": \"1352110219202\", \"value\": { \"javascriptEnabled\": true, \"browserName\": \"firefox\"}, \"state\": null}",
+      "responseHeaders" : {
+      },
+      "statusCode" : 200,
+      "method": "POST"
+    },
+    {
+      "url" : "/wd/hub/session/1352110219202",
+      "method": "DELETE"
+    },
+    {
+      "url" : "/wd/hub/session/1352110219202/url",
+      "postdata" : "{\"url\":\"http://localhost\"}" 
+    },
+    {
+      "url" : "/wd/hub/test",
+      "response" : "{\"status\":0}"
+    },
+    {
+      "url" : "/wd/hub/test_error",
+      "response" : "{\"status\":7,\"value\":{\"screen\":\"screenshot_data\"}}",
+      "statusCode" : 500
+    },
+    {
+      "url" : "/wd/hub/session/1352110219202/element",
+      "postdata" : "{\"using\":\"css selector\",\"value\":\"#weblogin\"}",
+      "response" : "{\"sessionId\":\"1352110219202\",\"status\":0,\"value\":{\"ELEMENT\":\"0\"},\"class\":\"org.openqa.selenium.remote.Response\",\"hCode\":604376696}"
+    }
+  ]
+}

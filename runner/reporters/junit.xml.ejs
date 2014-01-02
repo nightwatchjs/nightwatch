@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="<%= moduleName %>"
+             errors="<%= errors %>"
+             failures="<%= failures %>"
+             tests="<%= tests %>">
+  <% for (var testsuite in module) { %>
+  <testsuite errors="<%= module[testsuite].errors %>" failures="<%= module[testsuite].failed %>" hostname="" id=""
+    name="<%= testsuite %>" package="<%= moduleName %>" skipped="<%= module[testsuite].skipped %>" 
+    tests="<%= (module[testsuite].tests.length + module[testsuite].skipped) %>" time="" timestamp="">
+    <% var tests = module[testsuite].tests %>
+    <% for (var i = 0; i < tests.length; i++) { %>
+      <testcase name="<%= tests[i].message %>">
+        <% if (tests[i].failure) { %>  
+          <failure message="<%= tests[i].failure %>"></failure>
+        <% } %>
+      </testcase>  
+    <% } %>
+    <% if (systemerr != '') {%>
+      <system-err>
+        <%= systemerr %>
+      </system-err>
+    <% } %>
+    </testsuite>
+  <% } %>
+</testsuites>

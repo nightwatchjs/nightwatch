@@ -1,0 +1,37 @@
+var MockServer  = require('mockserver');
+    
+module.exports = {
+  setUp: function (callback) {
+    this.server = MockServer.init();
+    this.client = require('../../nightwatch.js').init();
+    
+    callback();
+  },
+  
+  testCommand : function(test) {
+    var client = this.client;
+    
+    MockServer.addMock({
+      url : "/wd/hub/session/1352110219202/title",
+      method:'GET',
+      response : JSON.stringify({
+        sessionId: "1352110219202",
+        status:0,
+        value : 'sample Title'
+      })
+    });
+    
+    client.getTitle(function callback(result) {
+      test.equals(result, 'sample Title');
+      test.done();
+    });
+  },
+           
+  tearDown : function(callback) {
+    this.client = null;
+    this.server.close();
+    this.server = null;
+    // clean up
+    callback();
+  }
+}

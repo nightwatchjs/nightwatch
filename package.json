@@ -1,0 +1,32 @@
+{
+  "name": "night-watch",
+  "description": "A node.js bindings implementation for selenium 2.0/webdriver",
+  "version": "0.1.0",
+  "author": {
+    "name": "Andrei Rusu",
+    "email": "andrei.rusu@beatfactor.net"
+  },
+  "homepage": "http://nightwatchjs.org",
+  "main": "./lib/index.js",
+  "licenses": {
+    "type": "MIT",
+    "url": "https://raw.github.com/beatfactor/nightwatch/master/LICENSE"
+  },
+  "bugs": "https://github.com/beatfactor/nightwatch/issues",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:beatfactor/nightwatch.git"
+  },
+  "dependencies": {
+    "ejs": ">=0.8.3",
+    "optimist": ">=0.3.5"
+  },
+  "devDependencies": {
+    "nodeunit" : "latest"
+  },
+  "bin" : { "webdriver" : "./bin/webdriver" },
+  "man" : "",
+  "scripts": {
+    "test": "node ./tests/run_tests.js"
+  }
+}
