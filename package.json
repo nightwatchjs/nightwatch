@@ -24,7 +24,7 @@
   "devDependencies": {
     "nodeunit" : "latest"
   },
-  "bin" : { "webdriver" : "./bin/webdriver" },
+  "bin" : { "nightwatch" : "./bin/nightwatch" },
   "man" : "",
   "scripts": {
     "test": "node ./tests/run_tests.js"
