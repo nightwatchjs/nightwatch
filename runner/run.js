@@ -11,6 +11,7 @@ var path = require('path'),
       failed:0,
       errors:0,
       skipped:0,
+      tests:0,
       errmessages:[],
       modules:{}
     };
@@ -50,13 +51,17 @@ exports.run = function runner(files, opts, aditional_opts, finishCallback) {
       globalresults.failed += testresults.failed;
       globalresults.errors += testresults.errors;
       globalresults.skipped += testresults.skipped;
+      globalresults.tests += testresults.tests;
       
       if (fullpaths.length) {
         setTimeout(function() {
           runTestModule(err, fullpaths);
         }, 0);  
       } else {
-        printResults(globalresults);
+        if (testresults.tests != globalresults.tests) {
+          printResults(globalresults);  
+        }
+        
         
         var output = aditional_opts.output_folder;
         if (output === false) {
@@ -168,7 +173,8 @@ function runModule(module, opts, moduleName, callback) {
     passed:0,
     failed:0,
     errors:0,
-    skipped:0
+    skipped:0,
+    tests:0
   };
   
   var setUp, tearDown;
@@ -220,6 +226,7 @@ function runModule(module, opts, moduleName, callback) {
         testresults.failed += results.failed;
         testresults.errors += results.errors;
         testresults.skipped += results.skipped;
+        testresults.tests += results.tests.length;
         if (this.client.terminated) {
           callback(testresults);
         } else {
