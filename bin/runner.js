@@ -49,10 +49,15 @@ try {
     opt.showHelp();
   } else {
     if (argv.c === DEFAULTS.config["default"]) {
-      argv.c = path.join(__dirname, argv.c);
+      if (fs.existsSync('./settings.json')) {
+        argv.c = path.join(path.resolve('./'), argv.c);  
+      } else {
+        argv.c = path.join(__dirname, argv.c);
+      }
     } 
-    process.chdir(process.cwd());
     
+    process.chdir(process.cwd());
+      
     var settings = require(argv.c);
     var runner = require(__dirname + '/../runner/run.js');
     if (!(argv.e in settings.test_settings)) {
