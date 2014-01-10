@@ -57,8 +57,12 @@ try {
     } 
     
     process.chdir(process.cwd());
-      
-    var settings = require(argv.c);
+    try {
+      var settings = require(argv.c);
+    } catch (ex) {
+      var settings = {};
+    }  
+    
     var runner = require(__dirname + '/../runner/run.js');
     if (!(argv.e in settings.test_settings)) {
       throw new Error("Invalid testing environment specified: " + argv.e);
@@ -71,7 +75,7 @@ try {
       output_folder = settings.output_folder;
     } 
     
-    var test_settings = settings.test_settings[argv.e];
+    var test_settings = settings.test_settings && settings.test_settings[argv.e] || {};
     test_settings.custom_commands_path = settings.custom_commands_path;
     
     if (typeof argv.t == 'string') {
