@@ -1,7 +1,7 @@
 var path = require('path'),
     fs = require('fs'),
     child_process = require('child_process'),
-    webdriverjs = require('../index.js'),
+    nightwatch = require('../index.js'),
     Logger = require("../lib/logger.js"),
     Reporter = require('./reporters/junit.js'),
     seleniumProcess = null,
@@ -166,7 +166,7 @@ function printResults(testresults) {
 }
 
 function runModule(module, opts, moduleName, callback) {
-  var client = webdriverjs.remote(opts);
+  var client = nightwatch.client(opts);
   var keys   = Object.keys(module);
   var tests  = [];
   var testresults = {
