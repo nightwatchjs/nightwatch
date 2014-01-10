@@ -6,13 +6,16 @@
   "selenium" : {
     "start_process" : false,
     "server_path" : "",
-    "log_path" : ""  
+    "log_path" : "",
+    "host" : "127.0.0.1",
+    "port" : 4444  
   },
   
   "test_settings" : {
     "default" : {
       "launch_url" : "http://localhost",
-      "port"  : 4444,
+      "selenium_host" : "127.0.0.1",
+      "selenium_port"  : 4444,
       "silent": true,
       "firefox_profile": false,
       "screenshots" : {

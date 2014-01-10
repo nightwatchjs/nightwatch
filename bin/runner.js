@@ -102,7 +102,8 @@ try {
       }
       
       runner.run(testsource, test_settings, {
-        output_folder : output_folder
+        output_folder : output_folder,
+        selenium : (settings.selenium || null)
       }, function() {
         runner.stopSelenium();
       });

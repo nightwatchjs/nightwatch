@@ -78,18 +78,20 @@ exports.run = function runner(files, opts, aditional_opts, finishCallback) {
 };
 
 exports.startSelenium = function (settings, test_settings, callback) {
-  if (!settings.selenium.start_process) {
+  if (!settings.selenium || !settings.selenium.start_process) {
     callback();
     return;
   }
   
   util.print(Logger.colors.light_purple('Starting selenium server... '));
-  
+  var selenium_port = settings.selenium.port || 4444;
+  var selenium_host = settings.selenium.host || "127.0.0.1";
   var output = '', error_out = '';
   var spawn = require('child_process').spawn;
   var cliOpts = [
     '-jar', settings.selenium.server_path,
-    '-port', test_settings.port
+    '-port', selenium_port,
+    '-host', selenium_host
   ];
   
   if (test_settings.firefox_profile) {
@@ -97,8 +99,8 @@ exports.startSelenium = function (settings, test_settings, callback) {
   }
   
   seleniumProcess = spawn('java', cliOpts);
-  seleniumProcess.host = '127.0.0.1'
-  seleniumProcess.port = test_settings.port;
+  seleniumProcess.host = selenium_host;
+  seleniumProcess.port = selenium_port;
   seleniumProcess.stdout.on('data', function(data) {
     var sentinal = 'Started org.openqa.jetty.jetty.Server';
     output += data.toString();
