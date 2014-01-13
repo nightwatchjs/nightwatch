@@ -58,10 +58,9 @@ exports.run = function runner(files, opts, aditional_opts, finishCallback) {
           runTestModule(err, fullpaths);
         }, 0);  
       } else {
-        if (testresults.tests != globalresults.tests) {
+        if (testresults.tests != globalresults.tests || testresults.steps.length > 1) {
           printResults(globalresults);  
         }
-        
         
         var output = aditional_opts.output_folder;
         if (output === false) {
@@ -156,7 +155,7 @@ exports.stopSelenium = function(callback) {
 
 function printResults(testresults) {
   if (testresults.passed > 0 && testresults.errors == 0 && testresults.failed == 0) {
-    console.log(Logger.colors.green("\nOK.", Logger.colors.background.black), testresults.passed + ' assertions passed.');
+    console.log(Logger.colors.green("\nOK. " + testresults.passed, Logger.colors.background.black), 'total assertions passed.');
   } else {
     var skipped = '';
     if (testresults.skipped) {
@@ -176,7 +175,8 @@ function runModule(module, opts, moduleName, callback) {
     failed:0,
     errors:0,
     skipped:0,
-    tests:0
+    tests:0,
+    steps:keys.slice(0)
   };
   
   var setUp, tearDown;
@@ -184,10 +184,11 @@ function runModule(module, opts, moduleName, callback) {
   
   if (keys.indexOf('setUp') > -1) {
     setUp = function(clientFn) {
-      module.setUp();
+      module.setUp(module.client);
       clientFn();
     };
     keys.splice(keys.indexOf('setUp'), 1);
+    testresults.steps.splice(testresults.steps.indexOf('setUp'), 1);
   } else {
     setUp = function(callback) {callback();}
   }
@@ -198,6 +199,8 @@ function runModule(module, opts, moduleName, callback) {
       clientFn();
     };
     keys.splice(keys.indexOf('tearDown'), 1);
+    testresults.steps.splice(testresults.steps.indexOf('tearDown'), 1);
+    
   } else {
     tearDown = function(callback) {callback();}
   }
