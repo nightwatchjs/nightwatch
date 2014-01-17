@@ -4,8 +4,13 @@ NightWatch
 UI automated testing framework based on [Node.js](http://nodejs.org/) and [Selenium WebDriver](http://docs.seleniumhq.org/projects/webdriver/)
 
 ***
-
 ## Quick Start
+
+## Developer Guide
+[http://nightwatchjs.org/guide](http://nightwatchjs.org/guide) 
+
+## API Reference
+[http://nightwatchjs.org/api](http://nightwatchjs.org/api) 
 
 ### Selenium WebDriver standalone server
 
