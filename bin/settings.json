@@ -1,6 +1,6 @@
 {
-  "src_folders" : ["examples/tests"],
-  "output_folder" : "examples/reports",
+  "src_folders" : ["node_modules/nightwatch/examples/tests"],
+  "output_folder" : "node_modules/nightwatch/examples/reports",
   "custom_commands_path" : "",
   
   "selenium" : {
