@@ -44,7 +44,7 @@ module.exports = {
       var request = client.runProtocolCommand({
         host : "127.0.0.1",
         path : "/test",
-        port : 9999
+        port : 10199
       });
       
       test.ok("send" in request);
@@ -68,7 +68,7 @@ module.exports = {
       var request = client.runProtocolCommand({
         host : "127.0.0.1",
         path : "/test_error",
-        port : 9999
+        port : 10199
       });
       
       request.on('result', function(result) {
