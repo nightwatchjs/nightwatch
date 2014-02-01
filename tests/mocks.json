@@ -1,9 +1,9 @@
 {
-  "port" : 10199,
+  "port" : 10195,
   "mocks" : [
     {
       "url" : "/wd/hub/session",
-      "postdata" : "{\"desiredCapabilities\":{\"browserName\":\"firefox\",\"version\":\"\",\"javascriptEnabled\":true,\"platform\":\"ANY\"},\"sessionId\":null}",
+      "postdata" : "{\"desiredCapabilities\":{\"browserName\":\"firefox\",\"javascriptEnabled\":true,\"acceptSslCerts\":true,\"platform\":\"ANY\"},\"sessionId\":null}",
       "response" : "{\"status\": 0, \"sessionId\": \"1352110219202\", \"value\": { \"javascriptEnabled\": true, \"browserName\": \"firefox\"}, \"state\": null}",
       "responseHeaders" : {
       },

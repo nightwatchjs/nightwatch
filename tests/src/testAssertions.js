@@ -2,13 +2,8 @@ var CommandQueue = require('../../lib/queue.js');
 
 module.exports = {
   setUp: function (callback) {
-    try {
-      this.server = require('mockserver').init();  
-    } catch(ex) {
-      console.log(ex.stack)
-    }
-    
-    this.client = require('../nightwatch.js').init();
+    this.server = require('mockserver').init();  
+    this.client = require('../nightwatch.js').init(callback);
     
     callback();
   },

@@ -1,6 +1,6 @@
 {
-  "src_folders" : ["node_modules/nightwatch/examples/tests"],
-  "output_folder" : "node_modules/nightwatch/examples/reports",
+  "src_folders" : ["./examples/tests"],
+  "output_folder" : "./examples/reports",
   "custom_commands_path" : "",
   
   "selenium" : {
@@ -27,6 +27,24 @@
         "browserName": "firefox",
         "javascriptEnabled": true,
         "acceptSslCerts": true
+      }
+    },
+    
+    "saucelabs" : {
+      "selenium_host" : "ondemand.saucelabs.com",
+      "selenium_port"  : 80,
+      "username" : "...",
+      "access_key" : "...",
+      "use_ssl" : false,
+      "silent": false,
+      "output": true,
+      "screenshots" : {
+        "enabled" : false,
+        "path" : ""
+      },
+      "desiredCapabilities": {
+        "name" : "test-example",
+        "browserName": "firefox"
       }
     }
   }

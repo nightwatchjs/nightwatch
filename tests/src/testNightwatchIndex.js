@@ -1,5 +1,3 @@
-var CommandQueue = require('../../lib/queue');
-
 module.exports = {
   setUp: function (callback) {
     this.server = require('mockserver').init();
@@ -8,7 +6,7 @@ module.exports = {
     callback();
   },
   
-  "Test initialization of WebdriverJS" : function(test) {
+  "Test initialization" : function(test) {
     var self = this;
     
     this.client.on('selenium:session_create', function(sessionId) {
@@ -44,7 +42,7 @@ module.exports = {
       var request = client.runProtocolCommand({
         host : "127.0.0.1",
         path : "/test",
-        port : 10199
+        port : 10195
       });
       
       test.ok("send" in request);
@@ -68,7 +66,7 @@ module.exports = {
       var request = client.runProtocolCommand({
         host : "127.0.0.1",
         path : "/test_error",
-        port : 10199
+        port : 10195
       });
       
       request.on('result', function(result) {

@@ -109,7 +109,9 @@ try {
         output_folder : output_folder,
         selenium : (settings.selenium || null)
       }, function() {
-        runner.stopSelenium();
+        if (settings.selenium && settings.selenium.start_process) {
+          runner.stopSelenium();  
+        }
       });
     });
   }
