@@ -4,7 +4,6 @@ module.exports = {
   setUp: function (callback) {
     this.server = require('mockserver').init();
     this.client = require('../nightwatch.js').init();
-    
     callback();
   },
   
