@@ -1,10 +1,10 @@
 {
   "name": "nightwatch",
   "description": "A node.js bindings implementation for selenium 2.0/webdriver",
-  "version": "0.1.7",
+  "version": "0.2.1",
   "author": {
     "name": "Andrei Rusu",
-    "email": "andrei.rusu@beatfactor.net"
+    "email": "andrei@nightwatchjs.org"
   },
   "homepage": "http://nightwatchjs.org",
   "main": "./lib/index.js",
