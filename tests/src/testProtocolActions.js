@@ -287,6 +287,58 @@ module.exports = {
     });
   },
   
+  testMouseButtonDown : function(test) {
+    var client = this.client;
+    
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.actions.mouseButtonDown.call(client, 'left', function callback() {
+        test.done();
+      });
+      
+      test.equal(command.request.method, "POST");
+      test.equal(command.data, '{"button":0}');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/buttondown');
+    });
+  },
+  
+  testMouseButtonDownMiddle : function(test) {
+    var client = this.client;
+    
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.actions.mouseButtonDown.call(client, 'middle', function callback() {
+        test.done();
+      });
+      
+      test.equal(command.data, '{"button":1}');
+    });
+  },
+  
+  testMouseButtonDownCallback : function(test) {
+    var client = this.client;
+    
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.actions.mouseButtonDown.call(client, function callback() {
+        test.done();
+      });
+      
+      test.equal(command.data, '{"button":0}');
+    });
+  },
+  
+  testMouseButtonUp : function(test) {
+    var client = this.client;
+    
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.actions.mouseButtonUp.call(client, 'right', function callback() {
+        test.done();
+      });
+      
+      test.equal(command.request.method, "POST");
+      test.equal(command.data, '{"button":2}');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/buttonup');
+    });
+  },
+  
   testMoveTo : function(test) {
     var client = this.client;
     
