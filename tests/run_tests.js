@@ -21,8 +21,16 @@ catch(e) {
 }
 
 process.chdir(__dirname);
+
 try {
-  reporter.run(['src', 'src/assertions', 'src/protocol', 'src/commands'], options);  
+  var server = require('mockserver').init();
+  server.on('listening', function() {
+    reporter.run(['src', 'src/assertions', 'src/protocol', 'src/commands'], options, function() {
+      server.close();
+    });  
+  });
+  
+
   //reporter.run(['src/commands'], options);  
 } catch (err) {
   console.log(e);

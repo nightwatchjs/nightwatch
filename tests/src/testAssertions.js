@@ -2,7 +2,6 @@ var CommandQueue = require('../../lib/queue.js');
 
 module.exports = {
   setUp: function (callback) {
-    this.server = require('mockserver').init();  
     this.client = require('../nightwatch.js').init(callback);
     
     callback();
@@ -52,9 +51,6 @@ module.exports = {
   tearDown : function(callback) {
     // clean up
     this.client = null;
-    this.server.close();
-    this.server = null;
-    
     callback();
   }
 }

@@ -2,7 +2,6 @@ var protocol = require('../../lib/selenium/protocol.js');
 
 module.exports = {
   setUp: function (callback) {
-    this.server = require('mockserver').init();
     this.client = require('../nightwatch.js').init();
     callback();
   },
@@ -287,7 +286,7 @@ module.exports = {
     });
   },
   
-  testMouseButtonDown : function(test) {
+  "test mouseButtonDown click left" : function(test) {
     var client = this.client;
     
     this.client.on('selenium:session_create', function(sessionId) {
@@ -301,7 +300,7 @@ module.exports = {
     });
   },
   
-  testMouseButtonDownMiddle : function(test) {
+  "test mouseButtonDown click middle" : function(test) {
     var client = this.client;
     
     this.client.on('selenium:session_create', function(sessionId) {
@@ -313,7 +312,7 @@ module.exports = {
     });
   },
   
-  testMouseButtonDownCallback : function(test) {
+  "test mouseButtonDown with callback only" : function(test) {
     var client = this.client;
     
     this.client.on('selenium:session_create', function(sessionId) {
@@ -325,7 +324,7 @@ module.exports = {
     });
   },
   
-  testMouseButtonUp : function(test) {
+  "test mouseButtonUp click right" : function(test) {
     var client = this.client;
     
     this.client.on('selenium:session_create', function(sessionId) {
@@ -434,8 +433,6 @@ module.exports = {
           
   tearDown : function(callback) {
     this.client = null;
-    this.server.close();
-    this.server = null;
     // clean up
     callback();
   }

@@ -2,7 +2,6 @@ var MockServer  = require('mockserver');
 
 module.exports = {
   setUp: function (callback) {
-    this.server = MockServer.init();
     this.client = require('../../nightwatch.js').init();
     
     callback();
@@ -29,8 +28,6 @@ module.exports = {
            
   tearDown : function(callback) {
     this.client = null;
-    this.server.close();
-    this.server = null;
     // clean up
     callback();
   }

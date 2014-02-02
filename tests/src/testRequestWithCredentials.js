@@ -2,7 +2,6 @@ var nightwatch = require('../../index.js');
 
 module.exports = {
   setUp: function (callback) {
-    this.server = require('mockserver').init();
     this.client = nightwatch.client({
       selenium_port : 10195,
       silent : true,
@@ -30,9 +29,6 @@ module.exports = {
   tearDown : function(callback) {
     this.client.queue.reset();
     this.client = null;
-    this.server.close();
-    this.server = null;
-    
     // clean up
     callback();
   }
