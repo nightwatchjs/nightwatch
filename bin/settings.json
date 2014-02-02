@@ -33,8 +33,8 @@
     "saucelabs" : {
       "selenium_host" : "ondemand.saucelabs.com",
       "selenium_port"  : 80,
-      "username" : "...",
-      "access_key" : "...",
+      "username" : "${SAUCE_USERNAME}",
+      "access_key" : "${SAUCE_ACCESS_KEY}",
       "use_ssl" : false,
       "silent": false,
       "output": true,

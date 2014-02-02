@@ -56,13 +56,31 @@ try {
       }
     } 
     
+    var settings;
     process.chdir(process.cwd());
     try {
-      var settings = require(argv.c);
+      settings = require(argv.c);
     } catch (ex) {
-      var settings = {};
+      settings = {};
     }  
-    
+  
+    // Looks for pattern ${VAR_NAME} in settings
+    function replaceEnvVariables(target) {
+      for (var key in target) {
+        switch(typeof target[key]){
+          case 'object':
+            replaceEnvVariables(target[key]);
+            break;
+          case 'string':
+            target[key] = target[key].replace(/\$\{(\w+)\}/g, function(match, varName){
+              return process.env[varName] || '${' + varName + '}';
+            });
+            break;
+        }
+      }
+    }
+    replaceEnvVariables(settings);
+
     var runner = require(__dirname + '/../runner/run.js');
     if (!(argv.e in settings.test_settings)) {
       throw new Error("Invalid testing environment specified: " + argv.e);
