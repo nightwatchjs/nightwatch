@@ -15,29 +15,29 @@
     "default" : {
       "launch_url" : "http://localhost",
       "selenium_host" : "127.0.0.1",
-      "selenium_port"  : 4444,
-      "silent": true,
-      "output": true,
-      "firefox_profile": false,
+      "selenium_port" : 4444,
+      "silent" : true,
+      "output" : true,
+      "firefox_profile" : false,
       "screenshots" : {
         "enabled" : false,
         "path" : ""
       },
-      "desiredCapabilities": {
-        "browserName": "firefox",
-        "javascriptEnabled": true,
-        "acceptSslCerts": true
+      "desiredCapabilities" : {
+        "browserName" : "firefox",
+        "javascriptEnabled" : true,
+        "acceptSslCerts" : true
       }
     },
     
     "saucelabs" : {
       "selenium_host" : "ondemand.saucelabs.com",
-      "selenium_port"  : 80,
-      "username" : "...",
-      "access_key" : "...",
+      "selenium_port" : 80,
+      "username" : "${SAUCE_USERNAME}",
+      "access_key" : "${SAUCE_ACCESS_KEY}",
       "use_ssl" : false,
-      "silent": false,
-      "output": true,
+      "silent" : false,
+      "output" : true,
       "screenshots" : {
         "enabled" : false,
         "path" : ""
@@ -49,3 +49,5 @@
     }
   }
 }
+
+
