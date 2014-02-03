@@ -1,103 +1,164 @@
-var fs = require('fs'), path = require('path');
-var Logger = require('../lib/logger.js');
-  
-try {
-  var DEFAULTS = {
-      config : {
-        demand : true,
-        alias : 'c',
-        description : 'Path to configuration file',
-        default: './settings.json'
-      },
-      output : {
-        alias : 'o',
-        description : 'Where to save the junit xml test reports.',
-        default : 'tests_output'
-      },
-      env : {
-        alias : 'e',
-        description : 'Testing environment to use',
-        default: 'default'
-      },
-      verbose : {
-        alias : 'v',
-        description : 'Turns on selenium command logging during the session'
-      },
-      test : {
-        alias : 't',
-        description : 'Run a single test'  
-      },
-      group : {
-        alias : 'g',
-        description : 'Run a single group of tests (a folder)'  
-      },
-      skipgroup : {
-        alias : 's',
-        description : 'Skip one or several (comma separated) group of tests'
-      },
-      help : {
-        alias : 'h',
-        description : 'Shows this help'
-      }
-  };
-  
-  var opt = require('optimist');
-  var argv = opt.usage('Usage: $0 [options]')
-              .options(DEFAULTS)
-              .argv;
-  if (argv.help) {
-    opt.showHelp();
-  } else {
-    if (argv.c === DEFAULTS.config["default"]) {
-      if (fs.existsSync('./settings.json')) {
-        argv.c = path.join(path.resolve('./'), argv.c);  
-      } else {
-        argv.c = path.join(__dirname, argv.c);
-      }
-    } 
-    
-    var settings;
-    process.chdir(process.cwd());
-    try {
-      settings = require(argv.c);
-    } catch (ex) {
-      settings = {};
-    }  
-  
-    // Looks for pattern ${VAR_NAME} in settings
-    function replaceEnvVariables(target) {
-      for (var key in target) {
-        switch(typeof target[key]){
-          case 'object':
-            replaceEnvVariables(target[key]);
-            break;
-          case 'string':
-            target[key] = target[key].replace(/\$\{(\w+)\}/g, function(match, varName){
-              return process.env[varName] || '${' + varName + '}';
-            });
-            break;
-        }
-      }
-    }
-    replaceEnvVariables(settings);
+/**
+ * Module dependencies
+ */
+var fs = require('fs'),
+    path = require('path'),
+    Logger = require('../lib/logger.js'),
+    cli = require('./_cli.js');
 
-    var runner = require(__dirname + '/../runner/run.js');
-    if (!(argv.e in settings.test_settings)) {
-      throw new Error("Invalid testing environment specified: " + argv.e);
+
+// CLI definitions
+
+// $ nightwatch -c 
+// $ nightwatch --config 
+cli.command('config')
+  .demand(true)
+  .description('Path to configuration file')
+  .alias('c')
+  .defaults('./settings.json');
+
+// $ nightwatch -o
+// $ nightwatch --output
+cli.command('output')
+  .description('Where to save the JUnit XML test reports.')
+  .alias('o')
+  .defaults('tests_output');
+
+// $ nightwatch -e
+// $ nightwatch --env saucelabs
+cli.command('env')
+  .description('Testing environment to use.')
+  .alias('e')
+  .defaults('default');
+
+// $ nightwatch -v
+// $ nightwatch --verbose
+cli.command('verbose')
+  .description('Turns on selenium command logging during the session.')
+  .alias('v');
+    
+// $ nightwatch -t
+// $ nightwatch --test
+cli.command('test')
+  .description('Runs a single test.')
+  .alias('t');
+  
+// $ nightwatch -g
+// $ nightwatch --group
+cli.command('group')
+  .description('Runs a group of tests (i.e. a folder)')
+  .alias('g');
+  
+// $ nightwatch -s
+// $ nightwatch --skipgroup
+cli.command('skipgroup')
+  .description('Skips one or several (comma separated) group of tests.')
+  .alias('s');
+
+// $ nightwatch -s
+// $ nightwatch --skipgroup
+cli.command('help')
+  .description('Shows this help.')
+  .alias('h');  
+
+/**
+ * Looks for pattern ${VAR_NAME} in settings
+ * @param {Object} target
+ */
+function replaceEnvVariables(target) {
+  for (var key in target) {
+    switch(typeof target[key]) {
+      case 'object':
+        replaceEnvVariables(target[key]);
+        break;
+      case 'string':
+        target[key] = target[key].replace(/\$\{(\w+)\}/g, function(match, varName) {
+          return process.env[varName] || '${' + varName + '}';
+        });
+        break;
     }
-    var output_folder;
-    if (argv.o !== DEFAULTS.output["default"] || typeof settings.output_folder == "undefined" || 
-      settings.output_folder == "") {
-      output_folder = argv.o;
+  }
+}
+
+/**
+ * Read the provided config json file; defaults to settings.json if one isn't provided
+ * @param {Object} argv
+ */
+function readSettings(argv) {
+  var settings;
+  
+  // use default settings.json file if we haven't received another value
+  if (cli.command('config').isDefault(argv.c)) {
+    var defaultValue = cli.command('config').defaults();
+    if (fs.existsSync(cli.command('config').defaults())) {
+      argv.c = path.join(path.resolve('./'), argv.c);  
     } else {
-      output_folder = settings.output_folder;
-    } 
+      argv.c = path.join(__dirname, argv.c);
+    }
+  }
+  
+  // reading the settings file
+  try {
+    settings = require(argv.c);
+    replaceEnvVariables(settings);
+  } catch (ex) {
+    settings = {};
+  }
+  
+  return settings;
+};
+
+/**
+ * 
+ * @param {Object} argv
+ */
+function parseTestSettings(argv) {
+  // checking if the env passed is valid
+  if (!settings.test_settings) {
+    throw new Error('No testing environment specified.');
+  }
+  if (!(argv.e in settings.test_settings)) {
+    throw new Error('Invalid testing environment specified: ' + argv.e);
+  }
+  
+  // picking the environment specific test settings
+  var test_settings = settings.test_settings;
+  test_settings.custom_commands_path = settings.custom_commands_path || '';
+  
+  if (argv.v) {
+    test_settings.silent = false;
+  }
+  
+  if (typeof argv.s == 'string') {
+    test_settings.skipgroup = argv.s.split(',');
+  }
+  
+  return test_settings;
+}
+       
+try {
+  var argv = cli.init();
+  
+  if (argv.help) {
+    cli.showHelp();
+  } else {
     
-    var test_settings = settings.test_settings && settings.test_settings[argv.e] || {};
-    test_settings.custom_commands_path = settings.custom_commands_path;
+    process.chdir(process.cwd());
     
+    // the selenium runner
+    var runner = require(__dirname + '/../runner/run.js');
+    var settings = readSettings(argv);
+    
+    // setting the output folder
+    var output_folder = cli.command('output').isDefault(argv.o) && 
+        settings.output_folder || argv.o;
+    
+    var test_settings = parseTestSettings(argv);
+    
+    // setting the source of the test(s)
+    var testsource;
     if (typeof argv.t == 'string') {
-      var testsource =  (argv.t.indexOf(process.cwd()) === -1) ? 
+      testsource =  (argv.t.indexOf(process.cwd()) === -1) ? 
                       path.join(process.cwd(), argv.t) :
                       argv.t;
       testsource.substr(-3) === '.js' || (testsource += '.js');
@@ -107,15 +168,8 @@ try {
     } else {
       testsource = settings.src_folders;
     }
-    
-    if (argv.v) {
-      test_settings.silent = false;
-    }
-    
-    if (typeof argv.s == 'string') {
-      test_settings.skipgroup = argv.s.split(',');
-    }
-    
+  
+    // running the tests
     runner.startSelenium(settings, test_settings, function(error, child, error_out, exitcode) {
       if (error) {
         Logger.error('There was an error while starting the Selenium server:');
@@ -134,7 +188,6 @@ try {
     });
   }
 } catch (ex) {
-  Logger.error('There was an error while starting the test runner:');
-  console.trace();
-  console.log(Logger.colors.red(ex.message));
+  Logger.error('There was an error while starting the test runner:\n');
+  console.log(ex.stack);
 }
