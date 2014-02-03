@@ -281,7 +281,7 @@ module.exports = {
       });
       
       test.equal(command.request.method, "POST");
-      test.equal(command.data, '{"frameId":"testFrame"}');
+      test.equal(command.data, '{"id":"testFrame"}');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/frame');
     });
   },
