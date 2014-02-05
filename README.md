@@ -1,18 +1,13 @@
-NightWatch
+[![NightWatch.js](http://nightwatchjs.org/img/logo_large.png)](http://sailsjs.org)
 ==========
 
-[![Build Status](https://travis-ci.org/beatfactor/nightwatch.png?branch=master)](https://travis-ci.org/beatfactor/nightwatch)
+[![Build Status](https://travis-ci.org/beatfactor/nightwatch.png?branch=master)](https://travis-ci.org/beatfactor/nightwatch) [![NPM version](https://badge.fury.io/js/nightwatch.png)](http://badge.fury.io/js/nightwatch)
 
 UI automated testing framework based on [Node.js](http://nodejs.org/) and [Selenium WebDriver](http://docs.seleniumhq.org/projects/webdriver/)
 
 ***
-## Quick Start
 
-## Developer Guide
-[http://nightwatchjs.org/guide](http://nightwatchjs.org/guide) 
-
-## API Reference
-[http://nightwatchjs.org/api](http://nightwatchjs.org/api) 
+#### [Homepage](http://nightwatchjs.org) | [Developer Guide](http://nightwatchjs.org/guide) | [API Reference](http://nightwatchjs.org/api) 
 
 ### Selenium WebDriver standalone server
 
