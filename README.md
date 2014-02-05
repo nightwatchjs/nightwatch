@@ -1,5 +1,4 @@
-[![NightWatch.js](http://nightwatchjs.org/img/logo_large.png)](http://sailsjs.org)
-==========
+# Nightwatch
 
 [![Build Status](https://travis-ci.org/beatfactor/nightwatch.png?branch=master)](https://travis-ci.org/beatfactor/nightwatch) [![NPM version](https://badge.fury.io/js/nightwatch.png)](http://badge.fury.io/js/nightwatch)
 
@@ -14,7 +13,7 @@ UI automated testing framework based on [Node.js](http://nodejs.org/) and [Selen
 First thing you need to download the selenium server jar file `selenium-server-standalone-2.x.x.jar` from here: 
 (https://code.google.com/p/selenium/downloads/list)
 
-### Install NightWatch
+### Install Nightwatch
 
 Install Node.js and then:
 ```sh
