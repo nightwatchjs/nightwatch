@@ -234,6 +234,8 @@ module.exports = new (function() {
     var start = new Date().getTime();
     var modules = {}
     var curModule;
+    
+    finishCallback = finishCallback || function() {};
       
     if (typeof files == 'string') {
       var paths = [files];
