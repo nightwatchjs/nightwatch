@@ -90,11 +90,14 @@ function readSettings(argv) {
   // use default settings.json file if we haven't received another value
   if (cli.command('config').isDefault(argv.c)) {
     var defaultValue = cli.command('config').defaults();
-    if (fs.existsSync(cli.command('config').defaults())) {
+    
+    if (fs.existsSync(defaultValue)) {
       argv.c = path.join(path.resolve('./'), argv.c);  
     } else {
       argv.c = path.join(__dirname, argv.c);
     }
+  } else {
+    argv.c = path.resolve(argv.c);
   }
   
   // reading the settings file

@@ -6,22 +6,40 @@
  */
 
 module.exports = {
-  setUp : function() {
-    
+  setUp : function(c) {
+  	console.log('Setting up...');   
   },
   
   tearDown : function() {
-    
+    console.log('Closing down...');
   },
   
-  'Demo test Google' : function (client) {
+  'step one' : function (client) {
     client
-      .url("http://www.google.com")
-      .waitForElementVisible('body', 1000)
-      .assert.title('Google')
-      .assert.visible('input[type=text]')
+      .url('http://google.com');
+      
+    client.waitForElementVisible('body', 1000);
+    
+    client.getLocation("input[type=text]", function(result) {
+      console.log(result)
+      //this.assert.equal(typeof result, "object", "is object");
+      //this.assert.equal(result.value.height, 20, 'is 20');
+    });
+    
+    client.assert.title('Google');
+    
+    client.url(function(result) {
+      this.assert.ok(result.value.indexOf('google.nl') !== -1, 'Google url is ok');    
+    });
+      
+    client.assert.visible('input[type=text]')
       .setValue('input[type=text]', 'nightwatch')
       .waitForElementVisible('button[name=btnG]', 1000)
+      //.setValue('input[type=text]', '2 nightwatch')
+  },
+  
+  'step two' : function (client) {
+    client
       .click('button[name=btnG]')
       .pause(1000)
       .assert.containsText('#main', 'The Night Watch')
