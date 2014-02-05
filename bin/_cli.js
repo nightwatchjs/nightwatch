@@ -3,7 +3,7 @@
  */
 var opt = require('optimist');
 
-module.exports = (function() {
+module.exports = new (function() {
     
   var _DEFAULTS_ = {};
   var _COMMANDS_ = {};
@@ -52,20 +52,22 @@ module.exports = (function() {
     return false;
   };
   
-  return {
-    showHelp : function() {
-      return opt.showHelp();  
-    },
-    command : function(name) {
-      if (_COMMANDS_[name]) {
-        return _COMMANDS_[name];
-      }
-      _COMMANDS_[name] = new Command(name);
-      
-      return _COMMANDS_[name]; 
-    },
-    init : function() {
-      return opt.usage('Usage: $0 [options]').options(_DEFAULTS_).argv;
+  
+  this.showHelp = function() {
+    return opt.showHelp();  
+  };
+  
+  this.command = function(name) {
+    if (_COMMANDS_[name]) {
+      return _COMMANDS_[name];
     }
-  };  
+    _COMMANDS_[name] = new Command(name);
+    
+    return _COMMANDS_[name]; 
+  };
+  
+  this.init = function() {
+    return opt.usage('Usage: $0 [options]').options(_DEFAULTS_).argv;
+  }
+   
 })();

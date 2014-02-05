@@ -19,6 +19,7 @@
       "silent" : true,
       "output" : true,
       "firefox_profile" : false,
+      "chrome_driver" : "",
       "screenshots" : {
         "enabled" : false,
         "path" : ""

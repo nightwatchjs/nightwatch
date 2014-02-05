@@ -1,10 +1,10 @@
 /**
  * Module dependencies
  */
-var fs = require('fs'),
-    path = require('path'),
-    Logger = require('../lib/logger.js'),
-    cli = require('./_cli.js');
+var fs = require('fs');
+var path = require('path');
+var Logger = require('../lib/logger.js');
+var cli = require('./_cli.js');
 
 
 // CLI definitions
@@ -102,6 +102,7 @@ function readSettings(argv) {
     settings = require(argv.c);
     replaceEnvVariables(settings);
   } catch (ex) {
+    Logger.error(ex);
     settings = {};
   }
   
@@ -145,8 +146,9 @@ try {
     
     process.chdir(process.cwd());
     
-    // the selenium runner
+    // the test runner
     var runner = require(__dirname + '/../runner/run.js');
+    
     var settings = readSettings(argv);
     
     // setting the output folder
@@ -170,22 +172,29 @@ try {
     }
   
     // running the tests
-    runner.startSelenium(settings, test_settings, function(error, child, error_out, exitcode) {
-      if (error) {
-        Logger.error('There was an error while starting the Selenium server:');
-        console.log(error_out);
-        process.exit(exitcode);
-      }
+    if (settings.selenium && settings.selenium.start_process) {
+      var selenium = require(__dirname + '/../runner/selenium.js');
       
+      selenium.startServer(settings, test_settings, function(error, child, error_out, exitcode) {
+        if (error) {
+          Logger.error('There was an error while starting the Selenium server:');
+          console.log(error_out);
+          process.exit(exitcode);
+        }
+        
+        runner.run(testsource, test_settings, {
+          output_folder : output_folder,
+          selenium : (settings.selenium || null)
+        }, function() {
+          selenium.stopServer();
+        });
+      });
+    } else {
       runner.run(testsource, test_settings, {
         output_folder : output_folder,
         selenium : (settings.selenium || null)
-      }, function() {
-        if (settings.selenium && settings.selenium.start_process) {
-          runner.stopSelenium();  
-        }
       });
-    });
+    }
   }
 } catch (ex) {
   Logger.error('There was an error while starting the test runner:\n');
