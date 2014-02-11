@@ -59,6 +59,16 @@
       "url" : "/wd/hub/session/1352110219202/execute",
       "response" : "{\"status\":0,\"value\":true}",
       "postdata": "{\"script\":\"return true\",\"args\":[]}"
+    },
+    {
+      "url" : "/wd/hub/session/1352110219202/execute",
+      "postdata": "{\"script\":\"return true\",\"args\":[]}",
+      "response" : "{\"status\":0,\"value\":true}"
+    },
+    {
+      "url" : "/wd/hub/session/1352110219202/execute",
+      "postdata": "{\"script\":\"return Mobify.evaluatedData\",\"args\":[]}",
+      "response" : "{\"status\":0,\"value\":true}"
     }
   ]
 }
