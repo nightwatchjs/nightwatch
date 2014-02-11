@@ -37,7 +37,7 @@
       "username" : "${SAUCE_USERNAME}",
       "access_key" : "${SAUCE_ACCESS_KEY}",
       "use_ssl" : false,
-      "silent" : false,
+      "silent" : true,
       "output" : true,
       "screenshots" : {
         "enabled" : false,
@@ -46,6 +46,18 @@
       "desiredCapabilities": {
         "name" : "test-example",
         "browserName": "firefox"
+      }
+    },
+    
+    "browserstack" : {
+      "selenium_host" : "hub.browserstack.com",
+      "selenium_port" : 80,
+      "silent" : true,
+      "desiredCapabilities": {
+        "name" : "test-example",
+        "browserName": "firefox",
+        "browserstack.user" : "...",
+        "browserstack.key" : "..."
       }
     }
   }

@@ -258,7 +258,7 @@ module.exports = new (function() {
       
       var modulePath = fullpaths.shift();
       var module     = require(modulePath);
-      var moduleName = modulePath.split('/').pop();
+      var moduleName = modulePath.split(path.sep).pop();
       globalresults.modules[moduleName] = [];
       console.log('\n' + Logger.colors.cyan('[ ' + moduleName + ' module ]'));
             

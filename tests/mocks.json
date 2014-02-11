@@ -38,6 +38,14 @@
       "response" : "{\"sessionId\":\"1352110219202\",\"status\":0,\"class\":\"org.openqa.selenium.remote.Response\",\"hCode\":604376696}"
     },
     {
+      "url" : "/wd/hub/session/1352110219202/window",
+      "method": "DELETE"
+    },
+    {
+      "url" : "/wd/hub/session/1352110219202/window",
+      "method": "POST"
+    },
+    {
       "url" : "/wd/hub/session/1352110219202/buttondown",
       "postdata" : "{\"button\":1}",
       "response" : "{\"sessionId\":\"1352110219202\",\"status\":0,\"class\":\"org.openqa.selenium.remote.Response\",\"hCode\":604376696}"
