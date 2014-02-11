@@ -46,6 +46,11 @@
       "url" : "/wd/hub/session/1352110219202/buttonup",
       "postdata" : "{\"button\":2}",
       "response" : "{\"sessionId\":\"1352110219202\",\"status\":0,\"class\":\"org.openqa.selenium.remote.Response\",\"hCode\":604376696}"
+    },
+    {
+      "url" : "/wd/hub/session/1352110219202/execute",
+      "postdata" : "{\"function_body\":\"return true\", \"args\":\"[]\"}",
+      "response" : "{\"value\":true}"
     }
   ]
 }
