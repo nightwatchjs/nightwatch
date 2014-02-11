@@ -1,4 +1,4 @@
-var MockServer  = require('mockserver');
+var MockServer = require('mockserver');
 
 module.exports = {
   setUp: function (callback) {
