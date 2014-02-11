@@ -14,7 +14,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "POST");
+      test.equal(command.request.method, 'POST');
       test.equal(command.data, '{"using":"id","value":"#weblogin"}');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/element');
     });
@@ -28,7 +28,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "POST");
+      test.equal(command.request.method, 'POST');
       test.equal(command.data, '{"using":"id","value":"#weblogin"}');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/elements');
     });
@@ -42,7 +42,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "POST");
+      test.equal(command.request.method, 'POST');
       test.equal(command.data, '{}');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/element/active');
     });
@@ -56,7 +56,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "POST");
+      test.equal(command.request.method, 'POST');
       test.equal(command.data, '');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/clear');
     });
@@ -70,7 +70,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "GET");
+      test.equal(command.request.method, 'GET');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/selected');
     });
   },
@@ -83,7 +83,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "GET");
+      test.equal(command.request.method, 'GET');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/enabled');
     });
   },
@@ -96,7 +96,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "GET");
+      test.equal(command.request.method, 'GET');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/element/ELEMENT1/equals/ELEMENT2');
     });
   },
@@ -109,7 +109,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "GET");
+      test.equal(command.request.method, 'GET');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/attribute/test_attr');
     });
   },
@@ -122,7 +122,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "POST");
+      test.equal(command.request.method, 'POST');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/click');
     });
   },
@@ -135,7 +135,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "GET");
+      test.equal(command.request.method, 'GET');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/css/test_property');
     });
   },
@@ -148,7 +148,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "GET");
+      test.equal(command.request.method, 'GET');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/displayed');
     });
   },
@@ -161,7 +161,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "GET");
+      test.equal(command.request.method, 'GET');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/location');
     });
   },
@@ -174,7 +174,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "GET");
+      test.equal(command.request.method, 'GET');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/location_in_view');
     });
   },
@@ -187,7 +187,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "GET");
+      test.equal(command.request.method, 'GET');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/name');
     });
   },
@@ -200,7 +200,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "GET");
+      test.equal(command.request.method, 'GET');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/size');
     });
   },
@@ -213,7 +213,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "GET");
+      test.equal(command.request.method, 'GET');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/text');
     });
   },
@@ -226,7 +226,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "GET");
+      test.equal(command.request.method, 'GET');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/value');
     });
   },
@@ -239,7 +239,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "POST");
+      test.equal(command.request.method, 'POST');
       test.equal(command.data, '{"value":["t","e","s","t"]}');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/value');
     });
@@ -253,7 +253,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "POST");
+      test.equal(command.request.method, 'POST');
       test.equal(command.data, '{"script":"<script>test();</script>","args":["arg1"]}');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/execute');
     });
@@ -267,7 +267,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "POST");
+      test.equal(command.request.method, 'POST');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/frame');
     });
   },
@@ -280,7 +280,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "POST");
+      test.equal(command.request.method, 'POST');
       test.equal(command.data, '{"id":"testFrame"}');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/frame');
     });
@@ -294,7 +294,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "POST");
+      test.equal(command.request.method, 'POST');
       test.equal(command.data, '{"button":0}');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/buttondown');
     });
@@ -332,7 +332,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "POST");
+      test.equal(command.request.method, 'POST');
       test.equal(command.data, '{"button":2}');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/buttonup');
     });
@@ -346,7 +346,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "POST");
+      test.equal(command.request.method, 'POST');
       test.equal(command.data, '{"element":"testElement","xoffset":0,"yoffset":1}');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/moveto');
     });
@@ -360,7 +360,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "POST");
+      test.equal(command.request.method, 'POST');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/refresh');
     });
   },
@@ -373,7 +373,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "GET");
+      test.equal(command.request.method, 'GET');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/screenshot');
     });
   },
@@ -386,7 +386,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "GET");
+      test.equal(command.request.method, 'GET');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/status');
     });
   },
@@ -399,7 +399,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "POST");
+      test.equal(command.request.method, 'POST');
       test.equal(command.data, '');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/submit');
     });
@@ -413,7 +413,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "GET");
+      test.equal(command.request.method, 'GET');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/title');
     });
   },
@@ -426,7 +426,7 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "GET");
+      test.equal(command.request.method, 'GET');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/window_handle');
     });
   },
@@ -439,8 +439,54 @@ module.exports = {
         test.done();
       });
       
-      test.equal(command.request.method, "GET");
+      test.equal(command.request.method, 'GET');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/window_handles');
+    });
+  },
+  
+  testCloseWindow : function(test) {
+    var client = this.client;
+    
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.actions.window.call(client, 'DELETE', function callback() {
+        test.done();
+      });
+      
+      test.equal(command.request.method, 'DELETE');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/window');
+    });
+  },
+  
+  testSwitchWindow : function(test) {
+    var client = this.client;
+    
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.actions.window.call(client, 'POST', 'other-window', function callback() {
+        test.done();
+      });
+      
+      test.equal(command.request.method, 'POST');
+      test.equal(command.data, '{"name":"other-window"}');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/window');
+    });
+  },
+  
+  testWindowCommand : function(test) {
+    var client = this.client;
+    this.client.on('selenium:session_create', function(sessionId) {
+      test.throws(
+        function() {
+          test.done();
+          protocol.actions.window.call(client, 'POST');
+        }, 'POST method without a name param throws an error'
+      );
+ 
+      test.throws(
+        function() {
+          protocol.actions.window.call(client, 'GET');
+        }, 'GET method throws an error'
+      );
+      
     });
   },
           
