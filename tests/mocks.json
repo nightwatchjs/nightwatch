@@ -58,9 +58,7 @@
     {
       "url" : "/wd/hub/session/1352110219202/execute",
       "response" : "{\"status\":0,\"value\":true}",
-      "statusCode" : 200,
-      "postdata": "{\"script\":\"return true\",\"args\":[]}",
-      "method": "POST"
+      "postdata": "{\"script\":\"return true\",\"args\":[]}"
     }
   ]
 }
