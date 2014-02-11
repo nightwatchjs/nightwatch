@@ -502,7 +502,33 @@ module.exports = {
       
     });
   },
-          
+  
+  testAcceptAlert : function(test) {
+    var client = this.client;
+    
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.actions.accept_alert.call(client, function callback() {
+        test.done();
+      });
+      
+      test.equal(command.request.method, 'POST');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/accept_alert');
+    });
+  },
+  
+  testDismissAlert : function(test) {
+    var client = this.client;
+    
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.actions.dismiss_alert.call(client, function callback() {
+        test.done();
+      });
+      
+      test.equal(command.request.method, 'POST');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/dismiss_alert');
+    });
+  },
+            
   tearDown : function(callback) {
     this.client = null;
     // clean up
