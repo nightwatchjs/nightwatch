@@ -364,6 +364,19 @@ module.exports = {
       test.equal(command.request.path, '/wd/hub/session/1352110219202/refresh');
     });
   },
+
+  testDoubleClick : function(test) {
+    var client = this.client;
+    
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.actions.doubleClick.call(client, function callback() {
+        test.done();
+      });
+      
+      test.equal(command.request.method, "POST");
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/doubleclick');
+    });
+  },
   
   testScreenshot : function(test) {
     var client = this.client;
