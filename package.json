@@ -27,6 +27,6 @@
   "bin" : { "nightwatch" : "./bin/nightwatch" },
   "man" : "",
   "scripts": {
-    "test": "./nightwatch -g tests"
+    "test": "node ./tests/run_tests.js"
   }
 }
