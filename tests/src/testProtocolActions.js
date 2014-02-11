@@ -503,6 +503,61 @@ module.exports = {
     });
   },
   
+  testWindowSizeErrors : function(test) {
+    var client = this.client;
+    this.client.on('selenium:session_create', function(sessionId) {
+      test.throws(
+        function() {
+          protocol.actions.windowSize.call(client, function() {});
+        }, 'First argument must be a window handle string.'
+      );
+      
+      test.throws(
+        function() {
+          protocol.actions.windowSize.call(client, 'current', 'a', 10);
+        }, 'Width and height arguments must be passed as numbers.'
+      ); 
+      
+      test.throws(
+        function() {
+          protocol.actions.windowSize.call(client, 'current', 10);
+        }, 'Width and height arguments must be passed as numbers.'
+      );
+      
+      test.throws(
+        function() {
+          test.done();
+          protocol.actions.windowSize.call(client, 'current', 10, 'a');
+        }, 'Width and height arguments must be passed as numbers.'
+      );
+    });
+  },
+  
+  testWindowSizeGet : function(test) {
+    var client = this.client;
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.actions.windowSize.call(client, 'current', function callback() {
+        test.done();
+      });
+      
+      test.equal(command.request.method, 'GET');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/window/current/size');  
+    });
+  },
+  
+  testWindowSizePost : function(test) {
+    var client = this.client;
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.actions.windowSize.call(client, 'current', 10, 10, function callback() {
+        test.done();
+      });
+      
+      test.equal(command.request.method, 'POST');
+      test.equal(command.data, '{"width":10,"height":10}');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/window/current/size');  
+    });
+  },
+  
   testAcceptAlert : function(test) {
     var client = this.client;
     
