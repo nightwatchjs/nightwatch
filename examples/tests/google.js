@@ -16,26 +16,18 @@ module.exports = {
   
   'step one' : function (client) {
     client
-      .url('http://google.com');
-      
-    client.waitForElementVisible('body', 1000);
-    
-    client.getLocation("input[type=text]", function(result) {
-      console.log(result)
-      //this.assert.equal(typeof result, "object", "is object");
-      //this.assert.equal(result.value.height, 20, 'is 20');
-    });
-    
-    client.assert.title('Google');
-    
-    client.url(function(result) {
-      this.assert.ok(result.value.indexOf('google.nl') !== -1, 'Google url is ok');    
-    });
-      
-    client.assert.visible('input[type=text]')
+      .url('http://google.com')
+      .waitForElementVisible('body', 1000)
+      .getLocation("input[type=text]", function(result) {
+        this.assert.equal(result.value.height, 20, 'is 20');
+      })
+      .assert.title('Google')
+      .url(function(result) {
+        this.assert.ok(result.value.indexOf('google.nl') !== -1, 'Google url is ok');    
+      })
+      .assert.visible('input[type=text]')
       .setValue('input[type=text]', 'nightwatch')
-      .waitForElementVisible('button[name=btnG]', 1000)
-      //.setValue('input[type=text]', '2 nightwatch')
+      .waitForElementVisible('button[name=btnG]', 1000);
   },
   
   'step two' : function (client) {
