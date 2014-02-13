@@ -28,13 +28,6 @@ module.exports = {
     });
   },
 
-  testWaitForPageToBeMobified : function(test) {
-    this.client.waitForCondition('return Mobify.evaluatedData', 1000, 1000, function callback(result) {
-      test.ok(result !== false);
-      test.done();
-    });
-  },
-
   tearDown : function(callback) {
     this.client = null;
     // clean up
