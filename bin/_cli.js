@@ -68,6 +68,6 @@ module.exports = new (function() {
   
   this.init = function() {
     return opt.usage('Usage: $0 [options]').options(_DEFAULTS_).argv;
-  }
+  };
    
 })();

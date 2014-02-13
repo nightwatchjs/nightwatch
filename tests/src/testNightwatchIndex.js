@@ -34,10 +34,10 @@ module.exports = {
     test.ok(err instanceof Error);
   },
   
-  'Test runProtocolCommand without error' : function(test) {
+  'Test runProtocolAction without error' : function(test) {
     var client = this.client;
     this.client.on('selenium:session_create', function(sessionId) {
-      var request = client.runProtocolCommand({
+      var request = client.runProtocolAction({
         host : "127.0.0.1",
         path : "/test",
         port : 10195
@@ -54,14 +54,14 @@ module.exports = {
     });
   },
   
-  'Test runProtocolCommand with error' : function(test) {
+  'Test runProtocolAction with error' : function(test) {
     var client = this.client;
     
     this.client.saveScreenshotToFile = function() {};
     this.client.options.screenshots.enabled = true;
     
     this.client.on('selenium:session_create', function(sessionId) {
-      var request = client.runProtocolCommand({
+      var request = client.runProtocolAction({
         host : "127.0.0.1",
         path : "/test_error",
         port : 10195
@@ -92,5 +92,5 @@ module.exports = {
     // clean up
     callback();
   }
-}
+};
       

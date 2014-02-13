@@ -46,7 +46,7 @@ module.exports = new (function() {
       keys.splice(keys.indexOf('setUp'), 1);
       testresults.steps.splice(testresults.steps.indexOf('setUp'), 1);
     } else {
-      setUp = function(callback) {callback();}
+      setUp = function(callback) {callback();};
     }
     
     if (keys.indexOf('tearDown') > -1) {
@@ -58,7 +58,7 @@ module.exports = new (function() {
       testresults.steps.splice(testresults.steps.indexOf('tearDown'), 1);
       
     } else {
-      tearDown = function(callback) {callback();}
+      tearDown = function(callback) {callback();};
     }
     
     function next() {
@@ -157,8 +157,11 @@ module.exports = new (function() {
       callback = function(){};
     });
     mkdir.on('exit', function (code) {
-      if (code === 0) callback();
-      else callback(new Error('mkdir exited with code: ' + code));
+      if (code === 0) {
+        callback();
+      } else {
+        callback(new Error('mkdir exited with code: ' + code));
+      }
     });
   };
   
@@ -232,7 +235,7 @@ module.exports = new (function() {
   
   this.run = function runner(files, opts, aditional_opts, finishCallback) {
     var start = new Date().getTime();
-    var modules = {}
+    var modules = {};
     var curModule;
     
     finishCallback = finishCallback || function() {};
@@ -252,7 +255,7 @@ module.exports = new (function() {
     runFiles(paths, function runTestModule(err, fullpaths) {
       if (!fullpaths || fullpaths.length == 0) {
         Logger.warn('No tests defined!');
-        console.log('using source folder', paths)
+        console.log('using source folder', paths);
         return;
       }
       
@@ -288,7 +291,7 @@ module.exports = new (function() {
             });
           }
         }
-      })
+      });
     }, opts);  
   };
   
