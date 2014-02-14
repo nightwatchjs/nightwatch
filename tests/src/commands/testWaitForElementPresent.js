@@ -20,10 +20,17 @@ module.exports = {
       test.done();
     });
   },
-              
+  
+  testFailureNoAbort : function(test) {
+    this.client.waitForElementPresent('.weblogin', 600, false, function callback(result) {
+      test.equal(result, false);
+      test.done();
+    });
+  },
+                
   tearDown : function(callback) {
     this.client = null;
     // clean up
     callback();
   }
-}
+};
