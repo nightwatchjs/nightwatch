@@ -16,7 +16,7 @@
     },
     {
       "url" : "/wd/hub/session/1352110219202/url",
-      "postdata" : "{\"url\":\"http://localhost\"}" 
+      "postdata" : "{\"url\":\"http://localhost\"}"
     },
     {
       "url" : "/wd/hub/test",
@@ -54,6 +54,21 @@
       "url" : "/wd/hub/session/1352110219202/buttonup",
       "postdata" : "{\"button\":2}",
       "response" : "{\"sessionId\":\"1352110219202\",\"status\":0,\"class\":\"org.openqa.selenium.remote.Response\",\"hCode\":604376696}"
+    },
+    {
+      "url" : "/wd/hub/session/1352110219202/execute",
+      "response" : "{\"status\":0,\"value\":true}",
+      "postdata" : "{\"script\":\"return true\",\"args\":[]}"
+    },
+    {
+      "url" : "/wd/hub/session/1352110219202/execute",
+      "postdata" : "{\"script\":\"return true\",\"args\":[]}",
+      "response" : "{\"status\":0,\"value\":true}"
+    },
+    {
+      "url" : "/wd/hub/session/1352110219202/execute",
+      "postdata" : "{\"script\":\"return Mobify.evaluatedData\",\"args\":[]}",
+      "response" : "{\"status\":0,\"value\":true}"
     }
   ]
 }
