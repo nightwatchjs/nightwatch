@@ -5,12 +5,13 @@ var path = require('path');
 var fs = require('fs');
 var util = require('util');
 var child_process = require('child_process');
+var minimatch = require('minimatch');
 var Nightwatch = require('../index.js');
 var Logger = require('../lib/logger.js');
 var Reporter = require('./reporters/junit.js');
-var minimatch = require('minimatch');
 
 module.exports = new (function() {
+  'use strict';
   var seleniumProcess = null;
   var globalresults = {
     passed : 0,
@@ -47,7 +48,7 @@ module.exports = new (function() {
       keys.splice(keys.indexOf('setUp'), 1);
       testresults.steps.splice(testresults.steps.indexOf('setUp'), 1);
     } else {
-      setUp = function(callback) {callback();}
+      setUp = function(callback) {callback();};
     }
 
     if (keys.indexOf('tearDown') > -1) {
@@ -59,7 +60,7 @@ module.exports = new (function() {
       testresults.steps.splice(testresults.steps.indexOf('tearDown'), 1);
 
     } else {
-      tearDown = function(callback) {callback();}
+      tearDown = function(callback) {callback();};
     }
 
     function next() {
@@ -118,7 +119,7 @@ module.exports = new (function() {
     }
 
     setTimeout(next, 0);
-  };
+  }
 
   function printResults(testresults) {
     if (testresults.passed > 0 && testresults.errors == 0 && testresults.failed == 0) {
@@ -131,7 +132,7 @@ module.exports = new (function() {
       console.log(Logger.colors.light_red('\nTEST FAILURE:'), Logger.colors.red(testresults.errors + testresults.failed) +
       ' assertions failed, ' + Logger.colors.green(testresults.passed) + ' passed' + skipped);
     }
-  };
+  }
 
   function wrapTest(setUp, tearDown, fn, context, onComplete) {
     return function (client) {
@@ -147,9 +148,8 @@ module.exports = new (function() {
       };
 
       setUp.call(context, clientFn);
-      return;
     };
-  };
+  }
 
   function ensureDir(path, callback) {
     var mkdir = child_process.spawn('mkdir', ['-p', path]);
@@ -161,7 +161,7 @@ module.exports = new (function() {
       if (code === 0) callback();
       else callback(new Error('mkdir exited with code: ' + code));
     });
-  };
+  }
 
   function runFiles(paths, cb, opts) {
     var extensionPattern = /\.js$/;
@@ -176,9 +176,12 @@ module.exports = new (function() {
           return cb(err);
         }
         list.sort();
-
-        var modules = list.filter(function (filename) {
-          return extensionPattern.exec(filename);
+        
+        var modules = list.filter(function (filePath) {
+          var filename = filePath.split('/').slice(-1)[0];
+          return opts.filter ? 
+            minimatch(filename, opts.filter) :
+            extensionPattern.exec(filePath);
         });
 
         modules = modules.map(function (filename) {
@@ -188,7 +191,7 @@ module.exports = new (function() {
         cb(null, modules);
       }, opts);
     });
-  };
+  }
 
   function walk(dir, done, opts) {
     var results = [];
@@ -207,8 +210,8 @@ module.exports = new (function() {
 
         fs.stat(file, function(err, stat) {
           if (stat && stat.isDirectory()) {
-            var dirname = file.split('/').slice(-1)[0];
-            if (opts.skipgroup && opts.skipgroup.indexOf(dirname) > -1) {
+            var dirName = file.split('/').slice(-1)[0];
+            if (opts.skipgroup && opts.skipgroup.indexOf(dirName) > -1) {
               pending = pending-1;
             } else {
               walk(file, function(err, res) {
@@ -220,16 +223,7 @@ module.exports = new (function() {
               }, opts);
             }
           } else {
-
-            if (opts.format) {
-              var filename = file.split('/').slice(-1)[0];
-
-              if (minimatch(filename, opts.format)) {
-                results.push(file);
-              }
-            } else {
-              results.push(file);
-            }
+            results.push(file);
             pending = pending-1;
 
             if (!pending) {
@@ -239,11 +233,11 @@ module.exports = new (function() {
         });
       });
     });
-  };
+  }
 
   this.run = function runner(files, opts, aditional_opts, finishCallback) {
     var start = new Date().getTime();
-    var modules = {}
+    var modules = {};
     var curModule;
 
     finishCallback = finishCallback || function() {};
@@ -259,11 +253,10 @@ module.exports = new (function() {
     if (paths.length == 0) {
       throw new Error('No tests to run.');
     }
-
     runFiles(paths, function runTestModule(err, fullpaths) {
       if (!fullpaths || fullpaths.length == 0) {
         Logger.warn('No tests defined!');
-        console.log('using source folder', paths)
+        console.log('using source folder', paths);
         return;
       }
 
@@ -299,7 +292,7 @@ module.exports = new (function() {
             });
           }
         }
-      })
+      });
     }, opts);
   };
 

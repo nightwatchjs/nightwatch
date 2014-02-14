@@ -18,9 +18,6 @@ module.exports = {
     client
       .url('http://google.com')
       .waitForElementVisible('body', 1000)
-      .getLocation("input[type=text]", function(result) {
-        this.assert.equal(result.value.height, 20, 'is 20');
-      })
       .assert.title('Google')
       .url(function(result) {
         this.assert.ok(result.value.indexOf('google.nl') !== -1, 'Google url is ok');    
@@ -37,4 +34,4 @@ module.exports = {
       .assert.containsText('#main', 'The Night Watch')
       .end();
   }
-}
+};

@@ -55,17 +55,18 @@ cli.command('skipgroup')
   .description('Skips one or several (comma separated) group of tests.')
   .alias('s');
 
+// $ nightwatch -f
+// $ nightwatch --filter
+cli.command('filter')
+  .description('Specify a filter (glob expression) as the file name format to use when loading the files.')
+  .defaults('')
+  .alias('f');
+  
 // $ nightwatch -s
 // $ nightwatch --skipgroup
 cli.command('help')
   .description('Shows this help.')
   .alias('h');
-
-// $ nightwatch -f
-// $ nightwatch --format
-cli.command('format')
-  .description('Specify a file name format.')
-  .alias('f');
 
 /**
  * Looks for pattern ${VAR_NAME} in settings
@@ -144,7 +145,7 @@ function parseTestSettings(argv) {
   }
 
   if (argv.f) {
-    test_settings.format = argv.f;
+    test_settings.filter = argv.f;
   }
 
   return test_settings;
@@ -152,7 +153,7 @@ function parseTestSettings(argv) {
 
 try {
   var argv = cli.init();
-
+  
   if (argv.help) {
     cli.showHelp();
   } else {
