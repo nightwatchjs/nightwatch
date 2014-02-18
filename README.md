@@ -22,9 +22,7 @@ $ npm install
 ```
 
 ### Run tests
-The tests for nightwatch are written using [nodeunit](https://github.com/caolan/nodeunit) as the test framework. 
-
-To run the nodeunit tests do:
+The tests for nightwatch are written using [nodeunit](https://github.com/caolan/nodeunit) as the test framework. To run the nodeunit tests do:
 ```sh
 $ npm test
 ```  
