@@ -1,6 +1,6 @@
 # Nightwatch
 
-UI automated testing framework powered by [Node.js](http://nodejs.org/). It uses the [Selenium WebDriver API](http://docs.seleniumhq.org/projects/webdriver/).
+UI automated testing framework powered by [Node.js](http://nodejs.org/). It uses the [Selenium WebDriver API](https://code.google.com/p/selenium/wiki/JsonWireProtocol).
 
 [![Build Status](https://travis-ci.org/beatfactor/nightwatch.png?branch=master)](https://travis-ci.org/beatfactor/nightwatch) [![NPM version](https://badge.fury.io/js/nightwatch.png)](http://badge.fury.io/js/nightwatch) [![Dependency Status](https://david-dm.org/beatfactor/nightwatch.png)](https://david-dm.org/beatfactor/nightwatch)
 
