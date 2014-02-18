@@ -1,8 +1,8 @@
 # Nightwatch
 
-[![Build Status](https://travis-ci.org/beatfactor/nightwatch.png?branch=master)](https://travis-ci.org/beatfactor/nightwatch) [![NPM version](https://badge.fury.io/js/nightwatch.png)](http://badge.fury.io/js/nightwatch) [![Dependency Status](https://david-dm.org/beatfactor/nightwatch.png)](https://david-dm.org/beatfactor/nightwatch)
+UI automated testing framework powered by [Node.js](http://nodejs.org/). It uses the [Selenium WebDriver API](http://docs.seleniumhq.org/projects/webdriver/).
 
-UI automated testing framework based on [Node.js](http://nodejs.org/) and [Selenium WebDriver](http://docs.seleniumhq.org/projects/webdriver/)
+[![Build Status](https://travis-ci.org/beatfactor/nightwatch.png?branch=master)](https://travis-ci.org/beatfactor/nightwatch) [![NPM version](https://badge.fury.io/js/nightwatch.png)](http://badge.fury.io/js/nightwatch) [![Dependency Status](https://david-dm.org/beatfactor/nightwatch.png)](https://david-dm.org/beatfactor/nightwatch)
 
 ***
 
@@ -30,4 +30,4 @@ $ npm test
 ```  
 
 ### Discuss
-In addition to [Twitter](https://twitter.com/nightwatchjs), a newly setup [Mailing List](https://groups.google.com/forum/#!forum/nightwatchjs) is also available for Nightwatch related discussions.
+In addition to [Twitter](https://twitter.com/nightwatchjs), the [Mailing List/Google Group](https://groups.google.com/forum/#!forum/nightwatchjs) is also available for Nightwatch related discussions.
