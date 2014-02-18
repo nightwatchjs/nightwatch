@@ -1,6 +1,6 @@
 # Nightwatch
 
-[![Build Status](https://travis-ci.org/beatfactor/nightwatch.png?branch=master)](https://travis-ci.org/beatfactor/nightwatch) [![NPM version](https://badge.fury.io/js/nightwatch.png)](http://badge.fury.io/js/nightwatch)
+[![Build Status](https://travis-ci.org/beatfactor/nightwatch.png?branch=master)](https://travis-ci.org/beatfactor/nightwatch) [![NPM version](https://badge.fury.io/js/nightwatch.png)](http://badge.fury.io/js/nightwatch) [![Dependency Status](https://david-dm.org/beatfactor/nightwatch.png)](https://david-dm.org/beatfactor/nightwatch)
 
 UI automated testing framework based on [Node.js](http://nodejs.org/) and [Selenium WebDriver](http://docs.seleniumhq.org/projects/webdriver/)
 
