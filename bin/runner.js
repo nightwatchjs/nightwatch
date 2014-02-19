@@ -135,6 +135,7 @@ function parseTestSettings(argv) {
   // picking the environment specific test settings
   var test_settings = settings.test_settings[argv.e];
   test_settings.custom_commands_path = settings.custom_commands_path || '';
+  test_settings.custom_assertions_path = settings.custom_assertions_path || '';
 
   if (argv.v) {
     test_settings.silent = false;
