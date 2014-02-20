@@ -53,7 +53,7 @@ module.exports = new (function() {
 
     if (keys.indexOf('tearDown') > -1) {
       tearDown = function(clientFn) {
-        module.tearDown();
+        module.tearDown(module.client);
         clientFn();
       };
       keys.splice(keys.indexOf('tearDown'), 1);
