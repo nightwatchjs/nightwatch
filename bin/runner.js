@@ -136,6 +136,12 @@ function parseTestSettings(argv) {
   var test_settings = settings.test_settings[argv.e];
   test_settings.custom_commands_path = settings.custom_commands_path || '';
 
+  if (settings.global_setup_teardown) {
+    var globals = require(path.join(process.cwd(), settings.global_setup_teardown));
+    test_settings.setUp = globals.setUp;
+    test_settings.tearDown = globals.tearDown;
+  }
+
   if (argv.v) {
     test_settings.silent = false;
   }
