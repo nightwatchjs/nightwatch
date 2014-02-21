@@ -91,7 +91,7 @@ module.exports = new (function() {
           testresults.skipped += results.skipped;
           testresults.tests += results.tests.length;
           if (this.client.terminated) {
-            callback(testresults);
+            callback(null, testresults);
           } else {
             setTimeout(next, 0);
           }
@@ -107,6 +107,7 @@ module.exports = new (function() {
           testresults.errors++;
           client.terminate();
           error = true;
+          callback(err, testresults);
         }
 
         if (!error) {
@@ -114,7 +115,7 @@ module.exports = new (function() {
         }
 
       } else {
-        callback(testresults);
+        callback(null, testresults);
       }
     }
 
@@ -176,10 +177,10 @@ module.exports = new (function() {
           return cb(err);
         }
         list.sort();
-        
+
         var modules = list.filter(function (filePath) {
           var filename = filePath.split('/').slice(-1)[0];
-          return opts.filter ? 
+          return opts.filter ?
             minimatch(filename, opts.filter) :
             extensionPattern.exec(filePath);
         });
@@ -261,12 +262,18 @@ module.exports = new (function() {
       }
 
       var modulePath = fullpaths.shift();
-      var module     = require(modulePath);
+      try {
+        var module     = require(modulePath);
+      } catch (err) {
+        finishCallback(err);
+        throw err;
+      }
+
       var moduleName = modulePath.split(path.sep).pop();
       globalresults.modules[moduleName] = [];
       console.log('\n' + Logger.colors.cyan('[ ' + moduleName + ' module ]'));
 
-      runModule(module, opts, moduleName, function(testresults) {
+      runModule(module, opts, moduleName, function(err, testresults) {
         globalresults.passed += testresults.passed;
         globalresults.failed += testresults.failed;
         globalresults.errors += testresults.errors;
@@ -284,11 +291,11 @@ module.exports = new (function() {
 
           var output = aditional_opts.output_folder;
           if (output === false) {
-            finishCallback();
+            finishCallback(null);
           } else {
             ensureDir(output, function() {
               Reporter.save(globalresults, output);
-              finishCallback();
+              finishCallback(null);
             });
           }
         }
