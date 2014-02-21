@@ -13,6 +13,7 @@ var Reporter = require('./reporters/junit.js');
 module.exports = new (function() {
   'use strict';
   var seleniumProcess = null;
+  var client;
   var globalresults = {
     passed : 0,
     failed : 0,
@@ -23,12 +24,12 @@ module.exports = new (function() {
     modules : {}
   };
 
-  function runModule(module, opts, moduleName, callback) {
-    var client = Nightwatch.client(opts);
+  function runModule(module, moduleName, callback) {
     var keys   = Object.keys(module);
     var tests  = [];
     var setUp;
     var tearDown;
+
     var testresults = {
       passed : 0,
       failed : 0,
@@ -239,8 +240,9 @@ module.exports = new (function() {
     var start = new Date().getTime();
     var modules = {};
     var curModule;
+    var noop = function() {};
 
-    finishCallback = finishCallback || function() {};
+    client = Nightwatch.client(opts);
 
     if (typeof files == 'string') {
       var paths = [files];
@@ -253,6 +255,16 @@ module.exports = new (function() {
     if (paths.length == 0) {
       throw new Error('No tests to run.');
     }
+
+    (opts.setUp || noop)(client);
+
+    finishCallback = (function(onFinish) {
+      return function() {
+        (opts.tearDown || noop)(client);
+        onFinish();
+      }
+    })(finishCallback || noop);
+
     runFiles(paths, function runTestModule(err, fullpaths) {
       if (!fullpaths || fullpaths.length == 0) {
         Logger.warn('No tests defined!');
@@ -266,7 +278,7 @@ module.exports = new (function() {
       globalresults.modules[moduleName] = [];
       console.log('\n' + Logger.colors.cyan('[ ' + moduleName + ' module ]'));
 
-      runModule(module, opts, moduleName, function(testresults) {
+      runModule(module, moduleName, function(testresults) {
         globalresults.passed += testresults.passed;
         globalresults.failed += testresults.failed;
         globalresults.errors += testresults.errors;
