@@ -139,7 +139,7 @@ function parseTestSettings(argv) {
   var test_settings = settings.test_settings[argv.e];
   test_settings.custom_commands_path = settings.custom_commands_path || '';
 
-  if (argv.v) {
+  if (argv.verbose) {
     test_settings.silent = false;
   }
 
@@ -205,7 +205,10 @@ try {
         runner.run(testsource, test_settings, {
           output_folder : output_folder,
           selenium : (settings.selenium || null)
-        }, function() {
+        }, function(err) {
+          if (err) {
+            console.log(Logger.colors.red('There was an error while running the test.'));
+          }
           selenium.stopServer();
         });
       });
