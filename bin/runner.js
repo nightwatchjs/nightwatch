@@ -68,6 +68,10 @@ cli.command('help')
   .description('Shows this help.')
   .alias('h');
 
+// $ nightwatch --version
+cli.command('version')
+  .description('Shows version information.');
+
 /**
  * Looks for pattern ${VAR_NAME} in settings
  * @param {Object} target
@@ -156,6 +160,9 @@ try {
   
   if (argv.help) {
     cli.showHelp();
+  } else if (argv.version) {
+    var packageConfig = require(__dirname + '/../package.json');
+    console.log(packageConfig.name + ' v' + packageConfig.version);
   } else {
 
     process.chdir(process.cwd());
