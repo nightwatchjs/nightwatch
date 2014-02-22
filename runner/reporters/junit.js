@@ -1,5 +1,6 @@
 var fs = require('fs'),
     path = require('path'),
+    mkpath = require('mkpath'),
     ejs = require('ejs'),
     child_process = require('child_process');
     
@@ -32,7 +33,8 @@ exports.save = function(results, folder) {
         }
       });
       
-      var filename = path.join(folder, moduleName + '.xml')
+      var filename = path.join(folder, moduleName + '.xml');
+      mkpath.sync(path.dirname(filename));
       fs.writeFileSync(filename, rendered, 'utf8');
     }
   });
