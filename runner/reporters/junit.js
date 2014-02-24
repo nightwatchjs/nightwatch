@@ -3,7 +3,7 @@ var fs = require('fs'),
     ejs = require('ejs'),
     child_process = require('child_process');
 
-exports.save = function(results, folder) {
+exports.save = function(results, folder, callback) {
   var tmpl = __dirname + "/junit.xml.ejs";
 
   fs.readFile(tmpl, function (err, data) {
@@ -36,11 +36,7 @@ exports.save = function(results, folder) {
         });
 
         var filename = path.join(folder, moduleName + '.xml');
-        fs.writeFile(filename, rendered, function(err) {
-          if (err) {
-            throw err;
-          }
-        });
+        fs.writeFile(filename, rendered, callback);
       }
     }
   });
