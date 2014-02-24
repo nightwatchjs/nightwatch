@@ -9,9 +9,9 @@
     "server_path" : "",
     "log_path" : "",
     "host" : "127.0.0.1",
-    "port" : 4444  
+    "port" : 4444
   },
-  
+
   "test_settings" : {
     "default" : {
       "launch_url" : "http://localhost",
@@ -32,7 +32,7 @@
         "acceptSslCerts" : true
       }
     },
-    
+
     "saucelabs" : {
       "selenium_host" : "ondemand.saucelabs.com",
       "selenium_port" : 80,
@@ -50,7 +50,7 @@
         "browserName": "firefox"
       }
     },
-    
+
     "browserstack" : {
       "selenium_host" : "hub.browserstack.com",
       "selenium_port" : 80,

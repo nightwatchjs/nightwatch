@@ -5,6 +5,7 @@ var path = require('path');
 var fs = require('fs');
 var util = require('util');
 var child_process = require('child_process');
+var mkpath = require('mkpath');
 var minimatch = require('minimatch');
 var Nightwatch = require('../index.js');
 var Logger = require('../lib/logger.js');
@@ -152,21 +153,6 @@ module.exports = new (function() {
     };
   }
 
-  function ensureDir(path, callback) {
-    var mkdir = child_process.spawn('mkdir', ['-p', path]);
-    mkdir.on('error', function (err) {
-      callback(err);
-      callback = function() {};
-    });
-    mkdir.on('exit', function (code) {
-      if (code === 0) {
-        callback();
-      } else {
-        callback(new Error('Error saving tests output. mkdir exited with code: ' + code));
-      }
-    });
-  }
-
   function runFiles(paths, cb, opts) {
     var extensionPattern = /\.js$/;
     if (paths.length == 1 && extensionPattern.test(paths[0])) {
@@ -297,9 +283,21 @@ module.exports = new (function() {
           if (output === false) {
             finishCallback(null);
           } else {
-            ensureDir(output, function() {
-              Reporter.save(globalresults, output);
-              finishCallback(null);
+            mkpath(output, function(err) {
+              if (err) {
+                console.log(Logger.colors.yellow('Output folder doesn\'t exist and cannot be created.'));
+                console.log(err.stack);
+                finishCallback(null);
+                return;
+              }
+
+              Reporter.save(globalresults, output, function(err) {
+                if (err) {
+                  console.log(Logger.colors.yellow('Warning: Failed to save report file to folder: ' + output));
+                  console.log(err.stack);
+                }
+                finishCallback(null);
+              });
             });
           }
         }
