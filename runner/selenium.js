@@ -38,6 +38,9 @@ module.exports = new (function() {
     if (test_settings.chrome_driver) {
       cliOpts.push('-Dwebdriver.chrome.driver=' + test_settings.chrome_driver);
     }
+    if (test_settings.ie_driver) {
+      cliOpts.push('-Dwebdriver.ie.driver=' + test_settings.ie_driver);
+    }
     
     seleniumProcess = spawn('java', cliOpts);
     seleniumProcess.host = selenium_host;
