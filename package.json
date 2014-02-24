@@ -24,13 +24,15 @@
     "mkpath": ">=0.1.0"
   },
   "devDependencies": {
-    "nodeunit": "latest"
+    "nodeunit": "latest",
+    "jshint": "~2.4.4"
   },
   "bin": {
     "nightwatch": "./bin/nightwatch"
   },
   "man": "",
   "scripts": {
+    "jshint": "./node_modules/.bin/jshint --verbose --config .jshintrc lib/",
     "test": "node ./tests/run_tests.js"
   }
 }
