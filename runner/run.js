@@ -123,7 +123,7 @@ module.exports = new (function() {
   }
 
   function printResults(testresults) {
-    if (testresults.passed > 0 && testresults.errors == 0 && testresults.failed == 0) {
+    if (testresults.passed > 0 && testresults.errors === 0 && testresults.failed === 0) {
       console.log(Logger.colors.green('\nOK. ' + testresults.passed, Logger.colors.background.black), 'total assertions passed.');
     } else {
       var skipped = '';
@@ -156,11 +156,14 @@ module.exports = new (function() {
     var mkdir = child_process.spawn('mkdir', ['-p', path]);
     mkdir.on('error', function (err) {
       callback(err);
-      callback = function(){};
+      callback = function() {};
     });
     mkdir.on('exit', function (code) {
-      if (code === 0) callback();
-      else callback(new Error('mkdir exited with code: ' + code));
+      if (code === 0) {
+        callback();
+      } else {
+        callback(new Error('Error saving tests output. mkdir exited with code: ' + code));
+      }
     });
   }
 
@@ -202,7 +205,7 @@ module.exports = new (function() {
       }
       var pending = list.length;
 
-      if (pending == 0) {
+      if (pending === 0) {
         return done(null, results);
       }
 
@@ -240,30 +243,31 @@ module.exports = new (function() {
     var start = new Date().getTime();
     var modules = {};
     var curModule;
-
+    var paths;
     finishCallback = finishCallback || function() {};
 
     if (typeof files == 'string') {
-      var paths = [files];
+      paths = [files];
     } else {
       paths = files.map(function (p) {
         return path.join(process.cwd(), p);
       });
     }
 
-    if (paths.length == 0) {
+    if (paths.length === 0) {
       throw new Error('No tests to run.');
     }
     runFiles(paths, function runTestModule(err, fullpaths) {
-      if (!fullpaths || fullpaths.length == 0) {
+      if (!fullpaths || fullpaths.length === 0) {
         Logger.warn('No tests defined!');
         console.log('using source folder', paths);
         return;
       }
 
+      var module;
       var modulePath = fullpaths.shift();
       try {
-        var module     = require(modulePath);
+        module = require(modulePath);
       } catch (err) {
         finishCallback(err);
         throw err;

@@ -120,7 +120,7 @@ function readSettings(argv) {
   }
 
   return settings;
-};
+}
 
 /**
  *
@@ -184,7 +184,9 @@ try {
       testsource =  (argv.t.indexOf(process.cwd()) === -1) ?
                       path.join(process.cwd(), argv.t) :
                       argv.t;
-      testsource.substr(-3) === '.js' || (testsource += '.js');
+      if (testsource.substr(-3) != '.js') {
+        testsource += '.js';
+      }
       fs.statSync(testsource);
     } else if (typeof argv.g == 'string') {
       testsource = [argv.g];
