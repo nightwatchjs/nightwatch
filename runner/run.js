@@ -168,7 +168,7 @@ module.exports = new (function() {
         list.sort();
 
         var modules = list.filter(function (filePath) {
-          var filename = filePath.split('/').slice(-1)[0];
+          var filename = filePath.split(path.sep).slice(-1)[0];
           return opts.filter ?
             minimatch(filename, opts.filter) :
             extensionPattern.exec(filePath);
@@ -196,11 +196,11 @@ module.exports = new (function() {
       }
 
       list.forEach(function(file) {
-        file = [dir, file].join('/');
+        file = [dir, file].join(path.sep);
 
         fs.stat(file, function(err, stat) {
           if (stat && stat.isDirectory()) {
-            var dirName = file.split('/').slice(-1)[0];
+            var dirName = file.split(path.sep).slice(-1)[0];
             if (opts.skipgroup && opts.skipgroup.indexOf(dirName) > -1) {
               pending = pending-1;
             } else {
