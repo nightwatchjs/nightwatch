@@ -7,7 +7,11 @@
 
 module.exports = {
   setUp : function(c) {
+<<<<<<< HEAD
   	console.log('Setting up...');
+=======
+    console.log('Setting up...');
+>>>>>>> master
   },
 
   tearDown : function() {
@@ -18,12 +22,13 @@ module.exports = {
     client
       .url('http://google.com')
       .waitForElementVisible('body', 1000)
-      .getLocation("input[type=text]", function(result) {
-        this.assert.equal(result.value.height, 20, 'is 20');
-      })
       .assert.title('Google')
       .url(function(result) {
+<<<<<<< HEAD
         this.assert.ok(result.value.indexOf('google.nl') !== -1, 'Google url is ok');
+=======
+        //this.assert.ok(result.value.indexOf('google.') !== -1, 'Google url is ok');
+>>>>>>> master
       })
       .assert.visible('input[type=text]')
       .setValue('input[type=text]', 'nightwatch')
@@ -37,6 +42,10 @@ module.exports = {
       .assert.containsText('#main', 'The Night Watch')
 
   }
+<<<<<<< HEAD
 
 
 }
+=======
+};
+>>>>>>> master

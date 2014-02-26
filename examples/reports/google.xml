@@ -6,10 +6,10 @@
   
   <testsuite errors="0" failures="0" hostname="" id=""
     name="step one" package="google" skipped="0" 
-    tests="5" time="" timestamp="">
+    tests="4" time="" timestamp="">
     
     
-      <testcase name="Element &lt;body&gt; was visible after 254 milliseconds.">
+      <testcase name="Element &lt;body&gt; was visible after 153 milliseconds.">
         
       </testcase>  
     
@@ -17,15 +17,11 @@
         
       </testcase>  
     
-      <testcase name="Assertion passed: Google url is ok">
-        
-      </testcase>  
-    
       <testcase name="Testing if element &lt;input[type=text]&gt; is visible.">
         
       </testcase>  
     
-      <testcase name="Element &lt;button[name=btnG]&gt; was visible after 30 milliseconds.">
+      <testcase name="Element &lt;button[name=btnG]&gt; was visible after 20 milliseconds.">
         
       </testcase>  
     

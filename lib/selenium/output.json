@@ -1,0 +1,732 @@
+[
+  {
+    "tags": [
+      {
+        "type": "method",
+        "string": "click"
+      },
+      {
+        "type": "param",
+        "types": [
+          "string"
+        ],
+        "name": "cssSelector",
+        "description": "The CSS selector used to locate the element. "
+      },
+      {
+        "type": "param",
+        "types": [
+          "function"
+        ],
+        "name": "[callback]",
+        "description": "Optional callback function to be called when the command finishes."
+      },
+      {
+        "type": "see",
+        "local": "protocol.elementIdClick",
+        "visibility": "protocol.elementIdClick"
+      },
+      {
+        "type": "api",
+        "visibility": "commands"
+      }
+    ],
+    "description": {
+      "full": "<p>Simulates a click event on the given DOM element. Uses elementIdClick protocol command.</p>\n\n<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (client) {\n     client.click(\"#main ul li a.first\");\n   };\n</pre></div>",
+      "summary": "<p>Simulates a click event on the given DOM element. Uses elementIdClick protocol command.</p>",
+      "body": "<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (client) {\n     client.click(\"#main ul li a.first\");\n   };\n</pre></div>"
+    },
+    "isPrivate": false,
+    "ignore": false,
+    "code": "elementCommands.click = 'elementIdClick';",
+    "ctx": {
+      "type": "property",
+      "receiver": "elementCommands",
+      "name": "click",
+      "value": "'elementIdClick'",
+      "string": "elementCommands.click"
+    }
+  },
+  {
+    "tags": [
+      {
+        "type": "method",
+        "string": "clearValue"
+      },
+      {
+        "type": "param",
+        "types": [
+          "string"
+        ],
+        "name": "cssSelector",
+        "description": "The CSS selector used to locate the element. "
+      },
+      {
+        "type": "param",
+        "types": [
+          "function"
+        ],
+        "name": "[callback]",
+        "description": "Optional callback function to be called when the command finishes."
+      },
+      {
+        "type": "see",
+        "local": "protocol.elementIdClear",
+        "visibility": "protocol.elementIdClear"
+      },
+      {
+        "type": "api",
+        "visibility": "commands"
+      }
+    ],
+    "description": {
+      "full": "<p>Clear a textarea or a text input element's value. Uses elementIdValue protocol command.</p>\n\n<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (client) {\n     client.clearValue('input[type=text]');\n   };\n</pre></div>",
+      "summary": "<p>Clear a textarea or a text input element's value. Uses elementIdValue protocol command.</p>",
+      "body": "<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (client) {\n     client.clearValue('input[type=text]');\n   };\n</pre></div>"
+    },
+    "isPrivate": false,
+    "ignore": false,
+    "code": "elementCommands.clearValue = 'elementIdClear';",
+    "ctx": {
+      "type": "property",
+      "receiver": "elementCommands",
+      "name": "clearValue",
+      "value": "'elementIdClear'",
+      "string": "elementCommands.clearValue"
+    }
+  },
+  {
+    "tags": [
+      {
+        "type": "method",
+        "string": "getAttribute"
+      },
+      {
+        "type": "param",
+        "types": [
+          "string"
+        ],
+        "name": "cssSelector",
+        "description": "The CSS selector used to locate the element. "
+      },
+      {
+        "type": "param",
+        "types": [
+          "string"
+        ],
+        "name": "atttribute",
+        "description": "The attribute name to inspect."
+      },
+      {
+        "type": "param",
+        "types": [
+          "function"
+        ],
+        "name": "[callback]",
+        "description": "Optional callback function to be called when the command finishes."
+      },
+      {
+        "type": "see",
+        "local": "protocol.elementIdAttribute",
+        "visibility": "protocol.elementIdAttribute"
+      },
+      {
+        "type": "return",
+        "types": [
+          "*"
+        ],
+        "description": "The value of the attribute"
+      },
+      {
+        "type": "api",
+        "visibility": "commands"
+      }
+    ],
+    "description": {
+      "full": "<p>Retrieve the value of an attribute for a given DOM element. Uses elementIdAttribute protocol command.</p>\n\n<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (client) {\n\n<pre><code> client.getAttribute(\"#main ul li a.first\", \"href\", function(result) {\n   this.assert.equal(typeof result, \"object\");\n   this.assert.equal(result.status, 0);\n   this.assert.equal(result.value, '<a href='http://nightwatchjs.org'>http://nightwatchjs.org</a>');\n });\n</code></pre>\n\n   };\n</pre></div>",
+      "summary": "<p>Retrieve the value of an attribute for a given DOM element. Uses elementIdAttribute protocol command.</p>",
+      "body": "<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (client) {\n\n<pre><code> client.getAttribute(\"#main ul li a.first\", \"href\", function(result) {\n   this.assert.equal(typeof result, \"object\");\n   this.assert.equal(result.status, 0);\n   this.assert.equal(result.value, '<a href='http://nightwatchjs.org'>http://nightwatchjs.org</a>');\n });\n</code></pre>\n\n   };\n</pre></div>"
+    },
+    "isPrivate": false,
+    "ignore": false,
+    "code": "elementCommands.getAttribute = ['elementIdAttribute', 1];",
+    "ctx": {
+      "type": "property",
+      "receiver": "elementCommands",
+      "name": "getAttribute",
+      "value": "['elementIdAttribute', 1]",
+      "string": "elementCommands.getAttribute"
+    }
+  },
+  {
+    "tags": [
+      {
+        "type": "method",
+        "string": "getCssProperty"
+      },
+      {
+        "type": "param",
+        "types": [
+          "string"
+        ],
+        "name": "cssSelector",
+        "description": "The CSS selector used to locate the element. "
+      },
+      {
+        "type": "param",
+        "types": [
+          "string"
+        ],
+        "name": "cssProperty",
+        "description": "The CSS property to inspect."
+      },
+      {
+        "type": "param",
+        "types": [
+          "function"
+        ],
+        "name": "[callback]",
+        "description": "Optional callback function to be called when the command finishes."
+      },
+      {
+        "type": "see",
+        "local": "protocol.elementIdCssProperty",
+        "visibility": "protocol.elementIdCssProperty"
+      },
+      {
+        "type": "return",
+        "types": [
+          "*"
+        ],
+        "description": "The value of the css property"
+      },
+      {
+        "type": "api",
+        "visibility": "commands"
+      }
+    ],
+    "description": {
+      "full": "<p>Retrieve the value of a css property for a given DOM element. Uses elementIdCssProperty protocol command.</p>\n\n<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (client) {\n\n<pre><code> client.getCssProperty(\"#main ul li a.first\", \"display\", function(result) {\n   this.assert.equal(typeof result, \"object\");\n   this.assert.equal(result.status, 0);\n   this.assert.equal(result.value, 'inline');\n });\n</code></pre>\n\n   };\n</pre></div>",
+      "summary": "<p>Retrieve the value of a css property for a given DOM element. Uses elementIdCssProperty protocol command.</p>",
+      "body": "<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (client) {\n\n<pre><code> client.getCssProperty(\"#main ul li a.first\", \"display\", function(result) {\n   this.assert.equal(typeof result, \"object\");\n   this.assert.equal(result.status, 0);\n   this.assert.equal(result.value, 'inline');\n });\n</code></pre>\n\n   };\n</pre></div>"
+    },
+    "isPrivate": false,
+    "ignore": false,
+    "code": "elementCommands.getCssProperty = ['elementIdCssProperty', 1];",
+    "ctx": {
+      "type": "property",
+      "receiver": "elementCommands",
+      "name": "getCssProperty",
+      "value": "['elementIdCssProperty', 1]",
+      "string": "elementCommands.getCssProperty"
+    }
+  },
+  {
+    "tags": [
+      {
+        "type": "method",
+        "string": "getElementSize"
+      },
+      {
+        "type": "param",
+        "types": [
+          "string"
+        ],
+        "name": "cssSelector",
+        "description": "The CSS selector used to locate the element. "
+      },
+      {
+        "type": "param",
+        "types": [
+          "function"
+        ],
+        "name": "[callback]",
+        "description": "Optional callback function to be called when the command finishes."
+      },
+      {
+        "type": "see",
+        "local": "protocol.elementIdSize",
+        "visibility": "protocol.elementIdSize"
+      },
+      {
+        "type": "return",
+        "types": [
+          "number"
+        ],
+        "description": "value.width The width of the element in pixels"
+      },
+      {
+        "type": "return",
+        "types": [
+          "number"
+        ],
+        "description": "value.height The height of the element in pixels"
+      },
+      {
+        "type": "api",
+        "visibility": "commands"
+      }
+    ],
+    "description": {
+      "full": "<p>Determine an element's size in pixels. Uses elementIdSize protocol command.</p>\n\n<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (client) {\n\n<pre><code> client.getElementSize(\"#main ul li a.first\", function(result) {\n   this.assert.equal(typeof result, \"object\");\n   this.assert.equal(result.status, 0);\n   this.assert.equal(result.value.width, 500);\n   this.assert.equal(result.value.height, 20);\n });\n</code></pre>\n\n   };\n</pre></div>",
+      "summary": "<p>Determine an element's size in pixels. Uses elementIdSize protocol command.</p>",
+      "body": "<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (client) {\n\n<pre><code> client.getElementSize(\"#main ul li a.first\", function(result) {\n   this.assert.equal(typeof result, \"object\");\n   this.assert.equal(result.status, 0);\n   this.assert.equal(result.value.width, 500);\n   this.assert.equal(result.value.height, 20);\n });\n</code></pre>\n\n   };\n</pre></div>"
+    },
+    "isPrivate": false,
+    "ignore": false,
+    "code": "elementCommands.getElementSize = 'elementIdSize';",
+    "ctx": {
+      "type": "property",
+      "receiver": "elementCommands",
+      "name": "getElementSize",
+      "value": "'elementIdSize'",
+      "string": "elementCommands.getElementSize"
+    }
+  },
+  {
+    "tags": [
+      {
+        "type": "method",
+        "string": "getLocation"
+      },
+      {
+        "type": "param",
+        "types": [
+          "string"
+        ],
+        "name": "cssSelector",
+        "description": "The CSS selector used to locate the element. "
+      },
+      {
+        "type": "param",
+        "types": [
+          "function"
+        ],
+        "name": "[callback]",
+        "description": "Optional callback function to be called when the command finishes."
+      },
+      {
+        "type": "see",
+        "local": "protocol.elementIdLocation",
+        "visibility": "protocol.elementIdLocation"
+      },
+      {
+        "type": "return",
+        "types": [
+          "value.x"
+        ],
+        "description": "{number} The X coordinate for the element on the page."
+      },
+      {
+        "type": "return",
+        "types": [
+          "number"
+        ],
+        "description": "value.y The Y coordinate for the element on the page."
+      },
+      {
+        "type": "api",
+        "visibility": "commands"
+      }
+    ],
+    "description": {
+      "full": "<p>Determine an element's location on the page. The point (0, 0) refers to the upper-left corner of the page. <br />The element's coordinates are returned as a JSON object with x and y properties. Uses elementIdLocation protocol command.</p>\n\n<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (client) {\n\n<pre><code> client.getLocation(\"#main ul li a.first\", function(result) {\n   this.assert.equal(typeof result, \"object\");\n   this.assert.equal(result.status, 0);\n   this.assert.equal(result.value.x, 200);\n   this.assert.equal(result.value.y, 200);\n });\n</code></pre>\n\n   };\n</pre></div>",
+      "summary": "<p>Determine an element's location on the page. The point (0, 0) refers to the upper-left corner of the page. <br />The element's coordinates are returned as a JSON object with x and y properties. Uses elementIdLocation protocol command.</p>",
+      "body": "<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (client) {\n\n<pre><code> client.getLocation(\"#main ul li a.first\", function(result) {\n   this.assert.equal(typeof result, \"object\");\n   this.assert.equal(result.status, 0);\n   this.assert.equal(result.value.x, 200);\n   this.assert.equal(result.value.y, 200);\n });\n</code></pre>\n\n   };\n</pre></div>"
+    },
+    "isPrivate": false,
+    "ignore": false,
+    "code": "elementCommands.getLocation = 'elementIdLocation';",
+    "ctx": {
+      "type": "property",
+      "receiver": "elementCommands",
+      "name": "getLocation",
+      "value": "'elementIdLocation'",
+      "string": "elementCommands.getLocation"
+    }
+  },
+  {
+    "tags": [
+      {
+        "type": "method",
+        "string": "click"
+      },
+      {
+        "type": "param",
+        "types": [
+          "string"
+        ],
+        "name": "cssSelector",
+        "description": "The CSS selector used to locate the element. "
+      },
+      {
+        "type": "param",
+        "types": [
+          "function"
+        ],
+        "name": "[callback]",
+        "description": "Optional callback function to be called when the command finishes. The callback is called with the main instance as context and the result object as the argument."
+      },
+      {
+        "type": "see",
+        "local": "protocol.elementIdClick",
+        "visibility": "protocol.elementIdClick"
+      },
+      {
+        "type": "api",
+        "visibility": "commands"
+      }
+    ],
+    "description": {
+      "full": "<p>Simulates a click event on the given DOM element. Uses elementIdClick protocol command.</p>\n\n<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (browser) {\n     browser.click(\"#main ul li a.first\");\n   };\n</pre></div>",
+      "summary": "<p>Simulates a click event on the given DOM element. Uses elementIdClick protocol command.</p>",
+      "body": "<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (browser) {\n     browser.click(\"#main ul li a.first\");\n   };\n</pre></div>"
+    },
+    "isPrivate": false,
+    "ignore": false,
+    "code": "elementCommands.getLocationInView = 'elementIdLocationInView';",
+    "ctx": {
+      "type": "property",
+      "receiver": "elementCommands",
+      "name": "getLocationInView",
+      "value": "'elementIdLocationInView'",
+      "string": "elementCommands.getLocationInView"
+    }
+  },
+  {
+    "tags": [
+      {
+        "type": "method",
+        "string": "click"
+      },
+      {
+        "type": "param",
+        "types": [
+          "string"
+        ],
+        "name": "cssSelector",
+        "description": "The CSS selector used to locate the element. "
+      },
+      {
+        "type": "param",
+        "types": [
+          "function"
+        ],
+        "name": "[callback]",
+        "description": "Optional callback function to be called when the command finishes. The callback is called with the main instance as context and the result object as the argument."
+      },
+      {
+        "type": "see",
+        "local": "protocol.elementIdClick",
+        "visibility": "protocol.elementIdClick"
+      },
+      {
+        "type": "api",
+        "visibility": "commands"
+      }
+    ],
+    "description": {
+      "full": "<p>Simulates a click event on the given DOM element. Uses elementIdClick protocol command.</p>\n\n<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (browser) {\n     browser.click(\"#main ul li a.first\");\n   };\n</pre></div>",
+      "summary": "<p>Simulates a click event on the given DOM element. Uses elementIdClick protocol command.</p>",
+      "body": "<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (browser) {\n     browser.click(\"#main ul li a.first\");\n   };\n</pre></div>"
+    },
+    "isPrivate": false,
+    "ignore": false,
+    "code": "elementCommands.getTagName = 'elementIdName';",
+    "ctx": {
+      "type": "property",
+      "receiver": "elementCommands",
+      "name": "getTagName",
+      "value": "'elementIdName'",
+      "string": "elementCommands.getTagName"
+    }
+  },
+  {
+    "tags": [
+      {
+        "type": "method",
+        "string": "click"
+      },
+      {
+        "type": "param",
+        "types": [
+          "string"
+        ],
+        "name": "cssSelector",
+        "description": "The CSS selector used to locate the element. "
+      },
+      {
+        "type": "param",
+        "types": [
+          "function"
+        ],
+        "name": "[callback]",
+        "description": "Optional callback function to be called when the command finishes. The callback is called with the main instance as context and the result object as the argument."
+      },
+      {
+        "type": "see",
+        "local": "protocol.elementIdClick",
+        "visibility": "protocol.elementIdClick"
+      },
+      {
+        "type": "api",
+        "visibility": "commands"
+      }
+    ],
+    "description": {
+      "full": "<p>Simulates a click event on the given DOM element. Uses elementIdClick protocol command.</p>\n\n<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (browser) {\n     browser.click(\"#main ul li a.first\");\n   };\n</pre></div>",
+      "summary": "<p>Simulates a click event on the given DOM element. Uses elementIdClick protocol command.</p>",
+      "body": "<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (browser) {\n     browser.click(\"#main ul li a.first\");\n   };\n</pre></div>"
+    },
+    "isPrivate": false,
+    "ignore": false,
+    "code": "elementCommands.getText = 'elementIdText';",
+    "ctx": {
+      "type": "property",
+      "receiver": "elementCommands",
+      "name": "getText",
+      "value": "'elementIdText'",
+      "string": "elementCommands.getText"
+    }
+  },
+  {
+    "tags": [
+      {
+        "type": "method",
+        "string": "click"
+      },
+      {
+        "type": "param",
+        "types": [
+          "string"
+        ],
+        "name": "cssSelector",
+        "description": "The CSS selector used to locate the element. "
+      },
+      {
+        "type": "param",
+        "types": [
+          "function"
+        ],
+        "name": "[callback]",
+        "description": "Optional callback function to be called when the command finishes. The callback is called with the main instance as context and the result object as the argument."
+      },
+      {
+        "type": "see",
+        "local": "protocol.elementIdClick",
+        "visibility": "protocol.elementIdClick"
+      },
+      {
+        "type": "api",
+        "visibility": "commands"
+      }
+    ],
+    "description": {
+      "full": "<p>Simulates a click event on the given DOM element. Uses elementIdClick protocol command.</p>\n\n<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (browser) {\n     browser.click(\"#main ul li a.first\");\n   };\n</pre></div>",
+      "summary": "<p>Simulates a click event on the given DOM element. Uses elementIdClick protocol command.</p>",
+      "body": "<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (browser) {\n     browser.click(\"#main ul li a.first\");\n   };\n</pre></div>"
+    },
+    "isPrivate": false,
+    "ignore": false,
+    "code": "elementCommands.getValue = 'elementIdValue';",
+    "ctx": {
+      "type": "property",
+      "receiver": "elementCommands",
+      "name": "getValue",
+      "value": "'elementIdValue'",
+      "string": "elementCommands.getValue"
+    }
+  },
+  {
+    "tags": [
+      {
+        "type": "method",
+        "string": "click"
+      },
+      {
+        "type": "param",
+        "types": [
+          "string"
+        ],
+        "name": "cssSelector",
+        "description": "The CSS selector used to locate the element. "
+      },
+      {
+        "type": "param",
+        "types": [
+          "function"
+        ],
+        "name": "[callback]",
+        "description": "Optional callback function to be called when the command finishes. The callback is called with the main instance as context and the result object as the argument."
+      },
+      {
+        "type": "see",
+        "local": "protocol.elementIdClick",
+        "visibility": "protocol.elementIdClick"
+      },
+      {
+        "type": "api",
+        "visibility": "commands"
+      }
+    ],
+    "description": {
+      "full": "<p>Simulates a click event on the given DOM element. Uses elementIdClick protocol command.</p>\n\n<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (browser) {\n     browser.click(\"#main ul li a.first\");\n   };\n</pre></div>",
+      "summary": "<p>Simulates a click event on the given DOM element. Uses elementIdClick protocol command.</p>",
+      "body": "<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (browser) {\n     browser.click(\"#main ul li a.first\");\n   };\n</pre></div>"
+    },
+    "isPrivate": false,
+    "ignore": false,
+    "code": "elementCommands.isVisible = 'elementIdDisplayed';",
+    "ctx": {
+      "type": "property",
+      "receiver": "elementCommands",
+      "name": "isVisible",
+      "value": "'elementIdDisplayed'",
+      "string": "elementCommands.isVisible"
+    }
+  },
+  {
+    "tags": [
+      {
+        "type": "method",
+        "string": "click"
+      },
+      {
+        "type": "param",
+        "types": [
+          "string"
+        ],
+        "name": "cssSelector",
+        "description": "The CSS selector used to locate the element. "
+      },
+      {
+        "type": "param",
+        "types": [
+          "function"
+        ],
+        "name": "[callback]",
+        "description": "Optional callback function to be called when the command finishes. The callback is called with the main instance as context and the result object as the argument."
+      },
+      {
+        "type": "see",
+        "local": "protocol.elementIdClick",
+        "visibility": "protocol.elementIdClick"
+      },
+      {
+        "type": "api",
+        "visibility": "commands"
+      }
+    ],
+    "description": {
+      "full": "<p>Simulates a click event on the given DOM element. Uses elementIdClick protocol command.</p>\n\n<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (browser) {\n     browser.click(\"#main ul li a.first\");\n   };\n</pre></div>",
+      "summary": "<p>Simulates a click event on the given DOM element. Uses elementIdClick protocol command.</p>",
+      "body": "<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (browser) {\n     browser.click(\"#main ul li a.first\");\n   };\n</pre></div>"
+    },
+    "isPrivate": false,
+    "ignore": false,
+    "code": "elementCommands.moveToElement = ['moveTo', 2];",
+    "ctx": {
+      "type": "property",
+      "receiver": "elementCommands",
+      "name": "moveToElement",
+      "value": "['moveTo', 2]",
+      "string": "elementCommands.moveToElement"
+    }
+  },
+  {
+    "tags": [
+      {
+        "type": "method",
+        "string": "click"
+      },
+      {
+        "type": "param",
+        "types": [
+          "string"
+        ],
+        "name": "cssSelector",
+        "description": "The CSS selector used to locate the element. "
+      },
+      {
+        "type": "param",
+        "types": [
+          "function"
+        ],
+        "name": "[callback]",
+        "description": "Optional callback function to be called when the command finishes. The callback is called with the main instance as context and the result object as the argument."
+      },
+      {
+        "type": "see",
+        "local": "protocol.elementIdClick",
+        "visibility": "protocol.elementIdClick"
+      },
+      {
+        "type": "api",
+        "visibility": "commands"
+      }
+    ],
+    "description": {
+      "full": "<p>Simulates a click event on the given DOM element. Uses elementIdClick protocol command.</p>\n\n<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (browser) {\n     browser.click(\"#main ul li a.first\");\n   };\n</pre></div>",
+      "summary": "<p>Simulates a click event on the given DOM element. Uses elementIdClick protocol command.</p>",
+      "body": "<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (browser) {\n     browser.click(\"#main ul li a.first\");\n   };\n</pre></div>"
+    },
+    "isPrivate": false,
+    "ignore": false,
+    "code": "elementCommands.setValue = ['elementIdValue', 1];",
+    "ctx": {
+      "type": "property",
+      "receiver": "elementCommands",
+      "name": "setValue",
+      "value": "['elementIdValue', 1]",
+      "string": "elementCommands.setValue"
+    }
+  },
+  {
+    "tags": [
+      {
+        "type": "method",
+        "string": "click"
+      },
+      {
+        "type": "param",
+        "types": [
+          "string"
+        ],
+        "name": "cssSelector",
+        "description": "The CSS selector used to locate the element. "
+      },
+      {
+        "type": "param",
+        "types": [
+          "function"
+        ],
+        "name": "[callback]",
+        "description": "Optional callback function to be called when the command finishes. The callback is called with the main instance as context and the result object as the argument."
+      },
+      {
+        "type": "see",
+        "local": "protocol.elementIdClick",
+        "visibility": "protocol.elementIdClick"
+      },
+      {
+        "type": "api",
+        "visibility": "commands"
+      }
+    ],
+    "description": {
+      "full": "<p>Simulates a click event on the given DOM element. Uses elementIdClick protocol command.</p>\n\n<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (browser) {\n     browser.click(\"#main ul li a.first\");\n   };\n</pre></div>",
+      "summary": "<p>Simulates a click event on the given DOM element. Uses elementIdClick protocol command.</p>",
+      "body": "<div class=\"highlight\"><pre lang=\"\">   this.demoTest = function (browser) {\n     browser.click(\"#main ul li a.first\");\n   };\n</pre></div>"
+    },
+    "isPrivate": false,
+    "ignore": false,
+    "code": "elementCommands.submitForm = 'submit';\n  \n  for (var commandName in elementCommands) {\n    var args = elementCommands[commandName];\n    if (!Array.isArray(args)) {\n      args = [args];\n    }\n    \n    returnValue[commandName] = addElementCommand.apply(context, args);\n  }\n  \n  return returnValue;\n};",
+    "ctx": {
+      "type": "property",
+      "receiver": "elementCommands",
+      "name": "submitForm",
+      "value": "'submit'",
+      "string": "elementCommands.submitForm"
+    }
+  }
+]

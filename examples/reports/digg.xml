@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="digg"
+             errors="0"
+             failures="0"
+             tests="undefined">
+  
+  <testsuite errors="0" failures="0" hostname="" id=""
+    name="digg facebook login" package="digg" skipped="0" 
+    tests="5" time="" timestamp="">
+    
+    
+      <testcase name="Element &lt;body&gt; was visible after 664 milliseconds.">
+        
+      </testcase>  
+    
+      <testcase name="Assertion passed: There should be two windows open.">
+        
+      </testcase>  
+    
+      <testcase name="Element &lt;#facebook body&gt; was visible after 856 milliseconds.">
+        
+      </testcase>  
+    
+      <testcase name="Assertion passed: There should be only one window open.">
+        
+      </testcase>  
+    
+      <testcase name="Element &lt;#digg-header.authenticated&gt; was visible after 1490 milliseconds.">
+        
+      </testcase>  
+    
+    
+    </testsuite>
+  
+</testsuites>

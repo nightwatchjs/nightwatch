@@ -1,5 +1,5 @@
 .project
 *.DS_Store
-.idea
+*.idea
 node_modules
 npm-debug.log

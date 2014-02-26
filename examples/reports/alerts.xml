@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="alerts"
+             errors="0"
+             failures="0"
+             tests="undefined">
+  
+  <testsuite errors="0" failures="0" hostname="" id=""
+    name="step one" package="alerts" skipped="0" 
+    tests="2" time="" timestamp="">
+    
+    
+      <testcase name="Element &lt;body&gt; was visible after 59 milliseconds.">
+        
+      </testcase>  
+    
+      <testcase name="Testing if the page title equals &quot;Test&quot;.">
+        
+      </testcase>  
+    
+    
+    </testsuite>
+  
+</testsuites>
