@@ -42,6 +42,19 @@ module.exports = {
     test.equal(command.context.client, client, 'Command should contain a reference to main client instance.');
   },
 
+  testLocatorStrategy : function(test) {
+    var client = this.client;
+    client.on('selenium:session_create', function(sessionId) {
+      test.done();
+    });
+    Api.init(client);
+
+    client.api.useXpath();
+    test.equal(client.locateStrategy, 'xpath');
+    client.api.useCss();
+    test.equal(client.locateStrategy, 'css selector');
+  },
+
   tearDown : function(callback) {
 
     this.client = null;
