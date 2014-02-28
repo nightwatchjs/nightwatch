@@ -1,16 +1,16 @@
-var protocol = require('../../lib/selenium/protocol.js');
-
 module.exports = {
   setUp: function (callback) {
     this.client = require('../nightwatch.js').init();
+    this.protocol = require('../../lib/selenium/protocol.js')(this.client);
     callback();
   },
 
   testElement : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.element.call(client, 'id', '#weblogin', function callback() {
+      var command = protocol.element('id', '#weblogin', function callback() {
         test.done();
       });
 
@@ -22,9 +22,10 @@ module.exports = {
 
   testElementPlural : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.elements.call(client, 'id', '#weblogin', function callback() {
+      var command = protocol.elements('id', '#weblogin', function callback() {
         test.done();
       });
 
@@ -36,9 +37,10 @@ module.exports = {
 
   testElementActive : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.elementActive.call(client, function callback() {
+      var command = protocol.elementActive(function callback() {
         test.done();
       });
 
@@ -50,9 +52,10 @@ module.exports = {
 
   testElementIdClear : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.elementIdClear.call(client, 'TEST_ELEMENT', function callback() {
+      var command = protocol.elementIdClear('TEST_ELEMENT', function callback() {
         test.done();
       });
 
@@ -64,9 +67,10 @@ module.exports = {
 
   testElementIdSelected : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.elementIdSelected.call(client, 'TEST_ELEMENT', function callback() {
+      var command = protocol.elementIdSelected('TEST_ELEMENT', function callback() {
         test.done();
       });
 
@@ -77,9 +81,10 @@ module.exports = {
 
   testElementIdEnabled : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.elementIdEnabled.call(client, 'TEST_ELEMENT', function callback() {
+      var command = protocol.elementIdEnabled('TEST_ELEMENT', function callback() {
         test.done();
       });
 
@@ -90,9 +95,10 @@ module.exports = {
 
   testElementIdEquals : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.elementIdEquals.call(client, 'ELEMENT1', 'ELEMENT2', function callback() {
+      var command = protocol.elementIdEquals('ELEMENT1', 'ELEMENT2', function callback() {
         test.done();
       });
 
@@ -103,9 +109,10 @@ module.exports = {
 
   testElementIdAttribute : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.elementIdAttribute.call(client, 'TEST_ELEMENT', 'test_attr', function callback() {
+      var command = protocol.elementIdAttribute('TEST_ELEMENT', 'test_attr', function callback() {
         test.done();
       });
 
@@ -116,9 +123,10 @@ module.exports = {
 
   testElementIdClick : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.elementIdClick.call(client, 'TEST_ELEMENT', function callback() {
+      var command = protocol.elementIdClick('TEST_ELEMENT', function callback() {
         test.done();
       });
 
@@ -129,9 +137,10 @@ module.exports = {
 
   testElementIdCssProperty : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.elementIdCssProperty.call(client, 'TEST_ELEMENT', 'test_property', function callback() {
+      var command = protocol.elementIdCssProperty('TEST_ELEMENT', 'test_property', function callback() {
         test.done();
       });
 
@@ -142,9 +151,10 @@ module.exports = {
 
   testElementIdDisplayed : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.elementIdDisplayed.call(client, 'TEST_ELEMENT', function callback() {
+      var command = protocol.elementIdDisplayed('TEST_ELEMENT', function callback() {
         test.done();
       });
 
@@ -155,9 +165,10 @@ module.exports = {
 
   testElementIdLocation : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.elementIdLocation.call(client, 'TEST_ELEMENT', function callback() {
+      var command = protocol.elementIdLocation('TEST_ELEMENT', function callback() {
         test.done();
       });
 
@@ -168,9 +179,10 @@ module.exports = {
 
   testElementIdLocationInView : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.elementIdLocationInView.call(client, 'TEST_ELEMENT', function callback() {
+      var command = protocol.elementIdLocationInView('TEST_ELEMENT', function callback() {
         test.done();
       });
 
@@ -181,9 +193,10 @@ module.exports = {
 
   testElementIdName : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.elementIdName.call(client, 'TEST_ELEMENT', function callback() {
+      var command = protocol.elementIdName('TEST_ELEMENT', function callback() {
         test.done();
       });
 
@@ -194,9 +207,10 @@ module.exports = {
 
   testElementIdSize : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.elementIdSize.call(client, 'TEST_ELEMENT', function callback() {
+      var command = protocol.elementIdSize('TEST_ELEMENT', function callback() {
         test.done();
       });
 
@@ -207,9 +221,10 @@ module.exports = {
 
   testElementIdText : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.elementIdText.call(client, 'TEST_ELEMENT', function callback() {
+      var command = protocol.elementIdText('TEST_ELEMENT', function callback() {
         test.done();
       });
 
@@ -220,9 +235,10 @@ module.exports = {
 
   testElementIdValueGet : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.elementIdValue.call(client, 'TEST_ELEMENT', function callback() {
+      var command = protocol.elementIdValue('TEST_ELEMENT', function callback() {
         test.done();
       });
 
@@ -233,9 +249,10 @@ module.exports = {
 
   testElementIdValuePost : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.elementIdValue.call(client, 'TEST_ELEMENT', 'test', function callback() {
+      var command = protocol.elementIdValue('TEST_ELEMENT', 'test', function callback() {
         test.done();
       });
 
@@ -247,9 +264,10 @@ module.exports = {
 
   testExecuteString : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.execute.call(client, '<script>test();</script>', ['arg1'], function callback() {
+      var command = protocol.execute('<script>test();</script>', ['arg1'], function callback() {
         test.done();
       });
 
@@ -261,9 +279,10 @@ module.exports = {
 
   testExecuteFunction : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.execute.call(client, function() {return test();},
+      var command = protocol.execute(function() {return test();},
         ['arg1'], function callback() {
         test.done();
       });
@@ -275,9 +294,10 @@ module.exports = {
 
   testExecuteAsync : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.execute_async.call(client, '<script>test();</script>', ['arg1'], function callback() {
+      var command = protocol.execute_async('<script>test();</script>', ['arg1'], function callback() {
         test.done();
       });
 
@@ -289,9 +309,10 @@ module.exports = {
 
   testExecuteAsyncFunction : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.execute_async.call(client, function() {return test();},
+      var command = protocol.execute_async(function() {return test();},
         ['arg1'], function callback() {
           test.done();
         });
@@ -303,9 +324,10 @@ module.exports = {
 
   testFrameDefault : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.frame.call(client, function callback() {
+      var command = protocol.frame(function callback() {
         test.done();
       });
 
@@ -316,9 +338,10 @@ module.exports = {
 
   testFramePost : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.frame.call(client, 'testFrame', function callback() {
+      var command = protocol.frame('testFrame', function callback() {
         test.done();
       });
 
@@ -330,9 +353,10 @@ module.exports = {
 
   'test mouseButtonDown click left' : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.mouseButtonDown.call(client, 'left', function callback() {
+      var command = protocol.mouseButtonDown('left', function callback() {
         test.done();
       });
 
@@ -344,9 +368,10 @@ module.exports = {
 
   'test mouseButtonDown click middle' : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.mouseButtonDown.call(client, 'middle', function callback() {
+      var command = protocol.mouseButtonDown('middle', function callback() {
         test.done();
       });
 
@@ -356,9 +381,10 @@ module.exports = {
 
   'test mouseButtonDown with callback only' : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.mouseButtonDown.call(client, function callback() {
+      var command = protocol.mouseButtonDown(function callback() {
         test.done();
       });
 
@@ -368,9 +394,10 @@ module.exports = {
 
   'test mouseButtonUp click right' : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.mouseButtonUp.call(client, 'right', function callback() {
+      var command = protocol.mouseButtonUp('right', function callback() {
         test.done();
       });
 
@@ -382,9 +409,10 @@ module.exports = {
 
   testMoveTo : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.moveTo.call(client, 'testElement', 0, 1, function callback() {
+      var command = protocol.moveTo('testElement', 0, 1, function callback() {
         test.done();
       });
 
@@ -396,9 +424,10 @@ module.exports = {
 
   testRefresh : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.refresh.call(client, function callback() {
+      var command = protocol.refresh(function callback() {
         test.done();
       });
 
@@ -409,9 +438,10 @@ module.exports = {
 
   testDoubleClick : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.doubleClick.call(client, function callback() {
+      var command = protocol.doubleClick(function callback() {
         test.done();
       });
 
@@ -422,9 +452,10 @@ module.exports = {
 
   testScreenshot : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.screenshot.call(client, function callback() {
+      var command = protocol.screenshot(function callback() {
         test.done();
       });
 
@@ -435,9 +466,10 @@ module.exports = {
 
   testStatus : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.status.call(client, function callback() {
+      var command = protocol.status(function callback() {
         test.done();
       });
 
@@ -448,9 +480,10 @@ module.exports = {
 
   testSubmit : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.submit.call(client, 'TEST_ELEMENT', function callback() {
+      var command = protocol.submit('TEST_ELEMENT', function callback() {
         test.done();
       });
 
@@ -462,9 +495,10 @@ module.exports = {
 
   testTitle : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.title.call(client, function callback() {
+      var command = protocol.title(function callback() {
         test.done();
       });
 
@@ -475,9 +509,10 @@ module.exports = {
 
   testWindowHandle : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.window_handle.call(client, function callback() {
+      var command = protocol.window_handle(function callback() {
         test.done();
       });
 
@@ -488,9 +523,10 @@ module.exports = {
 
   testWindowHandlePlural : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.window_handles.call(client, function callback() {
+      var command = protocol.window_handles(function callback() {
         test.done();
       });
 
@@ -501,9 +537,10 @@ module.exports = {
 
   testCloseWindow : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.window.call(client, 'DELETE', function callback() {
+      var command = protocol.window('DELETE', function callback() {
         test.done();
       });
 
@@ -514,9 +551,10 @@ module.exports = {
 
   testSwitchWindow : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.window.call(client, 'POST', 'other-window', function callback() {
+      var command = protocol.window('POST', 'other-window', function callback() {
         test.done();
       });
 
@@ -528,17 +566,19 @@ module.exports = {
 
   testWindowCommand : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
+
     this.client.on('selenium:session_create', function(sessionId) {
       test.throws(
         function() {
           test.done();
-          protocol.actions.window.call(client, 'POST');
+          protocol.window('POST');
         }, 'POST method without a name param throws an error'
       );
 
       test.throws(
         function() {
-          protocol.actions.window.call(client, 'GET');
+          protocol.window('GET');
         }, 'GET method throws an error'
       );
 
@@ -547,29 +587,31 @@ module.exports = {
 
   testWindowSizeErrors : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
+
     this.client.on('selenium:session_create', function(sessionId) {
       test.throws(
         function() {
-          protocol.actions.windowSize.call(client, function() {});
+          protocol.windowSize(function() {});
         }, 'First argument must be a window handle string.'
       );
 
       test.throws(
         function() {
-          protocol.actions.windowSize.call(client, 'current', 'a', 10);
+          protocol.windowSize('current', 'a', 10);
         }, 'Width and height arguments must be passed as numbers.'
       );
 
       test.throws(
         function() {
-          protocol.actions.windowSize.call(client, 'current', 10);
+          protocol.windowSize('current', 10);
         }, 'Width and height arguments must be passed as numbers.'
       );
 
       test.throws(
         function() {
           test.done();
-          protocol.actions.windowSize.call(client, 'current', 10, 'a');
+          protocol.windowSize('current', 10, 'a');
         }, 'Width and height arguments must be passed as numbers.'
       );
     });
@@ -577,8 +619,10 @@ module.exports = {
 
   testWindowSizeGet : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
+
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.windowSize.call(client, 'current', function callback() {
+      var command = protocol.windowSize('current', function callback() {
         test.done();
       });
 
@@ -589,8 +633,10 @@ module.exports = {
 
   testWindowSizePost : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
+
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.windowSize.call(client, 'current', 10, 10, function callback() {
+      var command = protocol.windowSize('current', 10, 10, function callback() {
         test.done();
       });
 
@@ -602,9 +648,10 @@ module.exports = {
 
   testAcceptAlert : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.accept_alert.call(client, function callback() {
+      var command = protocol.accept_alert(function callback() {
         test.done();
       });
 
@@ -615,9 +662,10 @@ module.exports = {
 
   testDismissAlert : function(test) {
     var client = this.client;
+    var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.actions.dismiss_alert.call(client, function callback() {
+      var command = protocol.dismiss_alert(function callback() {
         test.done();
       });
 

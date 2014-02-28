@@ -8,5 +8,6 @@
   "supernew":true,
   "validthis":true,
   "sub":true,
-  "loopfunc":true
+  "loopfunc":true,
+  "quotmark":"single"
 }

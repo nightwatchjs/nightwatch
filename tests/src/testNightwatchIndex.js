@@ -13,53 +13,6 @@ module.exports = {
     });
   },
 
-  testAddCommand : function(test) {
-    this.client.on('selenium:session_create', function(sessionId) {
-      test.done();
-    });
-
-    var command = function() {
-      return 'testCommand action';
-    };
-
-    this.client.addCommand('testCommand', command, this.client);
-    test.ok('testCommand' in this.client, 'Test if the command was added');
-
-    try {
-      this.client.addCommand('testCommand', command, this.client);
-    } catch (ex) {
-      var err = ex;
-    }
-
-    test.ok(err instanceof Error);
-  },
-
-  testAddCustomCommand : function(test) {
-    var client = this.client;
-    client.on('selenium:session_create', function(sessionId) {
-      test.done();
-    });
-
-    var commandsTemp = {};
-    var addCommandFn = client.addCommand;
-    client.addCommand = function(name, commandFn, context, parent) {
-      commandsTemp[name] = {
-        fn : commandFn,
-        context : context,
-        parent : parent
-      };
-    };
-
-    client.options.custom_commands_path = './extra';
-    client.loadCustomCommands();
-
-    test.ok('customCommand' in commandsTemp, 'Test if the custom command was added');
-    test.ok('customCommandConstructor' in commandsTemp, 'Test if the custom command was added');
-    var command = commandsTemp.customCommandConstructor;
-
-    test.equal(command.context.client, client, 'Command should contain a reference to main client instance.');
-  },
-
   'Test runProtocolCommand without error' : function(test) {
     var client = this.client;
     this.client.on('selenium:session_create', function(sessionId) {
@@ -106,7 +59,7 @@ module.exports = {
 
   testRunCommand : function(test) {
     var client = this.client;
-    client.runCommand('url', ['http://localhost'], function(result) {
+    client.enqueueCommand('url', ['http://localhost'], function(result) {
       test.ok(true, 'Callback 1 was called');
       test.done();
     });

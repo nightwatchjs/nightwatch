@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <testsuites name="google"
              errors="0"
-             failures="0"
+             failures="1"
              tests="undefined">
   
-  <testsuite errors="0" failures="0" hostname="" id=""
+  <testsuite errors="0" failures="1" hostname="" id=""
     name="step one" package="google" skipped="0" 
-    tests="4" time="" timestamp="">
+    tests="5" time="" timestamp="">
     
     
-      <testcase name="Element &lt;body&gt; was visible after 153 milliseconds.">
+      <testcase name="Element &lt;body&gt; was visible after 151 milliseconds.">
         
       </testcase>  
     
@@ -21,19 +21,13 @@
         
       </testcase>  
     
-      <testcase name="Element &lt;button[name=btnG]&gt; was visible after 20 milliseconds.">
+      <testcase name="Assertion passed: R is ok">
         
       </testcase>  
     
-    
-    </testsuite>
-  
-  <testsuite errors="0" failures="0" hostname="" id=""
-    name="step two" package="google" skipped="0" 
-    tests="1" time="" timestamp="">
-    
-    
-      <testcase name="Testing if element &lt;#main&gt; contains text: The Night Watch">
+      <testcase name="Timed out while waiting for element &lt;button[name=btnG]&gt; to not be visible for 1000 milliseconds.">
+          
+          <failure message="Expected &quot;not visible&quot; but got: &quot;visible&quot;"></failure>
         
       </testcase>  
     

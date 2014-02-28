@@ -17,10 +17,6 @@
       "launch_url" : "http://localhost",
       "selenium_host" : "127.0.0.1",
       "selenium_port" : 4444,
-      "logger" : {
-        "enable" : true,
-        "colors" : false
-      }
       "silent" : true,
       "output" : true,
       "firefox_profile" : false,

@@ -4,12 +4,4 @@
              failures="0"
              tests="undefined">
   
-  <testsuite errors="0" failures="0" hostname="" id=""
-    name="should simply open and close" package="grid" skipped="0" 
-    tests="0" time="" timestamp="">
-    
-    
-    
-    </testsuite>
-  
 </testsuites>
