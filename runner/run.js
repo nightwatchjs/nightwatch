@@ -51,7 +51,7 @@ module.exports = new (function() {
 
     if (keys.indexOf('tearDown') > -1) {
       tearDown = function(clientFn) {
-        module.tearDown();
+        module.tearDown(client.api);
         clientFn();
       };
       keys.splice(keys.indexOf('tearDown'), 1);
@@ -128,7 +128,7 @@ module.exports = new (function() {
       if (testresults.skipped) {
         skipped = ' and ' + Logger.colors.cyan(testresults.skipped) + ' skipped.';
       }
-      if (modulekeys.length) {
+      if (modulekeys && modulekeys.length) {
         modulekeys = modulekeys.map(function(e) {
           return Logger.colors.cyan('"' + e + '"');
         });
