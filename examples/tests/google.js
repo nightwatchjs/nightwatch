@@ -14,24 +14,12 @@ module.exports = {
     console.log('Closing down...');
   },
 
-  'step one' : function (client) {
+  'demo test google' : function (client) {
     client
       .url('http://google.com')
-      .waitForElementVisible('body', 1000)
-      .assert.title('Google')
-      .url(function(result) {
-        //this.assert.ok(result.value.indexOf('google.') !== -1, 'Google url is ok');
-      })
-      .assert.visible('input[type=text]')
-      .isVisible('input[type=text]', function(r) {
-        this.assert.ok(r !== null, 'R is ok')
-      })
+      .waitForElementPresent('body', 1000)
       .setValue('input[type=text]', 'nightwatch')
-      .waitForElementNotVisible('button[name=btnG]', 1000);
-  },
-
-  'step two' : function (client) {
-    client
+      .waitForElementVisible('button[name=btnG]', 1000)
       .click('button[name=btnG]')
       .pause(1000)
       .assert.containsText('#main', 'The Night Watch')
