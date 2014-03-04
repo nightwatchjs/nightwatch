@@ -7,6 +7,7 @@ module.exports = {
   'attributeEquals assertion passed' : function(test) {
     var assertionFn = require('../../../lib/selenium/assertions/attributeEquals.js');
     var client = {
+      options : {},
       api : {
         getAttribute : function(cssSelector, attribute, callback) {
           test.equals(cssSelector, '.test_element');
@@ -25,14 +26,15 @@ module.exports = {
         test.done();
       }
     };
-
-    var m = Api.createAssertion(assertionFn, true, client);
-    m.command('.test_element', 'role', 'main', 'Test message');
+    Api.init(client);
+    var m = Api.createAssertion('attributeEquals', assertionFn, true, client);
+    m._commandFn('.test_element', 'role', 'main', 'Test message');
   },
 
   'attributeEquals assertion failed' : function(test) {
     var assertionFn = require('../../../lib/selenium/assertions/attributeEquals.js');
     var client = {
+      options : {},
       api : {
         getAttribute : function(cssSelector, attribute, callback) {
           callback({
@@ -51,13 +53,15 @@ module.exports = {
       }
     };
 
-    var m = Api.createAssertion(assertionFn, true, client);
-    m.command('.test_element', 'role', 'main', 'Test message');
+    Api.init(client);
+    var m = Api.createAssertion('attributeEquals', assertionFn, true, client);
+    m._commandFn('.test_element', 'role', 'main', 'Test message');
   },
 
   'attributeEquals assertion not found' : function(test) {
     var assertionFn = require('../../../lib/selenium/assertions/attributeEquals.js');
     var client = {
+      options : {},
       api : {
         getAttribute : function(cssSelector, attribute, callback) {
           callback({
@@ -75,8 +79,9 @@ module.exports = {
       }
     };
 
-    var m = Api.createAssertion(assertionFn, true, client);
-    m.command('.test_element', 'role', 'main', 'Test message');
+    Api.init(client);
+    var m = Api.createAssertion('attributeEquals', assertionFn, true, client);
+    m._commandFn('.test_element', 'role', 'main', 'Test message');
   },
 
   tearDown : function(callback) {

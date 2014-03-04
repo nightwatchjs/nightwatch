@@ -7,6 +7,7 @@ module.exports = {
   'containsText assertion passed' : function(test) {
     var assertionFn = require('../../../lib/selenium/assertions/containsText.js');
     var client = {
+      options : {},
       api : {
         getText : function(cssSelector, callback) {
           test.equals(cssSelector, '.test_element');
@@ -24,14 +25,15 @@ module.exports = {
         test.done();
       }
     };
-
-    var m = Api.createAssertion(assertionFn, true, client);
+    Api.init(client);
+    var m = Api.createAssertion('containsText', assertionFn, true, client);
     m.command('.test_element', 'text result', 'Test message');
   },
 
   'containsText assertion failed' : function(test) {
     var assertionFn = require('../../../lib/selenium/assertions/containsText.js');
     var client = {
+      options : {},
       api : {
         getText : function(cssSelector, callback) {
           callback({
@@ -48,14 +50,15 @@ module.exports = {
         test.done();
       }
     };
-
-    var m = Api.createAssertion(assertionFn, true, client);
+    Api.init(client);
+    var m = Api.createAssertion('containsText', assertionFn, true, client);
     m.command('.test_element', 'text result', 'Test message');
   },
 
   'containsText assertion not found' : function(test) {
     var assertionFn = require('../../../lib/selenium/assertions/containsText.js');
     var client = {
+      options : {},
       api : {
         getText : function(cssSelector, callback) {
           callback({
@@ -72,8 +75,8 @@ module.exports = {
         test.done();
       }
     };
-
-    var m = Api.createAssertion(assertionFn, true, client);
+    Api.init(client);
+    var m = Api.createAssertion('containsText', assertionFn, true, client);
     m.command('.test_element', 'text result', 'Test message');
   },
 
