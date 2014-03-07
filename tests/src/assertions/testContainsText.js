@@ -27,7 +27,7 @@ module.exports = {
     };
     Api.init(client);
     var m = Api.createAssertion('containsText', assertionFn, true, client);
-    m.command('.test_element', 'text result', 'Test message');
+    m._commandFn('.test_element', 'text result', 'Test message');
   },
 
   'containsText assertion failed' : function(test) {
@@ -52,7 +52,7 @@ module.exports = {
     };
     Api.init(client);
     var m = Api.createAssertion('containsText', assertionFn, true, client);
-    m.command('.test_element', 'text result', 'Test message');
+    m._commandFn('.test_element', 'text result', 'Test message');
   },
 
   'containsText assertion not found' : function(test) {
@@ -77,7 +77,7 @@ module.exports = {
     };
     Api.init(client);
     var m = Api.createAssertion('containsText', assertionFn, true, client);
-    m.command('.test_element', 'text result', 'Test message');
+    m._commandFn('.test_element', 'text result', 'Test message');
   },
 
   tearDown : function(callback) {
