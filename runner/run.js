@@ -38,6 +38,12 @@ module.exports = new (function() {
 
     module.client = client.api;
 
+    if (module.disabled === true) {
+      console.log('\nSkipping module: ', Logger.colors.cyan(moduleName));
+      callback(null, false);
+      return;
+    }
+
     if (keys.indexOf('setUp') > -1) {
       setUp = function(clientFn) {
         module.setUp(module.client);
@@ -46,7 +52,9 @@ module.exports = new (function() {
       keys.splice(keys.indexOf('setUp'), 1);
       testResults.steps.splice(testResults.steps.indexOf('setUp'), 1);
     } else {
-      setUp = function(callback) {callback();};
+      setUp = function(cb) {
+        cb();
+      };
     }
 
     if (keys.indexOf('tearDown') > -1) {
@@ -268,11 +276,14 @@ module.exports = new (function() {
       console.log('\n' + Logger.colors.cyan('[ ' + moduleName + ' module ]'));
 
       runModule(module, opts, moduleName, function(err, testresults, modulekeys) {
-        globalResults.passed += testresults.passed;
-        globalResults.failed += testresults.failed;
-        globalResults.errors += testresults.errors;
-        globalResults.skipped += testresults.skipped;
-        globalResults.tests += testresults.tests;
+        if (typeof testresults == 'object') {
+          globalResults.passed += testresults.passed;
+          globalResults.failed += testresults.failed;
+          globalResults.errors += testresults.errors;
+          globalResults.skipped += testresults.skipped;
+          globalResults.tests += testresults.tests;
+        }
+
 
         if (fullpaths.length) {
           setTimeout(function() {

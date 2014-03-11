@@ -17,6 +17,8 @@
  */
 
 module.exports = {
+  disabled : true,
+
   'digg facebook login' : function (client) {
     try {
       var fbcredentials = require('./fbcredentials.json');

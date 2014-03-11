@@ -11,6 +11,7 @@ module.exports = new (function() {
   var SENTINEL = 'Started org.openqa.jetty.jetty.Server';
   var DEFAULT_HOST = '127.0.0.1';
   var DEFAULT_PORT = 4444;
+  var DEFAULT_LOG_FILE = 'selenium-debug.log';
   var seleniumProcess = null;
 
   this.startServer = function (settings, test_settings, callback) {
@@ -71,7 +72,7 @@ module.exports = new (function() {
       }
 
       if (settings.selenium.log_path !== false) {
-        fs.writeFile(path.join(settings.selenium.log_path, 'selenium_out.log'), output, 'utf8', function(err) {
+        fs.writeFile(path.join(settings.selenium.log_path, DEFAULT_LOG_FILE), output, 'utf8', function(err) {
           if (err) {
             console.log(Logger.colors.light_red('\nError writing log file to:'), err.path);
           }

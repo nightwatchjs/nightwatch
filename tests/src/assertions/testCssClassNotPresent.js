@@ -21,7 +21,7 @@ module.exports = {
         test.equals(passed, true);
         test.equals(result, 'other-css-class some-css-class');
         test.equals(expected, 'without test-css-class');
-        test.equals(msg, 'Testing if element <.test_element> does not have css class: "test-css-class"');
+        test.equals(msg, 'Testing if element <.test_element> does not have css class: "test-css-class".');
         test.equals(abortOnFailure, true);
         delete assertionFn;
         test.done();
