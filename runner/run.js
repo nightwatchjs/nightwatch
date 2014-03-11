@@ -22,8 +22,16 @@ module.exports = new (function() {
     modules : {}
   };
 
-  function runModule(module, opts, moduleName, callback) {
-    var client = Nightwatch.client(opts);
+  function runModule(module, opts, moduleName, callback, finishCallback) {
+
+    var client;
+    try {
+      client = Nightwatch.client(opts);
+    } catch (err) {
+      console.log(err.stack);
+      finishCallback(err);
+      return;
+    }
     var keys   = Object.keys(module);
     var setUp;
     var tearDown;
@@ -316,7 +324,7 @@ module.exports = new (function() {
             });
           }
         }
-      });
+      }, finishCallback);
     }, opts);
   };
 })();
