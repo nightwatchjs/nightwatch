@@ -25,7 +25,7 @@ process.chdir(__dirname);
 try {
   var server = require('mockserver').init();
   server.on('listening', function() {
-    reporter.run(['src', 'src/assertions'/*, 'src/protocol', 'src/commands'*/], options, function() {
+    reporter.run(['src', 'src/assertions', 'src/protocol', 'src/commands'], options, function() {
       server.close();
     });
   });

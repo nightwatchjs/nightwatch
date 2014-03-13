@@ -14,7 +14,16 @@ module.exports = {
       test.equal(result.value.ELEMENT, '0');
       test.done();
     });
+  },
 
+  testSuccessWithCustomMessage : function(test) {
+    this.client.api.waitForElementPresent('#weblogin', 100, function callback(result, instance) {
+      test.equal(instance.expectedValue, 'found');
+      test.equal(instance.message, 'Element #weblogin found in 100 milliseconds');
+      test.equal(result.status, 0);
+      test.equal(result.value.ELEMENT, '0');
+      test.done();
+    }, 'Element %s found in %d milliseconds');
   },
 
   testFailure : function(test) {
