@@ -674,6 +674,84 @@ module.exports = {
     });
   },
 
+  testCookieGet : function(test) {
+    var client = this.client;
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.cookie('GET', function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'GET');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/cookie');
+    });
+  },
+
+  testCookiePost : function(test) {
+    var client = this.client;
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.cookie('POST', {name: 'test_cookie'}, function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'POST');
+      test.equal(command.data, '{"cookie":{"name":"test_cookie"}}');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/cookie');
+    });
+  },
+
+  testCookieDeleteAll : function(test) {
+    var client = this.client;
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.cookie('DELETE', function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'DELETE');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/cookie');
+    });
+  },
+
+  testCookieDeleteOne : function(test) {
+    var client = this.client;
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.cookie('DELETE', 'test_cookie', function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'DELETE');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/cookie/test_cookie');
+    });
+  },
+
+  testCookieErrors : function(test) {
+    var client = this.client;
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      test.throws(
+        function() {
+          test.done();
+          protocol.cookie('POST');
+        }, 'POST method without a cookie param throws an error'
+      );
+
+      test.throws(
+        function() {
+          protocol.window('PUT');
+        }, 'PUT method throws an error'
+      );
+
+    });
+  },
+
   tearDown : function(callback) {
     this.client = null;
     // clean up
