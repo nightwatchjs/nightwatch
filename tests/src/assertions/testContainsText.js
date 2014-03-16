@@ -1,86 +1,87 @@
+var Api = require('../../../lib/api.js');
 module.exports = {
   setUp: function (callback) {
     callback();
   },
-  
-  "containsText assertion passed" : function(test) {
-    var Assertion = require('../../../lib/selenium/assertions/containsText.js');
+
+  'containsText assertion passed' : function(test) {
+    var assertionFn = require('../../../lib/selenium/assertions/containsText.js');
     var client = {
-      getText : function(cssSelector, callback) {
-        test.equals(cssSelector, '.test_element');
-        callback({
-          value : 'expected text result'
-        });
+      options : {},
+      api : {
+        getText : function(cssSelector, callback) {
+          test.equals(cssSelector, '.test_element');
+          callback({
+            value : 'expected text result'
+          });
+        }
       },
       assertion : function(passed, result, expected, msg, abortOnFailure) {
         test.equals(passed, true);
         test.equals(result, 'expected text result');
         test.equals(expected, 'text result');
         test.equals(abortOnFailure, true);
-        delete Assertion;
+        delete assertionFn;
         test.done();
       }
     };
-    
-    var m = new Assertion();
-    m.abortOnFailure = true;
-    m.client = client;
-    
-    m.command('.test_element', 'text result', 'Test message');
+    Api.init(client);
+    var m = Api.createAssertion('containsText', assertionFn, true, client);
+    m._commandFn('.test_element', 'text result', 'Test message');
   },
-  
-  "containsText assertion failed" : function(test) {
-    var Assertion = require('../../../lib/selenium/assertions/containsText.js');
+
+  'containsText assertion failed' : function(test) {
+    var assertionFn = require('../../../lib/selenium/assertions/containsText.js');
     var client = {
-      getText : function(cssSelector, callback) {
-        callback({
-          value : 'not_expected'
-        });
+      options : {},
+      api : {
+        getText : function(cssSelector, callback) {
+          callback({
+            value : 'not_expected'
+          });
+        }
       },
       assertion : function(passed, result, expected, msg, abortOnFailure) {
         test.equals(passed, false);
         test.equals(result, 'not_expected');
         test.equals(expected, 'text result');
         test.equals(abortOnFailure, true);
-        delete Assertion;
+        delete assertionFn;
         test.done();
       }
     };
-    
-    var m = new Assertion();
-    m.abortOnFailure = true;
-    m.client = client;
-    
-    m.command('.test_element', 'text result', 'Test message');
+    Api.init(client);
+    var m = Api.createAssertion('containsText', assertionFn, true, client);
+    m._commandFn('.test_element', 'text result', 'Test message');
   },
-  
-  "containsText assertion not found" : function(test) {
-    var Assertion = require('../../../lib/selenium/assertions/containsText.js');
+
+  'containsText assertion not found' : function(test) {
+    var assertionFn = require('../../../lib/selenium/assertions/containsText.js');
     var client = {
-      getText : function(cssSelector, callback) {
-        callback({
-          status : -1
-        });
+      options : {},
+      api : {
+        getText : function(cssSelector, callback) {
+          callback({
+            status : -1
+          });
+        }
       },
       assertion : function(passed, result, expected, msg, abortOnFailure) {
         test.equals(passed, false);
         test.equals(result, null);
         test.equals(expected, 'text result');
         test.equals(abortOnFailure, true);
-        delete Assertion;
+        delete assertionFn;
         test.done();
       }
     };
-    
-    var m = new Assertion();
-    m.abortOnFailure = true;
-    m.client = client;
-    
-    m.command('.test_element', 'text result', 'Test message');
+    Api.init(client);
+    var m = Api.createAssertion('containsText', assertionFn, true, client);
+    m._commandFn('.test_element', 'text result', 'Test message');
   },
-  
+
   tearDown : function(callback) {
     callback();
   }
 }
-      
+

@@ -46,10 +46,7 @@ module.exports = new (function() {
   };
 
   Command.prototype.isDefault = function(value) {
-    if (_DEFAULTS_[this.name]['default'] === value) {
-      return true;
-    }
-    return false;
+    return _DEFAULTS_[this.name]['default'] === value;
   };
 
 
@@ -69,5 +66,5 @@ module.exports = new (function() {
   this.init = function() {
     return opt.usage('Usage: $0 [options]').options(_DEFAULTS_).argv;
   };
-
 })();
+

@@ -15,7 +15,7 @@ cli.command('config')
   .demand(true)
   .description('Path to configuration file')
   .alias('c')
-  .defaults('./settings.json');
+  .defaults('./nightwatch.json');
 
 // $ nightwatch -o
 // $ nightwatch --output
@@ -100,11 +100,19 @@ function readSettings(argv) {
   // use default settings.json file if we haven't received another value
   if (cli.command('config').isDefault(argv.c)) {
     var defaultValue = cli.command('config').defaults();
+    var deprecatedValue = './settings.json';
 
     if (fs.existsSync(defaultValue)) {
       argv.c = path.join(path.resolve('./'), argv.c);
+    } else if (fs.existsSync(deprecatedValue)) {
+      argv.c = path.join(path.resolve('./'), deprecatedValue);
     } else {
-      argv.c = path.join(__dirname, argv.c);
+      var defaultFile = path.join(__dirname, argv.c);
+      if (fs.existsSync(defaultFile)) {
+        argv.c = defaultFile;
+      } else {
+        argv.c = path.join(__dirname, deprecatedValue);
+      }
     }
   } else {
     argv.c = path.resolve(argv.c);

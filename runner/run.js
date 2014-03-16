@@ -12,9 +12,7 @@ var Logger = require('../lib/logger.js');
 var Reporter = require('./reporters/junit.js');
 
 module.exports = new (function() {
-  'use strict';
-  var seleniumProcess = null;
-  var globalresults = {
+  var globalResults = {
     passed : 0,
     failed : 0,
     errors : 0,
@@ -24,13 +22,20 @@ module.exports = new (function() {
     modules : {}
   };
 
-  function runModule(module, opts, moduleName, callback) {
-    var client = Nightwatch.client(opts);
+  function runModule(module, opts, moduleName, callback, finishCallback) {
+
+    var client;
+    try {
+      client = Nightwatch.client(opts);
+    } catch (err) {
+      console.log(err.stack);
+      finishCallback(err);
+      return;
+    }
     var keys   = Object.keys(module);
-    var tests  = [];
     var setUp;
     var tearDown;
-    var testresults = {
+    var testResults = {
       passed : 0,
       failed : 0,
       errors : 0,
@@ -39,7 +44,13 @@ module.exports = new (function() {
       steps : keys.slice(0)
     };
 
-    module.client = client;
+    module.client = client.api;
+
+    if (module.disabled === true) {
+      console.log('\nSkipping module: ', Logger.colors.cyan(moduleName));
+      callback(null, false);
+      return;
+    }
 
     if (keys.indexOf('setUp') > -1) {
       setUp = function(clientFn) {
@@ -47,18 +58,20 @@ module.exports = new (function() {
         clientFn();
       };
       keys.splice(keys.indexOf('setUp'), 1);
-      testresults.steps.splice(testresults.steps.indexOf('setUp'), 1);
+      testResults.steps.splice(testResults.steps.indexOf('setUp'), 1);
     } else {
-      setUp = function(callback) {callback();};
+      setUp = function(cb) {
+        cb();
+      };
     }
 
     if (keys.indexOf('tearDown') > -1) {
       tearDown = function(clientFn) {
-        module.tearDown();
+        module.tearDown(client.api);
         clientFn();
       };
       keys.splice(keys.indexOf('tearDown'), 1);
-      testresults.steps.splice(testresults.steps.indexOf('tearDown'), 1);
+      testResults.steps.splice(testResults.steps.indexOf('tearDown'), 1);
 
     } else {
       tearDown = function(callback) {callback();};
@@ -74,7 +87,7 @@ module.exports = new (function() {
 
         console.log('\nRunning: ', Logger.colors.green(key));
         var test = wrapTest(setUp, tearDown, module[key], module, function onComplete(results, errors) {
-          globalresults.modules[moduleName][key] = {
+          globalResults.modules[moduleName][key] = {
             passed  : results.passed,
             failed  : results.failed,
             errors  : results.errors,
@@ -83,32 +96,32 @@ module.exports = new (function() {
           };
 
           if (Array.isArray(errors) && errors.length) {
-            globalresults.errmessages = globalresults.errmessages.concat(errors);
+            globalResults.errmessages = globalResults.errmessages.concat(errors);
           }
 
-          testresults.passed += results.passed;
-          testresults.failed += results.failed;
-          testresults.errors += results.errors;
-          testresults.skipped += results.skipped;
-          testresults.tests += results.tests.length;
-          if (this.client.terminated) {
-            callback(null, testresults);
+          testResults.passed += results.passed;
+          testResults.failed += results.failed;
+          testResults.errors += results.errors;
+          testResults.skipped += results.skipped;
+          testResults.tests += results.tests.length;
+          if (client.terminated) {
+            callback(null, testResults, keys);
           } else {
             setTimeout(next, 0);
           }
-        });
+        }, client);
 
         var error = false;
         try {
-          test(client);
+          test(client.api);
         } catch (err) {
-          globalresults.errmessages.push(err.message);
+          globalResults.errmessages.push(err.message);
           console.log(Logger.colors.red('\nAn error occured while running the test:'));
           console.log(err.stack);
-          testresults.errors++;
+          testResults.errors++;
           client.terminate();
           error = true;
-          callback(err, testresults);
+          callback(err, testResults);
         }
 
         if (!error) {
@@ -116,29 +129,36 @@ module.exports = new (function() {
         }
 
       } else {
-        callback(null, testresults);
+        callback(null, testResults);
       }
     }
 
     setTimeout(next, 0);
   }
 
-  function printResults(testresults) {
+  function printResults(testresults, modulekeys) {
     if (testresults.passed > 0 && testresults.errors === 0 && testresults.failed === 0) {
       console.log(Logger.colors.green('\nOK. ' + testresults.passed, Logger.colors.background.black), 'total assertions passed.');
     } else {
       var skipped = '';
       if (testresults.skipped) {
-        skipped = ' and ' + Logger.colors.blue(testresults.skipped) + ' skipped.';
+        skipped = ' and ' + Logger.colors.cyan(testresults.skipped) + ' skipped.';
+      }
+      if (modulekeys && modulekeys.length) {
+        modulekeys = modulekeys.map(function(e) {
+          return Logger.colors.cyan('"' + e + '"');
+        });
+        var plural = modulekeys.length > 1 ? 's' : '';
+        skipped += '\nStep' + plural + ' ' + modulekeys.join(', ') + ' skipped.';
       }
       console.log(Logger.colors.light_red('\nTEST FAILURE:'), Logger.colors.red(testresults.errors + testresults.failed) +
       ' assertions failed, ' + Logger.colors.green(testresults.passed) + ' passed' + skipped);
     }
   }
 
-  function wrapTest(setUp, tearDown, fn, context, onComplete) {
-    return function (client) {
-      context.client = client;
+  function wrapTest(setUp, tearDown, fn, context, onComplete, client) {
+    return function (c) {
+      context.client = c;
       var clientFn = function () {
         client.once('queue:finished', function(results, errors) {
           tearDown.call(context, function() {
@@ -146,7 +166,7 @@ module.exports = new (function() {
           });
         });
 
-        return fn.call(context, client);
+        return fn.call(context, c);
       };
 
       setUp.call(context, clientFn);
@@ -260,23 +280,26 @@ module.exports = new (function() {
       }
 
       var moduleName = modulePath.split(path.sep).pop();
-      globalresults.modules[moduleName] = [];
+      globalResults.modules[moduleName] = [];
       console.log('\n' + Logger.colors.cyan('[ ' + moduleName + ' module ]'));
 
-      runModule(module, opts, moduleName, function(err, testresults) {
-        globalresults.passed += testresults.passed;
-        globalresults.failed += testresults.failed;
-        globalresults.errors += testresults.errors;
-        globalresults.skipped += testresults.skipped;
-        globalresults.tests += testresults.tests;
+      runModule(module, opts, moduleName, function(err, testresults, modulekeys) {
+        if (typeof testresults == 'object') {
+          globalResults.passed += testresults.passed;
+          globalResults.failed += testresults.failed;
+          globalResults.errors += testresults.errors;
+          globalResults.skipped += testresults.skipped;
+          globalResults.tests += testresults.tests;
+        }
+
 
         if (fullpaths.length) {
           setTimeout(function() {
             runTestModule(err, fullpaths);
           }, 0);
         } else {
-          if (testresults.tests != globalresults.tests || testresults.steps.length > 1) {
-            printResults(globalresults);
+          if (testresults.tests != globalResults.tests || testresults.steps.length > 1) {
+            printResults(globalResults, modulekeys);
           }
 
           var output = aditional_opts.output_folder;
@@ -291,7 +314,7 @@ module.exports = new (function() {
                 return;
               }
 
-              Reporter.save(globalresults, output, function(err) {
+              Reporter.save(globalResults, output, function(err) {
                 if (err) {
                   console.log(Logger.colors.yellow('Warning: Failed to save report file to folder: ' + output));
                   console.log(err.stack);
@@ -301,9 +324,8 @@ module.exports = new (function() {
             });
           }
         }
-      });
+      }, finishCallback);
     }, opts);
   };
-
 })();
 

@@ -8,5 +8,9 @@
   "supernew":true,
   "validthis":true,
   "sub":true,
-  "loopfunc":true
+  "loopfunc":true,
+  "quotmark":"single",
+  "indent":2,
+  "newcap":true,
+  "trailing":true
 }

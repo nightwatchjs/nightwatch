@@ -1,7 +1,7 @@
 {
   "src_folders" : ["./examples/tests"],
   "output_folder" : "./examples/reports",
-  "custom_commands_path" : "",
+  "custom_commands_path" : "./examples/custom-commands",
   "custom_assertions_path" : "",
 
   "selenium" : {

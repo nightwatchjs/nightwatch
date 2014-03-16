@@ -1,0 +1,92 @@
+var Api = require('../../../lib/api.js');
+module.exports = {
+  setUp: function (callback) {
+    callback();
+  },
+
+  'visible assertion passed' : function(test) {
+    var assertionFn = require('../../../lib/selenium/assertions/visible.js');
+    var client = {
+      options : {},
+      api : {
+        isVisible : function(cssSelector, callback) {
+          test.equals(cssSelector, '.test_element');
+          callback({
+            status : 0,
+            value : true
+          });
+        }
+      },
+      assertion : function(passed, result, expected, msg, abortOnFailure) {
+        test.equals(passed, true);
+        test.equals(result, true);
+        test.equals(expected, true);
+        test.equals(msg, 'Testing if element <.test_element> is visible.');
+        test.equals(abortOnFailure, true);
+        delete assertionFn;
+        test.done();
+      }
+    };
+    Api.init(client);
+    var m = Api.createAssertion('visible', assertionFn, true, client);
+    m._commandFn('.test_element');
+  },
+
+  'visible assertion failed' : function(test) {
+    var assertionFn = require('../../../lib/selenium/assertions/visible.js');
+    var client = {
+      options : {},
+      api : {
+        isVisible : function(cssSelector, callback) {
+          test.equals(cssSelector, '.test_element');
+          callback({
+            status : 0,
+            value : false
+          });
+        }
+      },
+      assertion : function(passed, result, expected, msg, abortOnFailure) {
+        test.equals(passed, false);
+        test.equals(result, false);
+        test.equals(expected, true);
+        test.equals(abortOnFailure, true);
+        delete assertionFn;
+        test.done();
+      }
+    };
+    Api.init(client);
+    var m = Api.createAssertion('visible', assertionFn, true, client);
+    m._commandFn('.test_element');
+  },
+
+  'visible assertion not found' : function(test) {
+    var assertionFn = require('../../../lib/selenium/assertions/visible.js');
+    var client = {
+      options : {},
+      api : {
+        isVisible : function(cssSelector, callback) {
+          callback({
+            status : -1
+          });
+        }
+      },
+      assertion : function(passed, result, expected, msg, abortOnFailure) {
+        test.equals(passed, false);
+        test.equals(result, null);
+        test.equals(expected, true);
+        test.equals(msg, 'Testing if element <.test_element> is visible. Element could not be located.');
+        test.equals(abortOnFailure, true);
+        delete assertionFn;
+        test.done();
+      }
+    };
+    Api.init(client);
+    var m = Api.createAssertion('visible', assertionFn, true, client);
+    m._commandFn('.test_element');
+  },
+
+  tearDown : function(callback) {
+    callback();
+  }
+}
+
