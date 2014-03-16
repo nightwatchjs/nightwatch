@@ -33,7 +33,7 @@ module.exports = {
       .waitForElementVisible('body', 1000)
       .click('#nav-signin')
       .click('#btn-facebook-auth-topnav')
-      .window_handles(function(result) {
+      .windowHandles(function(result) {
         client.assert.equal(result.value.length, 2, 'There should be two windows open.');
         var fbWindowHandle = result.value[1];
         client.switchWindow(fbWindowHandle);
@@ -42,7 +42,7 @@ module.exports = {
       .setValue('input#email', fbcredentials.username)
       .setValue('input#pass', fbcredentials.password)
       .click('#loginbutton input')
-      .window_handles(function(result) {
+      .windowHandles(function(result) {
         client.assert.equal(result.value.length, 1, 'There should be only one window open.');
         client.switchWindow(result.value[0]);
       })
