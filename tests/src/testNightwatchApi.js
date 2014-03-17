@@ -8,12 +8,23 @@ module.exports = {
 
   testAddCommand : function(test) {
     var client = this.client;
+    var api = client.api;
+
     client.on('selenium:session_create', function(sessionId) {
+      test.equals(api.sessionId, sessionId);
+      test.deepEqual(api.capabilities, {
+        'javascriptEnabled': true,
+        'browserName': 'firefox'
+      });
       test.done();
     });
     var command = function() {
       return 'testCommand action';
     };
+
+    test.deepEqual(api.globals, {
+      myGlobal : 'test'
+    });
 
     Api.addCommand('testCommand', command, this.client);
     test.ok('testCommand' in this.client.api, 'Test if the command was added');

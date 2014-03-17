@@ -131,6 +131,24 @@ function readSettings(argv) {
 }
 
 /**
+ * Reads globals from an external js or json file
+ * @param {string} file
+ * @returns {*}
+ */
+function readExternalGlobals(file) {
+  try {
+    var fullPath = path.resolve(file);
+    if (fs.existsSync(fullPath)) {
+      return require(fullPath);
+    }
+    throw new Error('External global file could not be located - using '+ file +'.')
+  } catch (err) {
+    err.message = 'Failed to load external global file: ' + err.message;
+    throw err;
+  }
+}
+
+/**
  *
  * @param {Object} argv
  */
@@ -147,6 +165,18 @@ function parseTestSettings(argv) {
   var test_settings = settings.test_settings[argv.e];
   test_settings.custom_commands_path = settings.custom_commands_path || '';
   test_settings.custom_assertions_path = settings.custom_assertions_path || '';
+
+  if (test_settings.selenium && typeof (test_settings.selenium) == 'object') {
+    for (var prop in test_settings.selenium) {
+      settings.selenium[prop] = test_settings.selenium[prop];
+    }
+  }
+  if (typeof settings.globals == 'string' && settings.globals) {
+    var globals = readExternalGlobals(settings.globals);
+    if (globals && globals.hasOwnProperty(argv.e)) {
+      test_settings.globals = globals[argv.e];
+    }
+  }
 
   if (argv.verbose) {
     test_settings.silent = false;

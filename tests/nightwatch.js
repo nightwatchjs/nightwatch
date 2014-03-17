@@ -3,14 +3,17 @@ var nightwatch = require('../index.js');
 module.exports = {
   init : function(callback) {
     return nightwatch.client({
-      selenium_port : 10195,
+      seleniumPort : 10195,
       silent : true,
-      output : false
+      output : false,
+      globals : {
+        myGlobal : 'test'
+      }
     }).start().once('error', function() {
       if (callback) {
         callback();
       }
       process.exit();
-    }) 
-  } 
+    })
+  }
 }
