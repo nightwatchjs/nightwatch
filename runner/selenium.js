@@ -46,6 +46,13 @@ module.exports = new (function() {
     seleniumProcess = spawn('java', cliOpts);
     seleniumProcess.host = selenium_host;
     seleniumProcess.port = selenium_port;
+    seleniumProcess.on('error', function(err) {
+      if (err.code == 'ENOENT') {
+        console.log(Logger.colors.red('\nAn error occured while trying to start Selenium. ' +
+          'Check if JAVA is installed on your machine.'));
+        console.log(util.inspect(err, false, 1, true));
+      }
+    });
 
     seleniumProcess.stdout.on('data', function(data) {
       output += data.toString();
