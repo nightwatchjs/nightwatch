@@ -23,7 +23,6 @@ module.exports = new (function() {
   };
 
   function runModule(module, opts, moduleName, callback, finishCallback) {
-
     var client;
     try {
       client = Nightwatch.client(opts);
@@ -245,6 +244,36 @@ module.exports = new (function() {
     });
   }
 
+  /**
+   * Get any subfolders relative to the base module path so that we can save the report files into their corresponding subfolders
+   *
+   * @param {string} modulePath
+   * @param {object} aditional_opts
+   * @returns {string}
+   */
+  function getPathDiff(modulePath, aditional_opts) {
+    var pathParts = modulePath.split(path.sep);
+    pathParts.pop();
+
+    var moduleFolder = pathParts.join(path.sep);
+    var diffInFolder = '', srcFolder;
+
+    if (Array.isArray(aditional_opts.src_folders)) {
+      for (var i = 0; i < aditional_opts.src_folders.length; i++) {
+        srcFolder = path.resolve(aditional_opts.src_folders[i]);
+        if (moduleFolder.indexOf(srcFolder) === 0) {
+          diffInFolder = moduleFolder.substring(srcFolder.length);
+          break;
+        }
+      }
+    } else if (typeof aditional_opts.src_folders == 'string') {
+      if (moduleFolder.indexOf(aditional_opts.src_folders) === 0) {
+        diffInFolder = moduleFolder.substring(aditional_opts.src_folders.length);
+      }
+    }
+    return diffInFolder;
+  }
+
   this.run = function runner(files, opts, aditional_opts, finishCallback) {
     var start = new Date().getTime();
     var modules = {};
@@ -263,6 +292,7 @@ module.exports = new (function() {
     if (paths.length === 0) {
       throw new Error('No tests to run.');
     }
+
     runFiles(paths, function runTestModule(err, fullpaths) {
       if (!fullpaths || fullpaths.length === 0) {
         Logger.warn('No tests defined!');
@@ -302,7 +332,8 @@ module.exports = new (function() {
             printResults(globalResults, modulekeys);
           }
 
-          var output = aditional_opts.output_folder;
+          var diffInFolder = getPathDiff(modulePath, aditional_opts);
+          var output = path.join(aditional_opts.output_folder, diffInFolder);
           if (output === false) {
             finishCallback(null);
           } else {
