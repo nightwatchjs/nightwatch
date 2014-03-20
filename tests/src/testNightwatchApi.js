@@ -50,7 +50,7 @@ module.exports = {
     var queue = client.enqueueCommand('customCommandConstructor', []);
     var command = queue.currentNode.children[0];
     test.equal(command.name, 'customCommandConstructor');
-    test.equal(command.context.client, client, 'Command should contain a reference to main client instance.');
+    test.equal(command.context, client.api, 'Command should contain a reference to main client instance.');
   },
 
   testLocatorStrategy : function(test) {
