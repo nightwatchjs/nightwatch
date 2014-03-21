@@ -28,7 +28,7 @@ module.exports = new (function() {
       client = Nightwatch.client(opts);
     } catch (err) {
       console.log(err.stack);
-      finishCallback(err);
+      finishCallback(err, false);
       return;
     }
     var keys   = Object.keys(module);
@@ -155,16 +155,6 @@ module.exports = new (function() {
     }
   }
 
-  function processExitListener() {
-    process.on('exit', function(code) {
-      if (globalResults.errors > 0 || globalResults.failed > 0) {
-        process.exit(1);
-      } else {
-        process.exit(code);
-      }
-    });
-  }
-
   function wrapTest(setUp, tearDown, fn, context, onComplete, client) {
     return function (c) {
       context.client = c;
@@ -289,6 +279,7 @@ module.exports = new (function() {
     var modules = {};
     var curModule;
     var paths;
+
     finishCallback = finishCallback || function() {};
 
     if (typeof files == 'string') {
@@ -309,13 +300,13 @@ module.exports = new (function() {
         console.log('using source folder', paths);
         return;
       }
-
+      
       var module;
       var modulePath = fullpaths.shift();
       try {
         module = require(modulePath);
       } catch (err) {
-        finishCallback(err);
+        finishCallback(err, false);
         throw err;
       }
 
@@ -344,14 +335,15 @@ module.exports = new (function() {
 
           var diffInFolder = getPathDiff(modulePath, aditional_opts);
           var output = path.join(aditional_opts.output_folder, diffInFolder);
+          var success = globalResults.failed === 0 && globalResults.errors === 0;
           if (output === false) {
-            finishCallback(null);
+            finishCallback(null, success);
           } else {
             mkpath(output, function(err) {
               if (err) {
                 console.log(Logger.colors.yellow('Output folder doesn\'t exist and cannot be created.'));
                 console.log(err.stack);
-                finishCallback(null);
+                finishCallback(null, success);
                 return;
               }
 
@@ -360,15 +352,13 @@ module.exports = new (function() {
                   console.log(Logger.colors.yellow('Warning: Failed to save report file to folder: ' + output));
                   console.log(err.stack);
                 }
-                finishCallback(null);
+                finishCallback(null, success);
               });
             });
           }
         }
       }, finishCallback);
     }, opts);
-
-    processExitListener();
   };
 })();
 
