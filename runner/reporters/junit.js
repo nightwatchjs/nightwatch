@@ -4,7 +4,7 @@ var fs = require('fs'),
     child_process = require('child_process');
 
 exports.save = function(results, folder, callback) {
-  var tmpl = __dirname + "/junit.xml.ejs";
+  var tmpl = __dirname + '/junit.xml.ejs';
 
   fs.readFile(tmpl, function (err, data) {
     if (err) {
@@ -31,7 +31,7 @@ exports.save = function(results, folder, callback) {
             tests      : tests,
             errors     : errors,
             failures   : failures,
-            systemerr  : results.errmessages.join("\n")
+            systemerr  : results.errmessages.join('\n')
           }
         });
 

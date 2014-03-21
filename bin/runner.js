@@ -141,7 +141,7 @@ function readExternalGlobals(file) {
     if (fs.existsSync(fullPath)) {
       return require(fullPath);
     }
-    throw new Error('External global file could not be located - using '+ file +'.')
+    throw new Error('External global file could not be located - using '+ file +'.');
   } catch (err) {
     err.message = 'Failed to load external global file: ' + err.message;
     throw err;
