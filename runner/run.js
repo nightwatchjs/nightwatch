@@ -155,6 +155,16 @@ module.exports = new (function() {
     }
   }
 
+  function processExitListener() {
+    process.on('exit', function(code) {
+      if (globalResults.errors > 0 || globalResults.failed > 0) {
+        process.exit(1);
+      } else {
+        process.exit(code);
+      }
+    });
+  }
+
   function wrapTest(setUp, tearDown, fn, context, onComplete, client) {
     return function (c) {
       context.client = c;
@@ -300,7 +310,7 @@ module.exports = new (function() {
         console.log('using source folder', paths);
         return;
       }
-      
+
       var module;
       var modulePath = fullpaths.shift();
       try {
@@ -359,6 +369,8 @@ module.exports = new (function() {
         }
       }, finishCallback);
     }, opts);
+
+    processExitListener();
   };
 })();
 
