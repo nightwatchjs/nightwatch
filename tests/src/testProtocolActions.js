@@ -474,7 +474,7 @@ module.exports = {
       });
 
       test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/status');
+      test.equal(command.request.path, '/wd/hub/status');
     });
   },
 

@@ -8,12 +8,23 @@ module.exports = {
 
   testAddCommand : function(test) {
     var client = this.client;
+    var api = client.api;
+
     client.on('selenium:session_create', function(sessionId) {
+      test.equals(api.sessionId, sessionId);
+      test.deepEqual(api.capabilities, {
+        'javascriptEnabled': true,
+        'browserName': 'firefox'
+      });
       test.done();
     });
     var command = function() {
       return 'testCommand action';
     };
+
+    test.deepEqual(api.globals, {
+      myGlobal : 'test'
+    });
 
     Api.addCommand('testCommand', command, this.client);
     test.ok('testCommand' in this.client.api, 'Test if the command was added');
@@ -39,7 +50,7 @@ module.exports = {
     var queue = client.enqueueCommand('customCommandConstructor', []);
     var command = queue.currentNode.children[0];
     test.equal(command.name, 'customCommandConstructor');
-    test.equal(command.context.client, client, 'Command should contain a reference to main client instance.');
+    test.equal(command.context, client.api, 'Command should contain a reference to main client instance.');
   },
 
   testLocatorStrategy : function(test) {

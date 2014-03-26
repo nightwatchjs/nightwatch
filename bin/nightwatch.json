@@ -3,10 +3,11 @@
   "output_folder" : "./examples/reports",
   "custom_commands_path" : "./examples/custom-commands",
   "custom_assertions_path" : "",
+  "globals" : "./examples/globals.json",
 
   "selenium" : {
-    "start_process" : false,
-    "server_path" : "",
+    "start_process" : true,
+    "server_path" : "./bin/selenium-server-standalone-2.40.0.jar",
     "log_path" : "",
     "host" : "127.0.0.1",
     "port" : 4444
@@ -48,10 +49,19 @@
       "desiredCapabilities": {
         "name" : "test-example",
         "browserName": "firefox"
+      },
+      "globals" : {
+        "myGlobal" : "some_sauce_global"
+      },
+      "selenium" : {
+        "start_process" : false
       }
     },
 
     "browserstack" : {
+      "selenium" : {
+        "start_process" : false
+      },
       "selenium_host" : "hub.browserstack.com",
       "selenium_port" : 80,
       "silent" : true,
