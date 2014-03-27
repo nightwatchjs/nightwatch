@@ -326,20 +326,20 @@ module.exports = new (function() {
 
       function isInBlackList() {
         
-        var blacklist = opts.blacklist,
+        var exclude_list = opts.exclude,
           testFolder = paths[0].match(/.+[\\\/]([^\\\/]+)$/)[1],
           trimRegEx = new RegExp(testFolder + "[\\/\\\\](.+$)"),
           trimmedModulePath = modulePath.match(trimRegEx)[1].replace(/\\/g, "/");
 
-        if (typeof blacklist !== "undefined") {
+        if (typeof exclude_list !== "undefined") {
           
-          if (typeof blacklist === "string" && blacklist === "all") {
+          if (typeof exclude_list === "string" && exclude_list === "all") {
             return true;
           }
 
-          if (typeof blacklist.files !== "undefined" && blacklist.files.indexOf(trimmedModulePath) !== -1) return true; 
-          if (typeof blacklist.files !== "undefined" && (blacklist.files.indexOf(trimmedModulePath + ".js")) !== -1) return true; 
-          if (typeof blacklist.directories !== "undefined" && blacklist.directories.indexOf(path.dirname(trimmedModulePath)) !== -1) return true;
+          if (typeof exclude_list.files !== "undefined" && exclude_list.files.indexOf(trimmedModulePath) !== -1) return true; 
+          if (typeof exclude_list.files !== "undefined" && (exclude_list.files.indexOf(trimmedModulePath + ".js")) !== -1) return true; 
+          if (typeof exclude_list.directories !== "undefined" && exclude_list.directories.indexOf(path.dirname(trimmedModulePath)) !== -1) return true;
         }
         return false;
       }
