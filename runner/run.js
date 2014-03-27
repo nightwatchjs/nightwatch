@@ -324,6 +324,28 @@ module.exports = new (function() {
       globalResults.modules[moduleName] = [];
       console.log('\n' + Logger.colors.cyan('[ ' + moduleName + ' module ]'));
 
+      function isInBlackList() {
+        
+        var exclude_list = opts.exclude,
+          testFolder = paths[0].match(/.+[\\\/]([^\\\/]+)$/)[1],
+          trimRegEx = new RegExp(testFolder + "[\\/\\\\](.+$)"),
+          trimmedModulePath = modulePath.match(trimRegEx)[1].replace(/\\/g, "/");
+
+        if (typeof exclude_list !== "undefined") {
+          
+          if (typeof exclude_list === "string" && exclude_list === "all") {
+            return true;
+          }
+
+          if (typeof exclude_list.files !== "undefined" && exclude_list.files.indexOf(trimmedModulePath) !== -1) return true; 
+          if (typeof exclude_list.files !== "undefined" && (exclude_list.files.indexOf(trimmedModulePath + ".js")) !== -1) return true; 
+          if (typeof exclude_list.directories !== "undefined" && exclude_list.directories.indexOf(path.dirname(trimmedModulePath)) !== -1) return true;
+        }
+        return false;
+      }
+
+      module.disabled = isInBlackList();
+
       runModule(module, opts, moduleName, function(err, testresults, modulekeys) {
         if (typeof testresults == 'object') {
           globalResults.passed += testresults.passed;
@@ -373,4 +395,3 @@ module.exports = new (function() {
     processExitListener();
   };
 })();
-
