@@ -351,6 +351,20 @@ module.exports = {
     });
   },
 
+  testFrameParent : function(test) {
+    var client = this.client;
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.frameParent(function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'POST');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/frame/parent');
+    });
+  },
+
   'test mouseButtonDown click left' : function(test) {
     var client = this.client;
     var protocol = this.protocol;
@@ -749,6 +763,67 @@ module.exports = {
         }, 'PUT method throws an error'
       );
 
+    });
+  },
+
+  testTimeoutsValid : function(test) {
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function() {
+      var command = protocol.timeouts('script', 1000, function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'POST');
+      test.equal(command.data, '{"type":"script","ms":1000}');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/timeouts');
+    });
+  },
+
+  testTimeoutsInvalid : function(test) {
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function() {
+      test.throws(
+        function() {
+          protocol.timeouts('nonscript', 1000);
+        }
+      );
+
+      test.throws(
+        function() {
+          test.done();
+          protocol.timeouts('script');
+        }
+      );
+    });
+  },
+
+  testTimeoutsAsyncScript : function(test) {
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function() {
+      var command = protocol.timeoutsAsyncScript(1000, function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'POST');
+      test.equal(command.data, '{"ms":1000}');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/timeouts/async_script');
+    });
+  },
+
+  testTimeoutsImplicitWait : function(test) {
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function() {
+      var command = protocol.timeoutsImplicitWait(1000, function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'POST');
+      test.equal(command.data, '{"ms":1000}');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/timeouts/implicit_wait');
     });
   },
 
