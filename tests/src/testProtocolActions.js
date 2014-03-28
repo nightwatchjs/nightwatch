@@ -8,7 +8,6 @@ module.exports = {
   testElement : function(test) {
     var client = this.client;
     var protocol = this.protocol;
-
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.element('id', '#weblogin', function callback() {
         test.done();
@@ -51,7 +50,6 @@ module.exports = {
   },
 
   testElementIdClear : function(test) {
-    var client = this.client;
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
@@ -289,6 +287,21 @@ module.exports = {
 
       test.equal(command.data, '{"script":"var passedArgs = Array.prototype.slice.call(arguments,0); ' +
         'return function () {return test();}.apply(window, passedArgs);","args":["arg1"]}');
+    });
+  },
+
+  testExecuteFunctionNoArgs : function(test) {
+    var client = this.client;
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.execute(function() {return test();})
+        .on('complete', function() {
+          test.done();
+        });
+
+      test.equal(command.data, '{"script":"var passedArgs = Array.prototype.slice.call(arguments,0); ' +
+        'return function () {return test();}.apply(window, passedArgs);","args":[]}');
     });
   },
 
