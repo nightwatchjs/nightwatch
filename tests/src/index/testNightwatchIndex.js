@@ -79,9 +79,8 @@ module.exports = {
     client.on('selenium:session_create', function(sessionId) {
       test.equal(sessionId, 1352110219202);
       test.equal(client.api.capabilities.browserName, 'chrome');
-    }).on('nightwatch:finished', function() {
       test.done();
-    })
+    });
   },
 
   tearDown : function(callback) {
