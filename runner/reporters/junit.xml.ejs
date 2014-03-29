@@ -5,22 +5,22 @@
              tests="<%= tests %>">
   <% for (var testsuite in module) { %>
   <testsuite errors="<%= module[testsuite].errors %>" failures="<%= module[testsuite].failed %>" hostname="" id=""
-    name="<%= testsuite %>" package="<%= moduleName %>" skipped="<%= module[testsuite].skipped %>" 
+    name="<%= testsuite %>" package="<%= moduleName %>" skipped="<%= module[testsuite].skipped %>"
     tests="<%= (module[testsuite].tests.length + module[testsuite].skipped) %>" time="" timestamp="">
     <% var tests = module[testsuite].tests %>
     <% for (var i = 0; i < tests.length; i++) { %>
       <testcase name="<%= tests[i].message %>">
-        <% if (tests[i].failure) { %>  
+        <% if (tests[i].failure) { %>
           <failure message="<%= tests[i].failure %>"></failure>
         <% } %>
-        <% if (tests[i].screenshots && tests[i].screenshots.length>0) { %>
+        <% if (tests[i].screenshots && tests[i].screenshots.length > 0) { %>
           <system-out>
-            <% for(var j = 0; j < tests[i].screenshots.length; j++) { %>
+            <% for (var j = 0; j < tests[i].screenshots.length; j++) { %>
               [[ATTACHMENT|<%= tests[i].screenshots[j] %>]]
             <% } %>
           </system-out>
         <% } %>
-      </testcase>  
+      </testcase>
     <% } %>
     <% if (systemerr != '') {%>
       <system-err>
