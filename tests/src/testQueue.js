@@ -10,7 +10,7 @@ module.exports = {
 
   'Test commands queue' : function(test) {
     var client = this.client, urlCommand, endCommand;
-    this.client.on('queue:finished', function() {
+    this.client.on('nightwatch:finished', function() {
       test.equal(true, urlCommand.done);
       test.equal(true, endCommand.children[0].done);
       test.equal(true, endCommand.done);
