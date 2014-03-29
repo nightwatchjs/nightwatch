@@ -1,4 +1,4 @@
-var Client = require('../nightwatch.js');
+var Client = require('../../nightwatch.js');
 
 module.exports = {
   setUp: function (callback) {
@@ -63,7 +63,7 @@ module.exports = {
   testRunCommand : function(test) {
     var client = this.client = Client.init();
 
-    client.enqueueCommand('url', ['http://localhost'], function(result) {
+    client.enqueueCommand('url', ['http://localhost'], function() {
       test.ok(true, 'Callback 1 was called');
       test.done();
     });
@@ -75,7 +75,7 @@ module.exports = {
         browserName : 'chrome'
       }
     });
-    test.expect(2);
+
     client.on('selenium:session_create', function(sessionId) {
       test.equal(sessionId, 1352110219202);
       test.equal(client.api.capabilities.browserName, 'chrome');
