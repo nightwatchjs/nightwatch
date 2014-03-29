@@ -20,7 +20,7 @@ module.exports = new (function() {
     modules : {}
   };
 
-  function runModule(module, opts, moduleName, callback, finishCallback) {
+  function runModule(module, opts, moduleName, moduleCallback, finishCallback) {
     var client;
     try {
       client = Nightwatch.client(opts);
@@ -30,31 +30,92 @@ module.exports = new (function() {
       return;
     }
     var keys = Object.keys(module);
+    var currentTest;
     var setUp;
     var tearDown;
     var testResults = {
-      passed : 0,
-      failed : 0,
-      errors : 0,
+      passed  : 0,
+      failed  : 0,
+      errors  : 0,
       skipped : 0,
-      tests : 0,
-      steps : keys.slice(0)
+      tests   : 0,
+      steps   : keys.slice(0)
     };
 
-    module.client = client.api;
+    var onTestFinished = function (results, errors) {
+      globalResults.modules[moduleName][currentTest] = {
+        passed  : results.passed,
+        failed  : results.failed,
+        errors  : results.errors,
+        skipped : results.skipped,
+        tests   : [].concat(results.tests)
+      };
 
-    if (module.disabled === true) {
-      console.log('\nSkipping module: ', Logger.colors.cyan(moduleName));
-      callback(null, false);
-      return;
-    }
+      if (Array.isArray(errors) && errors.length) {
+        globalResults.errmessages = globalResults.errmessages.concat(errors);
+      }
 
-    function startClient(context, clientFn, client, onComplete) {
+      testResults.passed += results.passed;
+      testResults.failed += results.failed;
+      testResults.errors += results.errors;
+      testResults.skipped += results.skipped;
+      testResults.tests += results.tests.length;
+
+      client.printResult();
+
+      if (client.terminated) {
+        moduleCallback(null, testResults, keys);
+      } else {
+        setTimeout(next, 0);
+      }
+    };
+
+    var startClient = function(context, clientFn, client, onComplete) {
       client.once('nightwatch:finished', function(results, errors) {
         onComplete(results, errors);
       });
       clientFn.call(context, context.client);
       client.start();
+    };
+
+    var next = function() {
+      if (keys.length) {
+        currentTest = keys.shift();
+        if (typeof module[currentTest] != 'function') {
+          next();
+          return;
+        }
+
+        if (opts.output) {
+          console.log('\nRunning: ', Logger.colors.green(currentTest));
+        }
+
+        var test = wrapTest(setUp, tearDown, module[currentTest], module, onTestFinished, client);
+        var error = false;
+        try {
+          test(client.api);
+        } catch (err) {
+          globalResults.errmessages.push(err.message);
+          console.log(Logger.colors.red('\nAn error occured while running the test:'));
+          console.log(err.stack);
+          testResults.errors++;
+          client.terminate();
+          error = true;
+          moduleCallback(err, testResults);
+        }
+      } else {
+        moduleCallback(null, testResults);
+      }
+    };
+
+    module.client = client.api;
+
+    if (module.disabled === true) {
+      if (opts.output) {
+        console.log('\nSkipping module: ', Logger.colors.cyan(moduleName));
+      }
+      moduleCallback(null, false);
+      return;
     }
 
     // handling asynchronous setUp/tearDown case:
@@ -79,16 +140,16 @@ module.exports = new (function() {
     }
 
     if (typeof module.tearDown == 'function') {
-      tearDown = function(context, clientFn, client, onComplete) {
+      tearDown = function(context, clientFn, client, onTestComplete) {
         if (module.tearDown.length === 0) {
           startClient(context, clientFn, client, function(results, errors) {
             module.tearDown();
-            onComplete(results, errors);
+            onTestComplete(results, errors);
           });
         } else if (module.tearDown.length >= 0) {
           startClient(context, clientFn, client, function(results, errors) {
             module.tearDown(function() {
-              onComplete(results, errors);
+              onTestComplete(results, errors);
             });
           });
         }
@@ -97,59 +158,6 @@ module.exports = new (function() {
       testResults.steps.splice(testResults.steps.indexOf('tearDown'), 1);
     } else {
       tearDown = startClient;
-    }
-
-    function next() {
-      if (keys.length) {
-        var key = keys.shift();
-        if (typeof module[key] != 'function') {
-          next();
-          return;
-        }
-
-        var onTestFinished = function (results, errors) {
-          client.printResult();
-          globalResults.modules[moduleName][key] = {
-            passed  : results.passed,
-            failed  : results.failed,
-            errors  : results.errors,
-            skipped : results.skipped,
-            tests   : [].concat(results.tests)
-          };
-
-          if (Array.isArray(errors) && errors.length) {
-            globalResults.errmessages = globalResults.errmessages.concat(errors);
-          }
-
-          testResults.passed += results.passed;
-          testResults.failed += results.failed;
-          testResults.errors += results.errors;
-          testResults.skipped += results.skipped;
-          testResults.tests += results.tests.length;
-          if (client.terminated) {
-            callback(null, testResults, keys);
-          } else {
-            setTimeout(next, 0);
-          }
-        };
-
-        console.log('\nRunning: ', Logger.colors.green(key));
-        var test = wrapTest(setUp, tearDown, module[key], module, onTestFinished, client);
-        var error = false;
-        try {
-          test(client.api);
-        } catch (err) {
-          globalResults.errmessages.push(err.message);
-          console.log(Logger.colors.red('\nAn error occured while running the test:'));
-          console.log(err.stack);
-          testResults.errors++;
-          client.terminate();
-          error = true;
-          callback(err, testResults);
-        }
-      } else {
-        callback(null, testResults);
-      }
     }
 
     setTimeout(next, 0);
@@ -334,8 +342,9 @@ module.exports = new (function() {
 
       var moduleName = modulePath.split(path.sep).pop();
       globalResults.modules[moduleName] = [];
-      console.log('\n' + Logger.colors.cyan('[ ' + moduleName + ' module ]'));
-
+      if (opts.output) {
+        console.log('\n' + Logger.colors.cyan('[ ' + moduleName + ' module ]'));
+      }
       runModule(module, opts, moduleName, function(err, testresults, modulekeys) {
         if (typeof testresults == 'object') {
           globalResults.passed += testresults.passed;
@@ -350,7 +359,7 @@ module.exports = new (function() {
             runTestModule(err, fullpaths);
           }, 0);
         } else {
-          if (testresults.tests != globalResults.tests || testresults.steps.length > 1) {
+          if (opts.output && testresults.tests != globalResults.tests || testresults.steps.length > 1) {
             printResults(globalResults, modulekeys);
           }
 
