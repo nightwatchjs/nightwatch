@@ -56,5 +56,4 @@ module.exports = {
     this.client = null;
     callback();
   }
-}
-
+};
