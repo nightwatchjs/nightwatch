@@ -472,7 +472,7 @@ module.exports = {
         test.done();
       });
 
-      test.equal(command.request.method, "POST");
+      test.equal(command.request.method, 'POST');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/doubleclick');
     });
   },

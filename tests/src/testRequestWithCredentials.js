@@ -6,8 +6,8 @@ module.exports = {
       selenium_port : 10195,
       silent : true,
       output : false,
-      username : "testusername",
-      access_key : "123456"
+      username : 'testusername',
+      access_key : '123456'
     }).start().once('error', function() {
       callback();
       process.exit();
@@ -15,13 +15,13 @@ module.exports = {
 
     callback();
   },
-  
-  "Test initialization with credentials" : function(test) {
+
+  'Test initialization with credentials' : function(test) {
     var self = this;
 
     this.client.on('selenium:session_create', function(sessionId, request) {
-      var authorization = new Buffer("testusername:123456").toString('base64');
-      test.equal(request.request._headers['authorization'], "Basic " + authorization, "Testing if the Authorization header is set correctly");
+      var authorization = new Buffer('testusername:123456').toString('base64');
+      test.equal(request.request._headers['authorization'], 'Basic ' + authorization, 'Testing if the Authorization header is set correctly');
       test.done();
     });
   },

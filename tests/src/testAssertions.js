@@ -7,7 +7,7 @@ module.exports = {
     callback();
   },
 
-  "Testing assertions loaded" : function(test) {
+  'Testing assertions loaded' : function(test) {
     var assertModule = require('assert');
     for (var prop in assertModule) {
       test.ok(prop in this.client.api.assert);
