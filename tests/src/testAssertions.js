@@ -7,12 +7,13 @@ module.exports = {
     callback();
   },
 
-  "Testing assertions loaded" : function(test) {
+  'Testing assertions loaded' : function(test) {
     var assertModule = require('assert');
-    for (var prop in assertModule) {
+    var prop;
+    for (prop in assertModule) {
       test.ok(prop in this.client.api.assert);
     }
-    for (var prop in assertModule) {
+    for (prop in assertModule) {
       test.ok(prop in this.client.api.verify);
     }
     test.ok('elementPresent' in this.client.api.assert);
@@ -56,5 +57,4 @@ module.exports = {
     this.client = null;
     callback();
   }
-}
-
+};
