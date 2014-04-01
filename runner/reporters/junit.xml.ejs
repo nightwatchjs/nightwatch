@@ -16,7 +16,7 @@
         <% if (tests[i].screenshots && tests[i].screenshots.length > 0) { %>
           <system-out>
             <% for (var j = 0; j < tests[i].screenshots.length; j++) { %>
-              [[ATTACHMENT|<%= tests[i].screenshots[j] %>]]
+              [[ATTACHMENT|<%= require('path').resolve(tests[i].screenshots[j]) %>]]
             <% } %>
           </system-out>
         <% } %>
