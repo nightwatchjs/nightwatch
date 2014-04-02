@@ -840,6 +840,20 @@ module.exports = {
     });
   },
 
+  testKeys : function(test) {
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function() {
+      var command = protocol.keys(['A', 'B'], function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'POST');
+      test.equal(command.data, '{"value":["A","B"]}');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/keys');
+    });
+  },
+
   tearDown : function(callback) {
     this.client = null;
     // clean up
