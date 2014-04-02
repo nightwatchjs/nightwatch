@@ -1,13 +1,6 @@
 var Runner = require('../../../runner/run.js');
 
 module.exports = {
-  setUp: function (callback) {
-    process.on('exit', function(code) {
-      process.exit(0);
-    });
-    callback();
-  },
-
   testRunEmptyFolder : function(test) {
     Runner.run([process.cwd() + '/sampletests/empty'], {
     }, {
@@ -32,6 +25,40 @@ module.exports = {
       test.equals(err, null);
       test.ok('sample' in results.modules);
       test.ok('demoTest' in results.modules.sample);
+      test.done();
+    });
+  },
+
+  testRunWithExcludeFolder : function(test) {
+    Runner.run([process.cwd() + '/sampletests/withexclude'], {
+      seleniumPort : 10195,
+      silent : true,
+      output : false,
+      globals : {
+        test : test
+      },
+      exclude : ['excluded']
+    }, {
+      output_folder : false
+    }, function(err, results) {
+      test.ok(!('excluded-module' in results.modules));
+      test.done();
+    });
+  },
+
+  testRunWithExcludePattern : function(test) {
+    Runner.run([process.cwd() + '/sampletests/withexclude'], {
+      seleniumPort : 10195,
+      silent : true,
+      output : false,
+      globals : {
+        test : test
+      },
+      exclude : ['excluded/excluded-*']
+    }, {
+      output_folder : false
+    }, function(err, results) {
+      test.ok(!('excluded-module' in results.modules));
       test.done();
     });
   },
@@ -74,10 +101,5 @@ module.exports = {
       test.ok('demoTestMixed' in results.modules.sample);
       test.done();
     });
-  },
-
-  tearDown : function(callback) {
-    // clean up
-    callback();
   }
 };

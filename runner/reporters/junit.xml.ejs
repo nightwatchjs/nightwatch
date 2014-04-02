@@ -2,7 +2,7 @@
 <testsuites name="<%= moduleName %>"
              errors="<%= errors %>"
              failures="<%= failures %>"
-             tests="<%= tests %>">
+             tests="<%= testsNo %>">
   <% for (var testsuite in module) { %>
   <testsuite errors="<%= module[testsuite].errors %>" failures="<%= module[testsuite].failed %>" hostname="" id=""
     name="<%= testsuite %>" package="<%= moduleName %>" skipped="<%= module[testsuite].skipped %>"

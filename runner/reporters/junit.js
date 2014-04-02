@@ -23,12 +23,11 @@ exports.save = function(results, folder, callback) {
             failures += module[x].failed;
           }
         }
-
         var rendered = ejs.render(tmpl, {
           locals: {
             module     : module,
             moduleName : moduleName,
-            tests      : tests,
+            testsNo    : tests,
             errors     : errors,
             failures   : failures,
             systemerr  : results.errmessages.join('\n')

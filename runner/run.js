@@ -101,7 +101,6 @@ module.exports = new (function() {
           testResults.errors++;
           client.terminate();
           error = true;
-          moduleCallback(err, testResults);
         }
       } else {
         moduleCallback(null, testResults);
@@ -112,7 +111,7 @@ module.exports = new (function() {
 
     if (module.disabled === true) {
       if (opts.output) {
-        console.log('\nSkipping module: ', Logger.colors.cyan(moduleName));
+        console.log(Logger.colors.cyan(moduleName), 'module is disabled, skipping...');
       }
       moduleCallback(null, false);
       return;
@@ -184,7 +183,7 @@ module.exports = new (function() {
   }
 
   function processExitListener() {
-    process.on('exit', function(code) {
+    process.on('exit', function (code) {
       if (globalResults.errors > 0 || globalResults.failed > 0) {
         process.exit(1);
       } else {
@@ -213,6 +212,16 @@ module.exports = new (function() {
     }
 
     paths.forEach(function(p) {
+      if (opts.exclude) {
+        opts.exclude = opts.exclude.map(function(item) {
+          // remove trailing slash
+          if (item.charAt(item.length-1) === path.sep) {
+            item = item.substring(0, item.length-1);
+          }
+          return path.join(p, item);
+        });
+      }
+
       walk(p, function(err, list) {
         if (err) {
           return cb(err);
@@ -221,15 +230,24 @@ module.exports = new (function() {
 
         var modules = list.filter(function (filePath) {
           var filename = filePath.split(path.sep).slice(-1)[0];
-          return opts.filter ?
-            minimatch(filename, opts.filter) :
-            extensionPattern.exec(filePath);
+
+          if (opts.exclude) {
+            for (var i = 0; i < opts.exclude.length; i++) {
+              if (minimatch(filePath, opts.exclude[i])) {
+                return false;
+              }
+            }
+          }
+
+          if (opts.filter) {
+            return minimatch(filename, opts.filter);
+          }
+          return extensionPattern.exec(filePath);
         });
 
         modules = modules.map(function (filename) {
           return filename.replace(extensionPattern, '');
         });
-
         cb(null, modules);
       }, opts);
     });
@@ -253,7 +271,10 @@ module.exports = new (function() {
         fs.stat(file, function(err, stat) {
           if (stat && stat.isDirectory()) {
             var dirName = file.split(path.sep).slice(-1)[0];
-            if (opts.skipgroup && opts.skipgroup.indexOf(dirName) > -1) {
+            var isExcluded = opts.exclude && opts.exclude.indexOf(file) > -1;
+            var isSkipped = opts.skipgroup && opts.skipgroup.indexOf(dirName) > -1;
+
+            if (isExcluded || isSkipped) {
               pending = pending-1;
             } else {
               walk(file, function(err, res) {
@@ -359,7 +380,7 @@ module.exports = new (function() {
             runTestModule(err, fullpaths);
           }, 0);
         } else {
-          if (opts.output && testresults.tests != globalResults.tests || testresults.steps.length > 1) {
+          if (opts.output && (testresults.tests != globalResults.tests || testresults.steps.length > 1)) {
             printResults(globalResults, modulekeys);
           }
 
@@ -382,8 +403,8 @@ module.exports = new (function() {
                   console.log(Logger.colors.yellow('Warning: Failed to save report file to folder: ' + output));
                   console.log(err.stack);
                 }
-                finishCallback(null);
               });
+              finishCallback(null);
             });
           }
         }
