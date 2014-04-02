@@ -101,7 +101,6 @@ module.exports = new (function() {
           testResults.errors++;
           client.terminate();
           error = true;
-          //moduleCallback(err, testResults);
         }
       } else {
         moduleCallback(null, testResults);
