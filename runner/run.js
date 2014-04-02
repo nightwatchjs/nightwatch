@@ -380,7 +380,7 @@ module.exports = new (function() {
             runTestModule(err, fullpaths);
           }, 0);
         } else {
-          if (opts.output && testresults.tests != globalResults.tests || testresults.steps.length > 1) {
+          if (opts.output && (testresults.tests != globalResults.tests || testresults.steps.length > 1)) {
             printResults(globalResults, modulekeys);
           }
 
