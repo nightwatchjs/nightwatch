@@ -172,7 +172,10 @@ function parseTestSettings(argv) {
     }
   }
   if (typeof settings.globals == 'string' && settings.globals) {
-    var globals = readExternalGlobals(settings.globals);
+    settings.globals_path = settings.globals_path;
+  }
+  if (typeof settings.globals_path == 'string' && settings.globals_path) {
+    var globals = readExternalGlobals(settings.globals_path);
     if (globals && globals.hasOwnProperty(argv.e)) {
       test_settings.globals = globals[argv.e];
     }

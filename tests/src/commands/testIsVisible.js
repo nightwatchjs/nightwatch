@@ -11,19 +11,19 @@ module.exports = {
     var client = this.client.api;
 
     MockServer.addMock({
-      url : "/wd/hub/session/1352110219202/element/0/displayed",
+      url : '/wd/hub/session/1352110219202/element/0/displayed',
       method:'GET',
       response : JSON.stringify({
-        sessionId: "1352110219202",
+        sessionId: '1352110219202',
         status:0,
         value : true
       })
     });
 
     client.isVisible('css selector', '#weblogin', function callback(result) {
-      test.equals(result.value, true)
+      test.equals(result.value, true);
     }).isVisible('#weblogin', function callback(result) {
-      test.equals(result.value, true)
+      test.equals(result.value, true);
       test.done();
     });
   },

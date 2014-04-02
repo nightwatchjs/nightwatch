@@ -101,6 +101,7 @@ module.exports = new (function() {
           testResults.errors++;
           client.terminate();
           error = true;
+          moduleCallback(err, testResults);
         }
       } else {
         moduleCallback(null, testResults);
@@ -213,6 +214,9 @@ module.exports = new (function() {
 
     paths.forEach(function(p) {
       if (opts.exclude) {
+        if (!Array.isArray(opts.exclude)) {
+          opts.exclude = [opts.exclude];
+        }
         opts.exclude = opts.exclude.map(function(item) {
           // remove trailing slash
           if (item.charAt(item.length-1) === path.sep) {

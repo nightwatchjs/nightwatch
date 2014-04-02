@@ -7,7 +7,7 @@
 
 module.exports = {
   setUp : function(c) {
-    console.log('Setting up...');
+    this.client.assert.equal(c.globals.myGlobal, 1, 'checking globals are loaded.');
   },
 
   tearDown : function() {
