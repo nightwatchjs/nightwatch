@@ -10,6 +10,7 @@ var Nightwatch = require('../index.js');
 var Logger = require('../lib/logger.js');
 
 module.exports = new (function() {
+  var startTime;
   var globalResults = {
     passed : 0,
     failed : 0,
@@ -61,7 +62,7 @@ module.exports = new (function() {
       testResults.skipped += results.skipped;
       testResults.tests += results.tests.length;
 
-      client.printResult();
+      client.printResult(startTime);
 
       if (client.terminated) {
         moduleCallback(null, testResults, keys);
@@ -163,9 +164,10 @@ module.exports = new (function() {
     setTimeout(next, 0);
   }
 
-  function printResults(testresults, modulekeys) {
+  function printResults(testresults, modulekeys, startTime) {
+    var elapsedTime = new Date().getTime() - startTime;
     if (testresults.passed > 0 && testresults.errors === 0 && testresults.failed === 0) {
-      console.log(Logger.colors.green('\nOK. ' + testresults.passed, Logger.colors.background.black), 'total assertions passed.');
+      console.log(Logger.colors.green('\nOK. ' + testresults.passed, Logger.colors.background.black), 'total assertions passed. (' + elapsedTime + ' ms)');
     } else {
       var skipped = '';
       if (testresults.skipped) {
@@ -179,7 +181,7 @@ module.exports = new (function() {
         skipped += '\nStep' + plural + ' ' + modulekeys.join(', ') + ' skipped.';
       }
       console.log(Logger.colors.light_red('\nTEST FAILURE:'), Logger.colors.red(testresults.errors + testresults.failed) +
-        ' assertions failed, ' + Logger.colors.green(testresults.passed) + ' passed' + skipped);
+        ' assertions failed, ' + Logger.colors.green(testresults.passed) + ' passed' + skipped, '(' + elapsedTime + ' ms)');
     }
   }
 
@@ -334,6 +336,8 @@ module.exports = new (function() {
 
   this.run = function runner(files, opts, aditional_opts, finishCallback) {
     var paths;
+
+    startTime = new Date().getTime();
     finishCallback = finishCallback || function() {};
 
     if (typeof files == 'string') {
@@ -385,7 +389,7 @@ module.exports = new (function() {
           }, 0);
         } else {
           if (opts.output && (testresults.tests != globalResults.tests || testresults.steps.length > 1)) {
-            printResults(globalResults, modulekeys);
+            printResults(globalResults, modulekeys, startTime);
           }
 
           if (aditional_opts.output_folder === false) {

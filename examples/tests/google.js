@@ -18,12 +18,15 @@ module.exports = {
     client
       .url('http://google.com')
       .waitForElementPresent('body', 1000)
-      .setValue('input[type=text]', 'nightwatch')
-      .waitForElementVisible('button[name=btnG]', 1000)
-      .click('button[name=btnG]')
-      .pause(1000)
-      .assert.containsText('#main', 'The Night Watch')
-      .end();
+      .setValue('input[type=text]', 'nightwatch', function() {
+        this
+          .waitForElementVisible('button[name=btnG]', 1000)
+          .click('button[name=btnG]', function() {
+            this
+              .pause(500)
+              .assert.containsText('#main', 'The Night Watch');
+          });
+      }).end();
   }
 };
 
