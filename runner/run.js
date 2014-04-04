@@ -10,7 +10,7 @@ var Nightwatch = require('../index.js');
 var Logger = require('../lib/logger.js');
 
 module.exports = new (function() {
-  var startTime;
+  var globalStartTime;
   var globalResults = {
     passed : 0,
     failed : 0,
@@ -43,7 +43,7 @@ module.exports = new (function() {
       steps   : keys.slice(0)
     };
 
-    var onTestFinished = function (results, errors) {
+    var onTestFinished = function (results, errors, startTime) {
       globalResults.modules[moduleName][currentTest] = {
         passed  : results.passed,
         failed  : results.failed,
@@ -90,8 +90,10 @@ module.exports = new (function() {
         if (opts.output) {
           console.log('\nRunning: ', Logger.colors.green(currentTest));
         }
-
-        var test = wrapTest(setUp, tearDown, module[currentTest], module, onTestFinished, client);
+        var localStartTime = new Date().getTime();
+        var test = wrapTest(setUp, tearDown, module[currentTest], module, function(results, errors) {
+          onTestFinished(results, errors, localStartTime);
+        }, client);
         var error = false;
         try {
           test(client.api);
@@ -164,8 +166,8 @@ module.exports = new (function() {
     setTimeout(next, 0);
   }
 
-  function printResults(testresults, modulekeys, startTime) {
-    var elapsedTime = new Date().getTime() - startTime;
+  function printResults(testresults, modulekeys) {
+    var elapsedTime = new Date().getTime() - globalStartTime;
     if (testresults.passed > 0 && testresults.errors === 0 && testresults.failed === 0) {
       console.log(Logger.colors.green('\nOK. ' + testresults.passed, Logger.colors.background.black), 'total assertions passed. (' + elapsedTime + ' ms)');
     } else {
@@ -337,7 +339,7 @@ module.exports = new (function() {
   this.run = function runner(files, opts, aditional_opts, finishCallback) {
     var paths;
 
-    startTime = new Date().getTime();
+    globalStartTime = new Date().getTime();
     finishCallback = finishCallback || function() {};
 
     if (typeof files == 'string') {
@@ -389,7 +391,7 @@ module.exports = new (function() {
           }, 0);
         } else {
           if (opts.output && (testresults.tests != globalResults.tests || testresults.steps.length > 1)) {
-            printResults(globalResults, modulekeys, startTime);
+            printResults(globalResults, modulekeys, globalStartTime);
           }
 
           if (aditional_opts.output_folder === false) {
