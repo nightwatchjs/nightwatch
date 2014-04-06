@@ -854,6 +854,30 @@ module.exports = {
     });
   },
 
+  testKeysSingle : function(test) {
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function() {
+      var command = protocol.keys('A', function callback() {
+        test.done();
+      });
+
+      test.equal(command.data, '{"value":["A"]}');
+    });
+  },
+
+  testKeysUnicode : function(test) {
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function() {
+      var command = protocol.keys('\uE007', function callback() {
+        test.done();
+      });
+
+      test.equal(command.data, '{"value":["\\ue007"]}');
+    });
+  },
+
   tearDown : function(callback) {
     this.client = null;
     // clean up
