@@ -185,6 +185,8 @@ function parseTestSettings(argv) {
     test_settings.silent = false;
   }
 
+  test_settings.output = test_settings.output || typeof test_settings.output === 'undefined';
+
   if (typeof argv.s == 'string') {
     test_settings.skipgroup = argv.s.split(',');
   }
