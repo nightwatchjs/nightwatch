@@ -4,18 +4,15 @@
  * > it navigates to google.com and searches for nightwatch,
  *   verifying if the term 'The Night Watch' exists in the search results
  */
-var Keys = require('../../lib/keys.json');
 
 module.exports = {
   'demo test google' : function (client) {
     client
       .url('http://google.com')
       .waitForElementPresent('body', 1000)
-      .setValue('input[type=text]', ['nightwatch', Keys.ENTER])
-      //.setValue('input[type=text]', Keys.ENTER)
+      .setValue('input[type=text]', ['nightwatch', client.Keys.ENTER])
       .pause(1000)
       .assert.containsText('#main', 'The Night Watch')
       .end();
   }
 };
-
