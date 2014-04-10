@@ -1,4 +1,8 @@
-var CommandQueue = require('../../lib/queue.js');
+var BASE_PATH = process.env.NIGHTWATCH_COV
+  ? 'lib-cov'
+  : 'lib';
+
+var CommandQueue = require('../../' + BASE_PATH +'/core/queue.js');
 
 module.exports = {
   setUp: function (callback) {

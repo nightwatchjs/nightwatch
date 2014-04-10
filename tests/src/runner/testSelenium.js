@@ -1,4 +1,7 @@
-var selenium = require('../../../runner/selenium.js');
+var BASE_PATH = process.env.NIGHTWATCH_COV
+  ? 'lib-cov'
+  : 'lib';
+var selenium = require('../../../' + BASE_PATH +'/runner/selenium.js');
 var child_process = require('child_process');
 
 module.exports = {

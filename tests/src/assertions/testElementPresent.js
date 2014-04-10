@@ -1,11 +1,14 @@
-var Api = require('../../../lib/api.js');
+var BASE_PATH = process.env.NIGHTWATCH_COV
+  ? 'lib-cov'
+  : 'lib';
+var Api = require('../../../'+BASE_PATH+'/core/api.js');
 module.exports = {
   setUp: function (callback) {
     callback();
   },
 
   'elementPresent assertion passed' : function(test) {
-    var assertionFn = require('../../../lib/selenium/assertions/elementPresent.js');
+    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/elementPresent.js');
     var client = {
       options : {},
       locateStrategy : 'css selector',
@@ -37,7 +40,7 @@ module.exports = {
   },
 
   'elementPresent assertion failed' : function(test) {
-    var assertionFn = require('../../../lib/selenium/assertions/elementPresent.js');
+    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/elementPresent.js');
     var client = {
       options : {},
       locateStrategy : 'css selector',

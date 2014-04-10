@@ -1,5 +1,3 @@
-var CommandQueue = require('../../lib/queue.js');
-
 module.exports = {
   setUp: function (callback) {
     this.client = require('../nightwatch.js').init({}, callback);
