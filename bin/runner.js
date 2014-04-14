@@ -3,7 +3,7 @@
  */
 var fs = require('fs');
 var path = require('path');
-var Logger = require('../lib/logger.js');
+var Logger = require('../lib/util/logger.js');
 var cli = require('./_cli.js');
 
 
@@ -211,7 +211,7 @@ try {
     process.chdir(process.cwd());
 
     // the test runner
-    var runner = require(__dirname + '/../runner/run.js');
+    var runner = require(__dirname + '/../lib/runner/run.js');
 
     var settings = readSettings(argv);
 
@@ -249,7 +249,7 @@ try {
 
     // running the tests
     if (settings.selenium && settings.selenium.start_process) {
-      var selenium = require(__dirname + '/../runner/selenium.js');
+      var selenium = require(__dirname + '/../lib/runner/selenium.js');
       selenium.startServer(settings, test_settings, function(error, child, error_out, exitcode) {
         if (error) {
           Logger.error('There was an error while starting the Selenium server:');

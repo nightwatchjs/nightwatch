@@ -25,6 +25,8 @@
   },
   "devDependencies": {
     "nodeunit": "latest",
+    "jscoverage": "latest",
+    "coveralls": "latest",
     "jshint": "~2.4.4"
   },
   "bin": {
@@ -33,6 +35,7 @@
   "man": "",
   "scripts": {
     "jshint": "./node_modules/.bin/jshint --verbose --config .jshintrc lib/",
+    "coveralls": "jscoverage lib && NIGHTWATCH_COV=1 node ./tests/run_tests.js lcov | coveralls",
     "test": "node ./tests/run_tests.js"
   }
 }

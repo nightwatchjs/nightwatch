@@ -1,11 +1,14 @@
-var Api = require('../../../lib/api.js');
+var BASE_PATH = process.env.NIGHTWATCH_COV
+  ? 'lib-cov'
+  : 'lib';
+var Api = require('../../../'+BASE_PATH+'/core/api.js');
 module.exports = {
   setUp: function (callback) {
     callback();
   },
 
   'containsText assertion passed' : function(test) {
-    var assertionFn = require('../../../lib/selenium/assertions/containsText.js');
+    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/containsText.js');
     var client = {
       options : {},
       api : {
@@ -31,7 +34,7 @@ module.exports = {
   },
 
   'containsText assertion failed' : function(test) {
-    var assertionFn = require('../../../lib/selenium/assertions/containsText.js');
+    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/containsText.js');
     var client = {
       options : {},
       api : {
@@ -56,7 +59,7 @@ module.exports = {
   },
 
   'containsText assertion not found' : function(test) {
-    var assertionFn = require('../../../lib/selenium/assertions/containsText.js');
+    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/containsText.js');
     var client = {
       options : {},
       api : {

@@ -1,11 +1,14 @@
-var Api = require('../../../lib/api.js');
+var BASE_PATH = process.env.NIGHTWATCH_COV
+  ? 'lib-cov'
+  : 'lib';
+var Api = require('../../../'+BASE_PATH+'/core/api.js');
 module.exports = {
   setUp: function (callback) {
     callback();
   },
 
   'cssClassNotPresent assertion passed' : function(test) {
-    var assertionFn = require('../../../lib/selenium/assertions/cssClassNotPresent.js');
+    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/cssClassNotPresent.js');
     var client = {
       options : {},
       api : {
@@ -33,7 +36,7 @@ module.exports = {
   },
 
   'cssClassNotPresent assertion failed' : function(test) {
-    var assertionFn = require('../../../lib/selenium/assertions/cssClassNotPresent.js');
+    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/cssClassNotPresent.js');
     var client = {
       options : {},
       api : {
@@ -58,7 +61,7 @@ module.exports = {
   },
 
   'cssClassNotPresent assertion not found' : function(test) {
-    var assertionFn = require('../../../lib/selenium/assertions/cssClassNotPresent.js');
+    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/cssClassNotPresent.js');
     var client = {
       options : {},
       api : {

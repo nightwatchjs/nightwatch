@@ -1,11 +1,14 @@
-var Api = require('../../../lib/api.js');
+var BASE_PATH = process.env.NIGHTWATCH_COV
+  ? 'lib-cov'
+  : 'lib';
+var Api = require('../../../'+BASE_PATH+'/core/api.js');
 module.exports = {
   setUp: function (callback) {
     callback();
   },
 
   'attributeEquals assertion passed' : function(test) {
-    var assertionFn = require('../../../lib/selenium/assertions/attributeEquals.js');
+    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/attributeEquals.js');
     var client = {
       options : {},
       api : {
@@ -32,7 +35,7 @@ module.exports = {
   },
 
   'attributeEquals assertion failed' : function(test) {
-    var assertionFn = require('../../../lib/selenium/assertions/attributeEquals.js');
+    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/attributeEquals.js');
     var client = {
       options : {},
       api : {
@@ -59,7 +62,7 @@ module.exports = {
   },
 
   'attributeEquals assertion not found' : function(test) {
-    var assertionFn = require('../../../lib/selenium/assertions/attributeEquals.js');
+    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/attributeEquals.js');
     var client = {
       options : {},
       api : {

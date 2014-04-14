@@ -1,11 +1,14 @@
-var Api = require('../../../lib/api.js');
+var BASE_PATH = process.env.NIGHTWATCH_COV
+  ? 'lib-cov'
+  : 'lib';
+var Api = require('../../../'+BASE_PATH+'/core/api.js');
 module.exports = {
   setUp: function (callback) {
     callback();
   },
 
   'title assertion passed' : function(test) {
-    var assertionFn = require('../../../lib/selenium/assertions/title.js');
+    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/title.js');
     var client = {
       options : {},
       api : {
@@ -31,7 +34,7 @@ module.exports = {
   },
 
   'title assertion failed' : function(test) {
-    var assertionFn = require('../../../lib/selenium/assertions/title.js');
+    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/title.js');
     var client = {
       options : {},
       api : {
