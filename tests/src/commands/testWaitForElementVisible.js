@@ -32,6 +32,15 @@ module.exports = {
     });
   },
 
+  testGlobalTimeoutSetting: function(test) {
+    var command = function() {
+      this.client.api.waitForElementVisible('foo');
+    };
+
+    test.throws(command, Error, 'Timeout should be picked up globally if not provided');
+    test.done();
+  },
+
   tearDown : function(callback) {
     this.client = null;
     // clean up
