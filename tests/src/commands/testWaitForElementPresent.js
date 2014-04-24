@@ -16,24 +16,24 @@ module.exports = {
     });
   },
 
-  testSuccessWithCustomMessage : function(test) {
+  testFailureWithCustomMessage : function(test) {
     this.client.api.waitForElementPresent('.weblogin', 100, function callback(result, instance) {
       test.equal(instance.message, 'Element .weblogin found in 100 milliseconds');
-      test.equal(result, false);
+      test.equal(result.value, false);
       test.done();
     }, 'Element %s found in %d milliseconds');
   },
 
   testFailure : function(test) {
     this.client.api.waitForElementPresent('.weblogin', 600, function callback(result) {
-      test.equal(result, false);
+      test.equal(result.value, false);
       test.done();
     });
   },
 
   testFailureNoAbort : function(test) {
     this.client.api.waitForElementPresent('.weblogin', 600, false, function callback(result) {
-      test.equal(result, false);
+      test.equal(result.value, false);
       test.done();
     });
   },
