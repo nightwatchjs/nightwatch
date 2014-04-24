@@ -87,7 +87,7 @@ module.exports = {
   },
 
   testRunMixed : function(test) {
-    test.expect(4);
+    test.expect(6);
 
     Runner.run([process.cwd() + '/sampletests/mixed'], {
       seleniumPort : 10195,
