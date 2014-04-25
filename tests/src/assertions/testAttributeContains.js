@@ -1,26 +1,26 @@
 var BASE_PATH = process.env.NIGHTWATCH_COV
   ? 'lib-cov'
   : 'lib';
-var Api = require('../../../'+BASE_PATH+'/core/api.js');
+var Api = require('../../../' + BASE_PATH + '/core/api.js');
 module.exports = {
-  setUp: function (callback) {
+  setUp: function(callback) {
     callback();
   },
 
-  'attributeEquals assertion passed' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/attributeContains.js');
+  'attributeEquals assertion passed': function(test) {
+    var assertionFn = require('../../../' + BASE_PATH + '/selenium/assertions/attributeContains.js');
     var client = {
-      options : {},
-      api : {
-        getAttribute : function(cssSelector, attribute, callback) {
+      options: {},
+      api: {
+        getAttribute: function(cssSelector, attribute, callback) {
           test.equals(cssSelector, '.test_element');
           test.equals(attribute, 'href');
           callback({
-            value : 'http://www.google.com'
+            value: 'http://www.google.com'
           });
         }
       },
-      assertion : function(passed, result, expected, msg, abortOnFailure) {
+      assertion: function(passed, result, expected, msg, abortOnFailure) {
         test.equals(passed, true);
         test.equals(result, 'http://www.google.com');
         test.equals(expected, 'google');
@@ -34,19 +34,19 @@ module.exports = {
     m._commandFn('.test_element', 'href', 'google', 'Test message');
   },
 
-  'attributeContains assertion failed' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/attributeContains.js');
+  'attributeContains assertion failed': function(test) {
+    var assertionFn = require('../../../' + BASE_PATH + '/selenium/assertions/attributeContains.js');
     var client = {
-      options : {},
-      api : {
-        getAttribute : function(cssSelector, attribute, callback) {
+      options: {},
+      api: {
+        getAttribute: function(cssSelector, attribute, callback) {
           callback({
-            value : 'not_expected'
+            value: 'not_expected'
           });
         }
       },
 
-      assertion : function(passed, result, expected, msg, abortOnFailure) {
+      assertion: function(passed, result, expected, msg, abortOnFailure) {
         test.equals(passed, false);
         test.equals(result, 'not_expected');
         test.equals(expected, 'whatever');
@@ -61,18 +61,18 @@ module.exports = {
     m._commandFn('.test_element', 'role', 'whatever', 'Test message');
   },
 
-  'attributeContains assertion not found' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/attributeContains.js');
+  'attributeContains assertion not found': function(test) {
+    var assertionFn = require('../../../' + BASE_PATH + '/selenium/assertions/attributeContains.js');
     var client = {
-      options : {},
-      api : {
-        getAttribute : function(cssSelector, attribute, callback) {
+      options: {},
+      api: {
+        getAttribute: function(cssSelector, attribute, callback) {
           callback({
-            status : -1
+            status: -1
           });
         }
       },
-      assertion : function(passed, result, expected, msg, abortOnFailure) {
+      assertion: function(passed, result, expected, msg, abortOnFailure) {
         test.equals(passed, false);
         test.equals(result, null);
         test.equals(expected, 'main');
@@ -87,7 +87,7 @@ module.exports = {
     m._commandFn('.test_element', 'role', 'main', 'Test message');
   },
 
-  tearDown : function(callback) {
+  tearDown: function(callback) {
     callback();
   }
 }
