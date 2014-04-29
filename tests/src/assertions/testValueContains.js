@@ -62,7 +62,7 @@ module.exports = {
     m._commandFn('.test_element', 'some-value');
   },
 
-  'valueContains assertion not found' : function(test) {
+  'valueContains assertion element not found' : function(test) {
     var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/valueContains.js');
     var client = {
       options : {},
@@ -77,7 +77,34 @@ module.exports = {
         test.equals(passed, false);
         test.equals(result, null);
         test.equals(expected, true);
-        test.equals(msg, 'Testing if value of <.test_element> contains: "some-value". Element or attribute could not be located.');
+        test.equals(msg, 'Testing if value of <.test_element> contains: "some-value". Element could not be located.');
+        test.equals(abortOnFailure, true);
+        delete assertionFn;
+        test.done();
+      }
+    };
+    Api.init(client);
+    var m = Api.createAssertion('valueContains', assertionFn, true, client);
+    m._commandFn('.test_element', 'some-value');
+  },
+
+  'valueContains assertion value attribute not found' : function(test) {
+    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/valueContains.js');
+    var client = {
+      options : {},
+      api : {
+        getValue : function(cssSelector, callback) {
+          callback({
+            status : 0,
+            value : null
+          });
+        }
+      },
+      assertion : function(passed, result, expected, msg, abortOnFailure) {
+        test.equals(passed, false);
+        test.equals(result, null);
+        test.equals(expected, true);
+        test.equals(msg, 'Testing if value of <.test_element> contains: "some-value". Element does not have a value attribute.');
         test.equals(abortOnFailure, true);
         delete assertionFn;
         test.done();
