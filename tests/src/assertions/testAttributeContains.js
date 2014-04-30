@@ -7,7 +7,7 @@ module.exports = {
     callback();
   },
 
-  'attributeEquals assertion passed': function(test) {
+  'attributeContains assertion passed': function(test) {
     var assertionFn = require('../../../' + BASE_PATH + '/selenium/assertions/attributeContains.js');
     var client = {
       options: {},
