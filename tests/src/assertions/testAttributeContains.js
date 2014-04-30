@@ -84,7 +84,34 @@ module.exports = {
 
     Api.init(client);
     var m = Api.createAssertion('attributeContains', assertionFn, true, client);
-    m._commandFn('.test_element', 'role', 'main', 'Test message');
+    m._commandFn('.test_element', 'role', 'main');
+  },
+
+  'attributeContains assertion value attribute not found' : function(test) {
+    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/attributeContains.js');
+    var client = {
+      options : {},
+      api : {
+        getAttribute : function(cssSelector, attribute, callback) {
+          callback({
+            status : 0,
+            value : null
+          });
+        }
+      },
+      assertion : function(passed, result, expected, msg, abortOnFailure) {
+        test.equals(passed, false);
+        test.equals(result, null);
+        test.equals(expected, 'main');
+        test.equals(msg, 'Testing if attribute role of <.test_element> contains main. Element or attribute could not be located.');
+        test.equals(abortOnFailure, true);
+        delete assertionFn;
+        test.done();
+      }
+    };
+    Api.init(client);
+    var m = Api.createAssertion('attributeContains', assertionFn, true, client);
+    m._commandFn('.test_element', 'role', 'main');
   },
 
   tearDown: function(callback) {
