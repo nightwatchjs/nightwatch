@@ -30,7 +30,13 @@
         "browserName" : "firefox",
         "javascriptEnabled" : true,
         "acceptSslCerts" : true
-      }
+      },
+      "selenium_flags" : [
+        "-browserSessionReuse", ""
+      ],
+      "browser_session_reuse" : true,
+      "ensure_clean_session" : true,
+      "selenium_debug" : true
     },
 
     "saucelabs" : {

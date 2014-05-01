@@ -148,6 +148,15 @@ function readExternalGlobals(file) {
   }
 }
 
+function inheritFromDefaultEnv(test_settings) {
+  var defaultEnv = settings.test_settings['default'] || {};
+  for (var key in defaultEnv) {
+    if (typeof test_settings[key] == 'undefined') {
+      test_settings[key] = defaultEnv[key];
+    }
+  }
+}
+
 /**
  *
  * @param {Object} argv
@@ -157,14 +166,28 @@ function parseTestSettings(argv) {
   if (!settings.test_settings) {
     throw new Error('No testing environment specified.');
   }
-  if (!(argv.e in settings.test_settings)) {
-    throw new Error('Invalid testing environment specified: ' + argv.e);
+
+  var envs = argv.e.split(',');
+  for (var i = 0; i < envs.length; i++) {
+    if (!(envs[i] in settings.test_settings)) {
+      throw new Error('Invalid testing environment specified: ' + envs[i]);
+    }
   }
 
+  if (envs.length > 1) {
+    setupClustering(envs);
+    console.info('clustering mode');
+    return false;
+  }
   // picking the environment specific test settings
   var test_settings = settings.test_settings[argv.e];
   test_settings.custom_commands_path = settings.custom_commands_path || '';
   test_settings.custom_assertions_path = settings.custom_assertions_path || '';
+
+  inheritFromDefaultEnv(test_settings);
+
+
+  console.log('parseTest', test_settings)
 
   if (test_settings.selenium && typeof (test_settings.selenium) == 'object') {
     for (var prop in test_settings.selenium) {
@@ -198,9 +221,34 @@ function parseTestSettings(argv) {
   return test_settings;
 }
 
+function setupClustering(envs) {
+  var execFile = require('child_process').execFile, child;
+  for (var i = 0; i < envs.length; i++) {
+    var cliArgs = ['-e', envs[i]];
+    cliArgs.push('--disable_selenium');
+
+    child = execFile(process.mainModule.filename, cliArgs, {
+      cwd : process.cwd(),
+      encoding: 'utf8'
+    }, function (error, stdout, stderr) {
+      //console.log('stdout: ' + stdout);
+      //console.log('stderr: ' + stderr);
+      if (error !== null) {
+        console.log('exec error: ' + error);
+      }
+    });
+
+    child.stderr.on('data', function (data) {
+      process.stderr.write('['+ envs[i] +']' + ' ' + data);
+    });
+    child.stdout.on('data', function (data) {
+      process.stdout.write('['+ envs[i] +']' + ' ' + data);
+    });
+  }
+}
+
 try {
   var argv = cli.init();
-
   if (argv.help) {
     cli.showHelp();
   } else if (argv.version) {
@@ -220,6 +268,9 @@ try {
         settings.output_folder || argv.o;
 
     var test_settings = parseTestSettings(argv);
+    if (!test_settings) {
+      return;
+    }
 
     // setting the path where the tests are located
     var testsource;
