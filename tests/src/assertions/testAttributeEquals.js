@@ -87,6 +87,33 @@ module.exports = {
     m._commandFn('.test_element', 'role', 'main', 'Test message');
   },
 
+  'attributeEquals assertion value attribute not found' : function(test) {
+    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/attributeEquals.js');
+    var client = {
+      options : {},
+      api : {
+        getAttribute : function(cssSelector, attribute, callback) {
+          callback({
+            status : 0,
+            value : null
+          });
+        }
+      },
+      assertion : function(passed, result, expected, msg, abortOnFailure) {
+        test.equals(passed, false);
+        test.equals(result, null);
+        test.equals(expected, 'main');
+        test.equals(msg, 'Testing if attribute role of <.test_element> equals "main". Element does not have a role attribute.');
+        test.equals(abortOnFailure, true);
+        delete assertionFn;
+        test.done();
+      }
+    };
+    Api.init(client);
+    var m = Api.createAssertion('attributeEquals', assertionFn, true, client);
+    m._commandFn('.test_element', 'role', 'main');
+  },
+
   tearDown : function(callback) {
     callback();
   }
