@@ -186,7 +186,6 @@ function parseTestSettings(argv) {
 
   inheritFromDefaultEnv(test_settings);
 
-
   console.log('parseTest', test_settings)
 
   if (test_settings.selenium && typeof (test_settings.selenium) == 'object') {
@@ -223,28 +222,31 @@ function parseTestSettings(argv) {
 
 function setupClustering(envs) {
   var execFile = require('child_process').execFile, child;
-  for (var i = 0; i < envs.length; i++) {
-    var cliArgs = ['-e', envs[i]];
+
+  envs.forEach(function(item, index) {
+    console.log(index, item);
+    var cliArgs = ['-e', item];
     cliArgs.push('--disable_selenium');
 
     child = execFile(process.mainModule.filename, cliArgs, {
       cwd : process.cwd(),
       encoding: 'utf8'
     }, function (error, stdout, stderr) {
-      //console.log('stdout: ' + stdout);
-      //console.log('stderr: ' + stderr);
       if (error !== null) {
         console.log('exec error: ' + error);
       }
     });
 
     child.stderr.on('data', function (data) {
-      process.stderr.write('['+ envs[i] +']' + ' ' + data);
+      process.stderr.write('['+ item +']' + ' ' + data);
     });
     child.stdout.on('data', function (data) {
-      process.stdout.write('['+ envs[i] +']' + ' ' + data);
+      process.stdout.write('['+ item +']' + ' ' + data);
     });
-  }
+    child.on('close', function (code) {
+      console.log('child process exited with code ' + code);
+    });
+  });
 }
 
 try {
@@ -260,7 +262,6 @@ try {
 
     // the test runner
     var runner = require(__dirname + '/../lib/runner/run.js');
-
     var settings = readSettings(argv);
 
     // setting the output folder
