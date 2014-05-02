@@ -13,6 +13,10 @@ module.exports = {
       .setValue('input[type=text]', ['nightwatch', client.Keys.ENTER])
       .pause(1000)
       .assert.containsText('#main', 'The Night Watch')
+      .pause(1000)
+      .execute("return google.timers;", function(result){
+      	this.assert.ok(typeof result.value === 'function'); //forcing failure
+      })
       .end();
   }
 };

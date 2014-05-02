@@ -23,8 +23,8 @@
       "chrome_driver" : "",
       "ie_driver" : "",
       "screenshots" : {
-        "enabled" : false,
-        "path" : ""
+        "enabled" : true,
+        "path" : "./examples/reports"
       },
       "desiredCapabilities" : {
         "browserName" : "firefox",
