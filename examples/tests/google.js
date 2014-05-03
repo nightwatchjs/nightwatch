@@ -15,7 +15,7 @@ module.exports = {
       .assert.containsText('#main', 'The Night Watch')
       .pause(1000)
       .execute("return google.timers;", function(result){
-      	this.assert.ok(typeof result.value === 'function'); //forcing failure
+        this.assert.ok(typeof result.value === 'function'); //forcing failure
       })
       .end();
   }

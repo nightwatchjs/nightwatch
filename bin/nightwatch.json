@@ -24,7 +24,7 @@
       "ie_driver" : "",
       "screenshots" : {
         "enabled" : true,
-        "path" : "./examples/reports"
+        "path" : "./examples/screenshots"
       },
       "desiredCapabilities" : {
         "browserName" : "firefox",

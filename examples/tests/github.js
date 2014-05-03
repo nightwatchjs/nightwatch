@@ -1,5 +1,4 @@
 module.exports = {
-	disabled : true,
   'Demo test GitHub' : function (client) {
     client
       .url("https://github.com/beatfactor/nightwatch")
