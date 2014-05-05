@@ -1,7 +1,6 @@
 .project
 *.DS_Store
 *.idea
-.coveralls.yml
 /nightwatch.json
 node_modules
 npm-debug.log

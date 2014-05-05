@@ -296,6 +296,8 @@ try {
         } else {
           Logger.error('There was an error while running the test.');
         }
+
+        process.exit(1);
       }
     };
 
@@ -313,8 +315,8 @@ try {
           output_folder : output_folder,
           src_folders : settings.src_folders
         }, function(err) {
-          errorHandler(err);
           selenium.stopServer();
+          errorHandler(err);
         });
       });
     } else {
