@@ -181,6 +181,10 @@ function parseTestSettings(argv) {
     }
   }
 
+  if (test_settings.disable_colors) {
+    Logger.disableColors();
+  }
+
   if (argv.verbose) {
     test_settings.silent = false;
   }
