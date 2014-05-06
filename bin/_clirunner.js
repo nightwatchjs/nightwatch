@@ -138,9 +138,7 @@ CliRunner.prototype = {
       }
 
       console.error(Logger.colors.red(err.message));
-      if (err.data) {
-        console.log(util.inspect(err.data, false, 0, true));
-      }
+
       process.exit(1);
     }
   },
