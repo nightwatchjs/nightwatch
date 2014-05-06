@@ -388,7 +388,7 @@ CliRunner.prototype = {
         });
 
         child.stdout.on('data', function (data) {
-          process.stdout.write(Logger.colors.light_gray('[' + item + ']', Logger.colors.background.magenta) + '\n  ' + data);
+          process.stdout.write(Logger.colors.light_gray('[' + item + ']', Logger.colors.background.red) + '\n  ' + data);
         });
 
         child.stderr.on('data', function (data) {
