@@ -27,7 +27,8 @@
     "nodeunit": "latest",
     "jscoverage": "latest",
     "coveralls": "latest",
-    "jshint": "~2.4.4"
+    "jshint": "~2.4.4",
+    "mock-spawn": "^0.2.1"
   },
   "bin": {
     "nightwatch": "./bin/nightwatch"

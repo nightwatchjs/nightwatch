@@ -13,7 +13,6 @@ function CliRunner(argv) {
   this.test_settings = null;
   this.output_folder = '';
   this.parallelMode = false;
-  this.parallelEnvs = null;
   this.cli = require('./_cli.js');
 }
 
@@ -29,7 +28,6 @@ CliRunner.prototype = {
 
   /**
    * Read the provided config json file; defaults to settings.json if one isn't provided
-   * @param {Object} argv
    */
   readSettings : function() {
     // use default settings.json file if we haven't received another value
@@ -57,7 +55,12 @@ CliRunner.prototype = {
     try {
       this.settings = require(this.argv.c);
       this.replaceEnvVariables();
-      this.manageSelenium = !this.isParallelMode() && this.settings.selenium && this.settings.selenium.start_process;
+      this.manageSelenium = !this.isParallelMode() && this.settings.selenium &&
+        this.settings.selenium.start_process;
+
+      if (typeof this.settings.src_folders == 'string') {
+        this.settings.src_folders = [this.settings.src_folders];
+      }
     } catch (ex) {
       Logger.error(ex);
       this.settings = {};
@@ -116,7 +119,6 @@ CliRunner.prototype = {
       err.message = 'Failed to load external global file: ' + err.message;
       throw err;
     }
-
   },
 
   /**
@@ -162,12 +164,32 @@ CliRunner.prototype = {
         throw new Error('There was a problem reading the test file: ' + testsource);
       }
     } else if (typeof this.argv.g == 'string') {
-      testsource = [this.argv.g];
+      testsource = this.findGroupPath(this.argv.g);
     } else {
       testsource = this.settings.src_folders;
     }
 
     return testsource;
+  },
+
+  /**
+   * Attempting to prepend the base source folder to the group name;
+   * this only works if only one source folder is defined in the src_folders property
+   *
+   * @param {string} groupName
+   * @return {Array}
+   */
+  findGroupPath : function(groupName) {
+    if (this.settings.src_folders.length !== 1) {
+      return [groupName];
+    }
+    var srcFolder = this.settings.src_folders[0], fullPath;
+    if (groupName.indexOf(srcFolder) === 0) {
+      fullPath = groupName;
+    } else {
+      fullPath = path.join(srcFolder, groupName);
+    }
+    return [fullPath];
   },
 
   /**
@@ -245,6 +267,10 @@ CliRunner.prototype = {
     }
   },
 
+  /**
+   * Validates and parses the test settings
+   * @returns {CliRunner}
+   */
   parseTestSettings : function() {
     // checking if the env passed is valid
     if (!this.settings.test_settings) {
@@ -268,6 +294,11 @@ CliRunner.prototype = {
     return this;
   },
 
+  /**
+   * Sets the specific test settings for the specified environment
+   * @param {string} env
+   * @returns {CliRunner}
+   */
   setTestSettings : function(env) {
     // picking the environment specific test settings
     this.test_settings = this.settings.test_settings[env];
@@ -301,10 +332,16 @@ CliRunner.prototype = {
     if (this.argv.f) {
       this.test_settings.filter = this.argv.f;
     }
+
+    if (this.test_settings.disable_colors) {
+      Logger.disableColors();
+    }
+    return this;
   },
 
   /**
    * Backwards compatible method which attempts to merge deprecated driver specific options for selenium
+   * @returns {CliRunner}
    */
   mergeSeleniumOptions : function() {
     if (!this.manageSelenium) {
@@ -336,14 +373,21 @@ CliRunner.prototype = {
       deprecationNotice('ie_driver', 'webdriver.ie.driver');
       this.settings.selenium.cli_args['webdriver.ie.driver'] = this.test_settings.ie_driver;
     }
+
+    return this;
   },
 
+  /**
+   * Enables parallel execution mode
+   * @param {Array} envs
+   * @returns {CliRunner}
+   */
   setupParallelMode : function(envs) {
     this.parallelMode = true;
     var self = this;
 
     this.startSelenium(function() {
-      self.startParallelProcesses(envs, function() {
+      self.startChildProcesses(envs, function() {
         self.stopSelenium();
       });
     });
@@ -352,6 +396,11 @@ CliRunner.prototype = {
     return this;
   },
 
+  /**
+   * Returns an array of cli arguments to be passed to the child process,
+   * based on the args passed to the main process
+   * @returns {Array}
+   */
   getChildProcessArgs : function() {
     var args = [];
     for (var i = 2; i < process.argv.length; i++) {
@@ -364,7 +413,12 @@ CliRunner.prototype = {
     return args;
   },
 
-  startParallelProcesses : function(envs, finishCallback) {
+  /**
+   * Start a new child process for each environment
+   * @param {Array} envs
+   * @param {function} finishCallback
+   */
+  startChildProcesses : function(envs, finishCallback) {
     var execFile = require('child_process').execFile, child, self = this;
     var mainModule = process.mainModule.filename;
     finishCallback = finishCallback || function() {};
