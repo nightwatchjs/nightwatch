@@ -57,7 +57,6 @@ CliRunner.prototype = {
       this.replaceEnvVariables();
       this.manageSelenium = !this.isParallelMode() && this.settings.selenium &&
         this.settings.selenium.start_process;
-
       if (typeof this.settings.src_folders == 'string') {
         this.settings.src_folders = [this.settings.src_folders];
       }
@@ -330,12 +329,13 @@ CliRunner.prototype = {
     }
 
     if (this.argv.f) {
-      this.test_settings.filter = this.argv.f;
+      this.test_settings.filename_filter = this.argv.f;
     }
 
     if (this.test_settings.disable_colors) {
       Logger.disableColors();
     }
+
     return this;
   },
 
@@ -423,6 +423,27 @@ CliRunner.prototype = {
     var mainModule = process.mainModule.filename;
     finishCallback = finishCallback || function() {};
 
+    var availColors = [
+      ['red', 'light_gray'], ['green', 'black'], ['blue', 'light_gray'], ['magenta', 'light_gray']];
+    var currentIndex = availColors.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      temporaryValue = availColors[currentIndex];
+      availColors[currentIndex] = availColors[randomIndex];
+      availColors[randomIndex] = temporaryValue;
+    }
+
+    var writeToSdtout = function(data, item, index) {
+      data = data.replace(/^\s+|\s+$/g, "");
+      var color_pair = availColors[index%4];
+      process.stdout.write(Logger.colors[color_pair[1]]('[' + item + ']', Logger.colors.background[color_pair[0]]) + '\t' + data + '\n');
+    };
+
     envs.forEach(function(item, index) {
       var cliArgs = self.getChildProcessArgs();
       cliArgs.push('-e', item, '__parallel-mode');
@@ -440,11 +461,11 @@ CliRunner.prototype = {
         });
 
         child.stdout.on('data', function (data) {
-          process.stdout.write(Logger.colors.light_gray('[' + item + ']', Logger.colors.background.red) + '\n  ' + data);
+          writeToSdtout(data, item, index);
         });
 
         child.stderr.on('data', function (data) {
-          process.stdout.write(Logger.colors.light_gray('[' + item + ']', Logger.colors.background.magenta) + '\n  ' + data);
+          writeToSdtout(data, item, index);
         });
 
         child.on('close', function (code) {
