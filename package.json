@@ -28,7 +28,8 @@
     "jscoverage": "latest",
     "coveralls": "latest",
     "jshint": "~2.4.4",
-    "mock-spawn": "^0.2.1"
+    "mock-spawn": "^0.2.1",
+    "mockery": "^1.4.0"
   },
   "bin": {
     "nightwatch": "./bin/nightwatch"

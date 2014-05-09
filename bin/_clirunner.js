@@ -1,9 +1,9 @@
 var Runner = require('../lib/runner/run.js');
 var Logger = require('../lib/util/logger.js');
 var Selenium = require('../lib/runner/selenium.js');
+var util = require('util');
 var fs = require('fs');
 var path = require('path');
-var util = require('util');
 
 var SETTINGS_DEPRECTED_VAL = './settings.json';
 
@@ -30,7 +30,7 @@ CliRunner.prototype = {
    * Read the provided config json file; defaults to settings.json if one isn't provided
    */
   readSettings : function() {
-    // use default settings.json file if we haven't received another value
+    // use default nightwatch.json file if we haven't received another value
     if (this.cli.command('config').isDefault(this.argv.c)) {
       var defaultValue = this.cli.command('config').defaults();
       var deprecatedValue = SETTINGS_DEPRECTED_VAL;
@@ -48,7 +48,7 @@ CliRunner.prototype = {
         }
       }
     } else {
-      this.argv.c = path.resolve(argv.c);
+      this.argv.c = path.resolve(this.argv.c);
     }
 
     // reading the settings file
@@ -56,7 +56,7 @@ CliRunner.prototype = {
       this.settings = require(this.argv.c);
       this.replaceEnvVariables();
       this.manageSelenium = !this.isParallelMode() && this.settings.selenium &&
-        this.settings.selenium.start_process;
+        this.settings.selenium.start_process || false;
       if (typeof this.settings.src_folders == 'string') {
         this.settings.src_folders = [this.settings.src_folders];
       }
@@ -258,6 +258,9 @@ CliRunner.prototype = {
   },
 
   inheritFromDefaultEnv : function() {
+    if (this.argv.e == 'default') {
+      return;
+    }
     var defaultEnv = this.settings.test_settings['default'] || {};
     for (var key in defaultEnv) {
       if (typeof this.test_settings[key] == 'undefined') {
@@ -322,7 +325,7 @@ CliRunner.prototype = {
       this.test_settings.silent = false;
     }
 
-    this.test_settings.output = this.test_settings.output || typeof this.test_settings.output === 'undefined';
+    this.test_settings.output = this.test_settings.output || typeof this.test_settings.output == 'undefined';
 
     if (typeof this.argv.s == 'string') {
       this.test_settings.skipgroup = this.argv.s.split(',');
@@ -405,7 +408,7 @@ CliRunner.prototype = {
     var args = [];
     for (var i = 2; i < process.argv.length; i++) {
       if (process.argv[i] == '-e' || process.argv[i] == '--env') {
-        i++
+        i++;
       } else {
         args.push(process.argv[i]);
       }
@@ -424,7 +427,8 @@ CliRunner.prototype = {
     finishCallback = finishCallback || function() {};
 
     var availColors = [
-      ['red', 'light_gray'], ['green', 'black'], ['blue', 'light_gray'], ['magenta', 'light_gray']];
+      ['red', 'light_gray'], ['green', 'black'], ['blue', 'light_gray'], ['magenta', 'light_gray']
+    ];
     var currentIndex = availColors.length, temporaryValue, randomIndex;
 
     // While there remain elements to shuffle...
@@ -439,7 +443,7 @@ CliRunner.prototype = {
     }
 
     var writeToSdtout = function(data, item, index) {
-      data = data.replace(/^\s+|\s+$/g, "");
+      data = data.replace(/^\s+|\s+$/g, '');
       var color_pair = availColors[index%4];
       process.stdout.write(Logger.colors[color_pair[1]]('[' + item + ']', Logger.colors.background[color_pair[0]]) + '\t' + data + '\n');
     };
