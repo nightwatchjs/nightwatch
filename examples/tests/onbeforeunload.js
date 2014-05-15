@@ -18,24 +18,13 @@ module.exports = {
       .hasOnBeforeUnload(function(result) {
         this.verify.equal(result, true, 'The page should have an onbeforeunload handler');
         hasDialog = result;
-        this.click('a.cancel');
       })
       .url('http://google.com', function() {
         if (hasDialog) {
           this.acceptAlert();
         }
       })
-      .ifElementVisible('body', 1000, false, function(found) {
-        if (found.value) {
-          console.log('ifElementVisible callback', found);
-
-        }
-      })
+      .waitForElementVisible('body', 1000)
       .end();
-  },
-
-  tearDown : function() {
-    console.log(this.results)
-    console.log(this.errors);
   }
 };
