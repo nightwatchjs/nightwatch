@@ -246,7 +246,8 @@ CliRunner.prototype = {
     this.startSelenium(function() {
       Runner.run(source, self.test_settings, {
         output_folder : self.output_folder,
-        src_folders : self.settings.src_folders
+        src_folders : self.settings.src_folders,
+        live_output : self.settings.live_output
       }, function(err) {
         self
           .stopSelenium()
@@ -350,7 +351,7 @@ CliRunner.prototype = {
     if (!this.manageSelenium) {
       return this;
     }
-    this.settings.cli_args = {};
+    this.settings.selenium.cli_args = {};
 
     var deprecationNotice = function(propertyName, newSettingName) {
       console.warn(Logger.colors.brown('DEPRECATION NOTICE: Property ' + propertyName + ' is deprecated since v0.5. Please' +
@@ -390,7 +391,7 @@ CliRunner.prototype = {
     var self = this;
 
     this.startSelenium(function() {
-      self.startChildProcesses(envs, function() {
+      self.startChildProcesses(envs, function(o) {
         self.stopSelenium();
       });
     });
@@ -442,10 +443,35 @@ CliRunner.prototype = {
       availColors[randomIndex] = temporaryValue;
     }
 
+    var prevIndex = 0;
+    var output = {};
     var writeToSdtout = function(data, item, index) {
       data = data.replace(/^\s+|\s+$/g, '');
+      output[item] = output[item] || [];
+
+      var env_output = '';
       var color_pair = availColors[index%4];
-      process.stdout.write(Logger.colors[color_pair[1]]('[' + item + ']', Logger.colors.background[color_pair[0]]) + '\t' + data + '\n');
+      if (prevIndex !== index) {
+        prevIndex = index;
+        if (self.settings.live_output) {
+          env_output += '\n';
+        }
+      }
+
+      env_output += Logger.colors[color_pair[1]](' ' + item + ' ',
+        Logger.colors.background[color_pair[0]]);
+
+      if (self.settings.live_output) {
+        env_output += ' ' + data;
+      } else {
+        env_output += '\t' + data + '\n';
+      }
+
+      if (self.settings.live_output) {
+        console.log(env_output);
+      } else {
+        output[item].push(env_output);
+      }
     };
 
     envs.forEach(function(item, index) {
@@ -460,9 +486,10 @@ CliRunner.prototype = {
           cwd : process.cwd(),
           encoding: 'utf8',
           env : env
-        }, function (error, stdout, stderr) {
+        }, function (error, stdout, stderr) {});
 
-        });
+        console.log('Started child process for env:',
+          Logger.colors.yellow(' ' + item + ' ', Logger.colors.background.black), '\n');
 
         child.stdout.on('data', function (data) {
           writeToSdtout(data, item, index);
@@ -473,8 +500,16 @@ CliRunner.prototype = {
         });
 
         child.on('close', function (code) {
-          if (index == envs.length - 1) {
-            finishCallback();
+          if (!self.settings.live_output) {
+            var child_output = output[item];
+            for (var i = 0; i < child_output.length; i++) {
+              process.stdout.write(child_output[i]);
+            }
+            console.log('');
+          }
+
+          if (index === (envs.length - 1)) {
+            finishCallback(output);
           }
         });
       }, index * 10);
