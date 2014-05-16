@@ -106,9 +106,11 @@ CliRunner.prototype = {
     try {
       var fullPath = path.resolve(this.settings.globals_path);
       if (fs.existsSync(fullPath)) {
-        var globals = require(fullPath);
+        var globals = this.test_settings.globals = require(fullPath);
         if (globals && globals.hasOwnProperty(this.argv.e)) {
-          this.test_settings.globals = globals[this.argv.e];
+          for (var prop in globals[this.argv.e]) {
+            this.test_settings.globals[prop] = globals[this.argv.e][prop];
+          }
         }
         return this;
       }
@@ -138,7 +140,9 @@ CliRunner.prototype = {
         err.message = 'There was an error while running the test.';
       }
 
-      console.error(Logger.colors.red(err.message));
+      if (this.test_settings.output) {
+        console.error(Logger.colors.red(err.message));
+      }
 
       process.exit(1);
     }
@@ -207,7 +211,9 @@ CliRunner.prototype = {
     var self = this;
     Selenium.startServer(this.settings, function(error, child, error_out, exitcode) {
       if (error) {
-        Logger.error('There was an error while starting the Selenium server:');
+        if (self.test_settings.output) {
+          Logger.error('There was an error while starting the Selenium server:');
+        }
         self.globalErrorHandler({
           message : error_out
         });

@@ -42,6 +42,13 @@ module.exports = {
       }
     });
 
+    mockery.registerMock('./globals.json', {
+      extra : {
+        someGlobal : 'test'
+      },
+      otherGlobal : 'other-value'
+    });
+
     mockery.registerMock('./settings.json', {
       src_folders : 'tests',
       test_settings : {
@@ -300,10 +307,7 @@ module.exports = {
   testParseTestSettingsIncorrect : function(test) {
     mockery.registerMock('fs', {
       existsSync : function(module) {
-        if (module == './incorrect.json') {
-          return true;
-        }
-        return false;
+        return module == './incorrect.json';
       }
     });
 
@@ -316,5 +320,81 @@ module.exports = {
     }, 'Invalid testing environment specified: incorrect');
 
     test.done();
+  },
+
+  testReadExternalGlobals : function(test) {
+    mockery.registerMock('fs', {
+      existsSync : function(module) {
+        if (module == './custom.json' || module == './globals.json') {
+          return true;
+        }
+        return false;
+      }
+    });
+
+    var CliRunner = require('../../../'+ BASE_PATH +'/../bin/_clirunner.js');
+    var runner = new CliRunner({
+      c : './custom.json',
+      e : 'extra'
+    }).init();
+
+    runner.settings.globals_path = './globals.json';
+    runner.readExternalGlobals();
+
+    test.equals(runner.test_settings.globals.otherGlobal, 'other-value');
+    test.equals(runner.test_settings.globals.someGlobal, 'test');
+
+
+    test.throws(function() {
+      var runner = new CliRunner({
+        c : './custom.json',
+        e : 'extra'
+      }).init();
+      runner.settings.globals_path = './incorrect.json';
+      runner.readExternalGlobals();
+
+    }, 'External global file could not be located - using ./incorrect.json.');
+
+    test.done();
+  },
+
+  testStartSeleniumDisabled : function(test) {
+    var CliRunner = require('../../../'+ BASE_PATH +'/../bin/_clirunner.js');
+    var runner = new CliRunner({
+      c : './nightwatch.json',
+      e : 'default'
+    }).init();
+
+    runner.manageSelenium = false;
+    test.expect(1);
+    runner.startSelenium(function() {
+      test.ok('callback called');
+      test.done();
+    });
+  },
+
+  testStartSeleniumEnabled : function(test) {
+    mockery.registerMock('../lib/runner/selenium.js', {
+      startServer : function(settings, cb) {
+        cb({}, null, 'Server already running.');
+      }
+    });
+    var CliRunner = require('../../../'+ BASE_PATH +'/../bin/_clirunner.js');
+    var runner = new CliRunner({
+      c : './nightwatch.json',
+      e : 'default'
+    }).init();
+
+    runner.manageSelenium = true;
+    runner.parallelMode = true;
+    test.expect(2);
+    
+    runner.globalErrorHandler = function(err) {
+      test.equals(err.message, 'Server already running.');
+      test.equals(runner.settings.parallelMode, true);
+      test.done();
+    };
+
+    runner.startSelenium();
   }
 };
