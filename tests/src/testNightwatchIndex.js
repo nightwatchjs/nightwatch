@@ -83,8 +83,48 @@ module.exports = {
     });
   },
 
+  testSetOptions : function(test) {
+    var client = this.client = Client.init({
+      use_xpath : true,
+      launch_url : '/home'
+    });
+    var eq = test.equals;
+
+    eq(client.context, null);
+    eq(client.errors.length, 0);
+    test.deepEqual(client.results, {
+      passed:0,
+      failed:0,
+      errors:0,
+      skipped:0,
+      tests:[]
+    });
+
+    eq(client.locateStrategy, 'xpath');
+    eq(client.options.use_xpath, true);
+    eq(client.api.launchUrl, '/home');
+    eq(client.api.launch_url, '/home');
+
+    eq(client.options.screenshots.enabled, false);
+
+    test.done();
+  },
+
+  testSetOptionsScreenshots : function(test) {
+    test.throws(function() {
+      var client = this.client = Client.init({
+        screenshots : {
+          enabled : true,
+          path : '/screens'
+        }
+      });
+      test.equals(client.api.screenshotsPath, '/home');
+    });
+    test.done();
+  },
+
   tearDown : function(callback) {
-    this.client.queue.reset();
+    this.client && this.client.queue.reset();
     this.client = null;
     // clean up
     callback();
