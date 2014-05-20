@@ -22,7 +22,7 @@ module.exports = {
         test.equals(passed, true);
         test.equals(result, 'http://www.nightwatchjs.org');
         test.equals(expected, 'http://www.nightwatchjs.org');
-        test.equals(msg, 'Testing if the page url equals "http://www.nightwatchjs.org".');
+        test.equals(msg, 'Testing if the URL equals "http://www.nightwatchjs.org".');
         test.equals(abortOnFailure, true);
         delete assertionFn;
         test.done();

@@ -20,9 +20,9 @@ module.exports = {
       },
       assertion : function(passed, result, expected, msg, abortOnFailure) {
         test.equals(passed, true);
-        test.equals(result, 'nightwatchjs');
+        test.equals(result, 'http://www.nightwatchjs.org');
         test.equals(expected, 'nightwatchjs');
-        test.equals(msg, 'Testing if the page url contains "nightwatchjs".');
+        test.equals(msg, 'Testing if the URL contains "nightwatchjs".');
         test.equals(abortOnFailure, true);
         delete assertionFn;
         test.done();
@@ -38,7 +38,7 @@ module.exports = {
     var client = {
       options : {},
       api : {
-        title : function(callback) {
+        url : function(callback) {
           callback({
             value : 'http://www.nightwatchjs.org'
           });
@@ -46,7 +46,7 @@ module.exports = {
       },
       assertion : function(passed, result, expected, msg, abortOnFailure) {
         test.equals(passed, false);
-        test.equals(result, 'nightwatchjs');
+        test.equals(result, 'http://www.nightwatchjs.org');
         test.equals(expected, 'google');
         test.equals(abortOnFailure, true);
         delete assertionFn;
