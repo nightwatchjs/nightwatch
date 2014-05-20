@@ -7,7 +7,7 @@ module.exports = {
     callback();
   },
 
-  'title assertion passed' : function(test) {
+  'urlEquals assertion passed' : function(test) {
     var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/urlEquals.js');
     var client = {
       options : {},
@@ -22,7 +22,7 @@ module.exports = {
         test.equals(passed, true);
         test.equals(result, 'http://www.nightwatchjs.org');
         test.equals(expected, 'http://www.nightwatchjs.org');
-        test.equals(msg, 'Testing if the page title equals "http://www.nightwatchjs.org".');
+        test.equals(msg, 'Testing if the page url equals "http://www.nightwatchjs.org".');
         test.equals(abortOnFailure, true);
         delete assertionFn;
         test.done();
@@ -33,7 +33,7 @@ module.exports = {
     m._commandFn('http://www.nightwatchjs.org');
   },
 
-  'title assertion failed' : function(test) {
+  'urlEquals assertion failed' : function(test) {
     var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/title.js');
     var client = {
       options : {},
