@@ -35,7 +35,7 @@
   "man": "",
   "scripts": {
     "jshint": "./node_modules/.bin/jshint --verbose --config .jshintrc lib/",
-    "coveralls": "jscoverage lib && NIGHTWATCH_COV=1 node ./tests/run_tests.js lcov | coveralls",
+    "coveralls": "jscoverage lib --exclude *.ejs,*.json && NIGHTWATCH_COV=1 node ./tests/run_tests.js lcov | coveralls",
     "test": "node ./tests/run_tests.js"
   }
 }
