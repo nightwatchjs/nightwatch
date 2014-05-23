@@ -4,6 +4,7 @@
   "custom_commands_path" : "./examples/custom-commands",
   "custom_assertions_path" : "",
   "globals_path" : "./examples/globals.json",
+  "globals_common_env" : "common",
 
   "selenium" : {
     "start_process" : false,
