@@ -1,7 +1,7 @@
 /**
- * Module dependencies
+ * Module dependenciesyxc
  */
-var fs = require('fs');
+var fs = require('fs');ed
 var path = require('path');
 var Logger = require('../lib/util/logger.js');
 var cli = require('./_cli.js');
