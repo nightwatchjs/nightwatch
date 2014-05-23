@@ -1,4 +1,7 @@
 {
+  "common" : {
+    "commonGlobal" : "Everywhere"
+  },
   "default" : {
     "myGlobal" : 1
   },

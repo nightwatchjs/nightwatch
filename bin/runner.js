@@ -149,6 +149,30 @@ function readExternalGlobals(file) {
 }
 
 /**
+ * Builds the globals object with respect to common values shared for all environments
+ * @param {Object} globals
+ * @returns {Object} globals
+ */
+ function addGlobals(globals, ext_globals, common, env){
+	if(!globals){
+		globals = new Object();
+	}
+	//add common vars to globals, overwrite if already existing
+	if(common in ext_globals){
+		for(var i in ext_globals[common]){
+			globals[i] = ext_globals[common][i];
+		}
+	}
+	//add env vars to globals, overwrite if already existing
+	if(env != common && env in ext_globals){
+		for(var i in ext_globals[env]){
+			globals[i] = ext_globals[env][i];
+		}
+	}
+	return globals;
+}
+
+/**
  *
  * @param {Object} argv
  */
@@ -177,7 +201,11 @@ function parseTestSettings(argv) {
   if (typeof settings.globals_path == 'string' && settings.globals_path) {
     var globals = readExternalGlobals(settings.globals_path);
     if (globals && globals.hasOwnProperty(argv.e)) {
-      test_settings.globals = globals[argv.e];
+      if(typeof settings.globals_common_env == 'string' && settings.globals_common_env){
+    	test_settings.globals = addGlobals(test_settings.globals, globals, settings.globals_common_env, argv.e);
+      } else {
+        test_settings.globals = globals[argv.e];
+      }
     }
   }
 
