@@ -4,13 +4,19 @@
   "custom_commands_path" : "./examples/custom-commands",
   "custom_assertions_path" : "",
   "globals_path" : "./examples/globals.json",
+  "live_output" : false,
 
   "selenium" : {
     "start_process" : false,
     "server_path" : "",
     "log_path" : "",
     "host" : "127.0.0.1",
-    "port" : 4444
+    "port" : 4444,
+    "cli_args" : {
+      "webdriver.chrome.driver" : "",
+      "webdriver.ie.driver" : "",
+      "webdriver.firefox.profile" : ""
+    }
   },
 
   "test_settings" : {
@@ -20,9 +26,6 @@
       "selenium_port" : 4444,
       "silent" : true,
       "disable_colors": false,
-      "firefox_profile" : false,
-      "chrome_driver" : "",
-      "ie_driver" : "",
       "screenshots" : {
         "enabled" : false,
         "path" : ""
@@ -55,6 +58,15 @@
       },
       "selenium" : {
         "start_process" : false
+      }
+    },
+
+    "phantomjs" : {
+      "desiredCapabilities" : {
+        "browserName" : "phantomjs",
+        "javascriptEnabled" : true,
+        "acceptSslCerts" : true,
+        "phantomjs.binary.path" : "/path/to/phantomjs"
       }
     },
 
