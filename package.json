@@ -1,7 +1,7 @@
 {
   "name": "nightwatch",
   "description": "A node.js bindings implementation for selenium 2.0/webdriver",
-  "version": "0.4.14",
+  "version": "0.4.17",
   "author": {
     "name": "Andrei Rusu",
     "email": "andrei@nightwatchjs.org"
@@ -37,7 +37,7 @@
   "man": "",
   "scripts": {
     "jshint": "./node_modules/.bin/jshint --verbose --config .jshintrc lib/",
-    "coveralls": "jscoverage lib && NIGHTWATCH_COV=1 node ./tests/run_tests.js lcov | coveralls",
+    "coveralls": "jscoverage lib --exclude *.ejs,*.json && NIGHTWATCH_COV=1 node ./tests/run_tests.js lcov | coveralls",
     "test": "node ./tests/run_tests.js"
   }
 }
