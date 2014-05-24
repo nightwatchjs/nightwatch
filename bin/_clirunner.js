@@ -80,14 +80,14 @@ CliRunner.prototype = {
     target = target || this.settings;
     for (var key in target) {
       switch(typeof target[key]) {
-        case 'object':
-          this.replaceEnvVariables(target[key]);
-          break;
-        case 'string':
-          target[key] = target[key].replace(/\$\{(\w+)\}/g, function(match, varName) {
-            return process.env[varName] || '${' + varName + '}';
-          });
-          break;
+      case 'object':
+        this.replaceEnvVariables(target[key]);
+        break;
+      case 'string':
+        target[key] = target[key].replace(/\$\{(\w+)\}/g, function(match, varName) {
+          return process.env[varName] || '${' + varName + '}';
+        });
+        break;
       }
     }
 
@@ -239,7 +239,6 @@ CliRunner.prototype = {
 
   /**
    * Starts the test runner
-   * @param source
    * @returns {CliRunner}
    */
   runTests : function() {
