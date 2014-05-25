@@ -209,6 +209,7 @@ CliRunner.prototype = {
     }
     this.settings.parallelMode = this.parallelMode;
     var self = this;
+
     Selenium.startServer(this.settings, function(error, child, error_out, exitcode) {
       if (error) {
         if (self.test_settings.output) {
@@ -356,7 +357,7 @@ CliRunner.prototype = {
     if (!this.manageSelenium) {
       return this;
     }
-    this.settings.selenium.cli_args = {};
+    this.settings.selenium.cli_args = this.settings.selenium.cli_args || {};
 
     var deprecationNotice = function(propertyName, newSettingName) {
       console.warn(Logger.colors.brown('DEPRECATION NOTICE: Property ' + propertyName + ' is deprecated since v0.5. Please' +
