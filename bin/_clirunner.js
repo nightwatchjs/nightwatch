@@ -126,7 +126,9 @@ CliRunner.prototype = {
    * @returns {CliRunner}
    */
   setOutputFolder : function() {
-    this.output_folder = this.cli.command('output').isDefault(this.argv.o) && this.settings.output_folder || this.argv.o;
+    this.output_folder = this.settings.output_folder === false ?
+          false : (this.cli.command('output').isDefault(this.argv.o)
+                   && this.settings.output_folder || this.argv.o);
     return this;
   },
 
