@@ -3,7 +3,7 @@
   "mocks" : [
     {
       "url" : "/wd/hub/session",
-      "postdata" : "{\"desiredCapabilities\":{\"browserName\":\"firefox\",\"javascriptEnabled\":true,\"acceptSslCerts\":true,\"platform\":\"ANY\"},\"sessionId\":null}",
+      "postdata" : "{\"desiredCapabilities\":{\"browserName\":\"firefox\",\"javascriptEnabled\":true,\"acceptSslCerts\":true,\"platform\":\"ANY\"}}",
       "response" : "{\"status\": 0, \"sessionId\": \"1352110219202\", \"value\": { \"javascriptEnabled\": true, \"browserName\": \"firefox\"}, \"state\": null}",
       "responseHeaders" : {
       },
@@ -12,7 +12,7 @@
     },
     {
       "url" : "/wd/hub/session",
-      "postdata" : "{\"desiredCapabilities\":{\"browserName\":\"chrome\",\"javascriptEnabled\":true,\"acceptSslCerts\":true,\"platform\":\"ANY\"},\"sessionId\":null}",
+      "postdata" : "{\"desiredCapabilities\":{\"browserName\":\"chrome\",\"javascriptEnabled\":true,\"acceptSslCerts\":true,\"platform\":\"ANY\"}}",
       "responseHeaders" : {
         "location" : "http://localhost:10195/wd/hub/session/1352110219202"
       },
