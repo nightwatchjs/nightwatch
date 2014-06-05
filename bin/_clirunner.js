@@ -411,8 +411,8 @@ CliRunner.prototype = {
    * based on the args passed to the main process
    * @returns {Array}
    */
-  getChildProcessArgs : function() {
-    var args = [];
+  getChildProcessArgs : function(mainModule) {
+    var args = [mainModule];
     for (var i = 2; i < process.argv.length; i++) {
       if (process.argv[i] == '-e' || process.argv[i] == '--env') {
         i++;
@@ -481,14 +481,14 @@ CliRunner.prototype = {
     };
 
     envs.forEach(function(item, index) {
-      var cliArgs = self.getChildProcessArgs();
+      var cliArgs = self.getChildProcessArgs(mainModule);
       cliArgs.push('-e', item, '__parallel-mode');
       var env = process.env;
       setTimeout(function() {
         env.__NIGHTWATCH_PARALLEL_MODE = 1;
         env.__NIGHTWATCH_ENV = item;
 
-        child = execFile(mainModule, cliArgs, {
+        child = execFile(process.execPath, cliArgs, {
           cwd : process.cwd(),
           encoding: 'utf8',
           env : env
