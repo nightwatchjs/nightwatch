@@ -124,7 +124,9 @@ module.exports = {
   },
 
   tearDown : function(callback) {
-    this.client && this.client.queue.reset();
+    if (this.client) {
+      this.client.queue.reset();
+    }
     this.client = null;
     // clean up
     callback();
