@@ -30,6 +30,16 @@ module.exports = {
     };
 
     mockery.registerMock('./nightwatch.json', config);
+    mockery.registerMock('./output_disabled.json', {
+      src_folders : ['tests'],
+      output_folder : false,
+      test_settings : {
+        'default' : {
+          silent : true
+        }
+      }
+    });
+
     mockery.registerMock('./empty.json', {
       src_folders : 'tests'
     });
@@ -91,6 +101,9 @@ module.exports = {
         if (b == './custom.json') {
           return './custom.json';
         }
+        if (b == './output_disabled.json') {
+          return './output_disabled.json';
+        }
         if (b == './empty.json') {
           return './empty.json';
         }
@@ -147,6 +160,28 @@ module.exports = {
     test.equals(runner.output_folder, 'output');
     test.equals(runner.parallelMode, false);
     test.equals(runner.manageSelenium, false);
+
+    test.done();
+
+  },
+
+  testSetOutputFolder : function(test) {
+    mockery.registerMock('fs', {
+      existsSync : function(module) {
+        if (module == './settings.json') {
+          return false;
+        }
+        return true;
+      }
+    });
+
+    var CliRunner = require('../../../'+ BASE_PATH +'/../bin/_clirunner.js');
+    var runner = new CliRunner({
+      c : './output_disabled.json',
+      e : 'default'
+    }).init();
+
+    test.equals(runner.output_folder, false);
 
     test.done();
 
@@ -388,7 +423,7 @@ module.exports = {
     runner.manageSelenium = true;
     runner.parallelMode = true;
     test.expect(2);
-    
+
     runner.globalErrorHandler = function(err) {
       test.equals(err.message, 'Server already running.');
       test.equals(runner.settings.parallelMode, true);
