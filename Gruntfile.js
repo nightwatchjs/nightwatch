@@ -37,6 +37,19 @@ module.exports = function(grunt) {
     },
     jsonlint: {
       src: ['tests/*.json']
+    },
+    complexity: {
+      generic: {
+        src: ['lib/**/*.js', 'examples/**/*.js'],
+        options: {
+          breakOnErrors: true,
+          errorsOnly: false,
+          cyclomatic: [12, 10, 8, 6, 4],
+          halstead: [30.19, 25, 20, 16, 12, 6, 3],
+          maintainability: 98.65, // should be 100+,
+          hideComplexFunctions: false
+        }
+      }
     }
   });
 
@@ -45,10 +58,12 @@ module.exports = function(grunt) {
 
   //
   grunt.loadNpmTasks('grunt-jsonlint');
+  grunt.loadNpmTasks('grunt-complexity');
 
   // load the plugin that provides the "jshint" task.
   grunt.loadNpmTasks('grunt-contrib-jshint');
 
   // Default task(s).
   grunt.registerTask('default', ['jshint', 'jsonlint']);
+  grunt.registerTask('default', ['jshint', 'jsonlint', 'complexity']);
 };

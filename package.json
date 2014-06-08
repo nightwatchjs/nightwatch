@@ -33,7 +33,8 @@
     "mockery": "^1.4.0",
     "jsonlint": "~1.6.0",
     "grunt-contrib-jshint": "~0.10.0",
-    "grunt-jsonlint": "~1.0.4"
+    "grunt-jsonlint": "~1.0.4",
+    "grunt-complexity": "^0.1.7"
   },
   "bin": {
     "nightwatch": "./bin/nightwatch"
