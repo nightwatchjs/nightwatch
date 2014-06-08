@@ -1,7 +1,7 @@
 module.exports = {
   'Demo test GitHub' : function (client) {
     client
-      .url("https://github.com/beatfactor/nightwatch")
+      .url('https://github.com/beatfactor/nightwatch')
       .waitForElementVisible('body', 1000)
       .assert.title('beatfactor/nightwatch · GitHub')
       .assert.visible('.container .breadcrumb a span')
