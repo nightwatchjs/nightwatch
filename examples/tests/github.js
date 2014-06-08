@@ -8,4 +8,4 @@ module.exports = {
       .assert.containsText('.container .breadcrumb a span', 'nightwatch', 'Checking project title is set tot nightwatch')
       .end();
   }
-}
+};
