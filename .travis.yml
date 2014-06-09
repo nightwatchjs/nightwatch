@@ -8,6 +8,7 @@ before_script:
 
 script:
   - npm run-script jshint
+  - npm test
   - npm run-script coverage
 
 after_success:
