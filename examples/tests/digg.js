@@ -20,11 +20,12 @@ module.exports = {
   disabled : true,
 
   'digg facebook login' : function (client) {
+    var fbcredentials;
     try {
-      var fbcredentials = require('./fbcredentials.json');
+      fbcredentials = require('./fbcredentials.json');
     } catch (err) {
       console.error('Couldn\'t load the facebook credentials file. Please ensure that ' +
-        'you have the fbcredentials.json in the same folder as the test.')
+        'you have the fbcredentials.json in the same folder as the test.');
       process.exit();
     }
 
@@ -49,4 +50,4 @@ module.exports = {
       .waitForElementVisible('#digg-header.authenticated', 3000)
       .end();
   }
-}
+};
