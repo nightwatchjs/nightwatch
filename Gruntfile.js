@@ -29,8 +29,19 @@ module.exports = function(grunt) {
       src: ['tests/*.json']
     },
     complexity: {
-      generic: {
-        src: ['lib/**/*.js', 'examples/**/*.js'],
+      lib: {
+        src: ['lib/**/*.js'],
+        options: {
+          breakOnErrors: true,
+          errorsOnly: false,
+          cyclomatic: [12, 10, 8, 6, 4],
+          halstead: [30.19, 25, 20, 16, 12, 6, 3],
+          maintainability: 98.65, // should be 100+,
+          hideComplexFunctions: false
+        }
+      },
+      examples: {
+        src: ['examples/**/*.js'],
         options: {
           breakOnErrors: true,
           errorsOnly: false,
