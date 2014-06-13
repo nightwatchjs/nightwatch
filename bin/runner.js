@@ -1,8 +1,6 @@
 /**
  * Module dependencies
  */
-var fs = require('fs');
-var path = require('path');
 var Logger = require('../lib/util/logger.js');
 var cli = require('./_cli.js');
 var CliRunner = require('./_clirunner.js');
