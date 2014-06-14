@@ -1,6 +1,4 @@
-var BASE_PATH = process.env.NIGHTWATCH_COV
-  ? 'lib-cov'
-  : 'lib';
+var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
 
 module.exports = {
   setUp: function (callback) {
@@ -887,12 +885,12 @@ module.exports = {
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.url('http://localhost');
 
-      test.equal(command.request.method, "POST");
+      test.equal(command.request.method, 'POST');
       test.equal(command.data, '{"url":"http://localhost"}');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/url');
       command.on('result', function() {
         test.done();
-      })
+      });
     });
   },
 
@@ -902,7 +900,7 @@ module.exports = {
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.url(function() {});
 
-      test.equal(command.request.method, "GET");
+      test.equal(command.request.method, 'GET');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/url');
       command.on('result', function() {
         test.done();

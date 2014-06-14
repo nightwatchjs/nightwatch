@@ -1,7 +1,6 @@
 var Runner = require('../lib/runner/run.js');
 var Logger = require('../lib/util/logger.js');
 var Selenium = require('../lib/runner/selenium.js');
-var util = require('util');
 var fs = require('fs');
 var path = require('path');
 

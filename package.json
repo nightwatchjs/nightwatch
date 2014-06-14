@@ -18,6 +18,7 @@
     "url": "git@github.com:beatfactor/nightwatch.git"
   },
   "dependencies": {
+    "grunt": "~0.4.4",
     "ejs": ">=0.8.3",
     "optimist": ">=0.3.5",
     "minimatch": "~0.2.14",
@@ -29,7 +30,11 @@
     "coveralls": "latest",
     "jshint": "~2.4.4",
     "mock-spawn": "^0.2.1",
-    "mockery": "^1.4.0"
+    "mockery": "^1.4.0",
+    "jsonlint": "~1.6.0",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-jsonlint": "~1.0.4",
+    "grunt-complexity": "^0.1.7"
   },
   "bin": {
     "nightwatch": "./bin/nightwatch"
