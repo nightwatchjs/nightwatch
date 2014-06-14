@@ -66,5 +66,5 @@ module.exports = function(grunt) {
 
   // Default task(s).
   grunt.registerTask('default', ['jshint', 'jsonlint']);
-  grunt.registerTask('default', ['jshint', 'jsonlint', 'complexity']);
+  grunt.registerTask('all', ['jshint', 'jsonlint', 'complexity']);
 };

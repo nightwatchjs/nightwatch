@@ -12,6 +12,5 @@
   "quotmark":"single",
   "indent":2,
   "newcap":true,
-  "trailing":true,
-  "unused":true
+  "trailing":true
 }
