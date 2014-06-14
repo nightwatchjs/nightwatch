@@ -50,7 +50,7 @@ module.exports = {
     test.ok('customCommandConstructor' in this.client.api, 'Test if the custom command with constructor style was added');
 
     var queue = client.enqueueCommand('customCommandConstructor', []);
-    var command = queue.currentNode.children[0];
+    var command = queue.currentNode;
     test.equal(command.name, 'customCommandConstructor');
     test.equal(command.context, client.api, 'Command should contain a reference to main client instance.');
   },

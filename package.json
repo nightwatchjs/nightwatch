@@ -42,7 +42,7 @@
   "man": "",
   "scripts": {
     "jshint": "./node_modules/.bin/jshint --verbose --config .jshintrc lib/",
-    "coveralls": "jscoverage lib --exclude *.ejs,*.json && NIGHTWATCH_COV=1 node ./tests/run_tests.js lcov | coveralls",
+    "coverage": "jscoverage lib --exclude *.ejs,*.json && NIGHTWATCH_COV=1 node ./tests/run_tests.js lcov > ./lib-cov/lcov.info",
     "test": "node ./tests/run_tests.js"
   }
 }
