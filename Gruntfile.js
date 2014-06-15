@@ -50,7 +50,16 @@ module.exports = function(grunt) {
           maintainability: 98.65, // should be 100+,
           hideComplexFunctions: false
         }
-      }
+      },
+      npmrelease: {
+        options: {
+          push: true,
+          bump : true,
+          pushTags: true,
+          npm: true,
+          npmtag: false
+        }
+      },
     }
   });
 
@@ -60,6 +69,7 @@ module.exports = function(grunt) {
   //
   grunt.loadNpmTasks('grunt-jsonlint');
   grunt.loadNpmTasks('grunt-complexity');
+  grunt.loadNpmTasks('grunt-npmrelease');
 
   // load the plugin that provides the "jshint" task.
   grunt.loadNpmTasks('grunt-contrib-jshint');
