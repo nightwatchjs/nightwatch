@@ -5,6 +5,7 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+
     jshint: {
       options: {
         jshintrc: '.jshintrc'
@@ -25,9 +26,11 @@ module.exports = function(grunt) {
         src: ['examples/tests', 'examples/custom-commands']
       }
     },
+
     jsonlint: {
       src: ['tests/*.json']
     },
+
     complexity: {
       lib: {
         src: ['lib/**/*.js'],
@@ -50,31 +53,33 @@ module.exports = function(grunt) {
           maintainability: 98.65, // should be 100+,
           hideComplexFunctions: false
         }
+      }
+    },
+
+    npmrelease: {
+      options: {
+        push: true,
+        bump : true,
+        pushTags: true,
+        npm: true,
+        silent : false,
+        commitMessage : 'bump version number to %s'
       },
-      npmrelease: {
-        options: {
-          push: true,
-          bump : true,
-          pushTags: true,
-          npm: true,
-          npmtag: false
-        }
-      },
+      patch : {
+
+      }
     }
   });
 
-  // load custom external tasks (future)
-  grunt.loadTasks('tasks/');
-
-  //
+  grunt.loadNpmTasks('grunt-npm-release');
   grunt.loadNpmTasks('grunt-jsonlint');
   grunt.loadNpmTasks('grunt-complexity');
-  grunt.loadNpmTasks('grunt-npmrelease');
 
   // load the plugin that provides the "jshint" task.
   grunt.loadNpmTasks('grunt-contrib-jshint');
 
   // Default task(s).
+  grunt.registerTask('release', ['npmrelease']);
   grunt.registerTask('default', ['jshint', 'jsonlint']);
   grunt.registerTask('all', ['jshint', 'jsonlint', 'complexity']);
 };
