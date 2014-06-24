@@ -106,7 +106,7 @@ module.exports = {
   },
 
   testRunWithTags : function(test) {
-    Runner.run([process.cwd() + '/sampletests/withexclude'], {
+    Runner.run([process.cwd() + '/sampletests'], {
       seleniumPort : 10195,
       silent : true,
       output : false,
@@ -117,7 +117,8 @@ module.exports = {
     }, {
       output_folder : false
     }, function(err, results) {
-      test.ok(!('demoTagTest' in results.modules));
+      test.ok(('demoTagTest' in results.modules.sample));
+      test.ok(Object.keys(results.modules).length === 1);
       test.done();
     });
   },
