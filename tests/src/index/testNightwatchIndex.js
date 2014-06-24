@@ -1,3 +1,6 @@
+var os     = require('os');
+var path   = require('path');
+var fs     = require('fs');
 var Client = require('../../nightwatch.js');
 
 module.exports = {
@@ -80,6 +83,23 @@ module.exports = {
       test.equal(sessionId, 1352110219202);
       test.equal(client.api.capabilities.browserName, 'chrome');
       test.done();
+    });
+  },
+
+  'Test saveScreenshotToFile' : function(test) {
+    var client = this.client = Client.init();
+    var tmp = os.tmpdir();
+    var filePath = path.resolve(tmp, 'r3lekb', 'foo.png');
+    var data = 'nightwatch';
+
+    client.saveScreenshotToFile(filePath, data, function(err, actualFilePath) {
+      test.equal(err, null);
+      test.equal(actualFilePath, filePath);
+
+      fs.readFile(actualFilePath, function(err) {
+        test.equal(err, null);
+        test.done();
+      });
     });
   },
 
