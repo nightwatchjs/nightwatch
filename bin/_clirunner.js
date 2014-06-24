@@ -344,6 +344,10 @@ CliRunner.prototype = {
       this.test_settings.filename_filter = this.argv.f;
     }
 
+    if (this.argv.a) {
+      this.test_settings.tag_filter = this.argv.a;
+    }
+
     if (this.test_settings.disable_colors) {
       Logger.disableColors();
     }
