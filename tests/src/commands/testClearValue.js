@@ -18,10 +18,10 @@ module.exports = {
 
     client
       .clearValue('#weblogin', function callback(result) {
-        test.equals(result.status, 0)
+        test.equals(result.status, 0);
       })
       .clearValue('css selector', '#weblogin', function callback(result) {
-        test.equals(result.status, 0)
+        test.equals(result.status, 0);
         test.done();
       });
 

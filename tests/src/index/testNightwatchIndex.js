@@ -78,7 +78,7 @@ module.exports = {
         browserName : 'chrome'
       }
     });
-
+    test.expect(2);
     client.on('selenium:session_create', function(sessionId) {
       test.equal(sessionId, 1352110219202);
       test.equal(client.api.capabilities.browserName, 'chrome');
@@ -103,8 +103,68 @@ module.exports = {
     });
   },
 
+
+  'Test saveScreenshotToFile failure' : function(test) {
+    var client = this.client = Client.init();
+    var tmp = os.tmpdir();
+    var filePath = path.resolve(tmp, 'r3lekb', 'foo.png');
+    var data = 'nightwatch';
+
+    client.saveScreenshotToFile(filePath, data, function(err, actualFilePath) {
+      test.equal(err, null);
+      test.equal(actualFilePath, filePath);
+
+      fs.readFile(actualFilePath, function(err) {
+        test.equal(err, null);
+        test.done();
+      });
+    });
+  },
+
+  testSetOptions : function(test) {
+    var client = this.client = Client.init({
+      use_xpath : true,
+      launch_url : '/home'
+    });
+    var eq = test.equals;
+
+    eq(client.context, null);
+    eq(client.errors.length, 0);
+    test.deepEqual(client.results, {
+      passed:0,
+      failed:0,
+      errors:0,
+      skipped:0,
+      tests:[]
+    });
+
+    eq(client.locateStrategy, 'xpath');
+    eq(client.options.use_xpath, true);
+    eq(client.api.launchUrl, '/home');
+    eq(client.api.launch_url, '/home');
+
+    eq(client.options.screenshots.enabled, false);
+
+    test.done();
+  },
+
+  testSetOptionsScreenshots : function(test) {
+    test.throws(function() {
+      var client = this.client = Client.init({
+        screenshots : {
+          enabled : true,
+          path : '/screens'
+        }
+      });
+      test.equals(client.api.screenshotsPath, '/home');
+    });
+    test.done();
+  },
+
   tearDown : function(callback) {
-    this.client.queue.reset();
+    if (this.client) {
+      this.client.queue.reset();
+    }
     this.client = null;
     // clean up
     callback();
