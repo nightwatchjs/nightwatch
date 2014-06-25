@@ -703,6 +703,35 @@ module.exports = {
     });
   },
 
+  testGetAlertText: function(test) {
+    var client = this.client;
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.getAlertText(function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'GET');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/alert_text');
+    });
+  },
+
+  testSetAlertText: function(test) {
+    var client = this.client;
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.setAlertText('prompt text to set', function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'POST');
+      test.equal(command.data, '{"text":"prompt text to set"}');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/alert_text');
+    });
+  },
+
   testCookieGet : function(test) {
     var client = this.client;
     var protocol = this.protocol;
