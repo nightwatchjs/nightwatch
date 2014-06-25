@@ -5,7 +5,6 @@ var Logger = require('../lib/util/logger.js');
 var cli = require('./_cli.js');
 var CliRunner = require('./_clirunner.js');
 
-
 // CLI definitions
 
 // $ nightwatch -c

@@ -121,5 +121,5 @@ module.exports = {
       test.ok(Object.keys(results.modules).length === 1);
       test.done();
     });
-  },
+  }
 };

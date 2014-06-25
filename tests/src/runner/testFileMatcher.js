@@ -1,7 +1,7 @@
 var BASE_PATH = process.env.NIGHTWATCH_COV
   ? 'lib-cov'
   : 'lib';
-var matcher = require('../../../'+ BASE_PATH +'/runner/matcher.js');
+var matcher = require('../../../'+ BASE_PATH +'/runner/filematcher.js');
 
 module.exports = {
   'tag: test matching tags': function (test) {
@@ -10,7 +10,7 @@ module.exports = {
       tags: ['home', 'siberia']
     };
 
-    var matched = matcher.checkModuleTags(testModule, tags);
+    var matched = matcher.tags.checkModuleTags(testModule, tags);
 
     test.ok(matched === true);
     test.done();
@@ -22,7 +22,7 @@ module.exports = {
       tags: ['boroboro', 'siberia']
     };
 
-    var matched = matcher.checkModuleTags(testModule, tags);
+    var matched = matcher.tags.checkModuleTags(testModule, tags);
 
     test.ok(matched === false);
     test.done();
@@ -32,7 +32,7 @@ module.exports = {
     var tags = ['home', 'login', 'sign-up'];
     var testModule = {};
 
-    var matched = matcher.checkModuleTags(testModule, tags);
+    var matched = matcher.tags.checkModuleTags(testModule, tags);
 
     test.ok(matched === false);
     test.done();
@@ -40,9 +40,9 @@ module.exports = {
 
   'tag: test loading module with tags': function (test) {
     var tags = ['home', 'login', 'sign-up'];
-    var testModule = require('../../sampletests/tags/sample');
 
-    var matched = matcher.checkModuleTags(testModule, tags);
+
+    var matched = matcher.tags.match(__dirname + '/../../sampletests/tags/sample.js', tags);
 
     test.ok(matched === true);
     test.done();
