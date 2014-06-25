@@ -59,12 +59,13 @@ cli.command('filter')
   .defaults('')
   .alias('f');
 
-// $ nightwatch -s
-// $ nightwatch --skipgroup
+// $ nightwatch -h
+// $ nightwatch --help
 cli.command('help')
   .description('Shows this help.')
   .alias('h');
 
+// $ nightwatch -v
 // $ nightwatch --version
 cli.command('version')
   .alias('v')
@@ -80,8 +81,8 @@ try {
   } else {
     process.chdir(process.cwd());
 
-    var CliRunner = new CliRunner(argv);
-    CliRunner.init().runTests();
+    var runner = new CliRunner(argv);
+    runner.init().runTests();
   }
 } catch (ex) {
   Logger.error('There was an error while starting the test runner:\n');
