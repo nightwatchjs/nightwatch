@@ -1,4 +1,5 @@
 module.exports = {
+  tags: ['google'],
   'Demo test Google' : function (client) {
     client
       .url('http://www.google.com')

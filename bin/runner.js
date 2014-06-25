@@ -59,6 +59,13 @@ cli.command('filter')
   .defaults('')
   .alias('f');
 
+// $ nightwatch -a
+// $ nightwatch --tag
+cli.command('tag')
+  .description('Only run tests with the given tag.')
+  .defaults('')
+  .alias('a');
+
 // $ nightwatch -h
 // $ nightwatch --help
 cli.command('help')
