@@ -5,7 +5,6 @@ var Logger = require('../lib/util/logger.js');
 var cli = require('./_cli.js');
 var CliRunner = require('./_clirunner.js');
 
-
 // CLI definitions
 
 // $ nightwatch -c
@@ -59,12 +58,20 @@ cli.command('filter')
   .defaults('')
   .alias('f');
 
-// $ nightwatch -s
-// $ nightwatch --skipgroup
+// $ nightwatch -a
+// $ nightwatch --tag
+cli.command('tag')
+  .description('Only run tests with the given tag.')
+  .defaults('')
+  .alias('a');
+
+// $ nightwatch -h
+// $ nightwatch --help
 cli.command('help')
   .description('Shows this help.')
   .alias('h');
 
+// $ nightwatch -v
 // $ nightwatch --version
 cli.command('version')
   .alias('v')
@@ -80,8 +87,8 @@ try {
   } else {
     process.chdir(process.cwd());
 
-    var CliRunner = new CliRunner(argv);
-    CliRunner.init().runTests();
+    var runner = new CliRunner(argv);
+    runner.init().runTests();
   }
 } catch (ex) {
   Logger.error('There was an error while starting the test runner:\n');

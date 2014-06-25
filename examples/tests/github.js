@@ -1,4 +1,5 @@
 module.exports = {
+  tags: ['git'],
   'Demo test GitHub' : function (client) {
     client
       .url('https://github.com/beatfactor/nightwatch')
