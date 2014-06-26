@@ -1,6 +1,7 @@
 var os     = require('os');
 var path   = require('path');
 var fs     = require('fs');
+var mockery = require('mockery');
 var Client = require('../../nightwatch.js');
 
 module.exports = {
@@ -104,20 +105,47 @@ module.exports = {
   },
 
 
-  'Test saveScreenshotToFile failure' : function(test) {
+  'Test saveScreenshotToFile mkpath failure' : function(test) {
     var client = this.client = Client.init();
-    var tmp = os.tmpdir();
-    var filePath = path.resolve(tmp, 'r3lekb', 'foo.png');
+    var filePath = '/invalid-path';
     var data = 'nightwatch';
 
-    client.saveScreenshotToFile(filePath, data, function(err, actualFilePath) {
-      test.equal(err, null);
-      test.equal(actualFilePath, filePath);
+    mockery.enable({ useCleanCache: true, warnOnUnregistered: false });
+    mockery.registerMock('mkpath', function(location, callback) {
+      callback({code:1});
+    });
 
-      fs.readFile(actualFilePath, function(err) {
-        test.equal(err, null);
-        test.done();
-      });
+    client.saveScreenshotToFile(filePath, data, function(err) {
+      test.deepEqual(err, {code:1});
+      mockery.deregisterAll();
+      mockery.resetCache();
+      mockery.disable();
+      test.done();
+    });
+  },
+
+  'Test saveScreenshotToFile writeFile failure' : function(test) {
+    var client = this.client = Client.init();
+    var filePath = '/valid-path';
+    var data = 'nightwatch';
+
+    mockery.enable({ useCleanCache: true, warnOnUnregistered: false });
+    mockery.registerMock('mkpath', function(location, callback) {
+      callback(null);
+    });
+
+    mockery.registerMock('fs', {
+      writeFile : function(fileName, content, encoding, callback) {
+        callback({err: 1});
+      }
+    });
+
+    client.saveScreenshotToFile(filePath, data, function(err) {
+      test.deepEqual(err, {err:1});
+      mockery.deregisterAll();
+      mockery.resetCache();
+      mockery.disable();
+      test.done();
     });
   },
 
