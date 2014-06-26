@@ -9,7 +9,7 @@ module.exports = {
 
   testCommand : function(test) {
     MockServer.addMock({
-      url : "/wd/hub/session/1352110219202/screenshot",
+      url : '/wd/hub/session/1352110219202/screenshot',
       method:'GET',
       response : JSON.stringify({
         sessionId: "1352110219202",
@@ -18,14 +18,15 @@ module.exports = {
       })
     });
 
-    this.client.saveScreenshotToFile = function(fileName, data) {
+    this.client.saveScreenshotToFile = function(fileName, data, cb) {
       test.equal(fileName, 'screenshot.png');
       test.equal(data, 'screendata');
-      test.done();
+      cb();
     };
 
     this.client.api.saveScreenshot('screenshot.png', function(result) {
       test.equal(result.value, 'screendata');
+      test.done();
     });
   },
 

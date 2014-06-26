@@ -14,9 +14,9 @@ module.exports = {
             return true;
           },
           defaults : function() {
-            return './nightwatch.json'
+            return './nightwatch.json';
           }
-        }
+        };
       }
     });
 
