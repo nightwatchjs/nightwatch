@@ -15,9 +15,11 @@ module.exports = {
     client.on('selenium:session_create', function(sessionId) {
       test.equals(api.sessionId, sessionId);
       test.deepEqual(api.capabilities, {
-        'javascriptEnabled': true,
-        'browserName': 'firefox'
-      });
+        javascriptEnabled: true,
+        browserName: 'firefox',
+        version: 'TEST',
+        platform: 'TEST'
+    });
       test.done();
     });
     var command = function() {
