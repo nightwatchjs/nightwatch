@@ -30,6 +30,6 @@ try {
     });
   });
 } catch (err) {
-  console.log(e);
+  console.log(err.stack);
   process.exit();
 }
