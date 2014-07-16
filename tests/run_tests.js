@@ -16,7 +16,7 @@ try {
 }
 catch(e) {
   console.log(e);
-  console.log("Cannot find nodeunit module.");
+  console.log('Cannot find nodeunit module.');
   process.exit();
 }
 
@@ -30,6 +30,6 @@ try {
     });
   });
 } catch (err) {
-  console.log(e);
+  console.log(err.stack);
   process.exit();
 }
