@@ -141,11 +141,9 @@ CliRunner.prototype = {
       if (!err.message) {
         err.message = 'There was an error while running the test.';
       }
-
       if (this.test_settings.output) {
-        console.error(Logger.colors.red(err.message));
+        console.log(Logger.colors.red(err.message));
       }
-
       process.exit(1);
     }
   },
@@ -403,8 +401,10 @@ CliRunner.prototype = {
     var self = this;
 
     this.startSelenium(function() {
-      self.startChildProcesses(envs, function(o) {
+      self.startChildProcesses(envs, function(o, code) {
         self.stopSelenium();
+        console.log('___ CODE___', code)
+        process.exit(code);
       });
     });
 
@@ -457,6 +457,7 @@ CliRunner.prototype = {
 
     var prevIndex = 0;
     var output = {};
+    var globalExitCode = 0;
     var writeToSdtout = function(data, item, index) {
       data = data.replace(/^\s+|\s+$/g, '');
       output[item] = output[item] || [];
@@ -490,6 +491,7 @@ CliRunner.prototype = {
       var cliArgs = self.getChildProcessArgs(mainModule);
       cliArgs.push('-e', item, '__parallel-mode');
       var env = process.env;
+
       setTimeout(function() {
         env.__NIGHTWATCH_PARALLEL_MODE = 1;
         env.__NIGHTWATCH_ENV = item;
@@ -512,6 +514,9 @@ CliRunner.prototype = {
         });
 
         child.on('close', function (code) {
+          if (code) {
+            globalExitCode = 2;
+          }
           if (!self.settings.live_output) {
             var child_output = output[item];
             for (var i = 0; i < child_output.length; i++) {
@@ -521,7 +526,7 @@ CliRunner.prototype = {
           }
 
           if (index === (envs.length - 1)) {
-            finishCallback(output);
+            finishCallback(output, globalExitCode);
           }
         });
       }, index * 10);
