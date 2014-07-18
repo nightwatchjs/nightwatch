@@ -12,6 +12,15 @@
     },
     {
       "url" : "/wd/hub/session",
+      "postdata" : "{\"desiredCapabilities\":{\"browserName\":\"firefox\",\"javascriptEnabled\":true,\"acceptSslCerts\":true,\"platform\":\"ANY\",\"name\":\"test-Name\"}}",
+      "response" : "{\"status\": 0, \"sessionId\": \"1352110219202\", \"value\": { \"javascriptEnabled\": true, \"browserName\": \"firefox\", \"version\": \"TEST\", \"platform\": \"TEST\"}, \"state\": null}",
+      "responseHeaders" : {
+      },
+      "statusCode" : 201,
+      "method": "POST"
+    },
+    {
+      "url" : "/wd/hub/session",
       "postdata" : "{\"desiredCapabilities\":{\"browserName\":\"chrome\",\"javascriptEnabled\":true,\"acceptSslCerts\":true,\"platform\":\"ANY\"}}",
       "responseHeaders" : {
         "location" : "http://localhost:10195/wd/hub/session/1352110219202"

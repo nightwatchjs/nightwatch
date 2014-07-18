@@ -172,6 +172,20 @@ module.exports = {
     eq(client.api.launch_url, '/home');
 
     eq(client.options.screenshots.enabled, false);
+    eq(client.api.options.screenshots, false);
+
+    test.done();
+  },
+
+  testSetOptionsCredentials : function(test) {
+    var client = this.client = Client.init({
+      username : 'test-user',
+      accesKey : 'test-access-key'
+    });
+    var eq = test.equals;
+
+    eq(client.api.options.username, 'test-user');
+    eq(client.api.options.accessKey, 'test-access-key');
 
     test.done();
   },
@@ -180,11 +194,9 @@ module.exports = {
     test.throws(function() {
       var client = this.client = Client.init({
         screenshots : {
-          enabled : true,
-          path : '/screens'
+          enabled : true
         }
       });
-      test.equals(client.api.screenshotsPath, '/home');
     });
     test.done();
   },
