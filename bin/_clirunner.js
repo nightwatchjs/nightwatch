@@ -404,8 +404,7 @@ CliRunner.prototype = {
     this.startSelenium(function() {
       self.startChildProcesses(envs, function(o, code) {
         self.stopSelenium();
-        console.log('___ CODE___', code)
-        //process.exit(code);
+        process.exit(code);
       });
     });
 
@@ -522,8 +521,10 @@ CliRunner.prototype = {
           writeToSdtout(data, item, index);
         });
 
-        child.on('exit', function(code) {
-          console.log('EXIT CHID', code)
+        child.on('close', function(code) {
+          if (!self.processesRunning()) {
+            finishCallback(output, globalExitCode);
+          }
         });
 
         child.on('exit', function (code) {
@@ -539,12 +540,6 @@ CliRunner.prototype = {
           }
 
           self.runningProcesses[item] = false;
-          if (self.processesRunning()) {
-            process.nextTick(function() {
-              //finishCallback(output, globalExitCode);
-            });
-          }
-          console.log('CLOSE', self.processesRunning());
         });
       }, index * 10);
     });
