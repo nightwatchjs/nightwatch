@@ -12,6 +12,7 @@ function CliRunner(argv) {
   this.test_settings = null;
   this.output_folder = '';
   this.parallelMode = false;
+  this.runningProcesses = {};
   this.cli = require('./_cli.js');
 }
 
@@ -127,7 +128,7 @@ CliRunner.prototype = {
   setOutputFolder : function() {
     var isDisabled = this.settings.output_folder === false;
     var isDefault = this.cli.command('output').isDefault(this.argv.o);
-    
+
     this.output_folder = isDisabled ? false : (isDefault && this.settings.output_folder || this.argv.o);
     return this;
   },
@@ -141,11 +142,9 @@ CliRunner.prototype = {
       if (!err.message) {
         err.message = 'There was an error while running the test.';
       }
-
       if (this.test_settings.output) {
-        console.error(Logger.colors.red(err.message));
+        console.log(Logger.colors.red(err.message));
       }
-
       process.exit(1);
     }
   },
@@ -403,8 +402,9 @@ CliRunner.prototype = {
     var self = this;
 
     this.startSelenium(function() {
-      self.startChildProcesses(envs, function(o) {
+      self.startChildProcesses(envs, function(o, code) {
         self.stopSelenium();
+        process.exit(code);
       });
     });
 
@@ -429,18 +429,12 @@ CliRunner.prototype = {
     return args;
   },
 
-  /**
-   * Start a new child process for each environment
-   * @param {Array} envs
-   * @param {function} finishCallback
-   */
-  startChildProcesses : function(envs, finishCallback) {
-    var execFile = require('child_process').execFile, child, self = this;
-    var mainModule = process.mainModule.filename;
-    finishCallback = finishCallback || function() {};
-
+  getAvailableColors : function () {
     var availColors = [
-      ['red', 'light_gray'], ['green', 'black'], ['blue', 'light_gray'], ['magenta', 'light_gray']
+      ['red', 'light_gray'],
+      ['green', 'black'],
+      ['blue', 'light_gray'],
+      ['magenta', 'light_gray']
     ];
     var currentIndex = availColors.length, temporaryValue, randomIndex;
 
@@ -454,9 +448,23 @@ CliRunner.prototype = {
       availColors[currentIndex] = availColors[randomIndex];
       availColors[randomIndex] = temporaryValue;
     }
+    return availColors;
+  },
 
+  /**
+   * Start a new child process for each environment
+   * @param {Array} envs
+   * @param {function} finishCallback
+   */
+  startChildProcesses : function(envs, finishCallback) {
+    var execFile = require('child_process').execFile, child, self = this;
+    var mainModule = process.mainModule.filename;
+    finishCallback = finishCallback || function() {};
+
+    var availColors = this.getAvailableColors();
     var prevIndex = 0;
     var output = {};
+    var globalExitCode = 0;
     var writeToSdtout = function(data, item, index) {
       data = data.replace(/^\s+|\s+$/g, '');
       output[item] = output[item] || [];
@@ -490,6 +498,7 @@ CliRunner.prototype = {
       var cliArgs = self.getChildProcessArgs(mainModule);
       cliArgs.push('-e', item, '__parallel-mode');
       var env = process.env;
+      
       setTimeout(function() {
         env.__NIGHTWATCH_PARALLEL_MODE = 1;
         env.__NIGHTWATCH_ENV = item;
@@ -500,6 +509,7 @@ CliRunner.prototype = {
           env : env
         }, function (error, stdout, stderr) {});
 
+        self.runningProcesses[item] = true;
         console.log('Started child process for env:',
           Logger.colors.yellow(' ' + item + ' ', Logger.colors.background.black), '\n');
 
@@ -511,7 +521,16 @@ CliRunner.prototype = {
           writeToSdtout(data, item, index);
         });
 
-        child.on('close', function (code) {
+        child.on('close', function(code) {
+          if (!self.processesRunning()) {
+            finishCallback(output, globalExitCode);
+          }
+        });
+
+        child.on('exit', function (code) {
+          if (code) {
+            globalExitCode = 2;
+          }
           if (!self.settings.live_output) {
             var child_output = output[item];
             for (var i = 0; i < child_output.length; i++) {
@@ -520,12 +539,19 @@ CliRunner.prototype = {
             console.log('');
           }
 
-          if (index === (envs.length - 1)) {
-            finishCallback(output);
-          }
+          self.runningProcesses[item] = false;
         });
       }, index * 10);
     });
+  },
+
+  processesRunning : function() {
+    for (var item in this.runningProcesses) {
+      if (this.runningProcesses.hasOwnProperty(item) && this.runningProcesses[item]) {
+        return true;
+      }
+    }
+    return false;
   }
 };
 
