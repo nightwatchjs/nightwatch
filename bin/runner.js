@@ -93,4 +93,5 @@ try {
 } catch (ex) {
   Logger.error('There was an error while starting the test runner:\n');
   console.log(ex.stack);
+  process.exit(1);
 }
