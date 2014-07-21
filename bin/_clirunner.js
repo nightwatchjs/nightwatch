@@ -33,18 +33,17 @@ CliRunner.prototype = {
     // use default nightwatch.json file if we haven't received another value
     if (this.cli.command('config').isDefault(this.argv.c)) {
       var defaultValue = this.cli.command('config').defaults();
-      var deprecatedValue = SETTINGS_DEPRECTED_VAL;
 
       if (fs.existsSync(defaultValue)) {
         this.argv.c = path.join(path.resolve('./'), this.argv.c);
-      } else if (fs.existsSync(deprecatedValue)) {
-        this.argv.c = path.join(path.resolve('./'), deprecatedValue);
+      } else if (fs.existsSync(SETTINGS_DEPRECTED_VAL)) {
+        this.argv.c = path.join(path.resolve('./'), SETTINGS_DEPRECTED_VAL);
       } else {
         var defaultFile = path.join(__dirname, this.argv.c);
         if (fs.existsSync(defaultFile)) {
           this.argv.c = defaultFile;
         } else {
-          this.argv.c = path.join(__dirname, deprecatedValue);
+          this.argv.c = path.join(__dirname, SETTINGS_DEPRECTED_VAL);
         }
       }
     } else {
@@ -498,7 +497,7 @@ CliRunner.prototype = {
       var cliArgs = self.getChildProcessArgs(mainModule);
       cliArgs.push('-e', item, '__parallel-mode');
       var env = process.env;
-      
+
       setTimeout(function() {
         env.__NIGHTWATCH_PARALLEL_MODE = 1;
         env.__NIGHTWATCH_ENV = item;
