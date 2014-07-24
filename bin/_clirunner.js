@@ -5,6 +5,7 @@ var fs = require('fs');
 var path = require('path');
 
 var SETTINGS_DEPRECTED_VAL = './settings.json';
+var SETTINGS_JS_FILE = './nightwatch.conf.js';
 
 function CliRunner(argv) {
   this.settings = null;
@@ -33,8 +34,11 @@ CliRunner.prototype = {
     // use default nightwatch.json file if we haven't received another value
     if (this.cli.command('config').isDefault(this.argv.c)) {
       var defaultValue = this.cli.command('config').defaults();
+      var localJsValue = path.resolve(SETTINGS_JS_FILE);
 
-      if (fs.existsSync(defaultValue)) {
+      if (fs.existsSync(SETTINGS_JS_FILE)) {
+        this.argv.c = localJsValue;
+      } else if (fs.existsSync(defaultValue)) {
         this.argv.c = path.join(path.resolve('./'), this.argv.c);
       } else if (fs.existsSync(SETTINGS_DEPRECTED_VAL)) {
         this.argv.c = path.join(path.resolve('./'), SETTINGS_DEPRECTED_VAL);
@@ -142,8 +146,9 @@ CliRunner.prototype = {
         err.message = 'There was an error while running the test.';
       }
       if (this.test_settings.output) {
-        console.log(Logger.colors.red(err.message));
+        process.stderr.write('\n' + Logger.colors.red(err.message));
       }
+
       process.exit(1);
     }
   },
