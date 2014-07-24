@@ -30,6 +30,8 @@ module.exports = {
     };
 
     mockery.registerMock('./nightwatch.json', config);
+    mockery.registerMock('./nightwatch.conf.js', config);
+
     mockery.registerMock('./output_disabled.json', {
       src_folders : ['tests'],
       output_folder : false,
@@ -168,9 +170,10 @@ module.exports = {
   testSetOutputFolder : function(test) {
     mockery.registerMock('fs', {
       existsSync : function(module) {
-        if (module == './settings.json') {
+        if (module == './settings.json' || module == './nightwatch.conf.js') {
           return false;
         }
+
         return true;
       }
     });
