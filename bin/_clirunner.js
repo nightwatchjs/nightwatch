@@ -318,6 +318,7 @@ CliRunner.prototype = {
     this.test_settings = this.settings.test_settings[env];
     this.test_settings.custom_commands_path = this.settings.custom_commands_path || '';
     this.test_settings.custom_assertions_path = this.settings.custom_assertions_path || '';
+    this.test_settings.page_objects_path = this.settings.page_objects_path || '';
 
     this.inheritFromDefaultEnv();
 

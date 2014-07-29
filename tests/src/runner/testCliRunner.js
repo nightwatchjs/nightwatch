@@ -157,6 +157,7 @@ module.exports = {
       silent: true,
       custom_commands_path: '',
       custom_assertions_path: '',
+      page_objects_path: '',
       output: true
     }});
     test.equals(runner.output_folder, 'output');

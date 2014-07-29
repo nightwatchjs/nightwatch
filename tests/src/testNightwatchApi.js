@@ -44,7 +44,7 @@ module.exports = {
       test.done();
     });
 
-    client.options.custom_commands_path = './extra';
+    client.options.custom_commands_path = './extra/commands';
     Api.init(client);
     Api.loadCustomCommands();
 
@@ -55,6 +55,40 @@ module.exports = {
     var command = queue.currentNode;
     test.equal(command.name, 'customCommandConstructor');
     test.equal(command.context, client.api, 'Command should contain a reference to main client instance.');
+  },
+
+  testAddPageObject : function(test) {
+    var client = this.client;
+    client.on('selenium:session_create', function(sessionId) {
+      test.done();
+    });
+
+    client.options.page_objects_path = './extra/pageobjects';
+    Api.init(client);
+    Api.loadPageObjects();
+
+    test.ok(typeof client.api.page == 'object');
+    test.ok('SimplePage' in client.api.page);
+
+    client.api.page.SimplePage(test);
+  },
+
+  testAddCustomAssertion : function(test) {
+    var client = this.client;
+    client.on('selenium:session_create', function(sessionId) {
+      test.done();
+    });
+
+    client.options.custom_assertions_path = './extra/assertions';
+    Api.init(client);
+    Api.loadCustomAssertions();
+
+    test.expect(4);
+    test.ok('customAssertion' in client.api.assert);
+    test.ok('customAssertion' in client.api.verify);
+
+    client.api.assert.customAssertion(test, true);
+    client.queue.run();
   },
 
   tearDown : function(callback) {
