@@ -21,15 +21,17 @@ catch(e) {
 }
 
 process.chdir(__dirname);
-
 try {
   var server = require('mockserver').init();
   server.on('listening', function() {
-    reporter.run(['src', 'src/index', 'src/runner', 'src/assertions', 'src/commands'], options, function() {
+    reporter.run(['src', 'src/index', 'src/runner', 'src/assertions', 'src/commands'], options, function(err) {
       server.close();
+      if (err) {
+        process.exit(1);
+      }
     });
   });
 } catch (err) {
   console.log(err.stack);
-  process.exit();
+  process.exit(1);
 }
