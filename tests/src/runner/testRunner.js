@@ -139,36 +139,36 @@ module.exports = {
       test.ok(Object.keys(results.modules).length === 1, 'There was only 1 test running.');
       test.done();
     });
-  }
+  },
 
-  //  testRunWithOutput : function(test) {
-  //    var src_folders = [
-  //      path.join(process.cwd(), 'sampletests/withsubfolders')
-  //    ];
-  //
-  //    this.Runner.run(src_folders, {
-  //      seleniumPort : 10195,
-  //      silent : true,
-  //      output : false,
-  //      globals : {
-  //        test : test
-  //      }
-  //    }, {
-  //      output_folder : 'output',
-  //      src_folders : src_folders
-  //    }, function(err, results) {
-  //      test.equals(err, null);
-  //      var fs = require('fs');
-  //      fs.readdir(src_folders[0], function(err, list) {
-  //        test.deepEqual(list, ['simple', 'tags'], 'The subfolders have been created.');
-  //        var simpleReportFile = 'output/simple/FIREFOX_TEST_TEST_sample.xml';
-  //        var tagsReportFile = 'output/tags/FIREFOX_TEST_TEST_sample.xml';
-  //
-  //        test.ok(fs.existsSync(simpleReportFile), 'The simple report file was not created.');
-  //        test.ok(fs.existsSync(tagsReportFile), 'The tags report file was not created.');
-  //        test.done();
-  //      });
-  //
-  //    });
-  //  }
+  testRunWithOutput : function(test) {
+    var src_folders = [
+      path.join(process.cwd(), 'sampletests/withsubfolders')
+    ];
+
+    this.Runner.run(src_folders, {
+      seleniumPort : 10195,
+      silent : true,
+      output : false,
+      globals : {
+        test : test
+      }
+    }, {
+      output_folder : 'output',
+      src_folders : src_folders
+    }, function(err, results) {
+      test.equals(err, null);
+      var fs = require('fs');
+      fs.readdir(src_folders[0], function(err, list) {
+        test.deepEqual(list, ['simple', 'tags'], 'The subfolders have been created.');
+        var simpleReportFile = 'output/simple/FIREFOX_TEST_TEST_sample.xml';
+        var tagsReportFile = 'output/tags/FIREFOX_TEST_TEST_sample.xml';
+
+        test.ok(fs.existsSync(simpleReportFile), 'The simple report file was not created.');
+        test.ok(fs.existsSync(tagsReportFile), 'The tags report file was not created.');
+        test.done();
+      });
+
+    });
+  }
 };
