@@ -21,6 +21,9 @@ catch(e) {
 }
 
 process.chdir(__dirname);
+
+process.removeAllListeners('uncaughtException');
+
 try {
   var server = require('mockserver').init();
   server.on('listening', function() {
@@ -31,7 +34,7 @@ try {
       'src/assertions',
       'src/commands',
       'src/protocol'
-    ], options, function() {
+    ], options, function(err) {
       server.close();
       if (err) {
         process.exit(1);
