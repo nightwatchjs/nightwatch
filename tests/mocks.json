@@ -37,6 +37,14 @@
       "method": "GET"
     },
     {
+      "url" : "/wd/hub/session/1352110219202/source",
+      "response": "{\"name\":\"getPageSource\",\"sessionId\":\"1352110219202\",\"status\":0,\"value\":\"<!DOCTYPE html><html><head><title>NightwatchJS</title></head><body><div id='some_id'>some div content</div></body></html>\"}",
+      "responseHeaders" : {
+      },
+      "statusCode" : 201,
+      "method": "GET"
+    },
+    {
       "url" : "/wd/hub/session/1352110219202",
       "method": "DELETE"
     },

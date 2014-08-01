@@ -24,7 +24,14 @@ process.chdir(__dirname);
 try {
   var server = require('mockserver').init();
   server.on('listening', function() {
-    reporter.run(['src', 'src/index', 'src/runner', 'src/assertions', 'src/commands'], options, function(err) {
+    reporter.run([
+      'src',
+      'src/index',
+      'src/runner',
+      'src/assertions',
+      'src/commands',
+      'src/protocol'
+    ], options, function() {
       server.close();
       if (err) {
         process.exit(1);
