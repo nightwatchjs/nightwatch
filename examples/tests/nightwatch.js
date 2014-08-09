@@ -1,5 +1,5 @@
 module.exports = {
-  'Demo test Google' : function (client) {
+  'Demo test NightwatchJS.org' : function (client) {
     client
       .url('http://nightwatchjs.org')
       .waitForElementVisible('body', 1000)
