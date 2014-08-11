@@ -57,6 +57,28 @@ module.exports = {
     test.equal(command.context, client.api, 'Command should contain a reference to main client instance.');
   },
 
+    testAddCustomCommandByFilter : function(test) {
+        var client = this.client;
+        client.on('selenium:session_create', function(sessionId) {
+            test.done();
+        });
+
+        client.options.custom_commands_path = './extra/coffee/commands';
+        client.options.custom_commands_filter = '*.coffee';
+
+        Api.init(client);
+        Api.loadCustomCommands();
+
+        test.ok('coffeeCommand' in this.client.api, 'Test if the custom command was added');
+        test.ok('coffeeCommandConstructor' in this.client.api, 'Test if the custom command with constructor style was added');
+        test.ok(!('nonCoffeeCommandConstructor' in this.client.api), 'Test that we successfully avoided the js file with our filter');
+
+        var queue = client.enqueueCommand('coffeeCommandConstructor', []);
+        var command = queue.currentNode;
+        test.equal(command.name, 'coffeeCommandConstructor');
+        test.equal(command.context, client.api, 'Command should contain a reference to main client instance.');
+    },
+
   testAddPageObject : function(test) {
     var client = this.client;
     client.on('selenium:session_create', function(sessionId) {
@@ -90,6 +112,28 @@ module.exports = {
     client.api.assert.customAssertion(test, true);
     client.queue.run();
   },
+
+    testAddCustomAssertionByFilter : function(test) {
+        var client = this.client;
+        client.on('selenium:session_create', function(sessionId) {
+            test.done();
+        });
+
+        client.options.custom_assertions_path = './extra/coffee/assertions';
+        client.options.custom_assertions_filter = '*.coffee';
+
+        Api.init(client);
+        Api.loadCustomAssertions();
+
+        test.expect(4);
+        test.ok(!('customAssertion' in client.api.assert));
+        test.ok(!('customAssertion' in client.api.verify));
+        test.ok('coffeeAssertion' in client.api.assert);
+        test.ok('coffeeAssertion' in client.api.verify);
+
+        client.api.assert.coffeeAssertion(test, true);
+        client.queue.run();
+    },
 
   tearDown : function(callback) {
 

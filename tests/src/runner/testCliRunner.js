@@ -14,6 +14,9 @@ module.exports = {
             return true;
           },
           defaults : function() {
+            if (command === 'filter') {
+              return '**/*.js';
+            }
             return './nightwatch.json';
           }
         };
@@ -31,6 +34,7 @@ module.exports = {
 
     mockery.registerMock('./nightwatch.json', config);
     mockery.registerMock('./nightwatch.conf.js', config);
+    mockery.registerMock('./nightwatch.coffee', config);
 
     mockery.registerMock('./output_disabled.json', {
       src_folders : ['tests'],
@@ -118,6 +122,9 @@ module.exports = {
         if (b == 'demoGroup') {
           return 'tests/demoGroup';
         }
+          if (b == './myTest.js') {
+              return './myTest.js';
+          }
         return './nightwatch.json';
       },
       resolve : function(a) {
@@ -157,8 +164,13 @@ module.exports = {
       silent: true,
       custom_commands_path: '',
       custom_assertions_path: '',
+      custom_commands_filter: '',
+      custom_assertions_filter: '',
+      custom_files_filter: '',
       page_objects_path: '',
-      output: true
+      page_objects_filter: '',
+      output: true,
+        filename_filter: '**/*.js'
     }});
     test.equals(runner.output_folder, 'output');
     test.equals(runner.parallelMode, false);
@@ -435,5 +447,69 @@ module.exports = {
     };
 
     runner.startSelenium();
-  }
+  },
+
+  testCommandLineRequire : function(test) {
+
+      mockery.registerAllowable('extra/modules/testModule.js', true);
+      GLOBAL.testModules = {}; // The test module expects this property
+
+      var CliRunner = require('../../../'+ BASE_PATH +'/../bin/_clirunner.js');
+      var runner = new CliRunner({
+          c : './nightwatch.json',
+          e : 'default',
+          r : 'extra/modules/testModule.js'
+      });
+
+      runner.loadModules(runner.argv.r);
+
+      test.ok(GLOBAL.testModules.testModule);
+
+      delete GLOBAL.testModules;
+      test.done();
+  },
+
+  testCommandLineRequireArray : function(test) {
+        mockery.registerAllowable(['extra/modules/testModule.js', 'extra/modules/anotherModule.js']);
+        GLOBAL.testModules = {};
+
+        var CliRunner = require('../../../'+ BASE_PATH +'/../bin/_clirunner.js');
+        var runner = new CliRunner({
+            c : './nightwatch.json',
+            e : 'default',
+            r : 'extra/modules/testModule.js,extra/modules/anotherModule.js'
+        });
+
+        runner.loadModules(runner.argv.r);
+
+        test.ok(GLOBAL.testModules.testModule);
+        test.ok(GLOBAL.testModules.anotherModule);
+
+        delete GLOBAL.testModules
+        test.done();
+    },
+
+  testNonJSConfigFile : function(test) {
+
+        mockery.registerMock('fs', {
+            existsSync : function(module) {
+                if (module == './nightwatch.coffee') {
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
+        var CliRunner = require('../../../'+ BASE_PATH +'/../bin/_clirunner.js');
+        var runner = new CliRunner({
+            c : './nightwatch.coffee',
+            e : 'default'
+        }).init();
+
+        test.deepEqual(runner.settings.src_folders, ['tests']);
+        test.done();
+    }
+
+
 };

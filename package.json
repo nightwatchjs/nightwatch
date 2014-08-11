@@ -25,17 +25,18 @@
     "mkpath": ">=0.1.0"
   },
   "devDependencies": {
-    "nodeunit": "latest",
-    "jscoverage": "latest",
+    "coffee-script": "^1.7.1",
     "coveralls": "latest",
-    "jshint": "~2.4.4",
-    "mock-spawn": "^0.2.1",
-    "mockery": "~1.4.0",
-    "jsonlint": "~1.6.0",
+    "grunt-complexity": "^0.1.7",
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-jsonlint": "~1.0.4",
-    "grunt-complexity": "^0.1.7",
-    "grunt-npm-release": "latest"
+    "grunt-npm-release": "latest",
+    "jscoverage": "latest",
+    "jshint": "~2.4.4",
+    "jsonlint": "~1.6.0",
+    "mock-spawn": "^0.2.1",
+    "mockery": "~1.4.0",
+    "nodeunit": "latest"
   },
   "bin": {
     "nightwatch": "./bin/nightwatch"

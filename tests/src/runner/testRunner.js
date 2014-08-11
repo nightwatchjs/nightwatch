@@ -81,6 +81,66 @@ module.exports = {
     });
   },
 
+    testRunWithFilterPattern : function(test) {
+        var testsPath = path.join(process.cwd(), '/sampletests/withexclude');
+        var testPattern = path.join('excluded', 'excluded-*');
+        this.Runner.run([testsPath], {
+            seleniumPort : 10195,
+            silent : true,
+            output : false,
+            globals : {
+                test : test
+            },
+            filter : [testPattern]
+        }, {
+            output_folder : false
+        }, function(err, results) {
+
+            test.ok(('excluded-module' in results.modules));
+            test.ok(!('sample' in results.modules));
+            test.done();
+        });
+    },
+
+    testRunWithNonJSFilterPattern : function(test) {
+        var testsPath = path.join(process.cwd(), '/sampletests/coffee');
+        this.Runner.run([testsPath], {
+            seleniumPort : 10195,
+            silent : true,
+            output : false,
+            globals : {
+                test : test
+            },
+            filter : '**/*.coffee'
+        }, {
+            output_folder : false
+        }, function(err, results) {
+            test.ok(('simpleCoffee' in results.modules));
+            test.ok(!('sample' in results.modules));
+            test.done();
+        });
+    },
+
+    testRunWithNonJSExludePattern : function(test) {
+        var testsPath = path.join(process.cwd(), '/sampletests/coffee');
+        this.Runner.run([testsPath], {
+            seleniumPort : 10195,
+            silent : true,
+            output : false,
+            globals : {
+                test : test
+            },
+            exclude : '**/*.js'
+        }, {
+            output_folder : false
+        }, function(err, results) {
+            test.ok(('simpleCoffee' in results.modules));
+            test.ok(('sampleCoffee' in results.modules));
+            test.ok(!('sample' in results.modules));
+            test.done();
+        });
+    },
+
   testRunAsync : function(test) {
     test.expect(5);
     var testsPath = path.join(process.cwd(), '/sampletests/async');
@@ -94,7 +154,7 @@ module.exports = {
     }, {
       output_folder : false
     }, function(err, results) {
-      test.equals(err, null);
+        test.equals(err, null);
       test.ok('sample' in results.modules);
       test.ok('demoTestAsync' in results.modules.sample);
       test.done();
