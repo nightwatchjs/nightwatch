@@ -78,11 +78,11 @@ CliRunner.prototype = {
    */
 
   loadModules: function(mods) {
-      if (mods != null) {
-          modulesToRequire = typeof mods === 'string' ? mods.split(',') : mods;
-          modulesToRequire.forEach(require);
-      }
-      return this;
+    if (mods !== null && mods !== undefined) {
+    var modulesToRequire = typeof mods === 'string' ? mods.split(',') : mods;
+      modulesToRequire.forEach(require);
+    }
+    return this;
   },
 
   isParallelMode : function() {
