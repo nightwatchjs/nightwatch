@@ -14,6 +14,7 @@ function CliRunner(argv) {
   this.output_folder = '';
   this.parallelMode = false;
   this.runningProcesses = {};
+  this.loadedModules = {};
   this.cli = require('./_cli.js');
 }
 
@@ -79,8 +80,10 @@ CliRunner.prototype = {
 
   loadModules: function(mods) {
     if (mods !== null && mods !== undefined) {
-    var modulesToRequire = typeof mods === 'string' ? mods.split(',') : mods;
-      modulesToRequire.forEach(require);
+      var modulesToRequire = typeof mods === 'string' ? mods.split(',') : mods;
+      modulesToRequire.forEach(function(module) {
+        this.loadedModules[module] = require(module);
+      }, this);
     }
     return this;
   },

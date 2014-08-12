@@ -125,7 +125,7 @@ module.exports = {
         Api.init(client);
         Api.loadCustomAssertions();
 
-        test.expect(4);
+        test.expect(6);
         test.ok(!('customAssertion' in client.api.assert));
         test.ok(!('customAssertion' in client.api.verify));
         test.ok('coffeeAssertion' in client.api.assert);

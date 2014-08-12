@@ -122,9 +122,16 @@ module.exports = {
         if (b == 'demoGroup') {
           return 'tests/demoGroup';
         }
-          if (b == './myTest.js') {
-              return './myTest.js';
-          }
+        if (b == './myTest.js') {
+          return './myTest.js';
+        }
+        if (b == './testModule.js') {
+          return './testModule.js';
+        }
+        if (b == './anotherModule.js') {
+          return './anotherModule.js';
+        }
+
         return './nightwatch.json';
       },
       resolve : function(a) {
@@ -451,43 +458,37 @@ module.exports = {
 
   testCommandLineRequire : function(test) {
 
-      mockery.registerAllowable('extra/modules/testModule.js', true);
-      GLOBAL.testModules = {}; // The test module expects this property
+      mockery.registerMock('./testModule.js', {});
 
       var CliRunner = require('../../../'+ BASE_PATH +'/../bin/_clirunner.js');
       var runner = new CliRunner({
           c : './nightwatch.json',
           e : 'default',
-          r : 'extra/modules/testModule.js'
-      });
+          r : './testModule.js'
+      }).init();
 
-      runner.loadModules(runner.argv.r);
-
-      test.ok(GLOBAL.testModules.testModule);
-
-      delete GLOBAL.testModules;
+      test.ok('./testModule.js' in runner.loadedModules);
       test.done();
   },
 
   testCommandLineRequireArray : function(test) {
-        mockery.registerAllowable(['extra/modules/testModule.js', 'extra/modules/anotherModule.js']);
-        GLOBAL.testModules = {};
 
-        var CliRunner = require('../../../'+ BASE_PATH +'/../bin/_clirunner.js');
-        var runner = new CliRunner({
-            c : './nightwatch.json',
-            e : 'default',
-            r : 'extra/modules/testModule.js,extra/modules/anotherModule.js'
-        });
+    mockery.registerMock('./testModule.js', {});
+    mockery.registerMock('./anotherModule.js', {});
 
-        runner.loadModules(runner.argv.r);
+    var CliRunner = require('../../../'+ BASE_PATH +'/../bin/_clirunner.js');
+    var runner = new CliRunner({
+        c : './nightwatch.json',
+        e : 'default',
+        r : './testModule.js,./anotherModule.js'
+    }).init();
 
-        test.ok(GLOBAL.testModules.testModule);
-        test.ok(GLOBAL.testModules.anotherModule);
+    runner.loadModules(runner.argv.r);
 
-        delete GLOBAL.testModules
-        test.done();
-    },
+    test.ok('./testModule.js' in runner.loadedModules);
+    test.ok('./anotherModule.js' in runner.loadedModules);
+    test.done();
+  },
 
   testNonJSConfigFile : function(test) {
 
