@@ -33,7 +33,8 @@ try {
       'src/runner',
       'src/assertions',
       'src/commands',
-      'src/protocol'
+      'src/protocol',
+      'src/http'
     ], options, function(err) {
       server.close();
       if (err) {
