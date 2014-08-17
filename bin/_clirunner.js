@@ -14,12 +14,14 @@ function CliRunner(argv) {
   this.output_folder = '';
   this.parallelMode = false;
   this.runningProcesses = {};
+  this.loadedModules = {};
   this.cli = require('./_cli.js');
 }
 
 CliRunner.prototype = {
   init : function() {
     this
+      .loadModules(this.argv.r)
       .readSettings()
       .setOutputFolder()
       .parseTestSettings();
@@ -58,6 +60,7 @@ CliRunner.prototype = {
     try {
       this.settings = require(this.argv.c);
       this.replaceEnvVariables();
+      this.loadModules(this.settings.require); // This is useful if using nightwatch.json, but tests are in coffee etc
       this.manageSelenium = !this.isParallelMode() && this.settings.selenium &&
         this.settings.selenium.start_process || false;
       if (typeof this.settings.src_folders == 'string') {
@@ -68,6 +71,20 @@ CliRunner.prototype = {
       this.settings = {};
     }
 
+    return this;
+  },
+
+  /**
+   *  Adds modules
+   */
+
+  loadModules: function(mods) {
+    if (mods !== null && mods !== undefined) {
+      var modulesToRequire = typeof mods === 'string' ? mods.split(',') : mods;
+      modulesToRequire.forEach(function(module) {
+        this.loadedModules[module] = require(module);
+      }, this);
+    }
     return this;
   },
 
@@ -163,9 +180,11 @@ CliRunner.prototype = {
       testsource =  (this.argv.t.indexOf(process.cwd()) === -1) ?
         path.join(process.cwd(), this.argv.t) :
         this.argv.t;
-      if (testsource.substr(-3) != '.js') {
+
+      if (!(/\.[^./]*?$/.test(testsource))) { // If there is no extension, assume .js
         testsource += '.js';
       }
+
       try {
         fs.statSync(testsource);
       } catch (err) {
@@ -316,9 +335,14 @@ CliRunner.prototype = {
   setTestSettings : function(env) {
     // picking the environment specific test settings
     this.test_settings = this.settings.test_settings[env];
+    this.test_settings.custom_files_filter = this.settings.custom_files_filter || '';
     this.test_settings.custom_commands_path = this.settings.custom_commands_path || '';
+    this.test_settings.custom_commands_filter = this.settings.custom_commands_filter || '';
     this.test_settings.custom_assertions_path = this.settings.custom_assertions_path || '';
+    this.test_settings.custom_assertions_filter = this.settings.custom_assertions_filter || '';
     this.test_settings.page_objects_path = this.settings.page_objects_path || '';
+    this.test_settings.page_objects_filter = this.settings.page_objects_filter || '';
+
 
     this.inheritFromDefaultEnv();
 
@@ -344,9 +368,7 @@ CliRunner.prototype = {
       this.test_settings.skipgroup = this.argv.s.split(',');
     }
 
-    if (this.argv.f) {
-      this.test_settings.filename_filter = this.argv.f;
-    }
+    this.test_settings.filename_filter = this.argv.f || this.cli.command('filter').defaults();
 
     if (this.argv.a) {
       this.test_settings.tag_filter = this.argv.a;

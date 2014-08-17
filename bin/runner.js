@@ -55,7 +55,7 @@ cli.command('skipgroup')
 // $ nightwatch --filter
 cli.command('filter')
   .description('Specify a filter (glob expression) as the file name format to use when loading the files.')
-  .defaults('')
+  .defaults('**/*.js')
   .alias('f');
 
 // $ nightwatch -a
@@ -64,6 +64,12 @@ cli.command('tag')
   .description('Only run tests with the given tag.')
   .defaults('')
   .alias('a');
+
+// $ nightwatch -r
+// $ nightwatch --require
+cli.command('require')
+  .description('One or several (comma separated) modules to require before doing anything')
+  .alias('r');
 
 // $ nightwatch -h
 // $ nightwatch --help
