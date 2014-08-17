@@ -35,7 +35,8 @@
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-jsonlint": "~1.0.4",
     "grunt-complexity": "^0.1.7",
-    "grunt-npm-release": "latest"
+    "grunt-npm-release": "latest",
+    "nock": "~0.45.0"
   },
   "bin": {
     "nightwatch": "./bin/nightwatch"
