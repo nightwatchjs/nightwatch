@@ -87,11 +87,11 @@ try {
   } else {
     process.chdir(process.cwd());
 
-    var runner = new CliRunner(argv);
+    var runner = module.exports = new CliRunner(argv);
     runner.init().runTests();
   }
 } catch (ex) {
-  Logger.error('There was an error while starting the test runner:\n');
-  console.log(ex.stack);
+  Logger.error('There was an error while starting the test runner:\n\n');
+  process.stderr.write(ex.stack);
   process.exit(2);
 }

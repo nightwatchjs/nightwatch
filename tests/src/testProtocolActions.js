@@ -465,6 +465,34 @@ module.exports = {
     });
   },
 
+  testBack : function(test) {
+    var client = this.client;
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.back(function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'POST');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/back');
+    });
+  },
+
+  testForward : function(test) {
+    var client = this.client;
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.forward(function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'POST');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/forward');
+    });
+  },
+
   testDoubleClick : function(test) {
     var client = this.client;
     var protocol = this.protocol;

@@ -207,27 +207,30 @@ CliRunner.prototype = {
    */
   startSelenium : function(callback) {
     callback = callback || function() {};
+    var beforeGlobal = this.test_settings.globals && this.test_settings.globals.before || function(done) {done();};
 
     if (!this.manageSelenium) {
-      callback();
+      beforeGlobal(function() {
+        callback();
+      });
       return this;
     }
     this.settings.parallelMode = this.parallelMode;
     var self = this;
 
-    Selenium.startServer(this.settings, function(error, child, error_out, exitcode) {
-      if (error) {
-        if (self.test_settings.output) {
-          Logger.error('There was an error while starting the Selenium server:');
+    beforeGlobal(function() {
+      Selenium.startServer(self.settings, function(error, child, error_out, exitcode) {
+        if (error) {
+          if (self.test_settings.output) {
+            Logger.error('There was an error while starting the Selenium server:');
+          }
+          self.globalErrorHandler({
+            message : error_out
+          });
+          return;
         }
-        self.globalErrorHandler({
-          message : error_out
-        });
-        return;
-      }
-
-      callback();
-
+        callback();
+      });
     });
     return this;
   },
@@ -260,9 +263,13 @@ CliRunner.prototype = {
         src_folders : self.settings.src_folders,
         live_output : self.settings.live_output
       }, function(err) {
-        self
-          .stopSelenium()
-          .globalErrorHandler(err);
+        self.stopSelenium();
+
+        var afterGlobal = self.test_settings.globals && self.test_settings.globals.after || function(done) {done();};
+        afterGlobal(function() {
+          self.globalErrorHandler(err);
+        });
+
       });
     });
 
