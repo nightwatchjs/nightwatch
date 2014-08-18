@@ -37,7 +37,7 @@ module.exports = {
     };
 
     var request = new HttpRequest(options);
-    request.on('complete', function() {
+    request.on('success', function() {
       test.done();
     }).send();
 
@@ -72,7 +72,7 @@ module.exports = {
     });
 
     var request = new HttpRequest(options);
-    request.on('complete', function() {
+    request.on('success', function() {
       test.done();
     }).send();
 
@@ -166,11 +166,5 @@ module.exports = {
       test.done();
     }).send();
 
-  },
-
-  tearDown : function(callback) {
-
-    // clean up
-    callback();
   }
 };
