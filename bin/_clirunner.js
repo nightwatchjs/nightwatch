@@ -207,7 +207,8 @@ CliRunner.prototype = {
    */
   startSelenium : function(callback) {
     callback = callback || function() {};
-    var beforeGlobal = this.test_settings.globals && this.test_settings.globals.before || function(done) {done();};
+    var beforeGlobal = this.test_settings && this.test_settings.globals &&
+      this.test_settings.globals.before || function(done) {done();};
 
     if (!this.manageSelenium) {
       beforeGlobal(function() {
