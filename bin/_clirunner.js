@@ -60,6 +60,7 @@ CliRunner.prototype = {
       this.replaceEnvVariables();
       this.manageSelenium = !this.isParallelMode() && this.settings.selenium &&
         this.settings.selenium.start_process || false;
+
       if (typeof this.settings.src_folders == 'string') {
         this.settings.src_folders = [this.settings.src_folders];
       }
@@ -332,8 +333,12 @@ CliRunner.prototype = {
 
     // overwrite selenium settings per environment
     if (this.test_settings.selenium && typeof (this.test_settings.selenium) == 'object') {
+      this.settings.selenium = this.settings.selenium || {};
       for (var prop in this.test_settings.selenium) {
         this.settings.selenium[prop] = this.test_settings.selenium[prop];
+      }
+      if (this.settings.selenium.start_process === false) {
+        this.manageSelenium = false;
       }
     }
 

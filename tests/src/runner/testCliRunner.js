@@ -70,6 +70,21 @@ module.exports = {
         }
       }
     });
+    mockery.registerMock('./sauce.json', {
+      src_folders : 'tests',
+      selenium : {
+        start_process: true
+      },
+      test_settings : {
+        'default' : {
+        },
+        'saucelabs' : {
+          selenium : {
+            start_process : false
+          }
+        }
+      }
+    });
     mockery.registerMock('./custom.json', {
       src_folders : ['tests'],
       selenium : {
@@ -118,6 +133,9 @@ module.exports = {
         if (b == 'demoGroup') {
           return 'tests/demoGroup';
         }
+        if (b == './sauce.json') {
+          return './sauce.json';
+        }
         return './nightwatch.json';
       },
       resolve : function(a) {
@@ -160,6 +178,7 @@ module.exports = {
       page_objects_path: '',
       output: true
     }});
+
     test.equals(runner.output_folder, 'output');
     test.equals(runner.parallelMode, false);
     test.equals(runner.manageSelenium, false);
@@ -410,6 +429,25 @@ module.exports = {
       test.ok('callback called');
       test.done();
     });
+  },
+
+  testStartSeleniumDisabledPerEnvironment : function(test) {
+    mockery.registerMock('fs', {
+      existsSync : function(module) {
+        if (module == './sauce.json') {
+          return true;
+        }
+        return false;
+      }
+    });
+    var CliRunner = require('../../../'+ BASE_PATH +'/../bin/_clirunner.js');
+    var runner = new CliRunner({
+      c : './sauce.json',
+      e : 'saucelabs'
+    }).init();
+
+    test.equal(runner.manageSelenium, false);
+    test.done();
   },
 
   testStartSeleniumEnabled : function(test) {
