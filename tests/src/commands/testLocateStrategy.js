@@ -6,7 +6,7 @@ var Runner = require('../../../'+ BASE_PATH +'/runner/run.js');
 module.exports = {
   setUp: function (callback) {
     this.client = require('../../nightwatch.js').init();
-
+    process.removeAllListeners('exit');
     callback();
   },
 

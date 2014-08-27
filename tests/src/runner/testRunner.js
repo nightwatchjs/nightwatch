@@ -101,6 +101,27 @@ module.exports = {
     });
   },
 
+  testRunAsyncWithBeforeAndAfter : function(test) {
+    test.expect(10);
+    var testsPath = path.join(process.cwd(), '/sampletests/before-after');
+    this.Runner.run([testsPath], {
+      seleniumPort : 10195,
+      silent : true,
+      output : false,
+      globals : {
+        test : test
+      }
+    }, {
+      output_folder : false
+    }, function(err, results) {
+      test.equals(err, null);
+      test.ok('sampleWithBeforeAndAfter' in results.modules);
+      test.ok('demoTestAsyncOne' in results.modules.sampleWithBeforeAndAfter);
+      test.ok('demoTestAsyncTwo' in results.modules.sampleWithBeforeAndAfter);
+      test.done();
+    });
+  },
+
   testRunMixed : function(test) {
     test.expect(6);
     var testsPath = path.join(process.cwd(), '/sampletests/mixed');
