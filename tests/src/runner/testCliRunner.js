@@ -105,6 +105,10 @@ module.exports = {
 
           selenium : {
             host : 'other.host'
+          },
+
+          desiredCapabilities : {
+            'test.user' : '${ENV_USERNAME}'
           }
         }
       }
@@ -268,6 +272,7 @@ module.exports = {
     test.equal(runner.test_settings.disable_colors, true);
     test.equal(runner.test_settings.username, 'testuser');
     test.equal(runner.test_settings.credentials.service.user, 'testuser');
+    test.equal(runner.test_settings.desiredCapabilities['test.user'], 'testuser');
     test.done();
   },
 
