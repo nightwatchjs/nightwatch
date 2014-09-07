@@ -26,6 +26,7 @@ module.exports = {
   },
 
   testRunSimple : function(test) {
+    test.expect(5);
     var testsPath = path.join(process.cwd(), '/sampletests/simple');
     this.Runner.run([testsPath], {
       seleniumPort : 10195,
