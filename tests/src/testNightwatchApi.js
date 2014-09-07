@@ -19,7 +19,7 @@ module.exports = {
         browserName: 'firefox',
         version: 'TEST',
         platform: 'TEST'
-    });
+      });
       test.done();
     });
     var command = function() {
@@ -44,7 +44,7 @@ module.exports = {
       test.done();
     });
 
-    client.options.custom_commands_path = './extra/commands';
+    client.options.custom_commands_path = ['./extra/commands'];
     Api.init(client);
     Api.loadCustomCommands();
 
@@ -79,7 +79,7 @@ module.exports = {
       test.done();
     });
 
-    client.options.custom_assertions_path = './extra/assertions';
+    client.options.custom_assertions_path = ['./extra/assertions'];
     Api.init(client);
     Api.loadCustomAssertions();
 
