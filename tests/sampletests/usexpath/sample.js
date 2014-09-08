@@ -9,5 +9,13 @@ module.exports = {
       })
       .useCss()
       .end();
+  },
+
+  after : function(client, callback) {
+    process.nextTick(function() {
+      client.end();
+      client.globals.test.ok('after callback called');
+      callback();
+    });
   }
 };
