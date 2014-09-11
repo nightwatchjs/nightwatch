@@ -103,7 +103,7 @@ module.exports = {
   },
 
   testRunAsyncWithBeforeAndAfter : function(test) {
-    test.expect(10);
+    test.expect(27);
     var testsPath = path.join(process.cwd(), '/sampletests/before-after');
     this.Runner.run([testsPath], {
       seleniumPort : 10195,
@@ -119,6 +119,17 @@ module.exports = {
       test.ok('sampleWithBeforeAndAfter' in results.modules);
       test.ok('demoTestAsyncOne' in results.modules.sampleWithBeforeAndAfter);
       test.ok('demoTestAsyncTwo' in results.modules.sampleWithBeforeAndAfter);
+      test.ok(!('beforeEach' in results.modules.sampleWithBeforeAndAfter));
+      test.ok(!('before' in results.modules.sampleWithBeforeAndAfter));
+      test.ok(!('afterEach' in results.modules.sampleWithBeforeAndAfter));
+      test.ok(!('after' in results.modules.sampleWithBeforeAndAfter));
+      test.ok('syncBeforeAndAfter' in results.modules);
+      test.ok('demoTestAsyncOne' in results.modules.syncBeforeAndAfter);
+      test.ok('demoTestAsyncTwo' in results.modules.syncBeforeAndAfter);
+      test.ok(!('beforeEach' in results.modules.syncBeforeAndAfter));
+      test.ok(!('before' in results.modules.syncBeforeAndAfter));
+      test.ok(!('afterEach' in results.modules.syncBeforeAndAfter));
+      test.ok(!('after' in results.modules.syncBeforeAndAfter));
       test.done();
     });
   },
