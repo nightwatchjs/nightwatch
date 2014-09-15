@@ -100,6 +100,80 @@ module.exports = {
 
   },
 
+  testScreenshotDataInLog : function(test) {
+    nock('http://localhost:4444')
+      .post('/wd/hub/123456/screenshot')
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value: 'base64-data'
+      });
+
+    var options = {
+      path : '/:sessionId/screenshot',
+      method : 'POST',
+      sessionId : '123456'
+    };
+
+    var oldLoggerInfo = Logger.info;
+    var loggerInfoCalls = [];
+    Logger.info = function() {
+      loggerInfoCalls.push(arguments);
+    };
+
+    Logger.settings.screenshot_data = true;
+
+    var request = new HttpRequest(options);
+    request.on('success', function(result) {
+      var lastCall = loggerInfoCalls[loggerInfoCalls.length - 1];
+
+      test.ok(lastCall[1].value);
+      test.equal(lastCall[1].value, 'base64-data');
+      test.ok(result.value);
+      test.equal(result.value, 'base64-data');
+
+      Logger.info = oldLoggerInfo;
+      test.done();
+    }).send();
+  },
+
+  testScreenshotDataNotInLog : function(test) {
+    nock('http://localhost:4444')
+      .post('/wd/hub/123456/screenshot')
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value: 'base64-data'
+      });
+
+    var options = {
+      path : '/:sessionId/screenshot',
+      method : 'POST',
+      sessionId : '123456'
+    };
+
+    var oldLoggerInfo = Logger.info;
+    var loggerInfoCalls = [];
+    Logger.info = function() {
+      loggerInfoCalls.push(arguments);
+    };
+
+    Logger.settings.screenshot_data = false;
+
+    var request = new HttpRequest(options);
+    request.on('success', function(result) {
+      var lastCall = loggerInfoCalls[loggerInfoCalls.length - 1];
+
+      test.ok(lastCall[1].value);
+      test.equal(lastCall[1].value, '[removed by nightwatch due to settings]');
+      test.ok(result.value);
+      test.equal(result.value, 'base64-data');
+
+      Logger.info = oldLoggerInfo;
+      test.done();
+    }).send();
+  },
+
   testGetRequest : function(test) {
     nock('http://localhost:4444')
       .get('/wd/hub/123456/element')

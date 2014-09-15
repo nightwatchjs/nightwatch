@@ -2,7 +2,9 @@ var os     = require('os');
 var path   = require('path');
 var fs     = require('fs');
 var mockery = require('mockery');
+var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
 var Client = require('../../nightwatch.js');
+var Logger = require('../../../' + BASE_PATH + '/util/logger');
 
 module.exports = {
   setUp: function (callback) {
@@ -151,6 +153,7 @@ module.exports = {
 
   testSetOptions : function(test) {
     var client = this.client = Client.init({
+      log_screenshot_data: false,
       use_xpath : true,
       launch_url : '/home'
     });
@@ -173,6 +176,7 @@ module.exports = {
 
     eq(client.options.screenshots.enabled, false);
     eq(client.api.options.screenshots, false);
+    eq(Logger.settings.screenshot_data, false);
 
     test.done();
   },
