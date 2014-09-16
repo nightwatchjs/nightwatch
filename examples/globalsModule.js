@@ -10,12 +10,12 @@ module.exports = {
   },
 
   before : function(cb) {
-    console.log('GLOBAL BEFORE', this);
+    console.log('GLOBAL BEFORE');
     cb();
   },
 
   after : function(cb) {
-    console.log('GLOBAL AFTER', this);
+    console.log('GLOBAL AFTER');
     cb();
   }
 };

@@ -7,6 +7,8 @@ var path = require('path');
 module.exports = {
   setUp : function(cb) {
     this.Runner = require('../../../'+ BASE_PATH +'/runner/run.js');
+    process.removeAllListeners('exit');
+    process.removeAllListeners('uncaughtException');
     cb();
   },
 
@@ -202,6 +204,26 @@ module.exports = {
         test.done();
       });
 
+    });
+  },
+
+  testRunModuleSyncName : function(test) {
+    test.expect(3);
+    var testsPath = path.join(process.cwd(), '/sampletests/syncnames');
+    this.Runner.run([testsPath], {
+      seleniumPort : 10195,
+      silent : true,
+      output : false,
+      sync_test_names : true,
+      globals : {
+        test : test
+      }
+    }, {
+      output_folder : false
+    }, function(err, results) {
+      test.equals(err, null);
+      test.ok('sampleTest' in results.modules);
+      test.done();
     });
   }
 };

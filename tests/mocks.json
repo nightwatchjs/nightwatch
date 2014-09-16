@@ -12,7 +12,7 @@
     },
     {
       "url" : "/wd/hub/session",
-      "postdata" : "{\"desiredCapabilities\":{\"browserName\":\"firefox\",\"javascriptEnabled\":true,\"acceptSslCerts\":true,\"platform\":\"ANY\",\"name\":\"test-Name\"}}",
+      "postdata" : "",
       "response" : "{\"status\": 0, \"sessionId\": \"1352110219202\", \"value\": { \"javascriptEnabled\": true, \"browserName\": \"firefox\", \"version\": \"TEST\", \"platform\": \"TEST\"}, \"state\": null}",
       "responseHeaders" : {
       },
