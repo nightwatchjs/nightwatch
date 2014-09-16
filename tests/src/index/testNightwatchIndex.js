@@ -173,7 +173,6 @@ module.exports = {
 
     eq(client.options.screenshots.enabled, false);
     eq(client.api.options.screenshots, false);
-
     test.done();
   },
 
@@ -191,6 +190,22 @@ module.exports = {
   },
 
   testSetOptionsScreenshots : function(test) {
+    var client = this.client = Client.init({
+      screenshots : {
+        enabled : true,
+        path : ''
+      },
+      log_screenshot_data : true
+    });
+    var eq = test.equals;
+
+    eq(client.api.options.log_screenshot_data, true);
+    eq(client.api.options.screenshotsPath, '');
+
+    test.done();
+  },
+
+  testSetOptionsScreenshotsThrows : function(test) {
     test.throws(function() {
       var client = this.client = Client.init({
         screenshots : {

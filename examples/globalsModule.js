@@ -7,5 +7,15 @@ module.exports = {
 
   'test_env' : {
     myGlobal: 'test_global'
+  },
+
+  before : function(cb) {
+    console.log('GLOBAL BEFORE', this);
+    cb();
+  },
+
+  after : function(cb) {
+    console.log('GLOBAL AFTER', this);
+    cb();
   }
 };

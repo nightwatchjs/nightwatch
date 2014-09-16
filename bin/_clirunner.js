@@ -220,7 +220,7 @@ CliRunner.prototype = {
     this.settings.parallelMode = this.parallelMode;
     var self = this;
 
-    beforeGlobal(function() {
+    beforeGlobal.call(this.test_settings.globals, function() {
       Selenium.startServer(self.settings, function(error, child, error_out, exitcode) {
         if (error) {
           if (self.test_settings.output) {
@@ -268,7 +268,7 @@ CliRunner.prototype = {
         self.stopSelenium();
 
         var afterGlobal = self.test_settings.globals && self.test_settings.globals.after || function(done) {done();};
-        afterGlobal(function() {
+        afterGlobal.call(self.test_settings.globals, function() {
           self.globalErrorHandler(err);
         });
 
