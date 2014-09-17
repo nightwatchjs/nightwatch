@@ -27,8 +27,8 @@ module.exports = {
     };
 
     this.client.api.saveScreenshot('screenshot.png', function(result) {
-      test.equal(result.value, '');
-      test.equal(result.screenshot_data, 'screendata');
+      test.equal(result.value, 'screendata');
+      test.equal(result.suppressBase64Data, true);
       test.done();
     });
 
