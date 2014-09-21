@@ -147,7 +147,7 @@ CliRunner.prototype = {
         err.message = 'There was an error while running the test.';
       }
       if (this.test_settings.output) {
-        process.stderr.write('\n' + Logger.colors.red(err.message));
+        process.stderr.write('\n' + Logger.colors.red(err.message) + '\n');
       }
 
       process.exit(1);
