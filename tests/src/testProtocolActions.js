@@ -512,7 +512,7 @@ module.exports = {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.screenshot(function callback() {
+      var command = protocol.screenshot(false, function callback() {
         test.done();
       });
 

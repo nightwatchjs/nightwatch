@@ -18,6 +18,8 @@ module.exports = {
       })
     });
 
+    test.expect(4);
+    this.client.api.options.log_screenshot_data = false;
     this.client.saveScreenshotToFile = function(fileName, data, cb) {
       test.equal(fileName, 'screenshot.png');
       test.equal(data, 'screendata');
@@ -26,8 +28,10 @@ module.exports = {
 
     this.client.api.saveScreenshot('screenshot.png', function(result) {
       test.equal(result.value, 'screendata');
+      test.equal(result.suppressBase64Data, true);
       test.done();
     });
+
   },
 
   tearDown : function(callback) {
@@ -35,4 +39,4 @@ module.exports = {
 
     callback();
   }
-}
+};

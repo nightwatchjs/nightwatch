@@ -7,6 +7,7 @@ module.exports = {
   setUp: function (callback) {
     this.client = require('../../nightwatch.js').init();
     process.removeAllListeners('exit');
+    process.removeAllListeners('uncaughtException');
     callback();
   },
 
