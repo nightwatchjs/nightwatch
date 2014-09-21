@@ -11,7 +11,7 @@ module.exports = {
     var client = this.client.api;
 
     MockServer.addMock({
-      url : "/wd/hub/session/1352110219202/element/0/value",
+      url : "/wd/hub/session/1352110219202/element/0/attribute/value",
       method:'GET',
       response : JSON.stringify({
         sessionId: "1352110219202",
