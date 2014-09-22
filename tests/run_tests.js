@@ -28,13 +28,14 @@ try {
   var server = require('mockserver').init();
   server.on('listening', function() {
     reporter.run([
-      'src',
-      'src/index',
-      'src/runner',
-      'src/assertions',
-      'src/commands',
-      'src/protocol',
-      'src/http'
+      //'src',
+      //'src/index',
+      'src/cli',
+//      'src/runner',
+//      'src/assertions',
+//      'src/commands',
+//      'src/protocol',
+//      'src/http'
     ], options, function(err) {
       server.close();
       if (err) {

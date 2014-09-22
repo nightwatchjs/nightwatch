@@ -218,6 +218,7 @@ CliRunner.prototype = {
       });
       return this;
     }
+
     this.settings.parallelMode = this.parallelMode;
     var self = this;
 
@@ -253,13 +254,14 @@ CliRunner.prototype = {
    * Starts the test runner
    * @returns {CliRunner}
    */
-  runTests : function() {
+  runTests : function(callback) {
     if (this.parallelMode) {
       return this;
     }
 
     var source = this.getTestSource();
     var self = this;
+
     this.startSelenium(function() {
       Runner.run(source, self.test_settings, {
         output_folder : self.output_folder,
@@ -272,6 +274,7 @@ CliRunner.prototype = {
         var context = self.test_settings && self.test_settings.globals || null;
         afterGlobal.call(context, function() {
           self.globalErrorHandler(err);
+          callback();
         });
 
       });
