@@ -11,6 +11,6 @@ script:
   - npm test
 #  - npm run-script coverage
 
-after_success:
+#after_success:
 #  - cat ./lib-cov/lcov.info |coveralls
 
