@@ -18,11 +18,15 @@ function CliRunner(argv) {
 }
 
 CliRunner.prototype = {
-  init : function() {
+  /**
+   * @param {function} [done]
+   * @returns {CliRunner}
+   */
+  init : function(done) {
     this
       .readSettings()
       .setOutputFolder()
-      .parseTestSettings();
+      .parseTestSettings(done);
 
     return this;
   },
@@ -218,6 +222,7 @@ CliRunner.prototype = {
       });
       return this;
     }
+
     this.settings.parallelMode = this.parallelMode;
     var self = this;
 
@@ -260,6 +265,7 @@ CliRunner.prototype = {
 
     var source = this.getTestSource();
     var self = this;
+
     this.startSelenium(function() {
       Runner.run(source, self.test_settings, {
         output_folder : self.output_folder,
@@ -296,7 +302,7 @@ CliRunner.prototype = {
    * Validates and parses the test settings
    * @returns {CliRunner}
    */
-  parseTestSettings : function() {
+  parseTestSettings : function(callback) {
     // checking if the env passed is valid
     if (!this.settings.test_settings) {
       throw new Error('No testing environment specified.');
@@ -310,7 +316,7 @@ CliRunner.prototype = {
     }
 
     if (envs.length > 1) {
-      this.setupParallelMode(envs);
+      this.setupParallelMode(envs, callback);
       return this;
     }
 
@@ -415,16 +421,22 @@ CliRunner.prototype = {
   /**
    * Enables parallel execution mode
    * @param {Array} envs
+   * @param {function} [callback]
    * @returns {CliRunner}
    */
-  setupParallelMode : function(envs) {
+  setupParallelMode : function(envs, callback) {
     this.parallelMode = true;
     var self = this;
 
     this.startSelenium(function() {
       self.startChildProcesses(envs, function(o, code) {
         self.stopSelenium();
-        process.exit(code);
+        if (callback) {
+          callback();
+        }
+        if (code) {
+          process.exit(code);
+        }
       });
     });
 
@@ -516,7 +528,7 @@ CliRunner.prototype = {
 
     envs.forEach(function(item, index) {
       var cliArgs = self.getChildProcessArgs(mainModule);
-      cliArgs.push('-e', item, '__parallel-mode');
+      cliArgs.push('-e', item, '--parallel-mode');
       var env = process.env;
 
       setTimeout(function() {
@@ -552,7 +564,7 @@ CliRunner.prototype = {
             globalExitCode = 2;
           }
           if (!self.settings.live_output) {
-            var child_output = output[item];
+            var child_output = output[item] || '';
             for (var i = 0; i < child_output.length; i++) {
               process.stdout.write(child_output[i]);
             }
