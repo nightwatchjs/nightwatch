@@ -6,7 +6,7 @@ var events = require('events');
 var mockery = require('mockery');
 module.exports = {
   setUp: function(callback) {
-    mockery.enable({ useCleanCache: true, warnOnUnregistered: true });
+    mockery.enable({ useCleanCache: true, warnOnUnregistered: false });
     callback();
   },
 
@@ -30,6 +30,10 @@ module.exports = {
         var Child = function() {
           this.stdout = new Stdout();
           this.stderr = new Stderr();
+          setTimeout(function() {
+            this.emit('exit');
+            this.emit('close');
+          }.bind(this), 11);
         };
 
         util.inherits(Child, events.EventEmitter);
@@ -38,22 +42,23 @@ module.exports = {
     });
 
     mockery.registerMock('../lib/runner/run.js', {
-      run : function(source, settings, opts, callback) {
-        console.log('Run', source, settings)
-        //callback();
-      }
+      run : function(source, settings, opts, callback) {}
     });
 
     var CliRunner = require('../../../' + BASE_PATH + '/../bin/_clirunner.js');
     var runner = new CliRunner({
       c : './extra/nightwatch.json',
       e : 'default,mixed'
-    }).init();
+    });
 
-    runner.runTests(function() {
-      console.log(allArgs);
-      console.log(allOpts);
+    runner.init(function() {
+      test.ok(runner.isParallelMode());
+      test.equals(allArgs.length, 2);
+      test.equals(allArgs[0][2], 'default');
+      test.equals(allArgs[1][2], 'mixed');
       test.done();
     });
+
+    test.ok(runner.parallelMode);
   }
 };
