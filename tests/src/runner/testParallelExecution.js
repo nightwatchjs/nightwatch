@@ -11,6 +11,9 @@ module.exports = {
   },
 
   tearDown: function(callback) {
+    mockery.deregisterAll();
+    mockery.resetCache();
+    mockery.disable();
     callback();
   },
 
