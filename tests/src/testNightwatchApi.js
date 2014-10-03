@@ -50,12 +50,15 @@ module.exports = {
 
     test.ok('customCommand' in this.client.api, 'Test if the custom command was added');
     test.ok('customCommandConstructor' in this.client.api, 'Test if the custom command with constructor style was added');
+    test.ok('other' in this.client.api, 'Commands under the subfolder were not loaded properly');
+    test.ok('otherCommand' in this.client.api.other);
 
     var queue = client.enqueueCommand('customCommandConstructor', []);
     var command = queue.currentNode;
     test.equal(command.name, 'customCommandConstructor');
     test.equal(command.context, client.api, 'Command should contain a reference to main client instance.');
   },
+
 
   testAddPageObject : function(test) {
     var client = this.client;
