@@ -1,44 +1,20 @@
 var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
-
-var CommandQueue = require('../../' + BASE_PATH +'/core/queue.js');
+var Utils = require('../../' + BASE_PATH +'/util/utils.js');
 
 module.exports = {
-  setUp: function (callback) {
-    CommandQueue.reset();
-    this.client = require('../nightwatch.js').init();
+  testFormatElapsedTime : function(test) {
 
-    callback();
-  },
+    var resultMs = Utils.formatElapsedTime(999);
+    test.equals(resultMs, '999ms');
 
-  'Test commands queue' : function(test) {
-    var client = this.client, urlCommand, endCommand;
-    this.client.on('nightwatch:finished', function() {
-      test.equal(urlCommand.done, true);
-      test.equal(endCommand.children.length, 0);
-      test.equal(endCommand.done, true);
-      test.equal(CommandQueue.list().length, 0);
-      test.done();
-    });
+    var resultSec = Utils.formatElapsedTime(1999);
+    test.equals(resultSec, '1.999s');
 
-    client.api.url('http://localhost').end();
+    var resultMin = Utils.formatElapsedTime(122299);
+    test.equals(resultMin, '2m 2s / 122299ms');
 
-    test.equal(CommandQueue.list().length, 2);
-    urlCommand = CommandQueue.instance().rootNode.children[0];
-    endCommand = CommandQueue.instance().rootNode.children[1];
+    test.done();
 
-    this.client.on('selenium:session_create', function(sessionId) {
-      test.equal(endCommand.done, false);
-      test.equal(urlCommand.done, false);
-      test.equal(endCommand.started, false);
-      test.equal(urlCommand.started, true);
-    });
-
-  },
-
-  tearDown : function(callback) {
-    // clean up
-    this.client = null;
-    CommandQueue.reset();
-    callback();
   }
 };
+
