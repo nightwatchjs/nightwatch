@@ -188,6 +188,55 @@ module.exports = {
     });
   },
 
+  testRunWithGlobalReporter : function(test) {
+    test.expect(15);
+    var testsPath = path.join(process.cwd(), '/sampletests/before-after');
+    var reporterCount = 0;
+    this.Runner.run([testsPath], {
+      seleniumPort : 10195,
+      silent : true,
+      output : false,
+      globals : {
+        test : test,
+        reporter: function(results) {
+          test.ok('modules' in results);
+          reporterCount++;
+        }
+      }
+    }, {
+      output_folder : false
+    }, function(err, results) {
+      test.equals(err, null);
+      test.equals(reporterCount, 1);
+      test.done();
+    });
+  },
+
+  testRunWithGlobalAsyncReporter : function(test) {
+    test.expect(15);
+    var testsPath = path.join(process.cwd(), '/sampletests/before-after');
+    var reporterCount = 0;
+    this.Runner.run([testsPath], {
+      seleniumPort : 10195,
+      silent : true,
+      output : false,
+      globals : {
+        test : test,
+        reporter: function(results, done) {
+          test.ok('modules' in results);
+          reporterCount++;
+          done();
+        }
+      }
+    }, {
+      output_folder : false
+    }, function(err, results) {
+      test.equals(err, null);
+      test.equals(reporterCount, 1);
+      test.done();
+    });
+  },
+
   testRunMixed : function(test) {
     test.expect(6);
     var testsPath = path.join(process.cwd(), '/sampletests/mixed');

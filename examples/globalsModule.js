@@ -30,5 +30,10 @@ module.exports = {
   afterEach : function(cb) {
     console.log('GLOBAL AFTER EACH');
     cb();
+  },
+
+  reporter : function(results, cb) {
+    console.log(JSON.stringify(results, null, ' '));
+    cb();
   }
 };
