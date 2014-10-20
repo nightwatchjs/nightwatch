@@ -286,6 +286,37 @@ CliRunner.prototype = {
     return this;
   },
 
+  runPreloadedTests: function(modules) {
+    if(this.parallelMode) {
+      return this;
+    }
+
+    var self = this;
+
+    this.startSelenium(function() {
+
+      Runner.init(self.test_settings, {
+        output_folder: self.output_folder,
+        src_folders: self.settings.src_folders,
+        live_output: self.settings.live_output
+      }, function(err) {
+        self.stopSelenium();
+
+        var afterGlobal = self.test_settings.globals && self.test_settings.globals.after || function(done) {
+          done();
+        };
+        var context = self.test_settings && self.test_settings.globals || null;
+        afterGlobal.call(context, function() {
+          self.globalErrorHandler(err);
+        });
+      });
+
+      Runner.runTestModule(null, modules);
+    });
+
+    return this;
+  },
+
   inheritFromDefaultEnv : function() {
     if (this.argv.e == 'default') {
       return;
