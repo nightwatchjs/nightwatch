@@ -1,6 +1,6 @@
 var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
 
-var simpleSampleTest = require('../../sampletests/usexpath/sample');
+var simpleSampleTest = require('../../sampletests/simple/sample');
 var path = require('path');
 
 module.exports = {
@@ -20,6 +20,11 @@ module.exports = {
 
     //console.log(simpleSampleTest);
 
+    var modules = [];
+
+    simpleSampleTest.moduleName = 'demoTest';
+    modules.push(simpleSampleTest);
+
     var opts = {
       seleniumPort: 10195,
       silent: true,
@@ -32,18 +37,12 @@ module.exports = {
     this.Runner.init(opts, {
       output_folder: false
     }, function(err, results) {
-
       test.equals(err, null);
-      test.ok('demoTest' in results.modules);
-      test.ok('demoTestXpath' in results.modules.demoTest);
+      test.ok('sample' in results.modules);
+      test.ok('demoTest' in results.modules.sample);
       test.done();
     });
 
-    var moduleCallback = this.Runner.moduleCallback;
-
-    this.Runner.runModule(simpleSampleTest, opts, 'test module name', 'demoTest', function(err, modulekeys) {
-      return moduleCallback(err, modulekeys, []);
-    });
-
+    this.Runner.runTestModule(null, modules);
   }
 };
