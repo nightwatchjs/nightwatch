@@ -8,7 +8,7 @@ module.exports = {
   },
 
   'attributeEquals assertion passed' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/attributeEquals.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/attributeEquals.js');
     var client = {
       options : {},
       api : {
@@ -35,7 +35,7 @@ module.exports = {
   },
 
   'attributeEquals assertion failed' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/attributeEquals.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/attributeEquals.js');
     var client = {
       options : {},
       api : {
@@ -62,7 +62,7 @@ module.exports = {
   },
 
   'attributeEquals assertion not found' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/attributeEquals.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/attributeEquals.js');
     var client = {
       options : {},
       api : {
@@ -88,7 +88,7 @@ module.exports = {
   },
 
   'attributeEquals assertion value attribute not found' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/attributeEquals.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/attributeEquals.js');
     var client = {
       options : {},
       api : {

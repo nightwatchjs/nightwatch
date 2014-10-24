@@ -8,7 +8,7 @@ module.exports = {
   },
 
   'title assertion passed' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/title.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/title.js');
     var client = {
       options : {},
       api : {
@@ -34,7 +34,7 @@ module.exports = {
   },
 
   'title assertion failed' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/title.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/title.js');
     var client = {
       options : {},
       api : {

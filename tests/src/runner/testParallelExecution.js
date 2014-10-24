@@ -4,6 +4,7 @@ var BASE_PATH = process.env.NIGHTWATCH_COV
 var util = require('util');
 var events = require('events');
 var mockery = require('mockery');
+
 module.exports = {
   setUp: function(callback) {
     mockery.enable({ useCleanCache: true, warnOnUnregistered: false });
@@ -48,10 +49,10 @@ module.exports = {
       run : function(source, settings, opts, callback) {}
     });
 
-    var CliRunner = require('../../../' + BASE_PATH + '/../bin/_clirunner.js');
+    var CliRunner = require('../../../' + BASE_PATH + '/../lib/runner/cli/clirunner.js');
     var runner = new CliRunner({
-      c : './extra/nightwatch.json',
-      e : 'default,mixed'
+      config : './extra/nightwatch.json',
+      env : 'default,mixed'
     });
 
     runner.init(function() {

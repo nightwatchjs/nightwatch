@@ -8,7 +8,7 @@ module.exports = {
   },
 
   'cssClassNotPresent assertion passed' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/cssClassNotPresent.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/cssClassNotPresent.js');
     var client = {
       options : {},
       api : {
@@ -36,7 +36,7 @@ module.exports = {
   },
 
   'cssClassNotPresent assertion failed' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/cssClassNotPresent.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/cssClassNotPresent.js');
     var client = {
       options : {},
       api : {
@@ -61,7 +61,7 @@ module.exports = {
   },
 
   'cssClassNotPresent assertion not found' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/cssClassNotPresent.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/cssClassNotPresent.js');
     var client = {
       options : {},
       api : {

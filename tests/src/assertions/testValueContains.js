@@ -8,7 +8,7 @@ module.exports = {
   },
 
   'valueContains assertion passed' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/valueContains.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/valueContains.js');
     var client = {
       options : {},
       api : {
@@ -36,7 +36,7 @@ module.exports = {
   },
 
   'valueContains assertion failed' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/valueContains.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/valueContains.js');
     var client = {
       options : {},
       api : {
@@ -63,7 +63,7 @@ module.exports = {
   },
 
   'valueContains assertion element not found' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/valueContains.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/valueContains.js');
     var client = {
       options : {},
       api : {
@@ -89,7 +89,7 @@ module.exports = {
   },
 
   'valueContains assertion value attribute not found' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/valueContains.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/valueContains.js');
     var client = {
       options : {},
       api : {

@@ -8,7 +8,7 @@ module.exports = {
   },
 
   'urlEquals assertion passed' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/urlEquals.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/urlEquals.js');
     var client = {
       options : {},
       api : {
@@ -34,7 +34,7 @@ module.exports = {
   },
 
   'urlEquals assertion failed' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/title.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/title.js');
     var client = {
       options : {},
       api : {

@@ -8,7 +8,7 @@ module.exports = {
   },
 
   'containsText assertion passed' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/containsText.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/containsText.js');
     var client = {
       options : {},
       api : {
@@ -34,7 +34,7 @@ module.exports = {
   },
 
   'containsText assertion failed' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/containsText.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/containsText.js');
     var client = {
       options : {},
       api : {
@@ -59,7 +59,7 @@ module.exports = {
   },
 
   'containsText assertion not found' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/containsText.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/containsText.js');
     var client = {
       options : {},
       api : {

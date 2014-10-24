@@ -8,7 +8,7 @@ module.exports = {
   },
 
   'urlContains assertion passed' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/urlContains.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/urlContains.js');
     var client = {
       options : {},
       api : {
@@ -34,7 +34,7 @@ module.exports = {
   },
 
   'urlContains assertion failed' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/urlContains.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/urlContains.js');
     var client = {
       options : {},
       api : {

@@ -8,7 +8,7 @@ module.exports = {
   },
 
   'hidden assertion passed' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/hidden.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/hidden.js');
     var client = {
       options : {},
       api : {
@@ -36,7 +36,7 @@ module.exports = {
   },
 
   'hidden assertion failed' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/hidden.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/hidden.js');
     var client = {
       options : {},
       api : {
@@ -63,7 +63,7 @@ module.exports = {
   },
 
   'hidden assertion not found' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/hidden.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/hidden.js');
     var client = {
       options : {},
       api : {

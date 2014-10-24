@@ -3,7 +3,7 @@ var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
 module.exports = {
   setUp: function (callback) {
     this.client = require('../nightwatch.js').init();
-    this.protocol = require('../../' + BASE_PATH + '/selenium/protocol.js')(this.client);
+    this.protocol = require('../../' + BASE_PATH + '/api/protocol.js')(this.client);
     callback();
   },
 

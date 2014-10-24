@@ -8,7 +8,7 @@ module.exports = {
   },
 
   'elementPresent assertion passed' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/elementPresent.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/elementPresent.js');
     var client = {
       options : {},
       locateStrategy : 'css selector',
@@ -40,7 +40,7 @@ module.exports = {
   },
 
   'elementPresent assertion failed' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/elementPresent.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/elementPresent.js');
     var client = {
       options : {},
       locateStrategy : 'css selector',

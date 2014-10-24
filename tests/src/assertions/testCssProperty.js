@@ -8,7 +8,7 @@ module.exports = {
   },
 
   'cssProperty assertion passed' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/cssProperty.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/cssProperty.js');
     var client = {
       options : {},
       api : {
@@ -36,7 +36,7 @@ module.exports = {
   },
 
   'cssProperty assertion failed' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/cssProperty.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/cssProperty.js');
     var client = {
       options : {},
       api : {
@@ -63,7 +63,7 @@ module.exports = {
   },
 
   'cssProperty assertion not found' : function(test) {
-    var assertionFn = require('../../../'+BASE_PATH+'/selenium/assertions/cssProperty.js');
+    var assertionFn = require('../../../'+BASE_PATH + '/api/assertions/cssProperty.js');
     var client = {
       options : {},
       api : {

@@ -1,7 +1,7 @@
 module.exports = {
   setUp: function (callback) {
     this.client = require('../../nightwatch.js').init();
-    this.protocol = require('../../../lib/selenium/protocol.js')(this.client);
+    this.protocol = require('../../../lib/api/protocol.js')(this.client);
     callback();
   },
 
