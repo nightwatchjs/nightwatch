@@ -33,7 +33,7 @@ module.exports = {
   },
 
   reporter : function(results, cb) {
-    console.log(JSON.stringify(results, null, ' '));
+    console.log(results);
     cb();
   }
 };
