@@ -47,6 +47,29 @@ module.exports = {
     });
   },
 
+  testRunMultipleSrcFolders : function(test) {
+    test.expect(8);
+    var testsPath = path.join(process.cwd(), '/sampletests/simple');
+    var testsPath2 = path.join(process.cwd(), '/sampletests/srcfolders');
+    this.Runner.run([testsPath2, testsPath], {
+      seleniumPort : 10195,
+      silent : true,
+      output : false,
+      globals : {
+        test : test
+      }
+    }, {
+      output_folder : false
+    }, function(err, results) {
+      test.equals(err, null);
+      test.ok('sample' in results.modules);
+      test.ok('demoTest' in results.modules.sample);
+      test.ok('other_sample' in results.modules);
+      test.ok('srcFoldersTest' in results.modules.other_sample);
+      test.done();
+    });
+  },
+
   testRunWithExcludeFolder : function(test) {
     var testsPath = path.join(process.cwd(), '/sampletests/withexclude');
     this.Runner.run([testsPath], {
