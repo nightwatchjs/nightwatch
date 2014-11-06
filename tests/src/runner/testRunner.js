@@ -47,6 +47,31 @@ module.exports = {
     });
   },
 
+  'test run multiple sources and same module name' : function(test) {
+    this.Runner.run([
+      path.join(process.cwd(), '/sampletests/simple'),
+      path.join(process.cwd(), '/sampletests/mixed')
+    ], {
+      seleniumPort : 10195,
+      silent : true,
+      output : false,
+      globals : {
+        test : test
+      }
+    }, {
+      output_folder : false
+    }, function(err, results) {
+      test.equals(err, null);
+
+      test.ok('simple/sample' in results.modules);
+      test.ok('mixed/sample' in results.modules);
+      test.ok('demoTest' in results.modules['simple/sample']);
+      test.ok('demoTestMixed' in results.modules['mixed/sample']);
+
+      test.done();
+    });
+  },
+
   testRunMultipleSrcFolders : function(test) {
     test.expect(8);
     var testsPath = path.join(process.cwd(), '/sampletests/simple');
@@ -62,13 +87,14 @@ module.exports = {
       output_folder : false
     }, function(err, results) {
       test.equals(err, null);
-      test.ok('sample' in results.modules);
-      test.ok('demoTest' in results.modules.sample);
-      test.ok('other_sample' in results.modules);
-      test.ok('srcFoldersTest' in results.modules.other_sample);
+      test.ok('simple/sample' in results.modules);
+      test.ok('demoTest' in results.modules['simple/sample']);
+      test.ok('srcfolders/other_sample' in results.modules);
+      test.ok('srcFoldersTest' in results.modules['srcfolders/other_sample']);
       test.done();
     });
   },
+
 
   testRunWithExcludeFolder : function(test) {
     var testsPath = path.join(process.cwd(), '/sampletests/withexclude');
