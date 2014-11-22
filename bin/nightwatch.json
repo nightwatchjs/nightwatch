@@ -5,6 +5,8 @@
   "custom_assertions_path" : "",
   "globals_path" : "",
   "live_output" : false,
+  "parallel_process_delay" : 10,
+  "disable_colors": false,
 
   "selenium" : {
     "start_process" : false,
