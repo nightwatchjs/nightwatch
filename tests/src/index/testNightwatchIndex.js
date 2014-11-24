@@ -46,6 +46,7 @@ module.exports = {
 
     client.saveScreenshotToFile = function() {};
     client.options.screenshots.enabled = true;
+    client.options.screenshots.onSeleniumError = true;
     client.on('selenium:session_create', function(sessionId) {
       var request = client.runProtocolAction({
         host : '127.0.0.1',
