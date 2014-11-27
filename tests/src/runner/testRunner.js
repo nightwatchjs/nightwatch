@@ -73,7 +73,7 @@ module.exports = {
   },
 
   testRunMultipleSrcFolders : function(test) {
-    test.expect(8);
+    test.expect(9);
     var testsPath = path.join(process.cwd(), '/sampletests/simple');
     var testsPath2 = path.join(process.cwd(), '/sampletests/srcfolders');
     this.Runner.run([testsPath2, testsPath], {
