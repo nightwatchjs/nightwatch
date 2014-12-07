@@ -180,6 +180,7 @@ module.exports = {
       custom_commands_path: '',
       custom_assertions_path: '',
       page_objects_path: '',
+      testWorkers: {},
       output: true
     }});
 

@@ -1,4 +1,5 @@
 {
+  "eqnull":true,
   "bitwise":true,
   "curly":true,
   "noempty":true,
