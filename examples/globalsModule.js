@@ -23,12 +23,10 @@ module.exports = {
   },
 
   after : function(cb) {
-    console.log('GLOBAL AFTER');
     cb();
   },
 
   afterEach : function(cb) {
-    console.log('GLOBAL AFTER EACH');
     cb();
   },
 

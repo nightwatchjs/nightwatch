@@ -23,8 +23,19 @@ module.exports = {
         if (hasDialog) {
           this.acceptAlert();
         }
+        this.verify.equal(1, 0);
+        this.verify.equal(1, 2);
       })
-      .waitForElementVisible('body', 1000)
-      .end();
+      .waitForElementVisible('xbody', 1000);
+
+  },
+
+  'go to nightwatch' : function(c) {
+    c.url('http://nightwatchjs.org')
+      .waitForElementVisible('body', 1000);
+  },
+
+  after : function(c) {
+    c.end();
   }
 };
