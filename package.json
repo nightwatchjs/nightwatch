@@ -26,6 +26,7 @@
     "q": "^1.1.2"
   },
   "devDependencies": {
+    "grunt": "~0.4.4",
     "nodeunit": "latest",
     "jscoverage": "latest",
     "coveralls": "latest",
