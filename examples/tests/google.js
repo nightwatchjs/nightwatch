@@ -11,6 +11,7 @@ module.exports = {
       .click('button[name=btnG]')
       .pause(1000)
       .assert.containsText('#main', 'The Night Watch')
+      .assert.matches('#main', /^The Night Watch$/)
       .end();
   }
 };

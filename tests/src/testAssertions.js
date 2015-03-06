@@ -47,6 +47,9 @@ module.exports = {
     test.ok('title' in this.client.api.assert);
     test.ok('title' in this.client.api.verify);
 
+    test.ok('matches' in this.client.api.assert);
+    test.ok('matches' in this.client.api.verify);
+
     test.done();
   },
 
