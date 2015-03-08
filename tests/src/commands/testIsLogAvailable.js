@@ -21,14 +21,14 @@ module.exports = {
     });
 
     client.isLogAvailable( "unknown", function callback(result) {
-		  test.equals(typeof result === 'boolean', true);
-		  test.equals(result, false);
-		})
-		.isLogAvailable( "browser", function callback(result) {
-		  test.equals(typeof result === 'boolean', true);
-		  test.equals(result, true);
-		  test.done();
-		})
+          test.equals(typeof result === 'boolean', true);
+          test.equals(result, false);
+        })
+        .isLogAvailable( "browser", function callback(result) {
+          test.equals(typeof result === 'boolean', true);
+          test.equals(result, true);
+          test.done();
+        })
   },
 
   tearDown : function(callback) {
