@@ -21,11 +21,11 @@ module.exports = {
     });
 
     client.getLog('browser', function(result) {
-	  test.equals(Array.isArray(result), true);
-	  test.equals(result.length, 2);
+      test.equals(Array.isArray(result), true);
+      test.equals(result.length, 2);
       test.equals(result[0].message, 'Test log');
-	  test.equals(result[1].message, 'Test log2');
-	  test.done();
+      test.equals(result[1].message, 'Test log2');
+      test.done();
     });
   },
 
