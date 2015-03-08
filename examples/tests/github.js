@@ -6,7 +6,8 @@ module.exports = {
       .waitForElementVisible('body', 1000)
       .assert.title('beatfactor/nightwatch · GitHub')
       .assert.visible('.container .breadcrumb a span')
-      .assert.containsText('.container .breadcrumb a span', 'nightwatch', 'Checking project title is set to nightwatch');
+      .assert.containsText('.container .breadcrumb a span', 'nightwatch', 'Checking project title is set to nightwatch')
+      .assert.matches('.container .breadcrumb a span', /nightwatch/, 'Checking project title is matches nightwatch');
 
 
   },
