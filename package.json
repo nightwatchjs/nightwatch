@@ -18,13 +18,13 @@
     "url": "git@github.com:beatfactor/nightwatch.git"
   },
   "dependencies": {
-    "grunt": "~0.4.4",
     "ejs": "~0.8.3",
     "optimist": ">=0.3.5",
     "minimatch": "~0.2.14",
     "mkpath": ">=0.1.0"
   },
   "devDependencies": {
+    "grunt": "~0.4.4",
     "nodeunit": "latest",
     "jscoverage": "latest",
     "coveralls": "latest",
