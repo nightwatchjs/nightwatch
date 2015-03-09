@@ -1,5 +1,6 @@
 var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
 
+var path = require('path');
 var Api = require('../../' + BASE_PATH + '/core/api.js');
 
 module.exports = {
@@ -57,6 +58,25 @@ module.exports = {
     var command = queue.currentNode;
     test.equal(command.name, 'customCommandConstructor');
     test.equal(command.context, client.api, 'Command should contain a reference to main client instance.');
+  },
+
+  testAddCustomCommandFullPath : function(test) {
+    var client = this.client;
+    client.on('selenium:session_create', function(sessionId) {
+      test.done();
+    });
+
+    var absPath = path.join(process.cwd(), 'extra/commands');
+    client.options.custom_commands_path = [absPath];
+    Api.init(client);
+
+    test.doesNotThrow(
+      function() {
+        Api.loadCustomCommands();
+      }, Error, 'Exception thrown loading custom command with absolute path'
+    );
+
+    test.ok('customCommand' in this.client.api, 'Commands defined with an absolute path were not loaded properly');
   },
 
 
