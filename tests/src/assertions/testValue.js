@@ -1,7 +1,7 @@
-var BASE_PATH = process.env.NIGHTWATCH_COV
-  ? 'lib-cov'
-  : 'lib';
-var Api = require('../../../'+BASE_PATH+'/core/api.js');
+
+var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
+var Api = require('../../../' + BASE_PATH + '/core/api.js');
+
 module.exports = {
   setUp: function (callback) {
     callback();
@@ -26,7 +26,6 @@ module.exports = {
         test.equals(expected, 'some-value');
         test.equals(msg, 'Testing if value of <.test_element> equals: "some-value".');
         test.equals(abortOnFailure, true);
-        delete assertionFn;
         test.done();
       }
     };
@@ -53,7 +52,6 @@ module.exports = {
         test.equals(result, 'wrong-value');
         test.equals(expected, 'some-value');
         test.equals(abortOnFailure, true);
-        delete assertionFn;
         test.done();
       }
     };
@@ -79,7 +77,6 @@ module.exports = {
         test.equals(expected, 'some-value');
         test.equals(msg, 'Testing if value of <.test_element> equals: "some-value". Element or attribute could not be located.');
         test.equals(abortOnFailure, true);
-        delete assertionFn;
         test.done();
       }
     };
@@ -91,5 +88,5 @@ module.exports = {
   tearDown : function(callback) {
     callback();
   }
-}
+};
 

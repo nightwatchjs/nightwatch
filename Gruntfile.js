@@ -14,21 +14,28 @@ module.exports = function(grunt) {
         src: 'bin/*.js'
       },
       lib: {
-        src: 'lib/**/*.js'
+        src: ['index.js', 'lib/**/*.js']
       },
       tests: [
-        'tests/*.js', 'tests/extra/*.js', 'tests/src/*.js'
+        'tests/*.js',
+        'tests/extra/**/*.js',
+        'tests/src/**/*.js',
+        'tests/sampletests/**/*.js'
       ],
       gruntfile: {
         src: 'Gruntfile.js'
       },
       examples: {
-        src: ['examples/tests', 'examples/custom-commands']
+        src: [
+          'examples/*.js',
+          'examples/tests/**/*.js',
+          'examples/custom-commands/**/*.js'
+        ]
       }
     },
 
     jsonlint: {
-      src: ['tests/*.json']
+      src: ['tests/**/*.json', 'examples/**/*.json']
     },
 
     complexity: {

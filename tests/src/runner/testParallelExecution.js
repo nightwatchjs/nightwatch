@@ -1,6 +1,5 @@
-var BASE_PATH = process.env.NIGHTWATCH_COV
-  ? 'lib-cov'
-  : 'lib';
+
+var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
 var util = require('util');
 var events = require('events');
 var mockery = require('mockery');

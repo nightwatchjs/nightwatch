@@ -11,10 +11,10 @@ module.exports = {
     var client = this.client.api;
 
     MockServer.addMock({
-      url : "/wd/hub/session/1352110219202/element/0/submit",
+      url : '/wd/hub/session/1352110219202/element/0/submit',
       method:'POST',
       response : JSON.stringify({
-        sessionId: "1352110219202",
+        sessionId: '1352110219202',
         status:0
       })
     });
@@ -32,4 +32,4 @@ module.exports = {
     // clean up
     callback();
   }
-}
+};

@@ -1,7 +1,5 @@
-var BASE_PATH = process.env.NIGHTWATCH_COV
-  ? 'lib-cov'
-  : 'lib';
 
+var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
 var path = require('path');
 
 module.exports = {
@@ -22,7 +20,7 @@ module.exports = {
     this.Runner.run([testsPath], {}, {
       output_folder : false
     }, function(err) {
-      test.ok(err.message.indexOf('No tests defined!') == 0);
+      test.ok(err.message.indexOf('No tests defined!') === 0);
       test.done();
     });
   },

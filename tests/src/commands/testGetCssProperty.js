@@ -11,17 +11,17 @@ module.exports = {
     var client = this.client.api;
 
     MockServer.addMock({
-      url : "/wd/hub/session/1352110219202/element/0/css/display",
+      url : '/wd/hub/session/1352110219202/element/0/css/display',
       method:'GET',
       response : JSON.stringify({
-        sessionId: "1352110219202",
+        sessionId: '1352110219202',
         status:0,
         value : 'block'
       })
     });
 
     var command = client.getCssProperty('#weblogin', 'display', function callback(result) {
-      test.equals(result.value, 'block')
+      test.equals(result.value, 'block');
       test.done();
     });
   },
@@ -31,4 +31,4 @@ module.exports = {
     // clean up
     callback();
   }
-}
+};

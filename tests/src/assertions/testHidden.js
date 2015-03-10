@@ -1,7 +1,7 @@
-var BASE_PATH = process.env.NIGHTWATCH_COV
-  ? 'lib-cov'
-  : 'lib';
-var Api = require('../../../'+BASE_PATH+'/core/api.js');
+
+var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
+var Api = require('../../../' + BASE_PATH + '/core/api.js');
+
 module.exports = {
   setUp: function (callback) {
     callback();
@@ -26,7 +26,6 @@ module.exports = {
         test.equals(expected, true);
         test.equals(msg, 'Testing if element <.test_element> is hidden.');
         test.equals(abortOnFailure, true);
-        delete assertionFn;
         test.done();
       }
     };
@@ -53,7 +52,6 @@ module.exports = {
         test.equals(result, false);
         test.equals(expected, true);
         test.equals(abortOnFailure, true);
-        delete assertionFn;
         test.done();
       }
     };
@@ -79,7 +77,6 @@ module.exports = {
         test.equals(expected, true);
         test.equals(msg, 'Testing if element <.test_element> is hidden. Element could not be located.');
         test.equals(abortOnFailure, true);
-        delete assertionFn;
         test.done();
       }
     };
@@ -91,5 +88,5 @@ module.exports = {
   tearDown : function(callback) {
     callback();
   }
-}
+};
 
