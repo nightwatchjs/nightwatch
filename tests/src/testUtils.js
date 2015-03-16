@@ -10,7 +10,7 @@ module.exports = {
     var resultSec = Utils.formatElapsedTime(1999);
     test.equals(resultSec, '1.999s');
 
-    var resultMin = Utils.formatElapsedTime(122299);
+    var resultMin = Utils.formatElapsedTime(122299, true);
     test.equals(resultMin, '2m 2s / 122299ms');
 
     test.done();

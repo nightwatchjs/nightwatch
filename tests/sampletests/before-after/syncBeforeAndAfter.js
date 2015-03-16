@@ -7,11 +7,11 @@ module.exports = {
     client.globals.test.ok('before callback called.');
   },
 
-  demoTestAsyncOne : function (client) {
+  demoTestSyncOne : function (client) {
     client.url('http://localhost');
   },
 
-  demoTestAsyncTwo : function (client) {
+  demoTestSyncTwo : function (client) {
     client.end();
   },
 

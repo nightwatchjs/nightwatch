@@ -6,14 +6,14 @@ var path = require('path');
 
 module.exports = {
   setUp : function(cb) {
-    this.Runner = require('../../../'+ BASE_PATH +'/runner/run.js');
+    this.Runner = require('../../../'+ BASE_PATH +'/run/run.js');
     process.removeAllListeners('exit');
     process.removeAllListeners('uncaughtException');
     cb();
   },
 
   tearDown : function(callback) {
-    delete require.cache[require.resolve('../../../'+ BASE_PATH +'/runner/run.js')];
+    delete require.cache[require.resolve('../../../'+ BASE_PATH +'/run/run.js')];
     callback();
   },
 
@@ -22,7 +22,7 @@ module.exports = {
     this.Runner.run([testsPath], {}, {
       output_folder : false
     }, function(err) {
-      test.ok(err.message.indexOf('No tests defined!') == 0);
+      test.ok(err.message.indexOf('No tests defined!') === 0);
       test.done();
     });
   },
@@ -38,20 +38,23 @@ module.exports = {
         test : test
       }
     }, {
-      output_folder : false
+      output_folder : false,
+      start_session : true
     }, function(err, results) {
       test.equals(err, null);
       test.ok('sample' in results.modules);
-      test.ok('demoTest' in results.modules.sample);
+      test.ok('demoTest' in results.modules.sample.completed);
       test.done();
     });
   },
 
   'test run multiple sources and same module name' : function(test) {
-    this.Runner.run([
+    var srcFolders = [
       path.join(process.cwd(), '/sampletests/simple'),
       path.join(process.cwd(), '/sampletests/mixed')
-    ], {
+    ];
+
+    this.Runner.run(srcFolders, {
       seleniumPort : 10195,
       silent : true,
       output : false,
@@ -59,14 +62,16 @@ module.exports = {
         test : test
       }
     }, {
-      output_folder : false
+      output_folder : false,
+      start_session : true,
+      src_folders : srcFolders
     }, function(err, results) {
       test.equals(err, null);
 
       test.ok('simple/sample' in results.modules);
       test.ok('mixed/sample' in results.modules);
-      test.ok('demoTest' in results.modules['simple/sample']);
-      test.ok('demoTestMixed' in results.modules['mixed/sample']);
+      test.ok('demoTest' in results.modules['simple/sample'].completed);
+      test.ok('demoTestMixed' in results.modules['mixed/sample'].completed);
 
       test.done();
     });
@@ -76,7 +81,8 @@ module.exports = {
     test.expect(8);
     var testsPath = path.join(process.cwd(), '/sampletests/simple');
     var testsPath2 = path.join(process.cwd(), '/sampletests/srcfolders');
-    this.Runner.run([testsPath2, testsPath], {
+    var srcFolders = [testsPath2, testsPath];
+    this.Runner.run(srcFolders, {
       seleniumPort : 10195,
       silent : true,
       output : false,
@@ -84,13 +90,15 @@ module.exports = {
         test : test
       }
     }, {
-      output_folder : false
+      output_folder : false,
+      start_session : true,
+      src_folders : srcFolders
     }, function(err, results) {
       test.equals(err, null);
       test.ok('simple/sample' in results.modules);
-      test.ok('demoTest' in results.modules['simple/sample']);
+      test.ok('demoTest' in results.modules['simple/sample'].completed);
       test.ok('srcfolders/other_sample' in results.modules);
-      test.ok('srcFoldersTest' in results.modules['srcfolders/other_sample']);
+      test.ok('srcFoldersTest' in results.modules['srcfolders/other_sample'].completed);
       test.done();
     });
   },
@@ -107,7 +115,8 @@ module.exports = {
       },
       exclude : ['excluded']
     }, {
-      output_folder : false
+      output_folder : false,
+      start_session : true
     }, function(err, results) {
       test.ok(!('excluded-module' in results.modules));
       test.done();
@@ -126,7 +135,8 @@ module.exports = {
       },
       exclude : [testPattern]
     }, {
-      output_folder : false
+      output_folder : false,
+      start_session : true
     }, function(err, results) {
       test.ok(!('excluded-module' in results.modules));
       test.done();
@@ -144,11 +154,12 @@ module.exports = {
         test : test
       }
     }, {
-      output_folder : false
+      output_folder : false,
+      start_session : true
     }, function(err, results) {
       test.equals(err, null);
       test.ok('sample' in results.modules);
-      test.ok('demoTestAsync' in results.modules.sample);
+      test.ok('demoTestAsync' in results.modules.sample.completed);
       test.done();
     });
   },
@@ -164,23 +175,26 @@ module.exports = {
         test : test
       }
     }, {
-      output_folder : false
+      output_folder : false,
+      start_session : true
     }, function(err, results) {
       test.equals(err, null);
       test.ok('sampleWithBeforeAndAfter' in results.modules);
-      test.ok('demoTestAsyncOne' in results.modules.sampleWithBeforeAndAfter);
-      test.ok('demoTestAsyncTwo' in results.modules.sampleWithBeforeAndAfter);
-      test.ok(!('beforeEach' in results.modules.sampleWithBeforeAndAfter));
-      test.ok(!('before' in results.modules.sampleWithBeforeAndAfter));
-      test.ok(!('afterEach' in results.modules.sampleWithBeforeAndAfter));
-      test.ok(!('after' in results.modules.sampleWithBeforeAndAfter));
+
+      var result = results.modules.sampleWithBeforeAndAfter.completed;
+      test.ok('demoTestAsyncOne' in result);
+      test.ok('demoTestAsyncTwo' in result);
+      test.ok(!('beforeEach' in result));
+      test.ok(!('before' in result));
+      test.ok(!('afterEach' in result));
+      test.ok(!('after' in result));
       test.ok('syncBeforeAndAfter' in results.modules);
-      test.ok('demoTestAsyncOne' in results.modules.syncBeforeAndAfter);
-      test.ok('demoTestAsyncTwo' in results.modules.syncBeforeAndAfter);
-      test.ok(!('beforeEach' in results.modules.syncBeforeAndAfter));
-      test.ok(!('before' in results.modules.syncBeforeAndAfter));
-      test.ok(!('afterEach' in results.modules.syncBeforeAndAfter));
-      test.ok(!('after' in results.modules.syncBeforeAndAfter));
+      test.ok('demoTestAsyncOne' in result);
+      test.ok('demoTestAsyncTwo' in result);
+      test.ok(!('beforeEach' in result));
+      test.ok(!('before' in result));
+      test.ok(!('afterEach' in result));
+      test.ok(!('after' in result));
       test.done();
     });
   },
@@ -200,7 +214,8 @@ module.exports = {
         afterEach: function() { afterEachCount++; }
       }
     }, {
-      output_folder : false
+      output_folder : false,
+      start_session : true
     }, function(err, results) {
       test.equals(err, null);
       test.equals(beforeEachCount, 2);
@@ -228,7 +243,8 @@ module.exports = {
         }
       }
     }, {
-      output_folder : false
+      output_folder : false,
+      start_session : true
     }, function(err, results) {
       test.equals(err, null);
       test.equals(beforeEachCount, 2);
@@ -253,7 +269,8 @@ module.exports = {
         }
       }
     }, {
-      output_folder : false
+      output_folder : false,
+      start_session : true
     }, function(err, results) {
       test.equals(err, null);
       test.equals(reporterCount, 1);
@@ -278,7 +295,8 @@ module.exports = {
         }
       }
     }, {
-      output_folder : false
+      output_folder : false,
+      start_session : true
     }, function(err, results) {
       test.equals(err, null);
       test.equals(reporterCount, 1);
@@ -301,7 +319,7 @@ module.exports = {
     }, function(err, results) {
       test.equals(err, null);
       test.ok('sample' in results.modules);
-      test.ok('demoTestMixed' in results.modules.sample);
+      test.ok('demoTestMixed' in results.modules.sample.completed);
       test.done();
     });
   },
@@ -318,9 +336,10 @@ module.exports = {
       },
       tag_filter : ['login']
     }, {
-      output_folder : false
+      output_folder : false,
+      start_session : true
     }, function(err, results) {
-      test.ok(('demoTagTest' in results.modules.sample), 'demoTagTest was ran');
+      test.ok(('demoTagTest' in results.modules.sample.completed), 'demoTagTest was ran');
       test.ok(Object.keys(results.modules).length === 1, 'There was only 1 test running.');
       test.done();
     });
@@ -340,7 +359,9 @@ module.exports = {
       }
     }, {
       output_folder : 'output',
-      src_folders : src_folders
+      start_session : true,
+      src_folders : src_folders,
+      reporter : 'junit'
     }, function(err, results) {
       test.equals(err, null);
       var fs = require('fs');
@@ -369,7 +390,8 @@ module.exports = {
         test : test
       }
     }, {
-      output_folder : false
+      output_folder : false,
+      start_session : true
     }, function(err, results) {
       test.equals(err, null);
       test.ok('sampleTest' in results.modules);
