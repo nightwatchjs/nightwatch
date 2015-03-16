@@ -66,8 +66,8 @@ module.exports = {
       test.done();
     });
 
-    var absPath = path.join(process.cwd(), 'extra/commands');
-    client.options.custom_commands_path = [absPath];
+    var absPath = path.resolve('extra/commands');
+    client.options.custom_commands_path = absPath;
     Api.init(client);
 
     test.doesNotThrow(
