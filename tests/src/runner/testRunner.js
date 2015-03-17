@@ -397,5 +397,24 @@ module.exports = {
       test.ok('sampleTest' in results.modules);
       test.done();
     });
+  },
+
+  testRunUnitTests : function(test) {
+    var testsPath = path.join(process.cwd(), '/sampletests/unittests');
+    test.expect(3);
+    this.Runner.run([testsPath], {
+      silent : true,
+      output : false,
+      globals : {
+        test : test
+      }
+    }, {
+      output_folder : false,
+      start_session : false
+    }, function(err, results) {
+      test.equals(err, null);
+      test.done();
+    });
   }
+
 };
