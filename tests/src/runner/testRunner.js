@@ -224,7 +224,7 @@ module.exports = {
     });
   },
 
-  testRunWithGlobalAsyncBeforeAndAfter : function(test) {
+  testRunWithGlobalAsyncBeforeEachAndAfterEach : function(test) {
     test.expect(15);
     var testsPath = path.join(process.cwd(), '/sampletests/before-after');
     var beforeEachCount = 0;
@@ -240,6 +240,42 @@ module.exports = {
         },
         afterEach: function(done) {
           setTimeout(function() { afterEachCount++; done(); }, 100);
+        }
+      }
+    }, {
+      output_folder : false,
+      start_session : true
+    }, function(err, results) {
+      test.equals(err, null);
+      test.equals(beforeEachCount, 2);
+      test.equals(afterEachCount, 2);
+      test.done();
+    });
+  },
+
+  testRunWithGlobalAsyncBeforeEachAndAfterEachWithBrowser : function(test) {
+    test.expect(17);
+    var testsPath = path.join(process.cwd(), '/sampletests/before-after');
+    var beforeEachCount = 0;
+    var afterEachCount = 0;
+    this.Runner.run([testsPath], {
+      seleniumPort : 10195,
+      silent : true,
+      output : false,
+      globals : {
+        test : test,
+        beforeEach: function(client, done) {
+          test.deepEqual(client.globals, this);
+          setTimeout(function() {
+            beforeEachCount++;
+            done();
+          }, 100);
+        },
+        afterEach: function(client, done) {
+          setTimeout(function() {
+            afterEachCount++;
+            done();
+          }, 100);
         }
       }
     }, {

@@ -27,6 +27,7 @@ module.exports = {
   },
 
   afterEach : function(cb) {
+    console.log('GLOBAL BEFORE EACH');
     cb();
   },
 
