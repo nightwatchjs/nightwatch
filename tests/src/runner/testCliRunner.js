@@ -80,7 +80,8 @@ module.exports = {
         },
         'saucelabs' : {
           selenium : {
-            start_process : false
+            start_process : false,
+            start_session : false
           }
         }
       }
@@ -105,6 +106,11 @@ module.exports = {
 
           selenium : {
             host : 'other.host'
+          },
+
+          cli_args : {
+            arg1 : 'arg1_value',
+            arg2 : 'arg2_value'
           },
 
           desiredCapabilities : {
@@ -267,6 +273,9 @@ module.exports = {
     }).init();
 
     test.equal(runner.manageSelenium, true);
+    test.equal(runner.startSession, true);
+    test.deepEqual(runner.settings.selenium.cli_args, {arg1: 'arg1_value', arg2: 'arg2_value'});
+
     test.equal(runner.settings.selenium.host, 'other.host');
     test.equal(runner.test_settings.output, false);
     test.equal(runner.test_settings.disable_colors, true);
@@ -452,7 +461,23 @@ module.exports = {
     }).init();
 
     test.equal(runner.manageSelenium, false);
+    test.equal(runner.startSession, false);
     test.done();
+  },
+
+  testStartSeleniuSession : function(test) {
+    var CliRunner = require('../../../'+ BASE_PATH +'/../lib/runner/cli/clirunner.js');
+    var runner = new CliRunner({
+      config : './nightwatch.json',
+      env : 'default'
+    }).init();
+
+    runner.manageSelenium = false;
+    test.expect(1);
+    runner.startSelenium(function() {
+      test.ok('callback called');
+      test.done();
+    });
   },
 
   testStartSeleniumEnabled : function(test) {
