@@ -315,6 +315,63 @@ module.exports = {
     test.done();
   },
 
+  testRunTestsWithTestcaseOption : function(test) {
+    mockery.registerMock('fs', {
+      existsSync : function(module) {
+        if (module == './custom.json') {
+          return true;
+        }
+        return false;
+      },
+      statSync : function(file) {
+        if (file == 'demoTest.js') {
+          return true;
+        }
+        throw new Error('Start error.');
+      }
+    });
+
+    var CliRunner = require('../../../'+ BASE_PATH +'/../lib/runner/cli/clirunner.js');
+    var runner = new CliRunner({
+      config : './custom.json',
+      env : 'default',
+      test : 'demoTest',
+      testcase : 'testCase'
+    }).init();
+
+    var testSource = runner.getTestSource();
+    test.equal(runner.argv.testcase, 'testCase');
+    test.done();
+  },
+
+  testRunTestsWithTestcaseOptionAndWithoutTest : function(test) {
+    mockery.registerMock('fs', {
+      existsSync : function(module) {
+        if (module == './custom.json') {
+          return true;
+        }
+        return false;
+      },
+      statSync : function(file) {
+        if (file == 'demoTest.js') {
+          return true;
+        }
+        throw new Error('Start error.');
+      }
+    });
+
+    var CliRunner = require('../../../'+ BASE_PATH +'/../lib/runner/cli/clirunner.js');
+    var runner = new CliRunner({
+      config : './custom.json',
+      env : 'default',
+      testcase : 'testCase'
+    }).init();
+
+    var testSource = runner.getTestSource();
+    test.equal(runner.argv.testcase, null);
+    test.done();
+  },
+
   testGetTestSourceGroup : function(test) {
     mockery.registerMock('fs', {
       existsSync : function(module) {

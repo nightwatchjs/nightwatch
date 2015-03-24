@@ -451,6 +451,48 @@ module.exports = {
       test.equals(err, null);
       test.done();
     });
+  },
+
+  testRunTestcase : function(test) {
+    var testsPath = path.join(process.cwd(), '/sampletests/before-after/syncBeforeAndAfter.js');
+
+    this.Runner.run(testsPath, {
+      silent : true,
+      output : false,
+      globals : {
+        test : test
+      }
+    }, {
+      output_folder : false,
+      start_session : true,
+      testcase : 'demoTestSyncOne'
+    }, function(err, results) {
+      test.equals(err, null);
+      test.ok('demoTestSyncOne' in results.modules.syncBeforeAndAfter.completed);
+      test.ok(!('demoTestSyncTwo' in results.modules.syncBeforeAndAfter.completed));
+
+      test.done();
+    });
+  },
+
+  testRunTestcaseInvalid : function(test) {
+    var testsPath = path.join(process.cwd(), '/sampletests/before-after/syncBeforeAndAfter.js');
+
+    this.Runner.run(testsPath, {
+      silent : true,
+      output : false,
+      globals : {
+        test : test
+      }
+    }, {
+      output_folder : false,
+      start_session : true,
+      testcase : 'Unknown'
+    }, function(err, results) {
+      test.equals(err.message, 'Error: "Unknown" is not a valid testcase in the current test suite.');
+
+      test.done();
+    });
   }
 
 };
