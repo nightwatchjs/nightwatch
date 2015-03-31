@@ -1,7 +1,10 @@
+var nightwatch = require('./lib/index.js');
 
 module.exports = function(grunt) {
 
   'use strict';
+
+  nightwatch.initGrunt(grunt);
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -68,7 +71,25 @@ module.exports = function(grunt) {
       patch : {
 
       }
+    },
+
+    nightwatch: {
+      options: {
+        cwd: './'
+      },
+
+      'default' : {},
+
+      browserstack: {
+        argv: {
+          env: 'browserstack'
+        },
+        settings: {
+          silent: true
+        }
+      }
     }
+
   });
 
   grunt.loadNpmTasks('grunt-npm-release');
