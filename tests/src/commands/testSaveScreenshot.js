@@ -12,7 +12,7 @@ module.exports = {
       url : '/wd/hub/session/1352110219202/screenshot',
       method:'GET',
       response : JSON.stringify({
-        sessionId: "1352110219202",
+        sessionId: '1352110219202',
         status:0,
         value:'screendata'
       })

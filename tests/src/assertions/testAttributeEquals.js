@@ -1,7 +1,7 @@
-var BASE_PATH = process.env.NIGHTWATCH_COV
-  ? 'lib-cov'
-  : 'lib';
+
+var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
 var Api = require('../../../'+BASE_PATH+'/core/api.js');
+
 module.exports = {
   setUp: function (callback) {
     callback();
@@ -25,7 +25,6 @@ module.exports = {
         test.equals(result, 'main');
         test.equals(expected, 'main');
         test.equals(abortOnFailure, true);
-        delete assertionFn;
         test.done();
       }
     };
@@ -51,7 +50,6 @@ module.exports = {
         test.equals(result, 'not_expected');
         test.equals(expected, 'main');
         test.equals(abortOnFailure, true);
-        delete assertionFn;
         test.done();
       }
     };
@@ -77,7 +75,6 @@ module.exports = {
         test.equals(result, null);
         test.equals(expected, 'main');
         test.equals(abortOnFailure, true);
-        delete assertionFn;
         test.done();
       }
     };
@@ -105,7 +102,6 @@ module.exports = {
         test.equals(expected, 'main');
         test.equals(msg, 'Testing if attribute role of <.test_element> equals "main". Element does not have a role attribute.');
         test.equals(abortOnFailure, true);
-        delete assertionFn;
         test.done();
       }
     };
@@ -117,5 +113,5 @@ module.exports = {
   tearDown : function(callback) {
     callback();
   }
-}
+};
 

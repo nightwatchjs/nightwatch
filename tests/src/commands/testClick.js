@@ -10,17 +10,17 @@ module.exports = {
     var client = this.client.api;
 
     MockServer.addMock({
-      "url" : "/wd/hub/session/1352110219202/element/0/click",
-      "response" : JSON.stringify({
-        sessionId: "1352110219202",
+      'url' : '/wd/hub/session/1352110219202/element/0/click',
+      'response' : JSON.stringify({
+        sessionId: '1352110219202',
         status:0
       })
     });
 
     client.click('#weblogin', function callback(result) {
-      test.equals(result.status, 0)
+      test.equals(result.status, 0);
     }).click('css selector', '#weblogin', function callback(result) {
-      test.equals(result.status, 0)
+      test.equals(result.status, 0);
       test.done();
     });
   },
@@ -29,9 +29,9 @@ module.exports = {
     var client = this.client.api;
 
     MockServer.addMock({
-      "url" : "/wd/hub/session/1352110219202/element/0/click",
-      "response" : JSON.stringify({
-        sessionId: "1352110219202",
+      'url' : '/wd/hub/session/1352110219202/element/0/click',
+      'response' : JSON.stringify({
+        sessionId: '1352110219202',
         status:0
       })
     });
@@ -39,10 +39,10 @@ module.exports = {
     client
       .useXpath()
       .click('//weblogin', function callback(result) {
-        test.equals(result.status, 0)
+        test.equals(result.status, 0);
       })
       .click('css selector', '#weblogin', function callback(result) {
-        test.equals(result.status, 0)
+        test.equals(result.status, 0);
         test.done();
       });
   },
@@ -52,4 +52,4 @@ module.exports = {
     // clean up
     callback();
   }
-}
+};

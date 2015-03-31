@@ -8,10 +8,10 @@ module.exports = {
 
   testGetCookies : function(test) {
     MockServer.addMock({
-      url : "/wd/hub/session/1352110219202/cookie",
+      url : '/wd/hub/session/1352110219202/cookie',
       method:'GET',
       response : JSON.stringify({
-        sessionId: "1352110219202",
+        sessionId: '1352110219202',
         status:0,
         value : [{
           name: 'test_cookie',
@@ -44,10 +44,10 @@ module.exports = {
 
   testGetCookieEmptyResult : function(test) {
     MockServer.addMock({
-      url : "/wd/hub/session/1352110219202/cookie",
+      url : '/wd/hub/session/1352110219202/cookie',
       method:'GET',
       response : JSON.stringify({
-        sessionId: "1352110219202",
+        sessionId: '1352110219202',
         status:0,
         value : []
       })
@@ -64,4 +64,4 @@ module.exports = {
     // clean up
     callback();
   }
-}
+};

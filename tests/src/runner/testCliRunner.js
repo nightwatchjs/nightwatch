@@ -1,7 +1,7 @@
-var BASE_PATH = process.env.NIGHTWATCH_COV
-  ? 'lib-cov'
-  : 'lib';
+
+var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
 var mockery = require('mockery');
+
 module.exports = {
   setUp: function(callback) {
     process.env['ENV_USERNAME'] = 'testuser';

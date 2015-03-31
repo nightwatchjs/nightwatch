@@ -1,6 +1,5 @@
-var BASE_PATH = process.env.NIGHTWATCH_COV
-  ? 'lib-cov'
-  : 'lib';
+
+var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
 var Runner = require('../../../'+ BASE_PATH +'/runner/run.js');
 
 module.exports = {
@@ -52,4 +51,4 @@ module.exports = {
 
     callback();
   }
-}
+};

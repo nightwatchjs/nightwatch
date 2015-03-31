@@ -1,6 +1,5 @@
-var BASE_PATH = process.env.NIGHTWATCH_COV
-  ? 'lib-cov'
-  : 'lib';
+
+var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
 var matcher = require('../../../'+ BASE_PATH +'/runner/filematcher.js');
 
 module.exports = {

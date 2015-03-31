@@ -11,19 +11,19 @@ module.exports = {
     var client = this.client.api;
 
     MockServer.addMock({
-      url : "/wd/hub/session/1352110219202/element/0/attribute/class",
+      url : '/wd/hub/session/1352110219202/element/0/attribute/class',
       method:'GET',
       response : JSON.stringify({
-        sessionId: "1352110219202",
+        sessionId: '1352110219202',
         status:0,
         value : 'test_class'
       })
     });
 
     client.getAttribute('#weblogin', 'class', function callback(result) {
-      test.equals(result.value, 'test_class')
+      test.equals(result.value, 'test_class');
     }).getAttribute('css selector', '#weblogin', 'class', function callback(result) {
-      test.equals(result.value, 'test_class')
+      test.equals(result.value, 'test_class');
       test.done();
     });
   },
@@ -33,4 +33,4 @@ module.exports = {
     // clean up
     callback();
   }
-}
+};
