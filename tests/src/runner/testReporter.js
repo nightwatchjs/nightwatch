@@ -1,6 +1,4 @@
-var BASE_PATH = process.env.NIGHTWATCH_COV
-  ? 'lib-cov'
-  : 'lib';
+var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
 var Reporter = require('../../../'+ BASE_PATH +'/runner/reporter.js');
 
 module.exports = {

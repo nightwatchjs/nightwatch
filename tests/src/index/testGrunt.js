@@ -1,6 +1,4 @@
-var BASE_PATH = process.env.NIGHTWATCH_COV
-  ? 'lib-cov'
-  : 'lib';
+var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
 var mockery = require('mockery');
 var Nightwatch = require('../../../lib/index.js');
 var path = require('path');

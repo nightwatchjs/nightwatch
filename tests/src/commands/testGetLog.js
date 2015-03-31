@@ -11,12 +11,12 @@ module.exports = {
     var client = this.client.api;
 
     MockServer.addMock({
-      url : "/wd/hub/session/1352110219202/log",
+      url : '/wd/hub/session/1352110219202/log',
       method:'POST',
       response : JSON.stringify({
-        sessionId: "1352110219202",
+        sessionId: '1352110219202',
         status:0,
-        value : [ { "level": "info", "timestamp": 534547832, "message": "Test log" }, { "level": "info", "timestamp": 534547442, "message": "Test log2" } ]
+        value : [ { 'level': 'info', 'timestamp': 534547832, 'message': 'Test log' }, { 'level': 'info', 'timestamp': 534547442, 'message': 'Test log2' } ]
       })
     });
 
@@ -34,4 +34,4 @@ module.exports = {
     // clean up
     callback();
   }
-}
+};

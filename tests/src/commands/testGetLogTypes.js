@@ -11,12 +11,12 @@ module.exports = {
     var client = this.client.api;
 
     MockServer.addMock({
-      url : "/wd/hub/session/1352110219202/log/types",
+      url : '/wd/hub/session/1352110219202/log/types',
       method:'GET',
       response : JSON.stringify({
-        sessionId: "1352110219202",
+        sessionId: '1352110219202',
         status:0,
-        value : [ "browser", "har" ]
+        value : [ 'browser', 'har' ]
       })
     });
 
@@ -34,4 +34,4 @@ module.exports = {
     // clean up
     callback();
   }
-}
+};
