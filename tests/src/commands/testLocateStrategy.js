@@ -31,7 +31,7 @@ module.exports = {
 
   'test run sample test with xpath' : function(test) {
     test.expect(3);
-    
+
     Runner.run([process.cwd() + '/sampletests/usexpath'], {
       seleniumPort : 10195,
       silent : true,
