@@ -1,4 +1,3 @@
-
 var MockServer = require('mockserver');
 
 module.exports = {

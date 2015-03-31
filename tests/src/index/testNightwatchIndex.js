@@ -216,12 +216,6 @@ module.exports = {
     test.done();
   },
 
-  testGrunt : function(test) {
-    var grunt = require('grunt');
-
-    test.done();
-  },
-
   tearDown : function(callback) {
     if (this.client) {
       this.client.queue.reset();
