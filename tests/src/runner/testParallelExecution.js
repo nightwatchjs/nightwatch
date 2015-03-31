@@ -35,7 +35,7 @@ module.exports = {
         return new Child();
       }
     });
-    mockery.registerMock('../lib/run/run.js', {
+    mockery.registerMock('../lib/runner/run.js', {
       run : function(source, settings, opts, callback) {}
     });
 

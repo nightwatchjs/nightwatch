@@ -1,7 +1,7 @@
 var BASE_PATH = process.env.NIGHTWATCH_COV
   ? 'lib-cov'
   : 'lib';
-var Reporter = require('../../../'+ BASE_PATH +'/run/reporter.js');
+var Reporter = require('../../../'+ BASE_PATH +'/runner/reporter.js');
 
 module.exports = {
   'test with unknown reporter' : function(test) {

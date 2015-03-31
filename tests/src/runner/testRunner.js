@@ -6,14 +6,14 @@ var path = require('path');
 
 module.exports = {
   setUp : function(cb) {
-    this.Runner = require('../../../'+ BASE_PATH +'/run/run.js');
+    this.Runner = require('../../../'+ BASE_PATH +'/runner/run.js');
     process.removeAllListeners('exit');
     process.removeAllListeners('uncaughtException');
     cb();
   },
 
   tearDown : function(callback) {
-    delete require.cache[require.resolve('../../../'+ BASE_PATH +'/run/run.js')];
+    delete require.cache[require.resolve('../../../'+ BASE_PATH +'/runner/run.js')];
     callback();
   },
 
