@@ -23,10 +23,8 @@ module.exports = {
         if (hasDialog) {
           this.acceptAlert();
         }
-        this.verify.equal(1, 0);
-        this.verify.equal(1, 2);
       })
-      .waitForElementVisible('xbody', 1000);
+      .waitForElementVisible('body', 1000);
 
   },
 

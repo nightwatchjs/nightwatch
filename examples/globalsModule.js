@@ -16,7 +16,7 @@ module.exports = {
     cb();
   },
 
-  beforeEach : function(cb) {
+  beforeEach : function(browser, cb) {
     cb();
   },
 
@@ -24,7 +24,7 @@ module.exports = {
     cb();
   },
 
-  afterEach : function(cb) {
+  afterEach : function(browser, cb) {
     cb();
   },
 
