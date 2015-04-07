@@ -28,7 +28,7 @@ $ npm test
 ```
 
 ### Discuss
-In addition to [Twitter](https://twitter.com/nightwatchjs), the [Mailing List/Google Group](https://groups.google.com/forum/#!forum/nightwatchjs) is also available for Nightwatch related discussions.
+The [Mailing List/Google Group](https://groups.google.com/forum/#!forum/nightwatchjs) is the most appropriate tool for Nightwatch related discussions. In addition, there is a [StackOverflow Nightwatch.js tag](http://stackoverflow.com/questions/tagged/nightwatch.js) at your disposal and [Twitter](https://twitter.com/nightwatchjs).
 
 ### Setup Guides
 Browser specific setup and usage guides along with debugging instructions can be found on the [**Wiki**](https://github.com/beatfactor/nightwatch/wiki).
