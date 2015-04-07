@@ -91,9 +91,14 @@ module.exports = {
     Api.loadPageObjects();
 
     test.ok(typeof client.api.page == 'object');
-    test.ok('SimplePage' in client.api.page);
 
-    client.api.page.SimplePage(test);
+    test.ok('SimplePageFn' in client.api.page);
+    test.ok('simplePageObj' in client.api.page);
+
+    client.api.page.SimplePageFn(test);
+
+    var simplePage = client.api.page.simplePageObj();
+    test.equals(typeof simplePage, 'object');
   },
 
   testAddCustomAssertion : function(test) {
