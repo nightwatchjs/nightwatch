@@ -27,7 +27,7 @@ Thanks in advance for your contribution.
   * create a new branch from master (e.g. `features/my-new-feature` or `issue/123-my-bugfix`)
 2. If you're fixing a bug also create an issue if one doesn't exist yet
 3. If it's a new feature explain why do you think it's necessary
-4. If your change include drastic or low level changes please make sure they will be accepted and what the impact will be
+4. If your change include drastic or low level changes please discuss them to make sure they will be accepted and what the impact will be
 5. If your change is based on exisiting functionality please consider refactoring first. Pull requests that duplicate code will not make it in very quick, if at all.
 6. Follow the same coding style with regards to spaces, semicolons, variable naming etc. 
 7. Add tests - after all this _is_ a testing framework
