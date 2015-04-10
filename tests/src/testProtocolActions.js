@@ -942,7 +942,7 @@ module.exports = {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.log('browser', function callback() {
+      var command = protocol.sessionLog('browser', function callback() {
         test.done();
       });
 
@@ -950,13 +950,13 @@ module.exports = {
       test.equal(command.request.path, '/wd/hub/session/1352110219202/log');
     });
   },
-  
+
   testLogTypes : function(test) {
     var client = this.client;
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      var command = protocol.logTypes(function callback() {
+      var command = protocol.sessionLogTypes(function callback() {
         test.done();
       });
 
@@ -964,7 +964,7 @@ module.exports = {
       test.equal(command.request.path, '/wd/hub/session/1352110219202/log/types');
     });
   },
-  
+
   tearDown : function(callback) {
     this.client = null;
     // clean up
