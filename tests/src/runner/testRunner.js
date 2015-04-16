@@ -163,7 +163,7 @@ module.exports = {
   },
 
   testRunAsyncWithBeforeAndAfter : function(test) {
-    test.expect(27);
+    test.expect(34);
     var testsPath = path.join(process.cwd(), '/sampletests/before-after');
     this.Runner.run([testsPath], {
       seleniumPort : 10195,
@@ -198,7 +198,7 @@ module.exports = {
   },
 
   testRunWithGlobalBeforeAndAfter : function(test) {
-    test.expect(15);
+    test.expect(22);
     var testsPath = path.join(process.cwd(), '/sampletests/before-after');
     var beforeEachCount = 0;
     var afterEachCount = 0;
@@ -216,14 +216,14 @@ module.exports = {
       start_session : true
     }, function(err, results) {
       test.equals(err, null);
-      test.equals(beforeEachCount, 2);
-      test.equals(afterEachCount, 2);
+      test.equals(beforeEachCount, 3);
+      test.equals(afterEachCount, 3);
       test.done();
     });
   },
 
   testRunWithGlobalAsyncBeforeEachAndAfterEach : function(test) {
-    test.expect(15);
+    test.expect(22);
     var testsPath = path.join(process.cwd(), '/sampletests/before-after');
     var beforeEachCount = 0;
     var afterEachCount = 0;
@@ -245,14 +245,14 @@ module.exports = {
       start_session : true
     }, function(err, results) {
       test.equals(err, null);
-      test.equals(beforeEachCount, 2);
-      test.equals(afterEachCount, 2);
+      test.equals(beforeEachCount, 3);
+      test.equals(afterEachCount, 3);
       test.done();
     });
   },
 
   testRunWithGlobalAsyncBeforeEachAndAfterEachWithBrowser : function(test) {
-    test.expect(17);
+    test.expect(25);
     var testsPath = path.join(process.cwd(), '/sampletests/before-after');
     var beforeEachCount = 0;
     var afterEachCount = 0;
@@ -281,14 +281,14 @@ module.exports = {
       start_session : true
     }, function(err, results) {
       test.equals(err, null);
-      test.equals(beforeEachCount, 2);
-      test.equals(afterEachCount, 2);
+      test.equals(beforeEachCount, 3);
+      test.equals(afterEachCount, 3);
       test.done();
     });
   },
 
   testRunWithGlobalReporter : function(test) {
-    test.expect(15);
+    test.expect(22);
     var testsPath = path.join(process.cwd(), '/sampletests/before-after');
     var reporterCount = 0;
     this.Runner.run([testsPath], {
@@ -313,7 +313,7 @@ module.exports = {
   },
 
   testRunWithGlobalAsyncReporter : function(test) {
-    test.expect(15);
+    test.expect(22);
     var testsPath = path.join(process.cwd(), '/sampletests/before-after');
     var reporterCount = 0;
     this.Runner.run([testsPath], {
@@ -383,13 +383,18 @@ module.exports = {
     var src_folders = [
       path.join(process.cwd(), 'sampletests/withsubfolders')
     ];
+    var currentTestArray = [];
 
     this.Runner.run(src_folders, {
       seleniumPort : 10195,
       silent : true,
       output : false,
       globals : {
-        test : test
+        test : test,
+        beforeEach : function(client, done) {
+          currentTestArray.push(client.currentTest);
+          done();
+        }
       }
     }, {
       output_folder : 'output',
@@ -398,6 +403,11 @@ module.exports = {
       reporter : 'junit'
     }, function(err, results) {
       test.equals(err, null);
+      test.deepEqual(currentTestArray, [
+        { name: '', module: 'simple/sample' },
+        { name: '', module: 'tags/sample' }
+      ]);
+
       var fs = require('fs');
       fs.readdir(src_folders[0], function(err, list) {
         test.deepEqual(list, ['simple', 'tags'], 'The subfolders have been created.');
@@ -491,6 +501,38 @@ module.exports = {
 
       test.done();
     });
-  }
+  },
 
+  testRunCurrentTestName : function(test) {
+    test.expect(8);
+    var testsPath = path.join(process.cwd(), '/sampletests/before-after/sampleSingleTest.js');
+    this.Runner.run([testsPath], {
+      seleniumPort : 10195,
+      silent : true,
+      output : false,
+      globals : {
+        test : test,
+        beforeEach: function(client, done) {
+          test.deepEqual(client.currentTest, {
+            name : '',
+            module : 'sampleSingleTest'
+          });
+          done();
+        },
+        afterEach: function(client, done) {
+          test.deepEqual(client.currentTest, {
+            name : null,
+            module : 'sampleSingleTest'
+          });
+          done();
+        }
+      }
+    }, {
+      output_folder : false,
+      start_session : true
+    }, function(err, results) {
+      test.equals(err, null);
+      test.done();
+    });
+  }
 };
