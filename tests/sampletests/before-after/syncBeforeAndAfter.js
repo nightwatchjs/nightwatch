@@ -9,9 +9,13 @@ module.exports = {
 
   demoTestSyncOne : function (client) {
     client.url('http://localhost');
+    var testName = client.currentTest.name;
+    client.globals.test.deepEqual(testName, 'demoTestSyncOne');
   },
 
   demoTestSyncTwo : function (client) {
+    var testName = client.currentTest.name;
+    client.globals.test.deepEqual(testName, 'demoTestSyncTwo');
     client.end();
   },
 
