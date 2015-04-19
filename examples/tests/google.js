@@ -4,7 +4,7 @@ module.exports = {
     client
       .page.google().goToGoogle()
       .assert.title('Google')
-      .assert.visible('input[type=text]')
+      .assert.visible('input[name="q"]')
       .setValue('input[type=text]', 'nightwatch')
       .waitForElementVisible('button[name=btnG]', 1000)
       .click('button[name=btnG]')
