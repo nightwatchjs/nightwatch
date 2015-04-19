@@ -521,6 +521,62 @@ module.exports = {
     });
   },
 
+  testSessionGET : function(test) {
+    var client = this.client;
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.session(function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'GET');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202');
+    });
+  },
+
+  testSessionDefault : function(test) {
+    var client = this.client;
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.session('GET', function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'GET');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202');
+    });
+  },
+
+  testSessionDELETE : function(test) {
+    var client = this.client;
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.session('DELETE', function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'DELETE');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202');
+    });
+  },
+
+  testSessionPOST : function(test) {
+    var client = this.client;
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.session('POST', function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'POST');
+      test.equal(command.request.path, '/wd/hub/session');
+    });
+  },
+
   testScreenshot : function(test) {
     var client = this.client;
     var protocol = this.protocol;
