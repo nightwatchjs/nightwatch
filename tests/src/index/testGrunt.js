@@ -36,10 +36,13 @@ module.exports = {
       this.init = function(done) {
         return this;
       };
-      this.runTests = function(done, settings) {
+      this.updateTestSettings = function(settings) {
         test.deepEqual(settings, {
           silent:true
         });
+        return this;
+      };
+      this.runTests = function(done) {
         done();
         return this;
       };
@@ -100,7 +103,10 @@ module.exports = {
       this.init = function() {
         return this;
       };
-      this.runTests = function(done, settings) {
+      this.updateTestSettings = function(settings) {
+        return this;
+      };
+      this.runTests = function(done) {
         done();
         return this;
       };
