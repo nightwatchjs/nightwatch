@@ -507,6 +507,20 @@ module.exports = {
     });
   },
 
+  testSessions : function(test) {
+    var client = this.client;
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.sessions(function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'GET');
+      test.equal(command.request.path, '/wd/hub/sessions');
+    });
+  },
+
   testScreenshot : function(test) {
     var client = this.client;
     var protocol = this.protocol;
