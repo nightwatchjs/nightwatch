@@ -75,6 +75,7 @@ module.exports = {
       selenium : {
         start_process: true
       },
+      end_session_on_fail : true,
       test_settings : {
         'default' : {
         },
@@ -91,6 +92,7 @@ module.exports = {
       selenium : {
         start_process : true
       },
+      end_session_on_fail : true,
       test_settings : {
         'default' : {
           output : false,
@@ -103,6 +105,7 @@ module.exports = {
               user : '${ENV_USERNAME}'
             }
           },
+          end_session_on_fail : false,
 
           selenium : {
             host : 'other.host'
@@ -274,6 +277,7 @@ module.exports = {
 
     test.equal(runner.manageSelenium, true);
     test.equal(runner.startSession, true);
+    test.equal(runner.endSessionOnFail, false);
     test.deepEqual(runner.settings.selenium.cli_args, {arg1: 'arg1_value', arg2: 'arg2_value'});
 
     test.equal(runner.settings.selenium.host, 'other.host');
@@ -519,6 +523,7 @@ module.exports = {
 
     test.equal(runner.manageSelenium, false);
     test.equal(runner.startSession, false);
+    test.equal(runner.endSessionOnFail, true);
     test.done();
   },
 

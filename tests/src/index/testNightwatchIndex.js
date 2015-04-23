@@ -104,7 +104,6 @@ module.exports = {
     });
   },
 
-
   'Test saveScreenshotToFile mkpath failure' : function(test) {
     var client = this.client = Client.init();
     var filePath = '/invalid-path';
@@ -207,12 +206,24 @@ module.exports = {
 
   testSetOptionsScreenshotsThrows : function(test) {
     test.throws(function() {
-      var client = this.client = Client.init({
+      this.client = Client.init({
         screenshots : {
           enabled : true
         }
       });
+    }.bind(this));
+    test.done();
+  },
+
+  testEndSessionOnFail : function(test) {
+    this.client = Client.init({
+      end_session_on_fail : true
     });
+    var eq = test.equals;
+    eq(this.client.options.end_session_on_fail, true);
+    this.client.endSessionOnFail(false);
+    eq(this.client.endSessionOnFail(), false);
+    eq(this.client.options.end_session_on_fail, false);
     test.done();
   },
 
