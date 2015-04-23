@@ -392,7 +392,10 @@ module.exports = {
       globals : {
         test : test,
         beforeEach : function(client, done) {
-          currentTestArray.push(client.currentTest);
+          currentTestArray.push({
+            name : client.currentTest.name,
+            module : client.currentTest.module
+          });
           done();
         }
       }
@@ -504,7 +507,7 @@ module.exports = {
   },
 
   testRunCurrentTestName : function(test) {
-    test.expect(8);
+    test.expect(10);
     var testsPath = path.join(process.cwd(), '/sampletests/before-after/sampleSingleTest.js');
     this.Runner.run([testsPath], {
       seleniumPort : 10195,
@@ -513,17 +516,13 @@ module.exports = {
       globals : {
         test : test,
         beforeEach: function(client, done) {
-          test.deepEqual(client.currentTest, {
-            name : '',
-            module : 'sampleSingleTest'
-          });
+          test.equal(client.currentTest.name, '');
+          test.equal(client.currentTest.module, 'sampleSingleTest');
           done();
         },
         afterEach: function(client, done) {
-          test.deepEqual(client.currentTest, {
-            name : null,
-            module : 'sampleSingleTest'
-          });
+          test.equal(client.currentTest.name, null);
+          test.equal(client.currentTest.module, 'sampleSingleTest');
           done();
         }
       }
