@@ -38,7 +38,7 @@ try {
     ], options, function(err) {
       setTimeout(function() {
         server.close();
-      }, 0);
+      }, 100);
 
       if (err) {
         process.exit(1);
