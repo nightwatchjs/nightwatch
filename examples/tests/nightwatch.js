@@ -1,4 +1,5 @@
 module.exports = {
+  disabled : true,
   'Demo test NightwatchJS.org' : function (client) {
     client
       .url('http://nightwatchjs.org')
