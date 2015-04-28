@@ -11,7 +11,7 @@ module.exports = {
     this.client.api.waitForElementPresent('#weblogin', 100, function callback(result, instance) {
       test.equal(instance.expectedValue, 'found');
       test.equal(result.status, 0);
-      test.equal(result.value.ELEMENT, '0');
+      test.equal(result.value[0].ELEMENT, '0');
       test.done();
     });
   },

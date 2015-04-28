@@ -75,6 +75,7 @@ module.exports = {
       selenium : {
         start_process: true
       },
+      end_session_on_fail : true,
       test_settings : {
         'default' : {
         },
@@ -86,11 +87,27 @@ module.exports = {
         }
       }
     });
+    mockery.registerMock('./selenium_override.json', {
+      src_folders : 'tests',
+      selenium : {
+        start_process: false,
+        start_session: false
+      },
+      test_settings : {
+        'default' : {
+          selenium : {
+            start_process : true,
+            start_session : true
+          }
+        }
+      }
+    });
     mockery.registerMock('./custom.json', {
       src_folders : ['tests'],
       selenium : {
         start_process : true
       },
+      end_session_on_fail : true,
       test_settings : {
         'default' : {
           output : false,
@@ -103,6 +120,7 @@ module.exports = {
               user : '${ENV_USERNAME}'
             }
           },
+          end_session_on_fail : false,
 
           selenium : {
             host : 'other.host'
@@ -145,6 +163,9 @@ module.exports = {
         }
         if (b == './sauce.json') {
           return './sauce.json';
+        }
+        if (b == './selenium_override.json') {
+          return './selenium_override.json';
         }
         return './nightwatch.json';
       },
@@ -274,6 +295,7 @@ module.exports = {
 
     test.equal(runner.manageSelenium, true);
     test.equal(runner.startSession, true);
+    test.equal(runner.endSessionOnFail, false);
     test.deepEqual(runner.settings.selenium.cli_args, {arg1: 'arg1_value', arg2: 'arg2_value'});
 
     test.equal(runner.settings.selenium.host, 'other.host');
@@ -519,6 +541,27 @@ module.exports = {
 
     test.equal(runner.manageSelenium, false);
     test.equal(runner.startSession, false);
+    test.equal(runner.endSessionOnFail, true);
+    test.done();
+  },
+
+  testStartSeleniumEnvironmentOverride : function(test) {
+    mockery.registerMock('fs', {
+      existsSync : function(module) {
+        if (module == './selenium_override.json') {
+          return true;
+        }
+        return false;
+      }
+    });
+    var CliRunner = require('../../../'+ BASE_PATH +'/../lib/runner/cli/clirunner.js');
+    var runner = new CliRunner({
+      config : './selenium_override.json',
+      env : 'default'
+    }).init();
+
+    test.equal(runner.manageSelenium, true);
+    test.equal(runner.startSession, true);
     test.done();
   },
 
