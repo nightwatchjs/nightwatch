@@ -380,6 +380,34 @@ module.exports = {
     });
   },
 
+  'test mouseButtonClick click left' : function(test) {
+    var client = this.client;
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.mouseButtonClick('left', function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'POST');
+      test.equal(command.data, '{"button":0}');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/click');
+    });
+  },
+
+  'test mouseButtonClick click right' : function(test) {
+    var client = this.client;
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.mouseButtonClick('right', function callback() {
+        test.done();
+      });
+
+      test.equal(command.data, '{"button":2}');
+    });
+  },
+
   'test mouseButtonDown click left' : function(test) {
     var client = this.client;
     var protocol = this.protocol;
