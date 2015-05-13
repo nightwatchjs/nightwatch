@@ -68,8 +68,18 @@
     },
     {
       "url" : "/wd/hub/session/1352110219202/element",
+      "postdata" : "{\"using\":\"css selector\",\"value\":\"#signupSection\"}",
+      "response" : "{\"sessionId\":\"1352110219202\",\"status\":0,\"value\":{\"ELEMENT\":\"0\"},\"class\":\"org.openqa.selenium.remote.Response\",\"hCode\":604376696}"
+    },
+    {
+      "url" : "/wd/hub/session/1352110219202/element",
       "postdata" : "{\"using\":\"xpath\",\"value\":\"//weblogin\"}",
       "response" : "{\"sessionId\":\"1352110219202\",\"status\":0,\"value\":{\"ELEMENT\":\"0\"},\"class\":\"org.openqa.selenium.remote.Response\",\"hCode\":604376696}"
+    },
+    {
+      "url" : "/wd/hub/session/1352110219202/element/0/element",
+      "postdata" : "{\"using\":\"css selector\",\"value\":\"#helpBtn\"}",
+      "response" : "{\"sessionId\":\"1352110219202\",\"status\":0,\"value\":{\"ELEMENT\":\"1\"},\"class\":\"org.openqa.selenium.remote.Response\",\"hCode\":604376696}"
     },
     {
       "url" : "/wd/hub/session/1352110219202/elements",
@@ -85,6 +95,16 @@
       "url" : "/wd/hub/session/1352110219202/elements",
       "postdata" : "{\"using\":\"xpath\",\"value\":\"//weblogin\"}",
       "response" : "{\"sessionId\":\"1352110219202\",\"status\":0,\"value\":[{\"ELEMENT\":\"0\"}],\"class\":\"org.openqa.selenium.remote.Response\",\"hCode\":604376696}"
+    },
+    {
+      "url" : "/wd/hub/session/1352110219202/elements",
+      "postdata" : "{\"using\":\"css selector\",\"value\":\"#signupSection\"}",
+      "response" : "{\"sessionId\":\"1352110219202\",\"status\":0,\"value\":[{\"ELEMENT\":\"0\"},{\"ELEMENT\":\"1\"}],\"class\":\"org.openqa.selenium.remote.Response\",\"hCode\":604376696}"
+    },
+    {
+      "url" : "/wd/hub/session/1352110219202/element/0/elements",
+      "postdata" : "{\"using\":\"css selector\",\"value\":\"#helpBtn\"}",
+      "response" : "{\"sessionId\":\"1352110219202\",\"status\":0,\"value\":[{\"ELEMENT\":\"1\"}],\"class\":\"org.openqa.selenium.remote.Response\",\"hCode\":604376696}"
     },
     {
       "url" : "/wd/hub/session/1352110219202/buttondown",

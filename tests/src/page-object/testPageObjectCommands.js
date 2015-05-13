@@ -28,6 +28,33 @@ module.exports = {
     });
   },
 
+  testPageObjectElementRecursion : function(test) {
+    MockServer.addMock({
+      'url' : '/wd/hub/session/1352110219202/element/1/click',
+      'response' : JSON.stringify({
+        sessionId: '1352110219202',
+        status:0
+      })
+    });
+
+    var section = this.client.api.page.simplePageObj().section.signUp;
+
+    section.click('help', function callback(result) {
+      test.equals(result.status, 0);
+      test.done();
+    });
+  },
+
+  testPageObjectPluralElementRecursion : function(test) {
+    var section = this.client.api.page.simplePageObj().section.signUp;
+    section.waitForElementPresent('help', 1000, true, function callback(result) {
+      test.equals(result.status, 0);
+      test.equals(result.value.length, 1);
+      test.equals(result.value[0].ELEMENT, '1');
+      test.done();
+    });
+  },
+
   testPageObjectElementCommandSwitchLocateStrategy : function(test) {
     MockServer.addMock({
       'url' : '/wd/hub/session/1352110219202/element/0/click',

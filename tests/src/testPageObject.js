@@ -30,37 +30,11 @@ module.exports = {
     test.ok('help' in page.section.signUp.elements);
     test.ok('getStarted' in page.section.signUp.section);
 
-    test.done();
-  },
-
-  testPageObjectSetSelector : function(test) {
-    var client = this.client = require('../nightwatch.js').init({
-      page_objects_path: './extra/pageobjects'
-    });
-
-    var page = client.api.page.simplePageObj();
     var elements = page.elements;
-
     test.equal(elements.loginCss.selector, '#weblogin');
     test.equal(elements.loginCss.locateStrategy, 'css selector');
     test.equal(elements.loginXpath.selector, '//weblogin');
     test.equal(elements.loginXpath.locateStrategy, 'xpath');
-
-    test.equal(page.section.signUp.elements.help.selector, '#signupSection #helpBtn');
-
-    test.done();
-  },
-
-  testPageObjectSetInvalidSelector : function(test) {
-    var client = this.client = require('../nightwatch.js').init({
-      page_objects_path: './extra/pageobjects'
-    });
-
-    test.throws(
-      function() {
-        var page = client.api.page.invalidPageObj();
-      }, 'Combining xpath and css selectors throws an exception'
-    );
 
     test.done();
   },
