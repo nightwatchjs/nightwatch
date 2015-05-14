@@ -56,4 +56,15 @@ module.exports = {
     test.ok(matched === true);
     test.done();
   },
+
+  'tag: test matching numeric tags single': function (test) {
+    var tags = 101;
+    var testModule = {
+      tags: ['101']
+    };
+
+    var matched = matcher.tags.checkModuleTags(testModule, tags);
+    test.ok(matched === true);
+    test.done();
+  }
 };
