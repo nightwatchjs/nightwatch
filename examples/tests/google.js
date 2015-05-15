@@ -2,14 +2,21 @@ module.exports = {
   tags: ['google'],
   'Demo test Google' : function (client) {
     client
-      .page.google().goToGoogle()
-      .assert.title('Google')
-      .assert.visible('input[name="q"]')
-      .setValue('input[type=text]', 'nightwatch')
-      .waitForElementVisible('button[name=btnG]', 1000)
-      .click('button[name=btnG]')
-      .pause(1000)
-      .assert.containsText('#main', 'Night Watch')
-      .end();
+      .url('http://google.com')
+      .pause(1000);
+
+    client.expect.element('#lst-ib').to.be.enabled;
+    client.expect.element('body').to.be.present.before(1000);
+    client.expect.element('#lst-ib').to.have.css('display').matches(/block/).before(2000);
+    client.expect.element('body').to.have.attribute('class').which.matches(/vasq$/);
+    client.expect.element('#hplogo').text.to.match(/Norge/).before(1000);
+
+    client.setValue('#lst-ib', 'Norway').pause(500);
+    client.expect.element('#lst-ib').to.have.value.equal('Norway');
+    client.expect.element('#lst-ib').to.be.an('input');
+    client.expect.element('#lst-ib').to.be.not.selected;
+    client.expect.element('#lst-ib').to.be.visible;
+
+    client.end();
   }
 };
