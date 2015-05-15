@@ -40,9 +40,30 @@ module.exports = {
   'tag: test loading module with tags': function (test) {
     var tags = ['home', 'login', 'sign-up'];
 
-
     var matched = matcher.tags.match(__dirname + '/../../sampletests/tags/sample.js', tags);
 
+    test.ok(matched === true);
+    test.done();
+  },
+
+  'tag: test matching numeric tags': function (test) {
+    var tags = ['room', 101];
+    var testModule = {
+      tags: ['101']
+    };
+
+    var matched = matcher.tags.checkModuleTags(testModule, tags);
+    test.ok(matched === true);
+    test.done();
+  },
+
+  'tag: test matching numeric tags single': function (test) {
+    var tags = 101;
+    var testModule = {
+      tags: ['101']
+    };
+
+    var matched = matcher.tags.checkModuleTags(testModule, tags);
     test.ok(matched === true);
     test.done();
   }
