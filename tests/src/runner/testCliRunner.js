@@ -213,6 +213,7 @@ module.exports = {
     test.equals(runner.output_folder, 'output');
     test.equals(runner.parallelMode, false);
     test.equals(runner.manageSelenium, false);
+    test.equals(runner.startSession, true);
 
     test.done();
 
