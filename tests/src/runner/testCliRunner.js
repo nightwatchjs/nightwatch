@@ -1,4 +1,3 @@
-
 var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
 var mockery = require('mockery');
 
@@ -58,7 +57,8 @@ module.exports = {
       extra : {
         someGlobal : 'test'
       },
-      otherGlobal : 'other-value'
+      otherGlobal : 'other-value',
+      overWritable: 'not-overwritten-global'
     });
 
     mockery.registerMock('./settings.json', {
@@ -119,6 +119,9 @@ module.exports = {
             service : {
               user : '${ENV_USERNAME}'
             }
+          },
+          globals : {
+            overWritable : 'overwritten'
           },
           end_session_on_fail : false,
 
@@ -495,6 +498,7 @@ module.exports = {
 
     test.equals(runner.test_settings.globals.otherGlobal, 'other-value');
     test.equals(runner.test_settings.globals.someGlobal, 'test');
+    test.equals(runner.test_settings.globals.overWritable, 'overwritten');
 
 
     test.throws(function() {
