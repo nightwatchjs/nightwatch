@@ -48,16 +48,21 @@ module.exports = {
 
     test.ok('assert' in page);
     test.ok('verify' in page);
+    test.ok('expect' in page);
     test.ok('title' in page.assert);
     test.ok('title' in page.verify);
     test.ok('containsText' in page.assert);
     test.ok('containsText' in page.verify);
     test.ok('ok' in page.assert);
     test.ok('ok' in page.verify);
+    test.ok('element' in page.expect);
+    test.ok('section' in page.expect);
     test.deepEqual(typeof page.assert.containsText, 'function');
     test.deepEqual(typeof page.verify.containsText, 'function');
     test.deepEqual(typeof page.assert.title, 'function');
     test.deepEqual(typeof page.verify.title, 'function');
+    test.deepEqual(typeof page.expect.element('loginCss'), 'object');
+    test.deepEqual(typeof page.expect.section('signUp'), 'object');
 
     test.done();
   },
