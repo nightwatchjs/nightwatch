@@ -9,7 +9,9 @@ module.exports = {
       tags: ['home', 'siberia']
     };
 
-    var matched = matcher.tags.checkModuleTags(testModule, tags);
+    var matched = matcher.tags.checkModuleTags(testModule, {
+      tag_filter : tags
+    });
 
     test.ok(matched === true);
     test.done();
@@ -21,7 +23,9 @@ module.exports = {
       tags: ['boroboro', 'siberia']
     };
 
-    var matched = matcher.tags.checkModuleTags(testModule, tags);
+    var matched = matcher.tags.checkModuleTags(testModule, {
+      tag_filter : tags
+    });
 
     test.ok(matched === false);
     test.done();
@@ -31,7 +35,9 @@ module.exports = {
     var tags = ['home', 'login', 'sign-up'];
     var testModule = {};
 
-    var matched = matcher.tags.checkModuleTags(testModule, tags);
+    var matched = matcher.tags.checkModuleTags(testModule, {
+      tag_filter : tags
+    });
 
     test.ok(matched === false);
     test.done();
@@ -40,8 +46,84 @@ module.exports = {
   'tag: test loading module with tags': function (test) {
     var tags = ['home', 'login', 'sign-up'];
 
+    var matched = matcher.tags.match(__dirname + '/../../sampletests/tags/sample.js', {
+      tag_filter : tags
+    });
 
-    var matched = matcher.tags.match(__dirname + '/../../sampletests/tags/sample.js', tags);
+    test.ok(matched === true);
+    test.done();
+  },
+
+  'tag: test matching numeric tags': function (test) {
+    var tags = ['room', 101];
+    var testModule = {
+      tags: ['101']
+    };
+
+    var matched = matcher.tags.checkModuleTags(testModule, {
+      tag_filter : tags
+    });
+    test.ok(matched === true);
+    test.done();
+  },
+
+  'tag: test matching numeric tags single': function (test) {
+    var tags = 101;
+    var testModule = {
+      tags: ['101']
+    };
+
+    var matched = matcher.tags.checkModuleTags(testModule, {
+      tag_filter : tags
+    });
+    test.ok(matched === true);
+    test.done();
+  },
+
+  'skiptag test not matching' : function(test) {
+    var matched = matcher.tags.checkModuleTags({
+      tags: ['room', 101]
+    }, {
+      skiptags : ['101']
+    });
+
+    test.ok(matched === false);
+    test.done();
+  },
+
+  'skiptag test matching' : function(test) {
+    var matched = matcher.tags.checkModuleTags({
+      tags: ['room', 101]
+    }, {
+      skiptags : ['other']
+    });
+
+    test.ok(matched === true);
+    test.done();
+  },
+
+  'skiptag test matching - undefined local tags' : function(test) {
+    var matched = matcher.tags.checkModuleTags({}, {
+      skiptags : ['other']
+    });
+
+    test.ok(matched === true);
+    test.done();
+  },
+
+  'skiptag test loading module with matching tags' : function(test) {
+    var matched = matcher.tags.match(__dirname + '/../../sampletests/tags/sample.js', {
+      skiptags : ['login']
+    });
+
+    test.ok(matched === false);
+    test.done();
+  },
+
+  'skiptag test loading module with no tags' : function(test) {
+    var matched = matcher.tags.match(__dirname + '/../../sampletests/simple/sample.js', {
+      skiptags : ['login']
+    });
 
     test.ok(matched === true);
     test.done();
