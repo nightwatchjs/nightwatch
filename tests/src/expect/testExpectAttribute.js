@@ -1,28 +1,13 @@
-var nock = require('nock');
-var flag = require('chai-nightwatch').flag;
+var Nocks = require('../../nocks.js');
 
 module.exports = {
   setUp: function (callback) {
     this.client = require('../../nightwatch.js').init();
-
     callback();
   },
 
-  'test expect element to have attribute [PASSED]' : function(test) {
-    nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/elements', {"using":"css selector","value":"#weblogin"} )
-      .reply(200, {
-        status: 0,
-        state: 'success',
-        value: [ { ELEMENT: '0' } ]
-      })
-      .get('/wd/hub/session/1352110219202/element/0/attribute/class')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: 'hp vasq',
-        state : 'success'
-      });
+  'to have attribute [PASSED]' : function(test) {
+    Nocks.elementFound().attributeValue('hp vasq');
 
     var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class');
     this.client.on('nightwatch:finished', function(results, errors) {
@@ -42,21 +27,8 @@ module.exports = {
     })
   },
 
-  'test expect element to have attribute with waitFor [PASSED]' : function(test) {
-    nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/elements', {"using":"css selector","value":"#weblogin"} )
-      .reply(200, {
-        status: 0,
-        state: 'success',
-        value: [ { ELEMENT: '0' } ]
-      })
-      .get('/wd/hub/session/1352110219202/element/0/attribute/class')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: 'hp vasq',
-        state : 'success'
-      });
+  'to have attribute with waitFor [PASSED]' : function(test) {
+    Nocks.elementFound().attributeValue('hp vasq');
 
     var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').before(100);
     this.client.on('nightwatch:finished', function(results, errors) {
@@ -67,22 +39,10 @@ module.exports = {
     })
   },
 
-  'test expect element to have attribute with waitFor [FAILED]' : function(test) {
+  'to have attribute with waitFor [FAILED]' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 50;
-    nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/elements', {"using":"css selector","value":"#weblogin"} )
-      .reply(200, {
-        status: 0,
-        state: 'success',
-        value: [ { ELEMENT: '0' } ]
-      })
-      .get('/wd/hub/session/1352110219202/element/0/attribute/class')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: null,
-        state : 'success'
-      });
+
+    Nocks.elementFound().attributeValue(null);
 
     var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').before(60);
     this.client.on('nightwatch:finished', function(results, errors) {
@@ -93,21 +53,8 @@ module.exports = {
     })
   },
 
-  'test expect element to have attribute [FAILED]' : function(test) {
-    nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/elements', {"using":"css selector","value":"#weblogin"} )
-      .reply(200, {
-        status: 0,
-        state: 'success',
-        value: [ { ELEMENT: '0' } ]
-      })
-      .get('/wd/hub/session/1352110219202/element/0/attribute/class')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: null,
-        state : 'success'
-      });
+  'to have attribute [FAILED]' : function(test) {
+    Nocks.elementFound().attributeValue(null);
 
     var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class');
     this.client.on('nightwatch:finished', function(results, errors) {
@@ -129,21 +76,8 @@ module.exports = {
     })
   },
 
-  'test expect element to not have attribute [PASSED]' : function(test) {
-    nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/elements', {"using":"css selector","value":"#weblogin"} )
-      .reply(200, {
-        status: 0,
-        state: 'success',
-        value: [{ELEMENT: '0'}]
-      })
-      .get('/wd/hub/session/1352110219202/element/0/attribute/class')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: null,
-        state : 'success'
-      });
+  'to not have attribute [PASSED]' : function(test) {
+    Nocks.elementFound().attributeValue(null);
 
     var expect = this.client.api.expect.element('#weblogin').to.not.have.attribute('class');
     this.client.on('nightwatch:finished', function(results, errors) {
@@ -163,21 +97,8 @@ module.exports = {
     })
   },
 
-  'test expect element to not have attribute [FAILED]' : function(test) {
-    nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/elements', {"using":"css selector","value":"#weblogin"} )
-      .reply(200, {
-        status: 0,
-        state: 'success',
-        value: [ { ELEMENT: '0' } ]
-      })
-      .get('/wd/hub/session/1352110219202/element/0/attribute/class')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: '',
-        state : 'success'
-      });
+  'to not have attribute [FAILED]' : function(test) {
+    Nocks.elementFound().attributeValue('');
 
     var expect = this.client.api.expect.element('#weblogin').to.not.have.attribute('class');
     this.client.on('nightwatch:finished', function(results, errors) {
@@ -197,14 +118,8 @@ module.exports = {
     })
   },
 
-  'test expect element to have attribute - element not found' : function(test) {
-    nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/elements')
-      .reply(200, {
-        status: 0,
-        state: 'success',
-        value: []
-      });
+  'to have attribute - element not found' : function(test) {
+    Nocks.elementNotFound();
 
     var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class');
     this.client.on('nightwatch:finished', function(results, errors) {
@@ -224,22 +139,8 @@ module.exports = {
     })
   },
 
-  'test expect element to have attribute equal to [PASSED]' : function(test) {
-    nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/elements', {"using":"css selector","value":"#weblogin"} )
-      .reply(200, {
-        status: 0,
-        state: 'success',
-        value: [ { ELEMENT: '0' } ]
-      })
-      .get('/wd/hub/session/1352110219202/element/0/attribute/class')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: 'hp vasq',
-        state : 'success'
-      });
-
+  'to have attribute equal to [PASSED]' : function(test) {
+    Nocks.elementFound().attributeValue('hp vasq');
     var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').equal('hp vasq');
     this.client.on('nightwatch:finished', function(results, errors) {
       test.equals(expect.assertion.waitForMs, null);
@@ -249,21 +150,8 @@ module.exports = {
     })
   },
 
-  'test expect element to have attribute equal to [FAILED]' : function(test) {
-    nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/elements', {"using":"css selector","value":"#weblogin"} )
-      .reply(200, {
-        status: 0,
-        state: 'success',
-        value: [ { ELEMENT: '0' } ]
-      })
-      .get('/wd/hub/session/1352110219202/element/0/attribute/class')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: 'hp vasq',
-        state : 'success'
-      });
+  'to have attribute equal to [FAILED]' : function(test) {
+    Nocks.elementFound().attributeValue('hp vasq');
 
     var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').equal('vasq');
     this.client.on('nightwatch:finished', function(results, errors) {
@@ -278,21 +166,8 @@ module.exports = {
     })
   },
 
-  'test expect element to have attribute NOT equal to [PASSED]' : function(test) {
-    nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/elements', {"using":"css selector","value":"#weblogin"} )
-      .reply(200, {
-        status: 0,
-        state: 'success',
-        value: [ { ELEMENT: '0' } ]
-      })
-      .get('/wd/hub/session/1352110219202/element/0/attribute/class')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: 'hp vasq',
-        state : 'success'
-      });
+  'to have attribute NOT equal to [PASSED]' : function(test) {
+    Nocks.elementFound().attributeValue('hp vasq');
 
     var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').not.equal('xx');
     this.client.on('nightwatch:finished', function(results, errors) {
@@ -306,21 +181,8 @@ module.exports = {
     })
   },
 
-  'test expect element to have attribute NOT equal to [FAILED]' : function(test) {
-    nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/elements', {"using":"css selector","value":"#weblogin"} )
-      .reply(200, {
-        status: 0,
-        state: 'success',
-        value: [ { ELEMENT: '0' } ]
-      })
-      .get('/wd/hub/session/1352110219202/element/0/attribute/class')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: 'hp vasq',
-        state : 'success'
-      });
+  'to have attribute NOT equal to [FAILED]' : function(test) {
+    Nocks.elementFound().attributeValue('hp vasq');
 
     var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').not.equal('hp vasq');
     this.client.on('nightwatch:finished', function(results, errors) {
@@ -335,32 +197,12 @@ module.exports = {
     })
   },
 
-  'test expect element to have attribute equal with waitFor [PASSED]' : function(test) {
+  'to have attribute equal with waitFor [PASSED]' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 50;
-    var mock = nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/elements', {"using":"css selector","value":"#weblogin"} )
-      .reply(200, {
-        status: 0,
-        state: 'success',
-        value: [ { ELEMENT: '0' } ]
-      });
+    Nocks.elementFound();
 
     var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').equal('hp vasq').before(110);
-    mock
-      .get('/wd/hub/session/1352110219202/element/0/attribute/class')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: null,
-        state : 'success'
-      })
-      .get('/wd/hub/session/1352110219202/element/0/attribute/class')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: 'hp vasq',
-        state : 'success'
-      });
+    Nocks.attributeValue(null).attributeValue('hp vasq');
 
     this.client.on('nightwatch:finished', function(results, errors) {
       test.equals(expect.assertion.waitForMs, 110);
@@ -371,32 +213,12 @@ module.exports = {
     })
   },
 
-  'test expect element to have attribute equal and waitFor [FAILED] - attribute not found' : function(test) {
+  'to have attribute equal and waitFor [FAILED] - attribute not found' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 50;
-    var mock = nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/elements', {"using":"css selector","value":"#weblogin"} )
-      .reply(200, {
-        status: 0,
-        state: 'success',
-        value: [ { ELEMENT: '0' } ]
-      });
+    Nocks.elementFound();
 
     var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').equal('hp vasq').before(110);
-    mock
-      .get('/wd/hub/session/1352110219202/element/0/attribute/class')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: null,
-        state : 'success'
-      })
-      .get('/wd/hub/session/1352110219202/element/0/attribute/class')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: null,
-        state : 'success'
-      });
+    Nocks.attributeValue(null).attributeValue(null);
 
     this.client.on('nightwatch:finished', function(results, errors) {
       test.equals(expect.assertion.waitForMs, 110);
@@ -407,29 +229,9 @@ module.exports = {
     })
   },
 
-  'test expect element to have attribute equal and waitFor [FAILED] - attribute not equal' : function(test) {
+  'to have attribute equal and waitFor [FAILED] - attribute not equal' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 10;
-    var mock = nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/elements', {"using":"css selector","value":"#weblogin"} )
-      .reply(200, {
-        status: 0,
-        state: 'success',
-        value: [ { ELEMENT: '0' } ]
-      })
-      .get('/wd/hub/session/1352110219202/element/0/attribute/class')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: 'xx',
-        state : 'success'
-      })
-      .get('/wd/hub/session/1352110219202/element/0/attribute/class')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: 'xx',
-        state : 'success'
-      });
+    Nocks.elementFound().attributeValue('xx').attributeValue('xx');
 
     var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').equal('hp vasq').before(11);
     this.client.on('nightwatch:finished', function(results, errors) {
@@ -444,14 +246,112 @@ module.exports = {
     })
   },
 
-  'test expect element to have attribute equal to - element not found' : function(test) {
-    nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/elements', {"using":"css selector","value":"#weblogin"} )
-      .reply(200, {
-        status: 0,
-        state: 'success',
-        value: []
-      });
+  'to have attribute not equal to [PASSED]' : function(test) {
+    Nocks.elementFound().attributeValue('xx');
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').not.equal('vasq');
+    test.equals(expect.assertion.message, 'Expected element <%s> to have attribute "class"');
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.expected, 'not equal to \'vasq\'');
+      test.equals(expect.assertion.actual, 'xx');
+      test.equals(expect.assertion.negate, true);
+      test.equals(expect.assertion.resultValue, 'xx');
+      test.equals(expect.assertion.passed, true);
+      test.deepEqual(expect.assertion.messageParts, [ ' not equal to', ': "', 'vasq', '"' ] );
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" not equal to: "vasq"');
+      test.done();
+    })
+  },
+
+  'to have attribute not equal to [FAILED]' : function(test) {
+    Nocks.elementFound().attributeValue('xx');
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').not.equal('xx');
+    test.equals(expect.assertion.message, 'Expected element <%s> to have attribute "class"');
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.expected, 'not equal to \'xx\'');
+      test.equals(expect.assertion.actual, 'xx');
+      test.equals(expect.assertion.negate, true);
+      test.equals(expect.assertion.resultValue, 'xx');
+      test.equals(expect.assertion.passed, false);
+      test.deepEqual(expect.assertion.messageParts, [ ' not equal to', ': "', 'xx', '"' ] );
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" not equal to: "xx"');
+      test.done();
+    })
+  },
+
+  'to have attribute not contains [PASSED]' : function(test) {
+    Nocks.elementFound().attributeValue('xx');
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').not.contains('vasq');
+
+    test.equals(expect.assertion.message, 'Expected element <%s> to have attribute "class"');
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.expected, 'not contain \'vasq\'');
+      test.equals(expect.assertion.actual, 'xx');
+      test.equals(expect.assertion.negate, true);
+      test.equals(expect.assertion.resultValue, 'xx');
+      test.equals(expect.assertion.passed, true);
+      test.deepEqual(expect.assertion.messageParts, [ ' not contain', ': "', 'vasq', '"' ] );
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" not contain: "vasq"');
+      test.done();
+    })
+  },
+
+  'to have attribute not contains [FAILED]' : function(test) {
+    Nocks.elementFound().attributeValue('xx');
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').not.contains('xx');
+    test.equals(expect.assertion.message, 'Expected element <%s> to have attribute "class"');
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.expected, 'not contain \'xx\'');
+      test.equals(expect.assertion.actual, 'xx');
+      test.equals(expect.assertion.negate, true);
+      test.equals(expect.assertion.resultValue, 'xx');
+      test.equals(expect.assertion.passed, false);
+      test.deepEqual(expect.assertion.messageParts, [ ' not contain', ': "', 'xx', '"' ] );
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" not contain: "xx"');
+      test.done();
+    })
+  },
+
+  'to have attribute not match [PASSED]' : function(test) {
+    Nocks.elementFound().attributeValue('xx');
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').not.match(/vasq/);
+
+    test.equals(expect.assertion.message, 'Expected element <%s> to have attribute "class"');
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.expected, 'not match \'/vasq/\'');
+      test.equals(expect.assertion.actual, 'xx');
+      test.equals(expect.assertion.negate, true);
+      test.equals(expect.assertion.resultValue, 'xx');
+      test.equals(expect.assertion.passed, true);
+      test.deepEqual(expect.assertion.messageParts, [ ' not match', ': "', /vasq/, '"' ]);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" not match: "/vasq/"');
+      test.done();
+    })
+  },
+
+  'to have attribute not match [FAILED]' : function(test) {
+    Nocks.elementFound().attributeValue('xx');
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').not.match(/xx/);
+    test.equals(expect.assertion.message, 'Expected element <%s> to have attribute "class"');
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.expected, 'not match \'/xx/\'');
+      test.equals(expect.assertion.actual, 'xx');
+      test.equals(expect.assertion.negate, true);
+      test.equals(expect.assertion.resultValue, 'xx');
+      test.equals(expect.assertion.passed, false);
+      test.deepEqual(expect.assertion.messageParts, [ ' not match', ': "', /xx/, '"' ]);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" not match: "/xx/"');
+      test.done();
+    })
+  },
+
+  'to have attribute equal to - element not found' : function(test) {
+    Nocks.elementNotFound();
 
     var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').equal('vasq');
     test.equals(expect.assertion.message, 'Expected element <%s> to have attribute "class"');
@@ -467,14 +367,8 @@ module.exports = {
     })
   },
 
-  'test expect element to have attribute contains - element not found' : function(test) {
-    nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/elements', {"using":"css selector","value":"#weblogin"} )
-      .reply(200, {
-        status: 0,
-        state: 'success',
-        value: []
-      });
+  'to have attribute contains - element not found' : function(test) {
+    Nocks.elementNotFound();
 
     var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').which.contains('vasq');
 
@@ -488,14 +382,8 @@ module.exports = {
     })
   },
 
-  'test expect element to have attribute match - element not found' : function(test) {
-    nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/elements', {"using":"css selector","value":"#weblogin"} )
-      .reply(200, {
-        status: 0,
-        state: 'success',
-        value: []
-      });
+  'to have attribute match - element not found' : function(test) {
+    Nocks.elementNotFound();
 
     var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').which.matches(/vasq$/);
 
@@ -509,17 +397,21 @@ module.exports = {
     })
   },
 
-  'test expect element to have attribute match throws' : function(test) {
+  'to have attribute match - throws exception on invalid regex' : function(test) {
+    Nocks.elementFound().attributeValue('xx');
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class');
     test.throws(function() {
-      this.client.api.expect.element('#weblogin').to.have.attribute('class').which.matches('');
+      expect.which.matches('');
     }.bind(this));
 
-    test.done();
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.done();
+    });
   },
 
   tearDown : function(callback) {
     this.client = null;
-
     // clean up
     callback();
   }
