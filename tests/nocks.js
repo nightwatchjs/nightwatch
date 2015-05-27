@@ -52,6 +52,114 @@ module.exports = {
     return this;
   },
 
+  enabled : function () {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/element/0/enabled')
+      .reply(200, {
+        status: 0,
+        sessionId : '1352110219202',
+        value: true,
+        state : 'success'
+      });
+    return this;
+  },
+
+  notEnabled : function () {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/element/0/enabled')
+      .reply(200, {
+        status: 0,
+        sessionId : '1352110219202',
+        value: false,
+        state : 'success'
+      });
+    return this;
+  },
+
+  selected : function () {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/element/0/selected')
+      .reply(200, {
+        status: 0,
+        sessionId : '1352110219202',
+        value: true,
+        state : 'success'
+      });
+    return this;
+  },
+
+  notSelected : function () {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/element/0/selected')
+      .reply(200, {
+        status: 0,
+        sessionId : '1352110219202',
+        value: false,
+        state : 'success'
+      });
+    return this;
+  },
+
+  visible : function () {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/element/0/displayed')
+      .reply(200, {
+        status: 0,
+        sessionId : '1352110219202',
+        value: true,
+        state : 'success'
+      });
+    return this;
+  },
+
+  notVisible : function () {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/element/0/displayed')
+      .reply(200, {
+        status: 0,
+        sessionId : '1352110219202',
+        value: false,
+        state : 'success'
+      });
+    return this;
+  },
+
+  value : function (value) {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/element/0/attribute/value')
+      .reply(200, {
+        status: 0,
+        sessionId : '1352110219202',
+        value: value,
+        state : 'success'
+      });
+    return this;
+  },
+
+  text : function (value) {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/element/0/text')
+      .reply(200, {
+        status: 0,
+        sessionId : '1352110219202',
+        value: value,
+        state : 'success'
+      });
+    return this;
+  },
+
+  name : function (value) {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/element/0/name')
+      .reply(200, {
+        status: 0,
+        sessionId : '1352110219202',
+        value: value,
+        state : 'success'
+      });
+    return this;
+  },
+
   cleanAll : function() {
     nock.cleanAll();
   }
