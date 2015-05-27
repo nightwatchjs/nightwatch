@@ -35,10 +35,15 @@ module.exports = {
     return this;
   },
 
-  cssProperty : function (value) {
-    nock('http://localhost:10195')
+  cssProperty : function (value, times) {
+    var mock = nock('http://localhost:10195')
       .get('/wd/hub/session/1352110219202/element/0/css/display')
-      .reply(200, {
+
+    if (times) {
+      mock.times(times);
+    }
+
+      mock.reply(200, {
         status: 0,
         sessionId : '1352110219202',
         value: value,

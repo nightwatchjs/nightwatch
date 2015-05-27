@@ -173,6 +173,7 @@ module.exports = {
     this.client.on('nightwatch:finished', function(results, errors) {
       test.equals(expect.assertion.waitForMs, null);
       test.equals(expect.assertion.negate, true);
+      test.equals(expect.assertion.actual, 'hp vasq');
       test.equals(expect.assertion.passed, true);
       test.equals(expect.assertion.resultValue, 'hp vasq');
       test.deepEqual(expect.assertion.messageParts, [ ' not equal to', ': "', 'xx', '"' ]);
@@ -242,40 +243,6 @@ module.exports = {
       test.equals(expect.assertion.expected, 'equal to \'hp vasq\'');
       test.equals(expect.assertion.actual, 'xx');
       test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" equal to: "hp vasq" in 11ms');
-      test.done();
-    })
-  },
-
-  'to have attribute not equal to [PASSED]' : function(test) {
-    Nocks.elementFound().attributeValue('xx');
-
-    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').not.equal('vasq');
-    test.equals(expect.assertion.message, 'Expected element <%s> to have attribute "class"');
-    this.client.on('nightwatch:finished', function(results, errors) {
-      test.equals(expect.assertion.expected, 'not equal to \'vasq\'');
-      test.equals(expect.assertion.actual, 'xx');
-      test.equals(expect.assertion.negate, true);
-      test.equals(expect.assertion.resultValue, 'xx');
-      test.equals(expect.assertion.passed, true);
-      test.deepEqual(expect.assertion.messageParts, [ ' not equal to', ': "', 'vasq', '"' ] );
-      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" not equal to: "vasq"');
-      test.done();
-    })
-  },
-
-  'to have attribute not equal to [FAILED]' : function(test) {
-    Nocks.elementFound().attributeValue('xx');
-
-    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').not.equal('xx');
-    test.equals(expect.assertion.message, 'Expected element <%s> to have attribute "class"');
-    this.client.on('nightwatch:finished', function(results, errors) {
-      test.equals(expect.assertion.expected, 'not equal to \'xx\'');
-      test.equals(expect.assertion.actual, 'xx');
-      test.equals(expect.assertion.negate, true);
-      test.equals(expect.assertion.resultValue, 'xx');
-      test.equals(expect.assertion.passed, false);
-      test.deepEqual(expect.assertion.messageParts, [ ' not equal to', ': "', 'xx', '"' ] );
-      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" not equal to: "xx"');
       test.done();
     })
   },
