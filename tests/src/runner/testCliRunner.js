@@ -198,7 +198,9 @@ module.exports = {
     var runner = new CliRunner({
       config : './nightwatch.json',
       env : 'default',
-      output : 'output'
+      output : 'output',
+      skiptags : 'home,arctic',
+      tag : 'danger'
     }).init();
 
     test.deepEqual(runner.settings.src_folders, ['tests']);
@@ -207,12 +209,15 @@ module.exports = {
       custom_commands_path: '',
       custom_assertions_path: '',
       page_objects_path: '',
-      output: true
+      output: true,
+      tag_filter: 'danger',
+      skiptags: [ 'home', 'arctic' ]
     }});
 
     test.equals(runner.output_folder, 'output');
     test.equals(runner.parallelMode, false);
     test.equals(runner.manageSelenium, false);
+    test.equals(runner.startSession, true);
 
     test.done();
 
