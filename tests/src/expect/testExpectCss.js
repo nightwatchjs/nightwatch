@@ -8,6 +8,7 @@ module.exports = {
 
   tearDown : function(callback) {
     this.client = null;
+    Nocks.cleanAll();
     callback();
   },
 
@@ -48,7 +49,10 @@ module.exports = {
   'to have css property with waitFor [FAILED]' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 50;
 
-    Nocks.elementFound().cssProperty('', 3);
+    Nocks.elementFound();
+    for (var i = 0 ; i <= 5 ; i++) {
+      Nocks.cssProperty('', 3);
+    }
 
     var expect = this.client.api.expect.element('#weblogin').to.have.css('display').before(60);
     this.client.on('nightwatch:finished', function(results, errors) {
@@ -223,7 +227,11 @@ module.exports = {
 
   'to have css property equal and waitFor [FAILED] - property not set' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 50;
-    Nocks.elementFound().cssProperty('', 3);
+
+    Nocks.elementFound();
+    for (var i = 0 ; i <= 5 ; i++) {
+      Nocks.cssProperty('', 3);
+    }
 
     var expect = this.client.api.expect.element('#weblogin').to.have.css('display').equal('block').before(110);
 
@@ -238,17 +246,21 @@ module.exports = {
 
   'to have css property equal and waitFor [FAILED] - property not equal' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 10;
-    Nocks.elementFound().cssProperty('xx', 2);
 
-    var expect = this.client.api.expect.element('#weblogin').to.have.css('display').equal('block').before(11);
+    Nocks.elementFound();
+    for (var i = 0 ; i <= 5 ; i++) {
+      Nocks.cssProperty('xx', 2);
+    }
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.css('display').equal('block').before(20);
     this.client.on('nightwatch:finished', function(results, errors) {
-      test.equals(expect.assertion.waitForMs, 11);
+      test.equals(expect.assertion.waitForMs, 20);
       test.equals(expect.assertion.passed, false);
       test.ok(expect.assertion.retries >= 1);
-      test.ok(expect.assertion.elapsedTime >= 11);
+      test.ok(expect.assertion.elapsedTime >= 20);
       test.equals(expect.assertion.expected, 'equal to \'block\'');
       test.equals(expect.assertion.actual, 'xx');
-      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have css property "display" equal to: "block" in 11ms');
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have css property "display" equal to: "block" in 20ms');
       test.done();
     })
   },

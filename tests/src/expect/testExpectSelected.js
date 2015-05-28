@@ -139,6 +139,23 @@ module.exports = {
     })
   },
 
+  'to not be selected with waitFor [FAILED]' : function(test) {
+    this.client.api.globals.waitForConditionPollInterval = 50;
+
+    Nocks.elementFound();
+    for (var i = 0 ; i <= 5 ; i++) {
+      Nocks.selected();
+    }
+
+    var expect = this.client.api.expect.element('#weblogin').to.not.be.selected.before(120);
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equal(expect.assertion.waitForMs, 120);
+      test.equals(expect.assertion.passed, false);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to not be selected in 120ms');
+      test.done();
+    })
+  },
+
   tearDown : function(callback) {
     this.client = null;
     Nocks.cleanAll();

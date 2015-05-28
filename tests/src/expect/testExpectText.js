@@ -88,15 +88,15 @@ module.exports = {
       Nocks.text('xx').text('xx');
     }
 
-    var expect = this.client.api.expect.element('#weblogin').text.to.equal('hp vasq').before(11);
+    var expect = this.client.api.expect.element('#weblogin').text.to.equal('hp vasq').before(30);
     this.client.on('nightwatch:finished', function(results, errors) {
-      test.equals(expect.assertion.waitForMs, 11);
+      test.equals(expect.assertion.waitForMs, 30);
       test.equals(expect.assertion.passed, false);
       test.ok(expect.assertion.retries >= 1);
-      test.ok(expect.assertion.elapsedTime >= 11);
+      test.ok(expect.assertion.elapsedTime >= 30);
       test.equals(expect.assertion.expected, 'equal \'hp vasq\'');
       test.equals(expect.assertion.actual, 'xx');
-      test.equals(expect.assertion.message, 'Expected element <#weblogin> text to equal: "hp vasq" in 11ms');
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> text to equal: "hp vasq" in 30ms');
       test.done();
     })
   },

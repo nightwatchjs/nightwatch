@@ -42,7 +42,10 @@ module.exports = {
   'to have attribute with waitFor [FAILED]' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 50;
 
-    Nocks.elementFound().attributeValue(null);
+    Nocks.elementFound();
+    for (var i = 0 ; i <= 5 ; i++) {
+      Nocks.attributeValue(null);
+    }
 
     var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').before(60);
     this.client.on('nightwatch:finished', function(results, errors) {
@@ -216,10 +219,13 @@ module.exports = {
 
   'to have attribute equal and waitFor [FAILED] - attribute not found' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 50;
+
     Nocks.elementFound();
+    for (var i = 0 ; i <= 5 ; i++) {
+      Nocks.attributeValue(null);
+    }
 
     var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').equal('hp vasq').before(110);
-    Nocks.attributeValue(null).attributeValue(null);
 
     this.client.on('nightwatch:finished', function(results, errors) {
       test.equals(expect.assertion.waitForMs, 110);
@@ -232,7 +238,11 @@ module.exports = {
 
   'to have attribute equal and waitFor [FAILED] - attribute not equal' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 10;
-    Nocks.elementFound().attributeValue('xx').attributeValue('xx');
+
+    Nocks.elementFound();
+    for (var i = 0 ; i <= 5 ; i++) {
+      Nocks.attributeValue('xx');
+    }
 
     var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').equal('hp vasq').before(11);
     this.client.on('nightwatch:finished', function(results, errors) {
@@ -379,6 +389,7 @@ module.exports = {
 
   tearDown : function(callback) {
     this.client = null;
+    Nocks.cleanAll();
     // clean up
     callback();
   }
