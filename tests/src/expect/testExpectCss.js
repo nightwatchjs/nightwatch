@@ -49,10 +49,7 @@ module.exports = {
   'to have css property with waitFor [FAILED]' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 50;
 
-    Nocks.elementFound();
-    for (var i = 0 ; i <= 5 ; i++) {
-      Nocks.cssProperty('', 3);
-    }
+    Nocks.elementFound().cssProperty('', 3);
 
     var expect = this.client.api.expect.element('#weblogin').to.have.css('display').before(60);
     this.client.on('nightwatch:finished', function(results, errors) {
@@ -227,30 +224,22 @@ module.exports = {
 
   'to have css property equal and waitFor [FAILED] - property not set' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 50;
+    Nocks.elementFound().cssProperty('', 3);
 
-    Nocks.elementFound();
-    for (var i = 0 ; i <= 5 ; i++) {
-      Nocks.cssProperty('', 3);
-    }
-
-    var expect = this.client.api.expect.element('#weblogin').to.have.css('display').equal('block').before(110);
+    var expect = this.client.api.expect.element('#weblogin').to.have.css('display').equal('block').before(120);
 
     this.client.on('nightwatch:finished', function(results, errors) {
-      test.equals(expect.assertion.waitForMs, 110);
+      test.equals(expect.assertion.waitForMs, 120);
       test.equals(expect.assertion.passed, false);
       test.ok(expect.assertion.retries > 1);
-      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have css property "display" equal to: "block" in 110ms');
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have css property "display" equal to: "block" in 120ms');
       test.done();
     })
   },
 
   'to have css property equal and waitFor [FAILED] - property not equal' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 10;
-
-    Nocks.elementFound();
-    for (var i = 0 ; i <= 5 ; i++) {
-      Nocks.cssProperty('xx', 2);
-    }
+    Nocks.elementFound().cssProperty('xx', 3);
 
     var expect = this.client.api.expect.element('#weblogin').to.have.css('display').equal('block').before(20);
     this.client.on('nightwatch:finished', function(results, errors) {

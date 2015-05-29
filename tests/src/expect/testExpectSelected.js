@@ -40,10 +40,7 @@ module.exports = {
   'to be selected with waitFor [FAILED]' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 50;
 
-    Nocks.elementFound();
-    for (var i = 0 ; i <= 5 ; i++) {
-      Nocks.notSelected();
-    }
+    Nocks.elementFound().notSelected(3);
 
     var expect = this.client.api.expect.element('#weblogin').to.be.selected.before(60);
     this.client.on('nightwatch:finished', function(results, errors) {
@@ -142,10 +139,7 @@ module.exports = {
   'to not be selected with waitFor [FAILED]' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 50;
 
-    Nocks.elementFound();
-    for (var i = 0 ; i <= 5 ; i++) {
-      Nocks.selected();
-    }
+    Nocks.elementFound().selected(3);
 
     var expect = this.client.api.expect.element('#weblogin').to.not.be.selected.before(120);
     this.client.on('nightwatch:finished', function(results, errors) {

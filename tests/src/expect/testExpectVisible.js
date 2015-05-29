@@ -40,10 +40,7 @@ module.exports = {
   'to be visible with waitFor [FAILED]' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 50;
 
-    Nocks.elementFound();
-    for (var i = 0 ; i <= 5 ; i++) {
-      Nocks.notVisible();
-    }
+    Nocks.elementFound().notVisible(3);
 
     var expect = this.client.api.expect.element('#weblogin').to.be.visible.before(60);
     this.client.on('nightwatch:finished', function(results, errors) {
@@ -142,10 +139,7 @@ module.exports = {
   'to not be visible with waitFor [FAILED]' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 50;
 
-    Nocks.elementFound();
-    for (var i = 0 ; i <= 5 ; i++) {
-      Nocks.visible();
-    }
+    Nocks.elementFound().visible();
 
     var expect = this.client.api.expect.element('#weblogin').to.not.be.visible.before(120);
     this.client.on('nightwatch:finished', function(results, errors) {

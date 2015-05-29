@@ -39,9 +39,7 @@ module.exports = {
   'to be present with waitFor [FAILED]' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 50;
 
-    for (var i = 0 ; i <= 5 ; i++) {
-      Nocks.elementNotFound();
-    }
+    Nocks.elementNotFound().elementNotFound();
 
     var expect = this.client.api.expect.element('#weblogin').to.be.present.before(60);
     this.client.on('nightwatch:finished', function(results, errors) {

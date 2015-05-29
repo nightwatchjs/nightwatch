@@ -43,36 +43,46 @@ module.exports = {
       mock.times(times);
     }
 
-      mock.reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: value,
-        state : 'success'
-      });
+    mock.reply(200, {
+      status: 0,
+      sessionId : '1352110219202',
+      value: value,
+      state : 'success'
+    });
     return this;
   },
 
-  enabled : function () {
-    nock('http://localhost:10195')
+  enabled : function (times) {
+    var mock = nock('http://localhost:10195')
       .get('/wd/hub/session/1352110219202/element/0/enabled')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: true,
-        state : 'success'
-      });
+
+    if (times) {
+      mock.times(times);
+    }
+
+    mock.reply(200, {
+      status: 0,
+      sessionId : '1352110219202',
+      value: true,
+      state : 'success'
+    });
     return this;
   },
 
-  notEnabled : function () {
-    nock('http://localhost:10195')
+  notEnabled : function (times) {
+    var mock = nock('http://localhost:10195')
       .get('/wd/hub/session/1352110219202/element/0/enabled')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: false,
-        state : 'success'
-      });
+
+    if (times) {
+      mock.times(times);
+    }
+
+    mock.reply(200, {
+      status: 0,
+      sessionId : '1352110219202',
+      value: false,
+      state : 'success'
+    });
     return this;
   },
 
@@ -88,15 +98,20 @@ module.exports = {
     return this;
   },
 
-  notSelected : function () {
-    nock('http://localhost:10195')
+  notSelected : function (times) {
+    var mock = nock('http://localhost:10195')
       .get('/wd/hub/session/1352110219202/element/0/selected')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: false,
-        state : 'success'
-      });
+
+    if (times) {
+      mock.times(times);
+    }
+
+    mock.reply(200, {
+      status: 0,
+      sessionId : '1352110219202',
+      value: false,
+      state : 'success'
+    });
     return this;
   },
 
@@ -112,39 +127,54 @@ module.exports = {
     return this;
   },
 
-  notVisible : function () {
-    nock('http://localhost:10195')
+  notVisible : function (times) {
+    var mock = nock('http://localhost:10195')
       .get('/wd/hub/session/1352110219202/element/0/displayed')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: false,
-        state : 'success'
-      });
+
+    if (times) {
+      mock.times(times);
+    }
+
+    mock.reply(200, {
+      status: 0,
+      sessionId : '1352110219202',
+      value: false,
+      state : 'success'
+    });
     return this;
   },
 
-  value : function (value) {
-    nock('http://localhost:10195')
+  value : function (value, times) {
+    var mock = nock('http://localhost:10195')
       .get('/wd/hub/session/1352110219202/element/0/attribute/value')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: value,
-        state : 'success'
-      });
+
+    if (times) {
+      mock.times(times);
+    }
+
+    mock.reply(200, {
+      status: 0,
+      sessionId : '1352110219202',
+      value: value,
+      state : 'success'
+    });
     return this;
   },
 
-  text : function (value) {
-    nock('http://localhost:10195')
+  text : function (value, times) {
+    var mock = nock('http://localhost:10195')
       .get('/wd/hub/session/1352110219202/element/0/text')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        value: value,
-        state : 'success'
-      });
+
+    if (times) {
+      mock.times(times);
+    }
+
+    mock.reply(200, {
+      status: 0,
+      sessionId : '1352110219202',
+      value: value,
+      state : 'success'
+    });
     return this;
   },
 

@@ -86,10 +86,7 @@ module.exports = {
 
     var expect = this.client.api.expect.element('#weblogin').to.have.value.equal('hp vasq').before(110);
 
-    Nocks.elementFound();
-    for (var i = 0 ; i <= 5 ; i++) {
-      Nocks.value(null);
-    }
+    Nocks.elementFound().value('xx', 3);
 
     this.client.on('nightwatch:finished', function(results, errors) {
       test.equals(expect.assertion.waitForMs, 110);
@@ -101,22 +98,19 @@ module.exports = {
   },
 
   'to have value equal and waitFor [FAILED] - value not equal' : function(test) {
-    this.client.api.globals.waitForConditionPollInterval = 10;
+    this.client.api.globals.waitForConditionPollInterval = 50;
 
-    Nocks.elementFound();
-    for (var i = 0 ; i <= 5 ; i++) {
-      Nocks.value('xx');
-    }
+    Nocks.elementFound().value('xx', 4);
 
-    var expect = this.client.api.expect.element('#weblogin').to.have.value.equal('hp vasq').before(11);
+    var expect = this.client.api.expect.element('#weblogin').to.have.value.equal('hp vasq').before(110);
     this.client.on('nightwatch:finished', function(results, errors) {
-      test.equals(expect.assertion.waitForMs, 11);
+      test.equals(expect.assertion.waitForMs, 110);
       test.equals(expect.assertion.passed, false);
       test.ok(expect.assertion.retries >= 1);
-      test.ok(expect.assertion.elapsedTime >= 11);
+      test.ok(expect.assertion.elapsedTime >= 110);
       test.equals(expect.assertion.expected, 'equal to \'hp vasq\'');
       test.equals(expect.assertion.actual, 'xx');
-      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have value equal to: "hp vasq" in 11ms');
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have value equal to: "hp vasq" in 110ms');
       test.done();
     })
   },

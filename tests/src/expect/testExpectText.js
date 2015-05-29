@@ -68,14 +68,14 @@ module.exports = {
     this.client.api.globals.waitForConditionPollInterval = 50;
     Nocks.elementFound();
 
-    var expect = this.client.api.expect.element('#weblogin').text.to.equal('hp vasq').before(110);
+    var expect = this.client.api.expect.element('#weblogin').text.to.equal('hp vasq').before(100);
     Nocks.text(null).text('hp vasq');
 
     this.client.on('nightwatch:finished', function(results, errors) {
-      test.equals(expect.assertion.waitForMs, 110);
+      test.equals(expect.assertion.waitForMs, 100);
       test.equals(expect.assertion.passed, true);
       test.equals(expect.assertion.retries, 1);
-      test.equals(expect.assertion.message, 'Expected element <#weblogin> text to equal: "hp vasq" in 110ms - condition was met in ' + expect.assertion.elapsedTime + 'ms');
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> text to equal: "hp vasq" in 100ms - condition was met in ' + expect.assertion.elapsedTime + 'ms');
       test.done();
     })
   },
@@ -83,20 +83,17 @@ module.exports = {
   'text to equal and waitFor [FAILED] - text not equal' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 10;
 
-    Nocks.elementFound();
-    for (var i = 0 ; i <= 5 ; i++) {
-      Nocks.text('xx').text('xx');
-    }
+    Nocks.elementFound().text('xx', 4);
 
-    var expect = this.client.api.expect.element('#weblogin').text.to.equal('hp vasq').before(30);
+    var expect = this.client.api.expect.element('#weblogin').text.to.equal('hp vasq').before(25);
     this.client.on('nightwatch:finished', function(results, errors) {
-      test.equals(expect.assertion.waitForMs, 30);
+      test.equals(expect.assertion.waitForMs, 25);
       test.equals(expect.assertion.passed, false);
       test.ok(expect.assertion.retries >= 1);
-      test.ok(expect.assertion.elapsedTime >= 30);
+      test.ok(expect.assertion.elapsedTime >= 25);
       test.equals(expect.assertion.expected, 'equal \'hp vasq\'');
       test.equals(expect.assertion.actual, 'xx');
-      test.equals(expect.assertion.message, 'Expected element <#weblogin> text to equal: "hp vasq" in 30ms');
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> text to equal: "hp vasq" in 25ms');
       test.done();
     })
   },
