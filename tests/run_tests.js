@@ -34,6 +34,7 @@ try {
       'src/commands',
       'src/protocol',
       'src/http',
+      'src/page-object',
       'src/index'
     ], options, function(err) {
       setTimeout(function() {

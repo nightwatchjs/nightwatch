@@ -20,6 +20,21 @@ module.exports = {
     });
   },
 
+  testElementIdElement : function(test) {
+    var client = this.client;
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.elementIdElement('0', 'id', '#weblogin', function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'POST');
+      test.equal(command.data, '{"using":"id","value":"#weblogin"}');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/element/0/element');
+    });
+  },
+
   testElementPlural : function(test) {
     var protocol = this.protocol;
 
@@ -31,6 +46,21 @@ module.exports = {
       test.equal(command.request.method, 'POST');
       test.equal(command.data, '{"using":"id","value":"#weblogin"}');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/elements');
+    });
+  },
+
+  testElementIdElementPlural : function(test) {
+    var client = this.client;
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.elementIdElements('0', 'id', '#weblogin', function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'POST');
+      test.equal(command.data, '{"using":"id","value":"#weblogin"}');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/element/0/elements');
     });
   },
 
