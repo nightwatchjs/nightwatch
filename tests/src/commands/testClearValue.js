@@ -1,4 +1,4 @@
-var nock = require('nock');
+var MockServer  = require('mockserver');
 module.exports = {
   setUp: function (callback) {
     this.client = require('../../nightwatch.js').init();
@@ -8,13 +8,14 @@ module.exports = {
 
   'test clearValue command' : function(test) {
     var client = this.client.api;
-    nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/element/0/clear')
-      .reply(200, {
-        status: 0,
-        sessionId : '1352110219202',
-        state : null
-      });
+
+    MockServer.addMock({
+      'url' : '/wd/hub/session/1352110219202/element/0/clear',
+      'response' : JSON.stringify({
+        sessionId: '1352110219202',
+        status:0
+      })
+    });
 
     client
       .clearValue('#weblogin', function callback(result) {
