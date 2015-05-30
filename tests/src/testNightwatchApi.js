@@ -96,6 +96,21 @@ module.exports = {
     client.api.page.SimplePage(test);
   },
 
+  testAddPageObjectArrayPath : function(test) {
+    var client = this.client;
+    client.on('selenium:session_create', function(sessionId) {
+      test.done();
+    });
+
+    client.options.page_objects_path = ['./extra/pageobjects', './extra/otherPageobjects'];
+    Api.init(client);
+    Api.loadPageObjects();
+
+    test.ok(typeof client.api.page == 'object');
+    test.ok('SimplePage' in client.api.page);
+    test.ok('OtherPage' in client.api.page);
+  },
+
   testAddCustomAssertion : function(test) {
     var client = this.client;
     client.on('selenium:session_create', function(sessionId) {
