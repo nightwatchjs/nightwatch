@@ -1,8 +1,8 @@
-var util = require('util')
+var util = require('util');
 
 var menuXpath = '//div[contains(@class, "hdtb-mitem")][contains(., %s)]';
 
-var menuMixins = {
+var menuCommands = {
   productIsSelected: function(product, callback) {
     var self = this;
     return this.getAttribute(product, 'class', function(result) {
@@ -19,7 +19,7 @@ module.exports = {
   sections: {
     menu: {
       selector: '#hdtb-msb',
-      mixins: [menuMixins],
+      commands: [menuCommands],
       elements: {
         web: { selector: util.format(menuXpath, 'Web'), locateStrategy: 'xpath' },
         video: { selector: util.format(menuXpath, 'Video'), locateStrategy: 'xpath' },

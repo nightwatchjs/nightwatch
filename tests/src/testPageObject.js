@@ -9,24 +9,24 @@ module.exports = {
     });
 
     var page = client.api.page.simplePageObj();
-
     test.ok('elements' in page);
     test.ok('name' in page);
     test.ok('section' in page);
     test.ok('url' in page);
     test.ok('api' in page);
     test.ok('client' in page);
-    test.ok('testMixin' in page);
+    test.ok('testCommand' in page);
 
     test.equal(typeof page.api, 'object');
     test.equal(typeof page.client, 'object');
     test.equal(page.name, 'simplePageObj');
     test.equal(page.url, 'http://localhost.com');
-    test.equal(page.testMixin(), page);
+    test.equal(page.testCommand(), page);
 
     test.ok('loginCss' in page.elements);
     test.ok('loginXpath' in page.elements);
     test.ok('signUp' in page.section);
+
     test.ok('help' in page.section.signUp.elements);
     test.ok('getStarted' in page.section.signUp.section);
 
@@ -57,12 +57,12 @@ module.exports = {
     test.ok('ok' in page.verify);
     test.ok('element' in page.expect);
     test.ok('section' in page.expect);
-    test.deepEqual(typeof page.assert.containsText, 'function');
-    test.deepEqual(typeof page.verify.containsText, 'function');
-    test.deepEqual(typeof page.assert.title, 'function');
-    test.deepEqual(typeof page.verify.title, 'function');
-    test.deepEqual(typeof page.expect.element('loginCss'), 'object');
-    test.deepEqual(typeof page.expect.section('signUp'), 'object');
+    test.equal(typeof page.assert.containsText, 'function');
+    test.equal(typeof page.verify.containsText, 'function');
+    test.equal(typeof page.assert.title, 'function');
+    test.equal(typeof page.verify.title, 'function');
+    test.equal(typeof page.expect.element('@loginCss'), 'object');
+    test.equal(typeof page.expect.section('signUp'), 'object');
 
     test.done();
   },

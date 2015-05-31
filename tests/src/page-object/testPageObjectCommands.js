@@ -21,8 +21,7 @@ module.exports = {
     });
 
     var page = this.client.api.page.simplePageObj();
-
-    page.setValue('loginCss', '1', function callback(result) {
+    page.setValue('@loginCss', '1', function callback(result) {
       test.equals(result.status, 0);
       test.done();
     });
@@ -39,7 +38,7 @@ module.exports = {
 
     var section = this.client.api.page.simplePageObj().section.signUp;
 
-    section.click('help', function callback(result) {
+    section.click('@help', function callback(result) {
       test.equals(result.status, 0);
       test.done();
     });
@@ -47,7 +46,7 @@ module.exports = {
 
   testPageObjectPluralElementRecursion : function(test) {
     var section = this.client.api.page.simplePageObj().section.signUp;
-    section.waitForElementPresent('help', 1000, true, function callback(result) {
+    section.waitForElementPresent('@help', 1000, true, function callback(result) {
       test.equals(result.status, 0);
       test.equals(result.value.length, 1);
       test.equals(result.value[0].ELEMENT, '1');
@@ -66,9 +65,9 @@ module.exports = {
 
     var page = this.client.api.page.simplePageObj();
 
-    page.click('loginCss', function callback(result) {
+    page.click('@loginCss', function callback(result) {
       test.equals(result.status, 0);
-    }).click('loginXpath', function callback(result) {
+    }).click('@loginXpath', function callback(result) {
       test.equals(result.status, 0);
       test.done();
     });
@@ -79,7 +78,7 @@ module.exports = {
 
     test.throws(
       function() {
-        page.click('invalidElement');
+        page.click('@invalidElement');
       }, 'Element command on an invalid element should throw exception'
     );
     test.done();

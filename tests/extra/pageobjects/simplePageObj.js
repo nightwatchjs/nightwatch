@@ -1,5 +1,5 @@
-var testMixins = {
-  testMixin : function() {
+var testCommands = {
+  testCommand : function() {
     return this;
   }
 };
@@ -21,5 +21,5 @@ module.exports = {
       }
     }
   },
-  mixins: [testMixins]
+  commands: [testCommands]
 };
