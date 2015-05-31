@@ -46,6 +46,26 @@ module.exports = {
     });
   },
 
+  testRunRetries : function(test) {
+    test.expect(11);
+    var testsPath = path.join(process.cwd(), '/sampletests/withfailures');
+    this.Runner.run([testsPath], {
+      seleniumPort : 10195,
+      silent : true,
+      output : false,
+      globals : {
+        test : test
+      }
+    }, {
+      output_folder : false,
+      start_session : true,
+      retries: 1
+    }, function(err, results) {
+      test.equals(err, null);
+      test.done();
+    });
+  },
+
   'test run multiple sources and same module name' : function(test) {
     var srcFolders = [
       path.join(process.cwd(), '/sampletests/simple'),
