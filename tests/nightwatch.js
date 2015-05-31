@@ -17,11 +17,17 @@ module.exports = {
       }
     }
 
-    return nightwatch.client(opts).start().once('error', function() {
-      if (callback) {
-        callback();
-      }
-      process.exit();
-    });
+    return nightwatch.client(opts)
+      .on('selenium:session_create', function() {
+        if (callback) {
+          callback();
+        }
+      })
+      .once('error', function() {
+        if (callback) {
+          callback();
+        }
+        process.exit();
+      }).start();
   }
 };

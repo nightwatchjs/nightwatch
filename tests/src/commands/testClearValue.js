@@ -8,6 +8,7 @@ module.exports = {
 
   'test clearValue command' : function(test) {
     var client = this.client.api;
+
     MockServer.addMock({
       'url' : '/wd/hub/session/1352110219202/element/0/clear',
       'response' : JSON.stringify({
