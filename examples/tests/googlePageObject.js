@@ -1,3 +1,4 @@
+/* jshint expr: true */
 module.exports = {
   'Demo Google search test using page objects' : function (client) {
     var homePage = client.page.home();
