@@ -23,6 +23,17 @@ module.exports = {
     return this;
   },
 
+  elementFoundXpath : function() {
+    nock('http://localhost:10195')
+      .post('/wd/hub/session/1352110219202/elements', {"using":"xpath","value":"//weblogin"} )
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value: [ { ELEMENT: '0' } ]
+      });
+    return this;
+  },
+
   attributeValue : function (value) {
     nock('http://localhost:10195')
       .get('/wd/hub/session/1352110219202/element/0/attribute/class')

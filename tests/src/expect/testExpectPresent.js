@@ -93,6 +93,37 @@ module.exports = {
   },
 
 
+  'to be present - xpath via useXpath [PASSED]' : function(test) {
+    Nocks.elementFoundXpath();
+
+    this.client.api.useXpath();
+    var expect = this.client.api.expect.element('//weblogin').to.be.present;
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.selector, '//weblogin');
+      test.equals(expect.assertion.passed, true);
+      test.equals(expect.assertion.message, 'Expected element <//weblogin> to be present');
+      test.deepEqual(expect.assertion.elementResult, { ELEMENT: '0' });
+      test.equals(results.passed, 1);
+      test.equals(results.failed, 0);
+      test.done();
+    })
+  },
+
+  'to be present - xpath via argument [PASSED]' : function(test) {
+    Nocks.elementFoundXpath();
+
+    var expect = this.client.api.expect.element('//weblogin', 'xpath').to.be.present;
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.selector, '//weblogin');
+      test.equals(expect.assertion.passed, true);
+      test.equals(expect.assertion.message, 'Expected element <//weblogin> to be present');
+      test.deepEqual(expect.assertion.elementResult, { ELEMENT: '0' });
+      test.equals(results.passed, 1);
+      test.equals(results.failed, 0);
+      test.done();
+    })
+  },
+
   tearDown : function(callback) {
     this.client = null;
     Nocks.cleanAll();
