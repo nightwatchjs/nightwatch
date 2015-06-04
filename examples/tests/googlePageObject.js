@@ -12,7 +12,7 @@ module.exports = {
     var resultsPage = client.page.searchResults();
     resultsPage.expect.element('@results').to.be.present.after(2000);
     resultsPage.expect.element('@results').to.contain.text('Nightwatch.js');
-    resultsPage.expect.section('menu').to.be.visible;
+    resultsPage.expect.section('@menu').to.be.visible;
 
     var menuSection = resultsPage.section.menu;
     menuSection.expect.element('@web').to.be.visible;
