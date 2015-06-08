@@ -167,6 +167,7 @@ module.exports = {
 
     eq(client.locateStrategy, 'xpath');
     eq(client.options.use_xpath, true);
+    eq(client.options.skip_testcases_on_fail, true);
     eq(client.api.launchUrl, '/home');
     eq(client.api.launch_url, '/home');
 
