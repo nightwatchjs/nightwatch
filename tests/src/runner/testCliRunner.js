@@ -591,7 +591,15 @@ module.exports = {
         cb({}, null, 'Server already running.');
       }
     });
-    var CliRunner = require('../../../'+ BASE_PATH +'/../lib/runner/cli/clirunner.js');
+    mockery.registerMock('./errorhandler.js', {
+      handle : function(err) {
+        test.equals(err.message, 'Server already running.');
+        test.equals(runner.settings.parallelMode, true);
+        test.done();
+      }
+    });
+
+    var CliRunner = require('../../../'+ BASE_PATH + '/../lib/runner/cli/clirunner.js');
     var runner = new CliRunner({
       config : './nightwatch.json',
       env : 'default'
@@ -600,12 +608,6 @@ module.exports = {
     runner.manageSelenium = true;
     runner.parallelMode = true;
     test.expect(2);
-
-    runner.globalErrorHandler = function(err) {
-      test.equals(err.message, 'Server already running.');
-      test.equals(runner.settings.parallelMode, true);
-      test.done();
-    };
 
     runner.startSelenium();
   }
