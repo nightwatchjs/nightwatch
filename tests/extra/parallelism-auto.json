@@ -1,0 +1,23 @@
+{
+  "src_folders" : ["./sampletests"],
+  "output_folder" : false,
+  "test_workers" : {
+    "enabled" : true,
+    "workers" : "auto"
+  },
+  "output" : false,
+  "selenium" : {
+    "start_process" : false
+  },
+
+  "test_settings" : {
+    "default" : {
+      "silent" : true,
+      "desiredCapabilities" : {
+        "browserName" : "firefox"
+      }
+    }
+  }
+}
+
+
