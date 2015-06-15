@@ -150,6 +150,17 @@ module.exports = {
     })
   },
 
+  'to have attribute which equals [PASSED]' : function(test) {
+    Nocks.elementFound().attributeValue('hp vasq');
+    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').which.equals('hp vasq');
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.waitForMs, null);
+      test.equals(expect.assertion.passed, true);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" which equals: "hp vasq"');
+      test.done();
+    })
+  },
+
   'to have attribute equal to [FAILED]' : function(test) {
     Nocks.elementFound().attributeValue('hp vasq');
 
@@ -266,6 +277,24 @@ module.exports = {
     })
   },
 
+  'to have attribute which contains [PASSED]' : function(test) {
+    Nocks.elementFound().attributeValue('vasq');
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').which.contains('vasq');
+
+    test.equals(expect.assertion.message, 'Expected element <%s> to have attribute "class"');
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.expected, 'contains \'vasq\'');
+      test.equals(expect.assertion.actual, 'vasq');
+      test.equals(expect.assertion.negate, false);
+      test.equals(expect.assertion.resultValue, 'vasq');
+      test.equals(expect.assertion.passed, true);
+      test.deepEqual(expect.assertion.messageParts, [ ' which ', 'contains', ': "', 'vasq', '"' ] );
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" which contains: "vasq"');
+      test.done();
+    })
+  },
+
   'to have attribute not contains [FAILED]' : function(test) {
     Nocks.elementFound().attributeValue('xx');
 
@@ -279,6 +308,24 @@ module.exports = {
       test.equals(expect.assertion.passed, false);
       test.deepEqual(expect.assertion.messageParts, [ ' not contain', ': "', 'xx', '"' ] );
       test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" not contain: "xx"');
+      test.done();
+    })
+  },
+
+  'to have attribute which matches [PASSED]' : function(test) {
+    Nocks.elementFound().attributeValue('vasq');
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').which.matches(/vasq/);
+
+    test.equals(expect.assertion.message, 'Expected element <%s> to have attribute "class"');
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.expected, 'matches \'/vasq/\'');
+      test.equals(expect.assertion.actual, 'vasq');
+      test.equals(expect.assertion.negate, false);
+      test.equals(expect.assertion.resultValue, 'vasq');
+      test.equals(expect.assertion.passed, true);
+      test.deepEqual(expect.assertion.messageParts, [ ' which ', 'matches', ': "', /vasq/, '"' ]);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" which matches: "/vasq/"');
       test.done();
     })
   },

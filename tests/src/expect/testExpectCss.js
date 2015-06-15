@@ -159,6 +159,18 @@ module.exports = {
     })
   },
 
+  'to have css property which equals [PASSED]' : function(test) {
+    Nocks.elementFound().cssProperty('block');
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.css('display').which.equals('block');
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.waitForMs, null);
+      test.equals(expect.assertion.passed, true);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have css property "display" which equals: "block"');
+      test.done();
+    })
+  },
+
   'to have css property equal to [FAILED]' : function(test) {
     Nocks.elementFound().cssProperty('block');
 
@@ -254,6 +266,22 @@ module.exports = {
     })
   },
 
+  'to have css property which contains [PASSED]' : function(test) {
+    Nocks.elementFound().cssProperty('block');
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.css('display').which.contains('block');
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.expected, 'contains \'block\'');
+      test.equals(expect.assertion.actual, 'block');
+      test.equals(expect.assertion.negate, false);
+      test.equals(expect.assertion.resultValue, 'block');
+      test.equals(expect.assertion.passed, true);
+      test.deepEqual(expect.assertion.messageParts, [ ' which ', 'contains', ': "', 'block', '"' ]);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have css property "display" which contains: "block"');
+      test.done();
+    })
+  },
+
   'to have css property not contains [PASSED]' : function(test) {
     Nocks.elementFound().cssProperty('xx');
 
@@ -284,6 +312,22 @@ module.exports = {
       test.equals(expect.assertion.passed, false);
       test.deepEqual(expect.assertion.messageParts, [ ' not contain', ': "', 'xx', '"' ] );
       test.equals(expect.assertion.message, 'Expected element <#weblogin> to have css property "display" not contain: "xx"');
+      test.done();
+    })
+  },
+
+  'to have css property which matches [PASSED]' : function(test) {
+    Nocks.elementFound().cssProperty('block');
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.css('display').which.matches(/block/);
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.expected, 'matches \'/block/\'');
+      test.equals(expect.assertion.actual, 'block');
+      test.equals(expect.assertion.negate, false);
+      test.equals(expect.assertion.resultValue, 'block');
+      test.equals(expect.assertion.passed, true);
+      test.deepEqual(expect.assertion.messageParts, [ ' which ', 'matches', ': "', /block/, '"' ]);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have css property "display" which matches: "/block/"');
       test.done();
     })
   },
