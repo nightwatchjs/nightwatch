@@ -150,6 +150,24 @@ module.exports = {
     })
   },
 
+  'text to contain [PASSED]' : function(test) {
+    Nocks.elementFound().text('vasq');
+
+    var expect = this.client.api.expect.element('#weblogin').text.to.contain('vasq');
+
+    test.equals(expect.assertion.message, 'Expected element <%s> text to');
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.expected, 'contain \'vasq\'');
+      test.equals(expect.assertion.actual, 'vasq');
+      test.equals(expect.assertion.negate, false);
+      test.equals(expect.assertion.resultValue, 'vasq');
+      test.equals(expect.assertion.passed, true);
+      test.deepEqual(expect.assertion.messageParts, [ ' contain', ': "', 'vasq', '"' ] );
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> text to contain: "vasq"');
+      test.done();
+    })
+  },
+
   'text to not contain [FAILED]' : function(test) {
     Nocks.elementFound().text('xx');
 
@@ -163,6 +181,24 @@ module.exports = {
       test.equals(expect.assertion.passed, false);
       test.deepEqual(expect.assertion.messageParts, [ ' not contain', ': "', 'xx', '"' ] );
       test.equals(expect.assertion.message, 'Expected element <#weblogin> text to not contain: "xx"');
+      test.done();
+    })
+  },
+
+  'text to match [PASSED]' : function(test) {
+    Nocks.elementFound().text('vasq');
+
+    var expect = this.client.api.expect.element('#weblogin').text.to.match(/vasq/);
+
+    test.equals(expect.assertion.message, 'Expected element <%s> text to');
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.expected, 'match \'/vasq/\'');
+      test.equals(expect.assertion.actual, 'vasq');
+      test.equals(expect.assertion.negate, false);
+      test.equals(expect.assertion.resultValue, 'vasq');
+      test.equals(expect.assertion.passed, true);
+      test.deepEqual(expect.assertion.messageParts, [ ' match', ': "', /vasq/, '"' ]);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> text to match: "/vasq/"');
       test.done();
     })
   },
