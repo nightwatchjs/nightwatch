@@ -553,5 +553,23 @@ module.exports = {
       test.equals(err, null);
       test.done();
     });
+  },
+
+  testRunCurrentTestInAfterEach : function(test) {
+    var testsPath = path.join(process.cwd(), '/sampletests/withaftereach/sampleSingleTest.js');
+    this.Runner.run([testsPath], {
+      seleniumPort : 10195,
+      silent : true,
+      output : false,
+      globals : {
+        test : test
+      }
+    }, {
+      output_folder : false,
+      start_session : true
+    }, function(err, results) {
+      test.equals(err, null);
+      test.done();
+    });
   }
 };

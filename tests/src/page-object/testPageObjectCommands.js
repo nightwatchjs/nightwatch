@@ -37,9 +37,13 @@ module.exports = {
     });
 
     var section = this.client.api.page.simplePageObj().section.signUp;
-
+    var client = this.client;
     section.click('@help', function callback(result) {
       test.equals(result.status, 0);
+    });
+
+    client.api.perform(function() {
+      test.equals(client.locateStrategy, 'css selector');
       test.done();
     });
   },
