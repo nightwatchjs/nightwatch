@@ -1036,7 +1036,51 @@ module.exports = {
       test.equal(command.request.path, '/wd/hub/session/1352110219202/log/types');
     });
   },
+/////////////////////////////
 
+
+  testContexts: function (test) {
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function (sessionId) {
+      var command = protocol.contexts(function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'GET');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/contexts');
+    });
+  },
+
+  testCurrentContext: function (test) {
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function (sessionId) {
+      var command = protocol.currentContext(function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'GET');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/context');
+    });
+  },
+
+
+  testSetContext: function (test) {
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function (sessionId) {
+      var command = protocol.setContext('Context text',function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'POST');
+      test.equal(command.data, '{"name":"Context text"}');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/context');
+    });
+  },
+  
+  
   tearDown : function(callback) {
     this.client = null;
     // clean up
