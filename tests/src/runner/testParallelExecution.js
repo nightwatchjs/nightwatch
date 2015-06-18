@@ -112,7 +112,7 @@ module.exports = {
 
     runner.init(function() {
       test.ok(runner.isParallelMode());
-      test.equals(self.allArgs.length, 2);
+      test.equals(self.allArgs.length, 17);
       test.ok('sample_1' in runner.runningProcesses);
       test.ok('sampleSingleTest_2' in runner.runningProcesses);
 
@@ -142,7 +142,7 @@ module.exports = {
 
     runner.init(function() {
       test.ok(runner.isParallelMode());
-      test.equals(self.allArgs.length, 2);
+      test.equals(self.allArgs.length, 17);
       test.done();
     });
 
@@ -162,7 +162,7 @@ module.exports = {
 
     runner.init(function() {
       test.ok(runner.isParallelMode());
-      test.equals(self.allArgs.length, 6);
+      test.equals(self.allArgs.length, 17);
       test.done();
     });
 
