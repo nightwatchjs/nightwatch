@@ -7,6 +7,7 @@
   "live_output" : false,
   "parallel_process_delay" : 10,
   "disable_colors": false,
+  "test_workers" : false,
 
   "selenium" : {
     "start_process" : false,
@@ -49,6 +50,7 @@
       "output" : true,
       "screenshots" : {
         "enabled" : false,
+        "on_failure" : true,
         "path" : ""
       },
       "desiredCapabilities": {

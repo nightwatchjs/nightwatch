@@ -1,4 +1,3 @@
-
 var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
 var util = require('util');
 var events = require('events');
@@ -25,8 +24,8 @@ module.exports = {
           this.stdout = new Stdout();
           this.stderr = new Stderr();
           setTimeout(function() {
-            this.emit('exit');
             this.emit('close');
+            this.emit('exit');
           }.bind(this), 11);
         };
 
@@ -151,6 +150,7 @@ module.exports = {
       workers : 'auto'
     });
     test.ok(runner.parallelModeWorkers());
+
   },
 
   testParallelExecutionWithWorkersCount : function(test) {
