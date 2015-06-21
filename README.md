@@ -16,7 +16,7 @@ Nightwatch works with the Selenium standalone server so the first thing you need
 
 Install Node.js and then:
 ```sh
-$ git clone git@github.com:beatfactor/nightwatch.git
+$ git clone git@github.com:nightwatchjs/nightwatch.git
 $ cd nightwatch
 $ npm install
 ```
@@ -31,4 +31,4 @@ $ npm test
 The [Mailing List/Google Group](https://groups.google.com/forum/#!forum/nightwatchjs) is the most appropriate tool for Nightwatch related discussions. In addition, there is a [StackOverflow Nightwatch.js tag](http://stackoverflow.com/questions/tagged/nightwatch.js) at your disposal and [Twitter](https://twitter.com/nightwatchjs).
 
 ### Setup Guides
-Browser specific setup and usage guides along with debugging instructions can be found on the [**Wiki**](https://github.com/beatfactor/nightwatch/wiki).
+Browser specific setup and usage guides along with debugging instructions can be found on the [**Wiki**](https://github.com/nightwatchjs/nightwatch/wiki).
