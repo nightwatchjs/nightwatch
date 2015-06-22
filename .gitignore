@@ -4,6 +4,7 @@
 /nightwatch.json
 node_modules
 npm-debug.log
+lib-cov
 selenium-debug.log
 phantomjsdriver.log
 *~
