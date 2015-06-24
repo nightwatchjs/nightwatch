@@ -5,9 +5,10 @@ var mockery = require('mockery');
 
 module.exports = {
   setUp: function(callback) {
-    var self = this;
     this.allArgs = [];
     this.allOpts = [];
+    var self = this;
+
     mockery.enable({ useCleanCache: true, warnOnUnregistered: false });
     mockery.registerMock('child_process', {
       execFile : function(path, args, opts) {
@@ -25,7 +26,7 @@ module.exports = {
           this.stderr = new Stderr();
           setTimeout(function() {
             this.emit('close');
-            this.emit('exit');
+            this.emit('exit', 0);
           }.bind(this), 11);
         };
 
@@ -33,6 +34,7 @@ module.exports = {
         return new Child();
       }
     });
+
     mockery.registerMock('../lib/runner/run.js', {
       run : function(source, settings, opts, callback) {}
     });

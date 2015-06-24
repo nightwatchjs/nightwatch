@@ -80,9 +80,7 @@ module.exports = function(grunt) {
       },
 
       'default' : {
-        settings : {
-          test_workers : false
-        }
+
       },
 
       browserstack: {
