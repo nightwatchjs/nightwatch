@@ -33,13 +33,13 @@ module.exports = {
     });
 
     mockery.registerMock('./runner/cli/clirunner.js', function() {
-      this.init = function(done) {
-        return this;
-      };
-      this.updateTestSettings = function(settings) {
+      this.setup = function(settings, done) {
         test.deepEqual(settings, {
           silent:true
         });
+        return this;
+      };
+      this.updateTestSettings = function(settings) {
         return this;
       };
       this.runTests = function(done) {
@@ -100,7 +100,7 @@ module.exports = {
       test.ok(!('env' in argv));
       test.equals(argv.test.substr(-34), '/tests/sampletests/async/sample.js');
 
-      this.init = function() {
+      this.setup = function() {
         return this;
       };
       this.updateTestSettings = function(settings) {

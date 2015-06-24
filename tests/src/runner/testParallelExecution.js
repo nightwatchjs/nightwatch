@@ -61,7 +61,7 @@ module.exports = {
       env : 'default,mixed'
     });
 
-    runner.init(function(output, code) {
+    runner.setup({}, function(output, code) {
       test.ok(runner.isParallelMode());
       test.equals(code, 0);
       test.deepEqual(output, { 'default': [], mixed: [] });
@@ -87,7 +87,7 @@ module.exports = {
       env : 'mixed,mixed'
     });
 
-    runner.init(function() {
+    runner.setup({}, function() {
       test.ok(runner.isParallelMode());
       test.equals(self.allArgs.length, 2);
       test.equals(self.allArgs[0][2], 'mixed');
@@ -109,7 +109,7 @@ module.exports = {
       config : './extra/parallelism.json'
     });
 
-    runner.init(function() {
+    runner.setup({}, function() {
       test.ok(runner.isParallelMode());
       test.equals(self.allArgs.length, 17);
       test.ok('sample_1' in runner.runningProcesses);
@@ -139,7 +139,7 @@ module.exports = {
       config : './extra/parallelism-auto.json'
     });
 
-    runner.init(function() {
+    runner.setup({}, function() {
       test.ok(runner.isParallelMode());
       test.equals(self.allArgs.length, 17);
       test.done();
@@ -160,7 +160,7 @@ module.exports = {
       config : './extra/parallelism-count.json'
     });
 
-    runner.init(function() {
+    runner.setup({}, function() {
       test.ok(runner.isParallelMode());
       test.equals(self.allArgs.length, 17);
       test.done();
@@ -171,5 +171,31 @@ module.exports = {
       workers : 6
     });
     test.ok(runner.parallelModeWorkers());
+  },
+
+  testParallelExecutionWithWorkersDisabledPerEnvironment : function(test) {
+    var CliRunner = require('../../../' + BASE_PATH + '/../lib/runner/cli/clirunner.js');
+    var runner = new CliRunner({
+      config : './extra/parallelism-disabled.json'
+    });
+
+    runner.setup();
+
+    test.equals(runner.settings.test_workers, false);
+    test.equals(runner.parallelModeWorkers(), false);
+    test.done();
+  },
+
+  testParallelExecutionWithWorkersDisabledFromGrunt : function(test) {
+    var CliRunner = require('../../../' + BASE_PATH + '/../lib/runner/cli/clirunner.js');
+    var runner = new CliRunner({
+      config : './extra/parallelism.json'
+    });
+
+    runner.setup({test_workers : false});
+
+    test.equals(runner.settings.test_workers, false);
+    test.equals(runner.parallelModeWorkers(), false);
+    test.done();
   }
 };

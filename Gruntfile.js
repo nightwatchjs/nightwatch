@@ -79,7 +79,11 @@ module.exports = function(grunt) {
         cwd: './'
       },
 
-      'default' : {},
+      'default' : {
+        settings : {
+          test_workers : false
+        }
+      },
 
       browserstack: {
         argv: {
