@@ -60,6 +60,28 @@ module.exports = {
     })
   },
 
+  'to have css property with message [PASSED]' : function(test) {
+    Nocks.elementFound().cssProperty('block');
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.css('display', 'Testing if #weblogin has display');
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.passed, true);
+      test.equals(expect.assertion.message, 'Testing if #weblogin has display');
+      test.done();
+    })
+  },
+
+  'to have css property with message [FAILED]' : function(test) {
+    Nocks.elementFound().cssProperty('', 3);
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.css('display', 'Testing if #weblogin has display');
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.passed, false);
+      test.equals(expect.assertion.message, 'Testing if #weblogin has display');
+      test.done();
+    })
+  },
+
   'to have css property [FAILED]' : function(test) {
     Nocks.elementFound().cssProperty('');
 
@@ -266,6 +288,7 @@ module.exports = {
     })
   },
 
+
   'to have css property which contains [PASSED]' : function(test) {
     Nocks.elementFound().cssProperty('block');
 
@@ -278,6 +301,46 @@ module.exports = {
       test.equals(expect.assertion.passed, true);
       test.deepEqual(expect.assertion.messageParts, [ ' which ', 'contains', ': "', 'block', '"' ]);
       test.equals(expect.assertion.message, 'Expected element <#weblogin> to have css property "display" which contains: "block"');
+      test.done();
+    })
+  },
+  'to have css property equal with message [PASSED]' : function(test) {
+    this.client.api.globals.waitForConditionPollInterval = 200;
+    Nocks.elementFound().cssProperty('block');
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.css('display', 'Testing if #weblogin has display which equals block').equal('block');
+    Nocks.cssProperty('').cssProperty('block');
+
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.actual, 'block');
+      test.equals(expect.assertion.passed, true);
+      test.equals(expect.assertion.message, 'Testing if #weblogin has display which equals block');
+      test.done();
+    })
+  },
+
+  'to have css property equal with message [FAILED] - property not set' : function(test) {
+    this.client.api.globals.waitForConditionPollInterval = 50;
+    Nocks.elementFound().cssProperty('', 3);
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.css('display', 'Testing if #weblogin has display which equals block').equal('block');
+
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.passed, false);
+      test.equals(expect.assertion.message, 'Testing if #weblogin has display which equals block');
+      test.done();
+    })
+  },
+
+  'to have css property equal with message [FAILED] - property not equal' : function(test) {
+    this.client.api.globals.waitForConditionPollInterval = 10;
+    Nocks.elementFound().cssProperty('xx', 3);
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.css('display', 'Testing if #weblogin has display which equals block').equal('block');
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.passed, false);
+      test.equals(expect.assertion.actual, 'xx');
+      test.equals(expect.assertion.message, 'Testing if #weblogin has display which equals block');
       test.done();
     })
   },

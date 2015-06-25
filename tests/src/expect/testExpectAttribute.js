@@ -53,6 +53,31 @@ module.exports = {
     })
   },
 
+  'to have attribute with message [PASSED]' : function(test) {
+    Nocks.elementFound().attributeValue('hp vasq');
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class', 'Testing if #weblogin has "class"');
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.passed, true);
+      test.equals(expect.assertion.message, 'Testing if #weblogin has "class"');
+      test.equals(results.tests[0].message, 'Testing if #weblogin has "class"');
+      test.done();
+    })
+  },
+
+  'to have attribute with message [FAILED]' : function(test) {
+
+    Nocks.elementFound().attributeValue(null);
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class', 'Testing if #weblogin has "class"');
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.passed, false);
+      test.equals(expect.assertion.message, 'Testing if #weblogin has "class" - attribute was not found');
+      test.equals(results.tests[0].message, 'Testing if #weblogin has "class" - attribute was not found');
+      test.done();
+    })
+  },
+
   'to have attribute [FAILED]' : function(test) {
     Nocks.elementFound().attributeValue(null);
 
@@ -255,6 +280,45 @@ module.exports = {
       test.equals(expect.assertion.expected, 'equal to \'hp vasq\'');
       test.equals(expect.assertion.actual, 'xx');
       test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" equal to: "hp vasq" in 11ms');
+      test.done();
+    })
+  },
+
+  'to have attribute equal to with message [PASSED]' : function(test) {
+    Nocks.elementFound().attributeValue('hp vasq');
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class', 'Testing if #weblogin has class which equals hp vasq').equal('hp vasq');
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.waitForMs, null);
+      test.equals(expect.assertion.passed, true);
+      test.equals(expect.assertion.message, 'Testing if #weblogin has class which equals hp vasq');
+      test.done();
+    })
+  },
+
+
+  'to have attribute equal with message [FAILED] - attribute not found' : function(test) {
+    Nocks.elementFound();
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class', 'Testing if #weblogin has class which equals hp vasq').equal('hp vasq');
+
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.passed, false);
+      test.equals(expect.assertion.message, 'Testing if #weblogin has class which equals hp vasq - attribute was not found');
+      test.done();
+    })
+  },
+
+
+  'to have attribute equal with message [FAILED] - attribute not equal' : function(test) {
+    Nocks.elementFound().attributeValue('xx');
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class', 'Testing if #weblogin has class which equals hp vasq').equal('hp vasq');
+
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.passed, false);
+      test.equals(expect.assertion.actual, 'xx');
+      test.equals(expect.assertion.message, 'Testing if #weblogin has class which equals hp vasq');
       test.done();
     })
   },
