@@ -64,7 +64,7 @@ module.exports = {
     });
 
     runner.setup({}, function(output, code) {
-      test.ok(runner.isParallelMode());
+      test.ok(!runner.isParallelMode());
       test.equals(code, 0);
       test.deepEqual(output, { 'default': [], mixed: [] });
       test.equals(self.allArgs.length, 2);
@@ -90,7 +90,7 @@ module.exports = {
     });
 
     runner.setup({}, function() {
-      test.ok(runner.isParallelMode());
+      test.ok(!runner.isParallelMode());
       test.equals(self.allArgs.length, 2);
       test.equals(self.allArgs[0][2], 'mixed');
       test.equals(self.allArgs[1][2], 'mixed');
@@ -112,7 +112,6 @@ module.exports = {
     });
 
     runner.setup({}, function() {
-      test.ok(runner.isParallelMode());
       test.equals(self.allArgs.length, 17);
       test.ok('sample_1' in runner.runningProcesses);
       test.ok('sampleSingleTest_2' in runner.runningProcesses);
@@ -125,8 +124,9 @@ module.exports = {
       test.equal(child.environment, 'sample');
       test.deepEqual(child.settings, runner.settings);
       test.strictEqual(child.globalExitCode, 0);
-      test.equal(child.args.length, 2);
+      test.equal(child.args.length, 3);
       test.equal(child.args[0], '--test');
+      test.equal(child.args[2], '--test-worker');
       test.done();
     });
 
@@ -142,7 +142,7 @@ module.exports = {
     });
 
     runner.setup({}, function() {
-      test.ok(runner.isParallelMode());
+      test.ok(!runner.isParallelMode());
       test.equals(self.allArgs.length, 17);
       test.done();
     });
@@ -163,7 +163,7 @@ module.exports = {
     });
 
     runner.setup({}, function() {
-      test.ok(runner.isParallelMode());
+      test.ok(!runner.isParallelMode());
       test.equals(self.allArgs.length, 17);
       test.done();
     });

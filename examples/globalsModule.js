@@ -13,6 +13,7 @@ module.exports = {
   },
 
   before : function(cb) {
+    console.log('GLOBAL BEFORE')
     cb();
   },
 
@@ -21,6 +22,7 @@ module.exports = {
   },
 
   after : function(cb) {
+    console.log('GLOBAL AFTER')
     cb();
   },
 
