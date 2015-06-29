@@ -1,4 +1,14 @@
 module.exports = {
+  before : function(client, callback) {
+    client.globals.test.ok('before callback called.');
+    callback();
+  },
+
+  beforeEach : function(client, callback) {
+    client.globals.test.ok('beforeEach callback called.');
+    callback();
+  },
+
   demoTest : function (client) {
     client.url('http://localhost')
       .assert.elementPresent('#weblogin')
@@ -6,13 +16,20 @@ module.exports = {
       .end();
   },
 
-  tearDown : function(callback) {
-    var client = this.client;
-    client.globals.test.deepEqual(this.results.passed, 1);
-    client.globals.test.deepEqual(this.results.failed, 1);
-    client.globals.test.deepEqual(this.results.errors, 0);
-    client.globals.test.deepEqual(this.results.skipped, 0);
-    client.globals.test.ok(this.results.tests.length, 2);
+  demoTest2 : function (client) {
+    client.url('http://localhost')
+      .assert.elementPresent('#weblogin')
+      .assert.elementPresent('#badElement')
+      .end();
+  },
+
+  afterEach : function(client, callback) {
+    client.globals.test.ok('afterEach callback called.');
+    callback();
+  },
+
+  after : function(client, callback) {
+    client.globals.test.ok('after callback called.');
     callback();
   }
 };
