@@ -172,6 +172,7 @@ module.exports = {
     eq(client.api.launch_url, '/home');
 
     eq(client.options.screenshots.enabled, false);
+    eq(typeof client.options.screenshots.on_error, 'undefined');
     eq(client.api.options.screenshots, false);
     test.done();
   },
@@ -200,7 +201,24 @@ module.exports = {
     var eq = test.equals;
 
     eq(client.api.options.log_screenshot_data, true);
+    eq(client.options.screenshots.on_error, true);
     eq(client.api.options.screenshotsPath, '');
+
+    test.done();
+  },
+
+  testSetOptionsScreenshotsOnError : function(test) {
+    var client = this.client = Client.init({
+      screenshots : {
+        enabled : true,
+        on_error : true,
+        path : ''
+      },
+      log_screenshot_data : true
+    });
+    var eq = test.equals;
+
+    eq(client.options.screenshots.on_error, true);
 
     test.done();
   },

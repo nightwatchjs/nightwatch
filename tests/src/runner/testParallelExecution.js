@@ -151,6 +151,10 @@ module.exports = {
       enabled : true,
       workers : 'auto'
     });
+    test.deepEqual(runner.test_settings.test_workers, {
+      enabled : true,
+      workers : 'auto'
+    });
     test.ok(runner.parallelModeWorkers());
 
   },
