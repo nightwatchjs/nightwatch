@@ -32,3 +32,4 @@ The [Mailing List/Google Group](https://groups.google.com/forum/#!forum/nightwat
 
 ### Setup Guides
 Browser specific setup and usage guides along with debugging instructions can be found on the [**Wiki**](https://github.com/nightwatchjs/nightwatch/wiki).
+
