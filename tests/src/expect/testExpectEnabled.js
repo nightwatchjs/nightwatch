@@ -150,6 +150,20 @@ module.exports = {
     })
   },
 
+  'to be enabled with waitFor - element not found' : function(test) {
+    this.client.api.globals.waitForConditionPollInterval = 50;
+
+    Nocks.elementNotFound();
+
+    var expect = this.client.api.expect.element('#weblogin').to.be.enabled.before(60);
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equal(expect.assertion.waitForMs, 60);
+      test.equals(expect.assertion.passed, false);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to be enabled in 60ms - element was not found');
+      test.done();
+    })
+  },
+
   tearDown : function(callback) {
     this.client = null;
     Nocks.cleanAll();

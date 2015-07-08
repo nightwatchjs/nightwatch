@@ -395,6 +395,20 @@ module.exports = {
     })
   },
 
+  'to have css property with waitFor - element not found' : function(test) {
+    this.client.api.globals.waitForConditionPollInterval = 50;
+
+    Nocks.elementNotFound();
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.css('display').before(60);
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equal(expect.assertion.waitForMs, 60);
+      test.equals(expect.assertion.passed, false);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have css property "display" in 60ms - element was not found');
+      test.done();
+    })
+  },
+
   'to have css property match - element not found' : function(test) {
     Nocks.elementNotFound();
 

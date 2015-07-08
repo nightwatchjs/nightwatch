@@ -313,6 +313,20 @@ module.exports = {
     })
   },
 
+  'to have value equal to with waitFor - element not found' : function(test) {
+    this.client.api.globals.waitForConditionPollInterval = 50;
+
+    Nocks.elementNotFound();
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.value.equal('hp vasq').before(60);
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equal(expect.assertion.waitForMs, 60);
+      test.equals(expect.assertion.passed, false);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have value equal to: "hp vasq" in 60ms - element was not found');
+      test.done();
+    })
+  },
+
   'to have value match - throws exception on invalid regex' : function(test) {
     Nocks.elementFound().value('xx');
 
