@@ -9,7 +9,7 @@ module.exports = {
   'demo test google' : function (client) {
     client
       .url('http://google.com')
-      .waitForElementPresent('xbody', 1000);
+      .waitForElementPresent('body', 1000);
   },
 
   'part two' : function(client) {

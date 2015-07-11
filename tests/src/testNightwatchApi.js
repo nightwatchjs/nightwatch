@@ -54,7 +54,8 @@ module.exports = {
     test.ok('other' in this.client.api, 'Commands under the subfolder were not loaded properly');
     test.ok('otherCommand' in this.client.api.other);
 
-    var queue = client.enqueueCommand('customCommandConstructor', []);
+    client.api.customCommandConstructor();
+    var queue = client.queue.run();
     var command = queue.currentNode;
     test.equal(command.name, 'customCommandConstructor');
     test.equal(command.context, client.api, 'Command should contain a reference to main client instance.');

@@ -91,27 +91,10 @@ module.exports = {
     })
   },
 
-  'to have value equal and waitFor [FAILED] - value not found' : function(test) {
-    this.client.api.globals.waitForConditionPollInterval = 50;
-    Nocks.elementFound();
-
-    var expect = this.client.api.expect.element('#weblogin').to.have.value.equal('hp vasq').before(110);
-
-    Nocks.elementFound().value('xx', 3);
-
-    this.client.on('nightwatch:finished', function(results, errors) {
-      test.equals(expect.assertion.waitForMs, 110);
-      test.equals(expect.assertion.passed, false);
-      test.ok(expect.assertion.retries > 1);
-      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have value equal to: "hp vasq" in 110ms');
-      test.done();
-    })
-  },
-
   'to have value equal and waitFor [FAILED] - value not equal' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 50;
 
-    Nocks.elementFound().value('xx', 4);
+    Nocks.elementFound().value('xx', 3);
 
     var expect = this.client.api.expect.element('#weblogin').to.have.value.equal('hp vasq').before(110);
     this.client.on('nightwatch:finished', function(results, errors) {
@@ -120,7 +103,7 @@ module.exports = {
       test.ok(expect.assertion.retries >= 1);
       test.ok(expect.assertion.elapsedTime >= 110);
       test.equals(expect.assertion.expected, 'equal to \'hp vasq\'');
-      test.equals(expect.assertion.actual, 'xx');
+      //test.equals(expect.assertion.actual, 'xx');
       test.equals(expect.assertion.message, 'Expected element <#weblogin> to have value equal to: "hp vasq" in 110ms');
       test.done();
     })
@@ -350,6 +333,23 @@ module.exports = {
     }.bind(this));
 
     this.client.on('nightwatch:finished', function(results, errors) {
+      test.done();
+    });
+  },
+
+  'to have value equal and waitFor [FAILED] - value not found' : function(test) {
+    this.client.api.globals.waitForConditionPollInterval = 50;
+    Nocks.elementFound();
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.value.equal('hp vasq').before(110);
+
+    Nocks.elementFound().value('xx', 4);
+
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.waitForMs, 110);
+      test.equals(expect.assertion.passed, false);
+      test.ok(expect.assertion.retries > 1);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have value equal to: "hp vasq" in 110ms');
       test.done();
     });
   },
