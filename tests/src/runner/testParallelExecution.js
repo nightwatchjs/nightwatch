@@ -2,6 +2,7 @@ var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
 var util = require('util');
 var events = require('events');
 var mockery = require('mockery');
+var path = require('path');
 
 module.exports = {
   setUp: function(callback) {
@@ -112,16 +113,16 @@ module.exports = {
     });
 
     runner.setup({}, function() {
-      test.equals(self.allArgs.length, 17);
-      test.ok('sample_1' in runner.runningProcesses);
-      test.ok('sampleSingleTest_2' in runner.runningProcesses);
+      test.equals(self.allArgs.length, 18);
+      test.ok(path.join('sampletests', 'async', 'sample_1') in runner.runningProcesses);
+      test.ok(path.join('sampletests', 'before-after', 'sampleSingleTest_2') in runner.runningProcesses);
 
-      var child = runner.runningProcesses.sample_1;
+      var child = runner.runningProcesses[path.join('sampletests', 'async', 'sample_1')];
       test.deepEqual(child.env_output, []);
       test.ok(child.mainModule.length > 0);
       test.strictEqual(child.index, 0);
       test.equal(child.startDelay, 10);
-      test.equal(child.environment, 'sample');
+      test.equal(child.environment, path.join('sampletests', 'async', 'sample'));
       test.deepEqual(child.settings, runner.settings);
       test.strictEqual(child.globalExitCode, 0);
       test.equal(child.args.length, 3);
@@ -143,7 +144,7 @@ module.exports = {
 
     runner.setup({}, function() {
       test.ok(!runner.isParallelMode());
-      test.equals(self.allArgs.length, 17);
+      test.equals(self.allArgs.length, 18);
       test.done();
     });
 
@@ -168,7 +169,7 @@ module.exports = {
 
     runner.setup({}, function() {
       test.ok(!runner.isParallelMode());
-      test.equals(self.allArgs.length, 17);
+      test.equals(self.allArgs.length, 18);
       test.done();
     });
 
