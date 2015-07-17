@@ -7,6 +7,7 @@ var testCommands = {
 module.exports = {
   url: 'http://localhost.com',
   elements: {
+    loginAsString: '#weblogin',
     loginCss: { selector: '#weblogin' },
     loginXpath: { selector: '//weblogin', locateStrategy: 'xpath' }
   },

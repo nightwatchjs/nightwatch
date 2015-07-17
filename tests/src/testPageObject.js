@@ -35,6 +35,8 @@ module.exports = {
     test.equal(elements.loginCss.locateStrategy, 'css selector');
     test.equal(elements.loginXpath.selector, '//weblogin');
     test.equal(elements.loginXpath.locateStrategy, 'xpath');
+    test.equal(elements.loginAsString.selector, '#weblogin');
+    test.equal(elements.loginAsString.locateStrategy, 'css selector');
 
     test.done();
   },
