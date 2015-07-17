@@ -1066,8 +1066,6 @@ module.exports = {
       test.equal(command.request.path, '/wd/hub/session/1352110219202/log/types');
     });
   },
-/////////////////////////////
-
 
   testContexts: function (test) {
     var protocol = this.protocol;
@@ -1095,22 +1093,20 @@ module.exports = {
     });
   },
 
-
   testSetContext: function (test) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function (sessionId) {
-      var command = protocol.setContext('Context text',function callback() {
+      var command = protocol.setContext('NATIVE',function callback() {
         test.done();
       });
 
       test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"name":"Context text"}');
+      test.equal(command.data, '{"name":"NATIVE"}');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/context');
     });
   },
-  
-  
+
   tearDown : function(callback) {
     this.client = null;
     // clean up
