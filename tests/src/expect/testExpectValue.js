@@ -316,13 +316,27 @@ module.exports = {
   'to have value equal to with waitFor - element not found' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 50;
 
-    Nocks.elementNotFound();
+    Nocks.elementNotFound().elementNotFound().elementNotFound();
 
     var expect = this.client.api.expect.element('#weblogin').to.have.value.equal('hp vasq').before(60);
     this.client.on('nightwatch:finished', function(results, errors) {
       test.equal(expect.assertion.waitForMs, 60);
       test.equals(expect.assertion.passed, false);
       test.equals(expect.assertion.message, 'Expected element <#weblogin> to have value equal to: "hp vasq" in 60ms - element was not found');
+      test.done();
+    })
+  },
+
+  'to have value equal with waitFor - element found on retry' : function(test) {
+    this.client.api.globals.waitForConditionPollInterval = 50;
+    Nocks.elementNotFound().elementFound().value('hp vasq');
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.value.equal('hp vasq').before(110);
+
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.waitForMs, 110);
+      test.equals(expect.assertion.passed, true);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have value equal to: "hp vasq" in 110ms - condition was met in ' + expect.assertion.elapsedTime + 'ms');
       test.done();
     })
   },

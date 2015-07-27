@@ -39,7 +39,7 @@ module.exports = {
   'to be present with waitFor [FAILED]' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 50;
 
-    Nocks.elementNotFound().elementNotFound();
+    Nocks.elementNotFound().elementNotFound().elementNotFound();
 
     var expect = this.client.api.expect.element('#weblogin').to.be.present.before(60);
     this.client.on('nightwatch:finished', function(results, errors) {
@@ -67,6 +67,19 @@ module.exports = {
       test.equals(results.passed, 0);
       test.equals(results.failed, 1);
       test.equals(results.tests[0].message, 'Expected element <#weblogin> to be present - element was not found');
+      test.done();
+    })
+  },
+
+  'to be present with waitFor [PASSED on retry]' : function(test) {
+    this.client.api.globals.waitForConditionPollInterval = 50;
+    Nocks.elementNotFound().elementFound();
+
+    var expect = this.client.api.expect.element('#weblogin').to.be.present.before(60);
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equal(expect.assertion.waitForMs, 60);
+      test.equals(expect.assertion.passed, true);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to be present in 60ms - element was present in ' + expect.assertion.elapsedTime + 'ms');
       test.done();
     })
   },

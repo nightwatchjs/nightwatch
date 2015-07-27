@@ -202,13 +202,27 @@ module.exports = {
   'to be with waitFor - element not found' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 50;
 
-    Nocks.elementNotFound();
+    Nocks.elementNotFound().elementNotFound().elementNotFound();
 
     var expect = this.client.api.expect.element('#weblogin').to.be.an('input').before(60);
     this.client.on('nightwatch:finished', function(results, errors) {
       test.equal(expect.assertion.waitForMs, 60);
       test.equals(expect.assertion.passed, false);
       test.equals(expect.assertion.message, 'Expected element <#weblogin> to be an input in 60ms - element was not found');
+      test.done();
+    })
+  },
+
+  'to be with waitFor - element found on retry' : function(test) {
+    this.client.api.globals.waitForConditionPollInterval = 50;
+
+    Nocks.elementNotFound().elementFound().name('input');
+
+    var expect = this.client.api.expect.element('#weblogin').to.be.an('input').before(60);
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equal(expect.assertion.waitForMs, 60);
+      test.equals(expect.assertion.passed, true);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to be an input in 60ms - condition was met in ' + expect.assertion.elapsedTime + 'ms');
       test.done();
     })
   },
