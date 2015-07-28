@@ -10,7 +10,7 @@ UI automated testing framework powered by [Node.js](http://nodejs.org/). It uses
 
 ### Selenium WebDriver standalone server
 Nightwatch works with the Selenium standalone server so the first thing you need to do is download the selenium server jar file `selenium-server-standalone-2.x.x.jar` from the Selenium releases page:
-**http://selenium-release.storage.googleapis.com/index.html**
+**https://selenium-release.storage.googleapis.com/index.html**
 
 ### Install Nightwatch
 
