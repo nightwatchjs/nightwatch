@@ -1107,6 +1107,33 @@ module.exports = {
     });
   },
 
+  testGetOrientation: function (test) {
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function (sessionId) {
+      var command = protocol.getOrientation(function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'GET');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/orientation');
+    });
+  },
+
+  testSetOrientation: function (test) {
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function (sessionId) {
+      var command = protocol.setOrientation('LANDSCAPE',function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'POST');
+      test.equal(command.data, '{"orientation":"LANDSCAPE"}');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/orientation');
+    });
+  },
+
   tearDown : function(callback) {
     this.client = null;
     // clean up
