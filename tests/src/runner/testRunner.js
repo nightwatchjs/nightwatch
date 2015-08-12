@@ -498,6 +498,50 @@ module.exports = {
     });
   },
 
+  testRunWithTagsAndFilterEmpty : function(test) {
+    var testsPath = path.join(process.cwd(), 'sampletests');
+
+    this.Runner.run([testsPath], {
+      seleniumPort : 10195,
+      silent : true,
+      output : false,
+      globals : {
+        test : test
+      },
+      filter : 'syncnames/*',
+      tag_filter : ['login']
+    }, {
+      output_folder : false,
+      start_session : true
+    }, function(err, results) {
+      test.ok(err);
+      test.equal(results, false);
+      test.done();
+    });
+  },
+
+  testRunWithTagsAndFilterNotEmpty : function(test) {
+    var testsPath = path.join(process.cwd(), 'sampletests');
+
+    this.Runner.run([testsPath], {
+      seleniumPort : 10195,
+      silent : true,
+      output : false,
+      globals : {
+        test : test
+      },
+      filter : 'tags/*',
+      tag_filter : ['login']
+    }, {
+      output_folder : false,
+      start_session : true
+    }, function(err, results) {
+      test.equal(err, null);
+      test.ok(('demoTagTest' in results.modules.sample.completed), 'demoTagTest was ran');
+      test.done();
+    });
+  },
+
   testRunWithOutput : function(test) {
     var src_folders = [
       path.join(process.cwd(), 'sampletests/withsubfolders')
