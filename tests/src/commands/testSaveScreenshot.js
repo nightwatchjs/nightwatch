@@ -34,6 +34,37 @@ module.exports = {
 
   },
 
+  testUseScreenshotPath : function(test) {
+    MockServer.addMock({
+      url : '/wd/hub/session/1352110219202/screenshot',
+      method:'GET',
+      response : JSON.stringify({
+        sessionId: '1352110219202',
+        status:0,
+        value:'screendata'
+      })
+    });
+
+    test.expect(4);
+    this.client.api.options.log_screenshot_data = false;
+    this.client.api.options.use_screenshot_path = true;
+    this.client.api.options.screenshots = {};
+    this.client.api.options.screenshots.path = 'root_dir/';
+
+    this.client.saveScreenshotToFile = function(fileName, data, cb) {
+      test.equal(fileName, 'root_dir/screenshot.png');
+      test.equal(data, 'screendata');
+      cb();
+    };
+
+    this.client.api.saveScreenshot('screenshot.png', function(result) {
+      test.equal(result.value, 'screendata');
+      test.equal(result.suppressBase64Data, true);
+      test.done();
+    });
+
+  },
+
   tearDown : function(callback) {
     this.client = null;
 
