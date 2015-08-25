@@ -174,6 +174,7 @@ module.exports = {
     eq(client.options.screenshots.enabled, false);
     eq(typeof client.options.screenshots.on_error, 'undefined');
     eq(client.api.options.screenshots, false);
+    eq(client.options.use_screenshot_path, false);
     test.done();
   },
 
