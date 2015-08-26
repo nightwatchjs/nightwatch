@@ -45,6 +45,53 @@ module.exports = {
     });
   },
 
+  testRunNoSkipTestcasesOnFail : function(test) {
+    test.expect(11);
+    var testsPath = path.join(process.cwd(), '/sampletests/withfailures');
+    this.Runner.run([testsPath], {
+      seleniumPort : 10195,
+      silent : true,
+      output : true,
+      skip_testcases_on_fail: false,
+      globals : {
+        test : test
+      }
+    }, {
+      output_folder : false,
+      start_session : true
+    }, function(err, results) {
+      test.equals(results.passed, 2);
+      test.equals(results.failed, 2);
+      test.equals(results.errors, 0);
+      test.equals(results.skipped, 0);
+      test.equals(err, null);
+      test.done();
+    });
+  },
+
+  testRunSkipTestcasesOnFail : function(test) {
+    test.expect(9);
+    var testsPath = path.join(process.cwd(), '/sampletests/withfailures');
+    this.Runner.run([testsPath], {
+      seleniumPort : 10195,
+      silent : true,
+      output : false,
+      globals : {
+        test : test
+      }
+    }, {
+      output_folder : false,
+      start_session : true
+    }, function(err, results) {
+      test.equals(results.passed, 1);
+      test.equals(results.failed, 1);
+      test.equals(results.errors, 0);
+      test.equals(results.modules.sample.skipped[0], 'demoTest2');
+      test.equals(err, null);
+      test.done();
+    });
+  },
+
   testRunRetries : function(test) {
     test.expect(11);
     var testsPath = path.join(process.cwd(), '/sampletests/withfailures');

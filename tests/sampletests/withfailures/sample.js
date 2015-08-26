@@ -13,6 +13,7 @@ module.exports = {
     client.url('http://localhost')
       .assert.elementPresent('#weblogin')
       .assert.elementPresent('#badElement')
+      .assert.elementPresent('#webLogin')
       .end();
   },
 
