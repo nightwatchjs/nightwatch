@@ -49,7 +49,7 @@ module.exports = {
     this.client.api.options.log_screenshot_data = false;
     this.client.api.options.use_screenshot_path = true;
     this.client.api.options.screenshots = {};
-    this.client.api.options.screenshots.path = 'root_dir/';
+    this.client.api.screenshotsPath = 'root_dir/';
 
     this.client.saveScreenshotToFile = function(fileName, data, cb) {
       test.equal(fileName, 'root_dir/screenshot.png');
