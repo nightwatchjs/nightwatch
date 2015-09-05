@@ -56,9 +56,12 @@ module.exports = {
 
     mockery.registerMock('./globals.json', {
       extra : {
-        someGlobal : 'test'
+        someGlobal : 'test',
+        otherGlobal : 'extra-value'
       },
-      otherGlobal : 'other-value'
+      otherGlobal : 'other-value',
+      inheritedGlobal : 'inherited',
+      overwritten : '1'
     });
 
     mockery.registerMock('./settings.json', {
@@ -111,13 +114,30 @@ module.exports = {
       test_settings : {
         'default' : {
           output : false,
-          disable_colors: true
+          disable_colors: true,
+          globals : {
+            overwritten : '2',
+            testGlobalOne : 'one',
+            testGlobalTwo : {
+              one : 1,
+              two : {
+                three : '3'
+              }
+            }
+          }
         },
         'extra' : {
           username : '${ENV_USERNAME}',
           credentials : {
             service : {
               user : '${ENV_USERNAME}'
+            }
+          },
+          globals : {
+            testGlobalTwo : {
+              two : {
+                three : '5'
+              }
             }
           },
           end_session_on_fail : false,
@@ -495,18 +515,23 @@ module.exports = {
     }).init();
 
     runner.settings.globals_path = './globals.json';
+    runner.inheritFromDefaultEnv();
     runner.readExternalGlobals();
 
-    test.equals(runner.test_settings.globals.otherGlobal, 'other-value');
+    test.equals(runner.test_settings.globals.otherGlobal, 'extra-value');
+    test.equals(runner.test_settings.globals.inheritedGlobal, 'inherited');
     test.equals(runner.test_settings.globals.someGlobal, 'test');
-
+    test.equals(runner.test_settings.globals.overwritten, '2');
+    test.equals(runner.test_settings.globals.testGlobalOne, 'one');
+    test.equals(runner.test_settings.globals.testGlobalTwo.two.three, '5');
+    test.equals(runner.test_settings.globals.testGlobalTwo.one, 1);
 
     test.throws(function() {
       var runner = new CliRunner({
         config : './custom.json',
         env : 'extra'
       }).init();
-      runner.settings.globals_path = './incorrect.json';
+      runner.settings.globals_path = './doesnotexist.json';
       runner.readExternalGlobals();
 
     }, 'External global file could not be located - using ./incorrect.json.');
