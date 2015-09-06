@@ -22,11 +22,11 @@ module.exports = {
         value : false
       })
     });
-
+    this.client.api.globals.abortOnAssertionFailure = false;
     this.client.api.waitForElementVisible('#weblogin', 110, 50, function callback(result, instance) {
       test.equal(assertion[0], false);
       test.equal(assertion[1], 'not visible');
-      test.equal(assertion[4], true);
+      test.equal(assertion[4], false);
 
       test.done();
     });
