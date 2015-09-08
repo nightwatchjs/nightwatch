@@ -438,6 +438,7 @@ module.exports = {
 
     var testSource = runner.getTestSource();
     test.deepEqual(testSource, ['tests/demoGroup']);
+    test.equals(runner.test_settings.group_name, 'demoGroup');
 
     var otherRunner = new CliRunner({
       config : './custom.json',
@@ -447,6 +448,7 @@ module.exports = {
 
     testSource = otherRunner.getTestSource();
     test.deepEqual(testSource, ['tests/demoGroup']);
+    test.equals(runner.test_settings.group_name, 'tests/demoGroup');
 
     var simpleRunner = new CliRunner({
       config : './custom.json',
