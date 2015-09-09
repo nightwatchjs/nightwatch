@@ -51,7 +51,7 @@ module.exports = {
     this.Runner.run([testsPath], {
       seleniumPort : 10195,
       silent : true,
-      output : true,
+      output : false,
       skip_testcases_on_fail: false,
       globals : {
         test : test

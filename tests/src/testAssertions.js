@@ -105,7 +105,9 @@ module.exports = {
     var client = {
       options: {},
       api : {
-        globals: { retryAssertionTimeout: 5 },
+        globals: {
+          retryAssertionTimeout: 5
+        },
         getText : function(cssSelector, callback) {
           test.equals(cssSelector, '.test_element');
           callback({

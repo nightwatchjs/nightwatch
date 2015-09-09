@@ -29,11 +29,13 @@ module.exports = {
 
   'to have attribute with waitFor [PASSED]' : function(test) {
     Nocks.elementFound().attributeValue('hp vasq');
+    this.client.api.globals.abortOnAssertionFailure = false;
 
     var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').before(100);
     this.client.on('nightwatch:finished', function(results, errors) {
       test.equals(expect.assertion.waitForMs, 100);
       test.equals(expect.assertion.passed, true);
+      test.equals(expect.assertion.abortOnFailure, false);
       test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" in 100ms - attribute was present in '+ expect.assertion.elapsedTime +'ms');
       test.done();
     })
@@ -48,6 +50,7 @@ module.exports = {
     this.client.on('nightwatch:finished', function(results, errors) {
       test.equal(expect.assertion.waitForMs, 60);
       test.equals(expect.assertion.passed, false);
+      test.equals(expect.assertion.abortOnFailure, true);
       test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" in 60ms - attribute was not found');
       test.done();
     })

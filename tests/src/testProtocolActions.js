@@ -579,7 +579,21 @@ module.exports = {
     });
   },
 
-  testSessionGET : function(test) {
+  testSessionDefault : function(test) {
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+
+      var command = protocol.session(function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'GET');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202');
+    });
+  },
+
+  testSessionGETImplicit : function(test) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
@@ -592,7 +606,7 @@ module.exports = {
     });
   },
 
-  testSessionDefault : function(test) {
+  testSessionGETExplicit : function(test) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
@@ -602,6 +616,32 @@ module.exports = {
 
       test.equal(command.request.method, 'GET');
       test.equal(command.request.path, '/wd/hub/session/1352110219202');
+    });
+  },
+
+  testSessionGETImplicitById : function(test) {
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.session('1352110219203', function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'GET');
+      test.equal(command.request.path, '/wd/hub/session/1352110219203');
+    });
+  },
+
+  testSessionGETExplicitById : function(test) {
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.session('GET', '1352110219203', function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'GET');
+      test.equal(command.request.path, '/wd/hub/session/1352110219203');
     });
   },
 
@@ -615,6 +655,19 @@ module.exports = {
 
       test.equal(command.request.method, 'DELETE');
       test.equal(command.request.path, '/wd/hub/session/1352110219202');
+    });
+  },
+
+  testSessionDELETEById : function(test) {
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.session('DELETE', '1352110219203', function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'DELETE');
+      test.equal(command.request.path, '/wd/hub/session/1352110219203');
     });
   },
 
@@ -1104,6 +1157,44 @@ module.exports = {
       test.equal(command.request.method, 'POST');
       test.equal(command.data, '{"name":"NATIVE"}');
       test.equal(command.request.path, '/wd/hub/session/1352110219202/context');
+    });
+  },
+
+  testGetOrientation: function (test) {
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function (sessionId) {
+      var command = protocol.getOrientation(function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'GET');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/orientation');
+    });
+  },
+
+  testSetOrientation: function (test) {
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function (sessionId) {
+      var command = protocol.setOrientation('LANDSCAPE',function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'POST');
+      test.equal(command.data, '{"orientation":"LANDSCAPE"}');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/orientation');
+    });
+  },
+
+  testSetOrientationInvalid: function (test) {
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function (sessionId) {
+      test.throws(function() {
+        protocol.setOrientation('TEST');
+      });
+      test.done();
     });
   },
 

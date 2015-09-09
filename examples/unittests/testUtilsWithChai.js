@@ -12,6 +12,11 @@ module.exports = {
     expect(resultMin).to.equal('2m 2s / 122299ms');
   },
 
+  testFormatElapsedTimeMore : function(client) {
+    var resultMs = Utils.formatElapsedTime(999);
+    expect(resultMs).to.equal('999msx');
+  },
+
   testMakeFnAsync : function(client) {
     function asynFn(done) {
       done();
