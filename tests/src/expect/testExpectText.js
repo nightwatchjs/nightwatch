@@ -83,7 +83,7 @@ module.exports = {
   'text to equal and waitFor [FAILED] - text not equal' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 10;
 
-    Nocks.elementFound().text('xx', 4);
+    Nocks.elementFound().text('xx', 3);
 
     var expect = this.client.api.expect.element('#weblogin').text.to.equal('hp vasq').before(25);
     this.client.on('nightwatch:finished', function(results, errors) {
@@ -92,7 +92,7 @@ module.exports = {
       test.ok(expect.assertion.retries >= 1);
       test.ok(expect.assertion.elapsedTime >= 25);
       test.equals(expect.assertion.expected, 'equal \'hp vasq\'');
-      test.equals(expect.assertion.actual, 'xx');
+      //test.equals(expect.assertion.actual, 'xx');
       test.equals(expect.assertion.message, 'Expected element <#weblogin> text to equal: "hp vasq" in 25ms');
       test.done();
     })

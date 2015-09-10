@@ -25,7 +25,9 @@
     "minimatch": "~0.2.14",
     "mkpath": ">=0.1.0",
     "optimist": ">=0.3.5",
-    "q": "^1.1.2"
+    "q": "^1.1.2",
+    "chai-nightwatch": "~0.1.x",
+    "mocha-nightwatch" : "git://github.com/beatfactor/mocha.git#master"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
@@ -50,5 +52,13 @@
     "jshint": "./node_modules/.bin/jshint --verbose --config .jshintrc lib/",
     "coverage": "jscoverage lib --exclude *.ejs,*.json && NIGHTWATCH_COV=1 node ./tests/run_tests.js lcov > ./lib-cov/lcov.info",
     "test": "node ./tests/run_tests.js"
-  }
+  },
+  "files": [
+    "bin",
+    "examples",
+    "lib",
+    "README.md",
+    "LICENSE.md",
+    "index.js"
+  ]
 }

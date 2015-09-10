@@ -67,10 +67,11 @@ module.exports = {
   testRunCommand : function(test) {
     var client = this.client = Client.init();
 
-    client.enqueueCommand('url', ['http://localhost'], function() {
+    client.api.url('http://localhost', function() {
       test.ok(true, 'Callback 1 was called');
       test.done();
     });
+    client.queue.run();
   },
 
   testChromeSessionWithRedirectStatus : function(test) {
