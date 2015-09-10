@@ -56,11 +56,11 @@ module.exports = {
       addFile : function(file) {
         testFiles.push(file);
       },
-      run : function(opts, cb) {
+      run : function(nightwatch, opts, cb) {
         cb(false);
       }
     };
-    mockery.registerMock('mocha', Mocha);
+    mockery.registerMock('mocha-nightwatch', Mocha);
     mockery.registerMock('../run.js', {
       readPaths : function(source, settings, cb) {
         cb(null, [
@@ -106,11 +106,11 @@ module.exports = {
       addFile : function(file) {
         testFiles.push(file);
       },
-      run : function(opts, cb) {
+      run : function(nightwatch, opts, cb) {
         cb(false);
       }
     };
-    mockery.registerMock('mocha', Mocha);
+    mockery.registerMock('mocha-nightwatch', Mocha);
     mockery.registerMock('../run.js', {
       readPaths : function(source, settings, cb) {
         cb(null, [
@@ -158,11 +158,11 @@ module.exports = {
       addFile : function(file) {
         testFiles.push(file);
       },
-      run : function(opts, cb) {
+      run : function(nightwatch, opts, cb) {
         cb(false);
       }
     };
-    mockery.registerMock('mocha', Mocha);
+    mockery.registerMock('mocha-nightwatch', Mocha);
     mockery.registerMock('../run.js', {
       readPaths : function(source, settings, cb) {
         cb(true, []);
