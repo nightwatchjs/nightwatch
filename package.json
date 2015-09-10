@@ -27,7 +27,7 @@
     "optimist": ">=0.3.5",
     "q": "^1.1.2",
     "chai-nightwatch": "~0.1.x",
-    "mocha-nightwatch" : "git://github.com/beatfactor/mocha.git#master"
+    "mocha-nightwatch" : "^2.2.5"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
