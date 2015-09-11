@@ -604,7 +604,8 @@ module.exports = {
         beforeEach : function(client, done) {
           currentTestArray.push({
             name : client.currentTest.name,
-            module : client.currentTest.module
+            module : client.currentTest.module,
+            group : client.currentTest.group
           });
           done();
         }
@@ -617,8 +618,8 @@ module.exports = {
     }, function(err, results) {
       test.equals(err, null);
       test.deepEqual(currentTestArray, [
-        { name: '', module: 'simple/sample' },
-        { name: '', module: 'tags/sample' }
+        { name: '', module: 'simple/sample', group : 'simple' },
+        { name: '', module: 'tags/sample', group : 'tags' }
       ]);
 
       var fs = require('fs');
@@ -743,7 +744,7 @@ module.exports = {
   },
 
   testRunCurrentTestName : function(test) {
-    test.expect(10);
+    test.expect(11);
     var testsPath = path.join(process.cwd(), '/sampletests/before-after/sampleSingleTest.js');
     this.Runner.run([testsPath], {
       seleniumPort : 10195,
@@ -753,6 +754,7 @@ module.exports = {
         test : test,
         beforeEach: function(client, done) {
           test.equal(client.currentTest.name, '');
+          test.equal(client.currentTest.group, '');
           test.equal(client.currentTest.module, 'sampleSingleTest');
           done();
         },
