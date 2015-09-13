@@ -11,10 +11,10 @@ module.exports = {
     this.client = require('../nightwatch.js').init();
 
     nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/element', {"using":"css selector","value":"#weblogin"} )
+      .post('/wd/hub/session/1352110219202/elements', {"using":"css selector","value":"#weblogin"} )
       .reply(200, {
-        status: -1,
-        value: { ELEMENT: '0' }
+        status: 0,
+        value: []
       });
 
     this.client.api.assert.elementPresent('#weblogin');
@@ -24,7 +24,7 @@ module.exports = {
       test.equals(results.errors, 0);
       test.equals(results.skipped, 0);
       test.equals(results.tests[0].message, 'Testing if element <#weblogin> is present.');
-      test.equals(results.tests[0].failure, 'Expected "present" but got: "null"');
+      test.equals(results.tests[0].failure, 'Expected "present" but got: "not present"');
       test.ok('stacktrace' in results.tests[0]);
       test.done();
     })
@@ -34,11 +34,11 @@ module.exports = {
     this.client = require('../nightwatch.js').init();
 
     nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/element', {"using":"css selector","value":"#weblogin"} )
+      .post('/wd/hub/session/1352110219202/elements', {"using":"css selector","value":"#weblogin"} )
       .reply(200, {
         status: 0,
         state: 'success',
-        value: { ELEMENT: '0' }
+        value: [{ ELEMENT: '0' }]
       });
 
     this.client.api.assert.elementPresent('#weblogin');
