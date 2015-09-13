@@ -41,6 +41,20 @@ module.exports = {
     })
   },
 
+  'to have attribute with implicit waitFor [PASSED]' : function(test) {
+    Nocks.elementFound().attributeValue('hp vasq');
+    this.client.api.globals.abortOnAssertionFailure = false;
+    this.client.api.globals.waitForConditionTimeout = 65;
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class');
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.waitForMs, 65);
+      test.equals(expect.assertion.passed, true);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" - attribute was present in '+ expect.assertion.elapsedTime +'ms');
+      test.done();
+    })
+  },
+
   'to have attribute with waitFor [FAILED]' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 50;
 
