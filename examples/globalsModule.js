@@ -3,14 +3,16 @@ module.exports = {
   // it's being used in waitFor commands and expect assertions
   abortOnAssertionFailure : true,
 
-  // this will overwrite the default polling interval (currently 500ms) for waitFor commands and expect assertions that use retry
+  // this will overwrite the default polling interval (currently 500ms) for waitFor commands
+  // and expect assertions that use retry
   waitForConditionPollInterval : 300,
 
-  // default timeout value in milliseconds for waitFor commands and implicit waitFor value for expect assertions
+  // default timeout value in milliseconds for waitFor commands and implicit waitFor value for
+  // expect assertions
   waitForConditionTimeout : 5000,
 
   // this will cause waitFor commands on elements to throw an error if multiple
-  // elements are found using the given locate strategy
+  // elements are found using the given locate strategy and selector
   throwOnMultipleElementsReturned : true,
 
   'default' : {
