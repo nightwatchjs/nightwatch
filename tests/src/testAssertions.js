@@ -100,6 +100,30 @@ module.exports = {
     test.done();
   },
 
+  'Testing chai expect is loaded' : function(test) {
+    var client = require('../nightwatch.js').init({});
+    test.equal(typeof client.api.expect, 'function');
+    test.equal(typeof client.api.expect.element, 'function');
+
+    var something = 'test';
+    var expect = client.api.expect(something);
+    test.deepEqual(expect, require('chai').expect(something));
+
+    var element = client.api.expect.element('body');
+    test.ok('attribute' in element);
+    test.ok('css' in element);
+    test.ok('enabled' in element);
+    test.ok('present' in element);
+    test.ok('selected' in element);
+    test.ok('text' in element);
+    test.ok('a' in element);
+    test.ok('an' in element);
+    test.ok('value' in element);
+    test.ok('visible' in element);
+
+    test.done();
+  },
+
   'Testing passed assertion retry' : function(test) {
     var assertionFn = require('../../' + BASE_PATH + '/api/assertions/containsText.js');
     var client = {
