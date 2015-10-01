@@ -88,6 +88,23 @@ module.exports = {
     test.done();
   },
 
+  testPageObjectPropsFunctionReturnsObject : function(test) {
+    var page = this.client.api.page.simplePageObj();
+
+    test.equals(typeof page.props, 'object', 'props function should be called and set page.props equals its returned object');
+    test.equals(page.props.url, page.url, 'props function should be called with page context');
+    test.done();
+  },
+
+  testSectionObjectPropsFunctionReturnsObject : function(test) {
+    var page = this.client.api.page.simplePageObj();
+
+    test.equals(typeof page.section.propTest.props, 'object', 'props function should be called and set page.props equals its returned object');
+    test.ok(page.section.propTest.props.defaults.propTest, 'props function should be called with page context');
+    test.equals(page.section.propTest.props.defaults.propTest, '#propTest Value' );
+    test.done();
+  },
+
   tearDown : function(callback) {
     this.client = null;
     // clean up
