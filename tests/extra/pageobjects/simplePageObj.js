@@ -20,7 +20,23 @@ module.exports = {
       elements: {
         help: { selector: '#helpBtn' }
       }
+    },
+    propTest: {
+        selector: '#propTest',
+        props: function(){
+            var defaults = {};
+            defaults[ this.name ] = this.selector + ' Value';
+            return {
+                defaults: defaults
+            };
+        }
     }
   },
-  commands: [testCommands]
+  commands: [testCommands],
+  props: function(){
+    return {
+        prop: 'example',
+        url: this.url
+    };
+  }
 };
