@@ -29,7 +29,6 @@ try {
   server.on('listening', function() {
     reporter.run([
       'src',
-      'src/runner',
       'src/mocha',
       'src/expect',
       'src/protocol',
