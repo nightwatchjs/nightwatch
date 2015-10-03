@@ -789,5 +789,48 @@ module.exports = {
       test.equals(err, null);
       test.done();
     });
+  },
+
+  testRunWithAsyncHooks : function(test) {
+    var testsPath = path.join(process.cwd(), '/sampletests/withasynchooks');
+    test.expect(7);
+
+    this.Runner.run([testsPath], {
+      seleniumPort : 10195,
+      silent : true,
+      output : true,
+      globals : {
+        test : test
+      }
+    }, {
+      output_folder : false,
+      start_session : true
+    }, function(err, results) {
+      test.equals(err, null);
+      test.done();
+    });
+  },
+
+  testRunWithChaiExpect : function(test) {
+    var testsPath = path.join(process.cwd(), '/sampletests/withchaiexpect');
+    //test.expect(7);
+
+    this.Runner.run([testsPath], {
+      seleniumPort : 10195,
+      silent : true,
+      output : true,
+      globals : {
+        test : test
+      }
+    }, {
+      output_folder : false,
+      start_session : true
+    }, function(err, results) {
+      console.log(results)
+      test.equals(err, null);
+      test.equals(results.modules.sampleWithChai.tests, 2);
+      test.equals(results.modules.sampleWithChai.failures, 0);
+      test.done();
+    });
   }
 };
