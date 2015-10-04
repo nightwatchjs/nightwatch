@@ -813,12 +813,12 @@ module.exports = {
 
   testRunWithChaiExpect : function(test) {
     var testsPath = path.join(process.cwd(), '/sampletests/withchaiexpect');
-    //test.expect(7);
+    test.expect(6);
 
     this.Runner.run([testsPath], {
       seleniumPort : 10195,
       silent : true,
-      output : true,
+      output : false,
       globals : {
         test : test
       }
@@ -826,7 +826,6 @@ module.exports = {
       output_folder : false,
       start_session : true
     }, function(err, results) {
-      console.log(results)
       test.equals(err, null);
       test.equals(results.modules.sampleWithChai.tests, 2);
       test.equals(results.modules.sampleWithChai.failures, 0);

@@ -8,9 +8,11 @@ module.exports = {
     mockery.enable({ useCleanCache: true, warnOnUnregistered: false });
     function Nightwatch(opts) {
       this.results = {};
+      this.terminated = true;
       this.api = {
         currentTest : {}
       };
+
       this.queue = {
         run : function() {},
         reset : function() {},
@@ -24,6 +26,10 @@ module.exports = {
     Nightwatch.prototype.endSessionOnFail = function() {};
     Nightwatch.prototype.printResult = function() {};
     Nightwatch.prototype.clearResult = function() {};
+    Nightwatch.prototype.resetTerminated = function() {
+      this.terminated = false;
+      return this;
+    };
 
     mockery.registerMock('../index.js', {
       client : function(opts) {
@@ -42,12 +48,13 @@ module.exports = {
   },
 
   'test start with callback on success' : function(test) {
-    test.expect(1);
+    test.expect(2);
 
     var ClientManager = require('../../../'+ BASE_PATH +'/runner/clientmanager.js');
     var client = new ClientManager();
     client.init({});
     client.start(function() {
+      test.equals(client['@client'].terminated, false);
       test.equals(arguments.length, 0);
       test.done();
     });

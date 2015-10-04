@@ -9,7 +9,7 @@ module.exports = {
     client.url('http://localhost')
       .elements('css selector', '#weblogin', function(result) {
         var assertion = client.expect(result.value).to.have.length(1);
-        client.globals.test.deepEqual(assertion.__flags.object, { ELEMENT: '0' });
+        client.globals.test.deepEqual(assertion.__flags.object, [{ ELEMENT: '0' }]);
         try {
           client.expect(result.value).to.have.length(2);
         } catch (ex) {
