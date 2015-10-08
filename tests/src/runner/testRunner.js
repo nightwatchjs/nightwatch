@@ -793,12 +793,13 @@ module.exports = {
 
   testRunWithAsyncHooks : function(test) {
     var testsPath = path.join(process.cwd(), '/sampletests/withasynchooks');
-    test.expect(7);
+    test.expect(8);
 
     this.Runner.run([testsPath], {
       seleniumPort : 10195,
+      custom_commands_path : path.join(process.cwd(), '/extra/commands'),
       silent : true,
-      output : true,
+      output : false,
       globals : {
         test : test
       }
