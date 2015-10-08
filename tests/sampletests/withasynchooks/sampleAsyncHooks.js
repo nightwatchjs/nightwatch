@@ -37,12 +37,15 @@ module.exports = {
   },
 
   after : function(client, callback) {
-    client.perform(function() {
-      setTimeout(function() {
-        client.globals.test.ok('after callback called.');
-        callback();
-      }, 10);
-    });
-
+    client
+      .customPerform(function() {
+        client.globals.test.ok('customPerform callback called.');
+      })
+      .perform(function() {
+        setTimeout(function() {
+          client.globals.test.ok('after callback called.');
+          callback();
+        }, 10);
+      });
   }
 };
