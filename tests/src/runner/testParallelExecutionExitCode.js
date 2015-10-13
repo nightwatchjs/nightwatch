@@ -8,13 +8,13 @@ module.exports = {
     this.allArgs = [];
     this.allOpts = [];
     var self = this;
-
+    var index = 0;
     mockery.enable({ useCleanCache: true, warnOnUnregistered: false });
     mockery.registerMock('child_process', {
       execFile : function(path, args, opts) {
         self.allArgs.push(args);
         self.allOpts.push(opts);
-
+        
         function Stdout() {}
         function Stderr() {}
 
@@ -26,7 +26,7 @@ module.exports = {
           this.stderr = new Stderr();
           setTimeout(function() {
             this.emit('close');
-            this.emit('exit', 1);
+            this.emit('exit', index == 0 ? 1 : 0);
           }.bind(this), 11);
         };
 
@@ -40,7 +40,7 @@ module.exports = {
     });
     mockery.registerMock('os', {
       cpus : function() {
-        return [0, 1];
+        return [0, 1, 2];
       }
     });
 
@@ -55,10 +55,31 @@ module.exports = {
     callback();
   },
 
-  testParallelExecutionWithCodeNonZero : function(test) {
+  testParallelExecutionWithCodeNonZeroWorkers : function(test) {
     var CliRunner = require('../../../' + BASE_PATH + '/../lib/runner/cli/clirunner.js');
     var runner = new CliRunner({
       config : './extra/parallelism-count.json'
+    });
+
+    test.expect(2);
+
+    var originalExit = process.exit;
+    process.exit = function(code) {
+      test.equals(code, 1);
+      test.done();
+      process.exit = originalExit;
+    };
+
+    runner.setup({}, function(output, code) {
+      test.equals(code, 1);
+    });
+  },
+
+  testParallelExecutionWithCodeNonZeroEnvs : function(test) {
+    var CliRunner = require('../../../' + BASE_PATH + '/../lib/runner/cli/clirunner.js');
+    var runner = new CliRunner({
+      config : './extra/parallelism-envs.json',
+      env : 'env1,env2'
     });
 
     test.expect(2);
