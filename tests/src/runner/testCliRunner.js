@@ -193,10 +193,10 @@ module.exports = {
         return './nightwatch.json';
       },
       resolve : function(a) {
+        if(a === '../path/to/test'){
+          return '/path/to/test';
+        }
         return a;
-      },
-      isAbsolute : function(p){
-        return p.indexOf("./") === -1 || p.indexOf("../") === -1;
       }
     });
 
