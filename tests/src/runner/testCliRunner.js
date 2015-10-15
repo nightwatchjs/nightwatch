@@ -187,10 +187,16 @@ module.exports = {
         if (b == './selenium_override.json') {
           return './selenium_override.json';
         }
+        if (b == '../path/to/test') {
+          return process.cwd() + '/path/to/test';
+        }
         return './nightwatch.json';
       },
       resolve : function(a) {
         return a;
+      },
+      isAbsolute : function(p){
+        return p.indexOf("./") === -1 || p.indexOf("../") === -1;
       }
     });
 
@@ -359,6 +365,72 @@ module.exports = {
     var testSource = runner.getTestSource();
     test.expect(2);
     test.equal(testSource, 'demoTest.js');
+    test.done();
+  },
+
+  testGetTestSourceSingleWithAbsolutePath : function(test) {
+    var ABSOLUTE_PATH = '/path/to/test';
+    var ABSOLUTE_SRC_PATH = ABSOLUTE_PATH + ".js";
+
+    mockery.registerMock('fs', {
+      existsSync : function(module) {
+        if (module == './custom.json') {
+          return true;
+        }
+        return false;
+      },
+      statSync : function(file) {
+        if (file == ABSOLUTE_SRC_PATH) {
+          test.ok('stat called');
+          return true;
+        }
+        throw new Error('Start error.');
+      }
+    });
+
+    var CliRunner = require('../../../'+ BASE_PATH +'/../lib/runner/cli/clirunner.js');
+    var runner = new CliRunner({
+      config : './custom.json',
+      env : 'default',
+      test : ABSOLUTE_PATH
+    }).init();
+
+    var testSource = runner.getTestSource();
+    test.expect(2);
+    test.equal(testSource, ABSOLUTE_SRC_PATH);
+    test.done();
+  },
+
+  testGetTestSourceSingleWithRelativePath : function(test) {
+    var RELATIVE_PATH = '../path/to/test';
+    var TEST_SRC_PATH = process.cwd() + '/path/to/test.js';
+
+    mockery.registerMock('fs', {
+      existsSync : function(module) {
+        if (module == './custom.json') {
+          return true;
+        }
+        return false;
+      },
+      statSync : function(file) {
+        if (file == TEST_SRC_PATH) {
+          test.ok('stat called');
+          return true;
+        }
+        throw new Error('Start error.');
+      }
+    });
+
+    var CliRunner = require('../../../'+ BASE_PATH +'/../lib/runner/cli/clirunner.js');
+    var runner = new CliRunner({
+      config : './custom.json',
+      env : 'default',
+      test : RELATIVE_PATH
+    }).init();
+
+    var testSource = runner.getTestSource();
+    test.expect(2);
+    test.equal(testSource, TEST_SRC_PATH);
     test.done();
   },
 
