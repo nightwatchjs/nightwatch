@@ -2,9 +2,11 @@ var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
 var HttpRequest = require('../../../' + BASE_PATH + '/http/request.js');
 var Logger = require('../../../' + BASE_PATH + '/util/logger');
 var nock = require('nock');
+var mockery = require('mockery');
 
 module.exports = {
   setUp: function (callback) {
+    mockery.enable();
     Logger.disable();
     HttpRequest.setSeleniumPort(4444);
     HttpRequest.setCredentials({
@@ -23,6 +25,11 @@ module.exports = {
         state : null
       });
 
+    callback();
+  },
+
+  tearDown : function (callback) {
+    mockery.disable();
     callback();
   },
 
@@ -79,6 +86,36 @@ module.exports = {
     var authHeader = new Buffer('test:test-key').toString('base64');
     test.ok('Authorization' in request.reqOptions.headers);
     test.equal(request.reqOptions.headers.Authorization, 'Basic ' +authHeader);
+  },
+
+  testSendPostRequestWithProxy : function(test) {
+    function ProxyAgentMock(uri) {
+      this.proxy = uri;
+    };
+
+    mockery.registerMock('proxy-agent', ProxyAgentMock);
+
+    var options = {
+      path : '/session',
+      data : {
+        desiredCapabilities : {
+          browserName : 'firefox'
+        }
+      }
+    };
+
+    HttpRequest.setProxy('http://localhost:8080');
+
+    var request = new HttpRequest(options);
+    request.on('success', function() {
+      test.done();
+    }).send();
+
+    var opts = request.reqOptions;
+    test.ok('agent' in opts);
+    test.ok('proxy' in opts.agent);
+
+    HttpRequest.setProxy(null);
   },
 
   testResponseWithRedirect : function(test) {
