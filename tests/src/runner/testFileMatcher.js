@@ -127,5 +127,41 @@ module.exports = {
 
     test.ok(matched === true);
     test.done();
+  },
+
+  'tag filter does not find module, but skiptag does and excludes it' : function(test) {
+    var matched = matcher.tags.checkModuleTags({
+      tags: ['room', 101]
+    }, {
+      tag_filter : ['other'],
+      skiptags : ['101']
+    });
+
+    test.ok(matched === false);
+    test.done();
+  },
+
+  'tag filter finds module, skiptag also does and excludes it' : function(test) {
+    var matched = matcher.tags.checkModuleTags({
+      tags: ['room', 101]
+    }, {
+      tag_filter : ['room'],
+      skiptags : ['101']
+    });
+
+    test.ok(matched === false);
+    test.done();
+  },
+
+  'tag filter finds module, and skiptag does not' : function(test) {
+    var matched = matcher.tags.checkModuleTags({
+      tags: ['room', 101]
+    }, {
+      tag_filter : ['room'],
+      skiptags : ['other']
+    });
+
+    test.ok(matched === true);
+    test.done();
   }
 };
