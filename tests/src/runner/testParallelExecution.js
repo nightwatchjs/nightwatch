@@ -12,7 +12,7 @@ module.exports = {
 
     mockery.enable({ useCleanCache: true, warnOnUnregistered: false });
     mockery.registerMock('child_process', {
-      execFile : function(path, args, opts) {
+      spawn : function(path, args, opts) {
         self.allArgs.push(args);
         self.allOpts.push(opts);
 
