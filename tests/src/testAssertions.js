@@ -1,7 +1,6 @@
 var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
 var Api = require('../../' + BASE_PATH + '/core/api.js');
 var nock = require('nock');
-var path = require('path');
 
 module.exports = {
   setUp: function (callback) {
