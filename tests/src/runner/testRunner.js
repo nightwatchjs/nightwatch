@@ -46,7 +46,7 @@ module.exports = {
   },
 
   testRunNoSkipTestcasesOnFail : function(test) {
-    test.expect(11);
+    test.expect(12);
     var testsPath = path.join(process.cwd(), '/sampletests/withfailures');
     this.Runner.run([testsPath], {
       seleniumPort : 10195,
@@ -63,6 +63,7 @@ module.exports = {
       test.equals(results.passed, 2);
       test.equals(results.failed, 2);
       test.equals(results.errors, 0);
+      test.equals(results.errorsMessages, null);
       test.equals(results.skipped, 0);
       test.equals(err, null);
       test.done();
@@ -70,7 +71,7 @@ module.exports = {
   },
 
   testRunSkipTestcasesOnFail : function(test) {
-    test.expect(9);
+    test.expect(10);
     var testsPath = path.join(process.cwd(), '/sampletests/withfailures');
     this.Runner.run([testsPath], {
       seleniumPort : 10195,
@@ -86,6 +87,7 @@ module.exports = {
       test.equals(results.passed, 1);
       test.equals(results.failed, 1);
       test.equals(results.errors, 0);
+      test.equals(results.errorsMessages, null);
       test.equals(results.modules.sample.skipped[0], 'demoTest2');
       test.equals(err, null);
       test.done();
@@ -93,7 +95,7 @@ module.exports = {
   },
 
   testRunRetries : function(test) {
-    test.expect(11);
+    test.expect(12);
     var testsPath = path.join(process.cwd(), '/sampletests/withfailures');
     this.Runner.run([testsPath], {
       seleniumPort : 10195,
@@ -110,6 +112,7 @@ module.exports = {
       test.equals(results.passed, 1);
       test.equals(results.failed, 1);
       test.equals(results.errors, 0);
+      test.equals(results.errorsMessages, null);
       test.equals(results.skipped, 0);
       test.equals(err, null);
       test.done();
@@ -117,7 +120,7 @@ module.exports = {
   },
 
   testRunRetriesNoSkipTestcasesOnFail : function(test) {
-    test.expect(15);
+    test.expect(16);
     var testsPath = path.join(process.cwd(), '/sampletests/withfailures');
     this.Runner.run([testsPath], {
       seleniumPort : 10195,
@@ -135,6 +138,7 @@ module.exports = {
       test.equals(results.passed, 2);
       test.equals(results.failed, 2);
       test.equals(results.errors, 0);
+      test.equals(results.errorsMessages, null);
       test.equals(results.skipped, 0);
       test.equals(err, null);
       test.done();
@@ -142,7 +146,7 @@ module.exports = {
   },
 
   testRunSuiteRetries : function(test) {
-    test.expect(13);
+    test.expect(14);
     var testsPath = path.join(process.cwd(), '/sampletests/withfailures');
     this.Runner.run([testsPath], {
       seleniumPort : 10195,
@@ -159,6 +163,7 @@ module.exports = {
       test.equals(results.passed, 1);
       test.equals(results.failed, 1);
       test.equals(results.errors, 0);
+      test.equals(results.errorsMessages, null);
       test.equals(results.skipped, 0);
       test.equals(err, null);
       test.done();
@@ -166,7 +171,7 @@ module.exports = {
   },
 
   testRunSuiteRetriesNoSkipTestcasesOnFail : function(test) {
-    test.expect(13);
+    test.expect(14);
     var testsPath = path.join(process.cwd(), '/sampletests/withfailures');
     this.Runner.run([testsPath], {
       seleniumPort : 10195,
@@ -182,6 +187,7 @@ module.exports = {
       suite_retries: 1
     }, function(err, results) {
       test.equals(results.errors, 0);
+      test.equals(results.errorsMessages, null);
       test.equals(results.skipped, 0);
       test.equals(err, null);
       test.done();
