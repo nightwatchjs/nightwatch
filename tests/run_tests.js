@@ -29,10 +29,10 @@ try {
   server.on('listening', function() {
     reporter.run([
       'src',
-      'src/commands',
+      'src/runner',
       'src/expect',
       'src/page-object',
-      'src/runner',
+      'src/commands',
       'src/mocha',
       'src/protocol',
       'src/http',
