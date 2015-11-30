@@ -34,20 +34,15 @@ The [Mailing List/Google Group](https://groups.google.com/forum/#!forum/nightwat
 Browser specific setup and usage guides along with debugging instructions can be found on the [**Wiki**](https://github.com/nightwatchjs/nightwatch/wiki).
 
 ### Bug Reports / Feature Requests
-<br>Quick search on existing issues to reduce duplication.
-<br>Comprehensive issue title
-<br>Nightwatch version, OS platform, Selenium version, nodejs version
-<br>Indicate whether you can reproduce the issue at will, ocasionally, or not at all.
-<br>Describe your method of interacting with Nightwatch in addition to the intent of each step.
-<br>ex: node node_modules/nightwatch/bin runner.js -t tests/abc.js --env chrome 
-<br>After your steps, precisely describe the observed (actual) result and the expected result. Clearly separate facts (observations) from speculations.
-<br>ex:
-<br>Expected results: Nightwatch execution should contain xyz.
-<br>Actual results: Nightwatch execution does not contain xyz.
-
-<br> Code sample where the issue is observed
-<br> Issue involving any crash / exception: Stacktrace or execution log. 
-
-
-
-
+* Quick search on existing issues to reduce duplication.
+* Comprehensive issue title
+* Nightwatch version, OS platform, Selenium version, nodejs version
+* Indicate whether you can reproduce the issue at will, ocasionally, or not at all.
+* Describe your method of interacting with Nightwatch in addition to the intent of each step.
+    * ex: node node_modules/nightwatch/bin runner.js -t tests/abc.js --env chrome 
+* After your steps, precisely describe the observed (actual) result and the expected result. Clearly separate facts (observations) from speculations.
+    ex:
+    * Expected results: Nightwatch execution should contain xyz.
+    * Actual results: Nightwatch execution does not contain xyz.
+* Code sample where the issue is observed
+* Issue involving any crash / exception: Stacktrace or execution log.
