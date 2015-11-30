@@ -29,15 +29,15 @@ try {
   server.on('listening', function() {
     reporter.run([
       'src',
+      'src/commands',
+      'src/expect',
+      'src/page-object',
       'src/runner',
       'src/mocha',
-      'src/expect',
       'src/protocol',
       'src/http',
       'src/index',
-      'src/assertions',
-      'src/commands',
-      'src/page-object'
+      'src/assertions'
     ], options, function(err) {
       setTimeout(function() {
         server.close();
