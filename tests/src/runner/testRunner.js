@@ -452,6 +452,35 @@ module.exports = {
     });
   },
 
+  'test run with global async beforeEach and assert failure' : function(test) {
+    test.expect(2);
+    var beforeEachCount = 0;
+    var testsPath = path.join(process.cwd(), '/sampletests/before-after');
+
+    this.Runner.run([testsPath], {
+      seleniumPort : 10195,
+      silent : true,
+      output : false,
+      globals : {
+        test : test,
+        beforeEach: function(client, done) {
+          client.perform(function() {
+            beforeEachCount++;
+            client.assert.equal(0, 1);
+            done();
+          });
+        }
+      }
+    }, {
+      output_folder : false,
+      start_session : true
+    }, function(err, results) {
+      test.equals(err, null);
+      test.equals(beforeEachCount, 3);
+      test.done();
+    });
+  },
+
   testRunWithGlobalReporter : function(test) {
     test.expect(22);
     var testsPath = path.join(process.cwd(), '/sampletests/before-after');

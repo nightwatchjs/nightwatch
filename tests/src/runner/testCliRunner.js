@@ -539,6 +539,34 @@ module.exports = {
     test.done();
   },
 
+  testReadExternalGlobalsError : function(test) {
+    mockery.disable();
+
+    var CliRunner = require('../../../'+ BASE_PATH +'/../lib/runner/cli/clirunner.js');
+    var runner = new CliRunner({
+      config : './custom.json',
+      env : 'extra'
+    });
+
+    runner.test_settings = {};
+    runner.settings = {
+      globals_path : './extra/globals-err.js'
+    };
+
+    test.expect(3);
+
+    try {
+      runner.readExternalGlobals();
+    } catch (ex) {
+
+      test.equals(ex.name, 'Error reading external global file failed');
+      test.ok(/using.+?tests\/extra\/globals-err\.js/.test(ex.message));
+      test.ok(ex.stack.indexOf('extra/globals-err.js:1:63') > -1, 'Stack trace should start at the faulty globals-err.js.');
+    }
+
+    test.done();
+  },
+
   testStartSeleniumDisabled : function(test) {
     var CliRunner = require('../../../'+ BASE_PATH +'/../lib/runner/cli/clirunner.js');
     var runner = new CliRunner({
