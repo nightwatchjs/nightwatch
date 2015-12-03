@@ -30,14 +30,14 @@ try {
     reporter.run([
       'src',
       'src/runner',
-      'src/mocha',
       'src/expect',
+      'src/page-object',
+      'src/mocha',
       'src/protocol',
       'src/http',
       'src/index',
       'src/assertions',
-      'src/commands',
-      'src/page-object'
+      'src/commands'
     ], options, function(err) {
       setTimeout(function() {
         server.close();

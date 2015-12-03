@@ -861,5 +861,46 @@ module.exports = {
       test.equals(results.modules.sampleWithChai.failures, 0);
       test.done();
     });
+  },
+
+  'test currentTest in global beforeEach/afterEach' : function(test) {
+    test.expect(18);
+    var testsPath = path.join(process.cwd(), '/sampletests/withfailures');
+
+    this.Runner.run([testsPath], {
+      seleniumPort : 10195,
+      silent : true,
+      output : false,
+      globals : {
+        test : test,
+        beforeEach: function(client, done) {
+          test.deepEqual(client.currentTest.results.steps, [ 'demoTest', 'demoTest2' ]);
+          test.equals(client.currentTest.results.passed, 0);
+          test.equals(client.currentTest.results.failed, 0);
+          test.equals(client.currentTest.results.tests, 0);
+          test.deepEqual(client.currentTest.module, 'sample');
+          test.deepEqual(client.currentTest.name, '');
+          done();
+        },
+        afterEach: function(client, done) {
+          test.deepEqual(client.currentTest.results.steps, ['demoTest2' ]);
+          test.equals(client.currentTest.results.passed, 1);
+          test.equals(client.currentTest.results.failed, 1);
+          test.equals(client.currentTest.results.tests, 2);
+          test.ok('demoTest' in client.currentTest.results.testcases);
+
+          test.deepEqual(client.currentTest.name, 'demoTest');
+          test.deepEqual(client.currentTest.module, 'sample');
+          done();
+        }
+      }
+    }, {
+      output_folder : false,
+      start_session : true
+    }, function(err, results) {
+      test.equals(err, null);
+
+      test.done();
+    });
   }
 };
