@@ -54,6 +54,21 @@ module.exports = {
       test.done();
     })
   },
+  
+
+  'to have attribute with implicit and custom waitFor [PASSED]' : function(test) {
+    Nocks.elementFound().attributeValue('hp vasq');
+    this.client.api.globals.abortOnAssertionFailure = false;
+    this.client.api.globals.waitForConditionTimeout = 65;
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').before(100);
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.waitForMs, 100);
+      test.equals(expect.assertion.passed, true);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" in 100ms - attribute was present in '+ expect.assertion.elapsedTime +'ms');
+      test.done();
+    })
+  },
 
   'to have attribute with waitFor [FAILED]' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 50;
@@ -69,6 +84,21 @@ module.exports = {
       test.done();
     })
   },
+
+  'to have attribute with implicit and custom waitFor [FAILED]' : function(test) {
+    this.client.api.globals.waitForConditionPollInterval = 50;
+    Nocks.elementFound().attributeValue(null);    
+    this.client.api.globals.waitForConditionTimeout = 65;
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').before(100);
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.waitForMs, 100);
+      test.equals(expect.assertion.passed, false);
+      test.equals(expect.assertion.abortOnFailure, true);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" in 100ms - attribute was not found');
+      test.done();
+    })
+  },   
 
   'to have attribute with message [PASSED]' : function(test) {
     Nocks.elementFound().attributeValue('hp vasq');
@@ -125,6 +155,7 @@ module.exports = {
     this.client.on('nightwatch:finished', function(results, errors) {
       test.equals(expect.assertion.selector, '#weblogin');
       test.equals(expect.assertion.negate, true);
+      test.equals(expect.assertion.waitForMs, null);
       test.equals(expect.assertion.passed, true);
       test.equals(expect.assertion.expected, 'not found');
       test.equals(expect.assertion.actual, 'not found');
@@ -267,6 +298,23 @@ module.exports = {
     })
   },
 
+  'to have attribute equal with custom waitFor [PASSED]' : function(test) {
+    this.client.api.globals.waitForConditionPollInterval = 50;
+    this.client.api.globals.waitForConditionTimeout = 100;
+    Nocks.elementFound();
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').equal('hp vasq').before(60);
+    Nocks.attributeValue(null).attributeValue('hp vasq');
+
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.waitForMs, 60);
+      test.equals(expect.assertion.passed, true);
+      test.equals(expect.assertion.retries, 1);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" equal to: "hp vasq" in 60ms - condition was met in ' + expect.assertion.elapsedTime + 'ms');
+      test.done();
+    })
+  },
+
   'to have attribute equal and waitFor [FAILED] - attribute not found' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 50;
 
@@ -280,6 +328,23 @@ module.exports = {
       test.equals(expect.assertion.passed, false);
       test.ok(expect.assertion.retries > 1);
       test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" equal to: "hp vasq" in 110ms - attribute was not found');
+      test.done();
+    })
+  },
+
+  'to have attribute equal and custom waitFor [FAILED] - attribute not found' : function(test) {
+    this.client.api.globals.waitForConditionPollInterval = 50;
+    this.client.api.globals.waitForConditionTimeout = 100;
+    Nocks.elementFound();
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').equal('hp vasq').before(60);
+    Nocks.attributeValue(null).attributeValue(null);
+
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equals(expect.assertion.waitForMs, 60);
+      test.equals(expect.assertion.passed, false);
+      test.ok(expect.assertion.retries > 1);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" equal to: "hp vasq" in 60ms - attribute was not found');
       test.done();
     })
   },
@@ -507,6 +572,21 @@ module.exports = {
     })
   },
 
+  'to have attribute with custom waitFor - element not found' : function(test) {
+    this.client.api.globals.waitForConditionPollInterval = 50;
+    this.client.api.globals.waitForConditionTimeout = 50;
+
+    Nocks.elementNotFound().elementNotFound().elementNotFound();
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').before(100);
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equal(expect.assertion.waitForMs, 100);
+      test.equals(expect.assertion.passed, false);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" in 100ms - element was not found');
+      test.done();
+    })
+  },
+
   'to have attribute with waitFor - element found on retry' : function(test) {
     this.client.api.globals.waitForConditionPollInterval = 50;
 
@@ -521,6 +601,22 @@ module.exports = {
       test.done();
     })
   },
+
+  'to have attribute with custom waitFor - element found on retry' : function(test) {
+    this.client.api.globals.waitForConditionPollInterval = 50;
+    this.client.api.globals.waitForConditionTimeout = 60;
+    Nocks.elementNotFound().elementFound().attributeValue('hp vasq');
+
+    var expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').before(100);
+
+    this.client.on('nightwatch:finished', function(results, errors) {
+      test.equal(expect.assertion.waitForMs, 100);
+      test.equals(expect.assertion.passed, true);
+      test.equals(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" in 100ms - attribute was present in ' + expect.assertion.elapsedTime + 'ms');
+      test.done();
+    })
+  },
+
 
   'to have attribute match - throws exception on invalid regex' : function(test) {
     Nocks.elementFound().attributeValue('xx');
