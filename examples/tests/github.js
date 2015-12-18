@@ -5,8 +5,8 @@ module.exports = {
       .url('https://github.com/nightwatchjs/nightwatch')
       .waitForElementVisible('body', 1000)
       .assert.title('nightwatchjs/nightwatch · GitHub')
-      .assert.visible('.container .breadcrumb a span')
-      .assert.containsText('.container .breadcrumb a span', 'nightwatch', 'Checking project title is set to nightwatch');
+      .assert.visible('div.repohead-details-container span.author > a > span')
+      .assert.containsText('div.repohead-details-container span.author > a > span', 'nightwatchjs', 'Checking repo title is set to nightwatchjs');
   },
 
   after : function(client) {
