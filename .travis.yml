@@ -10,8 +10,8 @@ before_script:
 script:
   - grunt
   - npm test
-  # - npm run-script coverage
+  - jscoverage lib --exclude *.ejs,*.json && NIGHTWATCH_COV=1 node ./tests/run_tests.js lcov > ./lib-cov/lcov.info
 
 after_success:
-  # - cat ./lib-cov/lcov.info |coveralls
+  - cat ./lib-cov/lcov.info |coveralls
 
