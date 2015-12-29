@@ -8,10 +8,7 @@
   },
   "homepage": "http://nightwatchjs.org",
   "main": "./lib/index.js",
-  "licenses": {
-    "type": "MIT",
-    "url": "https://raw.github.com/nightwatchjs/nightwatch/master/LICENSE"
-  },
+  "license": "MIT",
   "bugs": "https://github.com/nightwatchjs/nightwatch/issues",
   "repository": {
     "type": "git",
@@ -27,7 +24,7 @@
     "optimist": ">=0.3.5",
     "q": "^1.1.2",
     "proxy-agent": ">=2.0.0",
-    "mocha-nightwatch": "2.2.6"
+    "mocha-nightwatch": "2.2.7"
   },
   "devDependencies": {
     "chai": "^3.2.0",
