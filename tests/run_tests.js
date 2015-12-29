@@ -32,12 +32,13 @@ try {
       'src/runner',
       'src/expect',
       'src/page-object',
-      'src/mocha',
       'src/protocol',
       'src/http',
       'src/index',
       'src/assertions',
-      'src/commands'
+      'src/mocha',
+      'src/commands',
+
     ], options, function(err) {
       setTimeout(function() {
         server.close();
