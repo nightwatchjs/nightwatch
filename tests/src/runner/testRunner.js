@@ -902,5 +902,48 @@ module.exports = {
 
       test.done();
     });
+  },
+
+  // TODO: enabled this test when other hooks have timeouts enabled
+  //'test async beforeEach hook timeout error' : function(test) {
+  //  var testsPath = path.join(process.cwd(), '/asynchookstests/before-timeout');
+  //
+  //  this.Runner.run([testsPath], {
+  //    seleniumPort : 10195,
+  //    silent : true,
+  //    output : false,
+  //    globals : {
+  //      test : test,
+  //      asyncHookTimeout : 10
+  //    }
+  //  }, {
+  //    output_folder : false,
+  //    start_session : true
+  //  }, function(err, results) {
+  //    test.ok(err instanceof Error);
+  //
+  //    test.done();
+  //  });
+  //},
+
+  'test async afterEach hook timeout error' : function(test) {
+    var testsPath = path.join(process.cwd(), '/asynchookstests/afterEach-timeout');
+
+    this.Runner.run([testsPath], {
+      seleniumPort : 10195,
+      silent : true,
+      output : false,
+      globals : {
+        test : test,
+        asyncHookTimeout : 10
+      }
+    }, {
+      output_folder : false,
+      start_session : true
+    }, function(err, results) {
+      test.ok(err instanceof Error);
+
+      test.done();
+    });
   }
 };

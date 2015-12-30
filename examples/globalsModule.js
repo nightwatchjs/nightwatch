@@ -15,7 +15,7 @@ module.exports = {
   // elements are found using the given locate strategy and selector
   throwOnMultipleElementsReturned : true,
 
-  // controls the timeout time for async hooks. Expects the done() call to be made within this time
+  // controls the timeout time for async hooks. Expects the done() callback to be invoked within this time
   // or an error is thrown
   asyncHookTimeout : 10000,
 
