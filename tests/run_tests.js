@@ -37,8 +37,7 @@ try {
       'src/index',
       'src/assertions',
       'src/mocha',
-      'src/commands',
-
+      'src/commands'
     ], options, function(err) {
       setTimeout(function() {
         server.close();

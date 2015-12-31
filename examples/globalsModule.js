@@ -15,6 +15,10 @@ module.exports = {
   // elements are found using the given locate strategy and selector
   throwOnMultipleElementsReturned : true,
 
+  // controls the timeout time for async hooks. Expects the done() callback to be invoked within this time
+  // or an error is thrown
+  asyncHookTimeout : 10000,
+
   'default' : {
     myGlobal : function() {
       return 'I\'m a method';
