@@ -3,7 +3,7 @@ module.exports = {
   'Demo test GitHub' : function (client) {
     client
       .url('https://github.com/nightwatchjs/nightwatch')
-      .waitForElementVisible('xbody', 1000)
+      .waitForElementVisible('body', 1000)
       .assert.title('nightwatchjs/nightwatch · GitHub')
       .assert.visible('.container h1 strong a')
       .assert.containsText('.container h1 strong a', 'nightwatch', 'Checking project title is set to nightwatch');
