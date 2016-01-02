@@ -82,7 +82,7 @@ module.exports = {
       fs.readdir(src_folders[0], function(err, list) {
         test.deepEqual(list, ['simple', 'tags'], 'The subfolders have been created.');
         var simpleReportFile = 'output/simple/FIREFOX_TEST_TEST_sample.xml';
-        var tagsReportFile = 'output/tags/FIREFOX_TEST_TEST_sample.xml';
+        var tagsReportFile = 'output/tags/FIREFOX_TEST_TEST_sampleTags.xml';
 
         test.ok(fs.existsSync(simpleReportFile), 'The simple report file was not created.');
         test.ok(fs.existsSync(tagsReportFile), 'The tags report file was not created.');
