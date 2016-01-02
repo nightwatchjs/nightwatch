@@ -75,7 +75,7 @@ module.exports = {
       test.equals(err, null);
       test.deepEqual(currentTestArray, [
         { name: '', module: 'simple/sample', group : 'simple' },
-        { name: '', module: 'tags/sample', group : 'tags' }
+        { name: '', module: 'tags/sampleTags', group : 'tags' }
       ]);
 
       var fs = require('fs');
