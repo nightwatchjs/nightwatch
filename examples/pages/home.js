@@ -12,6 +12,6 @@ module.exports = {
   commands: [searchCommands],
   elements: {
     searchBar: { selector: 'input[name=q]' },
-    submitButton: { selector: '[type=submit]' }
+    submitButton: { selector: 'button[type=submit]' }
   }
 };
