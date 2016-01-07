@@ -50,6 +50,7 @@ module.exports = {
       globals : {
         test : test,
         reporter: function(results, done) {
+          console.log(results);
           test.ok('modules' in results);
           reporterCount++;
           done();

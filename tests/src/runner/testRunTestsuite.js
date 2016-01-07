@@ -15,7 +15,7 @@ module.exports = {
   },
 
   testRunSuiteRetries : function(test) {
-    test.expect(13);
+    test.expect(14);
     var testsPath = path.join(process.cwd(), '/sampletests/withfailures');
     this.Runner.run([testsPath], {
       seleniumPort : 10195,
@@ -29,6 +29,7 @@ module.exports = {
       start_session : true,
       suite_retries: 1
     }, function(err, results) {
+      test.deepEqual(results.errmessages, []);
       test.equals(results.passed, 1);
       test.equals(results.failed, 1);
       test.equals(results.errors, 0);

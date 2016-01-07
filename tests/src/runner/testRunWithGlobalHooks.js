@@ -105,7 +105,7 @@ module.exports = {
   },
 
   'test run with global async beforeEach and assert failure' : function(test) {
-    test.expect(2);
+    test.expect(3);
     var beforeEachCount = 0;
     var testsPath = path.join(process.cwd(), '/sampletests/before-after');
 
@@ -128,7 +128,35 @@ module.exports = {
       start_session : true
     }, function(err, results) {
       test.equals(err, null);
+      test.equals(results.modules.sampleSingleTest.errmessages.length, 0);
       test.equals(beforeEachCount, 3);
+      test.done();
+    });
+  },
+
+  'test run with global async beforeEach and exception' : function(test) {
+    var testsPath = path.join(process.cwd(), '/sampletests/before-after');
+
+    this.Runner.run([testsPath], {
+      seleniumPort : 10195,
+      silent : true,
+      output : false,
+      globals : {
+        test : test,
+        beforeEach: function(client, done) {
+          client.perform(function() {
+            throw new Error('x');
+          });
+        }
+      }
+    }, {
+      output_folder : false,
+      start_session : true
+    }, function(err, results) {
+      test.equals(results.modules.sampleSingleTest.errmessages.length, 1);
+      test.equals(results.modules.sampleWithBeforeAndAfter.errmessages.length, 1);
+      test.equals(results.modules.syncBeforeAndAfter.errmessages.length, 1);
+      test.equals(results.modules.sampleSingleTest.errmessages[0].indexOf('Error while running perform command:'), 0);
       test.done();
     });
   },
