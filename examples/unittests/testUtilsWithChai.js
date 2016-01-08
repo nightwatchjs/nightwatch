@@ -14,7 +14,7 @@ module.exports = {
 
   testFormatElapsedTimeMore : function(client) {
     var resultMs = Utils.formatElapsedTime(999);
-    expect(resultMs).to.equal('999msx');
+    expect(resultMs).to.equal('999ms');
   },
 
   testMakeFnAsync : function(client) {

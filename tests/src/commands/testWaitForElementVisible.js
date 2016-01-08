@@ -32,6 +32,40 @@ module.exports = {
     });
   },
 
+  testStaleElementReference : function(test) {
+    var assertion = [];
+    this.client.assertion = function(result, actual, expected, msg, abortObFailure) {
+      Array.prototype.unshift.apply(assertion, arguments);
+    };
+
+    MockServer.addMock({ url : '/wd/hub/session/1352110219202/elements',
+      method:'POST',
+      response : JSON.stringify({
+        status: 0,
+        state: 'success',
+        value: [ { ELEMENT: '0' } ]
+      })
+    },
+    {
+      url : '/wd/hub/session/1352110219202/element/0/displayed',
+      method:'GET',
+      response : JSON.stringify({
+        sessionId: '1352110219202',
+        state: 'stale element reference',
+        status:10
+      })
+    });
+
+    this.client.api.waitForElementVisible('#weblogin', 110, 50, function callback(result, instance) {
+      test.equal(assertion[0], false);
+      test.equal(assertion[1], 'not visible');
+      test.equal(assertion[3], 'Timed out while waiting for element <#weblogin> to be visible for 110 milliseconds.');
+      test.equal(assertion[4], true);
+
+      test.done();
+    });
+  },
+
   'test not visible with global timeout default': function(test) {
     var assertion = [];
     this.client.assertion = function(result, actual, expected, msg, abortObFailure) {

@@ -12,7 +12,7 @@ module.exports = {
 
     mockery.enable({ useCleanCache: true, warnOnUnregistered: false });
     mockery.registerMock('child_process', {
-      execFile : function(path, args, opts) {
+      spawn : function(path, args, opts) {
         self.allArgs.push(args);
         self.allOpts.push(opts);
 
@@ -113,7 +113,7 @@ module.exports = {
     });
 
     runner.setup({}, function() {
-      test.equals(self.allArgs.length, 20);
+      test.equals(self.allArgs.length, 21);
       test.ok(path.join('sampletests', 'async', 'sample_1') in runner.runningProcesses);
       test.ok(path.join('sampletests', 'before-after', 'sampleSingleTest_2') in runner.runningProcesses);
 
@@ -144,7 +144,7 @@ module.exports = {
 
     runner.setup({}, function() {
       test.ok(!runner.isParallelMode());
-      test.equals(self.allArgs.length, 20);
+      test.equals(self.allArgs.length, 21);
       test.done();
     });
 
@@ -169,7 +169,7 @@ module.exports = {
 
     runner.setup({}, function() {
       test.ok(!runner.isParallelMode());
-      test.equals(self.allArgs.length, 20);
+      test.equals(self.allArgs.length, 21);
       test.done();
     });
 

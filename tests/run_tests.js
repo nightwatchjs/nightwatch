@@ -31,12 +31,15 @@ try {
       'src',
       'src/runner',
       'src/expect',
+      'src/cli',
+      'src/reporter',
+      'src/selenium-server',
       'src/page-object',
-      'src/mocha',
       'src/protocol',
       'src/http',
       'src/index',
       'src/assertions',
+      'src/mocha',
       'src/commands'
     ], options, function(err) {
       setTimeout(function() {
