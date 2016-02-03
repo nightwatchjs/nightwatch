@@ -41,25 +41,6 @@ module.exports = {
         }
       }
     });
-    mockery.registerMock('./live_output.json', {
-      src_folders : ['tests'],
-      live_output : true,
-      test_settings : {
-        'default' : {
-
-        }
-      }
-    });
-
-    mockery.registerMock('./live_output_override.json', {
-      src_folders : ['tests'],
-      live_output : true,
-      test_settings : {
-        'default' : {
-          live_output : false
-        }
-      }
-    });
 
     mockery.registerMock('./empty.json', {
       src_folders : 'tests'
@@ -188,12 +169,6 @@ module.exports = {
         if (b == './output_disabled.json') {
           return './output_disabled.json';
         }
-        if (b == './live_output.json') {
-          return './live_output.json';
-        }
-        if (b == './live_output_override.json') {
-          return './live_output_override.json';
-        }
         if (b == './empty.json') {
           return './empty.json';
         }
@@ -292,52 +267,6 @@ module.exports = {
     }).init();
 
     test.equals(runner.output_folder, false);
-
-    test.done();
-
-  },
-
-  testSetLiveOutput : function(test) {
-    mockery.registerMock('fs', {
-      existsSync : function(module) {
-        if (module == './settings.json' || module == './nightwatch.conf.js') {
-          return false;
-        }
-
-        return true;
-      }
-    });
-
-    var CliRunner = require('../../../'+ BASE_PATH +'/../lib/runner/cli/clirunner.js');
-    var runner = new CliRunner({
-      config : './live_output.json',
-      env : 'default'
-    }).init();
-
-    test.equals(runner.settings.live_output, true);
-
-    test.done();
-
-  },
-
-  testSetLiveOutputOverride : function(test) {
-    mockery.registerMock('fs', {
-      existsSync : function(module) {
-        if (module == './settings.json' || module == './nightwatch.conf.js') {
-          return false;
-        }
-
-        return true;
-      }
-    });
-
-    var CliRunner = require('../../../'+ BASE_PATH +'/../lib/runner/cli/clirunner.js');
-    var runner = new CliRunner({
-      config : './live_output_override.json',
-      env : 'default'
-    }).init();
-
-    test.equals(runner.settings.live_output, false);
 
     test.done();
 
