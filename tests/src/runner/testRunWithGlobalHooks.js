@@ -161,6 +161,32 @@ module.exports = {
     });
   },
 
+  'test run with global async beforeEach and done(err);' : function(test) {
+    var testsPath = path.join(process.cwd(), '/sampletests/before-after');
+
+    this.Runner.run([testsPath], {
+      seleniumPort : 10195,
+      silent : true,
+      output : false,
+      globals : {
+        test : test,
+        beforeEach: function(client, done) {
+          setTimeout(function() {
+            done(new Error('global beforeEach error'));
+          }, 10);
+        }
+      }
+    }, {
+      output_folder : false,
+      start_session : true
+    }, function(err, results) {
+      test.ok(err instanceof Error);
+      test.equals(err.message, 'global beforeEach error');
+
+      test.done();
+    });
+  },
+
   'test currentTest in global beforeEach/afterEach' : function(test) {
     test.expect(18);
     var testsPath = path.join(process.cwd(), '/sampletests/withfailures');
