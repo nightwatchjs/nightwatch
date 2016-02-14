@@ -123,7 +123,7 @@ module.exports = {
       test.strictEqual(child.index, 0);
       test.equal(child.startDelay, 10);
       test.equal(child.environment, path.join('sampletests', 'async', 'sample'));
-      test.deepEqual(child.settings, runner.settings);
+      test.deepEqual(child.settings, runner.test_settings);
       test.strictEqual(child.globalExitCode, 0);
       test.equal(child.args.length, 3);
       test.equal(child.args[0], '--test');
