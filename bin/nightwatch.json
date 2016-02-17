@@ -87,6 +87,27 @@
         "browserstack.user" : "...",
         "browserstack.key" : "..."
       }
+    },
+    
+    "testingbot" : {
+      "selenium_host" : "hub.testingbot.com",
+      "selenium_port" : 80,
+      "apiKey" : "${TB_KEY}",
+      "apiSecret" : "${TB_SECRET}",
+      "silent" : true,
+      "output" : true,
+      "screenshots" : {
+        "enabled" : false,
+        "on_failure" : true,
+        "path" : ""
+      },
+      "desiredCapabilities": {
+        "name" : "test-example",
+        "browserName": "firefox"
+      },
+      "selenium" : {
+        "start_process" : false
+      }
     }
   }
 }
