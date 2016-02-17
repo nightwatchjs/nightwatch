@@ -7,6 +7,7 @@ npm-debug.log
 lib-cov
 selenium-debug.log
 phantomjsdriver.log
+tests_output
 *~
 \#*
 \.#*

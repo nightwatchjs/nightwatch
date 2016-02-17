@@ -7,801 +7,801 @@ module.exports = {
     callback();
   },
 
-  testElement : function(test) {
+  testElement : function(done) {
     var protocol = this.protocol;
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.element('id', '#weblogin', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"using":"id","value":"#weblogin"}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/element');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{"using":"id","value":"#weblogin"}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/element');
     });
   },
 
-  testElementIdElement : function(test) {
+  testElementIdElement : function(done) {
     var client = this.client;
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.elementIdElement('0', 'id', '#weblogin', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"using":"id","value":"#weblogin"}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/element/0/element');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{"using":"id","value":"#weblogin"}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/0/element');
     });
   },
 
-  testElementPlural : function(test) {
+  testElementPlural : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.elements('id', '#weblogin', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"using":"id","value":"#weblogin"}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/elements');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{"using":"id","value":"#weblogin"}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/elements');
     });
   },
 
-  testElementIdElementPlural : function(test) {
+  testElementIdElementPlural : function(done) {
     var client = this.client;
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.elementIdElements('0', 'id', '#weblogin', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"using":"id","value":"#weblogin"}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/element/0/elements');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{"using":"id","value":"#weblogin"}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/0/elements');
     });
   },
 
-  testElementActive : function(test) {
+  testElementActive : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.elementActive(function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/element/active');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/active');
     });
   },
 
-  testElementIdClear : function(test) {
+  testElementIdClear : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.elementIdClear('TEST_ELEMENT', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/clear');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/clear');
     });
   },
 
-  testElementIdSelected : function(test) {
+  testElementIdSelected : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.elementIdSelected('TEST_ELEMENT', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/selected');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/selected');
     });
   },
 
-  testElementIdEnabled : function(test) {
+  testElementIdEnabled : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.elementIdEnabled('TEST_ELEMENT', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/enabled');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/enabled');
     });
   },
 
-  testElementIdEquals : function(test) {
+  testElementIdEquals : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.elementIdEquals('ELEMENT1', 'ELEMENT2', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/element/ELEMENT1/equals/ELEMENT2');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/ELEMENT1/equals/ELEMENT2');
     });
   },
 
-  testElementIdAttribute : function(test) {
+  testElementIdAttribute : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.elementIdAttribute('TEST_ELEMENT', 'test_attr', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/attribute/test_attr');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/attribute/test_attr');
     });
   },
 
-  testElementIdClick : function(test) {
+  testElementIdClick : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.elementIdClick('TEST_ELEMENT', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/click');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/click');
     });
   },
 
-  testElementIdCssProperty : function(test) {
+  testElementIdCssProperty : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.elementIdCssProperty('TEST_ELEMENT', 'test_property', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/css/test_property');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/css/test_property');
     });
   },
 
-  testElementIdDisplayed : function(test) {
+  testElementIdDisplayed : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.elementIdDisplayed('TEST_ELEMENT', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/displayed');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/displayed');
     });
   },
 
-  testElementIdLocation : function(test) {
+  testElementIdLocation : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.elementIdLocation('TEST_ELEMENT', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/location');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/location');
     });
   },
 
-  testElementIdLocationInView : function(test) {
+  testElementIdLocationInView : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.elementIdLocationInView('TEST_ELEMENT', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/location_in_view');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/location_in_view');
     });
   },
 
-  testElementIdName : function(test) {
+  testElementIdName : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.elementIdName('TEST_ELEMENT', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/name');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/name');
     });
   },
 
-  testElementIdSize : function(test) {
+  testElementIdSize : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.elementIdSize('TEST_ELEMENT', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/size');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/size');
     });
   },
 
-  testElementIdText : function(test) {
+  testElementIdText : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.elementIdText('TEST_ELEMENT', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/text');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/text');
     });
   },
 
-  testElementIdValueGet : function(test) {
+  testElementIdValueGet : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.elementIdValue('TEST_ELEMENT', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/attribute/value');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/attribute/value');
     });
   },
 
-  testElementIdValuePost : function(test) {
+  testElementIdValuePost : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.elementIdValue('TEST_ELEMENT', 'test', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"value":["t","e","s","t"]}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/value');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{"value":["t","e","s","t"]}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/value');
     });
   },
 
-  testExecuteString : function(test) {
+  testExecuteString : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.execute('<script>test();</script>', ['arg1'], function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"script":"<script>test();</script>","args":["arg1"]}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/execute');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{"script":"<script>test();</script>","args":["arg1"]}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/execute');
     });
   },
 
-  testExecuteFunction : function(test) {
+  testExecuteFunction : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.execute(function() {return test();},
         ['arg1'], function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.data, '{"script":"var passedArgs = Array.prototype.slice.call(arguments,0); ' +
+      assert.equal(command.data, '{"script":"var passedArgs = Array.prototype.slice.call(arguments,0); ' +
         'return function () {return test();}.apply(window, passedArgs);","args":["arg1"]}');
     });
   },
 
-  testExecuteFunctionNoArgs : function(test) {
+  testExecuteFunctionNoArgs : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.execute(function() {return test();})
         .on('complete', function() {
-          test.done();
+          done();
         });
 
-      test.equal(command.data, '{"script":"var passedArgs = Array.prototype.slice.call(arguments,0); ' +
+      assert.equal(command.data, '{"script":"var passedArgs = Array.prototype.slice.call(arguments,0); ' +
         'return function () {return test();}.apply(window, passedArgs);","args":[]}');
     });
   },
 
-  testExecuteAsync : function(test) {
+  testExecuteAsync : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.execute_async('<script>test();</script>', ['arg1'], function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"script":"<script>test();</script>","args":["arg1"]}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/execute_async');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{"script":"<script>test();</script>","args":["arg1"]}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/execute_async');
     });
   },
 
-  testExecuteAsyncFunction : function(test) {
+  testExecuteAsyncFunction : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.execute_async(function() {return test();},
         ['arg1'], function callback() {
-          test.done();
+          done();
         });
 
-      test.equal(command.data, '{"script":"var passedArgs = Array.prototype.slice.call(arguments,0); ' +
+      assert.equal(command.data, '{"script":"var passedArgs = Array.prototype.slice.call(arguments,0); ' +
         'return function () {return test();}.apply(window, passedArgs);","args":["arg1"]}');
     });
   },
 
-  testFrameDefault : function(test) {
+  testFrameDefault : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.frame(function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/frame');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/frame');
     });
   },
 
-  testFramePost : function(test) {
+  testFramePost : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.frame('testFrame', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"id":"testFrame"}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/frame');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{"id":"testFrame"}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/frame');
     });
   },
 
-  testFrameParent : function(test) {
+  testFrameParent : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.frameParent(function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/frame/parent');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/frame/parent');
     });
   },
 
-  'test mouseButtonClick click left' : function(test) {
+  'test mouseButtonClick click left' : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.mouseButtonClick('left', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"button":0}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/click');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{"button":0}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/click');
     });
   },
 
-  'test mouseButtonClick click right' : function(test) {
+  'test mouseButtonClick click right' : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.mouseButtonClick('right', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.data, '{"button":2}');
+      assert.equal(command.data, '{"button":2}');
     });
   },
 
-  'test mouseButtonClick click middle' : function(test) {
+  'test mouseButtonClick click middle' : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.mouseButtonClick('middle', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.data, '{"button":1}');
+      assert.equal(command.data, '{"button":1}');
     });
   },
 
-  'test mouseButtonClick with callback only' : function(test) {
+  'test mouseButtonClick with callback only' : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.mouseButtonClick(function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.data, '{"button":0}');
+      assert.equal(command.data, '{"button":0}');
     });
   },
 
-  'test mouseButtonClick with no args' : function(test) {
+  'test mouseButtonClick with no args' : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.mouseButtonClick();
       command.on('complete', function() {
-        test.done();
+        done();
       });
 
-      test.equal(command.data, '{"button":0}');
+      assert.equal(command.data, '{"button":0}');
     });
   },
 
-  'test mouseButtonDown click left' : function(test) {
+  'test mouseButtonDown click left' : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.mouseButtonDown('left', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"button":0}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/buttondown');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{"button":0}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/buttondown');
     });
   },
 
-  'test mouseButtonDown click middle' : function(test) {
+  'test mouseButtonDown click middle' : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.mouseButtonDown('middle', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.data, '{"button":1}');
+      assert.equal(command.data, '{"button":1}');
     });
   },
 
-  'test mouseButtonDown with callback only' : function(test) {
+  'test mouseButtonDown with callback only' : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.mouseButtonDown(function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.data, '{"button":0}');
+      assert.equal(command.data, '{"button":0}');
     });
   },
 
-  'test mouseButtonUp click right' : function(test) {
+  'test mouseButtonUp click right' : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.mouseButtonUp('right', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"button":2}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/buttonup');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{"button":2}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/buttonup');
     });
   },
 
-  testMoveTo : function(test) {
+  testMoveTo : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.moveTo('testElement', 0, 1, function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"element":"testElement","xoffset":0,"yoffset":1}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/moveto');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{"element":"testElement","xoffset":0,"yoffset":1}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/moveto');
     });
   },
 
-  testRefresh : function(test) {
+  testRefresh : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.refresh(function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/refresh');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/refresh');
     });
   },
 
-  testBack : function(test) {
+  testBack : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.back(function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/back');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/back');
     });
   },
 
-  testForward : function(test) {
+  testForward : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.forward(function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/forward');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/forward');
     });
   },
 
-  testDoubleClick : function(test) {
+  testDoubleClick : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.doubleClick(function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/doubleclick');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/doubleclick');
     });
   },
 
-  testSessions : function(test) {
+  testSessions : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.sessions(function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/sessions');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/sessions');
     });
   },
 
-  testSessionDefault : function(test) {
+  testSessionDefault : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
 
       var command = protocol.session(function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202');
     });
   },
 
-  testSessionGETImplicit : function(test) {
+  testSessionGETImplicit : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.session(function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202');
     });
   },
 
-  testSessionGETExplicit : function(test) {
+  testSessionGETExplicit : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.session('GET', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202');
     });
   },
 
-  testSessionGETImplicitById : function(test) {
+  testSessionGETImplicitById : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.session('1352110219203', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219203');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219203');
     });
   },
 
-  testSessionGETExplicitById : function(test) {
+  testSessionGETExplicitById : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.session('GET', '1352110219203', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219203');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219203');
     });
   },
 
-  testSessionDELETE : function(test) {
+  testSessionDELETE : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.session('DELETE', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'DELETE');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202');
+      assert.equal(command.request.method, 'DELETE');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202');
     });
   },
 
-  testSessionDELETEById : function(test) {
+  testSessionDELETEById : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.session('DELETE', '1352110219203', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'DELETE');
-      test.equal(command.request.path, '/wd/hub/session/1352110219203');
+      assert.equal(command.request.method, 'DELETE');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219203');
     });
   },
 
-  testSessionPOST : function(test) {
+  testSessionPOST : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.session('POST', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.request.path, '/wd/hub/session');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.request.path, '/wd/hub/session');
     });
   },
 
-  testScreenshot : function(test) {
+  testScreenshot : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.screenshot(false, function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/screenshot');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/screenshot');
     });
   },
 
-  testStatus : function(test) {
+  testStatus : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.status(function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/status');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/status');
     });
   },
 
-  testSubmit : function(test) {
+  testSubmit : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.submit('TEST_ELEMENT', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/submit');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/submit');
     });
   },
 
-  testTitle : function(test) {
+  testTitle : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.title(function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/title');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/title');
     });
   },
 
-  testWindowHandle : function(test) {
+  testWindowHandle : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.window_handle(function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/window_handle');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/window_handle');
     });
   },
 
-  testWindowHandlePlural : function(test) {
+  testWindowHandlePlural : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.window_handles(function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/window_handles');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/window_handles');
     });
   },
 
-  testCloseWindow : function(test) {
+  testCloseWindow : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.window('DELETE', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'DELETE');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/window');
+      assert.equal(command.request.method, 'DELETE');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/window');
     });
   },
 
-  testSwitchWindow : function(test) {
+  testSwitchWindow : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.window('POST', 'other-window', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"name":"other-window"}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/window');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{"name":"other-window"}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/window');
     });
   },
 
-  testWindowCommand : function(test) {
+  testWindowCommand : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      test.throws(
+      assert.throws(
         function() {
-          test.done();
+          done();
           protocol.window('POST');
         }, 'POST method without a name param throws an error'
       );
 
-      test.throws(
+      assert.throws(
         function() {
           protocol.window('GET');
         }, 'GET method throws an error'
@@ -810,241 +810,241 @@ module.exports = {
     });
   },
 
-  testWindowSizeErrors : function(test) {
+  testWindowSizeErrors : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      test.throws(
+      assert.throws(
         function() {
           protocol.windowSize(function() {});
         }, 'First argument must be a window handle string.'
       );
 
-      test.throws(
+      assert.throws(
         function() {
           protocol.windowSize('current', 'a', 10);
         }, 'Width and height arguments must be passed as numbers.'
       );
 
-      test.throws(
+      assert.throws(
         function() {
           protocol.windowSize('current', 10);
         }, 'Width and height arguments must be passed as numbers.'
       );
 
-      test.throws(
+      assert.throws(
         function() {
-          test.done();
+          done();
           protocol.windowSize('current', 10, 'a');
         }, 'Width and height arguments must be passed as numbers.'
       );
     });
   },
 
-  testWindowSizeGet : function(test) {
+  testWindowSizeGet : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.windowSize('current', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/window/current/size');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/window/current/size');
     });
   },
 
-  testWindowSizePost : function(test) {
+  testWindowSizePost : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.windowSize('current', 10, 10, function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"width":10,"height":10}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/window/current/size');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{"width":10,"height":10}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/window/current/size');
     });
   },
 
-  testWindowPositionGet : function(test) {
+  testWindowPositionGet : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.windowPosition('current', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/window/current/position');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/window/current/position');
     });
   },
 
-  testWindowPositionPost : function(test) {
+  testWindowPositionPost : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.windowPosition('current', 10, 10, function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"x":10,"y":10}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/window/current/position');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{"x":10,"y":10}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/window/current/position');
     });
   },
 
-  testWindowPositionErrors : function(test) {
+  testWindowPositionErrors : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      test.throws(
+      assert.throws(
         function() {
           protocol.windowPosition(function() {});
         }, 'First argument must be a window handle string.'
       );
 
-      test.throws(
+      assert.throws(
         function() {
           protocol.windowPosition('current', 'a', 10);
         }, 'Offset arguments must be passed as numbers.'
       );
 
-      test.throws(
+      assert.throws(
         function() {
           protocol.windowPosition('current', 10);
         }, 'Offset arguments must be passed as numbers.'
       );
 
-      test.throws(
+      assert.throws(
         function() {
-          test.done();
+          done();
           protocol.windowPosition('current', 10, 'a');
         }, 'Offset arguments must be passed as numbers.'
       );
     });
   },
 
-  testAcceptAlert : function(test) {
+  testAcceptAlert : function(done) {
     var client = this.client;
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.accept_alert(function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/accept_alert');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/accept_alert');
     });
   },
 
-  testDismissAlert : function(test) {
+  testDismissAlert : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.dismiss_alert(function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/dismiss_alert');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/dismiss_alert');
     });
   },
 
-  testGetAlertText: function(test) {
+  testGetAlertText: function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.getAlertText(function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/alert_text');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/alert_text');
     });
   },
 
-  testSetAlertText: function(test) {
+  testSetAlertText: function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.setAlertText('prompt text to set', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"text":"prompt text to set"}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/alert_text');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{"text":"prompt text to set"}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/alert_text');
     });
   },
 
-  testCookieGet : function(test) {
+  testCookieGet : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.cookie('GET', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/cookie');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/cookie');
     });
   },
 
-  testCookiePost : function(test) {
+  testCookiePost : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.cookie('POST', {name: 'test_cookie'}, function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"cookie":{"name":"test_cookie"}}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/cookie');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{"cookie":{"name":"test_cookie"}}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/cookie');
     });
   },
 
-  testCookieDeleteAll : function(test) {
+  testCookieDeleteAll : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.cookie('DELETE', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'DELETE');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/cookie');
+      assert.equal(command.request.method, 'DELETE');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/cookie');
     });
   },
 
-  testCookieDeleteOne : function(test) {
+  testCookieDeleteOne : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.cookie('DELETE', 'test_cookie', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'DELETE');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/cookie/test_cookie');
+      assert.equal(command.request.method, 'DELETE');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/cookie/test_cookie');
     });
   },
 
-  testCookieErrors : function(test) {
+  testCookieErrors : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
-      test.throws(
+      assert.throws(
         function() {
-          test.done();
+          done();
           protocol.cookie('POST');
         }, 'POST method without a cookie param throws an error'
       );
 
-      test.throws(
+      assert.throws(
         function() {
           protocol.window('PUT');
         }, 'PUT method throws an error'
@@ -1053,128 +1053,128 @@ module.exports = {
     });
   },
 
-  testTimeoutsValid : function(test) {
+  testTimeoutsValid : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function() {
       var command = protocol.timeouts('script', 1000, function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"type":"script","ms":1000}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/timeouts');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{"type":"script","ms":1000}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/timeouts');
     });
   },
 
-  testTimeoutsInvalid : function(test) {
+  testTimeoutsInvalid : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function() {
-      test.throws(
+      assert.throws(
         function() {
           protocol.timeouts('nonscript', 1000);
         }
       );
 
-      test.throws(
+      assert.throws(
         function() {
-          test.done();
+          done();
           protocol.timeouts('script');
         }
       );
     });
   },
 
-  testTimeoutsAsyncScript : function(test) {
+  testTimeoutsAsyncScript : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function() {
       var command = protocol.timeoutsAsyncScript(1000, function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"ms":1000}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/timeouts/async_script');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{"ms":1000}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/timeouts/async_script');
     });
   },
 
-  testTimeoutsImplicitWait : function(test) {
+  testTimeoutsImplicitWait : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function() {
       var command = protocol.timeoutsImplicitWait(1000, function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"ms":1000}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/timeouts/implicit_wait');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{"ms":1000}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/timeouts/implicit_wait');
     });
   },
 
-  testKeys : function(test) {
+  testKeys : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function() {
       var command = protocol.keys(['A', 'B'], function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"value":["A","B"]}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/keys');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{"value":["A","B"]}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/keys');
     });
   },
 
-  testKeysSingle : function(test) {
+  testKeysSingle : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function() {
       var command = protocol.keys('A', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.data, '{"value":["A"]}');
+      assert.equal(command.data, '{"value":["A"]}');
     });
   },
 
-  testKeysUnicode : function(test) {
+  testKeysUnicode : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function() {
       var command = protocol.keys('\uE007', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.data, '{"value":["\\ue007"]}');
+      assert.equal(command.data, '{"value":["\\ue007"]}');
     });
   },
 
-  testLog : function(test) {
+  testLog : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.sessionLog('browser', function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/log');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/log');
     });
   },
 
-  testLogTypes : function(test) {
+  testLogTypes : function(done) {
     var protocol = this.protocol;
 
     this.client.on('selenium:session_create', function(sessionId) {
       var command = protocol.sessionLogTypes(function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/log/types');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/log/types');
     });
   },
 
@@ -1183,11 +1183,11 @@ module.exports = {
 
     this.client.on('selenium:session_create', function (sessionId) {
       var command = protocol.contexts(function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/contexts');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/contexts');
     });
   },
 
@@ -1196,11 +1196,11 @@ module.exports = {
 
     this.client.on('selenium:session_create', function (sessionId) {
       var command = protocol.currentContext(function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/context');
+      assert.equal(command.request.method, 'GET');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/context');
     });
   },
 
@@ -1209,56 +1209,12 @@ module.exports = {
 
     this.client.on('selenium:session_create', function (sessionId) {
       var command = protocol.setContext('NATIVE',function callback() {
-        test.done();
+        done();
       });
 
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"name":"NATIVE"}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/context');
+      assert.equal(command.request.method, 'POST');
+      assert.equal(command.data, '{"name":"NATIVE"}');
+      assert.equal(command.request.path, '/wd/hub/session/1352110219202/context');
     });
-  },
-
-  testGetOrientation: function (test) {
-    var protocol = this.protocol;
-
-    this.client.on('selenium:session_create', function (sessionId) {
-      var command = protocol.getOrientation(function callback() {
-        test.done();
-      });
-
-      test.equal(command.request.method, 'GET');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/orientation');
-    });
-  },
-
-  testSetOrientation: function (test) {
-    var protocol = this.protocol;
-
-    this.client.on('selenium:session_create', function (sessionId) {
-      var command = protocol.setOrientation('LANDSCAPE',function callback() {
-        test.done();
-      });
-
-      test.equal(command.request.method, 'POST');
-      test.equal(command.data, '{"orientation":"LANDSCAPE"}');
-      test.equal(command.request.path, '/wd/hub/session/1352110219202/orientation');
-    });
-  },
-
-  testSetOrientationInvalid: function (test) {
-    var protocol = this.protocol;
-
-    this.client.on('selenium:session_create', function (sessionId) {
-      test.throws(function() {
-        protocol.setOrientation('TEST');
-      });
-      test.done();
-    });
-  },
-
-  tearDown : function(callback) {
-    this.client = null;
-    // clean up
-    callback();
   }
 };

@@ -20,7 +20,7 @@ module.exports = {
       })
     });
 
-    var command = client.getCssProperty('#weblogin', 'display', function callback(result) {
+    client.getCssProperty('#weblogin', 'display', function callback(result) {
       test.equals(result.value, 'block');
       test.done();
     });
