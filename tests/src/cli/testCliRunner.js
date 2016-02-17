@@ -42,6 +42,36 @@ module.exports = {
       }
     });
 
+    mockery.registerMock('./output_disabled_env.json', {
+      src_folders : ['tests'],
+      output_folder : 'reports',
+      test_settings : {
+        'default' : {
+          output_folder : false
+        }
+      }
+    });
+
+    mockery.registerMock('./output_custom_enabled.json', {
+      src_folders : ['tests'],
+      output_folder : false,
+      test_settings : {
+        'default' : {
+          output_folder : 'custom'
+        }
+      }
+    });
+
+    mockery.registerMock('./output_custom.json', {
+      src_folders : ['tests'],
+      output_folder : 'reports',
+      test_settings : {
+        'default' : {
+          output_folder : 'custom_overwritten'
+        }
+      }
+    });
+
     mockery.registerMock('./empty.json', {
       src_folders : 'tests'
     });
@@ -169,6 +199,15 @@ module.exports = {
         if (b == './output_disabled.json') {
           return './output_disabled.json';
         }
+        if (b == './output_disabled_env.json') {
+          return './output_disabled_env.json';
+        }
+        if (b == './output_custom.json') {
+          return './output_custom.json';
+        }
+        if (b == './output_custom_enabled.json') {
+          return './output_custom_enabled.json';
+        }
         if (b == './empty.json') {
           return './empty.json';
         }
@@ -267,6 +306,75 @@ module.exports = {
     }).init();
 
     test.equals(runner.output_folder, false);
+
+    test.done();
+
+  },
+
+  testSetOutputFolderDisabledPerEnv : function(test) {
+    mockery.registerMock('fs', {
+      existsSync : function(module) {
+        if (module == './settings.json' || module == './nightwatch.conf.js') {
+          return false;
+        }
+
+        return true;
+      }
+    });
+
+    var CliRunner = require('../../../'+ BASE_PATH +'/../lib/runner/cli/clirunner.js');
+    var runner = new CliRunner({
+      config : './output_disabled_env.json',
+      env : 'default'
+    }).init();
+
+    test.equals(runner.output_folder, false);
+
+    test.done();
+
+  },
+
+  testSetOutputFolderCustomOverwrite : function(test) {
+    mockery.registerMock('fs', {
+      existsSync : function(module) {
+        if (module == './settings.json' || module == './nightwatch.conf.js') {
+          return false;
+        }
+
+        return true;
+      }
+    });
+
+    var CliRunner = require('../../../'+ BASE_PATH +'/../lib/runner/cli/clirunner.js');
+    var runner = new CliRunner({
+      config : './output_custom.json',
+      env : 'default'
+    }).init();
+
+    test.equals(runner.output_folder, 'custom_overwritten');
+
+    test.done();
+
+  },
+
+  testSetOutputFolderCustomEnabled : function(test) {
+    mockery.registerMock('fs', {
+      existsSync : function(module) {
+        if (module == './settings.json' || module == './nightwatch.conf.js') {
+          return false;
+        }
+
+        return true;
+      }
+    });
+
+    var CliRunner = require('../../../'+ BASE_PATH +'/../lib/runner/cli/clirunner.js');
+    var runner = new CliRunner({
+      config : './output_custom_enabled.json',
+      env : 'default'
+    }).init();
+
+    test.equals(runner.output_folder, 'custom');
 
     test.done();
 
