@@ -180,6 +180,20 @@ module.exports = {
     m._commandFn('.test_element', 'text result', 'Test message');
   },
 
+  'Testing stringified object in assertion' : function(test) {
+    this.client = require('../nightwatch.js').init();
+    this.client.api.assert.equal({"test":true},{"test":false});     
+    this.client.on('nightwatch:finished', function(results, errors) {
+          test.equals(results.passed, 0);
+          test.equals(results.failed, 1);
+          test.equals(results.errors, 0);
+          test.equals(results.skipped, 0);
+          test.equals(results.tests[0].failure, 'Expected "{"test":false}" but got: "{"test":true}"');
+          test.ok('stacktrace' in results.tests[0]);
+          test.done();
+        });   
+  },
+
   tearDown : function(callback) {
     // clean up
     this.client = null;
