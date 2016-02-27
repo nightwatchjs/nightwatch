@@ -868,6 +868,64 @@ module.exports = {
     });
   },
 
+  testWindowPositionGet : function(test) {
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.windowPosition('current', function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'GET');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/window/current/position');
+    });
+  },
+
+  testWindowPositionPost : function(test) {
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      var command = protocol.windowPosition('current', 10, 10, function callback() {
+        test.done();
+      });
+
+      test.equal(command.request.method, 'POST');
+      test.equal(command.data, '{"x":10,"y":10}');
+      test.equal(command.request.path, '/wd/hub/session/1352110219202/window/current/position');
+    });
+  },
+
+  testWindowPositionErrors : function(test) {
+    var protocol = this.protocol;
+
+    this.client.on('selenium:session_create', function(sessionId) {
+      test.throws(
+        function() {
+          protocol.windowPosition(function() {});
+        }, 'First argument must be a window handle string.'
+      );
+
+      test.throws(
+        function() {
+          protocol.windowPosition('current', 'a', 10);
+        }, 'Offset arguments must be passed as numbers.'
+      );
+
+      test.throws(
+        function() {
+          protocol.windowPosition('current', 10);
+        }, 'Offset arguments must be passed as numbers.'
+      );
+
+      test.throws(
+        function() {
+          test.done();
+          protocol.windowPosition('current', 10, 'a');
+        }, 'Offset arguments must be passed as numbers.'
+      );
+    });
+  },
+
   testAcceptAlert : function(test) {
     var client = this.client;
     var protocol = this.protocol;
