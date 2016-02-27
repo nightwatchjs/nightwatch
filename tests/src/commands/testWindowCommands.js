@@ -25,6 +25,13 @@ module.exports = {
     });
   },
 
+  testPositionWindow : function(test) {
+    var client = this.client.api;
+    client.positionWindow(100, 100, function callback() {
+      test.done();
+    });
+  },
+
   tearDown : function(callback) {
     this.client = null;
     // clean up
