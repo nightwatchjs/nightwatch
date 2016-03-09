@@ -247,6 +247,46 @@ module.exports = {
     test.done();
   },
 
+  testPersistGlobalsEnabled : function(test) {
+    var opts = {
+      persist_globals : true,
+      globals : {
+        testGlobal : 'test'
+      }
+    };
+
+    var client = this.client = Client.init(opts);
+    test.equals(client.api.globals === opts.globals, true);
+    test.done();
+  },
+
+  testPersistGlobalsUndefined : function(test) {
+    var opts = {
+      globals : {
+        testGlobal : 'test'
+      }
+    };
+
+    var client = this.client = Client.init(opts);
+    test.deepEqual(client.api.globals, opts.globals);
+    test.equals(client.api.globals === opts.globals, false);
+    test.done();
+  },
+
+  testPersistGlobalsDisabled : function(test) {
+    var opts = {
+      persist_globals : false,
+      globals : {
+        testGlobal : 'test'
+      }
+    };
+
+    var client = this.client = Client.init(opts);
+    test.deepEqual(client.api.globals, opts.globals);
+    test.equals(client.api.globals === opts.globals, false);
+    test.done();
+  },
+
   tearDown : function(callback) {
     if (this.client) {
       this.client.queue.reset();
