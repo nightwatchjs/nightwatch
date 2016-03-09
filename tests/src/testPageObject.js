@@ -19,6 +19,7 @@ module.exports = {
 
     test.equal(typeof page.api, 'object');
     test.equal(typeof page.client, 'object');
+    test.equal(typeof page.elements, 'object');
     test.equal(page.name, 'simplePageObj');
     test.equal(page.url, 'http://localhost.com');
     test.equal(page.testCommand(), page);
@@ -37,6 +38,22 @@ module.exports = {
     test.equal(elements.loginXpath.locateStrategy, 'xpath');
     test.equal(elements.loginAsString.selector, '#weblogin');
     test.equal(elements.loginAsString.locateStrategy, 'css selector');
+
+    test.done();
+  },
+
+  testPageObjectElementsArray : function(test) {
+    var client = this.client = require('../nightwatch.js').init({
+      page_objects_path: './extra/pageobjects'
+    });
+
+    var page = client.api.page.pageObjElementsArray();
+    test.ok('elements' in page);
+
+    test.ok('someElement' in page.elements);
+    test.ok('otherElement' in page.elements);
+    test.equal(page.elements.someElement.selector, '#element');
+    test.equal(page.elements.otherElement.selector, '#otherElement');
 
     test.done();
   },
