@@ -27,7 +27,7 @@ module.exports = {
 
   testPositionWindow : function(test) {
     var client = this.client.api;
-    client.positionWindow(100, 100, function callback() {
+    client.setWindowPosition(100, 100, function callback() {
       test.done();
     });
   },
