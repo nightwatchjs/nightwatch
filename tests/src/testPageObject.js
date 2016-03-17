@@ -58,6 +58,17 @@ module.exports = {
     test.done();
   },
 
+  testPageObjectSubDirectory : function(test) {
+    var client = this.client = require('../nightwatch.js').init({
+      page_objects_path: './extra/pageobjects'
+    });
+
+    test.ok('addl' in client.api.page);
+    test.ok('simplePageObject' in client.api.page.addl);
+
+    test.done();
+  },
+
   testPageObjectAssertionsLoaded : function(test) {
     var client = this.client = require('../nightwatch.js').init({
       page_objects_path: './extra/pageobjects'
