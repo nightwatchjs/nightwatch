@@ -16,10 +16,12 @@ module.exports = {
     test.ok('api' in page);
     test.ok('client' in page);
     test.ok('testCommand' in page);
+    test.ok('instanceOptions' in page);
 
     test.equal(typeof page.api, 'object');
     test.equal(typeof page.client, 'object');
     test.equal(typeof page.elements, 'object');
+    test.equal(typeof page.instanceOptions, 'object');
     test.equal(page.name, 'simplePageObj');
     test.equal(page.url, 'http://localhost.com');
     test.equal(page.testCommand(), page);
