@@ -120,6 +120,7 @@ module.exports = {
       assert.equal(runner.settings.detailed_output, false);
       assert.equal(runner.test_settings.output, false);
       assert.equal(runner.test_settings.disable_colors, true);
+      assert.equal(runner.test_settings.log_timestamp, false);
       assert.equal(runner.test_settings.username, 'testuser');
       assert.equal(runner.test_settings.credentials.service.user, 'testuser');
       assert.equal(runner.test_settings.desiredCapabilities['test.user'], 'testuser');
@@ -713,7 +714,8 @@ module.exports = {
         test_settings : {
           'default' : {
             output : false,
-            disable_colors: true
+            disable_colors: true,
+            log_timestamp: false
           }
         }
       });
@@ -760,6 +762,7 @@ module.exports = {
           'default' : {
             output : false,
             disable_colors: true,
+            log_timestamp: false,
             globals : {
               overwritten : '2',
               testGlobalOne : 'one',
