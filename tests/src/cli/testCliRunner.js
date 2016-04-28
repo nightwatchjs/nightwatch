@@ -99,7 +99,8 @@ module.exports = {
       test_settings : {
         'default' : {
           output : false,
-          disable_colors: true
+          disable_colors: true,
+		  log_timestamp: false
         }
       }
     });
@@ -145,6 +146,7 @@ module.exports = {
         'default' : {
           output : false,
           disable_colors: true,
+          log_timestamp: false,
           globals : {
             overwritten : '2',
             testGlobalOne : 'one',
@@ -440,6 +442,7 @@ module.exports = {
     test.equal(runner.settings.selenium.host, 'other.host');
     test.equal(runner.test_settings.output, false);
     test.equal(runner.test_settings.disable_colors, true);
+	test.equal(runner.test_settings.log_timestamp, false);
     test.equal(runner.test_settings.username, 'testuser');
     test.equal(runner.test_settings.credentials.service.user, 'testuser');
     test.equal(runner.test_settings.desiredCapabilities['test.user'], 'testuser');
