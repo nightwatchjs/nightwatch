@@ -15,6 +15,11 @@ module.exports = {
   // elements are found using the given locate strategy and selector
   throwOnMultipleElementsReturned : true,
 
+  // this will cause throw an error if two or more commands with the same
+  // name are found. setting this to false will imply that the last command found 
+  // will overwrite the others
+  throwOnConflictingCommands: true,
+
   // controls the timeout time for async hooks. Expects the done() callback to be invoked within this time
   // or an error is thrown
   asyncHookTimeout : 10000,
