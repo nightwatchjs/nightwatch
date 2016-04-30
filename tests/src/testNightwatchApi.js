@@ -3,6 +3,8 @@ var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
 var path = require('path');
 var Api = require('../../' + BASE_PATH + '/core/api.js');
 
+var nightwatch = require('../../index.js');
+
 module.exports = {
   setUp: function (callback) {
     this.client = require('../nightwatch.js').init();
@@ -59,6 +61,34 @@ module.exports = {
     var command = queue.currentNode;
     test.equal(command.name, 'customCommandConstructor');
     test.equal(command.context, client.api, 'Command should contain a reference to main client instance.');
+  },
+
+  testOverwriteCustomConflictingCommand : function(test) {
+    var client = this.client;
+    client.on('selenium:session_create', function(sessionId) {
+      test.done();
+    });
+
+    client.api.globals.throwOnConflictingCommands = false;
+    client.options.custom_commands_path = ['./extra/commands', './extra/otherCommands'];
+    Api.init(client);
+    Api.loadCustomCommands();
+
+    test.ok('customCommand' in this.client.api, 'Test if the conflicting command was overwritten correctly');
+  },
+
+  testFailCustomConflictingCommand : function(test) {
+    var client = this.client;
+
+    client.options.custom_commands_path = ['./extra/commands', './extra/otherCommands'];
+    Api.init(client);
+
+    var command = function() {
+      Api.loadCustomCommands();
+    };
+
+    test.throws(command, Error, 'Conflicting commands should not be possible by default');
+    test.done();
   },
 
   testAddCustomCommandFullPath : function(test) {
