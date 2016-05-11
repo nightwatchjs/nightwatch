@@ -35,12 +35,15 @@ Browser specific setup and usage guides along with debugging instructions can be
 
 ### To use webdriver directly
 
-If you want to use webdriver directly, instead of via proxy commands though selenium server, just add
+If you want to use webdriver directly, instead of via proxy commands goes though selenium server
 
-`webdriver_only: true` to options and `path_prefix: ''` to your test setting.
+
+1. start chrome driver manually
+2. 
+
+`webdriver_only: true` to options and `path_prefix: ''`, and change port to `9515` in your setting.
 
 e.g.
-
 
 
 ```
@@ -53,7 +56,7 @@ e.g.
   'test_settings': {
     'default': {
        ...
-      'selenium_port': seleniumPort,
+      'selenium_port': 9515,
       'selenium_host': seleniumHost,
       'path_prefix': ''
       },
