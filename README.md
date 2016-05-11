@@ -33,3 +33,34 @@ The [Mailing List/Google Group](https://groups.google.com/forum/#!forum/nightwat
 ### Setup Guides
 Browser specific setup and usage guides along with debugging instructions can be found on the [**Wiki**](https://github.com/nightwatchjs/nightwatch/wiki).
 
+### To use webdriver directly
+
+If you want to use webdriver directly, instead of via proxy commands though selenium server, just add
+
+`webdriver_only: true` to options and `path_prefix: ''` to your test setting.
+
+e.g.
+
+
+
+```
+{
+  'custom_commands_path': 'commands',
+  'globals_path': 'support/globals',
+  ...
+  'webdriver_only': true,
+
+  'test_settings': {
+    'default': {
+       ...
+      'selenium_port': seleniumPort,
+      'selenium_host': seleniumHost,
+      'path_prefix': ''
+      },
+      'desiredCapabilities': {
+        ...
+      }
+    }
+  }
+}
+```
