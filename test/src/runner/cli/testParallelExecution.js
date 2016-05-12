@@ -69,6 +69,10 @@ module.exports = {
       });
 
       runner.setup({}, function (output, code) {
+        if (output instanceof Error) {
+          done(output);
+          return;
+        }
         assert.ok(!runner.isParallelMode());
         assert.equal(code, 0);
         assert.deepEqual(output, {'default': [], mixed: []});
@@ -93,7 +97,11 @@ module.exports = {
         config: path.join(__dirname, '../../../extra/parallelism.json')
       });
 
-      runner.setup({}, function () {
+      runner.setup({}, function (err) {
+        if (err instanceof Error) {
+          done(err);
+          return;
+        }
         assert.equal(self.allArgs.length, 21);
         assert.ok(path.join('sampletests', 'async', 'sample_1') in runner.runningProcesses);
         assert.ok(path.join('sampletests', 'before-after', 'sampleSingleTest_2') in runner.runningProcesses);
@@ -124,7 +132,11 @@ module.exports = {
         env: 'mixed,mixed'
       });
 
-      runner.setup({}, function () {
+      runner.setup({}, function (err) {
+        if (err instanceof Error) {
+          done(err);
+          return;
+        }
         assert.ok(!runner.isParallelMode());
         assert.equal(self.allArgs.length, 2);
         assert.equal(self.allArgs[0].indexOf('mixed') > -1, true);
@@ -172,7 +184,11 @@ module.exports = {
         config: path.join(__dirname, '../../../extra/parallelism-count.json')
       });
 
-      runner.setup({}, function () {
+      runner.setup({}, function (err) {
+        if (err instanceof Error) {
+          done(err);
+          return;
+        }
         assert.ok(!runner.isParallelMode());
         assert.equal(self.allArgs.length, 21);
         done();

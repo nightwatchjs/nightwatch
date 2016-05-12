@@ -38,6 +38,7 @@
     "jshint": "~2.4.4",
     "jsonlint": "~1.6.0",
     "mocha": "^2.3.4",
+    "mocha-lcov-reporter": "^1.2.0",
     "mock-spawn": "^0.2.1",
     "mockery": "~1.4.0",
     "nock": "~0.45.0",
@@ -51,6 +52,7 @@
     "jshint": "./node_modules/.bin/jshint --verbose --config .jshintrc lib/",
     "coverage": "jscoverage lib --exclude *.ejs,*.json && NIGHTWATCH_COV=1 node ./tests/run_tests.js lcov > ./lib-cov/lcov.info",
     "mocha-coverage": "jscoverage lib --exclude *.ejs,*.json && NIGHTWATCH_COV=1 ./node_modules/.bin/mocha test/src --reporter html-cov > coverage.html",
+    "mocha-lcov-coverage": "jscoverage lib --exclude *.ejs,*.json && NIGHTWATCH_COV=1 ./node_modules/.bin/mocha test/src --reporter mocha-lcov-reporter > lib-cov/coverage.lcov",
     "test": "./node_modules/.bin/mocha test/src",
     "unittests": "./bin/nightwatch -c test/nightwatch.json"
   },

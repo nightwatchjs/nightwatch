@@ -5,6 +5,7 @@
 node_modules
 npm-debug.log
 lib-cov
+coverage.html
 selenium-debug.log
 phantomjsdriver.log
 tests_output

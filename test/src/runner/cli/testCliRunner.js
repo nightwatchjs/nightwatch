@@ -117,6 +117,7 @@ module.exports = {
       assert.deepEqual(runner.settings.selenium.cli_args, {arg1: 'arg1_value', arg2: 'arg2_value'});
 
       assert.equal(runner.settings.selenium.host, 'other.host');
+      assert.equal(runner.settings.detailed_output, false);
       assert.equal(runner.test_settings.output, false);
       assert.equal(runner.test_settings.disable_colors, true);
       assert.equal(runner.test_settings.username, 'testuser');
@@ -184,6 +185,7 @@ module.exports = {
       }).init();
 
       var testSource = runner.getTestSource();
+      assert.equal(runner.settings.detailed_output, true);
       assert.equal(testSource, ABSOLUTE_SRC_PATH);
       assert.ok(statSyncCalled);
     },
@@ -639,6 +641,7 @@ module.exports = {
         selenium : {
           start_process : true
         },
+        detailed_output : true,
         end_session_on_fail : true,
         test_settings : {
           'default' : {
@@ -670,7 +673,7 @@ module.exports = {
               }
             },
             end_session_on_fail : false,
-
+            detailed_output : false,
             selenium : {
               host : 'other.host'
             },
