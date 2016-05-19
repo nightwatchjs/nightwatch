@@ -1,4 +1,3 @@
-
 var BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
 var mockery = require('mockery');
 

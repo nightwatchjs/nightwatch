@@ -28,19 +28,19 @@ try {
   var server = require('mockserver').init();
   server.on('listening', function() {
     reporter.run([
-      'src',
-      'src/runner',
-      'src/expect',
+      //'src',
+      //'src/runner',
+      //'src/expect',
       'src/cli',
-      'src/reporter',
-      'src/selenium-server',
-      'src/page-object',
-      'src/protocol',
-      'src/http',
-      'src/index',
-      'src/assertions',
-      'src/mocha',
-      'src/commands'
+      //'src/reporter',
+      //'src/selenium-server',
+      //'src/page-object',
+      //'src/protocol',
+      //'src/http',
+      //'src/index',
+      //'src/assertions',
+      //'src/mocha',
+      //'src/commands'
     ], options, function(err) {
       setTimeout(function() {
         server.close();

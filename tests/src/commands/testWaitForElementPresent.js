@@ -8,6 +8,8 @@ module.exports = {
   },
 
   testSuccess : function(test) {
+    api.globals.waitForConditionTimeout = 15;
+    api.globals.waitForConditionPollInterval = 10;
     this.client.api.waitForElementPresent('#weblogin', 100, function callback(result, instance) {
       test.equal(instance.expectedValue, 'found');
       test.equal(result.status, 0);

@@ -113,6 +113,11 @@ module.exports = {
     });
 
     runner.setup({}, function() {
+      try {
+
+      } catch (err) {
+
+      }
       test.equals(self.allArgs.length, 21);
       test.ok(path.join('sampletests', 'async', 'sample_1') in runner.runningProcesses);
       test.ok(path.join('sampletests', 'before-after', 'sampleSingleTest_2') in runner.runningProcesses);
