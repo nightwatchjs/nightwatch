@@ -105,6 +105,7 @@ module.exports = {
         if (err) {
           throw err;
         }
+
         assert.ok('demoTestSyncOne' in results.modules.syncBeforeAndAfter.completed);
         assert.ok(!('demoTestSyncTwo' in results.modules.syncBeforeAndAfter.completed));
 

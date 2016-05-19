@@ -223,6 +223,18 @@ module.exports = {
 
       assert.equal(runner.settings.test_workers, false);
       assert.equal(runner.parallelModeWorkers(), false);
+    },
+
+    testParallelExecutionWithWorkersAndSingleSourceFile: function () {
+      var CliRunner = common.require('runner/cli/clirunner.js');
+      var runner = new CliRunner({
+        config: path.join(__dirname, '../../../extra/parallelism.json'),
+        '_' : [path.join(__dirname, '../../../sampletests/async/sample.js')]
+      });
+
+      runner.setup();
+
+      assert.equal(runner.singleSourceFile(), true);
     }
   }
 };
