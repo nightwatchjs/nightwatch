@@ -65,6 +65,11 @@ module.exports = {
       assert.equal(page.elements.otherElement.selector, '#otherElement');
     },
 
+    testPageObjectSubDirectory : function() {
+      assert.ok('addl' in this.client.api.page);
+      assert.ok('simplePageObject' in this.client.api.page.addl);
+    },
+
     testPageObjectAssertionsLoaded: function () {
       var page = this.client.api.page.simplePageObj();
 
