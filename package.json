@@ -50,11 +50,10 @@
   "man": "",
   "scripts": {
     "jshint": "./node_modules/.bin/jshint --verbose --config .jshintrc lib/",
-    "coverage": "jscoverage lib --exclude *.ejs,*.json && NIGHTWATCH_COV=1 node ./tests/run_tests.js lcov > ./lib-cov/lcov.info",
     "mocha-coverage": "jscoverage lib --exclude *.ejs,*.json && NIGHTWATCH_COV=1 ./node_modules/.bin/mocha test/src --reporter html-cov > coverage.html",
     "mocha-lcov-coverage": "jscoverage lib --exclude *.ejs,*.json && NIGHTWATCH_COV=1 ./node_modules/.bin/mocha test/src --reporter mocha-lcov-reporter > lib-cov/coverage.lcov",
     "test": "./node_modules/.bin/mocha test/src",
-    "unittests": "./bin/nightwatch -c test/nightwatch.json"
+    "unit-tests": "./bin/nightwatch -c test/nightwatch.json"
   },
   "files": [
     "bin",
