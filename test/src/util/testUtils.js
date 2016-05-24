@@ -5,7 +5,7 @@ var Utils = common.require('util/utils.js');
 module.exports = {
   'test Utils' : {
     testFormatElapsedTime : function() {
-
+      
       var resultMs = Utils.formatElapsedTime(999);
       assert.equal(resultMs, '999ms');
 
@@ -62,4 +62,3 @@ module.exports = {
     }
   }
 };
-

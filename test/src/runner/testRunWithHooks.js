@@ -174,7 +174,7 @@ module.exports = {
         persist_globals : true,
         globals: globals
       }, {
-        output_folder: false,
+        output_folder: false, 
         start_session: true
       }, function (err, results) {
         if (err) {

@@ -129,8 +129,38 @@ module.exports = {
       runner.run().catch(function (err) {
         done(err);
       });
+    },
+
+    'test async unit test with timeout error': function (done) {
+      var testsPath = path.join(__dirname, '../../asynchookstests/unittest-async-timeout.js');
+      var globals = {
+        calls : 0,
+        asyncHookTimeout: 10
+      };
+
+      process.on('uncaughtException', function (err) {
+        assert.ok(err instanceof Error);
+        assert.equal(err.message, 'done() callback timeout of 10 ms was reached while executing "demoTest". ' +
+          'Make sure to call the done() callback when the operation finishes.');
+
+        done();
+      });
+
+      var runner = new Runner([testsPath], {
+        seleniumPort: 10195,
+        silent: true,
+        output: false,
+        persist_globals : true,
+        globals: globals,
+        compatible_testcase_support : true
+      }, {
+        output_folder : false,
+        start_session : false
+      });
+
+      runner.run().catch(function(err) {
+        done(err);
+      });
     }
   }
-
-
 };
