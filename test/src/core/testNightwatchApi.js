@@ -46,6 +46,9 @@ module.exports = MochaTest.add('test Nightwatch Api', {
     assert.ok('other' in client.api, 'Commands under the subfolder were not loaded properly');
     assert.ok('otherCommand' in client.api.other);
 
+    assert.ok('underscored_command' in client.api, 'Test if custom command original name was preserved');
+    assert.ok('underscoredCommand' in client.api, 'Test if command name was camelized');
+
     client.api.customCommandConstructor();
     var queue = client.queue.run();
     var command = queue.currentNode;
@@ -91,6 +94,10 @@ module.exports = MochaTest.add('test Nightwatch Api', {
 
     assert.ok('customAssertion' in client.api.assert);
     assert.ok('customAssertion' in client.api.verify);
+
+    assert.ok('underscored_assertion' in client.api.assert);
+    assert.ok('underscoredAssertion' in client.api.assert);
+
 
     client.api.assert.customAssertion(true);
     client.queue.run();
