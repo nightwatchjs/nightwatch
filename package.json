@@ -1,7 +1,7 @@
 {
   "name": "nightwatch",
   "description": "A node.js bindings implementation for selenium 2.0/webdriver",
-  "version": "0.8.18-custom.1",
+  "version": "0.9.0-custom",
   "author": {
     "name": "Andrei Rusu",
     "email": "andrei@nightwatchjs.org"
@@ -21,7 +21,7 @@
     "lodash.defaultsdeep": "^4.3.2",
     "minimatch": "~0.2.14",
     "mkpath": ">=0.1.0",
-    "mocha-nightwatch": "2.2.7",
+    "mocha-nightwatch": "2.2.9",
     "optimist": ">=0.3.5",
     "proxy-agent": ">=2.0.0",
     "q": "^1.1.2"
@@ -37,6 +37,8 @@
     "jscoverage": "latest",
     "jshint": "~2.4.4",
     "jsonlint": "~1.6.0",
+    "mocha": "^2.3.4",
+    "mocha-lcov-reporter": "^1.2.0",
     "mock-spawn": "^0.2.1",
     "mockery": "~1.4.0",
     "nock": "~0.45.0",
@@ -48,8 +50,10 @@
   "man": "",
   "scripts": {
     "jshint": "./node_modules/.bin/jshint --verbose --config .jshintrc lib/",
-    "coverage": "jscoverage lib --exclude *.ejs,*.json && NIGHTWATCH_COV=1 node ./tests/run_tests.js lcov > ./lib-cov/lcov.info",
-    "test": "node ./tests/run_tests.js"
+    "mocha-coverage": "jscoverage lib --exclude *.ejs,*.json && NIGHTWATCH_COV=1 ./node_modules/.bin/mocha test/src --reporter html-cov > coverage.html",
+    "mocha-lcov-coverage": "jscoverage lib --exclude *.ejs,*.json && NIGHTWATCH_COV=1 ./node_modules/.bin/mocha test/src --reporter mocha-lcov-reporter > lib-cov/coverage.lcov",
+    "test": "./node_modules/.bin/mocha test/src",
+    "unit-tests": "./bin/nightwatch -c test/nightwatch.json"
   },
   "files": [
     "bin",

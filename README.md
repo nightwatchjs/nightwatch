@@ -22,10 +22,20 @@ $ npm install
 ```
 
 ### Run tests
-The tests for nightwatch are written using [nodeunit](https://github.com/caolan/nodeunit) as the test framework. To run the nodeunit tests do:
+The tests for Nightwatch are written using [Mocha](http://mochajs.org/) exports interface but they can also be run with Nightwatch itself.
+
+To run the unit tests using mocha, do:
+
 ```sh
 $ npm test
 ```
+
+To run the unit tests using Nightwatch, do:
+
+```sh
+$ npm run unit-tests
+```
+
 
 ### Discuss
 The [Mailing List/Google Group](https://groups.google.com/forum/#!forum/nightwatchjs) is the most appropriate tool for Nightwatch related discussions. In addition, there is a [StackOverflow Nightwatch.js tag](http://stackoverflow.com/questions/tagged/nightwatch.js) at your disposal and [Twitter](https://twitter.com/nightwatchjs).
