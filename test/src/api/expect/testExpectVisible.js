@@ -157,15 +157,15 @@ module.exports = {
     },
 
     'to not be visible with waitFor [FAILED]': function (done) {
-      this.client.api.globals.waitForConditionPollInterval = 10;
+      this.client.api.globals.waitForConditionPollInterval = 15;
 
-      Nocks.elementFound().visible().visible().visible();
+      Nocks.elementFound().visible().visible();
 
       var expect = this.client.api.expect.element('#weblogin').to.not.be.visible.before(25);
       this.client.once('nightwatch:finished', function (results, errors) {
         assert.equal(expect.assertion.waitForMs, 25);
-        assert.equal(expect.assertion.passed, false);
         assert.equal(expect.assertion.message, 'Expected element <#weblogin> to not be visible in 25ms');
+        assert.equal(expect.assertion.passed, false);
         done();
       });
 
