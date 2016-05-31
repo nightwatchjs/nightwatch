@@ -9,7 +9,12 @@ module.exports = {
   elements: {
     loginAsString: '#weblogin',
     loginCss: { selector: '#weblogin' },
-    loginXpath: { selector: '//weblogin', locateStrategy: 'xpath' }
+    loginXpath: { selector: '//weblogin', locateStrategy: 'xpath' },
+    loginDynamicNoArgsInline: function(){return '#weblogin';},
+    loginDynamicSingleArgInline: function(element){return '' + element;},
+    loginDynamicMultiArgsInline: function(arg1, arg2){return arg1 + arg2;},
+    loginDynamicArgsCss: {selector: function(element){return '' + element;}},
+    loginDynamicArgsXpath: {selector: function(element){return '' + element;}, locateStrategy:'xpath'}
   },
   sections: {
     signUp: {

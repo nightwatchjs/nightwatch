@@ -134,6 +134,93 @@ module.exports = {
       assert.equal(typeof page.section.propTest.props, 'object', 'props function should be called and set page.props equals its returned object');
       assert.ok(page.section.propTest.props.defaults.propTest, 'props function should be called with page context');
       assert.equal(page.section.propTest.props.defaults.propTest, '#propTest Value' );
+    },
+
+    testDynamicPageObjectInline: function(done){
+      MockServer.addMock({
+        'url' : '/wd/hub/session/1352110219202/element/0/click',
+        'response' : JSON.stringify({
+          sessionId: '1352110219202',
+          status:0
+        })
+      }, true);
+      MockServer.addMock({
+        'url' : '/wd/hub/session/1352110219202/element/0/click',
+        'response' : JSON.stringify({
+          sessionId: '1352110219202',
+          status:0
+        })
+      }, true);
+      var page = this.client.api.page.simplePageObj();
+      page.click('@loginDynamicSingleArgInline<#weblogin>', function callback(result){
+        assert.equal(result.status, 0);
+      }).click('@loginDynamicMultiArgsInline<#web,login>', function callback(result){
+        assert.equal(result.status, 0);
+        done();
+      });
+
+      this.client.start();
+    },
+
+    testDynamicPageObjectNotInline: function(done){
+      MockServer.addMock({
+        'url' : '/wd/hub/session/1352110219202/element/0/click',
+        'response' : JSON.stringify({
+          sessionId: '1352110219202',
+          status:0
+        })
+      }, true);
+      MockServer.addMock({
+        'url' : '/wd/hub/session/1352110219202/element/0/click',
+        'response' : JSON.stringify({
+          sessionId: '1352110219202',
+          status:0
+        })
+      }, true);
+      var page = this.client.api.page.simplePageObj();
+      page.click('@loginDynamicArgsCss<#weblogin>', function callback(result){
+        assert.equal(result.status, 0);
+      }).click('@loginDynamicArgsXpath<//weblogin>', function callback(result){
+        assert.equal(result.status, 0);
+        done();
+      });
+
+      this.client.start();
+    },
+
+    testDynamicPageObjectNoArgs: function(done){
+      MockServer.addMock({
+        'url' : '/wd/hub/session/1352110219202/element/0/click',
+        'response' : JSON.stringify({
+          sessionId: '1352110219202',
+          status:0
+        })
+      }, true);
+      var page = this.client.api.page.simplePageObj();
+      page.click('@loginDynamicNoArgsInline<>', function callback(result){
+        assert.equal(result.status, 0);
+        done();
+      });
+
+      this.client.start();
+    },
+    testDynamicPageObjectErrorUsage: function(done){
+      MockServer.addMock({
+        'url' : '/wd/hub/session/1352110219202/element/0/click',
+        'response' : JSON.stringify({
+          sessionId: '1352110219202',
+          status:0
+        })
+      }, true);
+      var page = this.client.api.page.simplePageObj();
+      this.client.start();
+      assert.throws(
+        function(){
+          page.click('@loginCss<>');
+        }, 'should throw exception when called as dynamic page object but with no function type selector.'
+      );
+      done();
     }
+    
   }
 };
