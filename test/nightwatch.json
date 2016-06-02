@@ -1,0 +1,15 @@
+{
+  "src_folders" : ["./test/src"],
+  "test_workers" : false,
+  "selenium" : {
+    "start_process" : false,
+    "start_session" : false
+  },
+
+  "test_settings" : {
+    "default" : {
+      "filter" : "**/*.js",
+      "compatible_testcase_support" : true
+    }
+  }
+}
