@@ -157,15 +157,31 @@ module.exports = {
     },
 
     'to not be visible with waitFor [FAILED]': function (done) {
-      this.client.api.globals.waitForConditionPollInterval = 50;
+      this.client.api.globals.waitForConditionPollInterval = 15;
 
-      Nocks.elementFound().visible();
+      Nocks.elementFound().visible().visible();
 
-      var expect = this.client.api.expect.element('#weblogin').to.not.be.visible.before(120);
+      var expect = this.client.api.expect.element('#weblogin').to.not.be.visible.before(25);
       this.client.once('nightwatch:finished', function (results, errors) {
-        assert.equal(expect.assertion.waitForMs, 120);
+        assert.equal(expect.assertion.waitForMs, 25);
+        assert.equal(expect.assertion.message, 'Expected element <#weblogin> to not be visible in 25ms');
         assert.equal(expect.assertion.passed, false);
-        assert.equal(expect.assertion.message, 'Expected element <#weblogin> to not be visible in 120ms');
+        done();
+      });
+
+      this.client.start();
+    },
+
+    'to not be visible with waitFor [PASSED] - element not visible on retry': function (done) {
+      this.client.api.globals.waitForConditionPollInterval = 10;
+
+      Nocks.elementFound().visible().notVisible().notVisible();
+
+      var expect = this.client.api.expect.element('#weblogin').to.not.be.visible.before(30);
+      this.client.once('nightwatch:finished', function (results, errors) {
+        assert.equal(expect.assertion.waitForMs, 30);
+        assert.equal(expect.assertion.message.indexOf('Expected element <#weblogin> to not be visible in 30ms'), 0);
+        assert.equal(expect.assertion.passed, true, 'Assertion has passed');
         done();
       });
 
