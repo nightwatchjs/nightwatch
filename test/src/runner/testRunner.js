@@ -30,6 +30,22 @@ module.exports = {
       runner.run();
     },
 
+    testRunNoSrcFoldersArgument : function(done) {
+      var runner = new Runner(undefined, {}, {
+        output_folder : false
+      });
+      try {
+        runner.run().catch(function(err) {
+          done(err);
+        });
+      } catch (ex) {
+        assert.ok(ex instanceof Error);
+        assert.equal(ex.message, 'No source folder defined. Check configuration.');
+        done();
+      }
+
+    },
+
     testRunSimple: function (done) {
       var testsPath = path.join(__dirname, '../../sampletests/simple');
       var globals = {
