@@ -3,13 +3,14 @@
  */
 var Logger = require('../lib/util/logger.js');
 var Nightwatch = require('../lib/index.js');
+var Utils = require('../lib/util/utils.js');
 
 try {
   Nightwatch.cli(function(argv) {
+    argv._source = argv['_'].slice(0);
     Nightwatch.runner(argv);
   });
 } catch (ex) {
-  Logger.error('There was an error while starting the test runner:\n\n');
-  process.stderr.write(ex.stack + '\n');
+  Utils.showStackTraceWithHeadline('There was an error while starting the test runner:\n', ex.stack + '\n', true);
   process.exit(2);
 }

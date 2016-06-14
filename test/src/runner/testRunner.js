@@ -43,7 +43,6 @@ module.exports = {
         assert.equal(ex.message, 'No source folder defined. Check configuration.');
         done();
       }
-
     },
 
     testRunSimple: function (done) {

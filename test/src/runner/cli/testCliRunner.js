@@ -246,7 +246,7 @@ module.exports = {
       var runner = new CliRunner({
         config : './custom.json',
         env : 'default',
-        _ : ['test.js']
+        _source : ['test.js']
       }).init();
 
       var testSource = runner.getTestSource();

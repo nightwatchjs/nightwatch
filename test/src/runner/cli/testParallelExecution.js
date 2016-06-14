@@ -42,10 +42,6 @@ module.exports = {
         }
       });
 
-      //mockery.registerMock('../lib/runner/run.js', {
-      //  run: function (source, settings, opts, callback) {
-      //  }
-      //});
       mockery.registerMock('os', {
         cpus: function () {
           return [0, 1];
@@ -229,7 +225,7 @@ module.exports = {
       var CliRunner = common.require('runner/cli/clirunner.js');
       var runner = new CliRunner({
         config: path.join(__dirname, '../../../extra/parallelism.json'),
-        '_' : [path.join(__dirname, '../../../sampletests/async/sample.js')]
+        _source : [path.join(__dirname, '../../../sampletests/async/sample.js')]
       });
 
       runner.setup();
