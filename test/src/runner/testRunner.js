@@ -125,6 +125,84 @@ module.exports = {
       });
     },
 
+    testRunWithJUnitOutputAndFailures : function(done) {
+      var src_folders = [
+        path.join(__dirname, '../../sampletests/withfailures')
+      ];
+
+      var runner = new Runner(src_folders, {
+        seleniumPort : 10195,
+        silent : true,
+        output : false
+      }, {
+        output_folder : 'output',
+        start_session : true,
+        src_folders : src_folders,
+        reporter : 'junit'
+      }, function(err, results) {
+
+        assert.strictEqual(err, null);
+        var fs = require('fs');
+        var sampleReportFile = path.join(__dirname, '../../../output/FIREFOX_TEST_TEST_sample.xml');
+
+        assert.ok(fs.existsSync(sampleReportFile), 'The sample file report file was not created.');
+        fs.readFile(sampleReportFile, function(err, data) {
+          if (err) {
+            done(err);
+            return;
+          }
+          var content = data.toString();
+          assert.ok(content.indexOf('<failure message="Testing if element &lt;#badElement&gt; is present.">') > 0, 'Report contains failure information.')
+          done();
+        });
+      });
+
+      runner.run().catch(function (err) {
+        done(err);
+      });
+    },
+
+    'test run unit tests with junit output and failures' : function(done) {
+      var src_folders = [
+        path.join(__dirname, '../../asynchookstests/unittest-failure')
+      ];
+
+      var runner = new Runner(src_folders, {
+        seleniumPort : 10195,
+        silent : true,
+        output : false
+      }, {
+        output_folder : 'output',
+        start_session : false,
+        src_folders : src_folders,
+        reporter : 'junit'
+      }, function(err, results) {
+
+        assert.strictEqual(err, null);
+        var fs = require('fs');
+        var sampleReportFile = path.join(__dirname, '../../../output/unittest-failure.xml');
+
+        assert.ok(fs.existsSync(sampleReportFile), 'The sample file report file was not created.');
+        fs.readFile(sampleReportFile, function(err, data) {
+          if (err) {
+            done(err);
+            return;
+          }
+          var content = data.toString();
+          try {
+            assert.ok(content.indexOf('<failure message="AssertionError: 1 == 0 - expected &quot;0&quot; but got: &quot;1&quot;">') > 0, 'Report contains failure information.')
+            done();
+          } catch (err) {
+            done(err);
+          }
+        });
+      });
+
+      runner.run().catch(function (err) {
+        done(err);
+      });
+    },
+
     testRunUnitTests : function(done) {
       var testsPath = path.join(__dirname, '../../sampletests/unittests');
 
