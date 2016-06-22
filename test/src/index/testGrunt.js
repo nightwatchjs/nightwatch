@@ -80,6 +80,33 @@ module.exports = {
       Nightwatch.initGrunt(grunt);
     },
 
+    testRunCliTestSource : function(done) {
+      mockery.registerMock('./runner/cli/cli.js', {
+        setup : function() {
+          return this;
+        },
+        init : function() {
+          return {
+            _ : ['nightwatch'],
+            '$0': 'grunt',
+            env: 'default',
+            e: 'default',
+            filter: '',
+            f: '',
+            tag: '',
+            a: ''
+          };
+        }
+      });
+
+      Nightwatch.cli(function(argv) {
+        assert.ok('_' in argv);
+        assert.deepEqual(argv['_'], ['nightwatch']);
+        assert.strictEqual(argv._source, undefined);
+        done();
+      });
+    },
+
     testRunGruntParallelMode : function(done) {
       mockery.registerMock('./runner/cli/cli.js', {
         setup : function() {

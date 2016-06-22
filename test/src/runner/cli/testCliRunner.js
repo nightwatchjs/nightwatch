@@ -246,7 +246,7 @@ module.exports = {
       var runner = new CliRunner({
         config : './custom.json',
         env : 'default',
-        _ : ['test.js']
+        _source : ['test.js']
       }).init();
 
       var testSource = runner.getTestSource();
@@ -274,6 +274,37 @@ module.exports = {
         config : './custom.json',
         env : 'default',
         test : 'demoTest',
+        testcase : 'testCase'
+      }).init();
+
+      runner.getTestSource();
+      assert.equal(runner.argv.testcase, 'testCase');
+    },
+
+    testRunTestsWithTestcaseOptionAndSingleTestSource : function() {
+      mockery.registerMock('fs', {
+        existsSync : function(module) {
+          if (module == './custom.json') {
+            return true;
+          }
+          return false;
+        },
+        statSync : function(file) {
+          if (file == 'demoTest.js') {
+            return {
+              isFile : function() {
+                return true;
+              }
+            };
+          }
+        }
+      });
+
+      var CliRunner = common.require('runner/cli/clirunner.js');
+      var runner = new CliRunner({
+        config : './custom.json',
+        env : 'default',
+        _source : ['demoTest.js'],
         testcase : 'testCase'
       }).init();
 
