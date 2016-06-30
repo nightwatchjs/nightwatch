@@ -59,7 +59,7 @@ module.exports = {
       }, this);
       var client = this.client;
       var section = client.api.page.simplePageObj().section.signUp;
-      section.click('@help', function callback(result) {
+      section.click('@help()', function callback(result) {
         assert.equal(result.status, 0);
       });
 
@@ -72,7 +72,7 @@ module.exports = {
 
     testPageObjectPluralElementRecursion : function(done) {
       var section = this.client.api.page.simplePageObj().section.signUp;
-      section.waitForElementPresent('@help', 1000, true, function callback(result) {
+      section.waitForElementPresent('@help()', 1000, true, function callback(result) {
         assert.equal(result.status, 0);
         assert.equal(result.value.length, 1);
         assert.equal(result.value[0].ELEMENT, '1');

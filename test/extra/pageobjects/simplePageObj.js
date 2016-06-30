@@ -18,7 +18,7 @@ module.exports = {
         getStarted: { selector: '#getStarted' }
       },
       elements: {
-        help: { selector: '#helpBtn' }
+        help: { selector: function() { return '#helpBtn'; } }
       }
     },
     propTest: {
