@@ -43,9 +43,9 @@ module.exports = {
         if (err) {
           throw err;
         }
-        assert.equal(Object.keys(results.modules).length, 2);
+        assert.equal(Object.keys(results.modules).length, 3);
         assert.equal(('demoTagTest' in results.modules.sample.completed), true);
-        assert.equal(('otherDemoTagTest' in results.modules.sampleTags.completed), true);
+        assert.equal(('demoNoSkipTagTest' in results.modules.sampleNoSkipTag.completed), true);
         done();
       });
 
@@ -115,13 +115,18 @@ module.exports = {
 
         },
         tag_filter: ['login'],
-        skiptags: ['other']
+        skiptags: ['skip']
       }, {
         output_folder: false,
         start_session: true
       }, function (err, results) {
-        assert.equal(Object.keys(results.modules).length, 1);
-        assert.ok(('otherDemoTagTest' in results.modules.sampleTags.completed));
+        assert.equal(Object.keys(results.modules).length, 3);
+        assert.equal(results.tests, 3);
+        assert.equal(('demoTagTest' in results.modules.sample.completed), true);
+        assert.equal(('otherDemoTagTest' in results.modules.sampleTags.completed), true);
+        assert.equal(('demoNoSkipTagTest' in results.modules.sampleNoSkipTag.completed), true);
+        assert.equal(('sampleNoTags' in results.modules), false);
+        assert.equal(('sampleSkipTag' in results.modules), false);
         done();
       });
 
