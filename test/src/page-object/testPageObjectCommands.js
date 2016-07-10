@@ -49,6 +49,43 @@ module.exports = {
       this.client.start();
     },
 
+    testPageObjectCallbackContext : function(done) {
+      var api = this.client.api;
+      var page = api.page.simplePageObj();
+
+      page
+        .waitForElementPresent('#weblogin', 1000, true, function callback(result) {
+          assert.equal(this, api, 'page callback context using selector should equal api');
+        })
+        .waitForElementPresent('#weblogin', 1000, true, function callback(result) {
+          assert.equal(this, api, 'page callback context using selector with message should equal api');
+        }, 'Test sample message')
+        .waitForElementPresent('@loginCss', 1000, true, function callback(result) {
+          assert.equal(this, api, 'page callback context using element should equal api');
+        })
+        .waitForElementPresent('@loginCss', 1000, true, function callback(result) {
+          assert.equal(this, api, 'page callback context using element with message should equal api');
+          done();
+        }, 'Test sample message');
+
+      this.client.start();
+    },
+
+    testPageObjectLocateStrategy : function(done) {
+      var client = this.client;
+      var page = client.api.page.simplePageObj();
+
+      assert.equal(client.locateStrategy, 'css selector', 'locateStrategy should default to css selector');
+
+      page
+        .waitForElementPresent('@loginXpath', 1000, true, function callback(result) {
+          assert.equal(client.locateStrategy, 'css selector', 'locateStrategy should restore to previous css selector in callback when using xpath element');
+          done();
+        });
+
+      this.client.start();
+    },
+
     testPageObjectElementRecursion : function(done) {
       MockServer.addMock({
         'url' : '/wd/hub/session/1352110219202/element/1/click',
