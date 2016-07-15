@@ -4,7 +4,7 @@ var Api = common.require('core/api.js');
 
 module.exports = {
   'assert.cssClassPresent' : {
-    'cssClassNotPresent assertion passed' : function(done) {
+    'cssClassPresent assertion passed' : function(done) {
       var assertionFn = common.require('api/assertions/cssClassPresent.js');
       var client = {
         options : {},
@@ -31,7 +31,7 @@ module.exports = {
       m._commandFn('.test_element', 'test-css-class');
     },
 
-    'cssClassNotPresent assertion failed' : function(done) {
+    'cssClassPresent assertion failed' : function(done) {
       var assertionFn = common.require('api/assertions/cssClassPresent.js');
       var client = {
         options : {},
@@ -55,7 +55,7 @@ module.exports = {
       m._commandFn('.test_element', 'test-css-class');
     },
 
-    'cssClassNotPresent assertion not found' : function(done) {
+    'cssClassPresent assertion not found' : function(done) {
       var assertionFn = common.require('api/assertions/cssClassPresent.js');
       var client = {
         options : {},
