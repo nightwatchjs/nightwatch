@@ -393,7 +393,10 @@ module.exports = {
     testGetTestSourceGroup : function() {
       mockery.registerMock('fs', {
         existsSync : function(module) {
-          if (module == './custom.json') {
+          switch (module) {
+          case './custom.json':
+          case './multi_test_paths.json':
+          case 'tests/demoGroup':
             return true;
           }
           return false;
@@ -426,12 +429,38 @@ module.exports = {
 
       testSource = simpleRunner.getTestSource();
       assert.deepEqual(testSource, ['tests']);
+
+      var invalidGroupRunner = new CliRunner({
+        config : './custom.json',
+        env : 'default',
+        group : 'group_doesnotexist'
+      }).init();
+
+      testSource = invalidGroupRunner.getTestSource();
+      assert.deepEqual(testSource, ['tests/group_doesnotexist']);
+
+      var invalidGroupInMultiSrcRunner = new CliRunner({
+        config : './multi_test_paths.json',
+        env : 'default',
+        group : 'group_doesnotexist'
+      }).init();
+
+      testSource = invalidGroupInMultiSrcRunner.getTestSource();
+      assert.deepEqual(testSource, []);
     },
 
     testGetTestSourceMultipleGroups : function() {
       mockery.registerMock('fs', {
         existsSync : function(module) {
-          if (module == './custom.json') {
+          switch (module) {
+          case './custom.json':
+          case './multi_test_paths.json':
+          case 'tests/demoGroup1':
+          case 'tests/demoGroup2':
+          case 'tests1/demoGroup1':
+          case 'tests1/demoGroup2':
+          // no tests2/demoGroup1
+          case 'tests2/demoGroup2':
             return true;
           }
           return false;
@@ -447,6 +476,24 @@ module.exports = {
 
       var testSource = runner.getTestSource();
       assert.deepEqual(testSource, ['tests/demoGroup1', 'tests/demoGroup2']);
+
+      var invalidGroupRunner = new CliRunner({
+        config : './custom.json',
+        env : 'default',
+        group : 'demoGroup1,demoGroup2,group_doesnotexist'
+      }).init();
+
+      testSource = invalidGroupRunner.getTestSource();
+      assert.deepEqual(testSource, ['tests/demoGroup1', 'tests/demoGroup2', 'tests/group_doesnotexist']);
+
+      var stripMissingInMultiRunner = new CliRunner({
+        config : './multi_test_paths.json',
+        env : 'default',
+        group : 'demoGroup1,demoGroup2,group_doesnotexist'
+      }).init();
+
+      testSource = stripMissingInMultiRunner.getTestSource();
+      assert.deepEqual(testSource, ['tests1/demoGroup1', 'tests1/demoGroup2', 'tests2/demoGroup2']);
     },
 
     testParseTestSettingsInvalid : function() {
@@ -748,6 +795,17 @@ module.exports = {
           }
         }
       });
+
+      mockery.registerMock('./multi_test_paths.json', {
+        src_folders : ['tests1', 'tests2'],
+        test_settings : {
+          'default' : {
+            output : false,
+            disable_colors: true
+          }
+        }
+      });
+
       mockery.registerMock('./custom.json', {
         src_folders : ['tests'],
         selenium : {
@@ -807,6 +865,9 @@ module.exports = {
           if (b == './settings.json') {
             return './settings.json';
           }
+          if (b == './multi_test_paths.json') {
+            return './multi_test_paths.json';
+          }
           if (b == './custom.json') {
             return './custom.json';
           }
@@ -823,13 +884,16 @@ module.exports = {
             return 'demoTest';
           }
           if (b == 'demoGroup') {
-            return 'tests/demoGroup';
+            return a + '/demoGroup';
           }
           if (b == 'demoGroup1') {
-            return 'tests/demoGroup1';
+            return a + '/demoGroup1';
           }
           if (b == 'demoGroup2') {
-            return 'tests/demoGroup2';
+            return a + '/demoGroup2';
+          }
+          if (b == 'group_doesnotexist') {
+            return a + '/' + b;
           }
           if (b == './sauce.json') {
             return './sauce.json';
