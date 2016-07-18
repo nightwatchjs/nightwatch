@@ -29,5 +29,27 @@ module.exports = MochaTest.add('isLogAvailable', {
       });
 
     Nightwatch.start();
+  },
+
+  'client.isLogAvailable() failure' : function(done) {
+    var client = Nightwatch.api();
+
+     MockServer.addMock({
+      url : '/wd/hub/session/1352110219202/log/types',
+      method:'GET',
+      response : JSON.stringify({
+        sessionId: '1352110219202',
+        status:0,
+        value : { 'message': 'Session not started or terminated' }
+      })
+    });
+
+    client.isLogAvailable( 'unknown', function callback(result) {
+      assert.equal(typeof result === 'boolean', true);
+      assert.equal(result, false);
+      done();
+    });
+
+    Nightwatch.start();
   }
 });
