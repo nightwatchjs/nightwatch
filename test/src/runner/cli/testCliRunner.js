@@ -253,6 +253,37 @@ module.exports = {
       assert.deepEqual(testSource, ['test.js']);
     },
 
+    testRunTestsWithTestSourceSingleInvalid : function(done) {
+      mockery.registerMock('fs', {
+        existsSync : function(module) {
+          if (module == './custom.json') {
+            return true;
+          }
+          return false;
+        }
+      });
+
+      var invalidTestFile = 'doesnotexist.js';
+      var errorMessage = 'There was a problem reading the test file: ' + invalidTestFile;
+
+      mockery.registerMock('./errorhandler.js', {
+        handle : function(err) {
+          assert.equal(err.message, errorMessage);
+          done();
+        }
+      });
+
+      var CliRunner = common.require('runner/cli/clirunner.js');
+      var runner = new CliRunner({
+        config : './custom.json',
+        env : 'default',
+        test: invalidTestFile
+      }).init();
+
+      runner.manageSelenium = true;
+      runner.runTests();
+    },
+
     testRunTestsWithTestcaseOption : function() {
       mockery.registerMock('fs', {
         existsSync : function(module) {
