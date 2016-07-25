@@ -171,6 +171,37 @@ module.exports = {
       assert.equal(typeof page.section.propTest.props, 'object', 'props function should be called and set page.props equals its returned object');
       assert.ok(page.section.propTest.props.defaults.propTest, 'props function should be called with page context');
       assert.equal(page.section.propTest.props.defaults.propTest, '#propTest Value' );
+    },
+
+    testPageObjectWithUrlChanged : function(done) {
+      var page = this.client.api.page.simplePageObj();
+      var urlsArr = [];
+      page.api.url = function(url) {
+        urlsArr.push(url);
+      };
+
+      page.navigate();
+
+      page.api.perform(function() {
+        page.url = function() {
+          return 'http://nightwatchjs.org'
+        }
+      });
+
+      page.api.perform(function() {
+        page.navigate();
+      });
+
+      page.api.perform(function() {
+        try {
+          assert.deepEqual(urlsArr, ['http://localhost.com', 'http://nightwatchjs.org']);
+          done();
+        } catch (err) {
+          done(err);
+        }
+      });
+
+      this.client.start();
     }
   }
 };
