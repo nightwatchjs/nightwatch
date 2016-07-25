@@ -34,19 +34,19 @@ module.exports = {
 
       assert.equal(typeof page.api, 'object');
       assert.equal(typeof page.client, 'object');
-      assert.equal(typeof page.elements, 'object');
+      assert.equal(typeof page.settings.elements, 'object');
       assert.equal(page.name, 'simplePageObj');
-      assert.equal(page.url, 'http://localhost.com');
+      assert.equal(page.settings.url, 'http://localhost.com');
       assert.equal(page.testCommand(), page);
 
-      assert.ok('loginCss' in page.elements);
-      assert.ok('loginXpath' in page.elements);
+      assert.ok('loginCss' in page.settings.elements);
+      assert.ok('loginXpath' in page.settings.elements);
       assert.ok('signUp' in page.section);
 
-      assert.ok('help' in page.section.signUp.elements);
+      assert.ok('help' in page.section.signUp.settings.elements);
       assert.ok('getStarted' in page.section.signUp.section);
 
-      var elements = page.elements;
+      var elements = page.settings.elements;
       assert.equal(elements.loginCss.selector, '#weblogin');
       assert.equal(elements.loginCss.locateStrategy, 'css selector');
       assert.equal(elements.loginXpath.selector, '//weblogin');
@@ -59,10 +59,10 @@ module.exports = {
       var page = this.client.api.page.pageObjElementsArray();
       assert.ok('elements' in page);
 
-      assert.ok('someElement' in page.elements);
-      assert.ok('otherElement' in page.elements);
-      assert.equal(page.elements.someElement.selector, '#element');
-      assert.equal(page.elements.otherElement.selector, '#otherElement');
+      assert.ok('someElement' in page.settings.elements);
+      assert.ok('otherElement' in page.settings.elements);
+      assert.equal(page.settings.elements.someElement.selector, '#element');
+      assert.equal(page.settings.elements.otherElement.selector, '#otherElement');
     },
 
     testPageObjectSubDirectory : function() {
@@ -97,8 +97,8 @@ module.exports = {
 
       assert.ok('click' in page);
       assert.ok('waitForElementPresent' in page);
-      assert.ok(!('end' in page));
-      assert.ok(!('switchWindow' in page));
+      assert.ok(('end' in page));
+      assert.ok(('switchWindow' in page));
     }
   }
 };
