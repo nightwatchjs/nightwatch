@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="1"
+            tests="1">
+
+  <testsuite name="unittest-failure"
+    errors="0" failures="1" hostname="" id="" package="unittest-failure" skipped="0"
+    tests="1" time="0.001000" timestamp="Wed, 27 Jul 2016 11:02:58 GMT">
+  
+    <testcase name="demoTest" time="0.001000" assertions="0"><failure message="AssertionError: 1 == 0 - expected &quot;0&quot; but got: &quot;1&quot;">    at Object.module.exports.demoTest (/Users/romuald/Documents/devserver/workspace/nightwatch/test/asynchookstests/unittest-failure/unittest-failure.js:5:12)
+    at Object.&lt;anonymous&gt; (/Users/romuald/Documents/devserver/workspace/nightwatch/lib/util/utils.js:34:8)
+    at Module.callAsync (/Users/romuald/Documents/devserver/workspace/nightwatch/lib/runner/module.js:75:18)
+    at /Users/romuald/Documents/devserver/workspace/nightwatch/lib/runner/testcase.js:77:43
+    at _combinedTickCallback (internal/process/next_tick.js:67:7)
+    at process._tickCallback (internal/process/next_tick.js:98:9)</failure>
+    </testcase>
+  
+  
+  </testsuite>
+</testsuites>

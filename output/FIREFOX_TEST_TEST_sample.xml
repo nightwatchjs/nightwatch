@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="1"
+            tests="2">
+
+  <testsuite name="sample"
+    errors="0" failures="1" hostname="" id="" package="sample" skipped="1"
+    tests="2" time="0.008000" timestamp="Wed, 27 Jul 2016 11:02:58 GMT">
+  
+    <testcase name="demoTest" time="0.008000" assertions="2">
+
+      <failure message="Testing if element &lt;#badElement&gt; is present.">    at Object.module.exports.demoTest (/Users/romuald/Documents/devserver/workspace/nightwatch/test/sampletests/withfailures/sample.js:15:15)
+    at Module.call (/Users/romuald/Documents/devserver/workspace/nightwatch/lib/runner/module.js:62:34)
+    at /Users/romuald/Documents/devserver/workspace/nightwatch/lib/runner/testcase.js:70:29
+    at _combinedTickCallback (internal/process/next_tick.js:67:7)
+    at process._tickCallback (internal/process/next_tick.js:98:9)</failure>
+
+    
+    </testcase>
+  
+  
+    
+    <testcase
+      name="demoTest2">
+      <skipped />
+    </testcase>
+    
+  
+  </testsuite>
+</testsuites>
