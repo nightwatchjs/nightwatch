@@ -135,9 +135,13 @@ module.exports = {
           return false;
         },
         statSync : function(file) {
-          if (file == 'demoTest.js') {
+          if (file == 'demoTest') {
             statSyncCalled = true;
-            return true;
+            return {
+              isFile : function() {
+                return true;
+              }
+            };
           }
           throw new Error('Start error.');
         }
@@ -169,9 +173,14 @@ module.exports = {
           return false;
         },
         statSync : function(file) {
-          if (file == ABSOLUTE_SRC_PATH) {
+          console.log('statSync', file)
+          if (file == ABSOLUTE_PATH) {
             statSyncCalled = true;
-            return true;
+            return {
+              isFile : function() {
+                return true;
+              }
+            };
           }
           throw new Error('Start error.');
         }
@@ -203,9 +212,13 @@ module.exports = {
           return false;
         },
         statSync : function(file) {
-          if (file == TEST_SRC_PATH) {
+          if (file == RELATIVE_PATH) {
             statSyncCalled = true;
-            return true;
+            return {
+              isFile : function() {
+                return true;
+              }
+            };
           }
           throw new Error('Start error.');
         }
@@ -250,26 +263,24 @@ module.exports = {
       }).init();
 
       var testSource = runner.getTestSource();
-      assert.deepEqual(testSource, ['test.js']);
+      assert.deepEqual(testSource, 'test.js');
     },
 
     testRunTestsWithTestSourceSingleInvalid : function(done) {
+      var invalidTestFile = 'doesnotexist.js';
+      var errorMessage = 'ENOENT: no such file or directory, stat \'' + invalidTestFile + '\'';
       mockery.registerMock('fs', {
         existsSync : function(module) {
           if (module == './custom.json') {
             return true;
           }
           return false;
-        }
-      });
-
-      var invalidTestFile = 'doesnotexist.js';
-      var errorMessage = 'There was a problem reading the test file: ' + invalidTestFile;
-
-      mockery.registerMock('./errorhandler.js', {
-        handle : function(err) {
-          assert.equal(err.message, errorMessage);
-          done();
+        },
+        statSync : function(module) {
+          if (module == invalidTestFile) {
+            throw new Error(errorMessage);
+          }
+          throw new Error('Start error.');
         }
       });
 
@@ -278,10 +289,16 @@ module.exports = {
         config : './custom.json',
         env : 'default',
         test: invalidTestFile
-      }).init();
+      });
 
       runner.manageSelenium = true;
-      runner.runTests();
+
+      try {
+        runner.init();
+      } catch (err) {
+        assert.equal(err.message, errorMessage);
+        done();
+      }
     },
 
     testRunTestsWithTestcaseOption : function() {
@@ -293,8 +310,12 @@ module.exports = {
           return false;
         },
         statSync : function(file) {
-          if (file == 'demoTest.js') {
-            return true;
+          if (file == 'demoTest') {
+            return {
+              isFile : function() {
+                return true;
+              }
+            };
           }
           throw new Error('Start error.');
         }
