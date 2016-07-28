@@ -2,6 +2,7 @@
   "src_folders" : ["./examples/tests"],
   "output_folder" : "./examples/reports",
   "custom_commands_path" : "./examples/custom-commands",
+  "page_objects_path" : "./examples/pages",
   "custom_assertions_path" : "",
   "globals_path" : "",
   "live_output" : false,
