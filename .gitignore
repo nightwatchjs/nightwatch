@@ -9,6 +9,7 @@ coverage.html
 selenium-debug.log
 phantomjsdriver.log
 tests_output
+output
 *~
 \#*
 \.#*
