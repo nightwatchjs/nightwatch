@@ -9,6 +9,7 @@ module.exports = {
   elements: {
     loginAsString: '#weblogin',
     loginCss: { selector: '#weblogin' },
+    loginIndexed: { selector: '#weblogin', index: 1 },
     loginXpath: { selector: '//weblogin', locateStrategy: 'xpath' }
   },
   sections: {
