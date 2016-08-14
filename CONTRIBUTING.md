@@ -2,18 +2,22 @@
 
 Contributions to Nightwatch are always welcome but please try to follow these guidelines when sending in something as it will help addressing the issue quicker and more smoothly.
 
-## Submit an issue
-If you are filing a bug, regression issue or what it appears to be strange behaviour this is what you must keep in mind:
+__Please do not ask for assistance with writing your tests in the Issues list.__ Use the [Mailing List](https://groups.google.com/forum/#!forum/nightwatchjs) or [StackOverflow](http://stackoverflow.com/questions/tagged/nightwatch.js) to ask questions and seek help. Usually, assistance requests posted in the Issues list are closed right away.
 
-1. Please do not ask for support or questions in the __Issues__ list. The [mailing list](https://groups.google.com/forum/#!forum/nightwatchjs) is a much better place for discussions and it helps keeping things separate 
-2. Search for a similar issue here: https://github.com/nightwatchjs/nightwatch/search?type=Issues and add your scenario there and anything else which you think will help with fixing it
-3. Please do not repport issues you have with Selenium or the individual browser drivers that cannot or should not be solved in Nightwatch
-4. When submitting a new issue please include a sample test (for complex scenarios) which would reproduce the problem you're experiencing. The test should be against a public url
-5. Please write a meaningful  title that would clearly and concisely explain the problem. 
+## Submit an issue
+
+Before submitting a new issues, try searching for a similar one here: https://github.com/nightwatchjs/nightwatch/search?type=Issues and add your scenario there and anything else which you think will help with fixing it;
+ 
+If you are filing a bug, regression issue or what it appears to be strange behaviour, please follow this steps in writing your report:
+
+1. Please write a meaningful  title that would clearly and concisely explain the problem. 
   For instance:
-  - __not good__: "Issue with tags"
+  - __not helpful__: "Issue with tags"
   - __much better__: "Tags don't work when combined with --skiptags option in some cases"
-6. Also include: Nightwatch version, Node.js version, OS version and Selenium server version (including any driver version if applicable)
+2. Include a sample test (for complex scenarios) which would reproduce the problem you're experiencing. The test should be against a public url;
+3. Include a verbose output, if possible (run nightwatch with `--verbose` argument);
+4. Also include: Nightwatch version, Node.js version, OS version and Selenium server version (including any driver version if applicable);
+5. Please do not report issues you have with Selenium or the individual browser drivers that cannot or should not be solved in Nightwatch
 
 ## Requesting a feature
 Feature requests are welcome. 
