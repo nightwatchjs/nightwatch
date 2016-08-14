@@ -14,7 +14,7 @@ If you are filing a bug, regression issue or what it appears to be strange behav
   For instance:
   - __not helpful__: "Issue with tags"
   - __much better__: "Tags don't work when combined with --skiptags option in some cases"
-2. Include a sample test (for complex scenarios) which would reproduce the problem you're experiencing. The test should be against a public url;
+2. Include a sample test (for complex scenarios) which would reproduce the problem you're experiencing. The test should be against a public url. The test and other info should be posted inline, attachments will not be downloded;
 3. Include a verbose output, if possible (run nightwatch with `--verbose` argument);
 4. Also include: Nightwatch version, Node.js version, OS version and Selenium server version (including any driver version if applicable);
 5. Please do not report issues you have with Selenium or the individual browser drivers that cannot or should not be solved in Nightwatch
