@@ -289,6 +289,37 @@ module.exports = {
       client.endSessionOnFail(false);
       eq(client.endSessionOnFail(), false);
       eq(client.options.end_session_on_fail, false);
+    },
+
+    'test session response with status success and no sessionId': function (done) {
+      MockServer.addMock({
+        url : '/wd/hub/session',
+
+        postdata : JSON.stringify({
+          desiredCapabilities: {
+            browserName : 'chrome',
+            javascriptEnabled: true,
+            acceptSslCerts:true,
+            platform:'ANY'
+          }
+        }),
+        response : JSON.stringify({value: { message: 'Could not find device : iPhone 6' }}),
+        statusCode : 200,
+        method: 'POST'
+      }, true);
+
+      var client = Nightwatch.createClient({
+        desiredCapabilities: {
+          browserName: 'chrome'
+        }
+      });
+
+      client.on('error', function (data) {
+        assert.deepEqual(data, {value: { message: 'Could not find device : iPhone 6' }});
+        done();
+      });
+
+      client.startSession();
     }
   }
 };
