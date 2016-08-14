@@ -2,7 +2,7 @@
 
 Contributions to Nightwatch are always welcome but please try to follow these guidelines when sending in something as it will help addressing the issue quicker and more smoothly.
 
-__Please do not ask for assistance with writing your tests in the Issues list.__ Use the [Mailing List](https://groups.google.com/forum/#!forum/nightwatchjs) or [StackOverflow](http://stackoverflow.com/questions/tagged/nightwatch.js) to ask questions and seek help. Usually, assistance requests posted in the Issues list are closed right away.
+__Please do not ask for assistance in the Issues list.__ Use the [Mailing List](https://groups.google.com/forum/#!forum/nightwatchjs) or [StackOverflow](http://stackoverflow.com/questions/tagged/nightwatch.js) to ask questions and seek help. Usually, assistance requests posted in the Issues list are closed right away.
 
 ## Submit an issue
 
