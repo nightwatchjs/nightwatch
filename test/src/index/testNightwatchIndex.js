@@ -294,28 +294,30 @@ module.exports = {
     'test session response with status success and no sessionId': function (done) {
       MockServer.addMock({
         url : '/wd/hub/session',
-
         postdata : JSON.stringify({
           desiredCapabilities: {
-            browserName : 'chrome',
+            browserName : 'safari',
             javascriptEnabled: true,
             acceptSslCerts:true,
             platform:'ANY'
           }
         }),
-        response : JSON.stringify({value: { message: 'Could not find device : iPhone 6' }}),
+        response : '{"value":{"message":"Could not find device : iPhone 6"}}',
         statusCode : 200,
         method: 'POST'
       }, true);
 
       var client = Nightwatch.createClient({
         desiredCapabilities: {
-          browserName: 'chrome'
+          browserName: 'safari'
         }
       });
 
       client.on('error', function (data) {
-        assert.deepEqual(data, {value: { message: 'Could not find device : iPhone 6' }});
+        assert.equal(typeof data, 'object');
+        assert.ok('value' in data);
+        assert.ok('message' in data.value);
+        assert.equal(data.value.message, 'Could not find device : iPhone 6');
         done();
       });
 

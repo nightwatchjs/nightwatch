@@ -173,7 +173,6 @@ module.exports = {
           return false;
         },
         statSync : function(file) {
-          console.log('statSync', file)
           if (file == ABSOLUTE_PATH) {
             statSyncCalled = true;
             return {
