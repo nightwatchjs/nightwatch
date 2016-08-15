@@ -4,6 +4,12 @@ var Nightwatch = require('../../../lib/nightwatch.js');
 var MochaTest = require('../../../lib/mochatest.js');
 
 module.exports = MochaTest.add('isLogAvailable', {
+  afterEach : function() {
+    MockServer.removeMock({
+      url : '/wd/hub/session/1352110219202/log/types',
+      method: 'GET'
+    });
+  },
 
   'client.isLogAvailable()' : function(done) {
     var client = Nightwatch.api();
@@ -45,6 +51,10 @@ module.exports = MochaTest.add('isLogAvailable', {
     });
 
     client.isLogAvailable( 'unknown', function callback(result) {
+      assert.equal(typeof result === 'boolean', true);
+      assert.equal(result, false);
+    })
+    .isLogAvailable( 'browser', function callback(result) {
       assert.equal(typeof result === 'boolean', true);
       assert.equal(result, false);
       done();
