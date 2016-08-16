@@ -22,7 +22,7 @@ $ npm install
 ```
 
 ### Run tests
-The tests for Nightwatch are written using [Mocha](http://mochajs.org/) exports interface but they can also be run with Nightwatch itself.
+The tests for Nightwatch are written using [Mocha](http://mochajs.org/) exports interface so they can also be run with Nightwatch itself.
 
 To run the unit tests using mocha, do:
 
@@ -36,6 +36,12 @@ To run the unit tests using Nightwatch, do:
 $ npm run unit-tests
 ```
 
+To check test coverage, run the command:
+
+```sh
+$ npm run mocha-coverage
+```
+and then open the generate file _coverage.html_ in your browser.
 
 ### Discuss
 The [Mailing List/Google Group](https://groups.google.com/forum/#!forum/nightwatchjs) is the most appropriate tool for Nightwatch related discussions. In addition, there is a [StackOverflow Nightwatch.js tag](http://stackoverflow.com/questions/tagged/nightwatch.js) at your disposal and [Twitter](https://twitter.com/nightwatchjs).
