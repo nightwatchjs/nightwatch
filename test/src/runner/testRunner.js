@@ -1,4 +1,5 @@
 var path = require('path');
+var fs = require('fs');
 var assert = require('assert');
 var common = require('../../common.js');
 var CommandGlobals = require('../../lib/globals/commands.js');
@@ -104,15 +105,14 @@ module.exports = {
           { name: '', module: 'tags/sampleTags', group : 'tags' }
         ]);
 
-        var fs = require('fs');
         fs.readdir(src_folders[0], function(err, list) {
           try {
             assert.deepEqual(list, ['simple', 'tags'], 'The subfolders have been created.');
             var simpleReportFile = 'output/simple/FIREFOX_TEST_TEST_sample.xml';
             var tagsReportFile = 'output/tags/FIREFOX_TEST_TEST_sampleTags.xml';
 
-            assert.ok(fs.existsSync(simpleReportFile), 'The simple report file was not created.');
-            assert.ok(fs.existsSync(tagsReportFile), 'The tags report file was not created.');
+            assert.ok(fileExistsSync(simpleReportFile), 'The simple report file was not created.');
+            assert.ok(fileExistsSync(tagsReportFile), 'The tags report file was not created.');
             done();
           } catch (err) {
             done(err);
@@ -142,10 +142,9 @@ module.exports = {
       }, function(err, results) {
 
         assert.strictEqual(err, null);
-        var fs = require('fs');
         var sampleReportFile = path.join(__dirname, '../../../output/FIREFOX_TEST_TEST_sample.xml');
 
-        assert.ok(fs.existsSync(sampleReportFile), 'The sample file report file was not created.');
+        assert.ok(fileExistsSync(sampleReportFile), 'The sample file report file was not created.');
         fs.readFile(sampleReportFile, function(err, data) {
           if (err) {
             done(err);
@@ -179,10 +178,9 @@ module.exports = {
       }, function(err, results) {
 
         assert.strictEqual(err, null);
-        var fs = require('fs');
         var sampleReportFile = path.join(__dirname, '../../../output/unittest-failure.xml');
 
-        assert.ok(fs.existsSync(sampleReportFile), 'The sample file report file was not created.');
+        assert.ok(fileExistsSync(sampleReportFile), 'The sample file report file was not created.');
         fs.readFile(sampleReportFile, function(err, data) {
           if (err) {
             done(err);
@@ -257,3 +255,14 @@ module.exports = {
     }
   }
 };
+
+
+// util to replace deprecated fs.existsSync
+function fileExistsSync (path) {
+  try {
+    fs.statSync(path);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}

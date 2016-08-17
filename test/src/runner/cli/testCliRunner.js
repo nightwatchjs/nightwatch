@@ -6,11 +6,11 @@ module.exports = {
   'Test CLI Runner' : {
     testInitDefaults : function() {
       mockery.registerMock('fs', {
-        existsSync : function(module) {
+        statSync : function(module) {
           if (module == './settings.json') {
-            return false;
+            throw new Error('Does not exist');
           }
-          return true;
+          return {};
         }
       });
 
@@ -42,12 +42,11 @@ module.exports = {
 
     testSetOutputFolder : function() {
       mockery.registerMock('fs', {
-        existsSync : function(module) {
+        statSync : function(module) {
           if (module == './settings.json' || module == './nightwatch.conf.js') {
-            return false;
+            throw new Error('Does not exist');
           }
-
-          return true;
+          return {};
         }
       });
 
@@ -69,11 +68,11 @@ module.exports = {
       });
 
       mockery.registerMock('fs', {
-        existsSync : function(module) {
+        statSync : function(module) {
           if (module == './settings.json') {
-            return true;
+            return {};
           }
-          return false;
+          throw new Error('Does not exist');
         }
       });
 
@@ -97,11 +96,11 @@ module.exports = {
 
     testCustomSettingsFileAndEnvironment : function() {
       mockery.registerMock('fs', {
-        existsSync : function(module) {
+        statSync : function(module) {
           if (module == './custom.json') {
-            return true;
+            return {};
           }
-          return false;
+          throw new Error('Does not exist');
         }
       });
 
@@ -128,12 +127,6 @@ module.exports = {
     testGetTestSourceSingle : function() {
       var statSyncCalled = false;
       mockery.registerMock('fs', {
-        existsSync : function(module) {
-          if (module == './custom.json') {
-            return true;
-          }
-          return false;
-        },
         statSync : function(file) {
           if (file == 'demoTest') {
             statSyncCalled = true;
@@ -143,7 +136,10 @@ module.exports = {
               }
             };
           }
-          throw new Error('Start error.');
+          if (file == 'demoTest.js' || file == './custom.js') {
+            return {};
+          }
+          throw new Error('Does not exist');
         }
       });
 
@@ -166,12 +162,6 @@ module.exports = {
       var statSyncCalled = false;
 
       mockery.registerMock('fs', {
-        existsSync : function(module) {
-          if (module == './custom.json') {
-            return true;
-          }
-          return false;
-        },
         statSync : function(file) {
           if (file == ABSOLUTE_PATH) {
             statSyncCalled = true;
@@ -181,7 +171,10 @@ module.exports = {
               }
             };
           }
-          throw new Error('Start error.');
+          if (file == ABSOLUTE_SRC_PATH || file == './custom.json') {
+            return {};
+          }
+          throw new Error('Does not exist');
         }
       });
 
@@ -204,12 +197,6 @@ module.exports = {
       var statSyncCalled = false;
 
       mockery.registerMock('fs', {
-        existsSync : function(module) {
-          if (module == './custom.json') {
-            return true;
-          }
-          return false;
-        },
         statSync : function(file) {
           if (file == RELATIVE_PATH) {
             statSyncCalled = true;
@@ -219,7 +206,10 @@ module.exports = {
               }
             };
           }
-          throw new Error('Start error.');
+          if (file == TEST_SRC_PATH || file == './custom.json') {
+            return {};
+          }
+          throw new Error('Does not exist');
         }
       });
 
@@ -237,20 +227,15 @@ module.exports = {
 
     testGetTestSourceAsSecondArgument : function() {
       mockery.registerMock('fs', {
-        existsSync : function(module) {
-          if (module == './custom.json') {
-            return true;
-          }
-          return false;
-        },
         statSync : function(module) {
-          if (module == 'test.js') {
+          if (module == 'test.js' || module == './custom.json') {
             return {
               isFile : function() {
                 return true;
               }
             }
           }
+          throw new Error('Does not exist');
         }
       });
 
@@ -302,21 +287,15 @@ module.exports = {
 
     testRunTestsWithTestcaseOption : function() {
       mockery.registerMock('fs', {
-        existsSync : function(module) {
-          if (module == './custom.json') {
-            return true;
-          }
-          return false;
-        },
         statSync : function(file) {
-          if (file == 'demoTest') {
+          if (file == 'demoTest' || file == './custom.json') {
             return {
               isFile : function() {
                 return true;
               }
             };
           }
-          throw new Error('Start error.');
+          throw new Error('Does not exist');
         }
       });
 
@@ -334,20 +313,15 @@ module.exports = {
 
     testRunTestsWithTestcaseOptionAndSingleTestSource : function() {
       mockery.registerMock('fs', {
-        existsSync : function(module) {
-          if (module == './custom.json') {
-            return true;
-          }
-          return false;
-        },
         statSync : function(file) {
-          if (file == 'demoTest.js') {
+          if (file == 'demoTest.js' || file == './custom.json') {
             return {
               isFile : function() {
                 return true;
               }
             };
           }
+          throw new Error('Does not exist');
         }
       });
 
@@ -365,17 +339,11 @@ module.exports = {
 
     testRunTestsWithTestcaseOptionAndWithoutTest : function() {
       mockery.registerMock('fs', {
-        existsSync : function(module) {
-          if (module == './custom.json') {
-            return true;
-          }
-          return false;
-        },
         statSync : function(file) {
-          if (file == 'demoTest.js') {
-            return true;
+          if (file == 'demoTest.js' || file == './custom.json') {
+            return {};
           }
-          throw new Error('Start error.');
+          throw new Error('Does not exist');
         }
       });
 
@@ -392,11 +360,14 @@ module.exports = {
 
     testGetTestSourceGroup : function() {
       mockery.registerMock('fs', {
-        existsSync : function(module) {
-          if (module == './custom.json') {
-            return true;
+        statSync : function(module) {
+          switch (module) {
+          case './custom.json':
+          case './multi_test_paths.json':
+          case 'tests/demoGroup':
+            return {};
           }
-          return false;
+          throw new Error('Does not exist');
         }
       });
 
@@ -426,15 +397,41 @@ module.exports = {
 
       testSource = simpleRunner.getTestSource();
       assert.deepEqual(testSource, ['tests']);
+
+      var invalidGroupRunner = new CliRunner({
+        config : './custom.json',
+        env : 'default',
+        group : 'group_doesnotexist'
+      }).init();
+
+      testSource = invalidGroupRunner.getTestSource();
+      assert.deepEqual(testSource, ['tests/group_doesnotexist']);
+
+      var invalidGroupInMultiSrcRunner = new CliRunner({
+        config : './multi_test_paths.json',
+        env : 'default',
+        group : 'group_doesnotexist'
+      }).init();
+
+      testSource = invalidGroupInMultiSrcRunner.getTestSource();
+      assert.deepEqual(testSource, []);
     },
 
     testGetTestSourceMultipleGroups : function() {
       mockery.registerMock('fs', {
-        existsSync : function(module) {
-          if (module == './custom.json') {
-            return true;
+        statSync : function(module) {
+          switch (module) {
+          case './custom.json':
+          case './multi_test_paths.json':
+          case 'tests/demoGroup1':
+          case 'tests/demoGroup2':
+          case 'tests1/demoGroup1':
+          case 'tests1/demoGroup2':
+          // no tests2/demoGroup1
+          case 'tests2/demoGroup2':
+            return {};
           }
-          return false;
+          throw new Error('Does not exist');
         }
       });
 
@@ -447,15 +444,33 @@ module.exports = {
 
       var testSource = runner.getTestSource();
       assert.deepEqual(testSource, ['tests/demoGroup1', 'tests/demoGroup2']);
+
+      var invalidGroupRunner = new CliRunner({
+        config : './custom.json',
+        env : 'default',
+        group : 'demoGroup1,demoGroup2,group_doesnotexist'
+      }).init();
+
+      testSource = invalidGroupRunner.getTestSource();
+      assert.deepEqual(testSource, ['tests/demoGroup1', 'tests/demoGroup2', 'tests/group_doesnotexist']);
+
+      var stripMissingInMultiRunner = new CliRunner({
+        config : './multi_test_paths.json',
+        env : 'default',
+        group : 'demoGroup1,demoGroup2,group_doesnotexist'
+      }).init();
+
+      testSource = stripMissingInMultiRunner.getTestSource();
+      assert.deepEqual(testSource, ['tests1/demoGroup1', 'tests1/demoGroup2', 'tests2/demoGroup2']);
     },
 
     testParseTestSettingsInvalid : function() {
       mockery.registerMock('fs', {
-        existsSync : function(module) {
+        statSync : function(module) {
           if (module == './empty.json') {
-            return true;
+            return {};
           }
-          return false;
+          throw new Error('Does not exist');
         }
       });
 
@@ -470,8 +485,11 @@ module.exports = {
 
     testParseTestSettingsIncorrect : function() {
       mockery.registerMock('fs', {
-        existsSync : function(module) {
-          return module == './incorrect.json';
+        statSync : function(module) {
+          if (module == './incorrect.json') {
+            return {};
+          }
+          throw new Error('Does not exist');
         }
       });
 
@@ -487,11 +505,11 @@ module.exports = {
 
     testReadExternalGlobals : function() {
       mockery.registerMock('fs', {
-        existsSync : function(module) {
+        statSync : function(module) {
           if (module == './custom.json' || module == './globals.json') {
-            return true;
+            return {};
           }
-          return false;
+          throw new Error('Does not exist');
         }
       });
 
@@ -568,11 +586,11 @@ module.exports = {
 
     testStartSeleniumDisabledPerEnvironment : function() {
       mockery.registerMock('fs', {
-        existsSync : function(module) {
+        statSync : function(module) {
           if (module == './sauce.json') {
-            return true;
+            return {};
           }
-          return false;
+          throw new Error('Does not exist');
         }
       });
       var CliRunner = common.require('runner/cli/clirunner.js');
@@ -588,11 +606,11 @@ module.exports = {
 
     testStartSeleniumEnvironmentOverride : function() {
       mockery.registerMock('fs', {
-        existsSync : function(module) {
+        statSync : function(module) {
           if (module == './selenium_override.json') {
-            return true;
+            return {};
           }
-          return false;
+          throw new Error('Does not exist');
         }
       });
       var CliRunner = common.require('runner/cli/clirunner.js');
@@ -748,6 +766,17 @@ module.exports = {
           }
         }
       });
+
+      mockery.registerMock('./multi_test_paths.json', {
+        src_folders : ['tests1', 'tests2'],
+        test_settings : {
+          'default' : {
+            output : false,
+            disable_colors: true
+          }
+        }
+      });
+
       mockery.registerMock('./custom.json', {
         src_folders : ['tests'],
         selenium : {
@@ -807,6 +836,9 @@ module.exports = {
           if (b == './settings.json') {
             return './settings.json';
           }
+          if (b == './multi_test_paths.json') {
+            return './multi_test_paths.json';
+          }
           if (b == './custom.json') {
             return './custom.json';
           }
@@ -823,13 +855,16 @@ module.exports = {
             return 'demoTest';
           }
           if (b == 'demoGroup') {
-            return 'tests/demoGroup';
+            return a + '/demoGroup';
           }
           if (b == 'demoGroup1') {
-            return 'tests/demoGroup1';
+            return a + '/demoGroup1';
           }
           if (b == 'demoGroup2') {
-            return 'tests/demoGroup2';
+            return a + '/demoGroup2';
+          }
+          if (b == 'group_doesnotexist') {
+            return a + '/' + b;
           }
           if (b == './sauce.json') {
             return './sauce.json';
