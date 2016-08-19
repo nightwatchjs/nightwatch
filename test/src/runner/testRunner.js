@@ -239,6 +239,7 @@ module.exports = {
 
       var runner = new Runner([testsPath], {
         seleniumPort: 10195,
+        seleniumHost: '127.0.0.1',
         silent: true,
         output: false,
         persist_globals : true,

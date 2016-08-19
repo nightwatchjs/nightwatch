@@ -61,8 +61,8 @@ module.exports = {
         }
       }, function(error, process) {
         assert.equal(process.command, 'java');
-        assert.deepEqual(process.args, ['-jar', './selenium.jar', '-port', 4444, '-host', '127.0.0.1', '-Dwebdriver.test.property=test', '-DpropName=1']);
-        assert.equal(process.host, '127.0.0.1');
+        assert.deepEqual(process.args, ['-DpropName=1', '-Dwebdriver.test.property=test', '-jar', './selenium.jar', '-port', 4444]);
+        assert.equal(process.host, undefined);
         assert.equal(process.port, 4444);
         assert.equal(error, null);
         done();
