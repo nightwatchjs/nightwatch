@@ -126,8 +126,8 @@ module.exports = {
                 //   errors="0" failures="0" hostname="" id="" package="simple" skipped="0"
                 //   tests="1"
                 assert.ok(content.match(/<testsuite[\s]+name="sample"[\s]+errors="0"[\s]+failures="0"[\s]+hostname=""[\s]+id=""[\s]+package="simple"[\s]+skipped="0"[\s]+tests="1"/g) !== null, 'Report does not contain correct testsuite information.')
-                // <testcase name="simpleDemoTest" time="0.007000" assertions="1">
-                assert.ok(content.match(/<testcase[\s]+name="simpleDemoTest"[\s]+time="[.\d]+"[\s]+assertions="1">/g) !== null, 'Report does not contain the correct testcase element.')
+                // <testcase name="simpleDemoTest" classname="FIREFOX_TEST_TEST_.simple.sample" time="0.007000" assertions="1">
+                assert.ok(content.match(/<testcase[\s]+name="simpleDemoTest"[\s]+classname="FIREFOX_TEST_TEST_.simple.sample"[\s]+time="[.\d]+"[\s]+assertions="1">/g) !== null, 'Report does not contain the correct testcase element.')
 
                 assert.ok(content.indexOf('<failure message="[\s\S]*?">') === -1, 'Report contains failure information.')
                 done();
@@ -179,8 +179,8 @@ module.exports = {
             //   errors="0" failures="1" hostname="" id="" package="sample" skipped="1"
             //   tests="2"
             assert.ok(content.match(/<testsuite[\s]+name="sample"[\s]+errors="0"[\s]+failures="1"[\s]+hostname=""[\s]+id=""[\s]+package="sample"[\s]+skipped="1"[\s]+tests="2"/g) !== null, 'Report does not contain correct testsuite information.')
-            // <testcase name="demoTest" time="0.002000" assertions="2">
-            assert.ok(content.match(/<testcase[\s]+name="demoTest"[\s]+time="[.\d]+"[\s]+assertions="2">/g) !== null, 'Report does not contain the correct testcase element.')
+            // <testcase name="demoTest" classname="FIREFOX_TEST_TEST_.sample" time="0.002000" assertions="2">
+            assert.ok(content.match(/<testcase[\s]+name="demoTest"[\s]+classname="FIREFOX_TEST_TEST_.sample"[\s]+time="[.\d]+"[\s]+assertions="2">/g) !== null, 'Report does not contain the correct testcase element.')
 
             assert.ok(content.indexOf('<failure message="Testing if element &lt;#badElement&gt; is present.">') > 0, 'Report contains failure information.')
             done();
@@ -226,8 +226,8 @@ module.exports = {
             //   errors="0" failures="1" hostname="" id="" package="unittest-failure" skipped="0"
             //   tests="1"
             assert.ok(content.match(/<testsuite[\s]+name="unittest-failure"[\s]+errors="0"[\s]+failures="1"[\s]+hostname=""[\s]+id=""[\s]+package="unittest-failure"[\s]+skipped="0"[\s]+tests="1"/g) !== null, 'Report does not contain correct testsuite information.')
-            // <testcase name="demoTest" time="0.002000" assertions="0">
-            assert.ok(content.match(/<testcase[\s]+name="demoTest"[\s]+time="[.\d]+"[\s]+assertions="0">/g) !== null, 'Report does not contain the correct testcase element.')
+            // <testcase name="demoTest" classname="unittest-failure" time="0.002000" assertions="0">
+            assert.ok(content.match(/<testcase[\s]+name="demoTest"[\s]+classname="unittest-failure"[\s]+time="[.\d]+"[\s]+assertions="0">/g) !== null, 'Report does not contain the correct testcase element.')
 
             assert.ok(content.indexOf('<failure message="AssertionError: 1 == 0 - expected &quot;0&quot; but got: &quot;1&quot;">') > 0, 'Report does not contain failure information.')
             done();
