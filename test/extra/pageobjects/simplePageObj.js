@@ -9,7 +9,8 @@ module.exports = {
   elements: {
     loginAsString: '#weblogin',
     loginCss: { selector: '#weblogin' },
-    loginXpath: { selector: '//weblogin', locateStrategy: 'xpath' }
+    loginXpath: { selector: '//weblogin', locateStrategy: 'xpath' },
+    loginId: { selector: 'weblogin', locateStrategy: 'id' }
   },
   sections: {
     signUp: {
