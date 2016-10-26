@@ -8,7 +8,7 @@ var menuCommands = {
     return this.getAttribute(product, 'class', function(result) {
       var isSelected = result.value.indexOf('hdtb-msel') > -1;
       callback.call(self, isSelected);
-     });
+    });
   }
 };
 
