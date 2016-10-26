@@ -2,6 +2,8 @@
   "parser": "babel-eslint",
   "extend": "eslint:recommended",
   "env": {
+    "browser": true,
+    "mocha": true,
     "node": true
   },
   "globals": {},
@@ -13,7 +15,7 @@
     "no-undef": 2,
     "no-new-func": 2,
     "no-new-wrappers": 2,
-    "no-invalid-this": 2,
+    "no-invalid-this": 1,
     "dot-notation": 0,
     "no-loop-func": 2,
     "quotes": [

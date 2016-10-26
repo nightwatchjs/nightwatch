@@ -8,10 +8,10 @@ before_script:
   - npm install
 
 script:
+  - npm run lint
   - grunt
   - npm test
   # - npm run-script coverage
 
 after_success:
   # - cat ./lib-cov/lcov.info |coveralls
-

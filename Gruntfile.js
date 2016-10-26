@@ -82,6 +82,6 @@ module.exports = function(grunt) {
 
   // Default task(s).
   grunt.registerTask('release', ['npmrelease']);
-  grunt.registerTask('default', ['jshint', 'jsonlint']);
-  grunt.registerTask('all', ['jshint', 'jsonlint', 'complexity']);
+  grunt.registerTask('default', ['jsonlint']);
+  grunt.registerTask('all', ['jsonlint', 'complexity']);
 };
