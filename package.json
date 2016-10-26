@@ -27,15 +27,14 @@
     "q": "^1.1.2"
   },
   "devDependencies": {
+    "babel-eslint": "~7.0.0",
     "chai": "^3.2.0",
     "coveralls": "latest",
     "grunt": "~0.4.4",
     "grunt-complexity": "^0.1.7",
-    "grunt-contrib-jshint": "~0.10.0",
     "grunt-jsonlint": "~1.0.4",
     "grunt-npm-release": "latest",
     "jscoverage": "latest",
-    "jshint": "~2.4.4",
     "jsonlint": "~1.6.0",
     "mocha": "^2.3.4",
     "mocha-lcov-reporter": "^1.2.0",
@@ -49,7 +48,7 @@
   },
   "man": "",
   "scripts": {
-    "jshint": "./node_modules/.bin/jshint --verbose --config .jshintrc lib/",
+    "lint": "eslint bin examples lib index.js Gruntfile.js",
     "mocha-coverage": "jscoverage lib --exclude *.ejs,*.json && NIGHTWATCH_COV=1 ./node_modules/.bin/mocha test/src --reporter html-cov > coverage.html",
     "mocha-lcov-coverage": "jscoverage lib --exclude *.ejs,*.json && NIGHTWATCH_COV=1 ./node_modules/.bin/mocha test/src --reporter mocha-lcov-reporter > lib-cov/coverage.lcov",
     "test": "./node_modules/.bin/mocha test/src",

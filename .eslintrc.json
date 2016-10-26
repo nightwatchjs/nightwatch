@@ -1,0 +1,32 @@
+{
+  "parser": "babel-eslint",
+  "extend": "eslint:recommended",
+  "env": {
+    "node": true
+  },
+  "globals": {},
+  "rules": {
+    "no-bitwise": 2,
+    "curly": 2,
+    "no-empty": 2,
+    "no-new": 2,
+    "no-undef": 2,
+    "no-new-func": 2,
+    "no-new-wrappers": 2,
+    "no-invalid-this": 2,
+    "dot-notation": 0,
+    "no-loop-func": 2,
+    "quotes": [
+      2,
+      "single"
+    ],
+    "indent": [
+      2,
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "new-cap": 2
+  }
+}
