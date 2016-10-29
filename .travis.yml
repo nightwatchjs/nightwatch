@@ -2,6 +2,12 @@ language: node_js
 sudo: false
 node_js:
   - "0.10"
+  - "4"
+  - "6"
+
+cache:
+  directories:
+  - node_modules
 
 before_script:
   - npm install -g grunt-cli
@@ -15,3 +21,5 @@ script:
 after_success:
   # - cat ./lib-cov/lcov.info |coveralls
 
+matrix:
+  fast_finish: true
