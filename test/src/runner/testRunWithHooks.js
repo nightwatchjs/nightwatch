@@ -209,7 +209,6 @@ module.exports = {
         assert.equal(err.message, 'done() callback timeout of 10 ms was reached while executing "afterEach". ' +
           'Make sure to call the done() callback when the operation finishes.');
         assert.ok(err instanceof Error);
-
         done();
       });
 
