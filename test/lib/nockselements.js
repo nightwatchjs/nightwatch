@@ -8,14 +8,14 @@ module.exports = {
   _requestUri: 'http://localhost:10195',
   _protocolUri: '/wd/hub/session/1352110219202/',
 
-  elementFound : function(selector, using) {
+  elementFound : function(selector, using, foundElem) {
     nock(this._requestUri)
       .persist()
       .post(this._protocolUri + 'element', {'using':using || 'css selector','value':selector || '#nock'})
       .reply(200, {
         status: 0,
         state: 'success',
-        value: { ELEMENT: '0' }
+        value: foundElem || { ELEMENT: '0' }
       });
     return this;
   },
@@ -57,14 +57,14 @@ module.exports = {
     return this;
   },
 
-  elementByXpath : function(selector) {
+  elementByXpath : function(selector, foundElem) {
     nock(this._requestUri)
       .persist()
       .post(this._protocolUri + 'element', {'using':'xpath','value':selector || '//[@id="nock"]'})
       .reply(200, {
         status: 0,
         state: 'success',
-        value: { ELEMENT: '0' }
+        value: foundElem || { ELEMENT: '0' }
       });
     return this;
   },
@@ -81,7 +81,7 @@ module.exports = {
     return this;
   },
 
-  elementId : function (id, selector, using) {
+  elementId : function (id, selector, using, foundElem) {
     nock(this._requestUri)
       .persist()
       .post(this._protocolUri + 'element/' + (id || 0) + '/element',
@@ -89,7 +89,7 @@ module.exports = {
       .reply(200, {
         status: 0,
         state : 'success',
-        value: { ELEMENT: '0' }
+        value: foundElem || { ELEMENT: '0' }
       });
     return this;
   },
