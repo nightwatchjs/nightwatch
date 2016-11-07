@@ -1,4 +1,5 @@
 var nock = require('nock');
+nock.setAllowUnmocked(true);
 
 module.exports = {
   createSession : function() {
