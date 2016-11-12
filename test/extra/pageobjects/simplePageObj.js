@@ -9,6 +9,7 @@ module.exports = {
   elements: {
     loginAsString: '#weblogin',
     loginCss: { selector: '#weblogin' },
+    loginIndexed: { selector: '#weblogin', index: 1 },
     loginXpath: { selector: '//weblogin', locateStrategy: 'xpath' },
     loginId: { selector: 'weblogin', locateStrategy: 'id' }
   },
@@ -16,7 +17,12 @@ module.exports = {
     signUp: {
       selector: '#signupSection',
       sections: {
-        getStarted: { selector: '#getStarted' }
+        getStarted: {
+          selector: '#getStarted',
+          elements: {
+            start: { selector: '#getStartedStart' }
+          }
+        }
       },
       elements: {
         help: { selector: '#helpBtn' }
