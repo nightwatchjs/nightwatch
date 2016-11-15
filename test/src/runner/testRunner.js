@@ -30,34 +30,6 @@ module.exports = {
       });
       runner.run();
     },
-
-    'test detailed_output disabled and test failures': function (done) {
-      var testsPath = path.join(__dirname, '../../sampletests/withfailures');
-
-      var origConsoleLog = console.log; // need to test with output:true
-      console.log = function() {};
-
-      var runner = new Runner([testsPath], {
-        seleniumPort: 10195,
-        seleniumHost: '127.0.0.1',
-        silent: true,
-        output: true
-      }, {
-        output_folder : false,
-        start_session : true,
-        detailed_output : false
-      }, function(err, results) {
-        console.log = origConsoleLog;
-
-        assert.equal(results.passed, 1);
-        assert.equal(results.failed, 1);
-        done();
-      });
-
-      runner.run().catch(function(err) {
-        done(err);
-      });
-    },
     
     testRunNoSrcFoldersArgument : function(done) {
       var runner = new Runner(undefined, {}, {
