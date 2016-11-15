@@ -61,6 +61,7 @@ module.exports = {
       };
       mockery.registerMock('mocha-nightwatch', Mocha);
       mockery.registerMock('../run.js', {
+        setFinishCallback : function(cb) {},
         readPaths : function(source, settings, cb) {
           cb(null, [
             'test1.js', 'test2.js'
@@ -111,6 +112,7 @@ module.exports = {
       };
       mockery.registerMock('mocha-nightwatch', Mocha);
       mockery.registerMock('../run.js', {
+        setFinishCallback : function() {},
         readPaths : function(source, settings, cb) {
           cb(null, [
             'test1.js', 'test2.js'
@@ -163,6 +165,7 @@ module.exports = {
       };
       mockery.registerMock('mocha-nightwatch', Mocha);
       mockery.registerMock('../run.js', {
+        setFinishCallback : function() {},
         readPaths : function(source, settings, cb) {
           cb(true, []);
         }
