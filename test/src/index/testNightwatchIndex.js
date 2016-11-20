@@ -255,6 +255,15 @@ module.exports = {
       eq(client.api.options.screenshotsPath, '');
     },
 
+    testSetOptionsScreenshotsDefaults: function () {
+      var client = Nightwatch.createClient();
+      var eq = assert.equal;
+
+      eq(client.api.options.log_screenshot_data, false);
+      eq(client.options.screenshots.on_error, undefined);
+      eq(client.api.options.screenshotsPath, undefined);
+    },
+
     testSetOptionsScreenshotsOnError: function () {
       var client = Nightwatch.createClient({
         screenshots: {
