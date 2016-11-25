@@ -53,6 +53,20 @@ module.exports = {
       assert.ok(matched === true);
     },
 
+    'tag: test loading modules containing an error should not be silent': function () {
+        var hasResolved = false;
+        try {
+            var tags = ['home', 'login', 'sign-up'];
+            var matched = FileMatcher.tags.match(path.join(__dirname, '../../mock-errors/sample-error.js'), {
+              tag_filter: tags
+            });
+            hasResolved = true;
+        } catch(err) {
+            assert.ok(err instanceof Error);
+        }
+        assert.ok(!hasResolved, 'should not have resolved');
+    },
+
     'tag: test matching numeric tags': function () {
       var tags = ['room', 101];
       var testModule = {
