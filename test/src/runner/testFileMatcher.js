@@ -54,17 +54,17 @@ module.exports = {
     },
 
     'tag: test loading modules containing an error should not be silent': function () {
-        var hasResolved = false;
-        try {
-            var tags = ['home', 'login', 'sign-up'];
-            var matched = FileMatcher.tags.match(path.join(__dirname, '../../mock-errors/sample-error.js'), {
-              tag_filter: tags
-            });
-            hasResolved = true;
-        } catch(err) {
-            assert.ok(err instanceof Error);
-        }
-        assert.ok(!hasResolved, 'should not have resolved');
+      var errorThrown;
+
+      try {
+        var tags = ['home', 'login', 'sign-up'];
+        FileMatcher.tags.match(path.join(__dirname, '../../mock-errors/sample-error.js'), {
+          tag_filter: tags
+        });
+      } catch(err) {
+        errorThrown = err;
+      }
+      assert.ok(errorThrown instanceof Error);
     },
 
     'tag: test matching numeric tags': function () {
