@@ -65,6 +65,16 @@ module.exports = {
       assert.equal(page.elements.otherElement.selector, '#otherElement');
     },
 
+    testPageObjectCommandsObject: function () {
+      var page = this.client.api.page.pageObjCommandsObject();
+      assert.ok('testCommand' in page, 'testCommand exists in page object');
+      assert.equal(page.testCommand(), page, 'testCommand() returns page object');
+
+      var signUp = page.section.signUp;
+      assert.ok('testCommand' in signUp, 'testCommand exists in page object section');
+      assert.equal(signUp.testCommand(), signUp, 'testCommand() returns page object section');
+    },
+
     testPageObjectSubDirectory : function() {
       assert.ok('addl' in this.client.api.page);
       assert.ok('simplePageObject' in this.client.api.page.addl);
