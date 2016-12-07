@@ -27,7 +27,7 @@
     "q": "^1.1.2"
   },
   "devDependencies": {
-    "babel-eslint": "~7.0.0",
+    "babel-eslint": "~7.1.1",
     "chai": "^3.2.0",
     "coveralls": "latest",
     "grunt": "~0.4.4",
