@@ -1,7 +1,6 @@
 /**
  * Module dependencies
  */
-var Logger = require('../lib/util/logger.js');
 var Nightwatch = require('../lib/index.js');
 var Utils = require('../lib/util/utils.js');
 
