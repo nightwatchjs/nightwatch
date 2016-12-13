@@ -20,6 +20,6 @@ module.exports = {
 
       });
       
-      client.end();
+    client.end();
   }
 };
