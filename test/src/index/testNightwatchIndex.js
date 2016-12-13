@@ -291,6 +291,26 @@ module.exports = {
       eq(client.options.end_session_on_fail, false);
     },
 
+    testSetRequestTimeoutOptions: function () {
+      var client = Nightwatch.createClient({
+        request_timeout_options: {
+          timeout : 10000,
+          retry_attempts : 3
+        }
+      });
+
+      assert.deepEqual(client.options.request_timeout_options, {
+        timeout : 10000,
+        retry_attempts : 3
+      });
+
+      var common = require('../../common.js');
+      var HttpRequest = common.require('http/request.js');
+      var request = new HttpRequest({});
+      assert.equal(request.timeout, 10000);
+      assert.equal(request.retryAttempts, 3);
+    },
+
     'test session response with status success and no sessionId': function (done) {
       MockServer.addMock({
         url : '/wd/hub/session',
