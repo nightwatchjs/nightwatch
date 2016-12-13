@@ -41,8 +41,7 @@
     "mocha-lcov-reporter": "^1.2.0",
     "mock-spawn": "^0.2.1",
     "mockery": "~1.4.0",
-    "nock": "~0.45.0",
-    "nodeunit": "latest"
+    "nock": "~0.45.0"
   },
   "bin": {
     "nightwatch": "./bin/nightwatch"

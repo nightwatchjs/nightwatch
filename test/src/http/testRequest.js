@@ -31,6 +31,9 @@ module.exports = {
     },
 
     afterEach: function () {
+      HttpRequest.setTimeout(60000) // back to default after these tests
+      HttpRequest.setRetryAttempts(0);
+
       mockery.disable();
     },
 
@@ -206,4 +209,5 @@ module.exports = {
 
     }
   }
+
 };
