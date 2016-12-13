@@ -485,6 +485,33 @@ module.exports = {
       }, 'No testing environment specified.');
     },
 
+    testParseTestSettingsNull : function() {
+      mockery.registerMock('fs', {
+        statSync : function(module) {
+          if (module == './null.json') {
+            return {isFile : function() {return true;}};
+          }
+          throw new Error('Does not exist');
+        }
+      });
+
+      mockery.registerMock('../../util/logger.js', {
+        error : function() {
+          assert.ok(false, 'Logger.error should not be called');
+        }
+      });
+
+      var CliRunner = common.require('runner/cli/clirunner.js');
+      assert.throws(function() {
+        assert.doesNotThrow(function() {
+          new CliRunner({
+            config : './null.json',
+            env : 'default'
+          }).init();
+        }, /Logger.error should not be called/, 'Logger.error should not be called');
+      }, /No testing environment specified./);
+    },
+
     testParseTestSettingsIncorrect : function() {
       mockery.registerMock('fs', {
         statSync : function(module) {
@@ -708,6 +735,10 @@ module.exports = {
         src_folders : 'tests'
       });
 
+      mockery.registerMock('./null.json', {
+        irrelevantProperty: null
+      });
+
       mockery.registerMock('./incorrect.json', {
         src_folders : 'tests',
         test_settings : {
@@ -848,6 +879,9 @@ module.exports = {
           }
           if (b == './empty.json') {
             return './empty.json';
+          }
+          if (b == './null.json') {
+            return './null.json';
           }
           if (b == './incorrect.json') {
             return './incorrect.json';
