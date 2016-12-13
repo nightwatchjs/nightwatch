@@ -59,6 +59,7 @@ function MockServer(options, callback) {
     req.on('data', function(chunk) {
       postdata += chunk;
     });
+
     req.on('end', function() {
       var item = nextInLine(req, postdata);
       var responsedata = '';
@@ -80,11 +81,23 @@ function MockServer(options, callback) {
         options.finishedCallback(req, res);
       }
 
-      res.end(responsedata, function() {
-        if (item && item.__once) {
-          removeMock(item);
-        }
-      });
+      if (item && item.__once) {
+        removeMock(item);
+      }
+
+      if (item && item.socketDelay) {
+        var timeoutId = setTimeout(function() {
+          res.end(responsedata);
+        }, item.socketDelay);
+
+        req.on('close', function(err) {
+          clearTimeout(timeoutId);
+        });
+
+        return;
+      }
+
+      res.end(responsedata);
     });
   });
 

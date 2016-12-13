@@ -207,61 +207,6 @@ module.exports = {
         done();
       }).send();
 
-    },
-
-    testRequestTimeout: function (done) {
-      nock('http://localhost:4444')
-        .get('/wd/hub/123456/element')
-        .socketDelay(10000)
-        .reply(200, {});
-
-      var options = {
-        path: '/:sessionId/element',
-        method: 'GET',
-        sessionId: '123456'
-      };
-
-      HttpRequest.setTimeout(100);
-
-      var request = new HttpRequest(options);
-
-      request.on('error', function () {
-        assert.ok(true); // should trigger error on timeout
-        done();
-      }).send();
-
-    },
-
-    testRetryAttempts: function (done) {
-      nock('http://localhost:4444')
-        .get('/wd/hub/123456/element')
-        .socketDelay(10000)
-        .reply(500, {})
-        .get('/wd/hub/123456/element')
-        .socketDelay(100)
-        .reply(200, {})
-
-      var options = {
-        path: '/:sessionId/element',
-        method: 'GET',
-        sessionId: '123456'
-      };
-
-      HttpRequest.setTimeout(200);
-      HttpRequest.setRetryAttempts(1);
-
-      var request = new HttpRequest(options);
-
-      request
-      .on('success', function (result) {
-        assert.ok(true); // should succeed
-        done();
-      })
-      .on('error', function(){
-        // the nock library is merely invoking the timeout event, rather than actually timing out,
-        // so catch the first request that is supposed to delay 10000
-      }).send();
-
     }
   }
 
