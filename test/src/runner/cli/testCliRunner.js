@@ -485,6 +485,27 @@ module.exports = {
       }, 'No testing environment specified.');
     },
 
+    testParseTestSettingsNull : function() {
+      mockery.registerMock('fs', {
+        statSync : function(module) {
+          if (module == './null.json') {
+            return {isFile : function() {return true;}};
+          }
+          throw new Error('Does not exist');
+        }
+      });
+
+      var CliRunner = common.require('runner/cli/clirunner.js');
+
+      var runner = new CliRunner({
+        config : './null.json',
+        env : 'default'
+      });
+      runner.init();
+      assert.ok(typeof runner.settings.test_settings == 'object');
+      assert.strictEqual(runner.settings.test_settings['default'].irrelevantProperty, null);
+    },
+
     testParseTestSettingsIncorrect : function() {
       mockery.registerMock('fs', {
         statSync : function(module) {
@@ -708,6 +729,15 @@ module.exports = {
         src_folders : 'tests'
       });
 
+      mockery.registerMock('./null.json', {
+        src_folders : 'tests',
+        test_settings : {
+          'default' : {
+            irrelevantProperty: null
+          }
+        }
+      });
+
       mockery.registerMock('./incorrect.json', {
         src_folders : 'tests',
         test_settings : {
@@ -848,6 +878,9 @@ module.exports = {
           }
           if (b == './empty.json') {
             return './empty.json';
+          }
+          if (b == './null.json') {
+            return './null.json';
           }
           if (b == './incorrect.json') {
             return './incorrect.json';
