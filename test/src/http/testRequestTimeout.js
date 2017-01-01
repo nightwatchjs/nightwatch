@@ -75,8 +75,7 @@ module.exports = {
 
       request
         .on('error', function(res, err) {
-          assert.strictEqual(request.retryAttempts, 0);
-          assert.ok(err instanceof Error); // the 'socket hang up' error, caused by aborting the request
+          done(err);
         })
         .on('success', function (result) {
           assert.strictEqual(request.retryAttempts, 0);
