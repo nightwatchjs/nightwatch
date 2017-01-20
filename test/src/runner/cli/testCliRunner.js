@@ -128,7 +128,7 @@ module.exports = {
       var statSyncCalled = false;
       mockery.registerMock('fs', {
         statSync : function(file) {
-          if (file == 'demoTest') {
+          if (file == 'demoTest.js') {
             statSyncCalled = true;
             return {
               isFile : function() {
@@ -147,7 +147,7 @@ module.exports = {
       var runner = new CliRunner({
         config : './custom.json',
         env : 'default',
-        test : 'demoTest'
+        test : 'demoTest.js'
       }).init();
 
       var testSource = runner.getTestSource();
@@ -155,10 +155,40 @@ module.exports = {
       assert.ok(statSyncCalled);
     },
 
+    testGetTestSourceSingleWithTypescript: function() {
+      var statSyncCalled = false;
+      mockery.registerMock('fs', {
+        statSync : function(file) {
+          if (file == 'demoTest.ts') {
+            statSyncCalled = true;
+            return {
+              isFile : function() {
+                return true;
+              }
+            };
+          }
+          if (file == 'demoTest.ts' || file == './custom.ts') {
+            return {isFile : function() {return true}};
+          }
+          throw new Error('Does not exist');
+        }
+      });
+
+      var CliRunner = common.require('runner/cli/clirunner.js');
+      var runner = new CliRunner({
+        config : './custom.json',
+        env : 'default',
+        test : 'demoTest.ts'
+      }).init();
+
+      var testSource = runner.getTestSource();
+      assert.equal(testSource, 'demoTest.ts');
+      assert.ok(statSyncCalled);
+    },
 
     testGetTestSourceSingleWithAbsolutePath : function() {
-      var ABSOLUTE_PATH = '/path/to/test';
-      var ABSOLUTE_SRC_PATH = ABSOLUTE_PATH + ".js";
+      var ABSOLUTE_PATH = '/path/to/test.js';
+      var ABSOLUTE_SRC_PATH = ABSOLUTE_PATH;
       var statSyncCalled = false;
 
       mockery.registerMock('fs', {
@@ -188,40 +218,6 @@ module.exports = {
       var testSource = runner.getTestSource();
       assert.equal(runner.settings.detailed_output, true);
       assert.equal(testSource, ABSOLUTE_SRC_PATH);
-      assert.ok(statSyncCalled);
-    },
-
-    testGetTestSourceSingleWithRelativePath : function() {
-      var RELATIVE_PATH = '../path/to/test';
-      var TEST_SRC_PATH = process.cwd() + '/path/to/test.js';
-      var statSyncCalled = false;
-
-      mockery.registerMock('fs', {
-        statSync : function(file) {
-          if (file == RELATIVE_PATH) {
-            statSyncCalled = true;
-            return {
-              isFile : function() {
-                return true;
-              }
-            };
-          }
-          if (file == TEST_SRC_PATH || file == './custom.json') {
-            return {isFile : function() {return true}};
-          }
-          throw new Error('Does not exist');
-        }
-      });
-
-      var CliRunner = common.require('runner/cli/clirunner.js');
-      var runner = new CliRunner({
-        config : './custom.json',
-        env : 'default',
-        test : RELATIVE_PATH
-      }).init();
-
-      var testSource = runner.getTestSource();
-      assert.equal(testSource, TEST_SRC_PATH);
       assert.ok(statSyncCalled);
     },
 
