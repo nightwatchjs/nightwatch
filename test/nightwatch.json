@@ -1,5 +1,8 @@
 {
-  "src_folders" : ["./test/src"],
+  "src_folders" : [
+    "./test/src",
+    "./node_modules/nightwatch-component-a/test"
+  ],
   "test_workers" : false,
   "selenium" : {
     "start_process" : false,
