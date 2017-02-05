@@ -11,6 +11,7 @@ before_script:
 script:
   - grunt
   - npm test
+  - npm run unit-tests
   # - npm run-script coverage
 
 after_success:
