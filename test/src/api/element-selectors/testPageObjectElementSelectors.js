@@ -11,7 +11,8 @@ module.exports = MochaTest.add('test page object element selectors', {
 
   beforeEach: function (done) {
     Nightwatch.init({
-      page_objects_path: [path.join(__dirname, '../../../extra/pageobjects')]
+      page_objects_path: [path.join(__dirname, '../../../extra/pageobjects')],
+      custom_commands_path: [path.join(__dirname, '../../../extra/commands')]
     }, done);
   },
 
@@ -105,6 +106,32 @@ module.exports = MochaTest.add('test page object element selectors', {
       });
 
     Nightwatch.start();
+  },
+
+  'multiple elements' : function(done) {
+    nocks
+      .elementFound('#signupSection')
+      .elementFound('#getStarted')
+      .elementFound('#helpBtn')
+      .elementIdNotFound(0, '#helpBtn', 'xpath')
+      .elementId(0, '#helpBtn')
+      .text(0, 'first')
+      .text(1, 'second');
+
+    var client = Nightwatch.client();
+    Api.init(client);
+
+    var page = client.api.page.simplePageObj();
+
+    page
+      .customGetSelectors('@loginAsString', '@loginCss', function callback(result) {
+        assert.equal(result[0], '#weblogin', 'resolved @loginAsString selector')
+        assert.equal(result[1], '#weblogin', 'resolved @loginAsString selector')
+
+        done();
+      })
+
+    Nightwatch.start()
   }
 
 });
