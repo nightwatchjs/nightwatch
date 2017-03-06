@@ -311,6 +311,25 @@ module.exports = {
       assert.equal(request.retryAttempts, 3);
     },
 
+    'test resetTerminated will reset locate strategy': function () {
+      var client = Nightwatch.createClient({});
+      var eq = assert.equal;
+
+      //simulate the client command useXpath
+      client.locateStrategy = 'xpath';
+      client.resetTerminated();
+      eq(client.locateStrategy, 'css selector');
+
+      client = Nightwatch.createClient({
+        use_xpath: true,
+      });
+
+      // simulate the client command useCss
+      client.locateStrategy = 'css selector';
+      client.resetTerminated();
+      eq(client.locateStrategy, 'xpath');
+    },
+
     'test session response with status success and no sessionId': function (done) {
       MockServer.addMock({
         url : '/wd/hub/session',
