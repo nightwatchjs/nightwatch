@@ -1,7 +1,7 @@
 {
   "name": "nightwatch",
   "description": "A node.js bindings implementation for selenium 2.0/webdriver",
-  "version": "0.9.12",
+  "version": "0.9.13",
   "author": {
     "name": "Andrei Rusu",
     "email": "andrei@nightwatchjs.org"
@@ -16,15 +16,15 @@
   },
   "dependencies": {
     "chai-nightwatch": "~0.1.x",
-    "ejs": "~0.8.3",
-    "lodash.clone": "^3.0.3",
-    "lodash.defaultsdeep": "^4.3.2",
-    "minimatch": "~0.2.14",
-    "mkpath": ">=0.1.0",
+    "ejs": "0.8.3",
+    "lodash.clone": "3.0.3",
+    "lodash.defaultsdeep": "4.3.2",
+    "minimatch": "3.0.3",
+    "mkpath": "1.0.0",
     "mocha-nightwatch": "2.2.9",
-    "optimist": ">=0.3.5",
-    "proxy-agent": ">=2.0.0",
-    "q": "^1.1.2"
+    "optimist": "0.6.1",
+    "proxy-agent": "2.0.0",
+    "q": "1.4.1"
   },
   "devDependencies": {
     "chai": "^3.2.0",
