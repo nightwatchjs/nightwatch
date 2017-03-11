@@ -91,8 +91,38 @@ module.exports = {
       });
     },
 
+    testRunSuiteRetriesWithLocateStrategy : function(done) {
+      var testsPath = path.join(__dirname, '../../sampletests/suiteretries/locate-strategy');
+      var globals = {
+        calls : 0
+      };
+
+      var runner = new Runner([testsPath], {
+        seleniumPort : 10195,
+        silent : true,
+        output : false,
+        persist_globals : true,
+        globals : globals,
+        skip_testcases_on_fail: false
+      }, {
+        output_folder : false,
+        start_session : true,
+        suite_retries: 1
+      }, function(err, results) {
+        if (err) {
+          throw err;
+        }
+        assert.equal(runner.currentTestSuite.client['@client'].locateStrategy, 'css selector');
+        done();
+      });
+
+      runner.run().catch(function(err) {
+        done(err);
+      });
+    },
+
     'test clear command queue when run with suiteRetries' : function(done) {
-      var testsPath = path.join(__dirname, '../../sampletests/suiteretries');
+      var testsPath = path.join(__dirname, '../../sampletests/suiteretries/sample');
       var globals = {
         calls : 0
       };
