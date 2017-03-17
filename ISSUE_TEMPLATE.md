@@ -1,6 +1,6 @@
 Thanks in advance for your contribution. Please follow the below steps in submitting an issue, as it will help us with addressing it qucker.
 
-Before submitting a new issues, try searching for a similar one here: https://github.com/nightwatchjs/nightwatch/search?type=Issues.
+Before submitting a new issue, try searching for a similar one here: https://github.com/nightwatchjs/nightwatch/search?type=Issues.
 
 - [ ] Please do not ask for assistance in the Issues list. Use the [Mailing List](https://groups.google.com/forum/#!forum/nightwatchjs) or [StackOverflow](http://stackoverflow.com/questions/tagged/nightwatch.js) to ask questions or seek help. 
 - [ ] Use a meaningful title that would clearly and concisely explain the problem. For instance:
