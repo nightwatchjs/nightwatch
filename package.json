@@ -1,7 +1,7 @@
 {
   "name": "nightwatch",
   "description": "A node.js bindings implementation for selenium 2.0/webdriver",
-  "version": "0.9.13",
+  "version": "0.9.14",
   "author": {
     "name": "Andrei Rusu",
     "email": "andrei@nightwatchjs.org"
@@ -21,7 +21,7 @@
     "lodash.defaultsdeep": "4.3.2",
     "minimatch": "3.0.3",
     "mkpath": "1.0.0",
-    "mocha-nightwatch": "2.2.9",
+    "mocha-nightwatch": "3.2.1",
     "optimist": "0.6.1",
     "proxy-agent": "2.0.0",
     "q": "1.4.1"
