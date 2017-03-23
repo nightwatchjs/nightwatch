@@ -4,7 +4,7 @@ var common = require('../../common.js');
 var CommandGlobals = require('../../lib/globals/commands.js');
 var Runner = common.require('runner/run.js');
 
-module.exports = {
+var tests = {
   'testRunWithHooks' : {
     before: function (done) {
       CommandGlobals.beforeEach.call(this, done);
@@ -174,7 +174,7 @@ module.exports = {
         persist_globals : true,
         globals: globals
       }, {
-        output_folder: false, 
+        output_folder: false,
         start_session: true
       }, function (err, results) {
         if (err) {
@@ -219,3 +219,42 @@ module.exports = {
     }
   }
 };
+
+var hooks = ['before', 'after', 'beforeEach', 'afterEach'];
+
+hooks.forEach(function (hook) {
+  var provideErrorTest = 'test async ' + hook + ' hook provide error';
+
+  tests.testRunWithHooks[provideErrorTest] = function (done) {
+    var provideErrorTestPath = path.join(__dirname,
+      '../../asynchookstests/async-provide-error/' + hook + '.js');
+    var expectedErrorMessage = 'Provided error ' + hook;
+
+    var globals = {
+      calls : 0,
+      asyncHookTimeout: 10
+    };
+
+    var runner = new Runner([provideErrorTestPath], {
+      seleniumPort: 10195,
+      silent: true,
+      output: false,
+      persist_globals : true,
+      globals: globals
+    }, {
+      output_folder: false,
+      start_session: true
+    }, function (err, results) {
+      assert.equal(err.message, expectedErrorMessage);
+      assert.ok(err instanceof Error);
+
+      done();
+    });
+
+    runner.run().catch(function(err) {
+      done(err);
+    });
+  };
+});
+
+module.exports = tests;
