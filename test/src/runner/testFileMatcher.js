@@ -166,6 +166,24 @@ module.exports = {
       });
 
       assert.ok(matched === true);
+    },
+
+    'tags filter: loading module with tags': function () {
+      var tags = ['other', 'login'];
+      var matched = FileMatcher.tags.match(path.join(__dirname, '/../../sampletests/tags/sample.js'), {
+        tags_filter : tags
+      });
+
+      assert.ok(matched === true);
+    },
+
+    'tags filter: not finding module with tags': function () {
+      var tags = ['foobar', 'login'];
+      var matched = FileMatcher.tags.match(path.join(__dirname, '/../../sampletests/tags/sample.js'), {
+        tags_filter : tags
+      });
+
+      assert.ok(matched === false);
     }
   }
 };
