@@ -50,3 +50,7 @@ The [Mailing List/Google Group](https://groups.google.com/forum/#!forum/nightwat
 Specific WebDriver setup guides can be found on the [Docs website](http://nightwatchjs.org/gettingstarted/#browser-drivers-setup). 
 Legacy Selenium drivers setup guides along with debugging instructions can be found on the [**Wiki**](https://github.com/nightwatchjs/nightwatch/wiki).
 
+### License
+
+Licensed under [the MIT license](https://opensource.org/licenses/MIT).
+
