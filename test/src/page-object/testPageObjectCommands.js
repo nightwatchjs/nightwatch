@@ -202,6 +202,75 @@ module.exports = {
       });
 
       this.client.start();
+    },
+
+    testDynamicPageObjectInline: function(done){
+      MockServer.addMock({
+        'url' : '/wd/hub/session/1352110219202/element/0/click',
+        'response' : JSON.stringify({
+          sessionId: '1352110219202',
+          status:0
+        })
+      }, true);
+      MockServer.addMock({
+        'url' : '/wd/hub/session/1352110219202/element/0/click',
+        'response' : JSON.stringify({
+          sessionId: '1352110219202',
+          status:0
+        })
+      }, true);
+      var page = this.client.api.page.simplePageObj();
+      page.click(page.$('@loginDynamicSingleArgInline', '#weblogin'), function callback(result){
+        assert.equal(result.status, 0);
+      }).click(page.$('@loginDynamicMultiArgsInline', '#web', 'login'), function callback(result){
+        assert.equal(result.status, 0);
+        done();
+      });
+
+      this.client.start();
+    },
+
+    testDynamicPageObjectNotInline: function(done){
+      MockServer.addMock({
+        'url' : '/wd/hub/session/1352110219202/element/0/click',
+        'response' : JSON.stringify({
+          sessionId: '1352110219202',
+          status:0
+        })
+      }, true);
+      MockServer.addMock({
+        'url' : '/wd/hub/session/1352110219202/element/0/click',
+        'response' : JSON.stringify({
+          sessionId: '1352110219202',
+          status:0
+        })
+      }, true);
+      var page = this.client.api.page.simplePageObj();
+      page.click(page.$('@loginDynamicArgsCss', '#weblogin'), function callback(result){
+        assert.equal(result.status, 0);
+      }).click(page.$('@loginDynamicArgsXpath', '//weblogin'), function callback(result){
+        assert.equal(result.status, 0);
+        done();
+      });
+
+      this.client.start();
+    },
+
+    testDynamicPageObjectNoArgs: function(done){
+      MockServer.addMock({
+        'url' : '/wd/hub/session/1352110219202/element/0/click',
+        'response' : JSON.stringify({
+          sessionId: '1352110219202',
+          status:0
+        })
+      }, true);
+      var page = this.client.api.page.simplePageObj();
+      page.click(page.$('@loginDynamicNoArgsInline'), function callback(result){
+        assert.equal(result.status, 0);
+        done();
+      });
+
+      this.client.start();
     }
   }
 };

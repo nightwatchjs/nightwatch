@@ -11,7 +11,12 @@ module.exports = {
     loginCss: { selector: '#weblogin' },
     loginIndexed: { selector: '#weblogin', index: 1 },
     loginXpath: { selector: '//weblogin', locateStrategy: 'xpath' },
-    loginId: { selector: 'weblogin', locateStrategy: 'id' }
+    loginId: { selector: 'weblogin', locateStrategy: 'id' },
+    loginDynamicNoArgsInline: function(){return '#weblogin';},
+    loginDynamicSingleArgInline: function(element){return '' + element;},
+    loginDynamicMultiArgsInline: function(arg1, arg2){return arg1 + arg2;},
+    loginDynamicArgsCss: {selector: function(element){return '' + element;}},
+    loginDynamicArgsXpath: {selector: function(element){return '' + element;}, locateStrategy:'xpath'}
   },
   sections: {
     signUp: {
@@ -29,15 +34,32 @@ module.exports = {
       }
     },
     propTest: {
-        selector: '#propTest',
-        props: function(){
-            var defaults = {};
-            defaults[ this.name ] = this.selector + ' Value';
-            return {
-                defaults: defaults
-            };
-        }
+      selector: '#propTest',
+      props: function(){
+          var defaults = {};
+          defaults[ this.name ] = this.selector + ' Value';
+          return {
+              defaults: defaults
+          };
+      }
+    },
+    dynamicNoArgs: {
+      selector: function () { return '#signupSection'; },
+      elements: { foo: '#helpBtn' }
+    },
+    dynamicSingleArg: {
+      selector: function (arg1) { return '' + arg1; },
+      elements: { bar: '#helpBtn' }
+    },
+    dynamicMultiArgs: {
+      selector: function (arg1, arg2) { return arg1 + arg2; },
+      elements: { foobar: '#helpBtn' }
+    },
+    dynamicMultiArgsDynamicElement: {
+      selector: function (arg1, arg2) { return arg1 + arg2; },
+      elements: { dynamicSingleArg: function (arg1) { return '' + arg1; } }
     }
+
   },
   commands: [testCommands],
   props: function(){
