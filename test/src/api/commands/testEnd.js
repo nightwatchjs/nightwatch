@@ -102,6 +102,63 @@ module.exports = {
       Nightwatch.start();
     },
 
+
+    'client.end() - with custom screenshot names': function (done) {
+      var client = Nightwatch.client();
+
+      client.results.failed = 1;
+      client.options.desiredCapabilities = {
+        browserName: 'chrome'
+      }
+      client.options.screenshots = {
+        enabled: true,
+        on_failure: true,
+        path: './screens',
+        getFileName: function(currentTest, isError, options) {
+          return [
+            currentTest.module,
+            options.desiredCapabilities.browserName,
+            currentTest.name + ".png"
+          ].join('/')
+        }
+      };
+
+      client.api.currentTest = {
+        module: 'test_module',
+        name: 'test_name'
+      };
+
+      nock('http://localhost:10195')
+        .delete('/wd/hub/session/1352110219202')
+        .reply(200, {
+          status: 0,
+          state: 'success',
+          value: null
+        });
+
+      nock('http://localhost:10195')
+        .get('/wd/hub/session/1352110219202/screenshot')
+        .reply(200, {
+          status: 0,
+          state: 'success',
+          value: '==content'
+        });
+
+      client.saveScreenshotToFile = function (file, content) {
+        assert.equal(content, '==content');
+        assert.ok(file.indexOf('screens/test_module/chrome/test_name.png') > -1);
+        setTimeout(function () {
+          done();
+        }, 10);
+      };
+
+      client.api.end(function callback(result) {
+        assert.equal(result.value, null);
+      });
+
+      Nightwatch.start();
+    },
+
     'client.end() - failures and screenshots disabled': function (done) {
       var client = Nightwatch.client();
 
