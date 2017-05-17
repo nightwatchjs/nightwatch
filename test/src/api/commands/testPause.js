@@ -4,7 +4,7 @@ var MochaTest = require('../../../lib/mochatest.js');
 
 module.exports = MochaTest.add('pause', {
 
-  'client.pause()' : function(done) {
+  'client.pause() - milliseconds' : function(done) {
     var client = Nightwatch.api();
 
     client.pause(10, function() {
@@ -12,5 +12,13 @@ module.exports = MochaTest.add('pause', {
     });
 
     Nightwatch.start();
+  },
+
+  'client.pause() - no milliseconds given' : function(done) {
+    var client = Nightwatch.api();
+
+    client.pause();
+
+    Nightwatch.start(done);
   }
 });
