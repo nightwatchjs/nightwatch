@@ -82,6 +82,10 @@ module.exports = {
         seleniumPort : 10195,
         silent : true,
         output : false,
+        desiredCapabilities: {
+          platformName: 'PLATFORM_NAME',
+          platformVersion: 'PLATFORM_VERSION'
+        },
         globals : {
           beforeEach : function(client, doneFn) {
             currentTestArray.push({
@@ -108,8 +112,8 @@ module.exports = {
         fs.readdir(src_folders[0], function(err, list) {
           try {
             assert.deepEqual(list, ['simple', 'tags'], 'The subfolders have been created.');
-            var simpleReportFile = 'output/simple/FIREFOX_TEST_TEST_sample.xml';
-            var tagsReportFile = 'output/tags/FIREFOX_TEST_TEST_sampleTags.xml';
+            var simpleReportFile = 'output/simple/FIREFOX_TEST_PLATFORM_NAME_PLATFORM_VERSION_sample.xml';
+            var tagsReportFile = 'output/tags/FIREFOX_TEST_PLATFORM_NAME_PLATFORM_VERSION_sampleTags.xml';
 
             assert.ok(fileExistsSync(simpleReportFile), 'The simple report file was not created.');
             assert.ok(fileExistsSync(tagsReportFile), 'The tags report file was not created.');
@@ -147,7 +151,12 @@ module.exports = {
       var runner = new Runner(src_folders, {
         seleniumPort : 10195,
         silent : true,
-        output : false
+        output : false,
+        desiredCapabilities: {
+          platformName: 'PLATFORM_NAME',
+          platformVersion: 'PLATFORM_VERSION',
+          platform:'WINDOWS_10'
+        }
       }, {
         output_folder : 'output',
         start_session : true,
@@ -156,7 +165,7 @@ module.exports = {
       }, function(err, results) {
 
         assert.strictEqual(err, null);
-        var sampleReportFile = path.join(__dirname, '../../../output/FIREFOX_TEST_TEST_sample.xml');
+        var sampleReportFile = path.join(__dirname, '../../../output/FIREFOX_TEST_WINDOWS_10_sample.xml');
 
         assert.ok(fileExistsSync(sampleReportFile), 'The sample file report file was not created.');
         fs.readFile(sampleReportFile, function(err, data) {
@@ -174,7 +183,6 @@ module.exports = {
         done(err);
       });
     },
-
     'test run unit tests with junit output and failures' : function(done) {
       var src_folders = [
         path.join(__dirname, '../../asynchookstests/unittest-failure')
