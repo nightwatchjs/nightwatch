@@ -5,6 +5,8 @@ var path = require('path');
 var assert = require('assert');
 var common = require('../../../common.js');
 
+var SAMPLE_TEST_COUNT = 24; // number of test modules in sampletests
+
 module.exports = {
   'test Parallel Execution' : {
 
@@ -98,7 +100,7 @@ module.exports = {
           done(err);
           return;
         }
-        assert.equal(self.allArgs.length, 22);
+        assert.equal(self.allArgs.length, SAMPLE_TEST_COUNT);
         assert.ok(path.join('sampletests', 'async', 'sample_1') in runner.runningProcesses);
         assert.ok(path.join('sampletests', 'before-after', 'sampleSingleTest_2') in runner.runningProcesses);
 
@@ -156,7 +158,7 @@ module.exports = {
 
       runner.setup({}, function () {
         assert.ok(!runner.isParallelMode());
-        assert.equal(self.allArgs.length, 22);
+        assert.equal(self.allArgs.length, SAMPLE_TEST_COUNT);
         done();
       });
 
@@ -184,7 +186,7 @@ module.exports = {
           return;
         }
         assert.ok(!runner.isParallelMode());
-        assert.equal(self.allArgs.length, 22);
+        assert.equal(self.allArgs.length, SAMPLE_TEST_COUNT);
         done();
       });
 
