@@ -241,6 +241,45 @@ module.exports = {
       runner.run().catch(function(err) {
         done(err);
       });
+    },
+    'test errors are added to both suite and test case' : function(done) {
+      var testsPath = path.join(__dirname, '../../sampletests/witherrors');
+
+      var runner = new Runner([testsPath], {
+        seleniumPort: 10195,
+        silent: true,
+        output: false
+      }, {
+        output_folder: false,
+        start_session: true
+      }, function (err, results) {
+        if (err) {
+          throw err;
+        }
+
+        var errorText1 = 'some url callback error';
+        var errorText2 = 'some error';
+        assert.equal(results.errors, 2);
+        assert.equal(results.errmessages.length, 2);
+        assert.ok(results.errmessages[0].indexOf(errorText1) !== -1);
+        assert.ok(results.errmessages[1].indexOf(errorText2) !== -1);
+
+        var errorInCallback = results.modules.errorInCallback.completed.errorInCallback;
+        assert.equal(errorInCallback.errors, 1);
+        assert.equal(errorInCallback.errmessages.length, 1);
+        assert.ok(errorInCallback.errmessages[0].indexOf(errorText1) !== -1);
+
+        var sample = results.modules.sample.completed.sample;
+        assert.equal(sample.errors, 1);
+        assert.equal(sample.errmessages.length, 1);
+        assert.ok(sample.errmessages[0].indexOf(errorText2) !== -1);
+
+        done();
+      });
+
+      runner.run().catch(function (err) {
+        done(err);
+      });
     }
   }
 };
