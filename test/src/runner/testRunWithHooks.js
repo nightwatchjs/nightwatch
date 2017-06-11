@@ -1,5 +1,7 @@
 var path = require('path');
 var assert = require('assert');
+var xmlParser = require('xml2json');
+var fs = require('fs');
 var common = require('../../common.js');
 var CommandGlobals = require('../../lib/globals/commands.js');
 var Runner = common.require('runner/run.js');
@@ -189,7 +191,7 @@ var tests = {
       });
     },
 
-    'test async afterEach hook timeout error': function (done) {
+    'test async afterEach hook timeout error': function(done) {
       var testsPath = path.join(__dirname, '../../asynchookstests/afterEach-timeout');
       var globals = {
         calls : 0,
@@ -220,19 +222,31 @@ var tests = {
   }
 };
 
-var hooks = ['before', 'after', 'beforeEach', 'afterEach'];
-
-hooks.forEach(function (hook) {
-  var provideErrorTest = 'test async ' + hook + ' hook provide error';
+[
+  'before',
+  'beforeAsync',
+  'beforeWithClient',
+  'beforeEach',
+  'beforeEachAsync',
+  'beforeEachWithClient',
+  'beforeEachAsyncWithClient',
+  'beforeEachAsyncWithClientMultiple',
+  'afterEach',
+  'afterEachAsync',
+  'afterEachWithClient',
+  'after',
+  'afterAsync',
+  'afterWithClient'
+].forEach(function (hook) {
+  var provideErrorTest = 'test run with ' + hook + ' hook and explicit callback error';
 
   tests.testRunWithHooks[provideErrorTest] = function (done) {
-    var provideErrorTestPath = path.join(__dirname,
-      '../../asynchookstests/async-provide-error/' + hook + '.js');
+    var provideErrorTestPath = path.join(__dirname, '../../asynchookstests/async-provide-error/' + hook + '.js');
     var expectedErrorMessage = 'Provided error ' + hook;
 
     var globals = {
       calls : 0,
-      asyncHookTimeout: 10
+      asyncHookTimeout: 100
     };
 
     var runner = new Runner([provideErrorTestPath], {
@@ -242,11 +256,32 @@ hooks.forEach(function (hook) {
       persist_globals : true,
       globals: globals
     }, {
-      output_folder: false,
+      output_folder: path.join(__dirname, '../../hooks_output'),
       start_session: true
     }, function (err, results) {
-      assert.equal(err.message, expectedErrorMessage);
-      assert.ok(err instanceof Error);
+      var reportFile = path.join(__dirname, '../../hooks_output',
+        (['before', 'beforeAsync'].indexOf(hook) === -1 ? 'FIREFOX_TEST_TEST_': '') + hook + '.xml');
+
+      var xml = fs.readFileSync(reportFile).toString();
+      var testReport = JSON.parse(xmlParser.toJson(xml));
+
+      if (hook.indexOf('beforeEach') === 0) {
+        assert.strictEqual(results.assertions, 0);
+      }
+
+      assert.strictEqual(testReport.testsuites.errors, '1');
+      assert.strictEqual(testReport.testsuites.testsuite.name, hook);
+      assert.strictEqual(testReport.testsuites.testsuite.errors, '1');
+      assert.equal(typeof testReport.testsuites.testsuite['system-err'], 'string');
+
+      if (hook.indexOf('afterEach') === 0) {
+        assert.ok(testReport.testsuites.testsuite['system-err'].indexOf('Error: ' + expectedErrorMessage) > 0);
+      } else {
+        assert.strictEqual(testReport.testsuites.testsuite['system-err'].indexOf('Error: ' + expectedErrorMessage), 0);
+      }
+
+      assert.strictEqual(results.modules[hook].errors, 1);
+      assert.equal(results.errmessages.length, 1);
 
       done();
     });
