@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "chai-nightwatch": "~0.1.x",
+    "debug": "^2.6.0",
     "ejs": "0.8.3",
     "lodash.clone": "3.0.3",
     "lodash.defaultsdeep": "4.3.2",
