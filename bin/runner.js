@@ -7,7 +7,7 @@ var Utils = require('../lib/util/utils.js');
 try {
   Nightwatch.cli(function(argv) {
     argv._source = argv['_'].slice(0);
-    Nightwatch.runner(argv, function () {
+    Nightwatch.runner(argv, function() {
       process.exit(0);
     });
   });
