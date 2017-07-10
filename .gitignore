@@ -13,3 +13,4 @@ tests_output
 \#*
 \.#*
 output
+/test/hooks_output
