@@ -240,10 +240,11 @@ module.exports = MochaTest.add('element actions', {
     var protocol = this.protocol;
 
     var command = protocol.elementIdScreenshot('TEST_ELEMENT', false, function callback() {
-      done()
-    })
+      done();
+    });
 
     assert.equal(command.request.method, 'GET');
+    
     assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/screenshot?scroll=false');
   }
 });
