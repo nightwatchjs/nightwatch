@@ -234,5 +234,17 @@ module.exports = MochaTest.add('element actions', {
     assert.equal(command.request.method, 'POST');
     assert.equal(command.data, '{"value":["t","e","s","t"]}');
     assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/value');
+  },
+
+  textElementIdScreenshot: function(done) {
+    var protocol = this.protocol;
+
+    var command = protocol.elementIdScreenshot('TEST_ELEMENT', false, function callback() {
+      done();
+    });
+
+    assert.equal(command.request.method, 'GET');
+    
+    assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/screenshot?scroll=false');
   }
 });
