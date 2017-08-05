@@ -311,6 +311,32 @@ module.exports = {
       assert.equal(runner.argv.testcase, 'testCase');
     },
 
+    testRunMultipleTestsWithTestcaseOption : function() {
+      mockery.registerMock('fs', {
+        statSync : function(file) {
+          if (file == 'demoTest' || file == './custom.json') {
+            return {
+              isFile : function() {
+                return true;
+              }
+            };
+          }
+          throw new Error('Does not exist');
+        }
+      });
+
+      var CliRunner = common.require('runner/cli/clirunner.js');
+      var runner = new CliRunner({
+        config : './custom.json',
+        env : 'default',
+        test : 'demoTest',
+        testcase : 'testCase,testCase2'
+      }).init();
+
+      runner.getTestSource();
+      assert.equal(runner.argv.testcase, 'testCase,testCase2');
+    },
+
     testRunTestsWithTestcaseOptionAndSingleTestSource : function() {
       mockery.registerMock('fs', {
         statSync : function(file) {

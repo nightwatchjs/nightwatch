@@ -117,6 +117,34 @@ module.exports = {
       });
     },
 
+    testRunTestcaseMultiple : function(done) {
+      var Runner = common.require('runner/run.js');
+      var testsPath = path.join(__dirname, '../../sampletests/before-after/syncBeforeAndAfter.js');
+      var runner = new Runner(testsPath, {
+        silent : true,
+        output : false,
+        globals : {
+        }
+      }, {
+        output_folder : false,
+        start_session : true,
+        testcase : 'demoTestSyncOne,demoTestSyncTwo'
+      }, function(err, results) {
+        if (err) {
+          throw err;
+        }
+
+        assert.ok('demoTestSyncOne' in results.modules.syncBeforeAndAfter.completed);
+        assert.ok('demoTestSyncTwo' in results.modules.syncBeforeAndAfter.completed);
+
+        done();
+      });
+
+      runner.run().catch(function(err) {
+        done(err);
+      });
+    },
+
     testRunTestcaseInvalid : function(done) {
       var Runner = common.require('runner/run.js');
       var testsPath = path.join(__dirname, '../../sampletests/before-after/syncBeforeAndAfter.js');
@@ -130,6 +158,30 @@ module.exports = {
         output_folder : false,
         start_session : true,
         testcase : 'Unknown'
+      }, function(err, results) {
+        assert.equal(err.message, 'Error: "Unknown" is not a valid testcase in the current test suite.');
+
+        done();
+      });
+
+      runner.run().catch(function(err) {
+        done(err);
+      });
+    },
+
+    testRunTestcaseMultipleOneInvalid : function(done) {
+      var Runner = common.require('runner/run.js');
+      var testsPath = path.join(__dirname, '../../sampletests/before-after/syncBeforeAndAfter.js');
+
+      var runner = new Runner(testsPath, {
+        silent : true,
+        output : false,
+        globals : {
+        }
+      }, {
+        output_folder : false,
+        start_session : true,
+        testcase : 'demoTestSyncOne,Unknown'
       }, function(err, results) {
         assert.equal(err.message, 'Error: "Unknown" is not a valid testcase in the current test suite.');
 
