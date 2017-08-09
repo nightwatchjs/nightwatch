@@ -31,7 +31,7 @@ module.exports = MochaTest.add('client.execute', {
       });
 
     assert.equal(command.data, '{"script":"var passedArgs = Array.prototype.slice.call(arguments,0); ' +
-      'return function () {return test();}.apply(window, passedArgs);","args":["arg1"]}');
+      'return (function () {return test();}).apply(window, passedArgs);","args":["arg1"]}');
   },
 
   testExecuteFunctionNoArgs : function(done) {
@@ -43,7 +43,7 @@ module.exports = MochaTest.add('client.execute', {
       });
 
     assert.equal(command.data, '{"script":"var passedArgs = Array.prototype.slice.call(arguments,0); ' +
-      'return function () {return test();}.apply(window, passedArgs);","args":[]}');
+      'return (function () {return test();}).apply(window, passedArgs);","args":[]}');
   },
 
   testExecuteAsyncFunction : function() {
@@ -52,7 +52,7 @@ module.exports = MochaTest.add('client.execute', {
     var command = protocol.executeAsync(function() {return test();}, ['arg1']);
 
     assert.equal(command.data, '{"script":"var passedArgs = Array.prototype.slice.call(arguments,0); ' +
-      'return function () {return test();}.apply(window, passedArgs);","args":["arg1"]}');
+      'return (function () {return test();}).apply(window, passedArgs);","args":["arg1"]}');
   },
 
   testExecuteAsync : function(done) {
