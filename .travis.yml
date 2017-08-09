@@ -1,7 +1,10 @@
 language: node_js
 sudo: false
+dist: trusty
 node_js:
-  - "0.10"
+  - "stable"
+  - 4
+  - 6
 
 before_script:
   - npm install -g grunt-cli
@@ -15,3 +18,7 @@ script:
 after_success:
   # - cat ./lib-cov/lcov.info |coveralls
 
+cache:
+ directories:
+   - $HOME/.npm
+   - node_modules
