@@ -66,7 +66,7 @@ module.exports = {
         output_folder: false,
         start_session: true
       }, function (err, results) {
-        assert.equal(globals.calls, 12);
+        assert.equal(globals.calls, 10);
         assert.equal(Object.keys(results.modules).length, 4);
         assert.ok('sample' in results.modules);
         assert.ok('sampleSingleTest' in results.modules);

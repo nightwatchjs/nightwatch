@@ -26,7 +26,7 @@ module.exports = {
 
       client.on('selenium:session_create', function (sessionId, request) {
         var authorization = new Buffer('testusername:123456').toString('base64');
-        assert.equal(request.request._headers['authorization'], 'Basic ' + authorization, 'Testing if the Authorization header is set correctly');
+        assert.equal(request.reqOptions.headers['Authorization'], 'Basic ' + authorization, 'Testing if the Authorization header is set correctly');
         done();
       });
 
