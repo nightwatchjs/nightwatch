@@ -60,14 +60,14 @@ module.exports = function(grunt) {
       }
     },
 
-    npmrelease: {
+    release: {
       options: {
         push: true,
         bump : true,
         pushTags: true,
         npm: true,
         silent : false,
-        commitMessage : 'bump version number to %s'
+        commitMessage : 'bump version number to <%= version %>'
       },
       patch : {
 
@@ -95,7 +95,7 @@ module.exports = function(grunt) {
 
   });
 
-  grunt.loadNpmTasks('grunt-npm-release');
+  grunt.loadNpmTasks('grunt-release');
   grunt.loadNpmTasks('grunt-jsonlint');
   grunt.loadNpmTasks('grunt-complexity');
 
@@ -103,7 +103,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
 
   // Default task(s).
-  grunt.registerTask('release', ['npmrelease']);
   grunt.registerTask('default', ['jshint', 'jsonlint']);
   grunt.registerTask('all', ['jshint', 'jsonlint', 'complexity']);
 };
