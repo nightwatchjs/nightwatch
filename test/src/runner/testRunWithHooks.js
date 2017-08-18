@@ -102,7 +102,7 @@ var tests = {
         if (err) {
           throw err;
         }
-        assert.equal(globals.calls, 17);
+        assert.equal(globals.calls, 15);
         assert.ok('sampleWithBeforeAndAfter' in results.modules);
 
         var result = results.modules.sampleWithBeforeAndAfter.completed;

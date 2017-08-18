@@ -54,7 +54,7 @@ module.exports = {
         if (err) {
           throw err;
         }
-        assert.equal(globals.calls, 17);
+        assert.equal(globals.calls, 15);
         assert.equal(beforeEachCount, 3);
         assert.equal(afterEachCount, 3);
         done();
@@ -100,7 +100,7 @@ module.exports = {
         }
         assert.equal(beforeEachCount, 3);
         assert.equal(afterEachCount, 3);
-        assert.equal(globals.calls, 17);
+        assert.equal(globals.calls, 15);
         done();
       });
 
@@ -144,7 +144,7 @@ module.exports = {
         if (err) {
           throw err;
         }
-        assert.equal(globals.calls, 17);
+        assert.equal(globals.calls, 15);
         assert.equal(beforeEachCount, 3);
         assert.equal(afterEachCount, 3);
         done();
