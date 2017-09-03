@@ -1,6 +1,6 @@
 {
   "name": "nightwatch",
-  "description": "A node.js bindings implementation for selenium 2.0/webdriver",
+  "description": "Automated and unit testing framework, using the WebDriver API protocol.",
   "version": "0.9.16",
   "author": {
     "name": "Andrei Rusu",
@@ -29,6 +29,7 @@
   "devDependencies": {
     "chai": "^3.2.0",
     "coveralls": "latest",
+    "eslint": "^3.17.1",
     "grunt": "~0.4.4",
     "grunt-complexity": "^0.1.7",
     "grunt-contrib-jshint": "~0.10.0",
@@ -54,6 +55,18 @@
     "mocha-lcov-coverage": "jscoverage lib --exclude *.ejs,*.json && NIGHTWATCH_COV=1 ./node_modules/.bin/mocha test/src --reporter mocha-lcov-reporter > lib-cov/coverage.lcov",
     "test": "./node_modules/.bin/mocha test/src",
     "unit-tests": "./bin/nightwatch -c test/nightwatch.json"
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "env": {
+      "browser": false,
+      "node": true
+    },
+    "rules": {
+      "eqeqeq": "off",
+      "curly": ["error", "all"],
+      "quotes": ["error", "single"]
+    }
   },
   "files": [
     "bin",
