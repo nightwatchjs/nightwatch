@@ -20,7 +20,7 @@ module.exports = {
         env : 'default',
         output : 'output',
         skiptags : 'home,arctic',
-        tag : 'danger'
+        tag : ['danger', 'warning']
       }).init();
 
       assert.deepEqual(runner.settings.src_folders, ['tests']);
@@ -30,7 +30,7 @@ module.exports = {
         custom_assertions_path: '',
         page_objects_path: '',
         output: true,
-        tag_filter: 'danger',
+        tag_filter: [ 'danger', 'warning' ],
         skiptags: [ 'home', 'arctic' ]
       }});
 
@@ -38,6 +38,16 @@ module.exports = {
       assert.equal(runner.parallelMode, false);
       assert.equal(runner.manageSelenium, false);
       assert.equal(runner.startSession, true);
+    },
+
+    testCommaSeparatedTagOption: function() {
+      var CliRunner = common.require('runner/cli/clirunner.js');
+      var runner = new CliRunner({
+        tag : 'danger,warning'
+      }).init();
+
+      assert.deepEqual(runner.settings.src_folders, ['tests']);
+      assert.deepEqual(runner.settings.test_settings.default.tag_filter, [ 'danger', 'warning' ])
     },
 
     testSetOutputFolder : function() {
