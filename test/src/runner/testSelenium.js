@@ -110,5 +110,39 @@ module.exports = {
         done();
       });
     }
-  }
+  },
+  
+  testStartServerWithJavaPath : function(done) {
+      this.mockedSpawn.setStrategy(function (command, args, opts) {
+        assert.deepEqual(opts, {stdio : ['ignore', 'pipe', 'pipe']});
+        if (command !== '/java8/bin/java') {
+          return null;
+        }
+        return function (cb) {
+          this.stdout.write('Started org.openqa.jetty.jetty.Server');
+          return cb(0); // and exit 0
+        };
+      });
+
+      Selenium.startServer({
+        selenium : {
+          java_path : '/java8/bin/',
+          start_process : true,
+          server_path : './selenium.jar',
+          log_path : false,
+          cli_args : {
+            'webdriver.test.property' : 'test',
+            'webdriver.empty.property' : '',
+            '-DpropName' : '1'
+          }
+        }
+      }, function(error, process) {
+        assert.equal(process.command, 'java');
+        assert.deepEqual(process.args, ['-DpropName=1', '-Dwebdriver.test.property=test', '-jar', './selenium.jar', '-port', 4444]);
+        assert.equal(process.host, undefined);
+        assert.equal(process.port, 4444);
+        assert.equal(error, null);
+        done();
+      });
+    },
 };
