@@ -144,5 +144,5 @@ module.exports = {
         assert.equal(error, null);
         done();
       });
-    },
+    }
 };
