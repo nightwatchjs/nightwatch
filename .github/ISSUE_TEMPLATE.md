@@ -1,3 +1,8 @@
+<!--
+
+Before submitting a issue
+==================================
+
 Thanks in advance for your contribution. Please follow the below steps in submitting an issue, as it will help us with addressing it quicker.
 
 Before submitting a new issue, try searching for a similar one here: https://github.com/nightwatchjs/nightwatch/search?state=open&type=Issues.
@@ -10,3 +15,14 @@ Before submitting a new issue, try searching for a similar one here: https://git
 - [ ] Include the verbose output, if possible (run nightwatch with --verbose argument);
 - [ ] Also include: Nightwatch version, Node.js version, OS version and Selenium server version (including any driver version if applicable);
 - [ ] Please try to avoid sending issues you have with Selenium (e.g. works perfectly in ChromeDriver but not in Safari)
+
+Contributing to Nightwatch
+==================================
+
+Please see here for requesting a feature or submitting a pull request.
+
+- <https://github.com/nightwatchjs/nightwatch/blob/master/.github/CONTRIBUTING.md>
+
+-->
+
+
