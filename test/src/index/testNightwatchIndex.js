@@ -3,6 +3,7 @@ var path   = require('path');
 var fs     = require('fs');
 var mockery = require('mockery');
 var assert = require('assert');
+var common = require('../../common.js');
 
 var MockServer  = require('../../lib/mockserver.js');
 var Nightwatch = require('../../lib/nightwatch.js');
@@ -20,7 +21,7 @@ module.exports = {
         done();
       });
     },
-
+/*
     'Test initialization': function (done) {
       var client = Nightwatch.createClient({});
 
@@ -200,7 +201,7 @@ module.exports = {
         done();
       });
     },
-
+*/
     testSetOptions: function () {
       var client = Nightwatch.createClient({
         use_xpath: true,
@@ -208,7 +209,7 @@ module.exports = {
       });
       var eq = assert.equal;
 
-      eq(client.context, null);
+      /*
       eq(client.errors.length, 0);
       assert.deepEqual(client.results, {
         passed: 0,
@@ -217,27 +218,66 @@ module.exports = {
         skipped: 0,
         tests: []
       });
-
+      */
       eq(client.locateStrategy, 'xpath');
       eq(client.options.use_xpath, true);
       eq(client.api.options.skip_testcases_on_fail, true);
       eq(client.api.launchUrl, '/home');
       eq(client.api.launch_url, '/home');
+    },
 
+    testSetWebdriverOptionsDefaults: function () {
+      var client = Nightwatch.createClientDefaults();
+      var eq = assert.equal;
+
+      eq(client.options.webdriver.host, 'localhost');
+      eq(client.options.webdriver.port, 4444);
+      eq(client.options.webdriver.ssl, false);
       eq(client.options.screenshots.enabled, false);
       eq(typeof client.options.screenshots.on_error, 'undefined');
       eq(client.api.options.screenshots, false);
+      eq(client.options.start_session, true);
+      eq(client.options.end_session_on_fail, true);
+    },
+
+    testSetWebdriverOptions: function () {
+      var client = Nightwatch.createClient({
+        webdriver: {
+          host: '127.0.0.1',
+          port: 4445,
+          ssl: false,
+          timeout_options: {
+            timeout: 10000,
+            retry_attempts: 3
+          },
+          default_path_prefix: '',
+          username: 'test-user',
+          access_key: 'test-key'
+        }
+      });
+
+      var eq = assert.equal;
+      var HttpRequest = common.require('http/request.js');
+      var request = new HttpRequest({});
+
+      eq(request.reqOptions.host, '127.0.0.1');
+      eq(request.reqOptions.port, 4445);
+      eq(request.hostname, '');
+      eq(request.defaultPathPrefix, '');
     },
 
     testSetOptionsCredentials: function () {
       var client = Nightwatch.createClient({
         username: 'test-user',
-        accesKey: 'test-access-key'
+        accessKey: 'test-access-key'
       });
+
       var eq = assert.equal;
 
+      eq(client.options.username, 'test-user');
       eq(client.api.options.username, 'test-user');
       eq(client.api.options.accessKey, 'test-access-key');
+      eq(client.options.accessKey, 'test-access-key');
     },
 
     testSetOptionsScreenshots: function () {
@@ -286,9 +326,12 @@ module.exports = {
 
       var eq = assert.equal;
       eq(client.options.end_session_on_fail, true);
+      eq(client.session.endSessionOnFail, true);
+
       client.endSessionOnFail(false);
       eq(client.endSessionOnFail(), false);
       eq(client.options.end_session_on_fail, false);
+      eq(client.session.endSessionOnFail, false);
     },
 
     testSetRequestTimeoutOptions: function () {
@@ -304,7 +347,12 @@ module.exports = {
         retry_attempts : 3
       });
 
-      var common = require('../../common.js');
+      assert.deepEqual(client.options.webdriver.timeout_options, {
+        timeout : 10000,
+        retry_attempts : 3
+      });
+
+
       var HttpRequest = common.require('http/request.js');
       var request = new HttpRequest({});
       assert.equal(request.timeout, 10000);
@@ -343,5 +391,7 @@ module.exports = {
 
       client.startSession();
     }
+
   }
+
 };

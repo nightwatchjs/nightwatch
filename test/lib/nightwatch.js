@@ -4,6 +4,7 @@ var nightwatch = common.require('index.js');
 module.exports = new function () {
   var _client = null;
 
+
   this.createClient = function(options) {
     var opts = {
       seleniumPort : 10195,
@@ -21,6 +22,10 @@ module.exports = new function () {
     }
 
     return nightwatch.client(opts);
+  };
+
+  this.createClientDefaults = function() {
+    return nightwatch.client();
   };
 
   this.init = function(options, callback) {
