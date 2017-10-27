@@ -15,11 +15,7 @@ module.exports = new function () {
       }
     };
 
-    if (options) {
-      for (var prop in options) {
-        opts[prop] = options[prop];
-      }
-    }
+    Object.assign(opts, options);
 
     return nightwatch.client(opts);
   };
