@@ -1,12 +1,11 @@
-var common = require('../common.js');
-var nightwatch = common.require('index.js');
+const common = require('../common.js');
+const nightwatch = common.require('index.js');
 
 module.exports = new function () {
-  var _client = null;
+  let _client = null;
 
-
-  this.createClient = function(options) {
-    var opts = {
+  this.createClient = function(options = {}) {
+    let opts = {
       seleniumPort : 10195,
       silent : true,
       output : false,
@@ -27,12 +26,12 @@ module.exports = new function () {
   this.init = function(options, callback) {
     _client = this.createClient(options);
 
-    _client.once('selenium:session_create', function(id) {
+    _client.once('nightwatch:session.create', function(id) {
       if (callback) {
         callback();
       }
     })
-    .once('error', function() {
+    .once('nightwatch:session.error', function() {
       if (callback) {
         callback();
       }
@@ -51,9 +50,9 @@ module.exports = new function () {
   };
 
   this.start = function(done) {
-    _client.removeAllListeners('nightwatch:finished');
+    _client.removeAllListeners('nightwatch:session.finished');
     if (done) {
-      _client.once('nightwatch:finished', function(results, errors) {
+      _client.once('nightwatch:session.finished', function(results, errors) {
         done();
       });
     }

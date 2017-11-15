@@ -8,7 +8,8 @@ module.exports = {
   'test HttpRequestTimeout' : {
     beforeEach : function(done) {
       this.server = MockServer.init();
-      Logger.disable();
+      Logger.setOutputEnabled(false);
+
       this.server.on('listening', function() {
         done();
       });
@@ -30,17 +31,21 @@ module.exports = {
 
       var options = {
         path: '/:sessionId/element',
-        selenium_port: 10195,
         method: 'GET',
         sessionId: '123456'
       };
 
-      HttpRequest.setTimeout(50);
+      HttpRequest.globalSettings = {
+        timeout: 50,
+        default_path: '/wd/hub',
+        port: 10195
+      };
 
       var request = new HttpRequest(options);
 
-      request.on('error', function (err, res) {
-        assert.ok(res instanceof Error);
+      request.on('error', function (err) {
+        assert.equal(err.code, 'ECONNRESET');
+        assert.ok(err instanceof Error);
         done();
       }).on('success', function(result, response) {
         done(new Error('Request should have timed out.'));
@@ -67,8 +72,13 @@ module.exports = {
         sessionId: '10000000'
       };
 
-      HttpRequest.setTimeout(50);
-      HttpRequest.setRetryAttempts(1);
+      HttpRequest.globalSettings = {
+        timeout: 50,
+        retry_attempts: 1,
+        default_path: '/wd/hub',
+        port: 10195
+      };
+
 
       var request = new HttpRequest(options);
       assert.equal(request.retryAttempts, 1);
@@ -77,12 +87,12 @@ module.exports = {
         .on('error', function(res, err) {
           done(err);
         })
-        .on('success', function (result) {
+        .on('success', function () {
           assert.strictEqual(request.retryAttempts, 0);
+          assert.strictEqual(request.retryCount, 1);
           done();
         })
         .send();
     }
   }
-
 };

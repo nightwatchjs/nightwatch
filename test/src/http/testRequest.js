@@ -1,20 +1,22 @@
-var common = require('../../common.js');
-var HttpRequest = common.require('http/request.js');
-var Logger = common.require('util/logger');
-var nock = require('nock');
-var assert = require('assert');
-var mockery = require('mockery');
+const nock = require('nock');
+const assert = require('assert');
+const mockery = require('mockery');
+
+const common = require('../../common.js');
+const HttpRequest = common.require('http/request.js');
+const HttpOptions = common.require('http/options.js');
+const Logger = common.require('util/logger');
 
 module.exports = {
   'test HttpRequest' : {
     beforeEach: function (callback) {
       mockery.enable();
-      Logger.disable();
-      HttpRequest.setSeleniumPort(4444);
-      HttpRequest.setCredentials({
-        username: null,
-        key: null
-      });
+      Logger.setOutputEnabled(false);
+
+      HttpRequest.globalSettings = {
+        default_path: '/wd/hub'
+      };
+
       nock('http://localhost:4444')
         .post('/wd/hub/session')
         .reply(200, {
@@ -31,9 +33,6 @@ module.exports = {
     },
 
     afterEach: function () {
-      HttpRequest.setTimeout(60000) // back to default after these tests
-      HttpRequest.setRetryAttempts(0);
-
       mockery.disable();
     },
 
@@ -62,8 +61,8 @@ module.exports = {
       assert.equal(opts.port, 4444);
       assert.equal(opts.method, 'POST');
       assert.deepEqual(opts.headers, {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Content-Length': data.length
+        'content-type': 'application/json; charset=utf-8',
+        'content-length': data.length
       });
     },
 
@@ -77,25 +76,27 @@ module.exports = {
         }
       };
 
-      HttpRequest.setCredentials({
-        username: 'test',
-        key: 'test-key'
-      });
+      HttpRequest.globalSettings = {
+        credentials: {
+          username: 'test',
+          key: 'test-key'
+        }
+      };
 
       var request = new HttpRequest(options);
       request.on('success', function () {
         done();
       }).send();
 
+
       var authHeader = new Buffer('test:test-key').toString('base64');
-      assert.ok('Authorization' in request.reqOptions.headers);
-      assert.equal(request.reqOptions.headers.Authorization, 'Basic ' + authHeader);
+      assert.equal(request.httpRequest.getHeader('Authorization'), 'Basic ' + authHeader);
     },
 
     testSendPostRequestWithProxy: function (done) {
       function ProxyAgentMock(uri) {
         this.proxy = uri;
-      };
+      }
 
       mockery.registerMock('proxy-agent', ProxyAgentMock);
 
@@ -108,7 +109,9 @@ module.exports = {
         }
       };
 
-      HttpRequest.setProxy('http://localhost:8080');
+      HttpRequest.globalSettings = {
+        proxy: 'http://localhost:8080'
+      };
 
       var request = new HttpRequest(options);
       request.on('success', function () {
@@ -119,7 +122,9 @@ module.exports = {
       assert.ok('agent' in opts);
       assert.ok('proxy' in opts.agent);
 
-      HttpRequest.setProxy(null);
+      HttpRequest.globalSettings = {
+        proxy: null
+      };
     },
 
     testResponseWithRedirect: function (done) {
@@ -135,7 +140,7 @@ module.exports = {
       };
       var request = new HttpRequest(options);
       request.on('success', function (result, response, redirected) {
-        assert.ok(redirected);
+        assert.strictEqual(redirected, true);
         done();
       }).send();
 
@@ -153,32 +158,35 @@ module.exports = {
       };
 
       var request = new HttpRequest(options);
-      assert.equal(request.reqOptions.headers.Accept, 'application/json');
-      assert.equal(request.reqOptions.path, '/wd/hub/123456/element');
-
       request.on('success', function (result) {
         done();
       }).send();
+
+      assert.equal(request.httpRequest.getHeader('Accept'), 'application/json');
+      assert.equal(request.reqOptions.path, '/wd/hub/123456/element');
     },
 
     testErrorResponse: function (done) {
       nock('http://localhost:4444')
         .post('/wd/hub/error')
         .reply(500, {
-          status: -1,
-          stackTrace: '{}',
-          message: 'Unable to locate element'
+          value: {
+            status: -1,
+            stackTrace: '{}',
+            message: 'Unable to locate element'
+          }
         });
 
       var options = {
-        path: '/redirect',
+        path: '/wd/hub/error',
+        method: 'POST',
         data: {}
       };
 
       var request = new HttpRequest(options);
       request.on('error', function (result, response, screenshotContent) {
-        assert.ok(typeof result.stackTrace == 'undefined');
-        assert.ok(typeof result.message == 'undefined');
+        assert.equal(typeof result.stackTrace, 'undefined');
+        assert.equal(typeof result.message, 'undefined');
         done();
       }).send();
 
@@ -188,14 +196,17 @@ module.exports = {
       nock('http://localhost:4444')
         .post('/wd/hub/error')
         .reply(500, {
-          status: -1,
-          stackTrace: '{}',
-          localizedMessage: 'no such element',
-          message: 'no such element'
+          value: {
+            status: -1,
+            stackTrace: '{}',
+            localizedMessage: 'no such element',
+            message: 'no such element'
+          }
         });
 
       var options = {
-        path: '/redirect',
+        path: '/wd/hub/error',
+        method: 'POST',
         data: {}
       };
 
@@ -206,7 +217,6 @@ module.exports = {
         assert.ok(typeof result.message == 'undefined');
         done();
       }).send();
-
     }
   }
 

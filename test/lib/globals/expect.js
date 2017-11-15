@@ -3,17 +3,24 @@ var Globals = require('../globals.js');
 var Nightwatch = require('../nightwatch.js');
 
 module.exports = {
-  beforeEach: function (done) {
+  beforeEach(opts, done) {
+
+    if (arguments.length === 1) {
+      done = arguments[0];
+      opts = {};
+    }
+
     Globals.interceptStartFn();
     Nocks.cleanAll().createSession();
-    Nightwatch.init({
-    }, function () {
+
+    Nightwatch.init(opts, function () {
       done();
     });
+
     this.client = Nightwatch.client();
   },
 
-  afterEach : function() {
+  afterEach() {
     Nocks.deleteSession();
     Globals.restoreStartFn();
   }

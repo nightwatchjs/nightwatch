@@ -1,5 +1,7 @@
 module.exports = {
-  command : function() {
-    return this;
+  '@namespace' : 'TEST',
+
+  command : function(cb) {
+    this.perform(cb);
   }
 };
