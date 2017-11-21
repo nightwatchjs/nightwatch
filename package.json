@@ -64,8 +64,14 @@
     },
     "rules": {
       "eqeqeq": "off",
-      "curly": ["error", "all"],
-      "quotes": ["error", "single"]
+      "curly": [
+        "error",
+        "all"
+      ],
+      "quotes": [
+        "error",
+        "single"
+      ]
     }
   },
   "files": [

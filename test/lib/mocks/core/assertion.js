@@ -1,7 +1,9 @@
 const common = require('../../../common.js');
 
 module.exports = function(assertCallback) {
-  const NightwatchAssertion = common.require('api-loader/assertion.js');
+
+  const NightwatchAssertion = common.require('core/assertion.js');
+  console.log('assertCallback', NightwatchAssertion)
   class NightwatchAssertionMock extends NightwatchAssertion {
     runAssertion(passed, value, calleeFn, message) {
       super.runAssertion(passed, value, calleeFn, message);

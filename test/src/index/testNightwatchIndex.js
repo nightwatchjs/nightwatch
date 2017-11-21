@@ -2,11 +2,12 @@ var os     = require('os');
 var path   = require('path');
 var fs     = require('fs');
 var mockery = require('mockery');
-var assert = require('assert');
-var common = require('../../common.js');
+const assert = require('assert');
+const common = require('../../common.js');
 
-var MockServer  = require('../../lib/mockserver.js');
-var Nightwatch = require('../../lib/nightwatch.js');
+const MockServer = require('../../lib/mockserver.js');
+const Nightwatch = require('../../lib/nightwatch.js');
+const Transport = common.require('protocol/selenium.js');
 
 module.exports = {
   'test NightwatchIndex' : {
@@ -23,7 +24,7 @@ module.exports = {
     },
 
     'Test initialization': function (done) {
-      var client = Nightwatch.createClient({
+      let  client = Nightwatch.createClient({
         silent: false,
         output: false
       });
@@ -37,11 +38,12 @@ module.exports = {
     },
 
     'Test runProtocolCommand without error': function (done) {
-      var client = Nightwatch.createClient({});
+      let  client = Nightwatch.createClient({});
       client.on('nightwatch:session.create', function (sessionId) {
-        var request = client.transport.runProtocolAction({
+        let request = Transport.runProtocolAction({
           host: '127.0.0.1',
           path: '/test',
+          method: 'POST',
           port: 10195
         });
 
@@ -57,13 +59,13 @@ module.exports = {
     },
 
     'Test runProtocolAction with error': function (done) {
-      var client = Nightwatch.createClient({
+      let client = Nightwatch.createClient({
         screenshots: {
           enabled: true,
           path: './'
         },
         output: false,
-        silent: true
+        silent: false
       });
 
       let Reporter = common.require('core/reporter.js');
@@ -73,16 +75,17 @@ module.exports = {
       };
 
       client.on('nightwatch:session.create', function () {
-        var request = client.transport.runProtocolAction({
+        let request = Transport.runProtocolAction({
           host: '127.0.0.1',
           path: '/test_error',
+          method: 'POST',
           port: 10195
         });
 
         request.then(result => {
           assert.equal(result.status, -1);
           assert.equal(result.errorStatus, 7);
-          assert.equal(result.value.screen, undefined);
+          assert.strictEqual(result.value.screen, undefined);
           assert.equal(result.error, 'An element could not be located on the page using the given search parameters.');
           done();
         });
@@ -92,7 +95,7 @@ module.exports = {
     },
     /*
                 testRunCommand: function (done) {
-                  var client = Nightwatch.createClient({});
+                  let client = Nightwatch.createClient({});
 
                   client.api.url('http://localhost', function () {
                     assert.ok(true, 'Callback 1 was called');
@@ -137,7 +140,7 @@ module.exports = {
           method: 'GET'
         }, true);
 
-        var client = Nightwatch.createClient({
+        let client = Nightwatch.createClient({
           desiredCapabilities: {
             browserName: 'chrome'
           },
@@ -155,10 +158,10 @@ module.exports = {
       },
     /*
           'Test saveScreenshotToFile': function (done) {
-            var client = Nightwatch.createClient({});
-            var tmp = os.tmpdir();
-            var filePath = path.resolve(tmp, 'r3lekb', 'foo.png');
-            var data = 'nightwatch';
+            let client = Nightwatch.createClient({});
+            let tmp = os.tmpdir();
+            let filePath = path.resolve(tmp, 'r3lekb', 'foo.png');
+            let data = 'nightwatch';
 
             client.saveScreenshotToFile(filePath, data, function (err, actualFilePath) {
               assert.equal(err, null);
@@ -174,9 +177,9 @@ module.exports = {
           },
 
            'Test saveScreenshotToFile mkpath failure': function (done) {
-             var client = Nightwatch.createClient({});
-             var filePath = '/invalid-path';
-             var data = 'nightwatch';
+             let client = Nightwatch.createClient({});
+             let filePath = '/invalid-path';
+             let data = 'nightwatch';
 
              mockery.enable({useCleanCache: true, warnOnUnregistered: false});
              mockery.registerMock('mkpath', function (location, callback) {
@@ -193,9 +196,9 @@ module.exports = {
            },
 
            'Test saveScreenshotToFile writeFile failure': function (done) {
-             var client = Nightwatch.createClient({});
-             var filePath = '/valid-path';
-             var data = 'nightwatch';
+             let client = Nightwatch.createClient({});
+             let filePath = '/valid-path';
+             let data = 'nightwatch';
 
              mockery.enable({useCleanCache: true, warnOnUnregistered: false});
              mockery.registerMock('mkpath', function (location, callback) {
@@ -218,11 +221,11 @@ module.exports = {
            },
      */
     testSetOptions: function () {
-      var client = Nightwatch.createClient({
+      let client = Nightwatch.createClient({
         use_xpath: true,
         launch_url: '/home'
       });
-      var eq = assert.equal;
+      let eq = assert.equal;
 
       /*
       eq(client.errors.length, 0);
@@ -242,8 +245,8 @@ module.exports = {
     },
 
     testSetWebdriverOptionsDefaults: function () {
-      var client = Nightwatch.createClientDefaults();
-      var eq = assert.equal;
+      let client = Nightwatch.createClientDefaults();
+      let eq = assert.equal;
 
       eq(client.options.webdriver.host, 'localhost');
       eq(client.options.webdriver.port, 4444);
@@ -256,7 +259,7 @@ module.exports = {
     },
 
     testSetWebdriverOptions: function () {
-      var client = Nightwatch.createClient({
+      let client = Nightwatch.createClient({
         webdriver: {
           host: '127.0.0.1',
           port: 4445,
@@ -271,9 +274,9 @@ module.exports = {
         }
       });
 
-      var eq = assert.equal;
-      var HttpRequest = common.require('http/request.js');
-      var request = new HttpRequest({});
+      let eq = assert.equal;
+      let HttpRequest = common.require('http/request.js');
+      let request = new HttpRequest({});
 
       eq(request.reqOptions.host, '127.0.0.1');
       eq(request.reqOptions.port, 4445);
@@ -282,12 +285,12 @@ module.exports = {
     },
 
     testSetOptionsCredentials: function () {
-      var client = Nightwatch.createClient({
+      let client = Nightwatch.createClient({
         username: 'test-user',
         accessKey: 'test-access-key'
       });
 
-      var eq = assert.equal;
+      let eq = assert.equal;
 
       eq(client.options.username, 'test-user');
       eq(client.api.options.username, 'test-user');
@@ -296,14 +299,14 @@ module.exports = {
     },
 
     testSetOptionsScreenshots: function () {
-      var client = Nightwatch.createClient({
+      let client = Nightwatch.createClient({
         screenshots: {
           enabled: true,
           path: ''
         },
         log_screenshot_data: true
       });
-      var eq = assert.equal;
+      let eq = assert.equal;
 
       eq(client.api.options.log_screenshot_data, true);
       eq(client.options.screenshots.on_error, true);
@@ -311,7 +314,7 @@ module.exports = {
     },
 
     testSetOptionsScreenshotsOnError: function () {
-      var client = Nightwatch.createClient({
+      let client = Nightwatch.createClient({
         screenshots: {
           enabled: true,
           on_error: true,
@@ -319,7 +322,7 @@ module.exports = {
         },
         log_screenshot_data: true
       });
-      var eq = assert.equal;
+      let eq = assert.equal;
 
       eq(client.options.screenshots.on_error, true);
     },
@@ -335,11 +338,11 @@ module.exports = {
     },
 
     testEndSessionOnFail: function () {
-      var client = Nightwatch.createClient({
+      let client = Nightwatch.createClient({
         end_session_on_fail: true
       });
 
-      var eq = assert.equal;
+      let eq = assert.equal;
       eq(client.options.end_session_on_fail, true);
       eq(client.session.endSessionOnFail, true);
 
@@ -350,7 +353,7 @@ module.exports = {
     },
 
     testSetRequestTimeoutOptions: function () {
-      var client = Nightwatch.createClient({
+      let client = Nightwatch.createClient({
         request_timeout_options: {
           timeout : 10000,
           retry_attempts : 3
@@ -368,8 +371,8 @@ module.exports = {
       });
 
 
-      var HttpRequest = common.require('http/request.js');
-      var request = new HttpRequest({});
+      let HttpRequest = common.require('http/request.js');
+      let request = new HttpRequest({});
 
       assert.equal(request.httpOpts.timeout, 10000);
       assert.equal(request.retryAttempts, 3);
@@ -391,7 +394,7 @@ module.exports = {
         method: 'POST'
       }, true);
 
-      var client = Nightwatch.createClient({
+      let client = Nightwatch.createClient({
         desiredCapabilities: {
           browserName: 'safari'
         },

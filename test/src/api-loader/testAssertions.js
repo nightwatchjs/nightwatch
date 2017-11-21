@@ -7,11 +7,13 @@ const nock = require('nock');
 module.exports = {
   'test Assertions' : {
     beforeEach(done) {
-      mockery.enable({useCleanCache: true, warnOnUnregistered: false});
       Globals.beforeEach.call(this, {
-        silent: false,
-        output: true
-      }, done);
+        silent: true,
+        output: false
+      }, function() {
+        mockery.enable({useCleanCache: true, warnOnUnregistered: false});
+        done();
+      });
     },
 
     afterEach() {
@@ -19,55 +21,55 @@ module.exports = {
       mockery.disable();
       Globals.afterEach.call(this);
     },
-
-    'Testing results module on failure' : function(done) {
-      nock('http://localhost:10195')
-        .post('/wd/hub/session/1352110219202/elements', {"using":"css selector","value":"#weblogin"} )
-        .reply(200, {
-          status: 0,
-          value: []
-        });
-
-
-      this.client.api.assert.elementPresent('#weblogin');
-
-      this.client.once('nightwatch:session.finished', function(results, errors) {
-        assert.equal(results.passed, 0);
-        assert.equal(results.failed, 1);
-        assert.equal(results.errors, 0);
-        assert.equal(results.skipped, 0);
-        assert.equal(results.tests[0].message, 'Testing if element <#weblogin> is present.');
-        assert.equal(results.tests[0].failure, 'Expected "present" but got: "not present"');
-        assert.ok('stackTrace' in results.tests[0]);
-        done();
-      });
-
-      this.client.startSession();
-    },
     /*
-        'Testing results module on pass' : function(done) {
+        'Testing results module on failure' : function(done) {
           nock('http://localhost:10195')
             .post('/wd/hub/session/1352110219202/elements', {"using":"css selector","value":"#weblogin"} )
             .reply(200, {
               status: 0,
-              state: 'success',
-              value: [{ ELEMENT: '0' }]
+              value: []
             });
 
+
           this.client.api.assert.elementPresent('#weblogin');
-          this.client.once('nightwatch:finished', function(results, errors) {
-            assert.equal(results.passed, 1);
-            assert.equal(results.failed, 0);
+
+          this.client.once('nightwatch:session.finished', function(results, errors) {
+            assert.equal(results.passed, 0);
+            assert.equal(results.failed, 1);
             assert.equal(results.errors, 0);
             assert.equal(results.skipped, 0);
             assert.equal(results.tests[0].message, 'Testing if element <#weblogin> is present.');
-            assert.equal(results.tests[0].failure, false);
-            assert.equal(results.tests[0].stackTrace, '');
+            assert.equal(results.tests[0].failure, 'Expected "present" but got: "not present"');
+            assert.ok('stackTrace' in results.tests[0]);
             done();
           });
-          this.client.start();
+
+          this.client.startSession();
         },
-    */
+
+            'Testing results module on pass' : function(done) {
+              nock('http://localhost:10195')
+                .post('/wd/hub/session/1352110219202/elements', {"using":"css selector","value":"#weblogin"} )
+                .reply(200, {
+                  status: 0,
+                  state: 'success',
+                  value: [{ ELEMENT: '0' }]
+                });
+
+              this.client.api.assert.elementPresent('#weblogin');
+              this.client.once('nightwatch:finished', function(results, errors) {
+                assert.equal(results.passed, 1);
+                assert.equal(results.failed, 0);
+                assert.equal(results.errors, 0);
+                assert.equal(results.skipped, 0);
+                assert.equal(results.tests[0].message, 'Testing if element <#weblogin> is present.');
+                assert.equal(results.tests[0].failure, false);
+                assert.equal(results.tests[0].stackTrace, '');
+                done();
+              });
+              this.client.start();
+            },
+        */
     'Testing assertions loaded' : function() {
       var prop;
 
@@ -177,7 +179,7 @@ module.exports = {
         assert.strictEqual(this.assertion.calleeFn, calleeFn);
         assert.ok(this.assertion.stackTraceTitle.indexOf('Test message after') > -1);
 
-        assert.equal(reporterCalls.passedNo, 1);
+        assert.equal(reporterCalls.passedNo, 1, 'Reporter passedNo was not incremented');
         assert.strictEqual(reporterCalls.failedNo, 0);
         done();
       });
@@ -231,7 +233,7 @@ module.exports = {
         addTestToResults(test) {
           let stackTraceSections = test.stackTrace.split('\n');
           assert.ok(/^AssertionError: Test message after (\d+) milliseconds\.$/.test(stackTraceSections[0]));
-          assert.ok(stackTraceSections[1].indexOf('core/testAssertions.js') > -1);
+          assert.ok(stackTraceSections[1].indexOf('api-loader/testAssertions.js') > -1);
           assert.equal(test.failure, 'Expected "text result" but got: "not_expected"');
           assert.ok('message' in test);
           assert.ok('fullMsg' in test);
@@ -261,8 +263,8 @@ module.exports = {
 };
 
 function createAssertionLoader(returnValue, assertCallback) {
-  const NightwatchAssertion = common.requireMock('api-loader/command/assertion.js', assertCallback);
-  mockery.registerMock('./command/assertion.js', NightwatchAssertion);
+  //const NightwatchAssertion = common.requireMock('core/assertion.js', assertCallback);
+  //mockery.registerMock('../core/assertion.js', NightwatchAssertion);
 
   const assertionModule = common.require('api/assertions/containsText.js');
   let mockClient = {
@@ -292,9 +294,12 @@ function createAssertionLoader(returnValue, assertCallback) {
     }
   };
 
-  const AssertionLoader = common.requireMock('api-loader/assertion-loader.js', 'containsText', assertionModule);
+  const AssertionLoader = common.requireMock('api-loader/assertion.js', 'containsText', assertionModule, assertCallback);
   let loader = new AssertionLoader(mockClient);
-  loader.loadModule().setNamespace('assert').createAssertionWrapper(true).define();
+  loader.loadModule()
+    .setNamespace('assert')
+    .createWrapper(true)
+    .define();
 
   return loader;
 }

@@ -39,6 +39,7 @@ module.exports = {
     testSendPostRequest: function (done) {
       var options = {
         path: '/session',
+        method: 'POST',
         data: {
           desiredCapabilities: {
             browserName: 'firefox'
@@ -69,6 +70,7 @@ module.exports = {
     testSendPostRequestWithCredentials: function (done) {
       var options = {
         path: '/session',
+        method: 'POST',
         data: {
           desiredCapabilities: {
             browserName: 'firefox'
@@ -102,6 +104,7 @@ module.exports = {
 
       var options = {
         path: '/session',
+        method: 'POST',
         data: {
           desiredCapabilities: {
             browserName: 'firefox'
@@ -136,6 +139,7 @@ module.exports = {
 
       var options = {
         path: '/redirect',
+        method: 'POST',
         data: {}
       };
       var request = new HttpRequest(options);
