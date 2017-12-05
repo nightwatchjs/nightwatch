@@ -25,6 +25,19 @@ module.exports = {
       Nightwatch.start();
     },
 
+    'client.waitForElementPresent() with webdriver response success': function (done) {
+      var api = Nightwatch.api();
+
+      api.waitForElementPresent('#webdriver', 100, function callback(result, instance) {
+        assert.equal(instance.expectedValue, 'found');
+        assert.equal(result.status, 0);
+        assert.equal(result.value[0].ELEMENT, '5cc459b8-36a8-3042-8b4a-258883ea642b');
+        done();
+      });
+
+      Nightwatch.start();
+    },
+
     'client.waitForElementPresent() failure with custom message': function (done) {
       var api = Nightwatch.api();
       api.globals.waitForConditionPollInterval = 10;

@@ -8,17 +8,17 @@ module.exports = MochaTest.add('clearValue', {
     var client = Nightwatch.api();
 
     MockServer.addMock({
-      'url': '/wd/hub/session/1352110219202/element/0/clear',
+      'url': '/wd/hub/session/1352110219202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/clear',
       'response': JSON.stringify({
         sessionId: '1352110219202',
         status: 0
       })
     });
 
-    client.clearValue('#weblogin', function callback(result) {
+    client.clearValue('#webdriver', function callback(result) {
         assert.equal(result.status, 0);
       })
-      .clearValue('css selector', '#weblogin', function callback(result) {
+      .clearValue('css selector', '#webdriver', function callback(result) {
         assert.equal(result.status, 0);
         done();
       });
