@@ -201,8 +201,12 @@ module.exports = {
             return;
           }
           var content = data.toString();
+          
+          var hasNode6ErrorStyle = content.indexOf('<failure message="AssertionError: 1 == 0 - expected &quot;0&quot; but got: &quot;1&quot;">') > 0;
+          var hasNode8ErrorStyle = content.indexOf('AssertionError [ERR_ASSERTION]: 1 == 0') > 0;
+          
           try {
-            assert.ok(content.indexOf('<failure message="AssertionError: 1 == 0 - expected &quot;0&quot; but got: &quot;1&quot;">') > 0, 'Report contains failure information.')
+            assert.ok(hasNode6ErrorStyle || hasNode8ErrorStyle,'Report contains failure information.');
             done();
           } catch (err) {
             done(err);
