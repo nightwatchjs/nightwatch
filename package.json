@@ -31,7 +31,7 @@
     "coveralls": "latest",
     "grunt": "~0.4.4",
     "grunt-complexity": "^0.1.7",
-    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-jshint": "~0.11.0",
     "grunt-jsonlint": "~1.0.4",
     "grunt-npm-release": "latest",
     "jscoverage": "latest",
