@@ -202,7 +202,7 @@ module.exports = {
           }
           var content = data.toString();
           try {
-            assert.ok(content.indexOf('<failure message="AssertionError: 1 == 0 - expected &quot;0&quot; but got: &quot;1&quot;">') > 0, 'Report contains failure information.')
+            assert.ok(content.indexOf('<failure message="AssertionError: 1 == 0 - expected &#34;0&#34; but got: &#34;1&#34;">') > 0, 'Report contains failure information.')
             done();
           } catch (err) {
             done(err);

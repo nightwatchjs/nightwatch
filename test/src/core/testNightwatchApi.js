@@ -18,8 +18,8 @@ module.exports = MochaTest.add('test Nightwatch Api', {
     assert.deepEqual(api.capabilities, {
       javascriptEnabled: true,
       browserName: 'firefox',
-      version: 'TEST',
-      platform: 'TEST'
+      browserVersion: 'TEST',
+      platformVersion: 'TEST'
     });
 
     assert.deepEqual(api.globals, {
