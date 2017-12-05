@@ -12,7 +12,7 @@ module.exports = {
   demoTestSyncOne : function (client) {
     client.url('http://localhost');
     var testName = client.currentTest.name;
-    assert.equal(testName, 'demoTestSyncOxne');
+    assert.equal(testName, 'demoTestSyncOne');
   },
 
   demoTestSyncTwo : function (client) {
