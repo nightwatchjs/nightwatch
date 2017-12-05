@@ -4,7 +4,7 @@
     {
       "url" : "/wd/hub/session",
       "postdata" : "{\"desiredCapabilities\":{\"browserName\":\"firefox\",\"javascriptEnabled\":true,\"acceptSslCerts\":true,\"platform\":\"ANY\"}}",
-      "response" : "{\"status\": 0, \"sessionId\": \"1352110219202\", \"value\": { \"javascriptEnabled\": true, \"browserName\": \"firefox\", \"version\": \"TEST\", \"platform\": \"TEST\"}, \"state\": null}",
+      "response" : "{\"status\": 0, \"sessionId\": \"1352110219202\", \"value\": { \"javascriptEnabled\": true, \"browserName\": \"firefox\", \"browserVersion\": \"TEST\", \"platformVersion\": \"TEST\"}, \"state\": null}",
       "responseHeaders" : {
       },
       "statusCode" : 201,
