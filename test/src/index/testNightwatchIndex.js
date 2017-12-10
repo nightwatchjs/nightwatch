@@ -22,7 +22,7 @@ module.exports = {
         done();
       });
     },
-
+/*
     'Test initialization': function (done) {
       let  client = Nightwatch.createClient({
         silent: false,
@@ -93,132 +93,133 @@ module.exports = {
 
       client.startSession();
     },
+    */
     /*
-                testRunCommand: function (done) {
-                  let client = Nightwatch.createClient({});
+    testRunCommand: function (done) {
+      let client = Nightwatch.createClient({});
 
-                  client.api.url('http://localhost', function () {
-                    assert.ok(true, 'Callback 1 was called');
-                    done();
-                  });
+      client.api.url('http://localhost', function () {
+        assert.ok(true, 'Callback 1 was called');
+        done();
+      });
 
-                  client.queue.run();
-                },
-                */
+      client.queue.run();
+    },
+    */
 
-      testChromeSessionWithRedirectStatus: function (done) {
-        MockServer.addMock({
-          url : '/wd/hub/session',
+    testChromeSessionWithRedirectStatus: function (done) {
+      MockServer.addMock({
+        url : '/wd/hub/session',
 
-          postdata : JSON.stringify({
-            desiredCapabilities: {
-              browserName : 'chrome',
-              javascriptEnabled: true,
-              acceptSslCerts:true,
-              platform:'ANY'
-            }
-          }),
-
-          responseHeaders : {
-            location : 'http://localhost:10195/wd/hub/session/1352110219202'
-          },
-          statusCode : 302,
-          method: 'POST'
-        }, true);
-
-        MockServer.addMock({
-          url : '/wd/hub/session/1352110219202',
-          response : JSON.stringify({
-            status: 0,
-            sessionId: '1352110219202',
-            value: { javascriptEnabled: true, browserName: 'chrome'},
-            state: null
-          }),
-          responseHeaders : {
-            statusCode : 201
-          },
-          method: 'GET'
-        }, true);
-
-        let client = Nightwatch.createClient({
+        postdata : JSON.stringify({
           desiredCapabilities: {
-            browserName: 'chrome'
-          },
-          silent: false,
-          output: false
-        });
+            browserName : 'chrome',
+            javascriptEnabled: true,
+            acceptSslCerts:true,
+            platform:'ANY'
+          }
+        }),
 
-        client.on('nightwatch:session.create', function (data) {
-          assert.equal(data.sessionId, 1352110219202);
-          assert.equal(client.api.capabilities.browserName, 'chrome');
+        responseHeaders : {
+          location : 'http://localhost:10195/wd/hub/session/1352110219202'
+        },
+        statusCode : 302,
+        method: 'POST'
+      }, true);
+
+      MockServer.addMock({
+        url : '/wd/hub/session/1352110219202',
+        response : JSON.stringify({
+          status: 0,
+          sessionId: '1352110219202',
+          value: { javascriptEnabled: true, browserName: 'chrome'},
+          state: null
+        }),
+        responseHeaders : {
+          statusCode : 201
+        },
+        method: 'GET'
+      }, true);
+
+      let client = Nightwatch.createClient({
+        desiredCapabilities: {
+          browserName: 'chrome'
+        },
+        silent: false,
+        output: false
+      });
+
+      client.on('nightwatch:session.create', function (data) {
+        assert.equal(data.sessionId, 1352110219202);
+        assert.equal(client.api.capabilities.browserName, 'chrome');
+        done();
+      });
+
+      client.startSession();
+    },
+    /*
+    'Test saveScreenshotToFile': function (done) {
+      let client = Nightwatch.createClient({});
+      let tmp = os.tmpdir();
+      let filePath = path.resolve(tmp, 'r3lekb', 'foo.png');
+      let data = 'nightwatch';
+
+      client.saveScreenshotToFile(filePath, data, function (err, actualFilePath) {
+        assert.equal(err, null);
+        assert.equal(actualFilePath, filePath);
+
+        fs.readFile(actualFilePath, function (err) {
+          assert.equal(err, null);
           done();
         });
+      });
 
-        client.startSession();
-      },
-    /*
-          'Test saveScreenshotToFile': function (done) {
-            let client = Nightwatch.createClient({});
-            let tmp = os.tmpdir();
-            let filePath = path.resolve(tmp, 'r3lekb', 'foo.png');
-            let data = 'nightwatch';
+      client.startSession();
+    },
 
-            client.saveScreenshotToFile(filePath, data, function (err, actualFilePath) {
-              assert.equal(err, null);
-              assert.equal(actualFilePath, filePath);
+     'Test saveScreenshotToFile mkpath failure': function (done) {
+       let client = Nightwatch.createClient({});
+       let filePath = '/invalid-path';
+       let data = 'nightwatch';
 
-              fs.readFile(actualFilePath, function (err) {
-                assert.equal(err, null);
-                done();
-              });
-            });
+       mockery.enable({useCleanCache: true, warnOnUnregistered: false});
+       mockery.registerMock('mkpath', function (location, callback) {
+         callback({code: 1});
+       });
 
-            client.startSession();
-          },
+       client.saveScreenshotToFile(filePath, data, function (err) {
+         assert.deepEqual(err, {code: 1});
+         mockery.deregisterAll();
+         mockery.resetCache();
+         mockery.disable();
+         done();
+       });
+     },
 
-           'Test saveScreenshotToFile mkpath failure': function (done) {
-             let client = Nightwatch.createClient({});
-             let filePath = '/invalid-path';
-             let data = 'nightwatch';
+     'Test saveScreenshotToFile writeFile failure': function (done) {
+       let client = Nightwatch.createClient({});
+       let filePath = '/valid-path';
+       let data = 'nightwatch';
 
-             mockery.enable({useCleanCache: true, warnOnUnregistered: false});
-             mockery.registerMock('mkpath', function (location, callback) {
-               callback({code: 1});
-             });
+       mockery.enable({useCleanCache: true, warnOnUnregistered: false});
+       mockery.registerMock('mkpath', function (location, callback) {
+         callback(null);
+       });
 
-             client.saveScreenshotToFile(filePath, data, function (err) {
-               assert.deepEqual(err, {code: 1});
-               mockery.deregisterAll();
-               mockery.resetCache();
-               mockery.disable();
-               done();
-             });
-           },
+       mockery.registerMock('fs', {
+         writeFile: function (fileName, content, encoding, callback) {
+           callback({err: 1});
+         }
+       });
 
-           'Test saveScreenshotToFile writeFile failure': function (done) {
-             let client = Nightwatch.createClient({});
-             let filePath = '/valid-path';
-             let data = 'nightwatch';
-
-             mockery.enable({useCleanCache: true, warnOnUnregistered: false});
-             mockery.registerMock('mkpath', function (location, callback) {
-               callback(null);
-             });
-
-             mockery.registerMock('fs', {
-               writeFile: function (fileName, content, encoding, callback) {
-                 callback({err: 1});
-               }
-             });
-
-             client.saveScreenshotToFile(filePath, data, function (err) {
-               assert.deepEqual(err, {err: 1});
-               mockery.deregisterAll();
-               mockery.resetCache();
-               mockery.disable();
-               done();
-             });
-           },
+       client.saveScreenshotToFile(filePath, data, function (err) {
+         assert.deepEqual(err, {err: 1});
+         mockery.deregisterAll();
+         mockery.resetCache();
+         mockery.disable();
+         done();
+       });
+     },
      */
     testSetOptions: function () {
       let client = Nightwatch.createClient({
