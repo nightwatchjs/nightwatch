@@ -36,7 +36,7 @@ module.exports = {
       var client = Nightwatch.createClient({
         selenium_port: 10195,
         silent: false,
-        output: true,
+        output: false,
         username: 'testusername',
         access_key: '123456'
       });

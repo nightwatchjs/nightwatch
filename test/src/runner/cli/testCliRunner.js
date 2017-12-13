@@ -24,7 +24,7 @@ module.exports = {
       }).init();
 
       assert.deepEqual(runner.settings.src_folders, ['tests']);
-      assert.deepEqual(runner.settings.test_settings, {'default' : {
+      assert.deepEqual(runner.settings.envSettings, {'default' : {
         silent: true,
         custom_commands_path: '',
         custom_assertions_path: '',
@@ -87,10 +87,10 @@ module.exports = {
       }).init();
 
       assert.deepEqual(runner.settings.src_folders, ['tests']);
-      assert.deepEqual(runner.test_settings.skipgroup, ['tobeskipped']);
-      assert.equal(runner.test_settings.output, false);
-      assert.equal(runner.test_settings.silent, false);
-      assert.equal(runner.test_settings.filename_filter, 'tests*.js');
+      assert.deepEqual(runner.envSettings.skipgroup, ['tobeskipped']);
+      assert.equal(runner.envSettings.output, false);
+      assert.equal(runner.envSettings.silent, false);
+      assert.equal(runner.envSettings.filename_filter, 'tests*.js');
       assert.ok(disableColorsCalled, 'disable colors not called');
     },
 
@@ -117,11 +117,11 @@ module.exports = {
 
       assert.equal(runner.settings.selenium.host, 'other.host');
       assert.equal(runner.settings.detailed_output, false);
-      assert.equal(runner.test_settings.output, false);
-      assert.equal(runner.test_settings.disable_colors, true);
-      assert.equal(runner.test_settings.username, 'testuser');
-      assert.equal(runner.test_settings.credentials.service.user, 'testuser');
-      assert.equal(runner.test_settings.desiredCapabilities['test.user'], 'testuser');
+      assert.equal(runner.envSettings.output, false);
+      assert.equal(runner.envSettings.disable_colors, true);
+      assert.equal(runner.envSettings.username, 'testuser');
+      assert.equal(runner.envSettings.credentials.service.user, 'testuser');
+      assert.equal(runner.envSettings.desiredCapabilities['test.user'], 'testuser');
     },
 
     testGetTestSourceSingle : function() {
@@ -502,8 +502,8 @@ module.exports = {
         env : 'default'
       });
       runner.init();
-      assert.ok(typeof runner.settings.test_settings == 'object');
-      assert.strictEqual(runner.settings.test_settings['default'].irrelevantProperty, null);
+      assert.ok(typeof runner.settings.envSettings == 'object');
+      assert.strictEqual(runner.settings.envSettings['default'].irrelevantProperty, null);
     },
 
     testParseTestSettingsIncorrect : function() {
@@ -546,13 +546,13 @@ module.exports = {
       runner.inheritFromDefaultEnv();
       runner.readExternalGlobals();
 
-      assert.equal(runner.test_settings.globals.otherGlobal, 'extra-value');
-      assert.equal(runner.test_settings.globals.inheritedGlobal, 'inherited');
-      assert.equal(runner.test_settings.globals.someGlobal, 'test');
-      assert.equal(runner.test_settings.globals.overwritten, '2');
-      assert.equal(runner.test_settings.globals.testGlobalOne, 'one');
-      assert.equal(runner.test_settings.globals.testGlobalTwo.two.three, '5');
-      assert.equal(runner.test_settings.globals.testGlobalTwo.one, 1);
+      assert.equal(runner.envSettings.globals.otherGlobal, 'extra-value');
+      assert.equal(runner.envSettings.globals.inheritedGlobal, 'inherited');
+      assert.equal(runner.envSettings.globals.someGlobal, 'test');
+      assert.equal(runner.envSettings.globals.overwritten, '2');
+      assert.equal(runner.envSettings.globals.testGlobalOne, 'one');
+      assert.equal(runner.envSettings.globals.testGlobalTwo.two.three, '5');
+      assert.equal(runner.envSettings.globals.testGlobalTwo.one, 1);
 
       assert.throws(function() {
         var runner = new CliRunner({
@@ -575,7 +575,7 @@ module.exports = {
         env : 'extra'
       });
 
-      runner.test_settings = {};
+      runner.envSettings = {};
       runner.settings = {
         globals_path : './extra/globals-err.js'
       };
@@ -705,7 +705,7 @@ module.exports = {
 
       var config = {
         src_folders : ['tests'],
-        test_settings : {
+        envSettings : {
           'default' : {
             silent : true
           }
@@ -718,7 +718,7 @@ module.exports = {
       mockery.registerMock('./output_disabled.json', {
         src_folders : ['tests'],
         output_folder : false,
-        test_settings : {
+        envSettings : {
           'default' : {
             silent : true
           }
@@ -731,7 +731,7 @@ module.exports = {
 
       mockery.registerMock('./null.json', {
         src_folders : 'tests',
-        test_settings : {
+        envSettings : {
           'default' : {
             irrelevantProperty: null
           }
@@ -740,7 +740,7 @@ module.exports = {
 
       mockery.registerMock('./incorrect.json', {
         src_folders : 'tests',
-        test_settings : {
+        envSettings : {
           'default' : {
           }
         }
@@ -758,7 +758,7 @@ module.exports = {
 
       mockery.registerMock('./settings.json', {
         src_folders : 'tests',
-        test_settings : {
+        envSettings : {
           'default' : {
             output : false,
             disable_colors: true
@@ -771,7 +771,7 @@ module.exports = {
           start_process: true
         },
         end_session_on_fail : true,
-        test_settings : {
+        envSettings : {
           'default' : {
           },
           'saucelabs' : {
@@ -788,7 +788,7 @@ module.exports = {
           start_process: false,
           start_session: false
         },
-        test_settings : {
+        envSettings : {
           'default' : {
             selenium : {
               start_process : true,
@@ -800,7 +800,7 @@ module.exports = {
 
       mockery.registerMock('./multi_test_paths.json', {
         src_folders : ['tests1', 'tests2'],
-        test_settings : {
+        envSettings : {
           'default' : {
             output : false,
             disable_colors: true
@@ -815,7 +815,7 @@ module.exports = {
         },
         detailed_output : true,
         end_session_on_fail : true,
-        test_settings : {
+        envSettings : {
           'default' : {
             output : false,
             disable_colors: true,

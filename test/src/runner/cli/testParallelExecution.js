@@ -164,7 +164,7 @@ module.exports = {
         enabled: true,
         workers: 'auto'
       });
-      assert.deepEqual(runner.test_settings.test_workers, {
+      assert.deepEqual(runner.envSettings.test_workers, {
         enabled: true,
         workers: 'auto'
       });

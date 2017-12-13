@@ -40,7 +40,7 @@ module.exports = {
       mockery.registerMock('./withmocha.json', {
         src_folders : ['tests'],
         output_folder : false,
-        test_settings : {
+        envSettings : {
           'default' : {
             silent : true
           }
@@ -88,7 +88,7 @@ module.exports = {
       mockery.registerMock('./withmocha.json', {
         src_folders : ['tests'],
         output_folder : false,
-        test_settings : {
+        envSettings : {
           'default' : {
             silent : true
           },
@@ -139,7 +139,7 @@ module.exports = {
       mockery.registerMock('./withmocha.json', {
         src_folders : ['tests'],
         output_folder : false,
-        test_settings : {
+        envSettings : {
           'default' : {
             silent : true
           }

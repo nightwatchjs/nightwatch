@@ -25,10 +25,10 @@ module.exports = {
         verbose : false
       }).init();
 
-      runner.test_settings.globals.test_calls = 0;
+      runner.envSettings.globals.test_calls = 0;
 
       process.exit = function(code) {
-        assert.equal(runner.test_settings.globals.test_calls, 12);
+        assert.equal(runner.envSettings.globals.test_calls, 12);
         assert.equal(code, 10);
         done();
       };

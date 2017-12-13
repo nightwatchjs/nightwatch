@@ -13,7 +13,7 @@
     "server_path" : "./bin/selenium-server.jar"
   },
 
-  "test_settings" : {
+  "envSettings": {
     "default" : {
       "silent" : true,
       "desiredCapabilities" : {

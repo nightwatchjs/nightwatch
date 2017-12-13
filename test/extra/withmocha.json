@@ -9,7 +9,7 @@
     "server_path" : "./bin/selenium-server.jar"
   },
   "test_runner" : "mocha",
-  "test_settings" : {
+  "envSettings": {
     "default" : {
       "selenium_port" : 10195,
       "silent" : true,
