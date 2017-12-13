@@ -1,7 +1,7 @@
 {
   "name": "nightwatch",
-  "description": "Automated and unit testing framework, using the WebDriver API protocol.",
-  "version": "0.9.16",
+  "description": "Easy to use Node.js based End-to-End testing solution for browser based apps and websites, using the W3C WebDriver API.",
+  "version": "0.9.19",
   "author": {
     "name": "Andrei Rusu",
     "email": "andrei@nightwatchjs.org"
@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "chai-nightwatch": "~0.1.x",
-    "ejs": "0.8.3",
+    "ejs": "2.5.7",
     "lodash.clone": "3.0.3",
     "lodash.defaultsdeep": "4.3.2",
     "lodash.merge": "^4.6.0",

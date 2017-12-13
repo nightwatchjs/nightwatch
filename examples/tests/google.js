@@ -16,7 +16,7 @@ module.exports = {
 
     client.expect.element('#lst-ib').to.be.enabled;
 
-    client.expect.element('#hplogo').text.to.match(/Norge/).before(1000);
+    //client.expect.element('#hplogo').text.to.match(/Norge/).before(1000);
 
     client.setValue('#lst-ib', 'Norway').pause(500);
     client.expect.element('#lst-ib').to.have.value.equal('Norway');
