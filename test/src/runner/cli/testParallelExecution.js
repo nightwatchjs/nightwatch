@@ -86,6 +86,40 @@ module.exports = {
       assert.ok(runner.parallelMode);
     },
 
+    testParallelExecutionWithPromisedDone: function (done) {
+      var self = this;
+      var CliRunner = common.require('runner/cli/clirunner.js');
+      var runner = new CliRunner({
+        config: path.join(__dirname, '../../../extra/nightwatch.json'),
+        env: 'default,mixed'
+      });
+
+      runner.setup({}, function(output, code) {
+        if (output instanceof Error) {
+          done(output);
+          return;
+        }
+        assert.ok(!runner.isParallelMode());
+        assert.equal(code, 0);
+        assert.deepEqual(output, {'default': [], mixed: []});
+        assert.equal(self.allArgs.length, 2);
+        assert.equal(self.allArgs[0].indexOf('default') > -1, true);
+        assert.equal(self.allArgs[1].indexOf('mixed') > -1, true);
+
+        assert.ok('default_1' in runner.runningProcesses);
+        assert.ok('mixed_2' in runner.runningProcesses);
+        assert.equal(runner.runningProcesses['default_1'].processRunning, false);
+        assert.equal(runner.runningProcesses['mixed_2'].processRunning, false);
+        return new Promise(function (resolve) {
+          setTimeout(function(){
+              resolve();
+          }, 5);
+        }).then(done);
+      });
+
+      assert.ok(runner.parallelMode);
+    },
+
     testParallelExecutionWithWorkersDefaults: function (done) {
       var self = this;
       var CliRunner = common.require('runner/cli/clirunner.js');
