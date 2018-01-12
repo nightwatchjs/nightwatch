@@ -12,6 +12,7 @@ module.exports = {
         output: false
       }, function() {
         mockery.enable({useCleanCache: true, warnOnUnregistered: false});
+        console.log('BEFORE EACH')
         done();
       });
     },

@@ -10,7 +10,6 @@ module.exports = {
       opts = {};
     }
 
-    Globals.interceptStartFn();
     Nocks.cleanAll().createSession();
 
     Nightwatch.init(opts, function () {
@@ -22,6 +21,5 @@ module.exports = {
 
   afterEach() {
     Nocks.deleteSession();
-    Globals.restoreStartFn();
   }
 };

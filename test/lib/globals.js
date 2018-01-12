@@ -1,8 +1,5 @@
 var fs = require('fs');
 var path = require('path');
-var common = require('../common.js');
-var ClientManager = common.require('runner/clientmanager.js');
-var _originalStartFn = ClientManager.prototype.start;
 
 module.exports = {
   runGroupGlobal : function(client, hookName, done) {
@@ -21,17 +18,7 @@ module.exports = {
     });
   },
 
-  interceptStartFn : function() {
-    ClientManager.prototype.start = function() {};
-  },
-
-  restoreStartFn : function() {
-    ClientManager.prototype.start = _originalStartFn;
-  },
-
   beforeEach: function (client, done) {
-    this.interceptStartFn();
-
     if (client.currentTest.group) {
       this.runGroupGlobal(client, 'beforeEach', done);
     } else {
@@ -40,8 +27,6 @@ module.exports = {
   },
 
   afterEach : function(client, done) {
-    this.restoreStartFn();
-
     if (client.currentTest.group) {
       this.runGroupGlobal(client, 'afterEach', done);
     } else {
