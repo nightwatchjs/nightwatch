@@ -140,12 +140,12 @@ module.exports = {
             });
           }
         },
-        assertion : function(passed, result, expected, msg, abortOnFailure) {
+        assertion : function(passed, result, expected, assertionOutput, abortOnFailure) {
           assert.equal(passed, true);
           assert.equal(result, 'expected text result');
           assert.equal(expected, 'text result');
           assert.equal(abortOnFailure, true);
-          assert.equal(msg.indexOf('Test message after'), 0);
+          assert.equal(assertionOutput.message.indexOf('Test message after'), 0);
           done();
         }
       };
@@ -167,7 +167,8 @@ module.exports = {
             });
           }
         },
-        assertion : function(passed, result, expected, msg, abortOnFailure) {
+        assertion : function(passed, result, expected, assertionOutput, abortOnFailure) {
+          var msg = assertionOutput.message;
           assert.equal(passed, false);
           assert.equal(result, 'not_expected');
           assert.equal(expected, 'text result');
