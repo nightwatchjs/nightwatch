@@ -16,7 +16,7 @@ module.exports = {
     client
       .setValue('input[type=text]', ['nightwatch', client.Keys.ENTER])
       .pause(1000)
-      .assert.containsText('#main', 'Night Watch')
+      .assert.containsText('#main', 'xNight Watch')
       .end();
   }
 };

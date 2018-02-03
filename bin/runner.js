@@ -3,6 +3,7 @@
  */
 const Nightwatch = require('../lib/index.js');
 const Utils = require('../lib/util/utils.js');
+const Logger = require('../lib/util/logger.js');
 
 try {
   Nightwatch.cli(function(argv) {

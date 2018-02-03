@@ -1,6 +1,6 @@
 var searchCommands = {
   submit: function() {
-    this.waitForElementVisible('@submitButton', 3000)
+    this.waitForElementVisible('@submitButton', 1000)
       .click('@submitButton')
       .api.pause(1000);
 
