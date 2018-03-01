@@ -20,7 +20,7 @@ module.exports = {
         assertion : function(passed, result, expected, msg, abortOnFailure) {
           assert.equal(passed, true);
           assert.equal(result, 'other-css-class test-css-class');
-          assert.equal(expected, 'has test-css-class');
+          assert.equal(expected, 'test-css-class');
           assert.equal(msg, 'Testing if element <.test_element> has css class: "test-css-class".');
           assert.equal(abortOnFailure, true);
           done();
@@ -45,7 +45,7 @@ module.exports = {
         assertion : function(passed, result, expected, msg, abortOnFailure) {
           assert.equal(passed, false);
           assert.equal(result, 'other-css-class');
-          assert.equal(expected, 'has test-css-class');
+          assert.equal(expected, 'test-css-class');
           assert.equal(abortOnFailure, true);
           done();
         }
@@ -69,7 +69,7 @@ module.exports = {
         assertion : function(passed, result, expected, msg, abortOnFailure) {
           assert.equal(passed, false);
           assert.equal(result, null);
-          assert.equal(expected, 'has test-css-class');
+          assert.equal(expected, 'test-css-class');
           assert.equal(abortOnFailure, true);
           done();
         }
