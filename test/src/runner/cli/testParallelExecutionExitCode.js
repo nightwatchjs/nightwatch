@@ -59,6 +59,8 @@ module.exports = {
       process.env.__NIGHTWATCH_PARALLEL_MODE = null;
     },
 
+    // Only fails when whole suite is run, some strange test ordering
+    // dependency happening here...
     testParallelExecutionWithCodeNonZeroWorkers: function (done) {
       var CliRunner = common.require('runner/cli/clirunner.js');
       var runner = new CliRunner({
