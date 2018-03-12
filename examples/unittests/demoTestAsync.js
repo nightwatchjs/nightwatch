@@ -1,9 +1,20 @@
+const assert = require('assert');
+
 module.exports = {
-  'demo UnitTest' : function (client, done) {
-    client.assert.ok('TEST');
+  '@unitTest' : true,
+  '@skipTestcasesOnFail' : false,
+
+  'demo UnitTest' : function (done) {
+    assert.equal('TEST', 'TEST');
+    throw new Error('XX')
     setTimeout(function() {
       done();
-    }, 500);
+    }, 100);
 
+  },
+
+  '22 demo UnitTest' : function () {
+    assert.equal('ASB', 'ASB');
+    assert.equal('ASB', 'ASB');
   }
 };

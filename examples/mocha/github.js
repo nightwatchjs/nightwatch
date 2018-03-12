@@ -1,4 +1,7 @@
 describe('Github', function() {
+  before(function(client, done) {
+    done();
+  });
 
   it('Demo test GitHub', function (client) {
     client

@@ -1,14 +1,19 @@
 module.exports = {
   tags: ['git'],
   'Demo test GitHub' : function (client) {
-    client
-      .url('https://github.com/nightwatchjs/nightwatch')
-      .waitForElementVisible('body', 1000)
-      .assert.visible('.container h1 strong a')
-      .assert.containsText('.container h1 strong a', 'nightwatch', 'Checking project title is set to nightwatch');
+    return new Promise((resolve) => {
+      client
+        .url('http://github.com/nightwatchjs/nightwatch')
+        .waitForElementVisible('body', 1000)
+        .assert.visible('.container h1 strong a')
+        .assert.containsText('.container h1 strong a', 'nightwatch', 'Checking project title is set to nightwatch')
+        .perform(function() {
+          resolve();
+        });
+    });
   },
 
-  after : function(client) {
+  after(client) {
     client.end();
   }
 };

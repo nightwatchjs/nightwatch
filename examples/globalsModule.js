@@ -17,7 +17,7 @@ module.exports = {
 
   // controls the timeout time for async hooks. Expects the done() callback to be invoked within this time
   // or an error is thrown
-  asyncHookTimeout : 20000,
+  asyncHookTimeout : 10000,
 
   'default' : {
     myGlobal : function() {
@@ -33,23 +33,33 @@ module.exports = {
   },
 
   before : function(cb) {
+    //console.log('GLOBAL BEFORE')
     cb();
   },
 
   beforeEach : function(browser, cb) {
+    //console.log('GLOBAL beforeEach')
     cb();
   },
 
   after : function(cb) {
+    //console.log('GLOBAL AFTER')
     cb();
   },
 
   afterEach : function(browser, cb) {
-    cb();
+    browser.perform(function() {
+      //console.log('GLOBAL afterEach')
+
+
+        cb();
+
+
+    })
+
   },
 
   reporter : function(results, cb) {
-    //console.log(results);
     cb();
   }
 };

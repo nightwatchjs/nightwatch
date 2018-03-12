@@ -2,7 +2,6 @@
  * Module dependencies
  */
 const Nightwatch = require('../lib/index.js');
-const Utils = require('../lib/util/utils.js');
 const Logger = require('../lib/util/logger.js');
 
 try {
@@ -10,18 +9,22 @@ try {
     argv._source = argv['_'].slice(0);
 
     const runner = Nightwatch.CliRunner(argv);
-    runner.setup().startWebDriver()
+    runner.setup()
+      .startWebDriver()
       .catch(err => {
-        process.exit(5);
+        throw err;
       })
       .then(() => {
         return runner.runTests();
+      })
+      .catch(err => {
+        runner.processListener.setExitCode(10);
       })
       .then(() => {
         return runner.stopWebDriver();
       });
   });
-} catch (ex) {
-  Utils.showStackTraceWithHeadline('There was an error while starting the test runner:\n', ex.stack + '\n', true);
+} catch (err) {
+  Logger.error(err);
   process.exit(2);
 }
