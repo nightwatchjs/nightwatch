@@ -2,9 +2,9 @@ var assert = require('assert');
 var Nightwatch = require('../../../lib/nightwatch.js');
 var MochaTest = require('../../../lib/mochatest.js');
 
-module.exports = MochaTest.add('waitForElementNotPresent', {
+describe('waitForElementNotPresent', function() {
 
-  'client.waitForElementNotPresent() success' : function(done) {
+  it('client.waitForElementNotPresent() success', function(done) {
     var client = Nightwatch.client();
     var api = Nightwatch.api();
 
@@ -27,7 +27,7 @@ module.exports = MochaTest.add('waitForElementNotPresent', {
     Nightwatch.start();
   },
 
-  'client.waitForElementNotPresent() failure no abort' : function(done) {
+  it('client.waitForElementNotPresent() failure no abort', function(done) {
     var client = Nightwatch.client();
     var api = Nightwatch.api();
 
@@ -45,7 +45,7 @@ module.exports = MochaTest.add('waitForElementNotPresent', {
     Nightwatch.start();
   },
 
-  'client.waitForElementNotPresent() failure no abort with custom interval' : function(done) {
+  it('client.waitForElementNotPresent() failure no abort with custom interval', function(done) {
     var client = Nightwatch.client();
     var api = Nightwatch.api();
 

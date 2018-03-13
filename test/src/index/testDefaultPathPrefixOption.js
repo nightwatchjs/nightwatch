@@ -1,77 +1,79 @@
 const assert = require('assert');
-const MockServer  = require('../../lib/mockserver.js');
+const MockServer = require('../../lib/mockserver.js');
 const Nightwatch = require('../../lib/nightwatch.js');
 const common = require('../../common.js');
 const HttpRequest = common.require('http/request.js');
 
-module.exports = {
-  'test NightwatchIndex': {
-    before: function (done) {
-      this.server = MockServer.init();
-      this.server.on('listening', function () {
-        done();
-      });
-    },
-    after: function (done) {
-      Nightwatch.createClient({
-        default_path_prefix: '/wd/hub'
-      });
-      this.server.close(function () {
-        done();
-      });
-    },
+describe('test NightwatchIndex', function () {
+  before(function (done) {
+    this.server = MockServer.init();
+    this.server.on('listening', function () {
+      done();
+    });
+  });
 
-    testDefaultPathPrefix: function () {
-      var client = Nightwatch.createClient();
+  after(function (done) {
+    Nightwatch.createClient({
+      default_path_prefix: '/wd/hub'
+    });
+    this.server.close(function () {
+      done();
+    });
+  });
 
-      var request = new HttpRequest({
-        host: '127.0.0.1',
-        path: '/test'
-      });
+  it('testDefaultPathPrefix', function () {
+    var client = Nightwatch.createClient({
+      selenium: {
+        start_process: true
+      }
+    });
 
-      assert.strictEqual(request.defaultPathPrefix, '/wd/hub');
-    },
+    var request = new HttpRequest({
+      host: '127.0.0.1',
+      path: '/test'
+    });
 
-    testSetDefaultPathPrefixOption: function () {
-      var client = Nightwatch.createClient({
-        default_path_prefix: '/test'
-      });
+    assert.strictEqual(request.defaultPathPrefix, '/wd/hub');
+  });
 
-      var request = new HttpRequest({
-        host: '127.0.0.1',
-        path: '/test',
-        port: 10195
-      });
+  it('testSetDefaultPathPrefixOption', function () {
+    var client = Nightwatch.createClient({
+      default_path_prefix: '/test'
+    });
 
-       assert.strictEqual(request.defaultPathPrefix, '');
-    },
+    var request = new HttpRequest({
+      host: '127.0.0.1',
+      path: '/test',
+      port: 10195
+    });
 
-    testSetDefaultPathPrefixInvalidOption: function () {
-      Nightwatch.createClient({
-        default_path_prefix: '/wd/hub'
-      });
+    assert.strictEqual(request.defaultPathPrefix, '');
+  });
 
-      var eq = assert.equal;
+  it('testSetDefaultPathPrefixInvalidOption', function () {
+    Nightwatch.createClient({
+      default_path_prefix: '/wd/hub'
+    });
 
-      var request = new HttpRequest({
-        host: '127.0.0.1',
-        path: '/session',
-        port: 10195
-      });
-      eq(request.defaultPathPrefix, '/wd/hub');
-    },
+    var eq = assert.equal;
+    var request = new HttpRequest({
+      host: '127.0.0.1',
+      path: '/session',
+      port: 10195
+    });
+    eq(request.defaultPathPrefix, '/wd/hub');
+    HttpRequest.globalSettings = {
+      default_path: ''
+    };
+  });
 
-    testSetDefaultPathPrefixEmptyOption: function () {
-      var client = Nightwatch.createClient({
-        default_path_prefix: ''
-      });
+  it('testSetDefaultPathPrefixEmptyOption', function () {
+    var request = new HttpRequest({
+      host: '127.0.0.1',
+      path: '/test',
+      port: 10195
+    });
+    assert.strictEqual(request.defaultPathPrefix, '');
+  });
+});
 
-      var request = new HttpRequest({
-        host: '127.0.0.1',
-        path: '/test',
-        port: 10195
-      });
-      assert.strictEqual(request.defaultPathPrefix, '');
-    },
-  }
-};

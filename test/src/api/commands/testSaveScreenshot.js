@@ -3,9 +3,9 @@ var assert = require('assert');
 var Nightwatch = require('../../../lib/nightwatch.js');
 var MochaTest = require('../../../lib/mochatest.js');
 
-module.exports = MochaTest.add('saveScreenshot', {
+describe('saveScreenshot', function() {
 
-    'client.saveScreenshot()' : function(done) {
+    it('client.saveScreenshot()', function(done) {
       var client = Nightwatch.client();
       var api = Nightwatch.api();
 

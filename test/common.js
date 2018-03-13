@@ -1,7 +1,7 @@
 const BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
 const path = require('path');
 
-const common = module.exports = {
+module.exports = {
   require(relativeFilePath) {
     return require(path.join('../', BASE_PATH, relativeFilePath));
   },
@@ -16,3 +16,8 @@ const common = module.exports = {
     return mockedModule(...args);
   }
 };
+
+process.on('unhandledRejection', err => {
+  console.error('unhandledRejection:')
+  console.error(err.stack);
+});

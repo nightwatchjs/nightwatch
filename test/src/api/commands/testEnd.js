@@ -1,91 +1,91 @@
-var assert = require('assert');
-var MockServer = require('../../../lib/mockserver.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var Globals = require('../../../lib/globals.js');
-var Nocks = require('../../../lib/nocks.js');
-var nock = require('nock');
+const assert = require('assert');
+const Nightwatch = require('../../../lib/nightwatch.js');
+const common = require('../../../common.js');
+const Nocks = require('../../../lib/nocks.js');
+const nock = require('nock');
 
-module.exports = {
-  'end' : {
-    beforeEach: function (done) {
-      Globals.interceptStartFn();
-      Nocks.cleanAll().createSession();
-      Nightwatch.init({}, function () {
-        done();
-      });
-      this.api = Nightwatch.api();
-    },
+describe('end', function() {
+  beforeEach(function (done) {
+    Nocks.cleanAll().createSession();
 
-    afterEach: function () {
-      Globals.restoreStartFn();
-    },
+    Nightwatch.init({silent : true}, client => {
+      this.client = Nightwatch.client();
+      this.api = this.client.api;
+      done();
+    });
+  });
 
-    'client.end();': function (done) {
-      nock('http://localhost:10195')
-        .delete('/wd/hub/session/1352110219202')
-        .reply(200, {
-          status: 0,
-          state: 'success',
-          value: null
-        });
-
-      this.api.end(function callback(result) {
-        assert.equal(result.state, 'success');
-        assert.strictEqual(this.api.sessionId, null);
-      }.bind(this));
-
-      Nightwatch.start(done);
-    },
-
-    'client.end() - no session id': function (done) {
-      nock('http://localhost:10195')
-        .delete('/wd/hub/session/1352110219202')
-        .times(2)
-        .reply(200, {
-          status: 0,
-          state: 'success',
-          value: null
-        });
-
-      this.api.end();
-
-      this.api.end(function callback(result) {
-        assert.strictEqual(result, null);
+  it('client.end();', function (done) {
+    nock('http://localhost:10195')
+      .delete('/wd/hub/session/1352110219202')
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value: null
       });
 
-      Nightwatch.start(done);
-    },
+    this.api.end(function callback(result) {
+      assert.equal(result.state, 'success');
+      assert.strictEqual(this.api.sessionId, null);
+    }.bind(this));
 
-    'client.end() - with screenshot': function (done) {
-      var client = Nightwatch.client();
+    this.client.start(done);
+  });
 
-      client.results.failed = 1;
-      client.options.screenshots = {
+  it('client.end() - no session id', function (done) {
+    nock('http://localhost:10195')
+      .delete('/wd/hub/session/1352110219202')
+      .times(2)
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value: null
+      });
+
+    this.api.end();
+
+    this.api.end(function callback(result) {
+      assert.strictEqual(result, null);
+    });
+
+    this.client.start(done);
+  });
+
+  it('client.end() - with screenshot', function (done) {
+    nock('http://localhost:10195')
+      .delete('/wd/hub/session/1352110219202')
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value: null
+      });
+
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/screenshot')
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value: '==content'
+      });
+
+    const settings = {
+      screenshots: {
         enabled: true,
         on_failure: true,
         path: './screens'
-      };
+      }
+    };
 
-      client.api.currentTest = {
-        module: 'test_module',
-        name: 'test_name'
-      };
+    const Reporter = common.require('testsuite/reporter.js');
+    let reporter = new Reporter(['test case'], null, settings, {
+      suiteName: 'testSuite',
+      moduleKey: 'test-moduleKey',
+      reportPrefix: '',
+      groupName: 'test-GroupName'
+    });
 
-      nock('http://localhost:10195')
-        .delete('/wd/hub/session/1352110219202')
-        .reply(200, {
-          status: 0,
-          state: 'success',
-          value: null
-        });
-
-      nock('http://localhost:10195')
-        .get('/wd/hub/session/1352110219202/screenshot')
-        .reply(200, {
-          status: 0,
-          state: 'success',
-          value: '==content'
-        });
+    Nightwatch.initClient(settings, reporter).then(client => {
+      client.api.currentTest = client.reporter.currentTest;
 
       client.saveScreenshotToFile = function (file, content) {
         assert.equal(content, '==content');
@@ -99,36 +99,40 @@ module.exports = {
         assert.equal(result.value, null);
       });
 
-      Nightwatch.start();
-    },
+      client.start();
+    });
 
-    'client.end() - failures and screenshots disabled': function (done) {
-      var client = Nightwatch.client();
+    //client.results.failed = 1;
 
-      client.results.failed = 1;
-      client.currentTest = {
-        module: 'test_module',
-        name: 'test_name'
-      };
-      client.options.screenshots = {
-        enabled: true,
-        on_failure: false,
-        path: './screens'
-      };
 
-      nock('http://localhost:10195')
-        .delete('/wd/hub/session/1352110219202')
-        .reply(200, {
-          status: 0,
-          state: 'success',
-          value: null
-        });
+  });
 
-      client.api.end(function callback(result) {
-        assert.strictEqual(result.value, null);
+  it('client.end() - failures and screenshots disabled', function (done) {
+    const client = this.client;
+
+    client.results.failed = 1;
+    client.currentTest = {
+      module: 'test_module',
+      name: 'test_name'
+    };
+    client.options.screenshots = {
+      enabled: true,
+      on_failure: false,
+      path: './screens'
+    };
+
+    nock('http://localhost:10195')
+      .delete('/wd/hub/session/1352110219202')
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value: null
       });
 
-      Nightwatch.start(done);
-    }
-  }
-};
+    this.api.end(function callback(result) {
+      assert.strictEqual(result.value, null);
+    });
+
+    this.client.start(done);
+  });
+});

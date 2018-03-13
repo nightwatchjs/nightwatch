@@ -1,12 +1,29 @@
 const common = require('../common.js');
+const lodashMerge = require('lodash.merge');
 const nightwatch = common.require('index.js');
 
 module.exports = new function () {
   let _client = null;
 
-  this.createClient = function(options = {}) {
+  function extendClient(client) {
+    client.start = function(done = function() {}) {
+      return this.queue.run(function(err) {
+        if (err) {
+          return done(err);
+        }
+
+        done();
+      });
+    };
+  }
+
+  this.createClient = function(options = {}, reporter = null) {
     let opts = {
-      seleniumPort : 10195,
+      selenium : {
+        port: 10195,
+        start_process: true,
+        version2: true
+      },
       silent : true,
       output : false,
       globals : {
@@ -14,31 +31,44 @@ module.exports = new function () {
       }
     };
 
-    Object.assign(opts, options);
+    lodashMerge(opts, options);
 
-    return nightwatch.client(opts);
+    return nightwatch.client(opts, reporter);
   };
 
   this.createClientDefaults = function() {
     return nightwatch.client();
   };
 
-  this.init = function(options, callback) {
+  this.init = function(options, callback = function() {}) {
     _client = this.createClient(options);
 
+    extendClient(_client);
+
     _client.once('nightwatch:session.create', function(id) {
-      if (callback) {
-        callback();
-      }
-    })
-    .once('nightwatch:session.error', function() {
-      if (callback) {
-        callback();
-      }
+      callback();
+    }).once('nightwatch:session.error', function(err) {
+      callback();
       process.exit(1);
     });
 
     _client.startSession();
+  };
+
+  this.initClient = function(options, reporter) {
+    let client = this.createClient(options, reporter);
+
+    extendClient(client);
+
+    return new Promise(function(resolve, reject) {
+      client.once('nightwatch:session.create', function(id) {
+        resolve(client);
+      }).once('nightwatch:session.error', function(err) {
+        reject(err);
+      });
+
+      client.startSession();
+    });
   };
 
   this.api = function() {
@@ -50,13 +80,6 @@ module.exports = new function () {
   };
 
   this.start = function(done) {
-    _client.removeAllListeners('nightwatch:session.finished');
-    if (done) {
-      _client.once('nightwatch:session.finished', function(results, errors) {
-        done();
-      });
-    }
-
-    return _client.start();
+    return _client.start(done);
   };
 };

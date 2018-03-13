@@ -17,7 +17,6 @@
       "globals" : {},
       "desiredCapabilities" : {
         "browserName" : "firefox",
-        "javascriptEnabled" : true,
         "acceptSslCerts" : true
       }
     }

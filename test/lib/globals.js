@@ -1,15 +1,18 @@
-var fs = require('fs');
-var path = require('path');
+const fs = require('fs');
+const path = require('path');
+const ApiLoader = require('../lib/mocks/assertionLoader.js');
 
 module.exports = {
-  runGroupGlobal : function(client, hookName, done) {
-    var groupGlobal = path.join(__dirname, './globals/', client.currentTest.group.toLowerCase() + '.js');
+  runGroupGlobal(client, hookName, done) {
+    const groupGlobal = path.join(__dirname, './globals/', client.currentTest.group.toLowerCase() + '.js');
+
     fs.stat(groupGlobal, function(err, stats) {
       if (err) {
         return done();
       }
 
-      var global = require(groupGlobal);
+      const global = require(groupGlobal);
+
       if (global[hookName]) {
         global[hookName].call(global, done);
       } else {
@@ -18,7 +21,7 @@ module.exports = {
     });
   },
 
-  beforeEach: function (client, done) {
+  beforeEach(client, done) {
     if (client.currentTest.group) {
       this.runGroupGlobal(client, 'beforeEach', done);
     } else {
@@ -26,11 +29,25 @@ module.exports = {
     }
   },
 
-  afterEach : function(client, done) {
+  afterEach(client, done) {
     if (client.currentTest.group) {
       this.runGroupGlobal(client, 'afterEach', done);
     } else {
       done();
     }
+  },
+
+  assertionTest(definition, done) {
+    const loader = ApiLoader.create(`api/assertions/${definition.assertionName}.js`, definition.assertionName, definition.settings);
+
+    if (definition.api) {
+      Object.keys(definition.api).forEach(key => {
+        loader.setApiMethod(key, definition.api[key]);
+      });
+    }
+
+    loader.loadAssertion(definition.assertion, done);
+
+    return loader.client.api.assert[definition.assertionName](...definition.args);
   }
 };

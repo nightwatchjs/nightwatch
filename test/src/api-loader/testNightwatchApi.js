@@ -3,34 +3,38 @@ const path = require('path');
 const mockery = require('mockery');
 
 const common = require('../../common.js');
+const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer  = require('../../lib/mockserver.js');
-const MochaTest = require('../../lib/mochatest.js');
 
+describe('test Nightwatch Api', function() {
 
-module.exports = MochaTest.add('test Nightwatch Api', {
-  beforeEach() {
+  before(CommandGlobals.beforeEach);
+  after(CommandGlobals.afterEach);
+
+  beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
-  },
+  });
 
-  afterEach() {
+  afterEach(function() {
     mockery.deregisterAll();
     mockery.disable();
-  },
+  });
 
-  testLoadCommands() {
-    mockery.registerMock('../core/queue.js', {
-      add(commandName, command, context, args, originalStackTrace) {
-        assert.equal(commandName, 'session');
-        assert.equal(typeof command, 'function');
-        assert.equal(args[0], 'POST');
-        assert.equal(typeof args[1], 'function');
-      }
-    });
-
-    const Api = common.require('api-loader/api.js');
+  it('testLoadCommands', function() {
+    const ApiLoader = common.require('api-loader/api.js');
     let mockClient = {
       options: {},
       api: {},
+      session: {
+        commandQueue: {
+          add(commandName, command, context, args, originalStackTrace) {
+            assert.equal(commandName, 'session');
+            assert.equal(typeof command, 'function');
+            assert.equal(args[0], 'POST');
+            assert.equal(typeof args[1], 'function');
+          }
+        }
+      },
       isApiMethodDefined: function (commandName, namespace) {
         return false;
       },
@@ -42,12 +46,14 @@ module.exports = MochaTest.add('test Nightwatch Api', {
       }
     };
 
-    Api.loadCommands(mockClient);
-    mockClient.api.session('POST', function() {});
-  },
+    let api = new ApiLoader(mockClient);
+    api.loadClientCommands();
 
-  testAddExistingCommand() {
-    const Api = common.require('api-loader/api.js');
+    mockClient.api.session('POST', function() {});
+  });
+
+  it('testAddExistingCommand', function () {
+    const ApiLoader = common.require('api-loader/api.js');
     const CommandLoader = common.require('api-loader/command.js');
 
     let mockClient = {
@@ -64,7 +70,8 @@ module.exports = MochaTest.add('test Nightwatch Api', {
       }
     };
 
-    Api.loadCommands(mockClient);
+    let api = new ApiLoader(mockClient);
+    api.loadClientCommands();
 
     let loader = new CommandLoader(mockClient);
     loader.commandName = 'session';
@@ -72,204 +79,173 @@ module.exports = MochaTest.add('test Nightwatch Api', {
 
     assert.throws(function(err) {
       loader.define();
-    }, /Error: The command\/assertion \.session\(\) is already defined\./);
-  },
+    }, /Error: The command \.session\(\) is already defined\./);
+  });
 
-    testAddCustomAssertion : function(done) {
-      mockery.registerMock('../core/queue.js', {
-        add(commandName, command, context, args, originalStackTrace) {
-          assert.equal(commandName, 'customAssertion');
-          assert.equal(args.length, 1);
-          assert.strictEqual(args[0], true);
-          done();
-        }
-      });
-
-      const Api = common.require('api-loader/api.js');
-      let mockClient = {
-        startSessionEnabled: true,
-        options: {
-          custom_assertions_path: [path.join(__dirname, '../../extra/assertions')]
-        },
-        api: {},
-        isApiMethodDefined(commandName, namespace) {
-          return false;
-        },
-        setApiMethod(commandName, namespace, commandFn) {
-          mockClient.api[namespace] = mockClient.api[namespace] || {};
-          mockClient.api[namespace][commandName] = commandFn;
-        },
-        setApiProperty() {
-
-        },
-        transport: {
-          Actions: {}
-        }
-      };
-
-      Api.loadAssertions(mockClient);
-
-      assert.ok('customAssertion' in mockClient.api.assert);
-      assert.ok('customAssertion' in mockClient.api.verify);
-
-      mockClient.api.assert.customAssertion(true);
-    },
-
-    testLoadCustomAssertionsBadFolder : function() {
-      mockery.registerMock('../core/queue.js', {
-        add(commandName, command, context, args, originalStackTrace) {
-          done();
-        }
-      });
-
-      const Api = common.require('api-loader/api.js');
-      let mockClient = {
-        startSessionEnabled: true,
-        options: {
-          custom_assertions_path: './bad-folder'
-        },
-        api: {},
-        isApiMethodDefined: function (commandName, namespace) {
-          return false;
-        },
-        setApiMethod: function (commandName, namespace, commandFn) {
-        },
-        setApiProperty() {
-        },
-        transport: {
-          Actions: {}
-        }
-      };
-
-      assert.throws(function() {
-        Api.loadAssertions(mockClient);
-      }, /ENOENT: no such file or directory, scandir '\.\/bad-folder'/);
-    },
-
-    testAddCustomCommand() {
-      mockery.registerMock('../core/queue.js', {
-        add(commandName, command, context, args, originalStackTrace) {
-          assert.equal(commandName, 'customCommandConstructor');
-          assert.equal(typeof command, 'function');
-        }
-      });
-
-      const Api = common.require('api-loader/api.js');
-      let mockClient = {
-        options: {
-          custom_commands_path: [path.join(__dirname, '../../extra/commands')]
-        },
-        api: {},
-        isApiMethodDefined: function (commandName, namespace) {
-          return false;
-        },
-        setApiMethod: function (commandName, commandFn) {
-          mockClient.api[commandName] = commandFn;
-        },
-        transport: {
-          Actions: {}
-        }
-      };
-
-      Api.loadCommands(mockClient);
-
-      assert.ok('customCommand' in mockClient.api, 'Test if the custom command was added');
-      assert.ok('customCommandConstructor' in mockClient.api, 'Test if the custom command with constructor style was added');
-      assert.ok('customPerform' in mockClient.api);
-      assert.ok(typeof mockClient.api._otherPerform == 'undefined');
-
-      mockClient.api.customCommandConstructor();
-    },
-
-    testRunCustomPerformCommand(done) {
-      mockery.registerMock('../core/queue.js', {
-        add(commandName, command, context, args, originalStackTrace) {
-          let instance = command(...args);
-          if (commandName == 'customPerform') {
-            instance.on('complete', () => {
-              assert.strictEqual(paramFnCalled, true);
-              done()
-            });
+  it('testAddCustomAssertion', function(done) {
+    const ApiLoader = common.require('api-loader/api.js');
+    let mockClient = {
+      startSessionEnabled: true,
+      options: {
+        custom_assertions_path: [path.join(__dirname, '../../extra/assertions')]
+      },
+      session: {
+        commandQueue: {
+          add(commandName, command, context, args, originalStackTrace) {
+            assert.equal(commandName, 'customAssertion');
+            assert.equal(args.length, 1);
+            assert.strictEqual(args[0], true);
+            done();
           }
         }
-      });
-
-      const Api = common.require('api-loader/api.js');
-      let mockClient = {
-        options: {
-          custom_commands_path: [path.join(__dirname, '../../extra/commands')]
-        },
-        api: {},
-        isApiMethodDefined: function (commandName, namespace) {
-          return false;
-        },
-        setApiMethod: function (commandName, commandFn) {
-          mockClient.api[commandName] = commandFn;
-        },
-        transport: {
-          Actions: {}
-        }
-      };
-
-      Api.loadCommands(mockClient);
-
-      let paramFnCalled = false;
-      mockClient.api.customPerform(function() {
-        paramFnCalled = true;
-      });
-    },
-
-    testRunCustomCommandDeprecated(done) {
-      let commandQueue = [];
-      mockery.registerMock('../core/queue.js', {
-        add(commandName, command, context, args, originalStackTrace) {
-          commandQueue.push(commandName);
-          let instance = command(...args);
-
-          if (commandName == 'customCommand') {
-            assert.equal(instance.toString(), 'CommandInstance [name=customCommand]');
-          }
-        }
-      });
-
-      const Api = common.require('api-loader/api.js');
-      let mockClient = {
-        options: {
-          custom_commands_path: [path.join(__dirname, '../../extra/commands')]
-        },
-        api: {},
-        isApiMethodDefined: function (commandName, namespace) {
-          return false;
-        },
-        setApiMethod: function (commandName, commandFn) {
-          mockClient.api[commandName] = commandFn;
-        },
-        transport: {
-          Actions: {}
-        }
-      };
-
-      Api.loadCommands(mockClient);
-
-      mockClient.api.customCommand(function() {
-        assert.deepEqual(commandQueue, [ 'customCommand', 'perform' ]);
-        done();
-      });
-    },
-
-  testRunElementCommand(done) {
-    mockery.registerMock('./core/session.js', class {
-      get sessionId() {
-        return '1352110219202';
+      },
+      api: {},
+      isApiMethodDefined(commandName, namespace) {
+        return false;
+      },
+      setApiMethod(commandName, namespace, commandFn) {
+        mockClient.api[namespace] = mockClient.api[namespace] || {};
+        mockClient.api[namespace][commandName] = commandFn;
+      },
+      setApiProperty() {},
+      transport: {
+        Actions: {}
       }
-      setTransportProtocol() {}
-    });
+    };
 
+    let api = new ApiLoader(mockClient);
+    api.loadCustomAssertions();
+
+    assert.ok('customAssertion' in mockClient.api.assert);
+    assert.ok('customAssertion' in mockClient.api.verify);
+
+    mockClient.api.assert.customAssertion(true);
+  });
+
+  it('testLoadCustomAssertionsBadFolder', function() {
     mockery.registerMock('../core/queue.js', {
       add(commandName, command, context, args, originalStackTrace) {
-        command(...args);
+        done();
       }
     });
+
+    const ApiLoader = common.require('api-loader/api.js');
+    let mockClient = {
+      startSessionEnabled: true,
+      options: {
+        custom_assertions_path: './bad-folder'
+      },
+      api: {},
+      isApiMethodDefined: function (commandName, namespace) {
+        return false;
+      },
+      setApiMethod: function (commandName, namespace, commandFn) {
+      },
+      setApiProperty() {
+      },
+      transport: {
+        Actions: {}
+      }
+    };
+
+    assert.throws(function() {
+      let api = new ApiLoader(mockClient);
+      api.loadCustomAssertions();
+    }, /ENOENT: no such file or directory, scandir '/);
+  });
+
+  it('testRunCustomPerformCommand', function(done) {
+    const ApiLoader = common.require('api-loader/api.js');
+    let mockClient = {
+      options: {
+        custom_commands_path: [path.join(__dirname, '../../extra/commands')]
+      },
+      session: {
+        commandQueue: {
+          add(commandName, command, context, args, originalStackTrace) {
+            let instance = command(...args);
+            if (commandName == 'customPerform') {
+              instance.on('complete', () => {
+                assert.strictEqual(paramFnCalled, true);
+                done();
+              });
+            }
+          }
+        }
+      },
+      api: {
+        perform(fn) {
+          fn();
+        }
+      },
+      isApiMethodDefined: function (commandName, namespace) {
+        return false;
+      },
+      setApiMethod: function (commandName, commandFn) {
+        mockClient.api[commandName] = commandFn;
+      },
+      transport: {
+        Actions: {}
+      }
+    };
+
+    let api = new ApiLoader(mockClient);
+    api.loadCustomCommands();
+
+    let paramFnCalled = false;
+    mockClient.api.customPerform(function() {
+      paramFnCalled = true;
+    });
+  });
+
+  it('testRunCustomCommandDeprecated', function(done) {
+    let commandQueue = [];
+    const ApiLoader = common.require('api-loader/api.js');
+    let mockClient = {
+      options: {
+        custom_commands_path: [path.join(__dirname, '../../extra/commands')]
+      },
+      session: {
+        commandQueue: {
+          add(commandName, command, context, args, originalStackTrace) {
+            commandQueue.push(commandName);
+            let instance = command(...args);
+
+            if (commandName == 'customCommand') {
+              assert.equal(instance.toString(), 'CommandInstance [name=customCommand]');
+            }
+          }
+        }
+      },
+      api: {
+        perform(fn) {
+          commandQueue.push('perform');
+          fn();
+        }
+      },
+      isApiMethodDefined: function (commandName, namespace) {
+        return false;
+      },
+      setApiMethod: function (commandName, commandFn) {
+        mockClient.api[commandName] = commandFn;
+      },
+      transport: {
+        Actions: {}
+      }
+    };
+
+    let api = new ApiLoader(mockClient);
+    api.loadCustomCommands();
+
+    mockClient.api.customCommand(function() {
+      assert.deepEqual(commandQueue, ['customCommand', 'perform']);
+      done();
+    });
+  });
+
+  it('testRunElementCommand', function(done) {
+    const MockSession = require('../../lib/mocks/core/session.js');
+    mockery.registerMock('./core/session.js', MockSession);
 
     MockServer.addMock({
       url : '/wd/hub/session/1352110219202/element/0/value',
@@ -288,21 +264,11 @@ module.exports = MochaTest.add('test Nightwatch Api', {
       assert.strictEqual(result.status, 0);
       done();
     });
-  },
+  });
 
-  testRunClientCommand(done) {
-    mockery.registerMock('./core/session.js', class {
-      get sessionId() {
-        return '1352110219202';
-      }
-      setTransportProtocol() {}
-    });
-
-    mockery.registerMock('../core/queue.js', {
-      add(commandName, command, context, args, originalStackTrace) {
-        command.apply(context, args);
-      }
-    });
+  it('testRunClientCommand', function(done) {
+    const MockSession = require('../../lib/mocks/core/session.js');
+    mockery.registerMock('./core/session.js', MockSession);
 
     MockServer.addMock({
       url : '/wd/hub/session/1352110219202/window/current/position',
@@ -324,35 +290,72 @@ module.exports = MochaTest.add('test Nightwatch Api', {
       assert.strictEqual(result.status, 0);
       done();
     });
-  },
+  });
 
-  /*
-  testAddPageObject : function() {
-    var client = Nightwatch.client();
-    client.options.page_objects_path = path.join(__dirname, '../../extra/pageobjects');
-    Api.init(client);
-    Api.loadPageObjects();
 
-    assert.ok(typeof client.api.page == 'object');
+  it('testAddPageObject', function() {
+    const ApiLoader = common.require('api-loader/api.js');
+    let mockClient = {
+      options: {
+        page_objects_path: path.join(__dirname, '../../extra/pageobjects')
+      },
+      session: {},
+      api: {
+        perform(fn) {
+          fn();
+        }
+      },
+      isApiMethodDefined: function (commandName, namespace) {
+        return false;
+      },
+      setApiMethod: function (commandName, namespace, commandFn) {
+        mockClient.api[namespace] = mockClient.api[namespace] || {};
+        mockClient.api[namespace][commandName] = commandFn;
+      },
+      transport: {
+        Actions: {}
+      }
+    };
 
-    assert.ok('SimplePageFn' in client.api.page);
-    assert.ok('simplePageObj' in client.api.page);
+    let api = new ApiLoader(mockClient);
+    api.loadPageObjects();
 
-    client.api.page.SimplePageFn();
+    assert.ok(typeof mockClient.api.page == 'object');
+    assert.ok('simplePageObj' in mockClient.api.page);
 
-    var simplePage = client.api.page.simplePageObj();
+    let simplePage = mockClient.api.page.simplePageObj();
     assert.equal(typeof simplePage, 'object');
-  },
+  });
 
-  testAddPageObjectArrayPath : function() {
-    var client = Nightwatch.client();
-    client.options.page_objects_path = [path.join(__dirname, '../../extra/otherPageobjects')];
-    Api.init(client);
-    Api.loadPageObjects();
+  it('testAddPageObjectArrayPath', function() {
+    const ApiLoader = common.require('api-loader/api.js');
+    let mockClient = {
+      options: {
+        page_objects_path: [path.join(__dirname, '../../extra/otherPageobjects')]
+      },
+      session: {},
+      api: {
+        perform(fn) {
+          fn();
+        }
+      },
+      isApiMethodDefined: function (commandName, namespace) {
+        return false;
+      },
+      setApiMethod: function (commandName, namespace, commandFn) {
+        mockClient.api[namespace] = mockClient.api[namespace] || {};
+        mockClient.api[namespace][commandName] = commandFn;
+      },
+      transport: {
+        Actions: {}
+      }
+    };
 
-    assert.ok(typeof client.api.page == 'object');
-    assert.ok('simplePageObj' in client.api.page);
-    assert.ok('otherPage' in client.api.page);
-  },
-  */
+    let api = new ApiLoader(mockClient);
+    api.loadPageObjects();
+
+    assert.ok(typeof mockClient.api.page == 'object');
+    assert.ok('otherPage' in mockClient.api.page);
+  });
+
 });

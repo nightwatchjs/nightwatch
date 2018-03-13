@@ -3,9 +3,9 @@ var Nightwatch = require('../../../lib/nightwatch.js');
 var Globals = require('../../../lib/globals/commands.js');
 var MochaTest = require('../../../lib/mochatest.js');
 
-module.exports = MochaTest.add('locateStrategies', {
+describe('locateStrategies', function() {
 
-  'client.useXpath()' : function(done) {
+  it('client.useXpath()', function(done) {
     var client = Nightwatch.client();
     var api = Nightwatch.api();
 
@@ -18,7 +18,7 @@ module.exports = MochaTest.add('locateStrategies', {
 
   },
 
-  'client.useCss()' : function(done) {
+  it('client.useCss()', function(done) {
     var client = Nightwatch.client();
     var api = Nightwatch.api();
 
@@ -30,7 +30,7 @@ module.exports = MochaTest.add('locateStrategies', {
     Nightwatch.start();
   },
   /*
-  'test run sample test with xpath' : function(done) {
+  it('test run sample test with xpath', function(done) {
     //test.expect(3);
     var Runner = common.require('runner/run.js');
     Runner.run([process.cwd() + '/sampletests/usexpath'], {

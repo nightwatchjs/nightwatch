@@ -1,81 +1,60 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var Api = common.require('core/api.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = {
-  'assert.containsText' : {
-    'containsText assertion passed' : function(done) {
-      var assertionFn = common.require('api/assertions/containsText.js');
-      var client = {
-        options : {},
-        api : {
-          getText : function(cssSelector, callback) {
-            assert.equal(cssSelector, '.test_element');
-            callback({
-              value : 'expected text result'
-            });
-          }
-        },
-        assertion : function(passed, result, expected, msg, abortOnFailure) {
-          assert.equal(passed, true);
-          assert.equal(result, 'expected text result');
-          assert.equal(expected, 'text result');
-          assert.equal(abortOnFailure, true);
-          done();
+describe('assert.containsText', function () {
+  it('containsText assertion passed', function (done) {
+    Globals.assertionTest({
+      assertionName: 'containsText',
+      args: ['.test_element', 'text result', 'Test message'],
+      api: {
+        getText(cssSelector, callback) {
+          assert.equal(cssSelector, '.test_element');
+          callback({
+            value: 'expected text result'
+          });
         }
-      };
-      Api.init(client);
-      var m = Api.createAssertion('containsText', assertionFn, true, client);
-      m._commandFn('.test_element', 'text result', 'Test message');
-    },
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.equal(passed, true);
+        assert.equal(value, 'expected text result');
+      }
+    }, done);
+  });
 
-    'containsText assertion failed' : function(done) {
-      var assertionFn = common.require('api/assertions/containsText.js');
-      var client = {
-        options : {},
-        api : {
-          getText : function(cssSelector, callback) {
-            callback({
-              value : 'not_expected'
-            });
-          }
-        },
-        assertion : function(passed, result, expected, msg, abortOnFailure) {
-          assert.equal(passed, false);
-          assert.equal(result, 'not_expected');
-          assert.equal(expected, 'text result');
-          assert.equal(abortOnFailure, true);
-          done();
+  it('containsText assertion failed', function (done) {
+    Globals.assertionTest({
+      assertionName: 'containsText',
+      args: ['.test_element', 'text result', 'Test message'],
+      api: {
+        getText(cssSelector, callback) {
+          callback({
+            value: 'not_expected'
+          });
         }
-      };
-      Api.init(client);
-      var m = Api.createAssertion('containsText', assertionFn, true, client);
-      m._commandFn('.test_element', 'text result', 'Test message');
-    },
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.equal(passed, false);
+        assert.equal(value, 'not_expected');
+      }
+    }, done);
+  });
 
-    'containsText assertion not found' : function(done) {
-      var assertionFn = common.require('api/assertions/containsText.js');
-      var client = {
-        options : {},
-        api : {
-          getText : function(cssSelector, callback) {
-            callback({
-              status : -1
-            });
-          }
-        },
-        assertion : function(passed, result, expected, msg, abortOnFailure) {
-          assert.equal(passed, false);
-          assert.equal(result, null);
-          assert.equal(expected, 'text result');
-          assert.equal(abortOnFailure, true);
-          done();
+  it('containsText assertion not found', function (done) {
+    Globals.assertionTest({
+      assertionName: 'containsText',
+      args: ['.test_element', 'text result', 'Test message'],
+      api: {
+        getText(cssSelector, callback) {
+          callback({
+            status: -1
+          });
         }
-      };
-      Api.init(client);
-      var m = Api.createAssertion('containsText', assertionFn, true, client);
-      m._commandFn('.test_element', 'text result', 'Test message');
-    }
-  }
-};
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.equal(passed, false);
+        assert.equal(value, null);
+      }
+    }, done);
+  });
+});
 

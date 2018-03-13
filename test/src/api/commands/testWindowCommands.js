@@ -2,9 +2,9 @@ var assert = require('assert');
 var Nightwatch = require('../../../lib/nightwatch.js');
 var MochaTest = require('../../../lib/mochatest.js');
 
-module.exports = MochaTest.add('window', {
+describe('window', function() {
 
-  'client.closeWindow()' : function(done) {
+  it('client.closeWindow()', function(done) {
     var client = Nightwatch.api();
 
     client.closeWindow(function callback() {
@@ -14,7 +14,7 @@ module.exports = MochaTest.add('window', {
     Nightwatch.start();
   },
 
-  //'client.switchWindow()' : function(done) {
+  //it('client.switchWindow()', function(done) {
   //  var client = Nightwatch.api();
   //
   //  client.switchWindow(function callback() {
@@ -24,7 +24,7 @@ module.exports = MochaTest.add('window', {
   //  Nightwatch.start();
   //},
 
-  'client.resizeWindow()' : function(done) {
+  it('client.resizeWindow()', function(done) {
     var client = Nightwatch.api();
 
     client.resizeWindow(100, 100, function callback() {

@@ -18,7 +18,6 @@
       "silent" : true,
       "desiredCapabilities" : {
         "browserName" : "firefox",
-        "javascriptEnabled" : true,
         "acceptSslCerts" : true
       },
       "filter" : ["async/*"]

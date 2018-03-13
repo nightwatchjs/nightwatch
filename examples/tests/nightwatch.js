@@ -2,7 +2,7 @@ const assert = require('assert');
 
 module.exports = {
   disabled : false,
-  '@endSessionOnFail' : false,
+  //'@endSessionOnFail' : false,
   '@tags': ['website'],
 
   beforeEach: function(client, done) {

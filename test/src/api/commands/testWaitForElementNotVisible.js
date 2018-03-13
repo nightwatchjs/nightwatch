@@ -4,7 +4,7 @@ var Nightwatch = require('../../../lib/nightwatch.js');
 var MochaTest = require('../../../lib/mochatest.js');
 
 
-module.exports = MochaTest.add('waitForElementNotVisible', {
+describe('waitForElementNotVisible', function() {
   afterEach : function() {
     MockServer.removeMock({
       url : '/wd/hub/session/1352110219202/element/0/displayed',
@@ -12,7 +12,7 @@ module.exports = MochaTest.add('waitForElementNotVisible', {
     });
   },
 
-  'client.waitForElementNotVisible() success' : function(done) {
+  it('client.waitForElementNotVisible() success', function(done) {
     var client = Nightwatch.client();
     var api = Nightwatch.api();
     var assertion = [];
@@ -42,7 +42,7 @@ module.exports = MochaTest.add('waitForElementNotVisible', {
     Nightwatch.start();
   },
 
-  'client.waitForElementNotVisible() failure' : function(done) {
+  it('client.waitForElementNotVisible() failure', function(done) {
     var client = Nightwatch.client();
     var api = Nightwatch.api();
     var assertion = [];

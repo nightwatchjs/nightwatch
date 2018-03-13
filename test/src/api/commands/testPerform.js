@@ -14,7 +14,7 @@ module.exports = {
       CommandGlobals.afterEach(done);
     },
 
-    'client.perform()' : function(done) {
+    it('client.perform()', function(done) {
       var api = Nightwatch.api();
 
       api.perform(function() {
@@ -24,7 +24,7 @@ module.exports = {
       Nightwatch.start(done);
     },
 
-    'client.perform() with async callback' : function(done) {
+    it('client.perform() with async callback', function(done) {
       var api = Nightwatch.api();
 
       api.perform(function(complete) {
@@ -35,7 +35,7 @@ module.exports = {
       Nightwatch.start(done);
     },
 
-    'client.perform() with async callback and api param' : function(done) {
+    it('client.perform() with async callback and api param', function(done) {
       var api = Nightwatch.api();
 
       api.perform(function(client, complete) {

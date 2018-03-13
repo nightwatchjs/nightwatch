@@ -3,7 +3,7 @@ var assert = require('assert');
 var Nightwatch = require('../../../lib/nightwatch.js');
 var MochaTest = require('../../../lib/mochatest.js');
 
-module.exports = MochaTest.add('isLogAvailable', {
+describe('isLogAvailable', function() {
   afterEach : function() {
     MockServer.removeMock({
       url : '/wd/hub/session/1352110219202/log/types',
@@ -11,7 +11,7 @@ module.exports = MochaTest.add('isLogAvailable', {
     });
   },
 
-  'client.isLogAvailable()' : function(done) {
+  it('client.isLogAvailable()', function(done) {
     var client = Nightwatch.api();
 
     MockServer.addMock({
@@ -37,7 +37,7 @@ module.exports = MochaTest.add('isLogAvailable', {
     Nightwatch.start();
   },
 
-  'client.isLogAvailable() failure' : function(done) {
+  it('client.isLogAvailable() failure', function(done) {
     var client = Nightwatch.api();
 
      MockServer.addMock({

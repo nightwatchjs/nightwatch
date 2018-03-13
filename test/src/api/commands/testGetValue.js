@@ -3,9 +3,9 @@ var assert = require('assert');
 var Nightwatch = require('../../../lib/nightwatch.js');
 var MochaTest = require('../../../lib/mochatest.js');
 
-module.exports = MochaTest.add('getValue', {
+describe('getValue', function() {
 
-  'client.getValue()' : function(done) {
+  it('client.getValue()', function(done) {
     var client = Nightwatch.api();
 
     MockServer.addMock({

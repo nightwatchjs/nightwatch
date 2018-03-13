@@ -1,16 +1,13 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var Api = common.require('core/api.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = {
-  'assert.elementPresent' : {
-    'elementPresent assertion passed' : function(done) {
-      var assertionFn = common.require('api/assertions/elementPresent.js');
-      var client = {
-        options : {},
-        locateStrategy : 'css selector',
-        api : {
-          elements : function(using, selector, callback) {
+  describe('assert.elementPresent', function() {
+    it('elementPresent assertion passed', function(done) {
+      Globals.assertionTest({
+        assertionName: 'elementPresent',
+        args: ['.test_element'],
+        api: {
+          elements(using, selector, callback) {
             assert.equal(selector, '.test_element');
             assert.equal(using, 'css selector');
             callback({
@@ -21,27 +18,20 @@ module.exports = {
             });
           }
         },
-        assertion : function(passed, result, expected, msg, abortOnFailure) {
+        assertion(passed, value, calleeFn, message) {
           assert.equal(passed, true);
-          assert.equal(result, 'present');
-          assert.equal(expected, 'present');
-          assert.equal(msg, 'Testing if element <.test_element> is present.');
-          assert.equal(abortOnFailure, true);
-          done();
+          assert.equal(value, 'present');
+          assert.ok(message.startsWith('Testing if element <.test_element> is present'));
         }
-      };
-      Api.init(client);
-      var m = Api.createAssertion('elementPresent', assertionFn, true, client);
-      m._commandFn('.test_element');
-    },
+      }, done);
+    });
 
-    'elementPresent assertion failed' : function(done) {
-      var assertionFn = common.require('api/assertions/elementPresent.js');
-      var client = {
-        options : {},
-        locateStrategy : 'css selector',
-        api : {
-          elements : function(using, selector, callback) {
+    it('elementPresent assertion failed', function(done) {
+      Globals.assertionTest({
+        assertionName: 'elementPresent',
+        args: ['.test_element'],
+        api: {
+          elements(using, selector, callback) {
             assert.equal(selector, '.test_element');
             assert.equal(using, 'css selector');
             callback({
@@ -50,17 +40,11 @@ module.exports = {
             });
           }
         },
-        assertion : function(passed, result, expected, msg, abortOnFailure) {
+        assertion(passed, value, calleeFn, message) {
           assert.equal(passed, false);
-          assert.equal(result, 'not present');
-          assert.equal(expected, 'present');
-          assert.equal(abortOnFailure, true);
-          done();
+          assert.equal(value, 'not present');
+          assert.ok(message.startsWith('Testing if element <.test_element> is present'));
         }
-      };
-      Api.init(client);
-      var m = Api.createAssertion('elementPresent', assertionFn, true, client);
-      m._commandFn('.test_element');
-    }
-  }
-};
+      }, done);
+    });
+  });

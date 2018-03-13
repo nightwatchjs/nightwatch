@@ -1,9 +1,9 @@
-var Nocks = require('../nocks.js');
-var Globals = require('../globals.js');
-var Nightwatch = require('../nightwatch.js');
+const Nocks = require('../nocks.js');
+const Nightwatch = require('../nightwatch.js');
 
 module.exports = {
   beforeEach(opts, done) {
+    Nocks.enable();
 
     if (arguments.length === 1) {
       done = arguments[0];
@@ -21,5 +21,6 @@ module.exports = {
 
   afterEach() {
     Nocks.deleteSession();
+    Nocks.disable();
   }
 };
