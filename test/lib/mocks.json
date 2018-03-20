@@ -4,7 +4,7 @@
     {
       "url" : "/wd/hub/session",
       "postdata" : "{\"desiredCapabilities\":{\"browserName\":\"firefox\",\"javascriptEnabled\":true,\"acceptSslCerts\":true,\"platform\":\"ANY\"}}",
-      "response" : "{\"status\": 0, \"sessionId\": \"1352110219202\", \"value\": { \"javascriptEnabled\": true, \"browserName\": \"firefox\", \"version\": \"TEST\", \"platform\": \"TEST\"}, \"state\": null}",
+      "response" : "{\"status\": 0, \"sessionId\": \"1352110219202\", \"value\": { \"javascriptEnabled\": true, \"browserName\": \"firefox\", \"browserVersion\": \"TEST\", \"platformVersion\": \"TEST\"}, \"state\": null}",
       "responseHeaders" : {
       },
       "statusCode" : 201,
@@ -43,6 +43,11 @@
     },
     {
       "url" : "/wd/hub/session/1352110219202/element",
+      "postdata" : "{\"using\":\"css selector\",\"value\":\"#webdriver\"}",
+      "response" : "{\"sessionId\":\"1352110219202\",\"status\":0,\"value\":{\"element-6066-11e4-a52e-4f735466cecf\":\"5cc459b8-36a8-3042-8b4a-258883ea642b\"}}"
+    },
+    {
+      "url" : "/wd/hub/session/1352110219202/element",
       "postdata" : "{\"using\":\"css selector\",\"value\":\"#signupSection\"}",
       "response" : "{\"sessionId\":\"1352110219202\",\"status\":0,\"value\":{\"ELEMENT\":\"0\"},\"class\":\"org.openqa.selenium.remote.Response\",\"hCode\":604376696}"
     },
@@ -60,6 +65,11 @@
       "url" : "/wd/hub/session/1352110219202/elements",
       "postdata" : "{\"using\":\"css selector\",\"value\":\"#weblogin\"}",
       "response" : "{\"sessionId\":\"1352110219202\",\"status\":0,\"value\":[{\"ELEMENT\":\"0\"}],\"class\":\"org.openqa.selenium.remote.Response\",\"hCode\":604376696}"
+    },
+    {
+      "url" : "/wd/hub/session/1352110219202/elements",
+      "postdata" : "{\"using\":\"css selector\",\"value\":\"#webdriver\"}",
+      "response" : "{\"sessionId\":\"1352110219202\",\"status\":0,\"value\":[{\"element-6066-11e4-a52e-4f735466cecf\":\"5cc459b8-36a8-3042-8b4a-258883ea642b\"}]}"
     },
     {
       "url" : "/wd/hub/session/1352110219202/elements",

@@ -30,6 +30,8 @@ Feature requests are welcome.
 ## Submitting a pull request
 Thanks in advance for your contribution.
 
+__IMPORTANT__: Until v1.0 is released, please base your branch on _releases/v0.9_, not on _master_.
+
 1. Follow the usual git workflow for submitting a pull request
   
   * fork the project
