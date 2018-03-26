@@ -15,6 +15,7 @@
     "url": "git@github.com:nightwatchjs/nightwatch.git"
   },
   "dependencies": {
+    "adm-zip": "^0.4.7",
     "chai-nightwatch": "~0.1.x",
     "ejs": "2.5.7",
     "lodash.clone": "3.0.3",
