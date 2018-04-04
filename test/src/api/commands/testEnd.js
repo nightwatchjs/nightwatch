@@ -1,6 +1,5 @@
 const assert = require('assert');
 const Nightwatch = require('../../../lib/nightwatch.js');
-const common = require('../../../common.js');
 const Nocks = require('../../../lib/nocks.js');
 const nock = require('nock');
 
@@ -24,10 +23,10 @@ describe('end', function() {
         value: null
       });
 
-    this.api.end(function callback(result) {
+    this.api.end(result => {
       assert.equal(result.state, 'success');
       assert.strictEqual(this.api.sessionId, null);
-    }.bind(this));
+    });
 
     this.client.start(done);
   });
@@ -43,7 +42,6 @@ describe('end', function() {
       });
 
     this.api.end();
-
     this.api.end(function callback(result) {
       assert.strictEqual(result, null);
     });
@@ -68,59 +66,35 @@ describe('end', function() {
         value: '==content'
       });
 
-    const settings = {
+    Nightwatch.initClient({
       screenshots: {
         enabled: true,
         on_failure: true,
         path: './screens'
       }
-    };
+    }).then(client => {
+      client.api.currentTest = {
+        module: 'test_module',
+        name: 'test_name',
+        results: {
+          failed: 1,
+          passed: 0
+        }
+      };
 
-    const Reporter = common.require('testsuite/reporter.js');
-    let reporter = new Reporter(['test case'], null, settings, {
-      suiteName: 'testSuite',
-      moduleKey: 'test-moduleKey',
-      reportPrefix: '',
-      groupName: 'test-GroupName'
-    });
-
-    Nightwatch.initClient(settings, reporter).then(client => {
-      client.api.currentTest = client.reporter.currentTest;
-
-      client.saveScreenshotToFile = function (file, content) {
-        assert.equal(content, '==content');
+      client.api.saveScreenshot = function (file, callback) {
         assert.ok(file.indexOf('screens/test_module/test_name') > -1);
-        setTimeout(function () {
-          done();
-        }, 10);
       };
 
       client.api.end(function callback(result) {
         assert.equal(result.value, null);
       });
 
-      client.start();
+      client.start(done);
     });
-
-    //client.results.failed = 1;
-
-
   });
 
   it('client.end() - failures and screenshots disabled', function (done) {
-    const client = this.client;
-
-    client.results.failed = 1;
-    client.currentTest = {
-      module: 'test_module',
-      name: 'test_name'
-    };
-    client.options.screenshots = {
-      enabled: true,
-      on_failure: false,
-      path: './screens'
-    };
-
     nock('http://localhost:10195')
       .delete('/wd/hub/session/1352110219202')
       .reply(200, {
@@ -129,10 +103,31 @@ describe('end', function() {
         value: null
       });
 
-    this.api.end(function callback(result) {
-      assert.strictEqual(result.value, null);
-    });
+    Nightwatch.initClient({
+      screenshots: {
+        enabled: true,
+        on_failure: false,
+        path: './screens'
+      }
+    }).then(client => {
+      client.api.currentTest = {
+        module: 'test_module',
+        name: 'test_name',
+        results: {
+          failed: 1,
+          passed: 0
+        }
+      };
 
-    this.client.start(done);
+      client.api.saveScreenshot = function (file, callback) {
+        throw new Error('saveScreenshot should not be called');
+      };
+
+      client.api.end(function callback(result) {
+        assert.strictEqual(result.value, null);
+      });
+
+      client.start(done);
+    });
   });
 });

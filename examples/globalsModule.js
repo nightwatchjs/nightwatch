@@ -49,7 +49,7 @@ module.exports = {
 
   afterEach : function(browser, cb) {
     browser.perform(function() {
-      //console.log('GLOBAL afterEach')
+      console.log('GLOBAL afterEach')
 
 
         cb();
