@@ -14,6 +14,10 @@ describe('end', function() {
     });
   });
 
+  after(function() {
+    Nocks.disable();
+  });
+
   it('client.end();', function (done) {
     nock('http://localhost:10195')
       .delete('/wd/hub/session/1352110219202')

@@ -14,11 +14,14 @@ describe('getLog', function() {
   it('client.getLog()', function(done) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/log',
-      method: 'GET',
+      method: 'POST',
       response: JSON.stringify({
         sessionId: '1352110219202',
         status: 0,
-        value: [{'level': 'info', 'timestamp': 534547832, 'message': 'Test log'}, {'level': 'info', 'timestamp': 534547442, 'message': 'Test log2'}]
+        value: [
+          {'level': 'info', 'timestamp': 534547832, 'message': 'Test log'},
+          {'level': 'info', 'timestamp': 534547442, 'message': 'Test log2'}
+        ]
       })
     }, true);
 

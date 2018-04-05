@@ -43,7 +43,7 @@ describe('test expect element selectors', function() {
     let page = api.page.simplePageObj();
     let section = page.section.signUp;
 
-    let passes = [
+    let passedAssertions = [
       api.expect.element('.nock').to.be.present.before(1),
       api.expect.element({selector: '.nock'}).to.be.present.before(1),
       api.expect.element({selector: '//[@class="nock"]', locateStrategy: 'xpath'}).to.be.present.before(1),
@@ -52,33 +52,26 @@ describe('test expect element selectors', function() {
       //section.expect.element('@help').to.be.present.before(1)
     ];
 
-    let fails = [
+    let failedAssertions = [
       //[api.expect.element({selector: '.nock', locateStrategy: 'xpath'}).to.be.present.before(1), 'element was not found'],
       [page.expect.section({selector: '@signUp', locateStrategy: 'xpath'}).to.be.present.before(1), 'element was not found']
     ];
 
-    api.perform(function(performDone) {
-      process.nextTick(function(){ // keep assertions from being swallowed by perform
+    api.perform(function() {
+      passedAssertions.forEach(function(expect, index) {
+        assert.equal(expect.assertion.passed, true, 'passing [' + index + ']: ' + expect.assertion.message);
+      });
+    }).perform(function() {
+      failedAssertions.forEach(function(expectArr, index) {
+        let expect = expectArr[0];
+        let msgPartial = expectArr[1];
 
-        passes.forEach(function(expect, index) {
-          assert.equal(expect.assertion.passed, true, 'passing [' + index + ']: ' + expect.assertion.message);
-        });
-
-        fails.forEach(function(expectArr, index) {
-          let expect = expectArr[0];
-          let msgPartial = expectArr[1];
-
-          assert.equal(expect.assertion.passed, false, 'failing [' + index + ']: ' + expect.assertion.message);
-          assert.notEqual(expect.assertion.message.indexOf(msgPartial), -1, 'Message contains: ' + msgPartial);
-        });
-        
-        performDone();
-        done();
-
+        assert.equal(expect.assertion.passed, false, 'failing [' + index + ']: ' + expect.assertion.message);
+        assert.notEqual(expect.assertion.message.indexOf(msgPartial), -1, 'Message contains: ' + msgPartial);
       });
     });
 
-    Nightwatch.start();
+    Nightwatch.start(done);
   });
 
 });

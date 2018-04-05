@@ -22,9 +22,23 @@ describe('moveToElement', function() {
       })
     });
 
-    this.client.api.moveTo('css selector', '#weblogin', null, null, function callback(result) {
+    MockServer.addMock({
+      url : '/wd/hub/session/1352110219202/moveto',
+      method:'POST',
+      postdata: '{"element":"0","xoffset":1,"yoffset":1}',
+      response : JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0
+      })
+    });
+
+    this.client.api.moveToElement('css selector', '#weblogin', null, null, function(result) {
       assert.equal(result.status, 0);
-    }).moveToElement('#weblogin', null, null, function callback(result) {
+    }).moveToElement('#weblogin', null, null, function(result) {
+      assert.equal(result.status, 0);
+    }).moveTo('0', null, null, function(result) {
+      assert.equal(result.status, 0);
+    }).moveToElement('#weblogin', 1, 1, function(result) {
       assert.equal(result.status, 0);
     });
 
