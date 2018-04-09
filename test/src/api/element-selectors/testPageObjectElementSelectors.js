@@ -37,9 +37,6 @@ describe('test page object element selectors', function() {
       .text(0, 'first')
       .text(1, 'second');
 
-    // var client = Nightwatch.client();
-    // Api.init(client);
-    //
     let page = Nightwatch.api().page.simplePageObj();
 
     page
@@ -62,12 +59,9 @@ describe('test page object element selectors', function() {
       .getText('@loginId', function callback(result) {
         assert.equal(result.status, 0, 'element selector id found');
         assert.equal(result.value, 'first', 'element selector id value');
-      })
-      .api.perform(function() {
-      done();
-    });
+      });
 
-    Nightwatch.start();
+    Nightwatch.start(done);
   });
 
   it('page section elements', function(done) {
@@ -76,13 +70,10 @@ describe('test page object element selectors', function() {
       .elementFound('#getStarted')
       .elementFound('#helpBtn')
       .elementIdNotFound(0, '#helpBtn', 'xpath')
-      .elementId(0, '#helpBtn')
+      .elementsId('0', '#helpBtn', [{ELEMENT: '0'}])
       .text(0, 'first')
       .text(1, 'second');
 
-    // var client = Nightwatch.client();
-    // Api.init(client);
-    //
     let page = Nightwatch.api().page.simplePageObj();
     let section = page.section.signUp;
     let sectionChild = section.section.getStarted;
@@ -95,10 +86,11 @@ describe('test page object element selectors', function() {
       .getText({selector: '@help'}, function callback(result) {
         assert.equal(result.status, 0, 'section element selector property found');
         assert.equal(result.value, 'first', 'section element selector property value');
-      })
-      .getText({selector: '@help', locateStrategy: 'xpath'}, function callback(result) {
-        assert.equal(result.status, -1, 'section element selector css xpath override not found');
       });
+
+    assert.throws(function() {
+      section.getText({selector: '@help', locateStrategy: 'xpath'});
+    }, /^Error: Element "help\[locateStrategy='xpath'\]" was not found in "signUp"/);
 
     sectionChild
       .getText('#helpBtn', function callback(result) {
@@ -108,12 +100,9 @@ describe('test page object element selectors', function() {
       .getText({selector: '#helpBtn'}, function callback(result) {
         assert.equal(result.status, 0, 'child section element selector property found');
         assert.equal(result.value, 'first', 'child section element selector property value');
-      })
-      .api.perform(function() {
-      done();
-    });
+      });
 
-    Nightwatch.start();
+    Nightwatch.start(done);
   });
 
 });

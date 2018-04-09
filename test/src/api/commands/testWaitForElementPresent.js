@@ -18,7 +18,7 @@ describe('waitForElementPresent', function() {
     this.client.api.waitForElementPresent('#weblogin', 100, function(result, instance) {
       assert.equal(instance.expectedValue, 'found');
       assert.equal(result.status, 0);
-      assert.equal(result.value[0], '0');
+      assert.deepEqual(result.value[0], { ELEMENT: '0' });
     });
 
     this.client.start(done);
@@ -41,7 +41,7 @@ describe('waitForElementPresent', function() {
       client.api.waitForElementPresent('#webdriver', 100, function(result, instance) {
         assert.equal(instance.expectedValue, 'found');
         assert.equal(result.status, 0);
-        assert.equal(result.value, '5cc459b8-36a8-3042-8b4a-258883ea642b');
+        assert.deepEqual(result.value, [{'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'}]);
       });
 
       client.start(done);

@@ -46,40 +46,29 @@ describe('test protocol element selectors', function() {
       })
       .element('css selector', {selector: '#nock-none'}, function callback(result) {
         assert.equal(result.status, -1, 'Not found for selector property');
-      })
-      .perform(function() {
-        done(); // done here, not in start(), to make sure all commands complete without error
       });
 
-    Nightwatch.start();
+    Nightwatch.start(done);
   });
 
   it('protocol.element(using, null)', function (done) {
-    utils.catchQueueError(function (err) {
+    Nightwatch.api().element('css selector', null);
+
+    Nightwatch.start(function(err) {
+      assert.ok(err instanceof Error);
       assert.ok(err.message.includes('Invalid selector value specified'));
       done();
     });
-
-    Nightwatch.api()
-      .element('css selector', null, function callback(result) {
-        assert.ok(false, 'Null selector object should fail');
-      });
-
-    Nightwatch.start();
   });
 
   it('protocol.element(using, {})', function (done) {
-    utils.catchQueueError(function (err) {
-      assert.ok(err.message.includes('No selector property for'));
+    Nightwatch.api().element('css selector', {});
+
+    Nightwatch.start(function(err) {
+      assert.ok(err instanceof Error);
+      assert.ok(err.message.includes('No selector property for selector object'));
       done();
     });
-
-    Nightwatch.api()
-      .element('css selector', {}, function callback(result) {
-        assert.ok(false, 'Empty selector object should fail');
-      });
-
-    Nightwatch.start();
   });
 
   it('protocol.element(using, {selector, locateStrategy})', function (done) {
@@ -94,40 +83,29 @@ describe('test protocol element selectors', function() {
       })
       .element('css selector', {selector: '#nock', locateStrategy: null}, function callback(result) {
         assert.equal(result.value.ELEMENT, '0', 'Found element, null locateStrategy');
-      })
-      .perform(function() {
-        done();
       });
 
-    Nightwatch.start();
+    Nightwatch.start(done);
   });
 
   it('protocol.element(using, {locateStrategy})', function (done) {
-    utils.catchQueueError(function (err) {
-      assert.ok(err.message.includes('No selector property for'));
+    Nightwatch.api().element('css selector', {locateStrategy: 'css selector'});
+
+    Nightwatch.start(function(err) {
+      assert.ok(err instanceof Error);
+      assert.ok(err.message.includes('No selector property for selector object'));
       done();
     });
-
-    Nightwatch.api()
-      .element('css selector', {locateStrategy: 'css selector'}, function callback(result) {
-        assert.ok(false, 'Selector with just locateStrategy should fail');
-      });
-
-    Nightwatch.start();
   });
 
   it('protocol.element(using, {locateStrategy=invalid})', function (done) {
-    utils.catchQueueError(function (err) {
-      assert.ok(!err.message.includes('Provided locating strategy is not supported'));
+    Nightwatch.api().element('css selector', {selector: '.nock', locateStrategy: 'unsupported'});
+
+    Nightwatch.start(function(err) {
+      assert.ok(err instanceof Error);
+      assert.ok(err.message.includes('Provided locating strategy "unsupported" is not supported'));
       done();
     });
-
-    Nightwatch.api()
-      .element('css selector', {selector: '.nock', locateStrategy: 'unsupported'}, function callback(result) {
-        assert.ok(false, 'Selector with invalid locateStrategy should fail');
-      });
-
-    Nightwatch.start();
   });
 
   it('protocol.elements(using, {selector})', function (done) {
@@ -149,40 +127,29 @@ describe('test protocol element selectors', function() {
       .elements('css selector', {selector: '.nock-none'}, function callback(result) {
         assert.equal(result.status, 0, 'Not found for selector property');
         assert.equal(result.value.length, 0, 'No results for selector property');
-      })
-      .perform(function() {
-        done();
       });
 
-    Nightwatch.start();
+    Nightwatch.start(done);
   });
 
   it('protocol.elements(using, null)', function (done) {
-    utils.catchQueueError(function (err) {
+    Nightwatch.api().elements('css selector', null);
+
+    Nightwatch.start(function(err) {
+      assert.ok(err instanceof Error);
       assert.ok(err.message.includes('Invalid selector value specified'));
       done();
     });
-
-    Nightwatch.api()
-      .elements('css selector', null, function callback(result) {
-        assert.ok(false, 'Null selector object should fail');
-      });
-
-    Nightwatch.start();
   });
 
   it('protocol.elements(using, {})', function (done) {
-    utils.catchQueueError(function (err) {
-      assert.ok(err.message.includes('No selector property for'));
+    Nightwatch.api().elements('css selector', {});
+
+    Nightwatch.start(function(err) {
+      assert.ok(err instanceof Error);
+      assert.ok(err.message.includes('No selector property for selector object'));
       done();
     });
-
-    Nightwatch.api()
-      .elements('css selector', {}, function callback(result) {
-        assert.ok(false, 'Empty selector object should fail');
-      });
-
-    Nightwatch.start();
   });
 
   it('protocol.elements(using, {selector, locateStrategy})', function (done) {
@@ -202,41 +169,29 @@ describe('test protocol element selectors', function() {
       })
       .elements('css selector', {selector: '.nock', locateStrategy: null}, function callback(result) {
         assert.equal(result.value[0].ELEMENT, '0', 'Found element, null locateStrategy');
-      })
-      .perform(function() {
-        done();
       });
 
-    Nightwatch.start();
+    Nightwatch.start(done);
   });
 
   it('protocol.elements(using, {locateStrategy})', function (done) {
-    utils.catchQueueError(function (err) {
-      assert.ok(err.message.includes('No selector property for'));
+    Nightwatch.api().elements('css selector', {locateStrategy: 'css selector'});
+
+    Nightwatch.start(function(err) {
+      assert.ok(err instanceof Error);
+      assert.ok(err.message.includes('No selector property for selector object'));
       done();
     });
-
-    Nightwatch.api()
-      .elements('css selector', {locateStrategy: 'css selector'}, function callback(result) {
-        assert.ok(false, 'Selector with just locateStrategy should fail');
-      });
-
-    Nightwatch.start();
   });
 
   it('protocol.elements(using, {locateStrategy=invalid})', function (done) {
-    utils.catchQueueError(function (err) {
-      var msg = 'Provided locating strategy is not supported';
-      assert.equal(err.message.indexOf(msg), -1);
+    Nightwatch.api().elements('css selector', {selector: '.nock', locateStrategy: 'unsupported'});
+
+    Nightwatch.start(function(err) {
+      assert.ok(err instanceof Error);
+      assert.ok(err.message.includes('Provided locating strategy "unsupported" is not supported'));
       done();
     });
-
-    Nightwatch.api()
-      .elements('css selector', {selector: '.nock', locateStrategy: 'unsupported'}, function callback(result) {
-        assert.ok(false, 'Selector with invalid locateStrategy should fail');
-      });
-
-    Nightwatch.start();
   });
 
 });

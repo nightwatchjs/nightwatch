@@ -30,11 +30,11 @@ describe('test expect element selectors', function() {
   });
 
 
-  it('expect selectors', function (done) {
+  it('passing expect selectors', function (done) {
     nocks
       .elementsFound()
       .elementsFound('#signupSection', [{ELEMENT: '0'}])
-      .elementsId(0, '#helpBtn', [{ELEMENT: '0'}])
+      .elementsId(0, '#helpBtn', [{ELEMENT: '0'}, {ELEMENT: '1'}])
       .elementsByXpath();
 
     let api = Nightwatch.api();
@@ -43,35 +43,59 @@ describe('test expect element selectors', function() {
     let page = api.page.simplePageObj();
     let section = page.section.signUp;
 
-    let passedAssertions = [
+    let passingAssertions = [
       api.expect.element('.nock').to.be.present.before(1),
       api.expect.element({selector: '.nock'}).to.be.present.before(1),
       api.expect.element({selector: '//[@class="nock"]', locateStrategy: 'xpath'}).to.be.present.before(1),
       page.expect.section('@signUp').to.be.present.before(1),
       page.expect.section({selector: '@signUp', locateStrategy: 'css selector'}).to.be.present.before(1),
-      //section.expect.element('@help').to.be.present.before(1)
-    ];
-
-    let failedAssertions = [
-      //[api.expect.element({selector: '.nock', locateStrategy: 'xpath'}).to.be.present.before(1), 'element was not found'],
-      [page.expect.section({selector: '@signUp', locateStrategy: 'xpath'}).to.be.present.before(1), 'element was not found']
+      section.expect.element('@help').to.be.present.before(1)
     ];
 
     api.perform(function() {
-      passedAssertions.forEach(function(expect, index) {
+      passingAssertions.forEach(function(expect, index) {
         assert.equal(expect.assertion.passed, true, 'passing [' + index + ']: ' + expect.assertion.message);
-      });
-    }).perform(function() {
-      failedAssertions.forEach(function(expectArr, index) {
-        let expect = expectArr[0];
-        let msgPartial = expectArr[1];
-
-        assert.equal(expect.assertion.passed, false, 'failing [' + index + ']: ' + expect.assertion.message);
-        assert.notEqual(expect.assertion.message.indexOf(msgPartial), -1, 'Message contains: ' + msgPartial);
       });
     });
 
     Nightwatch.start(done);
   });
 
+
+  it('failing expect selectors - xpath .nock', function (done) {
+    nocks
+      .elementsFound()
+      .elementsByXpathError();
+
+    let api = Nightwatch.api();
+    api.globals.abortOnAssertionFailure = false;
+
+    let expect = api.expect.element({selector: '.nock', locateStrategy: 'xpath'}).to.be.present.before(1);
+
+    api.perform(function() {
+      assert.equal(expect.assertion.passed, false);
+      assert.ok(expect.assertion.message.includes('element was not found'));
+    });
+
+    Nightwatch.start(done);
+  });
+
+  it('failing expect selectors - xpath @signUp', function () {
+    nocks
+      .elementsFound()
+      .elementsFound('#signupSection')
+      .elementsByXpath();
+
+    let api = Nightwatch.api();
+    api.globals.abortOnAssertionFailure = false;
+
+    let page = api.page.simplePageObj();
+    try {
+      page.expect.section({selector: '@signUp', locateStrategy: 'xpath'}).to.be.present;
+    } catch (err) {
+      assert.ok(err instanceof Error);
+      assert.equal(err.message, 'Section "signUp[locateStrategy=\'xpath\']" was not found in "simplePageObj". Available sections: signUp[locateStrategy=\'css selector\'], propTest[locateStrategy=\'css selector\']');
+    }
+    Nightwatch.start();
+  });
 });
