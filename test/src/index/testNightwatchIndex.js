@@ -35,42 +35,42 @@ describe('test NightwatchIndex', function () {
 
   /*
 
-      'Test runProtocolAction with error': function (done) {
-        let client = Nightwatch.createClient({
-          screenshots: {
-            enabled: true,
-            path: './'
-          },
-          output: false,
-          silent: false
-        });
-
-        let Reporter = common.require('core/reporter.js');
-        let originalFn = Reporter.saveErrorScreenshot;
-        Reporter.saveErrorScreenshot = function (content) {
-          Reporter.saveErrorScreenshot = originalFn;
-        };
-
-        client.on('nightwatch:session.create', function () {
-          let request = Transport.runProtocolAction({
-            host: '127.0.0.1',
-            path: '/test_error',
-            method: 'POST',
-            port: 10195
-          });
-
-          request.then(result => {
-            assert.equal(result.status, -1);
-            assert.equal(result.errorStatus, 7);
-            assert.strictEqual(result.value.screen, undefined);
-            assert.equal(result.error, 'An element could not be located on the page using the given search parameters.');
-            done();
-          });
-        });
-
-        client.startSession();
+  'Test runProtocolAction with error': function (done) {
+    let client = Nightwatch.createClient({
+      screenshots: {
+        enabled: true,
+        path: './'
       },
-      */
+      output: false,
+      silent: false
+    });
+
+    let Reporter = common.require('core/reporter.js');
+    let originalFn = Reporter.saveErrorScreenshot;
+    Reporter.saveErrorScreenshot = function (content) {
+      Reporter.saveErrorScreenshot = originalFn;
+    };
+
+    client.on('nightwatch:session.create', function () {
+      let request = Transport.runProtocolAction({
+        host: '127.0.0.1',
+        path: '/test_error',
+        method: 'POST',
+        port: 10195
+      });
+
+      request.then(result => {
+        assert.equal(result.status, -1);
+        assert.equal(result.errorStatus, 7);
+        assert.strictEqual(result.value.screen, undefined);
+        assert.equal(result.error, 'An element could not be located on the page using the given search parameters.');
+        done();
+      });
+    });
+
+    client.startSession();
+  },
+  */
 
   it('testChromeSessionWithRedirectStatus', function (done) {
     MockServer.addMock({

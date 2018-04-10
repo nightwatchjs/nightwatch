@@ -38,20 +38,22 @@ describe('client.mouseButtonClick', function() {
     });
   });
 
-  it('test mouseButtonClick with callback only', function() {
+  it('test mouseButtonClick with callback only', function(done) {
     Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.deepEqual(opts.data, { button: 0 });
       },
       commandName: 'mouseButtonClick',
-      args: []
+      args: [function() {
+        done();
+      }]
     });
   });
 
   it('test mouseButtonClick with no args', function() {
     Globals.protocolTest.call(this, {
       assertion: function(opts) {
-        assert.deepEqual(opts.data, { button: '???? duplicate of above test'});
+        assert.deepEqual(opts.data, { button: 0 });
       },
       commandName: 'mouseButtonClick',
       args: []
@@ -80,13 +82,15 @@ describe('client.mouseButtonClick', function() {
     });
   });
 
-  it('test mouseButtonDown with callback only', function() {
+  it('test mouseButtonDown with callback only', function(done) {
     Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.deepEqual(opts.data, { button: 0 });
       },
       commandName: 'mouseButtonDown',
-      args: []
+      args: [function() {
+        done();
+      }]
     });
   });
 

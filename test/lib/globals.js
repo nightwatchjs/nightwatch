@@ -55,7 +55,7 @@ module.exports = {
 
   protocolBefore() {
     this.client = Nightwatch.createClient();
-    this.client.session.sessionId = '1352110219202';
+    this.client.session.sessionId = this.client.api.sessionId = '1352110219202';
 
     this.protocol = common.require('api/protocol.js')(this.client);
   },

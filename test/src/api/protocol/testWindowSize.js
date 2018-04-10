@@ -7,42 +7,43 @@ describe('windowSize', function() {
   });
 
   it('testWindowSizeErrors', function() {
-    var protocol = this.protocol;
+    const protocol = this.protocol;
 
     assert.throws(
       function() {
-        protocol.windowSize(function() {
-        });
-      }, 'First argument must be a window handle string.'
+        protocol.windowSize(function() {});
+      }, /First argument must be a window handle string/
     );
 
     assert.throws(
       function() {
         protocol.windowSize('current', 'a', 10);
-      }, 'Width and height arguments must be passed as numbers.'
-    );
-
-    assert.throws(
-      function() {
-        protocol.windowSize('current', 10);
-      }, 'Width and height arguments must be passed as numbers.'
+      }, /Width argument passed to \.windowSize\(\) must be a number/
     );
 
     assert.throws(
       function() {
         protocol.windowSize('current', 10, 'a');
-      }, 'Width and height arguments must be passed as numbers.'
+      }, /Height argument passed to \.windowSize\(\) must be a number/
+    );
+
+    assert.throws(
+      function() {
+        protocol.windowSize('current', 10);
+      }, /Second argument passed to \.windowSize\(\) should be a callback when not passing width and height/
     );
   });
 
-  it('testWindowSizeGet', function() {
+  it('testWindowSizeGet', function(done) {
     Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/window/current/size');
       },
       commandName: 'windowSize',
-      args: ['current']
+      args: ['current', function() {
+        done();
+      }]
     });
   });
 

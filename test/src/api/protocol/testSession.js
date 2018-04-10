@@ -53,7 +53,7 @@ describe('session commands', function() {
   it('testSessionGETImplicitById', function() {
     Globals.protocolTest.call(this, {
       assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
+        assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202');
       },
       commandName: 'session',
@@ -80,6 +80,19 @@ describe('session commands', function() {
       },
       commandName: 'session',
       args: ['DELETE']
+    });
+  });
+
+  it('testSessionDELETEWithCallback', function(done) {
+    Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'DELETE');
+        assert.equal(opts.path, '/session/1352110219202');
+      },
+      commandName: 'session',
+      args: ['DELETE', function() {
+        done();
+      }]
     });
   });
 

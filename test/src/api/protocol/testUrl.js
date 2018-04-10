@@ -29,21 +29,30 @@ describe('url', function() {
     });
   });
 
-  it('client.url() get with callback', function() {
+  it('client.url() get with callback', function(done) {
     Globals.protocolTest.call(this, {
       assertion: function(opts) {
-        assert.ok(false, 'b? duplicate of first test??? Get callback called');
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202/url');
       },
       commandName: 'url',
-      args: []
+      args: [function() {
+        done();
+      }]
     });
+  });
 
+  it('client.url() new with callback', function(done) {
     Globals.protocolTest.call(this, {
       assertion: function(opts) {
-        assert.ok(false, 'b? duplicate of second test? Post callback called');
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/url');
+        assert.deepEqual(opts.data, {url: 'http://localhost'});
       },
       commandName: 'url',
-      args: ['http://localhost']
+      args: ['http://localhost', function() {
+        done();
+      }]
     });
   });
 });

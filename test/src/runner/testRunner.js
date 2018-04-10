@@ -55,15 +55,12 @@ describe('testRunner', function() {
       reporter: 'junit'
     });
 
-    try {
-      return Runner.readTestSource(undefined, settings)
+    assert.throws(function() {
+      return Runner.readTestSource()
         .then(modules => {
           return runner.run(modules);
         });
-    } catch (ex) {
-      assert.ok(ex instanceof Error);
-      assert.equal(ex.message, 'Cannot read property \'length\' of undefined');
-    }
+    }, /No test source specified and no source folder defined\. Check configuration\./)
   });
 
   it('testRunSimple', function() {
@@ -103,14 +100,10 @@ describe('testRunner', function() {
       });
   });
 
-  it('testRunWithJUnitOutput', function(done) {
-
+  it('testRunWithJUnitOutput', function() {
     let src_folders = [
       path.join(__dirname, '../../sampletests/withsubfolders')
     ];
-
-    let currentTestArray = [];
-
 
     let settings = Settings.parse({
       selenium: {
@@ -133,102 +126,23 @@ describe('testRunner', function() {
         return runner.run(modules);
       })
       .then(_ => {
-        fs.readdir(src_folders[0], function(err, list) {
-          try {
-            assert.deepEqual(list, ['simple', 'tags'], 'The subfolders have not been created.');
-            let simpleReportFile = 'output/simple/FIREFOX_TEST_TEST_sample.xml';
-            let tagsReportFile = 'output/tags/FIREFOX_TEST_TEST_sampleTags.xml';
+        return readDirPromise(src_folders[0]);
+      })
+      .then(list => {
+        let simpleReportFile = 'output/simple/FIREFOX_TEST_TEST_sample.xml';
+        let tagsReportFile = 'output/tags/FIREFOX_TEST_TEST_sampleTags.xml';
 
-            assert.ok(fileExistsSync(simpleReportFile), 'The simple report file was not created.');
-            assert.ok(fileExistsSync(tagsReportFile), 'The tags report file was not created.');
+        assert.deepEqual(list, ['simple', 'tags'], 'The subfolders have not been created.');
+        assert.ok(fileExistsSync(simpleReportFile), 'The simple report file was not created.');
+        assert.ok(fileExistsSync(tagsReportFile), 'The tags report file was not created.');
 
-            fs.readFile(simpleReportFile, function(err, data) {
-              if (err) {
-                return done(err);
-
-              }
-
-              let content = data.toString();
-              console.log(content);
-
-              try {
-                assert.ok(/<testsuite[\s]+name="simple\.sample"[\s]+errors="0"[\s]+failures="0"[\s]+hostname=""[\s]+id=""[\s]+package="sample"[\s]+skipped="0"[\s]+tests="1"/.test(content), 'Report does not contain correct testsuite information.');
-                assert.ok(/<testcase[\s]+name="simpleDemoTest"[\s]+classname="simple\.sample"[\s]+time="[.\d]+"[\s]+assertions="1">/.test(content), 'Report does not contain the correct testcase element.');
-                done();
-              } catch (err) {
-                done(err);
-              }
-            });
-          } catch (err) {
-            done(err);
-          }
-        });
+        return readFilePromise(simpleReportFile);
+      })
+      .then(data => {
+        let content = data.toString();
+        assert.ok(/<testsuite[\s]+name="simple\.sample"[\s]+errors="0"[\s]+failures="0"[\s]+hostname=""[\s]+id=""[\s]+package="sample"[\s]+skipped="0"[\s]+tests="1"/.test(content), 'Report does not contain correct testsuite information.');
+        assert.ok(/<testcase[\s]+name="simpleDemoTest"[\s]+classname="simple\.sample"[\s]+time="[.\d]+"[\s]+assertions="1">/.test(content), 'Report does not contain the correct testcase element.');
       });
-
-    // let src_folders = [
-    //   path.join(__dirname, '../../sampletests/withsubfolders')
-    // ];
-    // let currentTestArray = [];
-    //
-    // let runner = new Runner(src_folders, {
-    //   seleniumPort: 10195,
-    //   silent: true,
-    //   output: false,
-    //   globals: {
-    //     beforeEach: function(client, doneFn) {
-    //       currentTestArray.push({
-    //         name: client.currentTest.name,
-    //         module: client.currentTest.module,
-    //         group: client.currentTest.group
-    //       });
-    //       doneFn();
-    //     }
-    //   }
-    // }, {
-    //   output_folder: 'output',
-    //   start_session: true,
-    //   src_folders: src_folders,
-    //   reporter: 'junit'
-    // }, function(err, results) {
-    //
-    //   assert.strictEqual(err, null);
-    //   assert.deepEqual(currentTestArray, [
-    //     {name: '', module: 'simple/sample', group: 'simple'},
-    //     {name: '', module: 'tags/sampleTags', group: 'tags'}
-    //   ]);
-    //
-    //   fs.readdir(src_folders[0], function(err, list) {
-    //     try {
-    //       assert.deepEqual(list, ['simple', 'tags'], 'The subfolders have been created.');
-    //       let simpleReportFile = 'output/simple/FIREFOX_TEST_TEST_sample.xml';
-    //       let tagsReportFile = 'output/tags/FIREFOX_TEST_TEST_sampleTags.xml';
-    //
-    //       assert.ok(fileExistsSync(simpleReportFile), 'The simple report file was not created.');
-    //       assert.ok(fileExistsSync(tagsReportFile), 'The tags report file was not created.');
-    //
-    //       fs.readFile(simpleReportFile, function(err, data) {
-    //         if (err) {
-    //           return done(err);
-    //         }
-    //
-    //         let content = data.toString();
-    //         try {
-    //           assert.ok(/<testsuite[\s]+name="simple\.sample"[\s]+errors="0"[\s]+failures="0"[\s]+hostname=""[\s]+id=""[\s]+package="simple"[\s]+skipped="0"[\s]+tests="1"/.test(content), 'Report does not contain correct testsuite information.');
-    //           assert.ok(/<testcase[\s]+name="simpleDemoTest"[\s]+classname="simple\.sample"[\s]+time="[.\d]+"[\s]+assertions="1">/.test(content), 'Report does not contain the correct testcase element.');
-    //           done();
-    //         } catch (err) {
-    //           done(err);
-    //         }
-    //       });
-    //     } catch (err) {
-    //       done(err);
-    //     }
-    //   });
-    // });
-    //
-    // runner.run().catch(function(err) {
-    //   done(err);
-    // });
   });
 
   it('testRunWithJUnitOutputAndFailures', function() {
@@ -430,6 +344,29 @@ describe('testRunner', function() {
   });
 });
 
+function readFilePromise(fileName) {
+  return new Promise(function(resolve, reject) {
+    fs.readFile(fileName, function(err, result) {
+      if (err) {
+        return reject(err);
+      }
+
+      resolve(result);
+    });
+  });
+}
+
+function readDirPromise(dirName) {
+  return new Promise(function(resolve, reject) {
+    fs.readdir(dirName, function(err, result) {
+      if (err) {
+        return reject(err);
+      }
+
+      resolve(result);
+    });
+  });
+}
 // util to replace deprecated fs.existsSync
 function fileExistsSync(path) {
   try {

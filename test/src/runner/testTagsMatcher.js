@@ -1,7 +1,6 @@
 const assert = require('assert');
 const path = require('path');
 const common = require('../../common.js');
-const FilenameMatcher = common.require('runner/matchers/filename.js');
 const TagsMatcher = common.require('runner/matchers/tags.js');
 
 describe('test TagsMatcher', function() {
@@ -58,18 +57,13 @@ describe('test TagsMatcher', function() {
   });
 
   it('tag: test loading modules containing an error should not be silent', function() {
-    let errorThrown;
+    let tags = ['home', 'login', 'sign-up'];
+    let matcher = new TagsMatcher({
+      tag_filter: tags
+    });
+    let matched = matcher.match(path.join(__dirname, '../../mock-errors/sample-error.js'));
 
-    try {
-      let tags = ['home', 'login', 'sign-up'];
-      let matcher = new TagsMatcher({
-        tag_filter: tags
-      });
-      let matched = matcher.match(path.join(__dirname, '../../mock-errors/sample-error.js'));
-    } catch (err) {
-      errorThrown = err;
-    }
-    assert.ok(errorThrown instanceof Error);
+    assert.strictEqual(matched, false);
   });
 
   it('tag: test matching numeric tags', function() {

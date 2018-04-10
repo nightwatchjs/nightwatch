@@ -13,8 +13,6 @@ module.exports = {
   },
 
   after : function(client) {
-    client.end(function() {
-
-    });
+    client.end();
   }
 };

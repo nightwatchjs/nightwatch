@@ -1,17 +1,17 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
-describe('element actions', function() {
-  before(function() {
+describe('element actions', function () {
+  before(function () {
     Globals.protocolBefore.call(this);
   });
 
   it('testElement', function () {
     Globals.protocolTest.call(this, {
-      assertion: function(opts) {
+      assertion: function (opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/element');
-        assert.deepEqual(opts.data, {using:'id',value:'#weblogin'});
+        assert.deepEqual(opts.data, {using: 'id', value: '#weblogin'});
       },
       commandName: 'element',
       args: ['id', '#weblogin']
@@ -20,10 +20,10 @@ describe('element actions', function() {
 
   it('testElementIdElement', function () {
     Globals.protocolTest.call(this, {
-      assertion: function(opts) {
+      assertion: function (opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/element/0/element');
-        assert.deepEqual(opts.data, {using:'id',value:'#weblogin'});
+        assert.deepEqual(opts.data, {using: 'id', value: '#weblogin'});
       },
       commandName: 'elementIdElement',
       args: ['0', 'id', '#weblogin']
@@ -32,10 +32,10 @@ describe('element actions', function() {
 
   it('testElementPlural', function () {
     Globals.protocolTest.call(this, {
-      assertion: function(opts) {
+      assertion: function (opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/elements');
-        assert.deepEqual(opts.data, {using:'id',value:'#weblogin'});
+        assert.deepEqual(opts.data, {using: 'id', value: '#weblogin'});
       },
       commandName: 'elements',
       args: ['id', '#weblogin']
@@ -44,10 +44,10 @@ describe('element actions', function() {
 
   it('testElementIdElementPlural', function () {
     Globals.protocolTest.call(this, {
-      assertion: function(opts) {
+      assertion: function (opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/element/0/elements');
-        assert.deepEqual(opts.data, {using:'id',value:'#weblogin'});
+        assert.deepEqual(opts.data, {using: 'id', value: '#weblogin'});
       },
       commandName: 'elementIdElements',
       args: ['0', 'id', '#weblogin']
@@ -56,10 +56,10 @@ describe('element actions', function() {
 
   it('testElementActive', function () {
     Globals.protocolTest.call(this, {
-      assertion: function(opts) {
+      assertion: function (opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/element/active');
-        assert.deepEqual(opts.data, {});
+        assert.deepEqual(opts.data, '');
       },
       commandName: 'elementActive',
       args: []
@@ -68,10 +68,10 @@ describe('element actions', function() {
 
   it('testElementIdClear', function () {
     Globals.protocolTest.call(this, {
-      assertion: function(opts) {
+      assertion: function (opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/element/TEST_ELEMENT/clear');
-        assert.equal(opts.data, '');
+        assert.deepEqual(opts.data, '');
       },
       commandName: 'elementIdClear',
       args: ['TEST_ELEMENT']
@@ -80,7 +80,7 @@ describe('element actions', function() {
 
   it('testElementIdSelected', function () {
     Globals.protocolTest.call(this, {
-      assertion: function(opts) {
+      assertion: function (opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/element/TEST_ELEMENT/selected');
       },
@@ -91,7 +91,7 @@ describe('element actions', function() {
 
   it('testElementIdEnabled', function () {
     Globals.protocolTest.call(this, {
-      assertion: function(opts) {
+      assertion: function (opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/element/TEST_ELEMENT/enabled');
       },
@@ -102,7 +102,7 @@ describe('element actions', function() {
 
   it('testElementIdEquals', function () {
     Globals.protocolTest.call(this, {
-      assertion: function(opts) {
+      assertion: function (opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/element/ELEMENT1/equals/ELEMENT2');
       },
@@ -113,7 +113,7 @@ describe('element actions', function() {
 
   it('testElementIdAttribute', function () {
     Globals.protocolTest.call(this, {
-      assertion: function(opts) {
+      assertion: function (opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/element/TEST_ELEMENT/attribute/test_attr');
       },
@@ -124,7 +124,7 @@ describe('element actions', function() {
 
   it('testElementIdClick', function () {
     Globals.protocolTest.call(this, {
-      assertion: function(opts) {
+      assertion: function (opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/element/TEST_ELEMENT/click');
       },
@@ -135,7 +135,7 @@ describe('element actions', function() {
 
   it('testElementIdCssProperty', function () {
     Globals.protocolTest.call(this, {
-      assertion: function(opts) {
+      assertion: function (opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/element/TEST_ELEMENT/css/test_property');
       },
@@ -146,7 +146,7 @@ describe('element actions', function() {
 
   it('testElementIdDisplayed', function () {
     Globals.protocolTest.call(this, {
-      assertion: function(opts) {
+      assertion: function (opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/element/TEST_ELEMENT/displayed');
       },
@@ -157,7 +157,7 @@ describe('element actions', function() {
 
   it('testElementIdLocation', function () {
     Globals.protocolTest.call(this, {
-      assertion: function(opts) {
+      assertion: function (opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/element/TEST_ELEMENT/location');
       },
@@ -168,7 +168,7 @@ describe('element actions', function() {
 
   it('testElementIdLocationInView', function () {
     Globals.protocolTest.call(this, {
-      assertion: function(opts) {
+      assertion: function (opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/element/TEST_ELEMENT/location_in_view');
       },
@@ -179,7 +179,7 @@ describe('element actions', function() {
 
   it('testElementIdName', function () {
     Globals.protocolTest.call(this, {
-      assertion: function(opts) {
+      assertion: function (opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/element/TEST_ELEMENT/name');
       },
@@ -190,7 +190,7 @@ describe('element actions', function() {
 
   it('testElementIdSize', function () {
     Globals.protocolTest.call(this, {
-      assertion: function(opts) {
+      assertion: function (opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/element/TEST_ELEMENT/size');
       },
@@ -201,7 +201,7 @@ describe('element actions', function() {
 
   it('testElementIdText', function () {
     Globals.protocolTest.call(this, {
-      assertion: function(opts) {
+      assertion: function (opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/element/TEST_ELEMENT/text');
       },
@@ -212,7 +212,7 @@ describe('element actions', function() {
 
   it('testElementIdValueGet', function () {
     Globals.protocolTest.call(this, {
-      assertion: function(opts) {
+      assertion: function (opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/element/TEST_ELEMENT/attribute/value');
       },
@@ -223,7 +223,7 @@ describe('element actions', function() {
 
   it('testElementIdValuePost', function () {
     Globals.protocolTest.call(this, {
-      assertion: function(opts) {
+      assertion: function (opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/element/TEST_ELEMENT/value');
       },
@@ -232,4 +232,4 @@ describe('element actions', function() {
     });
 
   });
-  });
+});

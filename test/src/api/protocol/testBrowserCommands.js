@@ -14,7 +14,7 @@ describe('browser commands', function() {
       },
       commandName: 'refresh',
       args: []
-    })
+    });
   });
 
   it('testBack', function() {
@@ -25,7 +25,7 @@ describe('browser commands', function() {
       },
       commandName: 'back',
       args: []
-    })
+    });
   });
 
   it('testForward', function() {
@@ -36,7 +36,7 @@ describe('browser commands', function() {
       },
       commandName: 'forward',
       args: []
-    })
+    });
   });
 
 });

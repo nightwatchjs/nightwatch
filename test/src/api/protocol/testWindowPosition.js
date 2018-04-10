@@ -6,14 +6,29 @@ describe('windowPosition', function() {
     Globals.protocolBefore.call(this);
   });
 
-  it('testWindowPositionGet', function() {
+  it('testWindowPositionGet without offsets and callback', function() {
+    assert.throws(() => {
+      Globals.protocolTest.call(this, {
+        assertion: function(opts) {
+          assert.equal(opts.method, 'GET');
+          assert.equal(opts.path, '/session/1352110219202/window/current/position');
+        },
+        commandName: 'windowPosition',
+        args: ['current']
+      });
+    }, /Second argument passed to \.windowPosition\(\) should be a callback when not passing offsetX and offsetY - undefined given/);
+  });
+
+  it('testWindowPositionGet', function(done) {
     Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/window/current/position');
       },
       commandName: 'windowPosition',
-      args: ['current']
+      args: ['current', function() {
+        done();
+      }]
     });
   });
 
@@ -29,31 +44,25 @@ describe('windowPosition', function() {
   });
 
   it('testWindowPositionErrors', function() {
-    var protocol = this.protocol;
+    let protocol = this.protocol;
 
     assert.throws(
       function() {
         protocol.windowPosition(function() {
         });
-      }, 'First argument must be a window handle string.'
+      }, /First argument must be a window handle string/
     );
 
     assert.throws(
       function() {
         protocol.windowPosition('current', 'a', 10);
-      }, 'Offset arguments must be passed as numbers.'
-    );
-
-    assert.throws(
-      function() {
-        protocol.windowPosition('current', 10);
-      }, 'Offset arguments must be passed as numbers.'
+      }, /offsetX argument passed to \.windowPosition\(\) must be a number/
     );
 
     assert.throws(
       function() {
         protocol.windowPosition('current', 10, 'a');
-      }, 'Offset arguments must be passed as numbers.'
+      }, /offsetY argument passed to \.windowPosition\(\) must be a number/
     );
   });
 
