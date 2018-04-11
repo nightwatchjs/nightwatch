@@ -1,13 +1,18 @@
 const path = require('path');
 const assert = require('assert');
 const common = require('../../common.js');
+const MockServer = require('../../lib/mockserver.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const Settings = common.require('settings/settings.js');
 
 describe('testRunTestcase', function() {
 
   before(function(done) {
-    CommandGlobals.beforeEach.call(this, done);
+    this.server = MockServer.init();
+
+    this.server.on('listening', () => {
+      done();
+    });
   });
 
   after(function(done) {
@@ -25,7 +30,7 @@ describe('testRunTestcase', function() {
     });
   });
 
-  it('testRunNoSkipTestcasesOnFail', function(done) {
+  it('testRunNoSkipTestcasesOnFail', function() {
     let Runner = common.require('runner/runner.js');
     let testsPath = path.join(__dirname, '../../sampletests/withfailures');
     let globals = {
@@ -45,7 +50,6 @@ describe('testRunTestcase', function() {
       start_session: true
     });
 
-
     let runner = Runner.create(settings, {
       reporter: 'junit'
     });
@@ -55,14 +59,14 @@ describe('testRunTestcase', function() {
         return runner.run(modules);
       })
       .then(result => {
-        assert.equal(globals.calls, 6);
+        assert.equal(settings.globals.calls, 6);
         assert.equal(runner.results.passed, 2);
         assert.equal(runner.results.failed, 2);
         assert.equal(runner.results.errors, 0);
       });
   });
 
-  it('testRunSkipTestcasesOnFail', function(done) {
+  it('testRunSkipTestcasesOnFail', function() {
     let Runner = common.require('runner/runner.js');
     let testsPath = path.join(__dirname, '../../sampletests/withfailures');
     let globals = {
@@ -81,7 +85,6 @@ describe('testRunTestcase', function() {
       start_session: true
     });
 
-
     let runner = Runner.create(settings, {
       reporter: 'junit'
     });
@@ -91,14 +94,14 @@ describe('testRunTestcase', function() {
         return runner.run(modules);
       })
       .then(result => {
-        assert.equal(globals.calls, 4);
+        assert.equal(settings.globals.calls, 4);
         assert.equal(runner.results.passed, 1);
         assert.equal(runner.results.failed, 1);
         assert.equal(runner.results.errors, 0);
       });
   });
 
-  it('testRunTestcase', function(done) {
+  it('testRunTestcase', function() {
     let Runner = common.require('runner/runner.js');
     let testsPath = path.join(__dirname, '../../sampletests/before-after/syncBeforeAndAfter.js');
     let settings = Settings.parse({
@@ -123,7 +126,7 @@ describe('testRunTestcase', function() {
       });
   });
 
-  it('testRunTestcaseInvalid', function(done) {
+  it('testRunTestcaseInvalid', function() {
     let Runner = common.require('runner/runner.js');
     let testsPath = path.join(__dirname, '../../sampletests/before-after/syncBeforeAndAfter.js');
 
@@ -154,7 +157,7 @@ describe('testRunTestcase', function() {
       });
   });
 
-  it('testRunCurrentTestName', function(done) {
+  it('testRunCurrentTestName', function() {
     let Runner = common.require('runner/runner.js');
     let testsPath = path.join(__dirname, '../../sampletests/before-after/sampleSingleTest.js');
     let settings = Settings.parse({
@@ -198,7 +201,7 @@ describe('testRunTestcase', function() {
       });
   });
 
-  it('testRunCurrentTestInAfterEach', function(done) {
+  it('testRunCurrentTestInAfterEach', function() {
     let Runner = common.require('runner/runner.js');
     let testsPath = path.join(__dirname, '../../sampletests/withaftereach/sampleSingleTest.js');
     let settings = Settings.parse({
@@ -230,7 +233,7 @@ describe('testRunTestcase', function() {
       });
   });
 
-  it('testRunRetries', function(done) {
+  it('testRunRetries', function() {
     let Runner = common.require('runner/runner.js');
     let testsPath = path.join(__dirname, '../../sampletests/withfailures');
     let globals = {calls: 0};
@@ -257,7 +260,7 @@ describe('testRunTestcase', function() {
         return runner.run(modules);
       })
       .then(result => {
-        assert.equal(globals.calls, 6);
+        assert.equal(settings.globals.calls, 6);
         assert.equal(runner.results.passed, 1);
         assert.equal(runner.results.failed, 1);
         assert.equal(runner.results.errors, 0);
@@ -265,7 +268,7 @@ describe('testRunTestcase', function() {
       });
   });
 
-  it('testRunRetriesNoSkipTestcasesOnFail', function(done) {
+  it('testRunRetriesNoSkipTestcasesOnFail', function() {
     let Runner = common.require('runner/runner.js');
     let testsPath = path.join(__dirname, '../../sampletests/withfailures');
     let globals = {calls: 0};
@@ -284,8 +287,6 @@ describe('testRunTestcase', function() {
       retries: 1
     });
 
-
-
     let runner = Runner.create(settings, {
       reporter: 'junit'
     });
@@ -295,7 +296,7 @@ describe('testRunTestcase', function() {
         return runner.run(modules);
       })
       .then(result => {
-        assert.equal(globals.calls, 10);
+        assert.equal(settings.globals.calls, 10);
         assert.equal(runner.results.passed, 2);
         assert.equal(runner.results.failed, 2);
         assert.equal(runner.results.errors, 0);

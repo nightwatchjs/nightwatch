@@ -3,6 +3,8 @@ const path = require('path');
 const ApiLoader = require('../lib/mocks/assertionLoader.js');
 const common = require('../common.js');
 const Nightwatch = require('../lib/nightwatch.js');
+const Settings = common.require('settings/settings.js');
+const Runner = common.require('runner/runner.js');
 
 module.exports = {
   runGroupGlobal(client, hookName, done) {
@@ -69,5 +71,20 @@ module.exports = {
     };
 
     this.protocol[definition.commandName](...definition.args);
+  },
+
+  startTestRunner(testsPath, suppliedSettings) {
+    let settings = Settings.parse(suppliedSettings);
+    let runner = Runner.create(settings, {
+      reporter: 'junit'
+    });
+
+    return Runner.readTestSource(testsPath, settings)
+      .then(modules => {
+        return runner.run(modules);
+      })
+      .then(_ => {
+        return runner;
+      });
   }
 };

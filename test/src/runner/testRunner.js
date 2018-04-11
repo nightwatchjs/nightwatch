@@ -3,6 +3,7 @@ const fs = require('fs');
 const assert = require('assert');
 const common = require('../../common.js');
 const MockServer = require('../../lib/mockserver.js');
+const Globals = require('../../lib/globals.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const Runner = common.require('runner/runner.js');
 const Settings = common.require('settings/settings.js');
@@ -28,22 +29,13 @@ describe('testRunner', function() {
   it('testRunEmptyFolder', function() {
     let testsPath = path.join(__dirname, '../../sampletests/empty');
 
-    let settings = Settings.parse({
+    return Globals.startTestRunner(testsPath, {
       output_folder: false
+    })
+    .catch(err => {
+      assert.ok(err instanceof Error);
+      assert.equal(err.message, `No tests defined! using source folder: ${testsPath}`);
     });
-
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .catch(err => {
-        assert.ok(err instanceof Error);
-        assert.equal(err.message, `No tests defined! using source folder: ${testsPath}`);
-      });
   });
 
   it('testRunNoSrcFoldersArgument', function() {
@@ -70,34 +62,23 @@ describe('testRunner', function() {
       calls: 0
     };
 
-    let settings = Settings.parse({
+    return Globals.startTestRunner(testsPath, {
       selenium: {
         port: 10195,
         version2: true,
         start_process: true
       },
       output_folder: false,
-      silent: true,
-      output: false,
       globals: globals
+    })
+    .then(runner => {
+      assert.ok('sample' in runner.results.modules);
+      assert.ok('demoTest' in runner.results.modules.sample.completed);
+
+      if (runner.results.lastError) {
+        throw runner.results.lastError;
+      }
     });
-
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(result => {
-        assert.ok('sample' in runner.results.modules);
-        assert.ok('demoTest' in runner.results.modules.sample.completed);
-
-        if (runner.results.lastError) {
-          throw runner.results.lastError;
-        }
-      });
   });
 
   it('testRunWithJUnitOutput', function() {
@@ -182,125 +163,6 @@ describe('testRunner', function() {
         let content = data.toString();
         assert.ok(content.indexOf('<failure message="Testing if element &lt;#badElement&gt; is present.') > 0, 'Report contains failure information.')
       });
-  });
-
-  it('test run unit tests with junit output and failures', function() {
-    let src_folders = [
-      path.join(__dirname, '../../asynchookstests/unittest-failure')
-    ];
-
-    let settings = Settings.parse({
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      output_folder: 'output',
-      silent: true,
-      output: false,
-      unit_tests_mode: true,
-    });
-
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(src_folders, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(_ => {
-        return readDirPromise(src_folders[0]);
-      })
-      .then(list => {
-
-        let sampleReportFile = 'output/unittest-failure.xml';
-        assert.ok(fileExistsSync(sampleReportFile), 'The sample file report was not created.');
-
-        return readFilePromise(sampleReportFile);
-      })
-      .then(data => {
-        let content = data.toString();
-        assert.ok(content.indexOf('<failure message="AssertionError: 1 == 0 - expected &#34;0&#34; but got: &#34;1&#34;">') > 0, 'Report contains failure information.')
-      });
-  });
-
-  it('testRunUnitTests', function() {
-    let src_folders = path.join(__dirname, '../../sampletests/unittests');
-
-    let settings = Settings.parse({
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      output_folder: false,
-      // src_folders: src_folders,
-      silent: true,
-      output: false,
-    });
-
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(src_folders, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(_ => {
-
-      });
-
-    // let runner = new Runner([testsPath], {
-    //   silent: true,
-    //   output: false,
-    //   globals: {}
-    // }, {
-    //   output_folder: false,
-    //   start_session: false
-    // }, function(err, results) {
-    //   assert.strictEqual(err, null);
-    //
-    //   done();
-    // });
-    //
-    // runner.run().catch(function(err) {
-    //   done(err);
-    // });
-  });
-
-  it('test async unit test with timeout error', function() {
-    let testsPath = path.join(__dirname, '../../asynchookstests/unittest-async-timeout.js');
-    let globals = {
-      calls: 0,
-      asyncHookTimeout: 10
-    };
-
-    process.on('uncaughtException', function(err) {
-      assert.ok(err instanceof Error);
-      assert.equal(err.message, 'done() callback timeout of 10 ms was reached while executing "demoTest". ' +
-        'Make sure to call the done() callback when the operation finishes.');
-
-      done();
-    });
-
-    // let runner = new Runner([testsPath], {
-    //   seleniumPort: 10195,
-    //   seleniumHost: '127.0.0.1',
-    //   silent: true,
-    //   output: false,
-    //   persist_globals: true,
-    //   globals: globals,
-    //   compatible_testcase_support: true
-    // }, {
-    //   output_folder: false,
-    //   start_session: false
-    // });
-    //
-    // runner.run().catch(function(err) {
-    //   done(err);
-    // });
   });
 });
 
