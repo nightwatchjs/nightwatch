@@ -98,7 +98,7 @@ describe('test PageObject Commands', function () {
         sessionId: '1352110219202',
         status: 0
       })
-    }, this);
+    }, true);
     let client = this.client;
     let section = client.api.page.simplePageObj().section.signUp;
     section.click('@help', function callback(result) {
@@ -112,6 +112,16 @@ describe('test PageObject Commands', function () {
   });
 
   it('testPageObjectPluralElementRecursion', function(done) {
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/element/1/elements',
+      method: 'POST',
+      response: JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0,
+        value: [{ELEMENT: '1'}]
+      })
+    });
+
     let section = this.client.api.page.simplePageObj().section.signUp;
     section.waitForElementPresent('@help', 1000, true, function callback(result) {
       assert.equal(result.status, 0);

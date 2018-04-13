@@ -9,8 +9,8 @@ module.exports = {
     return this;
   },
 
-  enable() {
-    if (this.disabled) {
+  enable(force) {
+    if (this.disabled || force) {
       nock.activate();
     }
 
@@ -27,18 +27,6 @@ module.exports = {
           browserName: 'firefox',
           version: 'TEST',
           platform: 'TEST'
-        }
-      });
-
-    nock('http://localhost:10195')
-      .post('/wd/hub/session')
-      .reply(201, {
-        status: 0,
-        sessionId: '1352110219202',
-        value: {
-          browserName: 'firefox',
-          acceptSslCerts: true,
-          platform: 'ANY'
         }
       });
 

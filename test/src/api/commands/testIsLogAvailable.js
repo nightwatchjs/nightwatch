@@ -4,15 +4,18 @@ const CommandGlobals = require('../../../lib/globals/commands.js');
 
 describe('isLogAvailable', function() {
 
-  beforeEach(function(done) {
+  before(function(done) {
     CommandGlobals.beforeEach.call(this, done);
   });
 
-  afterEach(function(done) {
+  afterEach(function() {
     MockServer.removeMock({
       url : '/wd/hub/session/1352110219202/log/types',
       method: 'GET'
     });
+  });
+
+  after(function(done) {
     CommandGlobals.afterEach.call(this, done);
   });
 

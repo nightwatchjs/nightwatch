@@ -17,7 +17,7 @@ module.exports = {
   }
 };
 
-process.on('unhandledRejection', err => {
-  console.error('unhandledRejection:')
-  console.error(err.stack);
-});
+// process.on('unhandledRejection', err => {
+//   console.error('TEST unhandledRejection:')
+//   console.error(err.stack);
+// });

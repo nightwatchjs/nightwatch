@@ -4,7 +4,7 @@ const Nightwatch = require('../../lib/nightwatch.js');
 const common = require('../../common.js');
 const HttpRequest = common.require('http/request.js');
 
-describe('test NightwatchIndex', function () {
+describe('test defaultPathPrefix', function () {
   before(function (done) {
     this.server = MockServer.init();
     this.server.on('listening', function () {
@@ -16,13 +16,15 @@ describe('test NightwatchIndex', function () {
     Nightwatch.createClient({
       default_path_prefix: '/wd/hub'
     });
+    HttpRequest.globalSettings = {
+    };
     this.server.close(function () {
       done();
     });
   });
 
   it('testDefaultPathPrefix', function () {
-    var client = Nightwatch.createClient({
+    Nightwatch.createClient({
       selenium: {
         start_process: true
       }
@@ -37,11 +39,31 @@ describe('test NightwatchIndex', function () {
   });
 
   it('testSetDefaultPathPrefixOption', function () {
-    var client = Nightwatch.createClient({
+    Nightwatch.createClient({
+      webdriver: {
+        default_path_prefix: '/test'
+      }
+    });
+
+    let request = new HttpRequest({
+      host: '127.0.0.1',
+      path: '/test',
+      port: 10195
+    });
+
+    assert.strictEqual(request.defaultPathPrefix, '');
+  });
+
+  it('test set defaultPathPrefix option when already set', function () {
+    HttpRequest.globalSettings = {
+      default_path: '/wd/hub'
+    };
+
+    Nightwatch.createClient({
       default_path_prefix: '/test'
     });
 
-    var request = new HttpRequest({
+    let request = new HttpRequest({
       host: '127.0.0.1',
       path: '/test',
       port: 10195
@@ -51,23 +73,31 @@ describe('test NightwatchIndex', function () {
   });
 
   it('testSetDefaultPathPrefixInvalidOption', function () {
+    HttpRequest.globalSettings = {
+      default_path: ''
+    };
+
     Nightwatch.createClient({
-      default_path_prefix: '/wd/hub'
+      webdriver: {
+        default_path_prefix: '/wd/hub'
+      }
     });
 
-    var eq = assert.equal;
-    var request = new HttpRequest({
+    let eq = assert.equal;
+    let request = new HttpRequest({
       host: '127.0.0.1',
       path: '/session',
       port: 10195
     });
+
     eq(request.defaultPathPrefix, '/wd/hub');
-    HttpRequest.globalSettings = {
-      default_path: ''
-    };
   });
 
   it('testSetDefaultPathPrefixEmptyOption', function () {
+    HttpRequest.globalSettings = {
+      default_path: ''
+    };
+
     var request = new HttpRequest({
       host: '127.0.0.1',
       path: '/test',

@@ -40,11 +40,12 @@ describe('waitForElementVisible', function() {
       assert.equal(assertion[0], false);
       assert.equal(assertion[1].actual, 'not visible');
       assert.equal(assertion[4], false);
-
       NightwatchAssertion.create = createOrig;
     });
 
-    this.client.start(done);
+    this.client.start(function(err) {
+      done(err);
+    });
   });
 
   it('client.waitForElementVisible() fail with global timeout default', function (done) {

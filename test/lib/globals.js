@@ -79,12 +79,18 @@ module.exports = {
       reporter: 'junit'
     });
 
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(_ => {
-        return runner;
-      });
+    if (!Array.isArray(testsPath)) {
+      testsPath = [testsPath];
+    }
+
+    return Runner.readTestSource(settings, {
+      _source: testsPath
+    })
+    .then(modules => {
+      return runner.run(modules);
+    })
+    .then(_ => {
+      return runner;
+    });
   }
 };

@@ -1,10 +1,9 @@
 const path = require('path');
 const assert = require('assert');
 const common = require('../../common.js');
-const MockServer = require('../../lib/mockserver.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
-const Settings = common.require('settings/settings.js');
-const Globals = require('../../lib/globals.js');
+const MockServer = require('../../lib/mockserver.js');
+const NightwatchClient = common.require('index.js');
 
 describe('testRunTestcase', function() {
 
@@ -23,6 +22,7 @@ describe('testRunTestcase', function() {
   beforeEach(function() {
     process.removeAllListeners('exit');
     process.removeAllListeners('uncaughtException');
+    process.removeAllListeners('unhandledRejection');
   });
 
   afterEach(function() {
@@ -31,14 +31,21 @@ describe('testRunTestcase', function() {
     });
   });
 
-  it('testRunNoSkipTestcasesOnFail', function() {
-    let Runner = common.require('runner/runner.js');
+  it('testRunner with skip_testcases_on_fail=false', function() {
     let testsPath = path.join(__dirname, '../../sampletests/withfailures');
     let globals = {
-      calls: 0
+      calls: 0,
+      reporter(results, cb) {
+        assert.equal(globals.calls, 6);
+        assert.equal(results.passed, 2);
+        assert.equal(results.failed, 2);
+        assert.equal(results.errors, 0);
+
+        cb();
+      }
     };
 
-    let settings = Settings.parse({
+    let settings = {
       selenium: {
         port: 10195,
         version2: true,
@@ -48,26 +55,27 @@ describe('testRunTestcase', function() {
       persist_globals: true,
       globals: globals,
       output_folder: false,
-      start_session: true
-    });
-
-    return Globals.startTestRunner(testsPath, settings)
-      .then(runner => {
-        assert.equal(settings.globals.calls, 6);
-        assert.equal(runner.results.passed, 2);
-        assert.equal(runner.results.failed, 2);
-        assert.equal(runner.results.errors, 0);
-      });
-  });
-
-  it('testRunSkipTestcasesOnFail', function() {
-    let Runner = common.require('runner/runner.js');
-    let testsPath = path.join(__dirname, '../../sampletests/withfailures');
-    let globals = {
-      calls: 0
+      output: false
     };
 
-    let settings = Settings.parse({
+    return NightwatchClient.runTests(testsPath, settings);
+  });
+
+  it('testRunner with skip_testcases_on_fail=true (default)', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/withfailures');
+    let globals = {
+      calls: 0,
+      reporter(results, cb) {
+        assert.equal(globals.calls, 4);
+        assert.equal(results.passed, 1);
+        assert.equal(results.failed, 1);
+        assert.equal(results.errors, 0);
+
+        cb();
+      }
+    };
+
+    let settings = {
       selenium: {
         port: 10195,
         version2: true,
@@ -75,157 +83,173 @@ describe('testRunTestcase', function() {
       },
       persist_globals: true,
       globals: globals,
-      output_folder: false,
-      start_session: true
-    });
+      output: false,
+      output_folder: false
+    };
 
-    return Globals.startTestRunner(testsPath, settings)
-      .then(runner => {
-        assert.equal(settings.globals.calls, 4);
-        assert.equal(runner.results.passed, 1);
-        assert.equal(runner.results.failed, 1);
-        assert.equal(runner.results.errors, 0);
-      });
+    return NightwatchClient.runTests(testsPath, settings);
   });
 
-  it('testRunTestcase', function() {
-    let Runner = common.require('runner/runner.js');
+  it('testRunner with --testcase argument', function() {
     let testsPath = path.join(__dirname, '../../sampletests/before-after/syncBeforeAndAfter.js');
-    let settings = Settings.parse({
-      silent: true,
+    let settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: false,
       output: false,
-      globals: {},
-      output_folder: false,
-      start_session: true,
-      testcase: 'demoTestSyncOne'
-    });
+      globals: {
+        reporter(results, cb) {
+          assert.equal(Object.keys(results.modules).length, 1);
+          assert.ok('demoTestSyncOne' in results.modules.syncBeforeAndAfter.completed);
 
-    return Globals.startTestRunner(testsPath, settings)
-      .then(runner => {
-        assert.ok('demoTestSyncOne' in runner.results.modules.syncBeforeAndAfter.completed);
-      });
-  });
-
-  it('testRunTestcaseInvalid', function() {
-    let Runner = common.require('runner/runner.js');
-    let testsPath = path.join(__dirname, '../../sampletests/before-after/syncBeforeAndAfter.js');
-
-    let settings = Settings.parse({
-      silent: true,
-      output: false,
-      globals: {},
-      output_folder: false,
-      start_session: true,
-      testcase: 'Unknown'
-    });
-
-    return Globals.startTestRunner(testsPath, settings)
-      .then(runner => {
-        assert.ok('sample' in runner.results.modules);
-        assert.ok('demoTest' in runner.results.modules.sample.completed);
-
-        if (runner.results.lastError) {
-          throw runner.results.lastError;
+          cb();
         }
+      },
+      output_folder: false
+    };
+
+    return NightwatchClient.runTests({
+      _source: [testsPath],
+      testcase: 'demoTestSyncOne'
+    }, settings);
+  });
+
+  it('testRunner with invalid --testcase argument', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/before-after/syncBeforeAndAfter.js');
+    let settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: false,
+      output: false,
+      globals: {
+        reporter(results, cb) {
+          assert.strictEqual(Object.keys(results.modules).length, 0);
+
+          cb();
+        }
+      },
+      output_folder: false
+    };
+
+    return NightwatchClient.runTests({
+      _source: [testsPath],
+      testcase: 'Unknown'
+    }, settings)
+      .then(_ => {
+        assert.ok(false, 'Test runner should have failed with invalid testcase error message');
+      })
+      .catch(err => {
+        assert.equal(err, 'Error: "Unknown" is not a valid testcase in the current test suite.');
       });
   });
 
   it('testRunCurrentTestName', function() {
-    let Runner = common.require('runner/runner.js');
     let testsPath = path.join(__dirname, '../../sampletests/before-after/sampleSingleTest.js');
-    let settings = Settings.parse({
+    let settings = {
       selenium: {
         port: 10195,
         version2: true,
         start_process: true
       },
       globals: {
-        beforeEach: function(client, cb) {
+        beforeEach(client, cb) {
           assert.equal(client.currentTest.name, '');
           assert.equal(client.currentTest.group, '');
           assert.equal(client.currentTest.module, 'sampleSingleTest');
           cb();
         },
-        afterEach: function(client, cb) {
-          assert.equal(client.currentTest.name, null);
+        afterEach(client, cb) {
+          assert.equal(client.currentTest.name, 'demoTest');
           assert.equal(client.currentTest.module, 'sampleSingleTest');
+          cb();
+        },
+        reporter(results, cb) {
+          assert.ok('sampleSingleTest' in results.modules);
+          assert.ok('demoTest' in results.modules.sampleSingleTest.completed);
+
           cb();
         }
       },
-      output_folder: false,
-      start_session: true
-    });
+      output_folder: false
+    };
 
-    return Globals.startTestRunner(testsPath, settings)
-      .then(runner => {
-        assert.ok('sample' in runner.results.modules);
-        assert.ok('demoTest' in runner.results.modules.sample.completed);
-
-        if (runner.results.lastError) {
-          throw runner.results.lastError;
-        }
-      });
+    return NightwatchClient.runTests(testsPath, settings);
   });
 
-  it('testRunCurrentTestInAfterEach', function() {
-    let Runner = common.require('runner/runner.js');
+  it('currentTest in afterEach hook', function() {
     let testsPath = path.join(__dirname, '../../sampletests/withaftereach/sampleSingleTest.js');
-    let settings = Settings.parse({
+    let settings = {
       selenium: {
         port: 10195,
         version2: true,
         start_process: true
       },
-      globals: {},
-      output_folder: false,
-      start_session: true
-    });
-
-    return Globals.startTestRunner(testsPath, settings)
-      .then(runner => {
-        assert.ok('sample' in runner.results.modules);
-        assert.ok('demoTest' in runner.results.modules.sample.completed);
-
-        if (runner.results.lastError) {
-          throw runner.results.lastError;
+      globals: {
+        reporter(results, cb) {
+          if (results.lastError instanceof Error) {
+            throw results.lastError;
+          }
+          cb();
         }
-      });
+      },
+      output_folder: false
+    };
+
+    return NightwatchClient.runTests(testsPath, settings);
   });
 
-  it('testRunRetries', function() {
-    let Runner = common.require('runner/runner.js');
+  it('testRunner with retries', function() {
     let testsPath = path.join(__dirname, '../../sampletests/withfailures');
-    let globals = {calls: 0};
+    let globals = {
+      calls: 0,
+      reporter(results, cb) {
+        assert.equal(settings.globals.calls, 6);
+        assert.equal(results.passed, 1);
+        assert.equal(results.failed, 1);
+        assert.equal(results.errors, 0);
+        assert.equal(results.skipped, 0);
+        cb();
+      }
+    };
 
-    let settings = Settings.parse({
+    let settings = {
       selenium: {
         port: 10195,
         version2: true,
         start_process: true
       },
       globals: globals,
+      output: false,
       persist_globals: true,
-      output_folder: false,
-      start_session: true,
-      retries: 1
-    });
+      output_folder: false
+    };
 
-    return Globals.startTestRunner(testsPath, settings)
-      .then(runner => {
-        assert.equal(settings.globals.calls, 6);
-        assert.equal(runner.results.passed, 1);
-        assert.equal(runner.results.failed, 1);
-        assert.equal(runner.results.errors, 0);
-        assert.equal(runner.results.skipped, 0);
-      });
+    return NightwatchClient.runTests({
+      retries: 1,
+      _source: [testsPath]
+    }, settings);
   });
 
-  it('testRunRetriesNoSkipTestcasesOnFail', function() {
-    let Runner = common.require('runner/runner.js');
+  it('testRunner with retries and skip_testcases_on_fail=false', function() {
     let testsPath = path.join(__dirname, '../../sampletests/withfailures');
-    let globals = {calls: 0};
+    let globals = {
+      calls: 0,
+      reporter(results, cb) {
+        assert.equal(settings.globals.calls, 10);
+        assert.equal(results.passed, 2);
+        assert.equal(results.failed, 2);
+        assert.equal(results.errors, 0);
+        cb();
+      }
+    };
 
-    let settings = Settings.parse({
+    let settings = {
       selenium: {
         port: 10195,
         version2: true,
@@ -235,17 +259,13 @@ describe('testRunTestcase', function() {
       skip_testcases_on_fail: false,
       persist_globals: true,
       output_folder: false,
-      start_session: true,
-      retries: 1
-    });
+      output: false
+    };
 
-    return Globals.startTestRunner(testsPath, settings)
-      .then(runner => {
-        assert.equal(settings.globals.calls, 10);
-        assert.equal(runner.results.passed, 2);
-        assert.equal(runner.results.failed, 2);
-        assert.equal(runner.results.errors, 0);
-      });
+    return NightwatchClient.runTests({
+      retries: 1,
+      _source: [testsPath]
+    }, settings);
   });
 
 });

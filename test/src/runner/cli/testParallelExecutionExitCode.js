@@ -6,17 +6,16 @@ const assert = require('assert');
 const common = require('../../../common.js');
 
 describe('test Parallel Execution Exit Code', function() {
+  const allArgs = [];
+  const allOpts = [];
 
   beforeEach(function() {
-    this.allArgs = [];
-    this.allOpts = [];
-    let self = this;
     let index = 0;
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
     mockery.registerMock('child_process', {
       spawn: function(path, args, opts) {
-        self.allArgs.push(args);
-        self.allOpts.push(opts);
+        allArgs.push(args);
+        allOpts.push(opts);
 
         function Stdout() {
         }
@@ -32,7 +31,7 @@ describe('test Parallel Execution Exit Code', function() {
           this.stderr = new Stderr();
           setTimeout(function() {
             this.emit('close');
-            this.emit('exit', index == 0 ? 1 : 0);
+            this.emit('exit', index === 0 ? 1 : 0);
           }.bind(this), 11);
         };
 
@@ -56,43 +55,43 @@ describe('test Parallel Execution Exit Code', function() {
     mockery.deregisterAll();
     mockery.resetCache();
     mockery.disable();
+    allArgs.length = 0;
+    allOpts.length = 0;
     process.env.__NIGHTWATCH_PARALLEL_MODE = null;
   });
 
-  it('testParallelExecutionWithCodeNonZeroWorkers', function(done) {
+  it('test parallel execution with code non zero test workers', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: path.join(__dirname, '../../../extra/parallelism-count.json')
     });
 
-    let originalExit = process.exit;
-    process.exit = function(code) {
+    runner.setup();
+
+    let setExitCode = runner.processListener.setExitCode;
+    runner.processListener.setExitCode = function(code) {
+      runner.processListener.setExitCode = setExitCode;
       assert.equal(code, 1);
-      process.exit = originalExit;
-      done();
     };
 
-    runner.setup({}, function(output, code) {
-      assert.equal(code, 1);
-    });
+    return runner.runTests();
   });
 
-  it('testParallelExecutionWithCodeNonZeroEnvs', function(done) {
+  it('test parallel execution with code non zero envs', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: path.join(__dirname, '../../../extra/parallelism-envs.json'),
       env: 'env1,env2'
     });
 
-    let originalExit = process.exit;
-    process.exit = function(code) {
+    runner.setup();
+
+    let setExitCode = runner.processListener.setExitCode;
+    runner.processListener.setExitCode = function(code) {
+      runner.processListener.setExitCode = setExitCode;
       assert.equal(code, 1);
-      process.exit = originalExit;
-      done();
     };
 
-    runner.setup({}, function(output, code) {
-      assert.equal(code, 1);
-    });
+    return runner.runTests();
   });
 });

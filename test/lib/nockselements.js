@@ -8,7 +8,6 @@ module.exports = {
   _requestUri: 'http://localhost:10195',
   _protocolUri: '/wd/hub/session/1352110219202/',
 
-
   _addNock(...args) {
     let item = nock(...args);
 
@@ -45,16 +44,20 @@ module.exports = {
       .reply(200, {
         status: 0,
         state: 'success',
-        value: foundArray || [ { ELEMENT: '0' }, { ELEMENT: '1' }, { ELEMENT: '2' } ]
+        value: foundArray || [{ELEMENT: '0'}, {ELEMENT: '1'}, {ELEMENT: '2'}]
       });
 
     return this;
   },
 
-  elementNotFound(selector) {
+  elementNotFound(selector = '#nock-none') {
     this._addNock(this._requestUri)
       .persist()
-      .post(this._protocolUri + 'element', {'using':'css selector','value':selector || '#nock-none'})
+      .post(this._protocolUri + 'element',
+        {
+          using: 'css selector',
+          value: selector
+        })
       .reply(200, {
         status: -1,
         value: {},
@@ -106,7 +109,7 @@ module.exports = {
 
   elementsByXpathError(selector = '.nock') {
     this._addNock(this._requestUri)
-      .post(this._protocolUri + 'elements', {'using':'xpath','value':selector})
+      .post(this._protocolUri + 'elements', {using: 'xpath', value: selector})
       .reply(500, {
         status: 19,
         state: 'XPathLookupError',
@@ -187,8 +190,24 @@ module.exports = {
     return this;
   },
 
-  cleanAll: function () {
+  cleanAll () {
     this._currentNocks = [];
     nock.cleanAll();
-  }
+  },
+
+  disabled: false,
+  disable() {
+    this.disabled = true;
+    nock.restore();
+
+    return this;
+  },
+
+  enable() {
+    if (this.disabled) {
+      nock.activate();
+    }
+
+    return this;
+  },
 };

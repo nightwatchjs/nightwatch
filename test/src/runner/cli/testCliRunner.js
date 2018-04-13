@@ -8,11 +8,11 @@ describe('Test CLI Runner', function() {
     process.env['ENV_USERNAME'] = 'testuser';
 
     mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
-    mockery.registerMock('./cli.js', {
+    mockery.registerMock('./argv-setup.js', {
       command: function(command) {
         return {
-          isDefault: function() {
-            return true;
+          isDefault: function(file) {
+            return file.includes('nightwatch.');
           },
           defaults: function() {
             return './nightwatch.json';
@@ -23,7 +23,7 @@ describe('Test CLI Runner', function() {
 
     let config = {
       src_folders: ['tests'],
-      envSettings: {
+      test_settings: {
         'default': {
           silent: true
         }
@@ -36,7 +36,7 @@ describe('Test CLI Runner', function() {
     mockery.registerMock('./output_disabled.json', {
       src_folders: ['tests'],
       output_folder: false,
-      envSettings: {
+      test_settings: {
         'default': {
           silent: true
         }
@@ -49,7 +49,7 @@ describe('Test CLI Runner', function() {
 
     mockery.registerMock('./null.json', {
       src_folders: 'tests',
-      envSettings: {
+      test_settings: {
         'default': {
           irrelevantProperty: null
         }
@@ -58,7 +58,7 @@ describe('Test CLI Runner', function() {
 
     mockery.registerMock('./incorrect.json', {
       src_folders: 'tests',
-      envSettings: {
+      test_settings: {
         'default': {}
       }
     });
@@ -75,7 +75,7 @@ describe('Test CLI Runner', function() {
 
     mockery.registerMock('./settings.json', {
       src_folders: 'tests',
-      envSettings: {
+      test_settings: {
         'default': {
           output: false,
           disable_colors: true
@@ -88,7 +88,7 @@ describe('Test CLI Runner', function() {
         start_process: true
       },
       end_session_on_fail: true,
-      envSettings: {
+      test_settings: {
         'default': {},
         'saucelabs': {
           selenium: {
@@ -104,11 +104,12 @@ describe('Test CLI Runner', function() {
         start_process: false,
         start_session: false
       },
-      envSettings: {
+      test_settings: {
         'default': {
           selenium: {
             start_process: true,
-            start_session: true
+            start_session: true,
+            server_path: './selenium.jar'
           }
         }
       }
@@ -116,7 +117,7 @@ describe('Test CLI Runner', function() {
 
     mockery.registerMock('./multi_test_paths.json', {
       src_folders: ['tests1', 'tests2'],
-      envSettings: {
+      test_settings: {
         'default': {
           output: false,
           disable_colors: true
@@ -127,11 +128,12 @@ describe('Test CLI Runner', function() {
     mockery.registerMock('./custom.json', {
       src_folders: ['tests'],
       selenium: {
-        start_process: true
+        start_process: true,
+        server_path: './selenium.jar'
       },
       detailed_output: true,
       end_session_on_fail: true,
-      envSettings: {
+      test_settings: {
         'default': {
           output: false,
           disable_colors: true,
@@ -179,6 +181,14 @@ describe('Test CLI Runner', function() {
     });
 
     mockery.registerMock('path', {
+      basename(a) {
+        if (a == './globals.json') {
+          return 'globals';
+        }
+      },
+      dirname(a) {
+        return '';
+      },
       join: function(a, b) {
         if (b == './settings.json') {
           return './settings.json';
@@ -225,6 +235,12 @@ describe('Test CLI Runner', function() {
         if (b == '../path/to/test') {
           return process.cwd() + '/path/to/test';
         }
+        if (b == './doesnotexist.json') {
+          return './doesnotexist.json';
+        }
+        if (b == './extra/globals-err.js') {
+          return './extra/globals-err.js';
+        }
         return './nightwatch.json';
       },
       resolve: function(a) {
@@ -242,7 +258,7 @@ describe('Test CLI Runner', function() {
     mockery.disable();
   });
 
-  it('testInitDefaults', function(done) {
+  it('testInitDefaults', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
         if (module == './settings.json') {
@@ -250,7 +266,7 @@ describe('Test CLI Runner', function() {
         }
         return {
           isFile: function() {
-            return true
+            return true;
           }
         };
       }
@@ -266,26 +282,19 @@ describe('Test CLI Runner', function() {
     }).setup();
 
     assert.deepEqual(runner.settings.src_folders, ['tests']);
-    assert.deepEqual(runner.settings.envSettings, {
-      'default': {
-        silent: true,
-        custom_commands_path: '',
-        custom_assertions_path: '',
-        page_objects_path: '',
-        output: true,
-        tag_filter: 'danger',
-        skiptags: ['home', 'arctic']
-      }
-    });
-
+    assert.strictEqual(runner.test_settings.silent, true);
+    assert.strictEqual(runner.test_settings.custom_commands_path, null);
+    assert.strictEqual(runner.test_settings.custom_assertions_path, null);
+    assert.strictEqual(runner.test_settings.output, true);
+    assert.strictEqual(runner.test_settings.tag_filter, 'danger');
+    assert.deepEqual(runner.test_settings.skiptags, ['home', 'arctic']);
     assert.equal(runner.globals.settings.output_folder, 'output');
     assert.equal(runner.globals.settings.parallel_mode, false);
-    assert.equal(runner.manageSelenium, false);
+    assert.equal(runner.isWebDriverManaged(), false);
     assert.equal(runner.globals.settings.start_session, true);
-    done();
   });
 
-  it('testSetOutputFolder', function(done) {
+  it('testSetOutputFolder', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
         if (module == './settings.json' || module == './nightwatch.conf.js') {
@@ -305,16 +314,22 @@ describe('Test CLI Runner', function() {
       env: 'default'
     }).setup();
 
-    assert.equal(runner.globals.settings.output_folder, false);
-    done();
+    assert.equal(runner.settings.output_folder, false);
   });
 
   it('testReadSettingsDeprecated', function(done) {
     let disableColorsCalled = false;
     mockery.registerMock('../../util/logger.js', {
-      disableColors: function() {
+      setOutputEnabled() {
+
+      },
+      setDetailedOutput() {
+
+      },
+      disableColors() {
         disableColorsCalled = true;
-      }
+      },
+      enable() {}
     });
 
     mockery.registerMock('fs', {
@@ -332,7 +347,7 @@ describe('Test CLI Runner', function() {
 
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
-      config: './nightwatch.json',
+      config: './settings.json',
       env: 'default',
       output: 'output',
       verbose: true,
@@ -340,16 +355,16 @@ describe('Test CLI Runner', function() {
       filter: 'tests*.js'
     }).setup();
 
-    assert.deepEqual(runner.settings.src_folders, ['tests']);
-    assert.deepEqual(runner.envSettings.skipgroup, ['tobeskipped']);
-    assert.equal(runner.envSettings.output, false);
-    assert.equal(runner.envSettings.silent, false);
-    assert.equal(runner.envSettings.filename_filter, 'tests*.js');
+    assert.deepEqual(runner.test_settings.src_folders, ['tests']);
+    assert.deepEqual(runner.test_settings.skipgroup, ['tobeskipped']);
+    assert.equal(runner.test_settings.output, false);
+    assert.equal(runner.test_settings.silent, false);
+    assert.equal(runner.test_settings.filename_filter, 'tests*.js');
     assert.ok(disableColorsCalled, 'disable colors not called');
     done();
   });
 
-  it('testCustomSettingsFileAndEnvironment', function(done) {
+  it('testCustomSettingsFileAndEnvironment', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
         if (module == './custom.json') {
@@ -369,40 +384,50 @@ describe('Test CLI Runner', function() {
       env: 'extra'
     }).setup();
 
-    assert.equal(runner.manageSelenium, true);
-    assert.equal(runner.startSession, true);
-    assert.equal(runner.endSessionOnFail, false);
-    assert.deepEqual(runner.settings.selenium.cli_args, {arg1: 'arg1_value', arg2: 'arg2_value'});
-
-    assert.equal(runner.settings.selenium.host, 'other.host');
-    assert.equal(runner.settings.detailed_output, false);
-    assert.equal(runner.envSettings.output, false);
-    assert.equal(runner.envSettings.disable_colors, true);
-    assert.equal(runner.envSettings.username, 'testuser');
-    assert.equal(runner.envSettings.credentials.service.user, 'testuser');
-    assert.equal(runner.envSettings.desiredCapabilities['test.user'], 'testuser');
-    done();
+    assert.equal(runner.isWebDriverManaged(), true);
+    assert.equal(runner.test_settings.selenium.host, 'other.host');
+    assert.equal(runner.test_settings.detailed_output, false);
+    assert.equal(runner.test_settings.output, false);
+    assert.equal(runner.test_settings.disable_colors, true);
+    assert.equal(runner.test_settings.username, 'testuser');
+    assert.equal(runner.test_settings.credentials.service.user, 'testuser');
+    assert.equal(runner.test_settings.desiredCapabilities['test.user'], 'testuser');
   });
 
-  it('testGetTestSourceSingle', function(done) {
+  it('testGetTestSourceSingle', function() {
+      let statCalled = false;
       let statSyncCalled = false;
       mockery.registerMock('fs', {
-        statSync: function(file) {
+        statSync : function(file) {
           if (file == 'demoTest') {
             statSyncCalled = true;
             return {
-              isFile: function() {
+              isFile : function() {
                 return true;
               }
             };
           }
+
           if (file == 'demoTest.js' || file == './custom.js') {
-            return {
-              isFile: function() {
-                return true
-              }
-            };
+            return {isFile : function() {return true}};
           }
+
+          throw new Error('Does not exist');
+        },
+
+        stat(file, cb) {
+          if (file == 'demoTest') {
+            statCalled = true;
+          }
+
+          if (file == 'demoTest' || file == 'demoTest.js' || file == './custom.js') {
+            return cb(null, {
+              isFile() {
+                return true;
+              }
+            });
+          }
+
           throw new Error('Does not exist');
         }
       });
@@ -414,14 +439,18 @@ describe('Test CLI Runner', function() {
         test: 'demoTest'
       }).setup();
 
-      let testSource = runner.getTestSource();
-      assert.equal(testSource, 'demoTest.js');
-      assert.ok(statSyncCalled);
+      const Runner = common.require('runner/runner.js');
+
+      return Runner.readTestSource(runner.test_settings, runner.argv)
+        .then(function(modules) {
+          assert.equal(modules[0], 'demoTest.js');
+          assert.ok(statSyncCalled);
+        });
     });
 
-    it('testGetTestSourceSingleWithAbsolutePath', function(done) {
+    it('testGetTestSourceSingleWithAbsolutePath', function() {
       let ABSOLUTE_PATH = '/path/to/test';
-      let ABSOLUTE_SRC_PATH = ABSOLUTE_PATH + ".js";
+      let ABSOLUTE_SRC_PATH = ABSOLUTE_PATH + '.js';
       let statSyncCalled = false;
 
       mockery.registerMock('fs', {
@@ -442,6 +471,18 @@ describe('Test CLI Runner', function() {
             };
           }
           throw new Error('Does not exist');
+        },
+
+        stat(file, cb) {
+          if (file == ABSOLUTE_SRC_PATH || file == './custom.js') {
+            return cb(null, {
+              isFile() {
+                return true;
+              }
+            });
+          }
+
+          throw new Error('Does not exist');
         }
       });
 
@@ -452,19 +493,34 @@ describe('Test CLI Runner', function() {
         test: ABSOLUTE_PATH
       }).setup();
 
-      let testSource = runner.getTestSource();
-      assert.equal(runner.settings.detailed_output, true);
-      assert.equal(testSource, ABSOLUTE_SRC_PATH);
-      assert.ok(statSyncCalled);
-    done();
+      assert.equal(runner.test_settings.detailed_output, true);
+
+      const Runner = common.require('runner/runner.js');
+
+      return Runner.readTestSource(runner.test_settings, runner.argv)
+        .then(function(modules) {
+          assert.equal(modules[0], ABSOLUTE_SRC_PATH);
+          assert.ok(statSyncCalled);
+        });
     });
 
-  it('testGetTestSourceSingleWithRelativePath', function(done) {
+  it('testGetTestSourceSingleWithRelativePath', function() {
     let RELATIVE_PATH = '../path/to/test';
     let TEST_SRC_PATH = process.cwd() + '/path/to/test.js';
     let statSyncCalled = false;
 
     mockery.registerMock('fs', {
+      stat(file, cb) {
+        if (file == TEST_SRC_PATH || file == './custom.js') {
+          return cb(null, {
+            isFile() {
+              return true;
+            }
+          });
+        }
+
+        throw new Error('Does not exist');
+      },
       statSync: function(file) {
         if (file == RELATIVE_PATH) {
           statSyncCalled = true;
@@ -492,155 +548,16 @@ describe('Test CLI Runner', function() {
       test: RELATIVE_PATH
     }).setup();
 
-    let testSource = runner.getTestSource();
-    assert.equal(testSource, TEST_SRC_PATH);
-    assert.ok(statSyncCalled);
-    done();
+    const Runner = common.require('runner/runner.js');
+
+    return Runner.readTestSource(runner.test_settings, runner.argv)
+      .then(function(modules) {
+        assert.equal(modules[0], TEST_SRC_PATH);
+        assert.ok(statSyncCalled);
+      });
   });
 
-  it('testGetTestSourceAsSecondArgument', function(done) {
-    mockery.registerMock('fs', {
-      statSync: function(module) {
-        if (module == 'test.js' || module == './custom.json') {
-          return {
-            isFile: function() {
-              return true;
-            }
-          }
-        }
-        throw new Error('Does not exist');
-      }
-    });
-
-    const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
-      config: './custom.json',
-      env: 'default',
-      _source: ['test.js']
-    }).setup();
-
-    let testSource = runner.getTestSource();
-    assert.deepEqual(testSource, 'test.js');
-    done();
-  });
-
-  it('testRunTestsWithTestSourceSingleInvalid', function(done) {
-    let invalidTestFile = 'doesnotexist.js';
-    let errorMessage = 'ENOENT: no such file or directory, stat \'' + invalidTestFile + '\'';
-    mockery.registerMock('fs', {
-      existsSync: function(module) {
-        if (module == './custom.json') {
-          return true;
-        }
-        return false;
-      },
-      statSync: function(module) {
-        if (module == invalidTestFile) {
-          throw new Error(errorMessage);
-        }
-        throw new Error('Start error.');
-      }
-    });
-
-    const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
-      config: './custom.json',
-      env: 'default',
-      test: invalidTestFile
-    });
-
-    runner.manageSelenium = true;
-
-    try {
-      runner.setup();
-    } catch (err) {
-      assert.equal(err.message, errorMessage);
-      done();
-    }
-    done();
-  });
-
-  it('testRunTestsWithTestcaseOption', function(done) {
-    mockery.registerMock('fs', {
-      statSync: function(file) {
-        if (file == 'demoTest' || file == './custom.json') {
-          return {
-            isFile: function() {
-              return true;
-            }
-          };
-        }
-        throw new Error('Does not exist');
-      }
-    });
-
-    const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
-      config: './custom.json',
-      env: 'default',
-      test: 'demoTest',
-      testcase: 'testCase'
-    }).setup();
-
-    runner.getTestSource();
-    assert.equal(runner.argv.testcase, 'testCase');
-    done();
-  });
-
-  it('testRunTestsWithTestcaseOptionAndSingleTestSource', function(done) {
-    mockery.registerMock('fs', {
-      statSync: function(file) {
-        if (file == 'demoTest.js' || file == './custom.json') {
-          return {
-            isFile: function() {
-              return true;
-            }
-          };
-        }
-        throw new Error('Does not exist');
-      }
-    });
-
-    const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
-      config: './custom.json',
-      env: 'default',
-      _source: ['demoTest.js'],
-      testcase: 'testCase'
-    }).setup();
-
-    let testSource = runner.getTestSource();
-    assert.equal(runner.argv.testcase, 'testCase');
-    done();
-  });
-
-  it('testRunTestsWithTestcaseOptionAndWithoutTest', function(done) {
-    mockery.registerMock('fs', {
-      statSync: function(file) {
-        if (file == 'demoTest.js' || file == './custom.json') {
-          return {
-            isFile: function() {
-              return true
-            }
-          };
-        }
-        throw new Error('Does not exist');
-      }
-    });
-
-    const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
-      config: './custom.json',
-      env: 'default',
-      testcase: 'testCase'
-    }).setup();
-
-    let testSource = runner.getTestSource();
-    assert.equal(runner.argv.testcase, null);
-    done();
-  });
-
-  it('testGetTestSourceGroup', function(done) {
+  it('testGetTestSourceGroup', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
         switch (module) {
@@ -659,7 +576,7 @@ describe('Test CLI Runner', function() {
             };
         }
         throw new Error('Does not exist');
-      }
+      },
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -669,8 +586,10 @@ describe('Test CLI Runner', function() {
       group: 'demoGroup'
     }).setup();
 
-    let testSource = runner.getTestSource();
-    assert.deepEqual(testSource, ['tests/demoGroup']);
+    const Runner = common.require('runner/runner.js');
+
+    const walker = Runner.getTestSource(runner.test_settings, runner.argv);
+    assert.deepEqual(walker.testSource, ['tests/demoGroup']);
 
     let otherRunner = new CliRunner({
       config: './custom.json',
@@ -678,16 +597,16 @@ describe('Test CLI Runner', function() {
       group: 'tests/demoGroup'
     }).setup();
 
-    testSource = otherRunner.getTestSource();
-    assert.deepEqual(testSource, ['tests/demoGroup']);
+    const walker2 = Runner.getTestSource(otherRunner.test_settings, otherRunner.argv);
+    assert.deepEqual(walker2.testSource, ['tests/demoGroup']);
 
     let simpleRunner = new CliRunner({
       config: './custom.json',
       env: 'default'
     }).setup();
 
-    testSource = simpleRunner.getTestSource();
-    assert.deepEqual(testSource, ['tests']);
+    const walker3 = Runner.getTestSource(simpleRunner.test_settings, simpleRunner.argv);
+    assert.deepEqual(walker3.testSource, ['tests']);
 
     let invalidGroupRunner = new CliRunner({
       config: './custom.json',
@@ -695,8 +614,8 @@ describe('Test CLI Runner', function() {
       group: 'group_doesnotexist'
     }).setup();
 
-    testSource = invalidGroupRunner.getTestSource();
-    assert.deepEqual(testSource, ['tests/group_doesnotexist']);
+    const walker4 = Runner.getTestSource(invalidGroupRunner.test_settings, invalidGroupRunner.argv);
+    assert.deepEqual(walker4.testSource, ['tests/group_doesnotexist']);
 
     let invalidGroupInMultiSrcRunner = new CliRunner({
       config: './multi_test_paths.json',
@@ -704,12 +623,14 @@ describe('Test CLI Runner', function() {
       group: 'group_doesnotexist'
     }).setup();
 
-    testSource = invalidGroupInMultiSrcRunner.getTestSource();
-    assert.deepEqual(testSource, []);
-    done();
+    try {
+      Runner.getTestSource(invalidGroupInMultiSrcRunner.test_settings, invalidGroupInMultiSrcRunner.argv);
+    } catch (ex) {
+      assert.ok(ex.message.includes('No test source specified, please check configuration; src_folders: "tests1", "tests2"; group(s): "group_doesnotexist".'));
+    }
   });
 
-  it('testGetTestSourceMultipleGroups', function(done) {
+  it('testGetTestSourceMultipleGroups', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
         switch (module) {
@@ -743,8 +664,10 @@ describe('Test CLI Runner', function() {
       group: 'demoGroup1,demoGroup2'
     }).setup();
 
-    let testSource = runner.getTestSource();
-    assert.deepEqual(testSource, ['tests/demoGroup1', 'tests/demoGroup2']);
+    const Runner = common.require('runner/runner.js');
+
+    const walker = Runner.getTestSource(runner.test_settings, runner.argv);
+    assert.deepEqual(walker.testSource, ['tests/demoGroup1', 'tests/demoGroup2']);
 
     let invalidGroupRunner = new CliRunner({
       config: './custom.json',
@@ -752,8 +675,8 @@ describe('Test CLI Runner', function() {
       group: 'demoGroup1,demoGroup2,group_doesnotexist'
     }).setup();
 
-    testSource = invalidGroupRunner.getTestSource();
-    assert.deepEqual(testSource, ['tests/demoGroup1', 'tests/demoGroup2', 'tests/group_doesnotexist']);
+    const walker2 = Runner.getTestSource(invalidGroupRunner.test_settings, invalidGroupRunner.argv);
+    assert.deepEqual(walker2.testSource, ['tests/demoGroup1', 'tests/demoGroup2', 'tests/group_doesnotexist']);
 
     let stripMissingInMultiRunner = new CliRunner({
       config: './multi_test_paths.json',
@@ -761,12 +684,11 @@ describe('Test CLI Runner', function() {
       group: 'demoGroup1,demoGroup2,group_doesnotexist'
     }).setup();
 
-    testSource = stripMissingInMultiRunner.getTestSource();
-    assert.deepEqual(testSource, ['tests1/demoGroup1', 'tests1/demoGroup2', 'tests2/demoGroup2']);
-    done();
+    const walker3 = Runner.getTestSource(stripMissingInMultiRunner.test_settings, stripMissingInMultiRunner.argv);
+    assert.deepEqual(walker3.testSource, ['tests1/demoGroup1', 'tests1/demoGroup2', 'tests2/demoGroup2']);
   });
 
-  it('testParseTestSettingsInvalid', function(done) {
+  it('testParseTestSettingsInvalid', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
         if (module == './empty.json') {
@@ -786,11 +708,11 @@ describe('Test CLI Runner', function() {
         config: './empty.json',
         env: 'default'
       }).setup();
-    }, /No testing environment specified\./);
-    done();
+    }, /No testing environment defined in the configuration file\./);
+
   });
 
-  it('testParseTestSettingsNull', function(done) {
+  it('testParseTestSettingsNull', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
         if (module == './null.json') {
@@ -810,13 +732,13 @@ describe('Test CLI Runner', function() {
       config: './null.json',
       env: 'default'
     });
+
     runner.setup();
-    assert.ok(typeof runner.settings.envSettings == 'object');
-    assert.strictEqual(runner.settings.envSettings['default'].irrelevantProperty, null);
-    done();
+    assert.ok(typeof runner.test_settings == 'object');
+    assert.strictEqual(runner.test_settings.irrelevantProperty, null);
   });
 
-  it('testParseTestSettingsIncorrect', function(done) {
+  it('testParseTestSettingsIncorrect', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
         if (module == './incorrect.json') {
@@ -836,12 +758,10 @@ describe('Test CLI Runner', function() {
         config: './incorrect.json',
         env: 'incorrect'
       }).setup();
-    }, /Invalid testing environment specified\: incorrect/);
-
-    done();
+    }, /Invalid testing environment specified: incorrect\. Available environments are: default/);
   });
 
-  it('testReadExternalGlobals', function(done) {
+  it('testReadExternalGlobals', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
         if (module == './custom.json' || module == './globals.json') {
@@ -859,76 +779,57 @@ describe('Test CLI Runner', function() {
     let runner = new CliRunner({
       config: './custom.json',
       env: 'extra'
-    }).setup();
+    }).setup({
+      globals_path: './globals.json'
+    });
 
-    runner.settings.globals_path = './globals.json';
-    runner.inheritFromDefaultEnv();
-    runner.readExternalGlobals();
-
-    assert.equal(runner.envSettings.globals.otherGlobal, 'extra-value');
-    assert.equal(runner.envSettings.globals.inheritedGlobal, 'inherited');
-    assert.equal(runner.envSettings.globals.someGlobal, 'test');
-    assert.equal(runner.envSettings.globals.overwritten, '2');
-    assert.equal(runner.envSettings.globals.testGlobalOne, 'one');
-    assert.equal(runner.envSettings.globals.testGlobalTwo.two.three, '5');
-    assert.equal(runner.envSettings.globals.testGlobalTwo.one, 1);
+    assert.equal(runner.test_settings.globals.otherGlobal, 'extra-value');
+    assert.equal(runner.test_settings.globals.inheritedGlobal, 'inherited');
+    assert.equal(runner.test_settings.globals.someGlobal, 'test');
+    assert.equal(runner.test_settings.globals.overwritten, '1');
+    assert.equal(runner.test_settings.globals.testGlobalOne, 'one');
+    assert.equal(runner.test_settings.globals.testGlobalTwo.two.three, '5');
+    assert.equal(runner.test_settings.globals.testGlobalTwo.one, 1);
 
     assert.throws(function() {
-      let runner = new CliRunner({
+      new CliRunner({
         config: './custom.json',
         env: 'extra'
-      }).setup();
-      runner.settings.globals_path = './doesnotexist.json';
-      runner.readExternalGlobals();
+      }).setup({
+        globals_path: './doesnotexist.json'
+      });
 
-    }, 'External global file could not be located - using ./incorrect.json.');
+    }, /Error reading external global file using "\.\/doesnotexist.json"/);
 
-    done();
   });
 
-  it('testReadExternalGlobalsError', function(done) {
-    mockery.disable();
-
-    const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
-      config: './custom.json',
-      env: 'extra'
+  it('testReadExternalGlobalsError', function() {
+    mockery.registerMock('fs', {
+      statSync: function(module) {
+        if (module == './custom.json') {
+          return {
+            isFile: function() {
+              return true
+            }
+          };
+        }
+        throw new Error('Does not exist');
+      }
     });
 
-    runner.envSettings = {};
-    runner.settings = {
-      globals_path: './extra/globals-err.js'
-    };
-
-    try {
-      runner.readExternalGlobals();
-    } catch (ex) {
-
-      assert.equal(ex.name, 'Error reading external global file failed');
-      let message = ex.message.split('\n')[0];
-      assert.ok(/using(?:.+)\/extra\/globals-err\.js/.test(message));
-    }
-    done();
-  });
-
-  it('testStartSeleniumDisabled', function(done) {
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
-      config: './nightwatch.json',
-      env: 'default'
-    }).setup();
+    assert.throws(function() {
+      new CliRunner({
+        config: './custom.json',
+        env: 'extra'
+      }).setup({
+        globals_path: './extra/globals-err.js'
+      });
 
-    runner.manageSelenium = false;
-
-    runner.startSelenium(function() {
-      assert.ok('callback called');
-
-      done();
-    });
-    done();
+    }, /Error reading external global file using "\.\/extra\/globals-err.js"/);
   });
 
-  it('testStartSeleniumDisabledPerEnvironment', function(done) {
+  it('testStartSeleniumDisabledPerEnvironment', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
         if (module == './sauce.json') {
@@ -947,13 +848,10 @@ describe('Test CLI Runner', function() {
       env: 'saucelabs'
     }).setup();
 
-    assert.equal(runner.manageSelenium, false);
-    assert.equal(runner.startSession, false);
-    assert.equal(runner.endSessionOnFail, true);
-    done();
+    assert.equal(runner.isWebDriverManaged(), false);
   });
 
-  it('testStartSeleniumEnvironmentOverride', function(done) {
+  it('testStartSeleniumEnvironmentOverride', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
         if (module == './selenium_override.json') {
@@ -972,54 +870,8 @@ describe('Test CLI Runner', function() {
       env: 'default'
     }).setup();
 
-    assert.equal(runner.manageSelenium, true);
-    assert.equal(runner.startSession, true);
-    done();
+    assert.equal(runner.isWebDriverManaged(), true);
   });
-
-  it('testStartSeleniuSession', function(done) {
-    const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
-      config: './nightwatch.json',
-      env: 'default'
-    }).setup();
-
-    runner.manageSelenium = false;
-
-    runner.startSelenium(function() {
-      assert.ok('callback called');
-      done();
-    });
-    done();
-  });
-
-  it('testStartSeleniumEnabled', function(done) {
-    mockery.registerMock('../selenium.js', {
-      startServer: function(settings, cb) {
-        cb({}, null, 'Server already running.');
-      }
-    });
-    mockery.registerMock('./errorhandler.js', {
-      handle: function(err) {
-        assert.equal(err.message, 'Server already running.');
-        assert.equal(runner.settings.parallelMode, true);
-        done();
-      }
-    });
-
-    const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
-      config: './nightwatch.json',
-      env: 'default'
-    }).setup();
-
-    runner.manageSelenium = true;
-    runner.parallelMode = true;
-
-    runner.startSelenium();
-    done();
-  });
-
 
 });
 

@@ -61,7 +61,7 @@ describe('test TagsMatcher', function() {
     let matcher = new TagsMatcher({
       tag_filter: tags
     });
-    let matched = matcher.match(path.join(__dirname, '../../mock-errors/sample-error.js'));
+    let matched = matcher.match(path.join(__dirname, '../../extra/mock-errors/sample-error.js'));
 
     assert.strictEqual(matched, false);
   });

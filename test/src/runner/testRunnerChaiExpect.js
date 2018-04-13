@@ -21,18 +21,19 @@ describe('testRunnerChaiExpect', function() {
 
   it('testRunWithChaiExpect', function() {
     const testsPath = path.join(__dirname, '../../sampletests/withchaiexpect');
-    const Runner = common.require('runner/runner.js');
-
     let settings = Settings.parse({
       selenium: {
         port: 10195,
         version2: true,
         start_process: true
       },
+      globals: {
+        test: assert,
+        reporter() {}
+      },
       output_folder: false,
       silent: true,
-      output: false,
-      globals: {test: assert}
+      output: false
     });
 
     return Globals.startTestRunner(testsPath, settings)

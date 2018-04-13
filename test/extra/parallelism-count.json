@@ -11,7 +11,7 @@
     "start_process" : false
   },
 
-  "envSettings": {
+  "test_settings": {
     "default" : {
       "silent" : true,
       "desiredCapabilities" : {

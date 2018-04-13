@@ -11,7 +11,6 @@ describe('expect.css', function() {
   });
 
   afterEach(function(done) {
-    Nocks.cleanAll();
     ExpectGlobals.afterEach.call(this, done);
   });
 
@@ -23,12 +22,10 @@ describe('expect.css', function() {
     this.client.api.perform(function() {
       assert.equal(expect.assertion.selector, '#weblogin');
       assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.waitForMs, 5000);
       assert.equal(expect.assertion.passed, true);
       assert.equal(expect.assertion.cssProperty, 'display');
       assert.equal(expect.assertion.resultValue, 'block');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have css property "display"'));
-      assert.deepEqual(expect.assertion.elementResult, {ELEMENT: '0'});
       assert.equal(expect.assertion.messageParts.length, 1);
     });
     this.client.start(done);
@@ -47,15 +44,15 @@ describe('expect.css', function() {
   });
 
   it('to have css property with waitFor [FAILED]', function(done) {
-    this.client.api.globals.waitForConditionPollInterval = 50;
+    this.client.api.globals.waitForConditionPollInterval = 15;
+    this.client.api.globals.waitForConditionTimeout = 50;
 
-    Nocks.elementFound().cssProperty('', 3);
+    Nocks.elementFound().cssProperty('', 4);
 
-    let expect = this.client.api.expect.element('#weblogin').to.have.css('display').before(60);
+    let expect = this.client.api.expect.element('#weblogin').to.have.css('display').before(40);
     this.client.api.perform(function() {
-      assert.equal(expect.assertion.waitForMs, 60);
-      assert.equal(expect.assertion.passed, false);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have css property "display" in 60ms'));
+      assert.equal(expect.assertion.passed, false, 'Assertion should fail');
+      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have css property "display" in 40ms'));
     });
     this.client.start(done);
   });
@@ -110,7 +107,6 @@ describe('expect.css', function() {
       assert.equal(expect.assertion.cssProperty, 'display');
       assert.equal(expect.assertion.resultValue, '');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have css property "display"'));
-      assert.deepEqual(expect.assertion.elementResult, {ELEMENT: '0'});
       assert.deepEqual(expect.assertion.messageParts, []);
     });
     this.client.start(done);
@@ -134,7 +130,6 @@ describe('expect.css', function() {
       assert.equal(expect.assertion.actual, 'not present');
       assert.equal(expect.assertion.resultValue, '');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not have css property "display"'));
-      assert.deepEqual(expect.assertion.elementResult, {ELEMENT: '0'});
       assert.equal(expect.assertion.messageParts.length, 1);
     });
     this.client.start(done);
@@ -158,7 +153,6 @@ describe('expect.css', function() {
       assert.equal(expect.assertion.actual, 'present');
       assert.equal(expect.assertion.resultValue, 'x');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not have css property "display"'));
-      assert.deepEqual(expect.assertion.elementResult, {ELEMENT: '0'});
       assert.deepEqual(expect.assertion.messageParts, []);
     });
     this.client.start(done);
@@ -188,10 +182,11 @@ describe('expect.css', function() {
 
   it('to have css property equal to [PASSED]', function(done) {
     Nocks.elementFound().cssProperty('block');
+    this.client.api.globals.waitForConditionTimeout = 65;
 
     let expect = this.client.api.expect.element('#weblogin').to.have.css('display').equal('block');
     this.client.api.perform(function() {
-      assert.equal(expect.assertion.waitForMs, 5000);
+      assert.equal(expect.assertion.waitForMs, 65);
       assert.equal(expect.assertion.passed, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have css property "display" equal to: "block"'));
     });
@@ -200,10 +195,11 @@ describe('expect.css', function() {
 
   it('to have css property which equals [PASSED]', function(done) {
     Nocks.elementFound().cssProperty('block');
+    this.client.api.globals.waitForConditionTimeout = 100;
 
     let expect = this.client.api.expect.element('#weblogin').to.have.css('display').which.equals('block');
     this.client.api.perform(function() {
-      assert.equal(expect.assertion.waitForMs, 5000);
+      assert.equal(expect.assertion.waitForMs, 100);
       assert.equal(expect.assertion.passed, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have css property "display" which equals: "block"'));
     });
@@ -237,7 +233,6 @@ describe('expect.css', function() {
 
     let expect = this.client.api.expect.element('#weblogin').to.have.css('display').not.equal('xx');
     this.client.api.perform(function() {
-      assert.equal(expect.assertion.waitForMs, 5000);
       assert.equal(expect.assertion.negate, true);
       assert.equal(expect.assertion.passed, true);
       assert.equal(expect.assertion.resultValue, 'block');

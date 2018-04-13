@@ -7,16 +7,19 @@ const CommandGlobals = require('../../../lib/globals/commands.js');
 describe('waitForElementNotVisible', function() {
   const createOrig = NightwatchAssertion.create;
 
-  beforeEach(function(done) {
+  before(function(done) {
     CommandGlobals.beforeEach.call(this, done);
   });
 
-  afterEach(function(done) {
+
+  afterEach(function() {
     MockServer.removeMock({
       url : '/wd/hub/session/1352110219202/element/0/displayed',
       method:'GET'
     });
+  });
 
+  after(function(done) {
     CommandGlobals.afterEach.call(this, done);
   });
 

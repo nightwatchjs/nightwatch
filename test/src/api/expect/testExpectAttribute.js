@@ -3,6 +3,12 @@ const Nocks = require('../../../lib/Nocks.js');
 const ExpectGlobals = require('../../../lib/globals/expect.js');
 
 describe('expect.attribute', function() {
+  before(function() {
+    try {
+      Nocks.enable(true);
+    } catch (e) {}
+  });
+
   beforeEach(function(done) {
     ExpectGlobals.beforeEach.call(this, () => {
       this.client.api.globals.abortOnAssertionFailure = false;
@@ -11,24 +17,21 @@ describe('expect.attribute', function() {
   });
 
   afterEach(function(done) {
-    Nocks.cleanAll();
     ExpectGlobals.afterEach.call(this, done);
   });
 
   it('to have attribute [PASSED]', function(done) {
     Nocks.elementFound().attributeValue('hp vasq');
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class');
+    this.client.api.globals.waitForConditionTimeout = 65;
 
     this.client.api.perform(function() {
       assert.equal(expect.assertion.selector, '#weblogin');
       assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.waitForMs, 5000);
       assert.equal(expect.assertion.passed, true);
       assert.equal(expect.assertion.attribute, 'class');
       assert.equal(expect.assertion.resultValue, 'hp vasq');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have attribute "class"'));
-      assert.deepEqual(expect.assertion.elementResult, {ELEMENT: '0'});
-      assert.equal(expect.assertion.messageParts.length, 1);
     });
 
     this.client.start(done);
@@ -173,7 +176,6 @@ describe('expect.attribute', function() {
       assert.equal(expect.assertion.attribute, 'class');
       assert.equal(expect.assertion.resultValue, null);
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" - attribute was not found');
-      assert.deepEqual(expect.assertion.elementResult, {ELEMENT: '0'});
       assert.deepEqual(expect.assertion.messageParts, [' - attribute was not found']);
     });
 
@@ -192,7 +194,6 @@ describe('expect.attribute', function() {
       assert.equal(expect.assertion.actual, 'not found');
       assert.equal(expect.assertion.resultValue, null);
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to not have attribute "class"');
-      assert.deepEqual(expect.assertion.elementResult, {ELEMENT: '0'});
       assert.deepEqual(expect.assertion.messageParts, []);
     });
 
@@ -218,7 +219,6 @@ describe('expect.attribute', function() {
       assert.equal(expect.assertion.actual, 'found');
       assert.equal(expect.assertion.resultValue, '');
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to not have attribute "class"');
-      assert.deepEqual(expect.assertion.elementResult, {ELEMENT: '0'});
       assert.deepEqual(expect.assertion.messageParts, []);
     });
 

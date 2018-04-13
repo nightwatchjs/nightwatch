@@ -1,17 +1,17 @@
 var assert = require('assert');
 
 module.exports = {
-  beforeEach : function(client, callback) {
-    var testName = client.currentTest.name;
-    assert.equal(testName, 'demoTest');
-    client.globals.calls++
-    callback();
-  },
-
   before : function(client, callback) {
     var testName = client.currentTest.name;
     assert.equal(testName, '');
-    client.globals.calls++
+    client.globals.calls++;
+    callback();
+  },
+
+  beforeEach : function(client, callback) {
+    var testName = client.currentTest.name;
+    assert.equal(testName, 'demoTest');
+    client.globals.calls++;
     callback();
   },
 
@@ -22,8 +22,7 @@ module.exports = {
     client.end();
   },
 
-  afterEach : function(callback) {
-    var client = this.client;
+  afterEach : function(client, callback) {
     var testName = client.currentTest.name;
     assert.equal(testName, 'demoTest');
     client.globals.calls++
@@ -32,7 +31,7 @@ module.exports = {
 
   after : function(client, callback) {
     var testName = client.currentTest.name;
-    assert.strictEqual(testName, null);
+    assert.equal(testName, 'demoTest');
     client.globals.calls++
     callback();
   }

@@ -3,8 +3,6 @@ const Nightwatch = require('../nightwatch.js');
 
 module.exports = {
   beforeEach(opts, done) {
-    Nocks.enable();
-
     if (arguments.length === 1) {
       done = arguments[0];
       opts = {};
@@ -12,6 +10,7 @@ module.exports = {
 
     Nocks.cleanAll().createSession();
 
+    Nocks.enable();
     Nightwatch.init(opts, function () {
       done();
     });
@@ -20,6 +19,7 @@ module.exports = {
   },
 
   afterEach(done) {
+    Nocks.cleanAll();
     Nocks.deleteSession();
     Nocks.disable();
     done();

@@ -21,68 +21,6 @@ describe('test Nightwatch Api', function() {
     done();
   });
 
-  it('testLoadCommands', function() {
-    const ApiLoader = common.require('api-loader/api.js');
-    let mockClient = {
-      options: {},
-      api: {},
-      session: {
-        commandQueue: {
-          add(commandName, command, context, args, originalStackTrace) {
-            assert.equal(commandName, 'session');
-            assert.equal(typeof command, 'function');
-            assert.equal(args[0], 'POST');
-            assert.equal(typeof args[1], 'function');
-          }
-        }
-      },
-      isApiMethodDefined: function (commandName, namespace) {
-        return false;
-      },
-      setApiMethod: function (commandName, commandFn) {
-        mockClient.api[commandName] = commandFn;
-      },
-      transport: {
-        Actions: {}
-      }
-    };
-
-    let api = new ApiLoader(mockClient);
-    api.loadClientCommands();
-
-    mockClient.api.session('POST', function() {});
-  });
-
-  it('testAddExistingCommand', function () {
-    const ApiLoader = common.require('api-loader/api.js');
-    const CommandLoader = common.require('api-loader/command.js');
-
-    let mockClient = {
-      options: {},
-      api: {},
-      isApiMethodDefined: function (commandName, namespace) {
-        return typeof mockClient.api[commandName] != 'undefined';
-      },
-      setApiMethod: function (commandName, commandFn) {
-        mockClient.api[commandName] = commandFn;
-      },
-      transport: {
-        Actions: {}
-      }
-    };
-
-    let api = new ApiLoader(mockClient);
-    api.loadClientCommands();
-
-    let loader = new CommandLoader(mockClient);
-    loader.commandName = 'session';
-    loader.commandFn = function() {};
-
-    assert.throws(function(err) {
-      loader.define();
-    }, /Error: The command \.session\(\) is already defined\./);
-  });
-
   it('testAddCustomAssertion', function(done) {
     const ApiLoader = common.require('api-loader/api.js');
     let mockClient = {
@@ -283,8 +221,8 @@ describe('test Nightwatch Api', function() {
 
     const Nightwatch = require('../../lib/nightwatch.js');
     let client = Nightwatch.createClient({
-      output: true,
-      silent: false
+      output: false,
+      silent: true
     });
 
     client.api.setWindowPosition(0, 0, function (result) {
@@ -293,40 +231,6 @@ describe('test Nightwatch Api', function() {
     });
   });
 
-
-  it('testAddPageObject', function() {
-    const ApiLoader = common.require('api-loader/api.js');
-    let mockClient = {
-      options: {
-        page_objects_path: path.join(__dirname, '../../extra/pageobjects')
-      },
-      session: {},
-      api: {
-        perform(fn) {
-          fn();
-        }
-      },
-      isApiMethodDefined: function (commandName, namespace) {
-        return false;
-      },
-      setApiMethod: function (commandName, namespace, commandFn) {
-        mockClient.api[namespace] = mockClient.api[namespace] || {};
-        mockClient.api[namespace][commandName] = commandFn;
-      },
-      transport: {
-        Actions: {}
-      }
-    };
-
-    let api = new ApiLoader(mockClient);
-    api.loadPageObjects();
-
-    assert.ok(typeof mockClient.api.page == 'object');
-    assert.ok('simplePageObj' in mockClient.api.page);
-
-    let simplePage = mockClient.api.page.simplePageObj();
-    assert.equal(typeof simplePage, 'object');
-  });
 
   it('testAddPageObjectArrayPath', function() {
     const ApiLoader = common.require('api-loader/api.js');

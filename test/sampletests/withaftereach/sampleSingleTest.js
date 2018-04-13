@@ -36,7 +36,7 @@ module.exports = {
 
   after : function(client, callback) {
     var testName = client.currentTest.name;
-    assert.deepEqual(testName, null);
+    assert.deepEqual(testName, 'demoTest');
     callback();
   }
 };

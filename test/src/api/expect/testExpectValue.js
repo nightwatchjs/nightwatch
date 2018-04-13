@@ -19,7 +19,6 @@ describe('expect.value', function() {
     Nocks.elementFound().value('hp vasq');
     let expect = this.client.api.expect.element('#weblogin').to.have.value.equal('hp vasq');
     this.client.api.perform(function() {
-      assert.equal(expect.assertion.waitForMs, 5000);
       assert.equal(expect.assertion.passed, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value equal to: "hp vasq"'));
     });
@@ -74,7 +73,6 @@ describe('expect.value', function() {
 
     let expect = this.client.api.expect.element('#weblogin').to.have.value.not.equal('xx');
     this.client.api.perform(function() {
-      assert.equal(expect.assertion.waitForMs, 5000);
       assert.equal(expect.assertion.negate, true);
       assert.equal(expect.assertion.passed, true);
       assert.equal(expect.assertion.resultValue, 'hp vasq');

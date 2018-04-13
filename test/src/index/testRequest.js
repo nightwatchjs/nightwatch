@@ -7,12 +7,18 @@ const HttpRequest = common.require('http/request.js');
 const Logger = common.require('util/logger');
 
 describe('test HttpRequest', function() {
+
   beforeEach(function (callback) {
+    try {
+      nock.activate();
+    } catch (err) {}
+
     mockery.enable();
     Logger.setOutputEnabled(false);
 
     HttpRequest.globalSettings = {
-      default_path: '/wd/hub'
+      default_path: '/wd/hub',
+      port: 4444
     };
 
     nock('http://localhost:4444')
@@ -33,10 +39,15 @@ describe('test HttpRequest', function() {
     mockery.disable();
   });
 
+  after(function() {
+    nock.restore();
+  });
+
   it('testSendPostRequest', function(done) {
     var options = {
       path: '/session',
       method: 'POST',
+      port: 4444,
       data: {
         desiredCapabilities: {
           browserName: 'firefox'
@@ -68,6 +79,7 @@ describe('test HttpRequest', function() {
     var options = {
       path: '/session',
       method: 'POST',
+      port: 4444,
       data: {
         desiredCapabilities: {
           browserName: 'firefox'
@@ -76,6 +88,8 @@ describe('test HttpRequest', function() {
     };
 
     HttpRequest.globalSettings = {
+      default_path: '/wd/hub',
+      port: 4444,
       credentials: {
         username: 'test',
         key: 'test-key'
@@ -85,11 +99,18 @@ describe('test HttpRequest', function() {
     var request = new HttpRequest(options);
     request.on('success', function () {
       done();
+    }).on('error', function(err) {
+      console.error(err);
+      done(new Error('Request Failed!'));
     }).send();
 
+    try {
+      var authHeader = new Buffer('test:test-key').toString('base64');
+      assert.equal(request.httpRequest.getHeader('Authorization'), 'Basic ' + authHeader);
+    } catch (err) {
+      done(err);
+    }
 
-    var authHeader = new Buffer('test:test-key').toString('base64');
-    assert.equal(request.httpRequest.getHeader('Authorization'), 'Basic ' + authHeader);
   });
 
   it('testSendPostRequestWithProxy', function (done) {
@@ -102,6 +123,7 @@ describe('test HttpRequest', function() {
     var options = {
       path: '/session',
       method: 'POST',
+      port: 4444,
       data: {
         desiredCapabilities: {
           browserName: 'firefox'
@@ -110,6 +132,8 @@ describe('test HttpRequest', function() {
     };
 
     HttpRequest.globalSettings = {
+      default_path: '/wd/hub',
+      port: 4444,
       proxy: 'http://localhost:8080'
     };
 
@@ -121,10 +145,6 @@ describe('test HttpRequest', function() {
     var opts = request.reqOptions;
     assert.ok('agent' in opts);
     assert.ok('proxy' in opts.agent);
-
-    HttpRequest.globalSettings = {
-      proxy: null
-    };
   });
 
   it('testResponseWithRedirect', function (done) {
@@ -137,6 +157,7 @@ describe('test HttpRequest', function() {
     var options = {
       path: '/redirect',
       method: 'POST',
+      port: 4444,
       data: {}
     };
     var request = new HttpRequest(options);
@@ -155,6 +176,7 @@ describe('test HttpRequest', function() {
     var options = {
       path: '/:sessionId/element',
       method: 'GET',
+      port: 4444,
       sessionId: '123456'
     };
 
@@ -208,6 +230,7 @@ describe('test HttpRequest', function() {
     var options = {
       path: '/wd/hub/error',
       method: 'POST',
+      port: 4444,
       data: {}
     };
 

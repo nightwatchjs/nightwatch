@@ -1,9 +1,14 @@
 const common = require('../common.js');
 const lodashMerge = require('lodash.merge');
 const nightwatch = common.require('index.js');
+const Settings = common.require('settings/settings.js');
+const Logger = common.require('util/logger.js');
 
 module.exports = new function () {
   let _client = null;
+
+  Logger.setOutputEnabled(false);
+  Logger.disable(false);
 
   function extendClient(client) {
     client.start = function(done = function() {}) {
@@ -33,7 +38,9 @@ module.exports = new function () {
 
     lodashMerge(opts, options);
 
-    return nightwatch.client(opts, reporter);
+    let settings = Settings.parse(opts);
+
+    return nightwatch.client(settings, reporter);
   };
 
   this.createClientDefaults = function() {

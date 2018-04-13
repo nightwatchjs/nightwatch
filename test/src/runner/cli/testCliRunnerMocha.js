@@ -7,11 +7,11 @@ describe('test CLI Runner Mocha', function() {
     process.env['ENV_USERNAME'] = 'testuser';
 
     mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
-    mockery.registerMock('./cli.js', {
+    mockery.registerMock('./argv-setup.js', {
       command: function(command) {
         return {
-          isDefault: function() {
-            return false;
+          isDefault: function(file) {
+            return file.includes('nightwatch.');
           },
           defaults: function() {
             return './nightwatch.json';
@@ -25,6 +25,23 @@ describe('test CLI Runner Mocha', function() {
       }
     });
 
+    mockery.registerMock('./folder-walk.js', class Walk {
+      readTestSource(source, settings, cb) {
+        return Promise.resolve([
+          'test1.js',
+          'test2.js'
+        ]);
+      }
+    });
+    mockery.registerMock('../../index.js', {
+      client(settings) {
+        return {
+          api: {},
+          settings: {}
+        };
+      }
+    });
+
   });
 
   afterEach(function() {
@@ -33,13 +50,13 @@ describe('test CLI Runner Mocha', function() {
     mockery.disable();
   });
 
-  it('testRunWithMochaDefaults', function(done) {
+  it('testRunWithMochaDefaults', function() {
     let testFiles = [];
 
     mockery.registerMock('./withmocha.json', {
       src_folders: ['tests'],
       output_folder: false,
-      envSettings: {
+      test_settings: {
         'default': {
           silent: true
         }
@@ -47,28 +64,9 @@ describe('test CLI Runner Mocha', function() {
       test_runner: 'mocha'
     });
 
-    function Mocha(options) {
-      assert.deepEqual(options, {ui: 'bdd'});
-    }
-
-    Mocha.prototype = {
-      addFile: function(file) {
-        testFiles.push(file);
-      },
-      run: function(nightwatch, opts, cb) {
-        cb(false);
-      }
-    };
-    mockery.registerMock('mocha-nightwatch', Mocha);
-    mockery.registerMock('../run.js', {
-      setFinishCallback: function(cb) {
-      },
-      readPaths: function(source, settings, cb) {
-        cb(null, [
-          'test1.js', 'test2.js'
-        ]);
-      }
-    });
+    createMockedMocha(function(options) {
+      assert.deepEqual(options, {timeout: 10000});
+    }, testFiles);
 
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
@@ -76,20 +74,18 @@ describe('test CLI Runner Mocha', function() {
       env: 'default'
     }).setup();
 
-    runner.runner(function(err, results) {
-      assert.equal(err, null);
+    return runner.runTests().then(function() {
       assert.deepEqual(testFiles, ['test1.js', 'test2.js']);
-      done();
     });
   });
 
-  it('testRunWithMochaPerEnvironment', function(done) {
+  it('testRunWithMochaPerEnvironment', function() {
     let testFiles = [];
 
     mockery.registerMock('./withmocha.json', {
       src_folders: ['tests'],
       output_folder: false,
-      envSettings: {
+      test_settings: {
         'default': {
           silent: true
         },
@@ -100,28 +96,9 @@ describe('test CLI Runner Mocha', function() {
       test_runner: 'default'
     });
 
-    function Mocha(options) {
-      assert.deepEqual(options, {ui: 'bdd'});
-    }
-
-    Mocha.prototype = {
-      addFile: function(file) {
-        testFiles.push(file);
-      },
-      run: function(nightwatch, opts, cb) {
-        cb(false);
-      }
-    };
-    mockery.registerMock('mocha-nightwatch', Mocha);
-    mockery.registerMock('../run.js', {
-      setFinishCallback: function() {
-      },
-      readPaths: function(source, settings, cb) {
-        cb(null, [
-          'test1.js', 'test2.js'
-        ]);
-      }
-    });
+    createMockedMocha(function(options) {
+      assert.deepEqual(options, {timeout: 10000});
+    }, testFiles);
 
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
@@ -129,20 +106,18 @@ describe('test CLI Runner Mocha', function() {
       env: 'mochatests'
     }).setup();
 
-    runner.runner(function(err, results) {
-      assert.equal(err, null);
+    return runner.runTests().then(function() {
       assert.deepEqual(testFiles, ['test1.js', 'test2.js']);
-      done();
     });
   });
 
-  it('testRunWithMochaCustomOpts', function(done) {
+  it('testRunWithMochaCustomOpts', function() {
     let testFiles = [];
 
     mockery.registerMock('./withmocha.json', {
       src_folders: ['tests'],
       output_folder: false,
-      envSettings: {
+      test_settings: {
         'default': {
           silent: true
         }
@@ -155,26 +130,12 @@ describe('test CLI Runner Mocha', function() {
       }
     });
 
-    function Mocha(options) {
-      assert.deepEqual(options, {ui: 'tdd'});
-    }
-
-    Mocha.prototype = {
-      addFile: function(file) {
-        testFiles.push(file);
-      },
-      run: function(nightwatch, opts, cb) {
-        cb(false);
-      }
-    };
-    mockery.registerMock('mocha-nightwatch', Mocha);
-    mockery.registerMock('../run.js', {
-      setFinishCallback: function() {
-      },
-      readPaths: function(source, settings, cb) {
-        cb(true, []);
-      }
-    });
+    createMockedMocha(function(options) {
+      assert.deepEqual(options, {
+        ui: 'tdd',
+        timeout: 10000
+      });
+    }, testFiles);
 
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
@@ -182,10 +143,36 @@ describe('test CLI Runner Mocha', function() {
       env: 'default'
     }).setup();
 
-    runner.runner(function(err, results) {
-      assert.equal(err, true);
-      assert.deepEqual(results, []);
-      done();
+    return runner.runTests().then(function() {
+      assert.deepEqual(testFiles, ['test1.js', 'test2.js']);
     });
   });
 });
+
+
+function createMockedMocha(assertionFn = function() {}, testFiles = []) {
+  function Mocha(options) {
+    this.suite = {};
+    assertionFn(options);
+  }
+
+  Mocha.prototype = {
+    addFile: function(file) {
+      testFiles.push(file);
+    },
+    run: function(cb) {
+      cb(null);
+    }
+  };
+
+  Mocha.Runner = function() {
+    this.suite = {};
+  };
+
+  Mocha.Runner.prototype = {
+    runSuite() {},
+    run(fn) {}
+  };
+
+  mockery.registerMock('mocha', Mocha);
+}

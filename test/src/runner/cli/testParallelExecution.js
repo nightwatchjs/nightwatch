@@ -6,16 +6,15 @@ const assert = require('assert');
 const common = require('../../../common.js');
 
 describe('test Parallel Execution', function() {
-  beforeEach(function() {
-    this.allArgs = [];
-    this.allOpts = [];
-    let self = this;
+  const allArgs = [];
+  const allOpts = [];
 
+  beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
     mockery.registerMock('child_process', {
       spawn: function(path, args, opts) {
-        self.allArgs.push(args);
-        self.allOpts.push(opts);
+        allArgs.push(args);
+        allOpts.push(opts);
 
         function Stdout() {
         }
@@ -51,149 +50,113 @@ describe('test Parallel Execution', function() {
     mockery.deregisterAll();
     mockery.resetCache();
     mockery.disable();
+    allArgs.length = 0;
+    allOpts.length = 0;
     process.env.__NIGHTWATCH_PARALLEL_MODE = null;
   });
 
-  it('testParallelExecution', function(done) {
-    let self = this;
+  it('testParallelExecution', function() {
     const CliRunner = common.require('runner/cli/cli.js');
+    let originalCwd = process.cwd();
+    process.chdir(path.join(__dirname, '../../../extra/'));
+
     let runner = new CliRunner({
-      config: path.join(__dirname, '../../../extra/nightwatch.json'),
+      config: './nightwatch.json',
       env: 'default,mixed'
     });
 
-    runner.setup({}, function(output, code) {
-      if (output instanceof Error) {
-        done(output);
-        return;
-      }
-      assert.ok(!runner.isParallelMode());
-      assert.equal(code, 0);
-      assert.deepEqual(output, {'default': [], mixed: []});
-      assert.equal(self.allArgs.length, 2);
-      assert.equal(self.allArgs[0].indexOf('default') > -1, true);
-      assert.equal(self.allArgs[1].indexOf('mixed') > -1, true);
+    runner.setup();
 
-      assert.ok('default_1' in runner.runningProcesses);
-      assert.ok('mixed_2' in runner.runningProcesses);
-      assert.equal(runner.runningProcesses['default_1'].processRunning, false);
-      assert.equal(runner.runningProcesses['mixed_2'].processRunning, false);
-      done();
+    assert.ok(runner.parallelMode());
+    assert.equal(runner.testEnv, 'default,mixed');
+    assert.deepEqual(runner.availableTestEnvs, ['default', 'mixed']);
+
+    return runner.runTests().then(_ => {
+      assert.ok(runner.parallelMode());
+      assert.strictEqual(runner.concurrency.globalExitCode, 0);
+      assert.equal(allArgs.length, 2);
+      assert.ok(allArgs[0].join(' ').includes('--env default --parallel-mode'));
+      assert.ok(allArgs[1].join(' ').includes('--env mixed --parallel-mode'));
+
+      process.chdir(originalCwd);
     });
-
-    assert.ok(runner.parallelMode);
   });
 
-  it('testParallelExecutionWithWorkersDefaults', function(done) {
-    let self = this;
+  it('test parallel execution with workers defaults', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: path.join(__dirname, '../../../extra/parallelism.json')
     });
 
-    runner.setup({}, function(err) {
-      if (err instanceof Error) {
-        done(err);
-        return;
-      }
-      assert.equal(self.allArgs.length, 22);
-      assert.ok(path.join('sampletests', 'async', 'sample_1') in runner.runningProcesses);
-      assert.ok(path.join('sampletests', 'before-after', 'sampleSingleTest_2') in runner.runningProcesses);
+    runner.setup();
 
-      let child = runner.runningProcesses[path.join('sampletests', 'async', 'sample_1')];
-      assert.deepEqual(child.env_output, []);
-      assert.ok(child.mainModule.length > 0);
-      assert.strictEqual(child.index, 0);
-      assert.equal(child.startDelay, 10);
-      assert.equal(child.environment, path.join('sampletests', 'async', 'sample'));
-      assert.deepEqual(child.settings, runner.settings);
-      assert.strictEqual(child.globalExitCode, 0);
-      assert.ok(child.args.length > 0);
-      assert.ok(child.args.indexOf('--test') > -1);
-      assert.ok(child.args.indexOf('--test-worker') > -1);
-      done();
+    assert.ok(runner.test_settings.test_workers);
+
+    return runner.runTests().then(_ => {
+      assert.equal(allArgs.length, 23);
+      assert.strictEqual(runner.concurrency.globalExitCode, 0);
     });
-
-    assert.ok(runner.settings.test_workers);
-    assert.ok(runner.parallelModeWorkers());
   });
 
-  it('testParallelExecutionSameEnv', function(done) {
-    let self = this;
+  it('testParallelExecutionSameEnv', function() {
+    let originalCwd = process.cwd();
+    process.chdir(path.join(__dirname, '../../../extra/'));
+
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
-      config: path.join(__dirname, '../../../extra/nightwatch.json'),
+      config: './nightwatch.json',
       env: 'mixed,mixed'
     });
 
-    runner.setup({}, function(err) {
-      if (err instanceof Error) {
-        done(err);
-        return;
-      }
-      assert.ok(!runner.isParallelMode());
-      assert.equal(self.allArgs.length, 2);
-      assert.equal(self.allArgs[0].indexOf('mixed') > -1, true);
-      assert.equal(self.allArgs[1].indexOf('mixed') > -1, true);
-      assert.ok('mixed_1' in runner.runningProcesses);
-      assert.ok('mixed_2' in runner.runningProcesses);
-      assert.equal(runner.runningProcesses['mixed_1'].processRunning, false);
-      assert.equal(runner.runningProcesses['mixed_2'].processRunning, false);
-      done();
-    });
+    runner.setup();
 
-    assert.ok(runner.parallelMode);
+    assert.ok(runner.parallelMode());
+    assert.equal(runner.testEnv, 'mixed,mixed');
+    assert.deepEqual(runner.availableTestEnvs, ['default', 'mixed']);
+
+    return runner.runTests().then(_ => {
+      assert.equal(allArgs.length, 2);
+      assert.ok(allArgs[0].join(' ').includes('--env mixed --parallel-mode'));
+      assert.ok(allArgs[1].join(' ').includes('--env mixed --parallel-mode'));
+      process.chdir(originalCwd);
+    });
   });
 
-  it('testParallelExecutionWithWorkersAuto', function(done) {
-    let self = this;
+  it('testParallelExecutionWithWorkersAuto', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: path.join(__dirname, '../../../extra/parallelism-auto.json')
     });
 
-    runner.setup({}, function() {
-      assert.ok(!runner.isParallelMode());
-      assert.equal(self.allArgs.length, 22);
-      done();
+    runner.setup();
+    assert.deepEqual(runner.test_settings.test_workers, {
+      enabled: true,
+      workers: 'auto'
     });
 
-    assert.deepEqual(runner.settings.test_workers, {
-      enabled: true,
-      workers: 'auto'
+    return runner.runTests().then(_ => {
+      assert.equal(allArgs.length, 23);
     });
-    assert.deepEqual(runner.envSettings.test_workers, {
-      enabled: true,
-      workers: 'auto'
-    });
-    assert.ok(runner.parallelModeWorkers());
   });
 
-  it('testParallelExecutionWithWorkersCount', function(done) {
-    let self = this;
+  it('test parallel execution with workers count', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: path.join(__dirname, '../../../extra/parallelism-count.json')
     });
 
-    runner.setup({}, function(err) {
-      if (err instanceof Error) {
-        done(err);
-        return;
-      }
-      assert.ok(!runner.isParallelMode());
-      assert.equal(self.allArgs.length, 22);
-      done();
-    });
-
-    assert.deepEqual(runner.settings.test_workers, {
+    runner.setup();
+    assert.deepEqual(runner.test_settings.test_workers, {
       enabled: true,
       workers: 6
     });
-    assert.ok(runner.parallelModeWorkers());
+
+    return runner.runTests().then(_ => {
+      assert.equal(allArgs.length, 23);
+    });
   });
 
-  it('testParallelExecutionWithWorkersDisabledPerEnvironment', function(done) {
+  it('test parallel execution with workers disabled per environment', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: path.join(__dirname, '../../../extra/parallelism-disabled.json')
@@ -201,23 +164,10 @@ describe('test Parallel Execution', function() {
 
     runner.setup();
 
-    assert.equal(runner.settings.test_workers, false);
-    assert.equal(runner.parallelModeWorkers(), false);
+    assert.equal(runner.test_settings.test_workers, false);
   });
 
-  it('testParallelExecutionWithWorkersDisabledFromGrunt', function(done) {
-    const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
-      config: path.join(__dirname, '../../../extra/parallelism.json')
-    });
-
-    runner.setup({test_workers: false});
-
-    assert.equal(runner.settings.test_workers, false);
-    assert.equal(runner.parallelModeWorkers(), false);
-  });
-
-  it('testParallelExecutionWithWorkersAndSingleSourceFile', function(done) {
+  it('test parallel execution with workers and single source file', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: path.join(__dirname, '../../../extra/parallelism.json'),
@@ -226,25 +176,8 @@ describe('test Parallel Execution', function() {
 
     runner.setup();
 
-    assert.equal(runner.singleSourceFile(), true);
-  });
-
-  it('testWorkerAndGetTestSource', function(done) {
-    const CliRunner = common.require('runner/cli/cli.js');
-    CliRunner.prototype.isParallelMode = function() {
-      return true;
-    };
-
-    let runner = new CliRunner({
-      config: path.join(__dirname, '../../../extra/parallelism.json')
+    return runner.runTests().then(_ => {
+      assert.equal(allArgs.length, 0);
     });
-    runner.setup();
-
-    runner.argv['test-worker'] = true;
-    runner.argv['test'] = path.join(__dirname, '../../../sampletests/async/sample');
-
-    let testsource = runner.getTestSource();
-    let filePath = '/sampletests/async/sample.js';
-    assert.equal(testsource.slice(filePath.length * -1), filePath);
   });
 });

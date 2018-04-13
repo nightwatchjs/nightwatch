@@ -21,8 +21,7 @@ module.exports = {
     client.end();
   },
 
-  afterEach : function(callback) {
-    var client = this.client;
+  afterEach : function(client, callback) {
     setTimeout(function() {
       client.globals.calls++;
       callback();

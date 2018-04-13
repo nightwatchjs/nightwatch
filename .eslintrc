@@ -20,7 +20,7 @@
     "no-extra-boolean-cast": 0,
     "quotes": ["error", "single"],
     "curly": ["error", "all"],
-    "no-console": ["error", { "allow": ["error"] }],
+    "no-console": ["warn", { "allow": ["error"] }],
     "no-debugger": 1,
     "semi": [1, "always"],
     "no-trailing-spaces": 0,
@@ -36,7 +36,7 @@
     "no-lone-blocks": 0,
     "one-var": ["error", "never"],
     "padding-line-between-statements": [
-      "error",
+      "warn",
       { "blankLine": "always", "prev": "*", "next": "return" },
       { "blankLine": "any", "prev": ["const"], "next": "*"}
     ]

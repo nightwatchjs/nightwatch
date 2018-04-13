@@ -2,13 +2,16 @@ const path = require('path');
 const assert = require('assert');
 const common = require('../../common.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
-const Runner = common.require('runner/runner.js');
-const Settings = common.require('settings/settings.js');
-const Globals = require('../../lib/globals.js');
+const MockServer = require('../../lib/mockserver.js');
+const NightwatchClient = common.require('index.js');
 
 describe('testRunWithTags', function() {
   before(function(done) {
-    CommandGlobals.beforeEach.call(this, done);
+    this.server = MockServer.init();
+
+    this.server.on('listening', () => {
+      done();
+    });
   });
 
   after(function(done) {
@@ -18,6 +21,7 @@ describe('testRunWithTags', function() {
   beforeEach(function() {
     process.removeAllListeners('exit');
     process.removeAllListeners('uncaughtException');
+    process.removeAllListeners('unhandledRejection');
   });
 
   afterEach(function() {
@@ -29,7 +33,7 @@ describe('testRunWithTags', function() {
   it('testRunWithTags', function() {
     let testsPath = path.join(__dirname, '../../sampletests');
 
-    let settings = Settings.parse({
+    let settings = {
       selenium: {
         port: 10195,
         version2: true,
@@ -37,24 +41,24 @@ describe('testRunWithTags', function() {
       },
       silent: true,
       output: false,
-      globals: {},
+      globals: {
+        reporter(results) {
+          assert.equal(Object.keys(results.modules).length, 2);
+          assert.ok('demoTagTest' in results.modules['tags/sample'].completed);
+          assert.ok('otherDemoTagTest' in results.modules['withsubfolders/tags/sampleTags'].completed);
+        }
+      },
       tag_filter: ['login'],
-      output_folder: false,
-      start_session: true
-    });
+      output_folder: false
+    };
 
-    return Globals.startTestRunner(testsPath, settings)
-      .then(runner => {
-        assert.equal(Object.keys(runner.results.modules).length, 2);
-        assert.equal(('demoTagTest' in runner.results.modules.sample.completed), true);
-        assert.equal(('otherDemoTagTest' in runner.results.modules.sampleTags.completed), true);
-      });
+    return NightwatchClient.runTests(testsPath, settings);
   });
 
   it('testRunWithTagsAndFilterEmpty', function() {
     let testsPath = path.join(__dirname, '../../sampletests');
 
-    let settings = Settings.parse({
+    let settings = {
       selenium: {
         port: 10195,
         version2: true,
@@ -62,31 +66,24 @@ describe('testRunWithTags', function() {
       },
       silent: true,
       output: false,
-      globals: {},
+      globals: {
+      },
       filter: 'syncnames/*',
       tag_filter: ['login'],
-      output_folder: false,
-      start_session: true
-    });
+      output_folder: false
+    };
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
+    return NightwatchClient.runTests(testsPath, settings)
       .catch(err => {
         assert.ok(err instanceof Error);
-        assert.ok(err.message.startsWith('No tests defined!'));
+        assert.ok(err.message.includes('No tests defined!'));
       });
   });
 
   it('testRunWithTagsAndFilterNotEmpty', function() {
     let testsPath = path.join(__dirname, '../../sampletests');
 
-    let settings = Settings.parse({
+    let settings = {
       selenium: {
         port: 10195,
         version2: true,
@@ -94,31 +91,23 @@ describe('testRunWithTags', function() {
       },
       silent: true,
       output: false,
-      globals: {},
+      globals: {
+        reporter(results) {
+          assert.ok('demoTagTest' in results.modules['tags/sample'].completed);
+        }
+      },
       filter: 'tags/*',
-      tag_filter: ['login']
-    }, {
+      tag_filter: ['login'],
       output_folder: false,
-      start_session: true
-    });
+    };
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(_ => {
-        assert.ok(('demoTagTest' in runner.results.modules.sample.completed), 'demoTagTest was ran');
-      });
+    return NightwatchClient.runTests(testsPath, settings);
   });
 
   it('testRunWithTagsAndSkipTags', function() {
     let testsPath = path.join(__dirname, '../../sampletests');
 
-    let settings = Settings.parse({
+    let settings = {
       selenium: {
         port: 10195,
         version2: true,
@@ -126,31 +115,26 @@ describe('testRunWithTags', function() {
       },
       silent: true,
       output: false,
-      globals: {},
+      globals: {
+        reporter(results) {
+          assert.equal(Object.keys(results.modules).length, 1);
+          assert.ok('otherDemoTagTest' in results.modules['withsubfolders/tags/sampleTags'].completed);
+        }
+      },
       tag_filter: ['login'],
-      output_folder: false,
-      start_session: true
-    });
+      output_folder: false
+    };
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit',
-      skipTags: ['other']
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(_ => {
-        assert.equal(Object.keys(runner.results.modules).length, 1);
-        assert.ok(('otherDemoTagTest' in runner.results.modules.sampleTags.completed));
-      });
+    return NightwatchClient.runTests({
+      _source: [testsPath],
+      skiptags: ['other']
+    }, settings);
   });
 
-  it('testRunWithTagsAndSkipTagsNoMatches', function() {
+  it('testRunner with tags and skip tags no matches', function() {
     let testsPath = path.join(__dirname, '../../sampletests');
 
-    let settings = Settings.parse({
+    let settings = {
       selenium: {
         port: 10195,
         version2: true,
@@ -160,23 +144,16 @@ describe('testRunWithTags', function() {
       output: false,
       globals: {},
       tag_filter: ['other'],
+      output_folder: false
+    };
 
-      output_folder: false,
-      start_session: true
-    });
-
-    let runner = Runner.create(settings, {
-      reporter: 'junit',
+    return NightwatchClient.runTests({
+      _source: [testsPath],
       skiptags: ['login']
+    }, settings).catch(err => {
+      assert.ok(err.message.includes('No tests defined! using source folder'));
+      assert.ok(err.detailedErr.includes('- using tags filter: other'));
+      assert.ok(err.detailedErr.includes('- using skiptags filter: login'));
     });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(_ => {
-        assert.equal(runner.results.errmessages.length, 0);
-        assert.equal(runner.results, false);
-      });
   });
 });

@@ -1,11 +1,10 @@
 var assert = require('assert');
 module.exports = {
-  demoTestSync : function (done) {
+  demoTestSync() {
     assert.equal(0, 0);
-    done();
   },
 
-  demoTestAsync : function(test, done) {
+  demoTestAsync(done) {
     setTimeout(function () {
       done();
     }, 10);

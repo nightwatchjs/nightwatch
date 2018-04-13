@@ -22,6 +22,9 @@ try {
       })
       .then(() => {
         return runner.stopWebDriver();
+      })
+      .catch(err => {
+        Logger.error(err);
       });
   });
 } catch (err) {

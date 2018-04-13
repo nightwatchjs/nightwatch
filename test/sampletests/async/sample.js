@@ -1,19 +1,16 @@
-var assert = require('assert');
-
 module.exports = {
-  setUp : function(client, callback) {
+  before(client, callback) {
     setTimeout(function() {
       client.globals.calls++;
       callback();
     }, 10);
   },
 
-  demoTestAsync : function (client) {
+  demoTestAsync(client) {
     client.url('http://localhost').end();
   },
 
-  tearDown : function(callback) {
-    var client = this.client;
+  after(client, callback) {
     setTimeout(function() {
       client.globals.calls++;
       callback();

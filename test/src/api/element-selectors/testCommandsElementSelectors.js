@@ -6,6 +6,7 @@ const Nightwatch = require('../../../lib/nightwatch.js');
 
 describe('test commands element selectors', function() {
   before(function(done) {
+    nocks.enable();
     this.server = MockServer.init();
     this.server.on('listening', () => {
       done();
@@ -13,19 +14,17 @@ describe('test commands element selectors', function() {
   });
 
   after(function(done) {
+    nocks.disable();
     this.server.close(function() {
       done();
     });
   });
 
   beforeEach(function (done) {
+    nocks.cleanAll();
     Nightwatch.init({
       page_objects_path: [path.join(__dirname, '../../../extra/pageobjects')]
     }, done);
-  });
-
-  afterEach(function () {
-    nocks.cleanAll();
   });
 
   // wrapped selenium command

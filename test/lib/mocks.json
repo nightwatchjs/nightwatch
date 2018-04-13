@@ -21,7 +21,8 @@
     },
     {
       "url" : "/wd/hub/session/1352110219202",
-      "method": "DELETE"
+      "method": "DELETE",
+      "response" : "{\"status\":0,\"state\":\"success\"}"
     },
     {
       "url" : "/wd/hub/session/1352110219202/url",
@@ -108,11 +109,13 @@
     },
     {
       "url" : "/wd/hub/session/1352110219202/window",
+      "response" : "{\"sessionId\":\"1352110219202\",\"status\":0}",
       "method": "DELETE"
     },
     {
       "url" : "/wd/hub/session/1352110219202/window",
-      "method": "POST"
+      "method": "POST",
+      "response" : "{\"sessionId\":\"1352110219202\",\"status\":0}"
     },
     {
       "url" : "/wd/hub/session/1352110219202/buttondown",

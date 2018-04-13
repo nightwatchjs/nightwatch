@@ -1,18 +1,18 @@
 const assert = require('assert');
 const common = require('../../common.js');
-
+const HttpRequest = common.require('http/request.js');
 const MockServer = require('../../lib/mockserver.js');
 const Nightwatch = require('../../lib/nightwatch.js');
 
 describe('test NightwatchIndex', function () {
-  before(function (done) {
+  beforeEach(function (done) {
     this.server = MockServer.init();
     this.server.on('listening', function () {
       done();
     });
   });
 
-  after(function (done) {
+  afterEach(function (done) {
     this.server.close(function () {
       done();
     });
@@ -32,45 +32,6 @@ describe('test NightwatchIndex', function () {
 
     client.startSession().catch(err => done(err));
   });
-
-  /*
-
-  'Test runProtocolAction with error': function (done) {
-    let client = Nightwatch.createClient({
-      screenshots: {
-        enabled: true,
-        path: './'
-      },
-      output: false,
-      silent: false
-    });
-
-    let Reporter = common.require('core/reporter.js');
-    let originalFn = Reporter.saveErrorScreenshot;
-    Reporter.saveErrorScreenshot = function (content) {
-      Reporter.saveErrorScreenshot = originalFn;
-    };
-
-    client.on('nightwatch:session.create', function () {
-      let request = Transport.runProtocolAction({
-        host: '127.0.0.1',
-        path: '/test_error',
-        method: 'POST',
-        port: 10195
-      });
-
-      request.then(result => {
-        assert.equal(result.status, -1);
-        assert.equal(result.errorStatus, 7);
-        assert.strictEqual(result.value.screen, undefined);
-        assert.equal(result.error, 'An element could not be located on the page using the given search parameters.');
-        done();
-      });
-    });
-
-    client.startSession();
-  },
-  */
 
   it('testChromeSessionWithRedirectStatus', function (done) {
     MockServer.addMock({
@@ -110,7 +71,7 @@ describe('test NightwatchIndex', function () {
         browserName: 'chrome'
       },
       silent: false,
-      output: true
+      output: false
     });
 
     client.on('nightwatch:session.create', function (data) {
@@ -122,70 +83,7 @@ describe('test NightwatchIndex', function () {
     client.startSession().catch(err => done(err));
   });
 
-  /*
-  'Test saveScreenshotToFile': function (done) {
-    let client = Nightwatch.createClient({});
-    let tmp = os.tmpdir();
-    let filePath = path.resolve(tmp, 'r3lekb', 'foo.png');
-    let data = 'nightwatch';
 
-    client.saveScreenshotToFile(filePath, data, function (err, actualFilePath) {
-      assert.equal(err, null);
-      assert.equal(actualFilePath, filePath);
-
-      fs.readFile(actualFilePath, function (err) {
-        assert.equal(err, null);
-        done();
-      });
-    });
-
-    client.startSession();
-  },
-
-   'Test saveScreenshotToFile mkpath failure': function (done) {
-     let client = Nightwatch.createClient({});
-     let filePath = '/invalid-path';
-     let data = 'nightwatch';
-
-     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
-     mockery.registerMock('mkpath', function (location, callback) {
-       callback({code: 1});
-     });
-
-     client.saveScreenshotToFile(filePath, data, function (err) {
-       assert.deepEqual(err, {code: 1});
-       mockery.deregisterAll();
-       mockery.resetCache();
-       mockery.disable();
-       done();
-     });
-   },
-
-   'Test saveScreenshotToFile writeFile failure': function (done) {
-     let client = Nightwatch.createClient({});
-     let filePath = '/valid-path';
-     let data = 'nightwatch';
-
-     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
-     mockery.registerMock('mkpath', function (location, callback) {
-       callback(null);
-     });
-
-     mockery.registerMock('fs', {
-       writeFile: function (fileName, content, encoding, callback) {
-         callback({err: 1});
-       }
-     });
-
-     client.saveScreenshotToFile(filePath, data, function (err) {
-       assert.deepEqual(err, {err: 1});
-       mockery.deregisterAll();
-       mockery.resetCache();
-       mockery.disable();
-       done();
-     });
-   },
-   */
   it('testSetOptions', function () {
     let client = Nightwatch.createClient({
       use_xpath: true,
@@ -201,6 +99,7 @@ describe('test NightwatchIndex', function () {
   });
 
   it('testSetWebdriverOptionsDefaults', function () {
+    HttpRequest.globalSettings = {};
     let client = Nightwatch.createClientDefaults();
     let eq = assert.equal;
 

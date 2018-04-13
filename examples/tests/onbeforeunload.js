@@ -5,8 +5,6 @@
  */
 
 module.exports = {
-
-  // TODO: Fix this test
   disabled: true,
 
   'go to page with unload handler': function(client) {

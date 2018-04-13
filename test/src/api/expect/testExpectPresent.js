@@ -30,7 +30,6 @@ describe('expect.present', function() {
       assert.equal(expect.assertion.waitForMs, 40);
       assert.equal(expect.assertion.passed, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be present'));
-      assert.deepEqual(expect.assertion.elementResult, {ELEMENT: '0'});
       assert.equal(expect.assertion.messageParts.length, 1);
     });
 
@@ -84,7 +83,6 @@ describe('expect.present', function() {
       assert.equal(expect.assertion.expected, 'present');
       assert.equal(expect.assertion.actual, 'not present');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be present - element was not found'));
-      assert.deepEqual(expect.assertion.elementResult, null);
       assert.equal(expect.assertion.messageParts[0], ' - element was not found');
     });
 
@@ -122,7 +120,6 @@ describe('expect.present', function() {
       assert.equal(expect.assertion.actual, 'present');
       assert.equal(typeof expect.assertion.resultValue, 'undefined');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not be present'));
-      assert.deepEqual(expect.assertion.elementResult, {ELEMENT: '0'});
       assert.equal(expect.assertion.messageParts.length, 1);
     });
 
@@ -138,7 +135,6 @@ describe('expect.present', function() {
       assert.equal(expect.assertion.selector, '//weblogin');
       assert.equal(expect.assertion.passed, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <//weblogin> to be present'));
-      assert.deepEqual(expect.assertion.elementResult, {ELEMENT: '0'});
     });
 
     this.client.start(done);
@@ -152,7 +148,6 @@ describe('expect.present', function() {
       assert.equal(expect.assertion.selector, '//weblogin');
       assert.equal(expect.assertion.passed, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <//weblogin> to be present'));
-      assert.deepEqual(expect.assertion.elementResult, {ELEMENT: '0'});
     });
 
     this.client.start(done);

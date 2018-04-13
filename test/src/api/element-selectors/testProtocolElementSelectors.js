@@ -3,10 +3,10 @@ const assert = require('assert');
 const nocks = require('../../../lib/nockselements.js');
 const MockServer  = require('../../../lib/mockserver.js');
 const Nightwatch = require('../../../lib/nightwatch.js');
-const utils = require('../../../lib/utils.js');
 
 describe('test protocol element selectors', function() {
   before(function(done) {
+    nocks.enable();
     this.server = MockServer.init();
     this.server.on('listening', () => {
       done();
@@ -14,19 +14,17 @@ describe('test protocol element selectors', function() {
   });
 
   after(function(done) {
+    nocks.disable();
     this.server.close(function() {
       done();
     });
   });
 
   beforeEach(function (done) {
+    nocks.cleanAll();
     Nightwatch.init({
       page_objects_path: [path.join(__dirname, '../../../extra/pageobjects')]
     }, done);
-  });
-
-  afterEach(function () {
-    nocks.cleanAll();
   });
 
   it('protocol.element(using, {selector})', function (done) {

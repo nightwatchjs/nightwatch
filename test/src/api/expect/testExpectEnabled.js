@@ -21,11 +21,9 @@ describe('expect.enabled', function() {
     this.client.api.perform(function() {
       assert.equal(expect.assertion.selector, '#weblogin');
       assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.waitForMs, 5000);
       assert.equal(expect.assertion.passed, true);
       assert.equal(expect.assertion.resultValue, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be enabled'));
-      assert.deepEqual(expect.assertion.elementResult, {ELEMENT: '0'});
       assert.equal(expect.assertion.messageParts.length, 1);
     });
 
@@ -79,7 +77,6 @@ describe('expect.enabled', function() {
       assert.equal(expect.assertion.actual, 'not enabled');
       assert.equal(expect.assertion.resultValue, false);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be enabled'));
-      assert.deepEqual(expect.assertion.elementResult, {ELEMENT: '0'});
       assert.equal(expect.assertion.messageParts.length, 0);
     });
 
@@ -104,7 +101,6 @@ describe('expect.enabled', function() {
       assert.equal(expect.assertion.actual, 'not enabled');
       assert.equal(expect.assertion.resultValue, false);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not be enabled'));
-      assert.deepEqual(expect.assertion.elementResult, {ELEMENT: '0'});
       assert.equal(expect.assertion.messageParts.length, 1);
     });
 
@@ -129,7 +125,6 @@ describe('expect.enabled', function() {
       assert.equal(expect.assertion.actual, 'enabled');
       assert.equal(expect.assertion.resultValue, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not be enabled'));
-      assert.deepEqual(expect.assertion.elementResult, {ELEMENT: '0'});
       assert.equal(expect.assertion.messageParts.length, 0);
     });
 

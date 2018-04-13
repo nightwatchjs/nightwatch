@@ -27,6 +27,10 @@ describe('test Request With Credentials', function () {
     Nocks.deleteSession();
   });
 
+  after(function() {
+    Nocks.disable();
+  });
+
   it('Test initialization with credentials', function (done) {
     let client = Nightwatch.createClient({
       selenium_port: 10195,

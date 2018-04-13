@@ -2,13 +2,18 @@ const common = require('../../../common.js');
 const path = require('path');
 const assert = require('assert');
 const Globals = require('../../../lib/globals/commands.js');
-const CliRunner = common.require('runner/cli/cli.js');
-
-const originalExit = process.exit;
+const MockServer = require('../../../lib/mockserver.js');
+const NightwatchClient = common.require('index.js');
 
 describe('test Mocha integration', function() {
-  beforeEach(function(done) {
-    Globals.beforeEach.call(this, done);
+  const originalExit = process.exit;
+
+  before(function(done) {
+    this.server = MockServer.init();
+
+    this.server.on('listening', () => {
+      done();
+    });
   });
 
   afterEach(function(done) {
@@ -18,27 +23,29 @@ describe('test Mocha integration', function() {
     Globals.afterEach.call(this, done);
   });
 
-  it('testRunMochaSampleTests', function(done) {
-    let runner = new CliRunner({
-      config: path.join(__dirname, '../../../extra/withmocha.json'),
-      env: 'default',
-      verbose: false
-    }).init();
-
-    runner.envSettings.globals.test_calls = 0;
-
-    process.exit = function(code) {
-      assert.equal(runner.envSettings.globals.test_calls, 12);
-      assert.equal(code, 10);
-      done();
+  it('testRunMochaSampleTests', function() {
+    let settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      persist_globals: true,
+      globals: {
+        test_calls: 0
+      },
+      output: false,
+      silent: true,
+      output_folder: false
     };
 
-    let mocha = runner.runner(function(err, results) {
-      assert.equal(err, null);
-      assert.equal(results.failed, 2);
+    return NightwatchClient.runTests({
+      config: path.join(__dirname, '../../../extra/withmocha.json'),
+      env: 'default',
+      _source: []
+    }, settings).catch(err => {
+      assert.equal(settings.globals.test_calls, 12);
+      assert.ok(err.message.includes('Mocha reported test failures.'));
     });
-
-    assert.equal(mocha.options.ui, 'bdd');
-
   });
 });

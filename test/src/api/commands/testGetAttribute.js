@@ -4,11 +4,11 @@ const CommandGlobals = require('../../../lib/globals/commands.js');
 
 describe('getAttribute', function() {
 
-  beforeEach(function(done) {
+  before(function(done) {
     CommandGlobals.beforeEach.call(this, done);
   });
 
-  afterEach(function(done) {
+  after(function(done) {
     CommandGlobals.afterEach.call(this, done);
   });
 

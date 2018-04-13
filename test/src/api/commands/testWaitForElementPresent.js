@@ -1,16 +1,14 @@
 const assert = require('assert');
 const MockServer  = require('../../../lib/mockserver.js');
 const Nightwatch = require('../../../lib/nightwatch.js');
-const common = require('../../../common.js');
-const NightwatchAssertion = common.require('core/assertion.js');
 const CommandGlobals = require('../../../lib/globals/commands.js');
 
 describe('waitForElementPresent', function() {
-  beforeEach(function(done) {
+  before(function(done) {
     CommandGlobals.beforeEach.call(this, done);
   });
 
-  afterEach(function(done) {
+  after(function(done) {
     CommandGlobals.afterEach.call(this, done);
   });
 

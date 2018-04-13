@@ -1,8 +1,7 @@
 const assert = require('assert');
 
 module.exports = {
-  disabled : false,
-  //'@endSessionOnFail' : false,
+  disabled : true,
   '@tags': ['website'],
 
   beforeEach: function(client, done) {

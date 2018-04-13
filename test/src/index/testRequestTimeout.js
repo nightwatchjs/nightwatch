@@ -72,6 +72,7 @@ describe('test HttpRequestTimeout', function() {
     };
 
     HttpRequest.globalSettings = {
+      host: 'localhost',
       timeout: 50,
       retry_attempts: 1,
       default_path: '/wd/hub',

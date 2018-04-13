@@ -1,19 +1,19 @@
 var assert = require('assert');
 
 module.exports = {
-  demoTestMixed : function (client) {
+  demoTestMixed(client) {
     client.url('http://localhost').end();
   },
 
-  tearDown : function(callback) {
-    var self = this;
-    setTimeout(function() {
-      assert.ok('tearDown callback called.');
-      assert.deepEqual(self.results, {
-        passed: 0, failed: 0, errors: 0, skipped: 0, tests: []
-      });
-      assert.deepEqual(self.errors, []);
+  afterEach(client, callback) {
+    setTimeout(function () {
+      assert.equal(client.currentTest.results.passed, 0);
+      assert.equal(client.currentTest.results.failed, 0);
+      assert.equal(client.currentTest.results.errors, 0);
+      assert.equal(client.currentTest.results.skipped, 0);
+      assert.equal(client.currentTest.results.tests, 0);
+
       callback();
-    }, 100);
+    }, 10);
   }
 };
