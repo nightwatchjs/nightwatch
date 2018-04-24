@@ -1,13 +1,17 @@
-var MockServer  = require('../../../lib/mockserver.js');
-var assert = require('assert');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const MockServer  = require('../../../lib/mockserver.js');
+const CommandGlobals = require('../../../lib/globals/commands.js');
 
 describe('submitForm', function() {
+  beforeEach(function(done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
+
+  afterEach(function(done) {
+    CommandGlobals.afterEach.call(this, done);
+  });
 
   it('client.submitForm()', function(done) {
-    var client = Nightwatch.api();
-
     MockServer.addMock({
       url : '/wd/hub/session/1352110219202/element/0/submit',
       method:'POST',
@@ -17,13 +21,12 @@ describe('submitForm', function() {
       })
     });
 
-    client.submitForm('#weblogin', function callback(result) {
+    this.client.api.submitForm('#weblogin', function callback(result) {
       assert.equal(result.status, 0);
     }).submitForm('css selector', '#weblogin', function callback(result) {
       assert.equal(result.status, 0);
-      done();
     });
 
-    Nightwatch.start();
-  }
+    this.client.start(done);
+  });
 });

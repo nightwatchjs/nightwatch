@@ -1,18 +1,22 @@
-var assert = require('assert');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const MockServer  = require('../../../lib/mockserver.js');
+const CommandGlobals = require('../../../lib/globals/commands.js');
 
 describe('window', function() {
+  beforeEach(function(done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
+
+  afterEach(function(done) {
+    CommandGlobals.afterEach.call(this, done);
+  });
 
   it('client.closeWindow()', function(done) {
-    var client = Nightwatch.api();
-
-    client.closeWindow(function callback() {
-      done();
+    this.client.api.closeWindow(function callback() {
     });
 
-    Nightwatch.start();
-  },
+    this.client.start(done);
+  });
 
   //it('client.switchWindow()', function(done) {
   //  var client = Nightwatch.api();
@@ -25,12 +29,9 @@ describe('window', function() {
   //},
 
   it('client.resizeWindow()', function(done) {
-    var client = Nightwatch.api();
-
-    client.resizeWindow(100, 100, function callback() {
-      done();
+    this.client.api.resizeWindow(100, 100, function callback() {
     });
 
-    Nightwatch.start();
-  }
+    this.client.start(done);
+  });
 });

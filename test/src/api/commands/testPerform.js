@@ -1,50 +1,41 @@
-var assert = require('assert');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var Globals = require('../../../lib/globals.js');
-var CommandGlobals = require('../../../lib/globals/commands.js');
+const assert = require('assert');
+const MockServer  = require('../../../lib/mockserver.js');
+const CommandGlobals = require('../../../lib/globals/commands.js');
 
-module.exports = {
-  perform : {
-    beforeEach : function(done) {
-      Globals.interceptStartFn();
-      CommandGlobals.beforeEach(done);
-    },
-    afterEach : function(done) {
-      Globals.restoreStartFn();
-      CommandGlobals.afterEach(done);
-    },
+describe('perform', function() {
+  beforeEach(function(done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
+
+  afterEach(function(done) {
+    CommandGlobals.afterEach.call(this, done);
+  });
 
     it('client.perform()', function(done) {
-      var api = Nightwatch.api();
-
-      api.perform(function() {
-        assert.deepEqual(api, this);
+      this.client.api.perform(function() {
+        assert.deepEqual(this.client.api, this);
       });
 
-      Nightwatch.start(done);
-    },
+      this.client.start(done);
+    }),
 
     it('client.perform() with async callback', function(done) {
-      var api = Nightwatch.api();
-
-      api.perform(function(complete) {
+        this.client.api.perform(function(complete) {
         assert.equal(typeof complete, 'function');
         complete();
       });
 
-      Nightwatch.start(done);
-    },
+      this.client.start(done);
+    }),
 
     it('client.perform() with async callback and api param', function(done) {
-      var api = Nightwatch.api();
-
-      api.perform(function(client, complete) {
-        assert.deepEqual(api, client);
+      let local_client = this.client.api;
+      this.client.api.perform(function(client, complete) {
+        assert.deepEqual(local_client, client);
         assert.equal(typeof complete, 'function');
         complete();
       });
 
-      Nightwatch.start(done);
-    }
-  }
-};
+      this.client.start(done);
+    });
+});

@@ -1,34 +1,32 @@
-var assert = require('assert');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var Globals = require('../../../lib/globals/commands.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const CommandGlobals = require('../../../lib/globals/commands.js');
 
 describe('locateStrategies', function() {
+  beforeEach(function(done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
+
+  afterEach(function(done) {
+    CommandGlobals.afterEach.call(this, done);
+  });
 
   it('client.useXpath()', function(done) {
-    var client = Nightwatch.client();
-    var api = Nightwatch.api();
-
-    api.useXpath(function() {
+    let client = this.client;
+    this.client.api.useXpath(function() {
       assert.equal(client.locateStrategy, 'xpath');
-      done();
     });
 
-    Nightwatch.start();
-
-  },
+    this.client.start(done);
+  });
 
   it('client.useCss()', function(done) {
-    var client = Nightwatch.client();
-    var api = Nightwatch.api();
-
-    api.useCss(function() {
+    let client = this.client;
+    this.client.api.useCss(function() {
       assert.equal(client.locateStrategy, 'css selector');
-      done();
     });
 
-    Nightwatch.start();
-  },
+    this.client.start(done);
+  });
   /*
   it('test run sample test with xpath', function(done) {
     //test.expect(3);

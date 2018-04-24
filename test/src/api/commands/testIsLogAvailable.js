@@ -1,19 +1,22 @@
-var MockServer  = require('../../../lib/mockserver.js');
-var assert = require('assert');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const MockServer  = require('../../../lib/mockserver.js');
+const CommandGlobals = require('../../../lib/globals/commands.js');
 
 describe('isLogAvailable', function() {
-  afterEach : function() {
+
+  beforeEach(function(done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
+
+  afterEach(function(done) {
     MockServer.removeMock({
       url : '/wd/hub/session/1352110219202/log/types',
       method: 'GET'
     });
-  },
+    CommandGlobals.afterEach.call(this, done);
+  });
 
   it('client.isLogAvailable()', function(done) {
-    var client = Nightwatch.api();
-
     MockServer.addMock({
       url : '/wd/hub/session/1352110219202/log/types',
       method:'GET',
@@ -24,22 +27,19 @@ describe('isLogAvailable', function() {
       })
     });
 
-    client.isLogAvailable( 'unknown', function callback(result) {
+    this.client.api.isLogAvailable( 'unknown', function callback(result) {
         assert.equal(typeof result === 'boolean', true);
         assert.equal(result, false);
       })
       .isLogAvailable( 'browser', function callback(result) {
         assert.equal(typeof result === 'boolean', true);
         assert.equal(result, true);
-        done();
       });
 
-    Nightwatch.start();
-  },
+      this.client.start(done);
+  });
 
   it('client.isLogAvailable() failure', function(done) {
-    var client = Nightwatch.api();
-
      MockServer.addMock({
       url : '/wd/hub/session/1352110219202/log/types',
       method:'GET',
@@ -50,16 +50,15 @@ describe('isLogAvailable', function() {
       })
     });
 
-    client.isLogAvailable( 'unknown', function callback(result) {
+    this.client.api.isLogAvailable( 'unknown', function callback(result) {
       assert.equal(typeof result === 'boolean', true);
       assert.equal(result, false);
     })
     .isLogAvailable( 'browser', function callback(result) {
       assert.equal(typeof result === 'boolean', true);
       assert.equal(result, false);
-      done();
     });
 
-    Nightwatch.start();
-  }
+    this.client.start(done);
+  });
 });

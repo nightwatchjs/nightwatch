@@ -1,19 +1,21 @@
-var MockServer  = require('../../../lib/mockserver.js');
-var assert = require('assert');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const MockServer  = require('../../../lib/mockserver.js');
+const CommandGlobals = require('../../../lib/globals/commands.js');
 
 describe('isVisible', function() {
-  afterEach : function() {
+  beforeEach(function(done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
+
+  afterEach(function(done) {
     MockServer.removeMock({
       url : '/wd/hub/session/1352110219202/element/0/displayed',
       method:'GET'
     });
-  },
+    CommandGlobals.afterEach.call(this, done);
+  });
 
   it('client.isVisible()', function(done) {
-    var client = Nightwatch.api();
-
     MockServer.addMock({
       url : '/wd/hub/session/1352110219202/element/0/displayed',
       method:'GET',
@@ -24,13 +26,12 @@ describe('isVisible', function() {
       })
     });
 
-    client.isVisible('css selector', '#weblogin', function callback(result) {
+    this.client.api.isVisible('css selector', '#weblogin', function callback(result) {
       assert.equal(result.value, true);
     }).isVisible('#weblogin', function callback(result) {
       assert.equal(result.value, true);
-      done();
     });
 
-    Nightwatch.start();
-  }
+    this.client.start(done);
+  });
 });

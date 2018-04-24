@@ -1,13 +1,17 @@
-var MockServer  = require('../../../lib/mockserver.js');
-var assert = require('assert');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const MockServer  = require('../../../lib/mockserver.js');
+const CommandGlobals = require('../../../lib/globals/commands.js');
 
 describe('getLocationInView', function() {
+  beforeEach(function(done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
+
+  afterEach(function(done) {
+    CommandGlobals.afterEach.call(this, done);
+  });
 
   it('client.getLocationInView()', function(done) {
-    var client = Nightwatch.api();
-
     MockServer.addMock({
       url : '/wd/hub/session/1352110219202/element/0/location_in_view',
       method:'GET',
@@ -21,13 +25,12 @@ describe('getLocationInView', function() {
       })
     });
 
-    client.getLocationInView('css selector', '#weblogin', function callback(result) {
+    this.client.api.getLocationInView('css selector', '#weblogin', function callback(result) {
       assert.deepEqual(result.value, {x : 1,y : 0});
     }).getLocationInView('#weblogin', function callback(result) {
       assert.deepEqual(result.value, {x : 1,y : 0});
-      done();
     });
 
-    Nightwatch.start();
-  }
+    this.client.start(done);
+  });
 });

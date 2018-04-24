@@ -1,13 +1,17 @@
-var MockServer  = require('../../../lib/mockserver.js');
-var assert = require('assert');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const MockServer  = require('../../../lib/mockserver.js');
+const CommandGlobals = require('../../../lib/globals/commands.js');
 
 describe('maximizeWindow', function() {
+  beforeEach(function(done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
+
+  afterEach(function(done) {
+    CommandGlobals.afterEach.call(this, done);
+  });
 
   it('client.maximizeWindow()', function(done) {
-    var client = Nightwatch.api();
-
     MockServer.addMock({
       'url': '/wd/hub/session/1352110219202/window/current/maximize',
       'response': JSON.stringify({
@@ -16,11 +20,10 @@ describe('maximizeWindow', function() {
       })
     }, true);
 
-    client.maximizeWindow(function callback(result) {
+    this.client.api.maximizeWindow(function callback(result) {
       assert.strictEqual(result.status, 0);
-      done();
     });
 
-    Nightwatch.start();
-  }
+    this.client.start(done);
+  });
 });
