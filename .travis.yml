@@ -7,7 +7,7 @@ before_script:
   - npm install
 
 script:
-  - npm run jshint
+  - npm run eslint
   - npm test
   # - npm run-script coverage
 
