@@ -1,59 +1,55 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var MockServer = require('../../../lib/mockserver.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = MochaTest.add('alert commands', {
-  beforeEach: function () {
-    this.client = Nightwatch.client();
-    this.protocol = common.require('api/protocol.js')(this.client);
-  },
+describe('alert commands', function() {
+  before(function() {
+    Globals.protocolBefore.call(this);
+  });
 
-  testAcceptAlert: function (done) {
-    var client = this.client;
-    var protocol = this.protocol;
-
-    var command = protocol.acceptAlert(function callback() {
-      done();
+  it('testAcceptAlert', function() {
+    Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/accept_alert');
+      },
+      commandName: 'acceptAlert',
+      args: []
     });
+  });
 
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/accept_alert');
-  },
-
-  testDismissAlert: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.dismissAlert(function callback() {
-      done();
+  it('testDismissAlert', function() {
+    Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/dismiss_alert');
+      },
+      commandName: 'dismissAlert',
+      args: []
     });
+  });
 
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/dismiss_alert');
-  },
-
-  testGetAlertText: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.getAlertText(function callback() {
-      done();
+  it('testGetAlertText', function() {
+    Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202/alert_text');
+      },
+      commandName: 'getAlertText',
+      args: []
     });
+  });
 
-    assert.equal(command.request.method, 'GET');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/alert_text');
-  },
-
-  testSetAlertText: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.setAlertText('prompt text to set', function callback() {
-      done();
+  it('testSetAlertText', function() {
+    let text = 'prompt text to set';
+    Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/alert_text');
+        assert.deepEqual(opts.data, {text: text});
+      },
+      commandName: 'setAlertText',
+      args: [text]
     });
-
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.data, '{"text":"prompt text to set"}');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/alert_text');
-  }
+  });
 
 });

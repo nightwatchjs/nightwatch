@@ -13,10 +13,10 @@ describe('test Assertions', function() {
     });
   });
 
-  afterEach(function() {
+  afterEach(function(done) {
     mockery.deregisterAll();
     mockery.disable();
-    Globals.afterEach.call(this);
+    Globals.afterEach.call(this, done);
   });
 
   it('Testing assertions loaded', function() {

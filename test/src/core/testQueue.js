@@ -13,8 +13,9 @@ describe('test Queue', function () {
     });
   });
 
-  afterEach(function () {
+  afterEach(function (done) {
     Globals.afterEach.call(this);
+    done();
   });
 
   it('Test commands queue', function (done) {

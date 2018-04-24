@@ -15,9 +15,10 @@ describe('test Nightwatch Api', function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
   });
 
-  afterEach(function() {
+  afterEach(function(done) {
     mockery.deregisterAll();
     mockery.disable();
+    done();
   });
 
   it('testLoadCommands', function() {

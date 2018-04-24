@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const ApiLoader = require('../lib/mocks/assertionLoader.js');
+const common = require('../common.js');
+const Nightwatch = require('../lib/nightwatch.js');
 
 module.exports = {
   runGroupGlobal(client, hookName, done) {
@@ -49,5 +51,23 @@ module.exports = {
     loader.loadAssertion(definition.assertion, done);
 
     return loader.client.api.assert[definition.assertionName](...definition.args);
+  },
+
+  protocolBefore() {
+    this.client = Nightwatch.createClient();
+    this.client.session.sessionId = '1352110219202';
+
+    this.protocol = common.require('api/protocol.js')(this.client);
+  },
+
+  protocolTest(definition) {
+    this.client.transport.runProtocolAction = function(opts) {
+      opts.method = opts.method || 'GET';
+      definition.assertion(opts);
+
+      return Promise.resolve();
+    };
+
+    this.protocol[definition.commandName](...definition.args);
   }
 };
