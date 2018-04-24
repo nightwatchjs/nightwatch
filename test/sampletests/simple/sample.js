@@ -1,7 +1,7 @@
 var assert = require('assert');
 
 module.exports = {
-  desiredCapabilities : {
+  '@desiredCapabilities' : {
     name : 'test-Name'
   },
   demoTest : function (client) {
