@@ -157,7 +157,6 @@ describe('testRunner', function() {
         start_process: true
       },
       output_folder: 'output',
-      // src_folders: src_folders,
       silent: true,
       output: false,
     });
@@ -171,17 +170,17 @@ describe('testRunner', function() {
         return runner.run(modules);
       })
       .then(_ => {
+        return readDirPromise(src_folders[0]);
+      })
+      .then(list => {
+        let sampleReportFile = 'output/FIREFOX_TEST_TEST_sample.xml';
+        assert.ok(fileExistsSync(sampleReportFile), 'The sample file report was not created.');
 
-        let sampleReportFile = path.join(__dirname, '../../../output/FIREFOX_TEST_TEST_sample.xml');
-        assert.ok(fileExistsSync(sampleReportFile), 'The sample file report file was not created.');
-
-        fs.readFile(sampleReportFile, function(err, data) {
-          if (err) {
-            throw err;
-          }
-          let content = data.toString();
-          assert.ok(content.indexOf('<failure message="Testing if element &lt;#badElement&gt; is present.') > 0, 'Report contains failure information.')
-        });
+        return readFilePromise(sampleReportFile);
+      })
+      .then(data => {
+        let content = data.toString();
+        assert.ok(content.indexOf('<failure message="Testing if element &lt;#badElement&gt; is present.') > 0, 'Report contains failure information.')
       });
   });
 
@@ -197,9 +196,9 @@ describe('testRunner', function() {
         start_process: true
       },
       output_folder: 'output',
-      // src_folders: src_folders,
       silent: true,
       output: false,
+      unit_tests_mode: true,
     });
 
     let runner = Runner.create(settings, {
@@ -211,58 +210,19 @@ describe('testRunner', function() {
         return runner.run(modules);
       })
       .then(_ => {
+        return readDirPromise(src_folders[0]);
+      })
+      .then(list => {
 
-        let sampleReportFile = path.join(__dirname, '../../../output/unittest-failure.xml');
-        assert.ok(fileExistsSync(sampleReportFile), 'The sample file report file was not created.');
+        let sampleReportFile = 'output/unittest-failure.xml';
+        assert.ok(fileExistsSync(sampleReportFile), 'The sample file report was not created.');
 
-        fs.readFile(sampleReportFile, function(err, data) {
-          if (err) {
-            throw(err);
-          }
-          let content = data.toString();
-          try {
-            assert.ok(content.indexOf('<failure message="AssertionError: 1 == 0 - expected &#34;0&#34; but got: &#34;1&#34;">') > 0, 'Report contains failure information.')
-            done();
-          } catch (err) {
-            throw err;
-          }
-        });
+        return readFilePromise(sampleReportFile);
+      })
+      .then(data => {
+        let content = data.toString();
+        assert.ok(content.indexOf('<failure message="AssertionError: 1 == 0 - expected &#34;0&#34; but got: &#34;1&#34;">') > 0, 'Report contains failure information.')
       });
-
-    //
-    // let runner = new Runner(src_folders, {
-    //   seleniumPort: 10195,
-    //   silent: true,
-    //   output: false
-    // }, {
-    //   output_folder: 'output',
-    //   start_session: false,
-    //   src_folders: src_folders,
-    //   reporter: 'junit'
-    // }, function(err, results) {
-    //
-    //   assert.strictEqual(err, null);
-    //   let sampleReportFile = path.join(__dirname, '../../../output/unittest-failure.xml');
-    //
-    //   assert.ok(fileExistsSync(sampleReportFile), 'The sample file report file was not created.');
-    //   fs.readFile(sampleReportFile, function(err, data) {
-    //     if (err) {
-    //       done(err);
-    //       return;
-    //     }
-    //     let content = data.toString();
-    //     try {
-    //       assert.ok(content.indexOf('<failure message="AssertionError: 1 == 0 - expected &#34;0&#34; but got: &#34;1&#34;">') > 0, 'Report contains failure information.')
-    //       done();
-    //     } catch (err) {
-    //       done(err);
-    //     }
-    //   });
-    // });
-    //
-    // runner.run().catch(function(err) {
-    //   done(err);
-    // });
   });
 
   it('testRunUnitTests', function() {
@@ -367,6 +327,7 @@ function readDirPromise(dirName) {
     });
   });
 }
+
 // util to replace deprecated fs.existsSync
 function fileExistsSync(path) {
   try {
