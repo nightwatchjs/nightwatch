@@ -1,14 +1,17 @@
-var MockServer  = require('../../../lib/mockserver.js');
-var assert = require('assert');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const MockServer  = require('../../../lib/mockserver.js');
+const CommandGlobals = require('../../../lib/globals/commands.js');
 
-module.exports = MochaTest.add('saveScreenshot', {
+describe('saveScreenshot', function() {
+  before(function(done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
 
-    'client.saveScreenshot()' : function(done) {
-      var client = Nightwatch.client();
-      var api = Nightwatch.api();
+  after(function(done) {
+    CommandGlobals.afterEach.call(this, done);
+  });
 
+    it('client.saveScreenshot()', function(done) {
       MockServer.addMock({
         url : '/wd/hub/session/1352110219202/screenshot',
         method:'GET',
@@ -19,20 +22,19 @@ module.exports = MochaTest.add('saveScreenshot', {
         })
       });
 
-      api.options.log_screenshot_data = false;
+      this.client.api.options.log_screenshot_data = false;
 
-      client.saveScreenshotToFile = function(fileName, data, cb) {
+      this.client.api.saveScreenshotToFile = function(fileName, data, cb) {
         assert.equal(fileName, 'screenshot.png');
         assert.equal(data, 'screendata');
         cb();
       };
 
-      api.saveScreenshot('screenshot.png', function(result) {
+      this.client.api.saveScreenshot('screenshot.png', function(result) {
         assert.equal(result.value, 'screendata');
         assert.equal(result.suppressBase64Data, true);
-        done();
       });
 
-      Nightwatch.start();
-    }
+      this.client.start(done);
+    });
   });

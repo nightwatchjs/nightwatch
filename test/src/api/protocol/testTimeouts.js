@@ -1,65 +1,61 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var MockServer = require('../../../lib/mockserver.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = MochaTest.add('timeouts commands', {
-  beforeEach: function () {
-    this.client = Nightwatch.client();
-    this.protocol = common.require('api/protocol.js')(this.client);
-  },
+describe('timeouts commands', function() {
+  before(function() {
+    Globals.protocolBefore.call(this);
+  });
 
-  testTimeoutsValid: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.timeouts('script', 1000, function callback() {
-      done();
+  it('testTimeoutsValid', function() {
+    Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/timeouts');
+        assert.deepEqual(opts.data, {type: 'script', ms: 1000});
+      },
+      commandName: 'timeouts',
+      args: ['script', 1000]
     });
+  });
 
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.data, '{"type":"script","ms":1000}');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/timeouts');
-  },
-
-  testTimeoutsInvalid: function () {
-    var protocol = this.protocol;
+  it('testTimeoutsInvalid', function() {
+    let protocol = this.protocol;
 
     assert.throws(
-      function () {
+      function() {
         protocol.timeouts('nonscript', 1000);
       }
     );
 
     assert.throws(
-      function () {
+      function() {
         protocol.timeouts('script');
       }
     );
-  },
+  });
 
-  testTimeoutsAsyncScript: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.timeoutsAsyncScript(1000, function callback() {
-      done();
+  it('testTimeoutsAsyncScript', function() {
+    Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/timeouts/async_script');
+        assert.deepEqual(opts.data, {ms: 1000});
+      },
+      commandName: 'timeoutsAsyncScript',
+      args: [1000]
     });
+  });
 
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.data, '{"ms":1000}');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/timeouts/async_script');
-  },
-
-  testTimeoutsImplicitWait: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.timeoutsImplicitWait(1000, function callback() {
-      done();
+  it('testTimeoutsImplicitWait', function() {
+    Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/timeouts/implicit_wait');
+        assert.deepEqual(opts.data, {ms: 1000});
+      },
+      commandName: 'timeoutsImplicitWait',
+      args: [1000]
     });
-
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.data, '{"ms":1000}');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/timeouts/implicit_wait');
-  }
+  });
 
 });

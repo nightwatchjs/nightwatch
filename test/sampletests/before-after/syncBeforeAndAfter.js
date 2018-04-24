@@ -1,18 +1,20 @@
 var assert = require('assert');
 
 module.exports = {
-  beforeEach : function(client) {
+  before : function(client, cb) {
     client.globals.calls++;
+    cb()
   },
 
-  before : function(client) {
-    client.globals.calls++
+  beforeEach : function(client, cb) {
+    client.globals.calls++;
+    cb()
   },
 
   demoTestSyncOne : function (client) {
     client.url('http://localhost');
     var testName = client.currentTest.name;
-    assert.equal(testName, 'demoTestSyncOxne');
+    assert.equal(testName, 'demoTestSyncOne');
   },
 
   demoTestSyncTwo : function (client) {
@@ -21,12 +23,11 @@ module.exports = {
     client.end();
   },
 
-  afterEach : function() {
-    var client = this.client;
-    client.globals.calls++
+  afterEach : function(client) {
+    client.globals.calls++;
   },
 
   after : function(client) {
-    client.globals.calls++
+    client.globals.calls++;
   }
 };

@@ -3,8 +3,8 @@
   "mocks" : [
     {
       "url" : "/wd/hub/session",
-      "postdata" : "{\"desiredCapabilities\":{\"browserName\":\"firefox\",\"javascriptEnabled\":true,\"acceptSslCerts\":true,\"platform\":\"ANY\"}}",
-      "response" : "{\"status\": 0, \"sessionId\": \"1352110219202\", \"value\": { \"javascriptEnabled\": true, \"browserName\": \"firefox\", \"browserVersion\": \"TEST\", \"platformVersion\": \"TEST\"}, \"state\": null}",
+      "postdata" : "{\"desiredCapabilities\":{\"browserName\":\"firefox\",\"acceptSslCerts\":true,\"platform\":\"ANY\"}}",
+      "response" : "{\"status\": 0, \"sessionId\": \"1352110219202\", \"value\": { \"browserName\": \"firefox\", \"browserVersion\": \"TEST\", \"platformVersion\": \"TEST\"}, \"state\": null}",
       "responseHeaders" : {
       },
       "statusCode" : 201,
@@ -13,7 +13,7 @@
     {
       "url" : "/wd/hub/session",
       "postdata" : "",
-      "response" : "{\"status\": 0, \"sessionId\": \"1352110219202\", \"value\": { \"javascriptEnabled\": true, \"browserName\": \"firefox\", \"version\": \"TEST\", \"platform\": \"TEST\"}, \"state\": null}",
+      "response" : "{\"status\": 0, \"sessionId\": \"1352110219202\", \"value\": { \"browserName\": \"firefox\", \"version\": \"TEST\", \"platform\": \"TEST\"}, \"state\": null}",
       "responseHeaders" : {
       },
       "statusCode" : 201,
@@ -21,7 +21,8 @@
     },
     {
       "url" : "/wd/hub/session/1352110219202",
-      "method": "DELETE"
+      "method": "DELETE",
+      "response" : "{\"status\":0,\"state\":\"success\"}"
     },
     {
       "url" : "/wd/hub/session/1352110219202/url",
@@ -63,6 +64,16 @@
     },
     {
       "url" : "/wd/hub/session/1352110219202/elements",
+      "postdata" : "{\"using\":\"css selector\",\"value\":\".weblogin\"}",
+      "response" : "{\"sessionId\":\"1352110219202\",\"status\":0,\"value\":[],\"class\":\"org.openqa.selenium.remote.Response\",\"hCode\":604376696}"
+    },
+    {
+      "url" : "/wd/hub/session/1352110219202/elements",
+      "postdata" : "{\"using\":\"css selector\",\"value\":\"#badElement\"}",
+      "response" : "{\"sessionId\":\"1352110219202\",\"status\":0,\"value\":[],\"class\":\"org.openqa.selenium.remote.Response\",\"hCode\":604376696}"
+    },
+    {
+      "url" : "/wd/hub/session/1352110219202/elements",
       "postdata" : "{\"using\":\"css selector\",\"value\":\"#weblogin\"}",
       "response" : "{\"sessionId\":\"1352110219202\",\"status\":0,\"value\":[{\"ELEMENT\":\"0\"}],\"class\":\"org.openqa.selenium.remote.Response\",\"hCode\":604376696}"
     },
@@ -98,11 +109,13 @@
     },
     {
       "url" : "/wd/hub/session/1352110219202/window",
+      "response" : "{\"sessionId\":\"1352110219202\",\"status\":0}",
       "method": "DELETE"
     },
     {
       "url" : "/wd/hub/session/1352110219202/window",
-      "method": "POST"
+      "method": "POST",
+      "response" : "{\"sessionId\":\"1352110219202\",\"status\":0}"
     },
     {
       "url" : "/wd/hub/session/1352110219202/buttondown",

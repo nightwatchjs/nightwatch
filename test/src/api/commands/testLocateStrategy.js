@@ -1,36 +1,34 @@
-var assert = require('assert');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var Globals = require('../../../lib/globals/commands.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const CommandGlobals = require('../../../lib/globals/commands.js');
 
-module.exports = MochaTest.add('locateStrategies', {
+describe('locateStrategies', function() {
+  before(function(done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
 
-  'client.useXpath()' : function(done) {
-    var client = Nightwatch.client();
-    var api = Nightwatch.api();
+  after(function(done) {
+    CommandGlobals.afterEach.call(this, done);
+  });
 
-    api.useXpath(function() {
+  it('client.useXpath()', function(done) {
+    let client = this.client;
+    this.client.api.useXpath(function() {
       assert.equal(client.locateStrategy, 'xpath');
-      done();
     });
 
-    Nightwatch.start();
+    this.client.start(done);
+  });
 
-  },
-
-  'client.useCss()' : function(done) {
-    var client = Nightwatch.client();
-    var api = Nightwatch.api();
-
-    api.useCss(function() {
+  it('client.useCss()', function(done) {
+    let client = this.client;
+    this.client.api.useCss(function() {
       assert.equal(client.locateStrategy, 'css selector');
-      done();
     });
 
-    Nightwatch.start();
-  },
+    this.client.start(done);
+  });
   /*
-  'test run sample test with xpath' : function(done) {
+  it('test run sample test with xpath', function(done) {
     //test.expect(3);
     var Runner = common.require('runner/run.js');
     Runner.run([process.cwd() + '/sampletests/usexpath'], {
