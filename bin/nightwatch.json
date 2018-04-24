@@ -1,51 +1,40 @@
 {
-  "src_folders" : ["./examples/tests"],
+  "src_folders" : ["./examples/tests", "./examples/mocha", "./examples/unittests"],
   "output_folder" : "./examples/reports",
   "custom_commands_path" : "./examples/custom-commands",
+  "custom_assertions_path" : "./examples/custom-assertions",
   "page_objects_path" : "./examples/pages",
-  "custom_assertions_path" : "",
-  "globals_path" : "",
-  "live_output" : false,
-  "parallel_process_delay" : 10,
+  "globals_path" : "./examples/globalsModule.js",
   "disable_colors": false,
   "test_workers" : false,
 
-  "selenium" : {
-    "start_process" : false,
-    "server_path" : "",
-    "log_path" : "",
-    "host" : "127.0.0.1",
-    "port" : 4444,
-    "cli_args" : {
-      "webdriver.chrome.driver" : "",
-      "webdriver.ie.driver" : "",
-      "webdriver.firefox.profile" : ""
-    }
-  },
-
   "webdriver" : {
-    "start_process": true,
-    "host": "localhost"
+    "start_process": false,
+    "host": "localhost",
+    "port": 4444
   },
 
   "test_settings" : {
     "default" : {
       "webdriver": {
-        "default_path_prefix": "",
-        "server_path": "./bin/geckodriver-0.19",
+        "server_path": "./bin/geckodriver-0.20",
         "cli_args": [
           "--log", "debug"
         ]
       },
-      "silent" : true,
       "disable_colors": false,
       "screenshots" : {
         "enabled" : false,
         "path" : ""
       },
+      "request_timeout_options": {
+        "timeout": 60000,
+        "retry_attempts": 5
+      },
+      "filter": ["./examples/tests"],
       "desiredCapabilities" : {
         "browserName" : "firefox",
-        "acceptInsecureCerts" : false
+        "acceptInsecureCerts" : true
       }
     },
 
