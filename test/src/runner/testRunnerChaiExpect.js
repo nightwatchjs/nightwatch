@@ -4,6 +4,7 @@ const common = require('../../common.js');
 const MockServer = require('../../lib/mockserver.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const Settings = common.require('settings/settings.js');
+const Globals = require('../../lib/globals.js');
 
 describe('testRunnerChaiExpect', function() {
   before(function(done) {
@@ -34,15 +35,8 @@ describe('testRunnerChaiExpect', function() {
       globals: {test: assert}
     });
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(_ => {
+    return Globals.startTestRunner(testsPath, settings)
+      .then(runner => {
         assert.equal(runner.results.modules.sampleWithChai.tests, 2);
         assert.equal(runner.results.modules.sampleWithChai.failures, 0);
       });

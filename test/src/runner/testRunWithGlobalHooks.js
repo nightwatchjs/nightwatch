@@ -2,8 +2,8 @@ const path = require('path');
 const assert = require('assert');
 const common = require('../../common.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
-
 const Settings = common.require('settings/settings.js');
+const Globals = require('../../lib/globals.js');
 
 describe('testRunWithGlobalHooks', function() {
   before(function(done) {
@@ -55,15 +55,8 @@ describe('testRunWithGlobalHooks', function() {
       start_session: true
     });
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(_ => {
+    return Globals.startTestRunner(testsPath, settings)
+      .then(runner => {
         assert.equal(session.globals.calls, 17);
         assert.equal(beforeEachCount, 3);
         assert.equal(afterEachCount, 3);
@@ -105,15 +98,8 @@ describe('testRunWithGlobalHooks', function() {
       start_session: true
     });
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(_ => {
+    return Globals.startTestRunner(testsPath, settings)
+      .then(runner => {
         assert.equal(beforeEachCount, 3);
         assert.equal(afterEachCount, 3);
         assert.equal(session.globals.calls, 17);
@@ -157,15 +143,8 @@ describe('testRunWithGlobalHooks', function() {
       start_session: true
     });
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(_ => {
+    return Globals.startTestRunner(testsPath, settings)
+      .then(runner => {
         assert.equal(session.globals.calls, 17);
         assert.equal(beforeEachCount, 3);
         assert.equal(afterEachCount, 3);
@@ -199,15 +178,8 @@ describe('testRunWithGlobalHooks', function() {
       start_session: true
     });
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(_ => {
+    return Globals.startTestRunner(testsPath, settings)
+      .then(runner => {
 
         assert.equal(results.modules.sampleSingleTest.errmessages.length, 0);
         assert.equal(beforeEachCount, 3);
@@ -239,15 +211,8 @@ describe('testRunWithGlobalHooks', function() {
       start_session: true
     });
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(_ => {
+    return Globals.startTestRunner(testsPath, settings)
+      .then(runner => {
         assert.equal(results.modules.sampleSingleTest.errmessages.length, 1);
         assert.equal(results.modules.sampleWithBeforeAndAfter.errmessages.length, 1);
         assert.equal(results.modules.syncBeforeAndAfter.errmessages.length, 1);
@@ -280,15 +245,8 @@ describe('testRunWithGlobalHooks', function() {
       start_session: true
     });
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(_ => {
+    return Globals.startTestRunner(testsPath, settings)
+      .then(runner => {
         assert.ok(err instanceof Error);
         assert.equal(err.message, 'global beforeEach error');
       });
@@ -339,15 +297,8 @@ describe('testRunWithGlobalHooks', function() {
       start_session: true
     });
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(_ => {
+    return Globals.startTestRunner(testsPath, settings)
+      .then(runner => {
         assert.equal(session.globals.calls, 6);
       });
 

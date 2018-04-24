@@ -16,3 +16,5 @@ tests_output
 output
 /test/hooks_output
 /bin/geckodriver*
+/coverage/
+/.nyc_output/

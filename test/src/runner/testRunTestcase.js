@@ -4,6 +4,7 @@ const common = require('../../common.js');
 const MockServer = require('../../lib/mockserver.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const Settings = common.require('settings/settings.js');
+const Globals = require('../../lib/globals.js');
 
 describe('testRunTestcase', function() {
 
@@ -50,15 +51,8 @@ describe('testRunTestcase', function() {
       start_session: true
     });
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(result => {
+    return Globals.startTestRunner(testsPath, settings)
+      .then(runner => {
         assert.equal(settings.globals.calls, 6);
         assert.equal(runner.results.passed, 2);
         assert.equal(runner.results.failed, 2);
@@ -85,15 +79,8 @@ describe('testRunTestcase', function() {
       start_session: true
     });
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(result => {
+    return Globals.startTestRunner(testsPath, settings)
+      .then(runner => {
         assert.equal(settings.globals.calls, 4);
         assert.equal(runner.results.passed, 1);
         assert.equal(runner.results.failed, 1);
@@ -113,16 +100,9 @@ describe('testRunTestcase', function() {
       testcase: 'demoTestSyncOne'
     });
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(result => {
-        assert.ok('demoTestSyncOne' in results.modules.syncBeforeAndAfter.completed);
+    return Globals.startTestRunner(testsPath, settings)
+      .then(runner => {
+        assert.ok('demoTestSyncOne' in runner.results.modules.syncBeforeAndAfter.completed);
       });
   });
 
@@ -139,15 +119,8 @@ describe('testRunTestcase', function() {
       testcase: 'Unknown'
     });
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(result => {
+    return Globals.startTestRunner(testsPath, settings)
+      .then(runner => {
         assert.ok('sample' in runner.results.modules);
         assert.ok('demoTest' in runner.results.modules.sample.completed);
 
@@ -183,15 +156,8 @@ describe('testRunTestcase', function() {
       start_session: true
     });
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(result => {
+    return Globals.startTestRunner(testsPath, settings)
+      .then(runner => {
         assert.ok('sample' in runner.results.modules);
         assert.ok('demoTest' in runner.results.modules.sample.completed);
 
@@ -215,15 +181,8 @@ describe('testRunTestcase', function() {
       start_session: true
     });
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(result => {
+    return Globals.startTestRunner(testsPath, settings)
+      .then(runner => {
         assert.ok('sample' in runner.results.modules);
         assert.ok('demoTest' in runner.results.modules.sample.completed);
 
@@ -251,15 +210,8 @@ describe('testRunTestcase', function() {
       retries: 1
     });
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(result => {
+    return Globals.startTestRunner(testsPath, settings)
+      .then(runner => {
         assert.equal(settings.globals.calls, 6);
         assert.equal(runner.results.passed, 1);
         assert.equal(runner.results.failed, 1);
@@ -287,15 +239,8 @@ describe('testRunTestcase', function() {
       retries: 1
     });
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(result => {
+    return Globals.startTestRunner(testsPath, settings)
+      .then(runner => {
         assert.equal(settings.globals.calls, 10);
         assert.equal(runner.results.passed, 2);
         assert.equal(runner.results.failed, 2);

@@ -4,6 +4,7 @@ const common = require('../../common.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const Runner = common.require('runner/runner.js');
 const Settings = common.require('settings/settings.js');
+const Globals = require('../../lib/globals.js');
 
 describe('testRunTestsuite', function() {
   before(function(done) {
@@ -86,15 +87,8 @@ describe('testRunTestsuite', function() {
       suite_retries: 1
     });
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(_ => {
+        return Globals.startTestRunner(testsPath, settings)
+      .then(runner => {
         assert.equal(settings.globals.calls, 10);
         assert.equal(runner.results.errors, 0);
       });
@@ -122,15 +116,8 @@ describe('testRunTestsuite', function() {
       suite_retries: 1
     });
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(_ => {
+        return Globals.startTestRunner(testsPath, settings)
+      .then(runner => {
         assert.equal(runner.currentTestSuite.client['@client'].locateStrategy, 'css selector');
       });
 
@@ -158,15 +145,8 @@ describe('testRunTestsuite', function() {
       suite_retries: 1
     });
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(_ => {
+        return Globals.startTestRunner(testsPath, settings)
+      .then(runner => {
         assert.equal(settings.globals.calls, 3);
         assert.equal(runner.results.passed, 3);
       });
@@ -192,15 +172,8 @@ describe('testRunTestsuite', function() {
       start_session: true
     });
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(testsPath, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(_ => {
+        return Globals.startTestRunner(testsPath, settings)
+      .then(runner => {
         assert.ok('sampleTest' in runner.results.modules);
       });
 

@@ -4,6 +4,7 @@ const assert = require('assert');
 const common = require('../../common.js');
 const Runner = common.require('runner/runner.js');
 const Settings = common.require('settings/settings.js');
+const Globals = require('../../lib/globals.js');
 
 describe('testRunnerUnitTests', function() {
   beforeEach(function() {
@@ -12,25 +13,18 @@ describe('testRunnerUnitTests', function() {
   });
 
   it('testRunUnitTests', function() {
-    let src_folders = path.join(__dirname, '../../sampletests/unittests');
+    let testsPath = path.join(__dirname, '../../sampletests/unittests');
 
     let settings = Settings.parse({
       output_folder: 'output',
       unit_tests_mode: true
     });
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(src_folders, settings)
-      .then(modules => {
-        return runner.run(modules);
-      });
+    return Globals.startTestRunner(testsPath, settings);
   });
 
   it('test run unit tests with junit output and failures', function() {
-    let src_folders = [
+    let testsPath = [
       path.join(__dirname, '../../asynchookstests/unittest-failure')
     ];
 
@@ -39,15 +33,8 @@ describe('testRunnerUnitTests', function() {
       unit_tests_mode: true
     });
 
-    let runner = Runner.create(settings, {
-      reporter: 'junit'
-    });
-
-    return Runner.readTestSource(src_folders, settings)
-      .then(modules => {
-        return runner.run(modules);
-      })
-      .then(_ => {
+    return Globals.startTestRunner(testsPath, settings)
+      .then(runner => {
         let sampleReportFile = 'output/unittest-failure.xml';
         assert.ok(fileExistsSync(sampleReportFile), 'The sample file report was not created.');
 

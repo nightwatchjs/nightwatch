@@ -4,6 +4,7 @@ const common = require('../../common.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const Runner = common.require('runner/runner.js');
 const Settings = common.require('settings/settings.js');
+const Globals = require('../../lib/globals.js');
 
 describe('testRunWithGlobalReporter', function() {
   before(function(done) {
