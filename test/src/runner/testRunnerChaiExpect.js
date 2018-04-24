@@ -1,46 +1,45 @@
-var path = require('path');
-var assert = require('assert');
-var common = require('../../common.js');
-var CommandGlobals = require('../../lib/globals/commands.js');
+const path = require('path');
+const assert = require('assert');
+const common = require('../../common.js');
+const CommandGlobals = require('../../lib/globals/commands.js');
+const Settings = common.require('settings/settings.js');
 
-module.exports = {
-  'testRunnerChaiExpect': {
-    before: function (done) {
-      CommandGlobals.beforeEach.call(this, done);
-    },
+describe('testRunnerChaiExpect', function() {
+  before(function(done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
 
-    after: function (done) {
-      CommandGlobals.afterEach.call(this, done);
-    },
+  after(function(done) {
+    CommandGlobals.afterEach.call(this, done);
+  });
 
-    testRunWithChaiExpect : function(done) {
-      var testsPath = path.join(__dirname, '../../sampletests/withchaiexpect');
-      var Runner = common.require('runner/run.js');
+  it('testRunWithChaiExpect', function(done) {
+    const testsPath = path.join(__dirname, '../../sampletests/withchaiexpect');
+    const Runner = common.require('runner/runner.js');
 
-      var runner = new Runner([testsPath], {
-        seleniumPort : 10195,
-        silent : true,
-        output : false,
-        globals : {
-          test : assert
-        }
-      }, {
-        output_folder : false,
-        start_session : true
-      }, function(err, results) {
-        if (err) {
-          throw err;
-        }
-        assert.equal(results.modules.sampleWithChai.tests, 2);
-        assert.equal(results.modules.sampleWithChai.failures, 0);
-        done();
+    let settings = Settings.parse({
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      output_folder: false,
+      silent: true,
+      output: false,
+      globals: {test: assert}
+    });
+
+    let runner = Runner.create(settings, {
+      reporter: 'junit'
+    });
+
+    return Runner.readTestSource(testsPath, settings)
+      .then(modules => {
+        return runner.run(modules);
+      })
+      .then(_ => {
+        assert.equal(runner.results.modules.sampleWithChai.tests, 2);
+        assert.equal(runner.results.modules.sampleWithChai.failures, 0);
       });
-
-      runner.run().catch(function (err) {
-        done(err);
-      });
-    }
-  }
-
-
-};
+  });
+});

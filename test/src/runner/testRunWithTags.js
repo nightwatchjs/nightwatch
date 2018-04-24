@@ -1,158 +1,188 @@
-var path = require('path');
-var assert = require('assert');
-var common = require('../../common.js');
-var CommandGlobals = require('../../lib/globals/commands.js');
-var Runner = common.require('runner/run.js');
+const path = require('path');
+const assert = require('assert');
+const common = require('../../common.js');
+const CommandGlobals = require('../../lib/globals/commands.js');
+const Runner = common.require('runner/runner.js');
+const Settings = common.require('settings/settings.js');
 
-module.exports = {
-  'testRunWithTags' : {
+describe('testRunWithTags', function() {
+  before(function(done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
 
-    before: function (done) {
-      CommandGlobals.beforeEach.call(this, done);
-    },
+  after(function(done) {
+    CommandGlobals.afterEach.call(this, done);
+  });
 
-    after: function (done) {
-      CommandGlobals.afterEach.call(this, done);
-    },
+  beforeEach(function() {
+    process.removeAllListeners('exit');
+    process.removeAllListeners('uncaughtException');
+  });
 
-    beforeEach: function () {
-      process.removeAllListeners('exit');
-      process.removeAllListeners('uncaughtException');
-    },
+  afterEach(function() {
+    Object.keys(require.cache).forEach(function(module) {
+      delete require.cache[module];
+    });
+  });
 
-    afterEach: function () {
-      Object.keys(require.cache).forEach(function(module) {
-        delete require.cache[module];
+  it('testRunWithTags', function() {
+    let testsPath = path.join(__dirname, '../../sampletests');
+
+    let settings = Settings.parse({
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      output: false,
+      globals: {},
+      tag_filter: ['login'],
+      output_folder: false,
+      start_session: true
+    });
+
+    let runner = Runner.create(settings, {
+      reporter: 'junit'
+    });
+
+    return Runner.readTestSource(testsPath, settings)
+      .then(modules => {
+        return runner.run(modules);
+      })
+      .then(_ => {
+        assert.equal(Object.keys(runner.results.modules).length, 2);
+        assert.equal(('demoTagTest' in runner.results.modules.sample.completed), true);
+        assert.equal(('otherDemoTagTest' in runner.results.modules.sampleTags.completed), true);
       });
-    },
-    
-    testRunWithTags: function (done) {
-      var testsPath = path.join(__dirname, '../../sampletests');
+  });
 
-      var runner = new Runner([testsPath], {
-        seleniumPort: 10195,
-        silent: true,
-        output: false,
-        globals: {
-        },
-        tag_filter: ['login']
-      }, {
-        output_folder: false,
-        start_session: true
-      }, function (err, results) {
-        if (err) {
-          throw err;
-        }
-        assert.equal(Object.keys(results.modules).length, 2);
-        assert.equal(('demoTagTest' in results.modules.sample.completed), true);
-        assert.equal(('otherDemoTagTest' in results.modules.sampleTags.completed), true);
-        done();
-      });
+  it('testRunWithTagsAndFilterEmpty', function() {
+    let testsPath = path.join(__dirname, '../../sampletests');
 
-      runner.run().catch(function(err) {
-        done(err);
-      });
-    },
+    let settings = Settings.parse({
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      output: false,
+      globals: {},
+      filter: 'syncnames/*',
+      tag_filter: ['login'],
+      output_folder: false,
+      start_session: true
+    });
 
-    testRunWithTagsAndFilterEmpty: function (done) {
-      var testsPath = path.join(__dirname, '../../sampletests');
+    let runner = Runner.create(settings, {
+      reporter: 'junit'
+    });
 
-      var runner = new Runner([testsPath], {
-        seleniumPort: 10195,
-        silent: true,
-        output: false,
-        globals: {
-        },
-        filter: 'syncnames/*',
-        tag_filter: ['login']
-      }, {
-        output_folder: false,
-        start_session: true
-      }, function (err, results) {
+    return Runner.readTestSource(testsPath, settings)
+      .then(modules => {
+        return runner.run(modules);
+      })
+      .catch(err => {
         assert.ok(err instanceof Error);
-        assert.equal(results, false);
-        done();
+        assert.ok(err.message.startsWith('No tests defined!'));
       });
+  });
 
-      runner.run().catch(function(err) {
-        done(err);
-      });
-    },
+  it('testRunWithTagsAndFilterNotEmpty', function() {
+      let testsPath = path.join(__dirname, '../../sampletests');
 
-    testRunWithTagsAndFilterNotEmpty: function (done) {
-      var testsPath = path.join(__dirname, '../../sampletests');
-
-      var runner = new Runner([testsPath], {
-        seleniumPort: 10195,
+      let settings = Settings.parse({
+        selenium: {
+          port: 10195,
+          version2: true,
+          start_process: true
+        },
         silent: true,
         output: false,
-        globals: {
-        },
+        globals: {},
         filter: 'tags/*',
         tag_filter: ['login']
       }, {
         output_folder: false,
         start_session: true
-      }, function (err, results) {
-        assert.strictEqual(err, null);
-        assert.ok(('demoTagTest' in results.modules.sample.completed), 'demoTagTest was ran');
-        done();
       });
 
-      runner.run().catch(function(err) {
-        done(err);
+      let runner = Runner.create(settings, {
+        reporter: 'junit'
       });
-    },
 
-    testRunWithTagsAndSkipTags: function (done) {
-      var testsPath = path.join(__dirname, '../../sampletests');
+      return Runner.readTestSource(testsPath, settings)
+        .then(modules => {
+          return runner.run(modules);
+        })
+        .then(_ => {
+          assert.ok(('demoTagTest' in runner.results.modules.sample.completed), 'demoTagTest was ran');
+        });
+    });
 
-      var runner = new Runner([testsPath], {
-        seleniumPort: 10195,
+    it('testRunWithTagsAndSkipTags', function() {
+      let testsPath = path.join(__dirname, '../../sampletests');
+
+      let settings = Settings.parse({
+        selenium: {
+          port: 10195,
+          version2: true,
+          start_process: true
+        },
         silent: true,
         output: false,
-        globals: {
-
-        },
+        globals: {},
         tag_filter: ['login'],
-        skiptags: ['other']
-      }, {
         output_folder: false,
         start_session: true
-      }, function (err, results) {
-        assert.equal(Object.keys(results.modules).length, 1);
-        assert.ok(('otherDemoTagTest' in results.modules.sampleTags.completed));
-        done();
       });
 
-      runner.run().catch(function(err) {
-        done(err);
-      });
-    },
-
-    testRunWithTagsAndSkipTagsNoMatches: function (done) {
-      var testsPath = path.join(__dirname, '../../sampletests');
-
-      var runner = new Runner([testsPath], {
-        seleniumPort: 10195,
-        silent: true,
-        output: false,
-        globals: {
-        },
-        tag_filter: ['other'],
-        skiptags: ['login']
-      }, {
-        output_folder: false,
-        start_session: true
-      }, function (err, results) {
-        assert.equal(err.message.indexOf('No tests defined!'), 0);
-        assert.equal(results, false);
-        done();
+      let runner = Runner.create(settings, {
+        reporter: 'junit',
+        skipTags: ['other']
       });
 
-      runner.run().catch(function(err) {
-        done(err);
+      return Runner.readTestSource(testsPath, settings)
+        .then(modules => {
+          return runner.run(modules);
+        })
+        .then(_ => {
+          assert.equal(Object.keys(runner.results.modules).length, 1);
+          assert.ok(('otherDemoTagTest' in runner.results.modules.sampleTags.completed));
+        });
+    });
+
+  it('testRunWithTagsAndSkipTagsNoMatches', function() {
+    let testsPath = path.join(__dirname, '../../sampletests');
+
+    let settings = Settings.parse({
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      output: false,
+      globals: {},
+      tag_filter: ['other'],
+
+      output_folder: false,
+      start_session: true
+    });
+
+    let runner = Runner.create(settings, {
+      reporter: 'junit',
+      skiptags: ['login']
+    });
+
+    return Runner.readTestSource(testsPath, settings)
+      .then(modules => {
+        return runner.run(modules);
+      })
+      .then(_ => {
+        assert.equal(runner.results.errmessages.length, 0);
+        assert.equal(runner.results, false);
       });
-    }
-  }
-};
+  });
+});

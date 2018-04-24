@@ -1,246 +1,278 @@
-var path = require('path');
-var assert = require('assert');
-var common = require('../../common.js');
-var CommandGlobals = require('../../lib/globals/commands.js');
-var Runner = common.require('runner/run.js');
+const path = require('path');
+const assert = require('assert');
+const common = require('../../common.js');
+const CommandGlobals = require('../../lib/globals/commands.js');
+const Runner = common.require('runner/runner.js');
+const Settings = common.require('settings/settings.js');
 
-module.exports = {
-  'testRunTestsuite' : {
-    before: function (done) {
-      CommandGlobals.beforeEach.call(this, done);
-    },
+describe('testRunTestsuite', function() {
+  before(function(done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
 
-    after: function (done) {
-      CommandGlobals.afterEach.call(this, done);
-    },
+  after(function(done) {
+    CommandGlobals.afterEach.call(this, done);
+  });
 
-    beforeEach: function () {
-      process.removeAllListeners('exit');
-      process.removeAllListeners('uncaughtException');
-    },
+  beforeEach(function() {
+    process.removeAllListeners('exit');
+    process.removeAllListeners('uncaughtException');
+  });
 
-    afterEach: function () {
-      Object.keys(require.cache).forEach(function(module) {
-        delete require.cache[module];
+  afterEach(function() {
+    Object.keys(require.cache).forEach(function(module) {
+      delete require.cache[module];
+    });
+  });
+
+  it('testRunSuiteRetries', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/withfailures');
+    let globals = {
+      calls: 0
+    };
+
+    let settings = Settings.parse({
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      output: false,
+      persist_globals: true,
+      globals: globals,
+      output_folder: false,
+      start_session: true
+    });
+
+    let runner = Runner.create(settings, {
+      reporter: 'junit',
+      suiteRetries: 1
+    });
+
+    return Runner.readTestSource(testsPath, settings)
+      .then(modules => {
+        return runner.run(modules);
+      })
+      .then(_ => {
+        assert.equal(settings.globals.calls, 8);
+        assert.deepEqual(runner.results.errmessages, []);
+        assert.equal(runner.results.passed, 1);
+        assert.equal(runner.results.failed, 1);
+        assert.equal(runner.results.errors, 0);
+        assert.equal(runner.results.skipped, 0);
       });
-    },
+  });
 
-    testRunSuiteRetries : function(done) {
-      var testsPath = path.join(__dirname, '../../sampletests/withfailures');
-      var globals = {
-        calls : 0
-      };
+  it('testRunSuiteRetriesNoSkipTestcasesOnFail', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/withfailures');
+    let globals = {
+      calls: 0
+    };
 
-      var runner = new Runner([testsPath], {
-        seleniumPort : 10195,
-        silent : true,
-        output : false,
-        persist_globals : true,
-        globals : globals
-      }, {
-        output_folder : false,
-        start_session : true,
-        suite_retries: 1
-      }, function(err, results) {
-        if (err) {
-          throw err;
-        }
-        assert.equal(globals.calls, 8);
-        assert.deepEqual(results.errmessages, []);
-        assert.equal(results.passed, 1);
-        assert.equal(results.failed, 1);
-        assert.equal(results.errors, 0);
-        assert.equal(results.skipped, 0);
-        done();
+    let settings = Settings.parse({
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      output: false,
+      persist_globals: true,
+      globals: globals,
+      skip_testcases_on_fail: false,
+      output_folder: false,
+      start_session: true,
+      suite_retries: 1
+    });
+
+    let runner = Runner.create(settings, {
+      reporter: 'junit'
+    });
+
+    return Runner.readTestSource(testsPath, settings)
+      .then(modules => {
+        return runner.run(modules);
+      })
+      .then(_ => {
+        assert.equal(settings.globals.calls, 10);
+        assert.equal(runner.results.errors, 0);
       });
+  });
 
-      runner.run().catch(function(err) {
-        done(err);
-      });
-    },
+  it('testRunSuiteRetriesWithLocateStrategy', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/suiteretries/locate-strategy');
+    let globals = {
+      calls: 0
+    };
 
-    testRunSuiteRetriesNoSkipTestcasesOnFail : function(done) {
-      var testsPath = path.join(__dirname, '../../sampletests/withfailures');
-      var globals = {
-        calls : 0
-      };
+    let settings = Settings.parse({
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      output: false,
+      persist_globals: true,
+      globals: globals,
+      skip_testcases_on_fail: false,
+      output_folder: false,
+      start_session: true,
+      suite_retries: 1
+    });
 
-      var runner = new Runner([testsPath], {
-        seleniumPort : 10195,
-        silent : true,
-        output : false,
-        persist_globals : true,
-        globals : globals,
-        skip_testcases_on_fail: false
-      }, {
-        output_folder : false,
-        start_session : true,
-        suite_retries: 1
-      }, function(err, results) {
-        if (err) {
-          throw err;
-        }
-        assert.equal(globals.calls, 10);
-        assert.equal(results.errors, 0);
-        assert.equal(results.skipped, 0);
-        done();
-      });
+    let runner = Runner.create(settings, {
+      reporter: 'junit'
+    });
 
-      runner.run().catch(function(err) {
-        done(err);
-      });
-    },
-
-    testRunSuiteRetriesWithLocateStrategy : function(done) {
-      var testsPath = path.join(__dirname, '../../sampletests/suiteretries/locate-strategy');
-      var globals = {
-        calls : 0
-      };
-
-      var runner = new Runner([testsPath], {
-        seleniumPort : 10195,
-        silent : true,
-        output : false,
-        persist_globals : true,
-        globals : globals,
-        skip_testcases_on_fail: false
-      }, {
-        output_folder : false,
-        start_session : true,
-        suite_retries: 1
-      }, function(err, results) {
-        if (err) {
-          throw err;
-        }
+    return Runner.readTestSource(testsPath, settings)
+      .then(modules => {
+        return runner.run(modules);
+      })
+      .then(_ => {
         assert.equal(runner.currentTestSuite.client['@client'].locateStrategy, 'css selector');
-        done();
       });
 
-      runner.run().catch(function(err) {
-        done(err);
+  })
+  ;
+
+  it('test clear command queue when run with suiteRetries', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/suiteretries/sample');
+    let globals = {
+      calls: 0
+    };
+
+    let settings = Settings.parse({
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      output: false,
+      persist_globals: true,
+      globals: globals,
+      output_folder: false,
+      start_session: true,
+      suite_retries: 1
+    });
+
+    let runner = Runner.create(settings, {
+      reporter: 'junit'
+    });
+
+    return Runner.readTestSource(testsPath, settings)
+      .then(modules => {
+        return runner.run(modules);
+      })
+      .then(_ => {
+        assert.equal(settings.globals.calls, 3);
+        assert.equal(runner.results.passed, 3);
       });
-    },
+  });
 
-    'test clear command queue when run with suiteRetries' : function(done) {
-      var testsPath = path.join(__dirname, '../../sampletests/suiteretries/sample');
-      var globals = {
-        calls : 0
-      };
+  it('testRunModuleSyncName', function() {
+    let globals = {
+      calls: 0
+    };
+    let testsPath = path.join(__dirname, '../../sampletests/syncnames');
+    let settings = Settings.parse({
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      output: false,
+      sync_test_names: true,
+      persist_globals: true,
+      globals: globals,
+      output_folder: false,
+      start_session: true
+    });
 
-      var runner = new Runner([testsPath], {
-        seleniumPort : 10195,
-        silent : true,
-        output : false,
-        persist_globals : true,
-        globals : globals
-      }, {
-        output_folder : false,
-        start_session : true,
-        suite_retries: 1
-      }, function(err, results) {
-        if (err) {
-          throw err;
-        }
-        assert.equal(globals.calls, 3);
-        assert.equal(results.passed, 3);
+    let runner = Runner.create(settings, {
+      reporter: 'junit'
+    });
 
-        done();
-      });
-
-      runner.run().catch(function(err) {
-        done(err);
-      });
-    },
-
-    testRunModuleSyncName : function(done) {
-      var globals = {
-        calls : 0
-      };
-      var testsPath = path.join(__dirname, '../../sampletests/syncnames');
-      var runner = new Runner([testsPath], {
-        seleniumPort : 10195,
-        silent : true,
-        output : false,
-        sync_test_names : true,
-        persist_globals : true,
-        globals : globals
-      }, {
-        output_folder : false,
-        start_session : true
-      }, function(err, results) {
-        if (err) {
-          throw err;
-        }
-        assert.ok('sampleTest' in results.modules);
-        done();
-      });
-
-      runner.run().catch(function(err) {
-        done(err);
-      });
-    },
-
-    'test run multiple sources and same module name' : function(done) {
-      var srcFolders = [
-        path.join(__dirname, '../../sampletests/simple'),
-        path.join(__dirname, '../../sampletests/mixed')
-      ];
-
-      var runner = new Runner(srcFolders, {
-        seleniumPort : 10195,
-        silent : true,
-        output : false,
-        globals : {
-        }
-      }, {
-        output_folder : false,
-        start_session : true,
-        src_folders : srcFolders
-      }, function(err, results) {
-        if (err) {
-          throw err;
-        }
-
-        assert.ok('simple/sample' in results.modules);
-        assert.ok('mixed/sample' in results.modules);
-        assert.ok('demoTest' in results.modules['simple/sample'].completed);
-        assert.ok('demoTestMixed' in results.modules['mixed/sample'].completed);
-
-        done();
+    return Runner.readTestSource(testsPath, settings)
+      .then(modules => {
+        return runner.run(modules);
+      })
+      .then(_ => {
+        assert.ok('sampleTest' in runner.results.modules);
       });
 
-      runner.run().catch(function(err) {
-        done(err);
-      });
-    },
+  });
 
-    testRunMultipleSrcFolders : function(done) {
-      var srcFolders = [
-        path.join(__dirname, '../../sampletests/simple'),
-        path.join(__dirname, '../../sampletests/srcfolders')
-      ];
-      var runner = new Runner(srcFolders, {
-        seleniumPort : 10195,
-        silent : true,
-        output : false
-      }, {
-        output_folder : false,
-        start_session : true,
-        src_folders : srcFolders
-      }, function(err, results) {
-        if (err) {
-          throw err;
-        }
-        assert.ok('simple/sample' in results.modules);
-        assert.ok('demoTest' in results.modules['simple/sample'].completed);
-        assert.ok('srcfolders/other_sample' in results.modules);
-        assert.ok('srcFoldersTest' in results.modules['srcfolders/other_sample'].completed);
-        done();
+  it('test run multiple sources and same module name', function() {
+    let srcFolders = [
+      path.join(__dirname, '../../sampletests/simple'),
+      path.join(__dirname, '../../sampletests/mixed')
+    ];
+
+    let settings = Settings.parse({
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      output: false,
+      globals: {},
+      output_folder: false,
+      start_session: true,
+      src_folders: srcFolders
+    });
+
+    let runner = Runner.create(settings, {
+      reporter: 'junit'
+    });
+
+    return Runner.readTestSource(srcFolders, settings)
+      .then(modules => {
+        return runner.run(modules);
+      })
+      .then(_ => {
+        assert.ok('simple/sample' in runner.results.modules);
+        assert.ok('mixed/sample' in runner.results.modules);
+        assert.ok('demoTest' in runner.results.modules['simple/sample'].completed);
+        assert.ok('demoTestMixed' in runner.results.modules['mixed/sample'].completed);
+      });
+  });
+
+  it('testRunMultipleSrcFolders', function() {
+    let srcFolders = [
+      path.join(__dirname, '../../sampletests/simple'),
+      path.join(__dirname, '../../sampletests/srcfolders')
+    ];
+    let settings = Settings.parse({
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      output: false,
+      output_folder: false,
+      start_session: true,
+      src_folders: srcFolders
+    });
+
+    let runner = Runner.create(settings, {
+      reporter: 'junit'
+    });
+
+    return Runner.readTestSource(srcFolders, settings)
+      .then(modules => {
+        return runner.run(modules);
+      })
+      .then(_ => {
+        assert.ok('simple/sample' in runner.results.modules);
+        assert.ok('demoTest' in runner.results.modules['simple/sample'].completed);
+        assert.ok('srcfolders/other_sample' in runner.results.modules);
       });
 
-      runner.run().catch(function(err) {
-        done(err);
-      });
-    }
-  }
-};
+  });
+});

@@ -1,90 +1,113 @@
-var path = require('path');
-var assert = require('assert');
-var common = require('../../common.js');
-var CommandGlobals = require('../../lib/globals/commands.js');
-var Runner = common.require('runner/run.js');
+const path = require('path');
+const assert = require('assert');
+const common = require('../../common.js');
+const CommandGlobals = require('../../lib/globals/commands.js');
+const Runner = common.require('runner/runner.js');
+const Settings = common.require('settings/settings.js');
 
-module.exports = {
-  'testRunWithExclude' : {
+describe('testRunWithExclude', function() {
 
-    before: function (done) {
-      CommandGlobals.beforeEach.call(this, done);
-    },
+  before(function(done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
 
-    after: function (done) {
-      CommandGlobals.afterEach.call(this, done);
-    },
+  after(function(done) {
+    CommandGlobals.afterEach.call(this, done);
+  });
 
-    testRunWithExcludeFolder: function (done) {
-      var testsPath = path.join(__dirname, '../../sampletests/withexclude');
-      var runner = new Runner([testsPath], {
-        seleniumPort: 10195,
-        silent: true,
-        output: false,
-        globals: {
-        },
-        exclude: ['excluded']
-      }, {
-        output_folder: false,
-        start_session: true
-      }, function (err, results) {
-        assert.ok(!('excluded-module' in results.modules));
-        assert.ok(!('not-excluded' in results.modules));
-        done();
+  it('testRunWithExcludeFolder', function(done) {
+    let testsPath = path.join(__dirname, '../../sampletests/withexclude');
+    let settings = Settings.parse({
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      output: false,
+      globals: {},
+      exclude: ['excluded'],
+      output_folder: false,
+      start_session: true
+    });
+
+    let runner = Runner.create(settings, {
+      reporter: 'junit'
+    });
+
+    return Runner.readTestSource(testsPath, settings)
+      .then(modules => {
+        return runner.run(modules);
+      })
+      .then(_ => {
+        assert.ok(!('excluded-module' in runner.results.modules));
+        assert.ok(!('not-excluded' in runner.results.modules));
+      });
+  });
+
+  it('testRunWithExcludePattern', function(done) {
+    let testsPath = path.join(__dirname, '../../sampletests/withexclude');
+
+    let testPattern = path.join('excluded', 'excluded-*');
+    let settings = Settings.parse({
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      output: false,
+      globals: {},
+      exclude: [testPattern]
+    }, {
+      output_folder: false,
+      start_session: true
+    });
+
+    let runner = Runner.create(settings, {
+      reporter: 'junit'
+    });
+
+    return Runner.readTestSource(testsPath, settings)
+      .then(modules => {
+        return runner.run(modules);
+      })
+      .then(_ => {
+        assert.ok(!('excluded-module' in runner.results.modules));
       });
 
-      runner.run().catch(function (err) {
-        done(err);
+  });
+
+  it('testRunWithExcludeFile', function(done) {
+    let testsPath = path.join(__dirname, '../../sampletests/withexclude');
+    let testPattern = path.join('excluded', 'excluded-module.js');
+
+    let settings = Settings.parse({
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      output: false,
+      globals: {},
+      exclude: [testPattern]
+    }, {
+      output_folder: false,
+      start_session: true
+    });
+
+    let runner = Runner.create(settings, {
+      reporter: 'junit'
+    });
+
+    return Runner.readTestSource(testsPath, settings)
+      .then(modules => {
+        return runner.run(modules);
+      })
+      .then(_ => {
+        assert.ok(!('excluded-module' in runner.results.modules));
+        assert.ok('not-excluded' in runner.results.modules);
       });
-    },
-
-    testRunWithExcludePattern: function (done) {
-      var testsPath = path.join(__dirname, '../../sampletests/withexclude');
-
-      var testPattern = path.join('excluded', 'excluded-*');
-      var runner = new Runner([testsPath], {
-        seleniumPort: 10195,
-        silent: true,
-        output: false,
-        globals: {
-        },
-        exclude: [testPattern]
-      }, {
-        output_folder: false,
-        start_session: true
-      }, function (err, results) {
-        assert.ok(!('excluded-module' in results.modules));
-        done();
-      });
-
-      runner.run().catch(function (err) {
-        done(err);
-      });
-    },
-
-    testRunWithExcludeFile: function (done) {
-      var testsPath = path.join(__dirname, '../../sampletests/withexclude');
-      var testPattern = path.join('excluded', 'excluded-module.js');
-
-      var runner = new Runner([testsPath], {
-        seleniumPort: 10195,
-        silent: true,
-        output: false,
-        globals: {
-        },
-        exclude: [testPattern]
-      }, {
-        output_folder: false,
-        start_session: true
-      }, function (err, results) {
-        assert.ok(!('excluded-module' in results.modules));
-        assert.ok('not-excluded' in results.modules);
-        done();
-      });
-
-      runner.run().catch(function (err) {
-        done(err);
-      });
-    }
-  }
-};
+  });
+});

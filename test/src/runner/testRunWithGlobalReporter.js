@@ -1,88 +1,92 @@
-var path = require('path');
-var assert = require('assert');
-var common = require('../../common.js');
-var CommandGlobals = require('../../lib/globals/commands.js');
-var Runner = common.require('runner/run.js');
+const path = require('path');
+const assert = require('assert');
+const common = require('../../common.js');
+const CommandGlobals = require('../../lib/globals/commands.js');
+const Runner = common.require('runner/runner.js');
+const Settings = common.require('settings/settings.js');
 
-module.exports = {
-  'testRunWithGlobalReporter' : {
+describe('testRunWithGlobalReporter', function() {
+  before(function(done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
 
-    before: function (done) {
-      CommandGlobals.beforeEach.call(this, done);
-    },
+  after(function(done) {
+    CommandGlobals.afterEach.call(this, done);
+  });
 
-    after: function (done) {
-      CommandGlobals.afterEach.call(this, done);
-    },
+  beforeEach(function() {
+    process.removeAllListeners('exit');
+    process.removeAllListeners('uncaughtException');
+  });
 
-    beforeEach: function () {
-      process.removeAllListeners('exit');
-      process.removeAllListeners('uncaughtException');
-    },
+  afterEach(function() {
+    Object.keys(require.cache).forEach(function(module) {
+      delete require.cache[module];
+    });
+  });
 
-    afterEach: function () {
-      Object.keys(require.cache).forEach(function(module) {
-        delete require.cache[module];
-      });
-    },
-
-    testRunWithGlobalReporter: function (done) {
-      var testsPath = path.join(__dirname, '../../sampletests/before-after');
-      var reporterCount = 0;
-      var runner = new Runner([testsPath], {
-        seleniumPort: 10195,
-        silent: true,
-        output: false,
-        globals: {
-          reporter: function (results) {
-            assert.ok('modules' in results);
-            reporterCount++;
-          }
+  it('testRunWithGlobalReporter', function(done) {
+    var testsPath = path.join(__dirname, '../../sampletests/before-after');
+    var reporterCount = 0;
+    let settings = Settings.parse({
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      output: false,
+      globals: {
+        reporter: function(results) {
+          assert.ok('modules' in results);
+          reporterCount++;
         }
-      }, {
-        output_folder: false,
-        start_session: true
-      }, function (err, results) {
-        if (err) {
-          throw err;
-        }
+      },
+      output_folder: false,
+      start_session: true
+    });
+
+    let runner = Runner.create(settings, {});
+
+    return Runner.readTestSource(testsPath, settings)
+      .then(modules => {
+        return runner.run(modules);
+      })
+      .then(_ => {
         assert.equal(reporterCount, 1);
-        done();
       });
+  });
 
-      runner.run().catch(function(err) {
-        done(err);
-      });
-    },
+  it('testRunWithGlobalAsyncReporter', function(done) {
+    var testsPath = path.join(__dirname, '../../sampletests/before-after');
+    var reporterCount = 0;
+    let settings = Settings.parse({
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      output: false,
+      globals: {
+        reporter: function(results, cb) {
+          assert.ok('modules' in results);
+          reporterCount++;
+          cb();
+        }
+      },
+      output_folder: false,
+      start_session: true
+    });
 
-    testRunWithGlobalAsyncReporter: function (done) {
-      var testsPath = path.join(__dirname, '../../sampletests/before-after');
-      var reporterCount = 0;
-      var runner = new Runner([testsPath], {
-        seleniumPort: 10195,
-        silent: true,
-        output: false,
-        globals: {
-          reporter: function (results, cb) {
-            assert.ok('modules' in results);
-            reporterCount++;
-            cb();
-          }
-        }
-      }, {
-        output_folder: false,
-        start_session: true
-      }, function (err, results) {
-        if (err) {
-          throw err;
-        }
+    let runner = Runner.create(settings, {});
+
+    return Runner.readTestSource(testsPath, settings)
+      .then(modules => {
+        return runner.run(modules);
+      })
+      .then(_ => {
         assert.equal(reporterCount, 1);
-        done();
       });
-
-      runner.run().catch(function(err) {
-        done(err);
-      });
-    }
-  }
-};
+  });
+});
