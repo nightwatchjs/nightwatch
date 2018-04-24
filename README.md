@@ -8,7 +8,7 @@ Nightwatch is a complete and integrated solution for end-to-end testing of web a
 
 ***
 
-####[Homepage](http://nightwatchjs.org) | [Getting Started](http://nightwatchjs.org/gettingstarted) | [Developer Guide](http://nightwatchjs.org/guide) | [API Reference](http://nightwatchjs.org/api) | [Blog](http://nightwatchjs.org/blog)
+#### [Homepage](http://nightwatchjs.org) | [Getting Started](http://nightwatchjs.org/gettingstarted) | [Developer Guide](http://nightwatchjs.org/guide) | [API Reference](http://nightwatchjs.org/api) | [Blog](http://nightwatchjs.org/blog)
 
 ### 1. Install Nightwatch
 
@@ -31,21 +31,21 @@ $ npm install
 Nightwatch uses a [WebDriver](https://www.w3.org/TR/webdriver/) compatible server to control the browser. WebDriver is a W3C specification and industry standard which provides a platform and HTTP protocol to interact with a browser.
    
 Nightwatch includes support for automatically managing the following services:
-##### ChromeDriver 
+#### ChromeDriver 
 - for running tests against the Chrome browser;
 - download url: [https://sites.google.com/a/chromium.org/chromedriver/downloads](https://sites.google.com/a/chromium.org/chromedriver/downloads).
 
-##### GeckoDriver
+#### GeckoDriver
 - for running tests against the Mozilla Firefox browser;
 - download url: [https://github.com/mozilla/geckodriver/releases](https://github.com/mozilla/geckodriver/releases).
  
-##### Selenium Standalone Server 
+#### Selenium Standalone Server 
 - allows managing multiple browser configurations in one place and also to make use of the [Selenium Grid](https://github.com/SeleniumHQ/selenium/wiki/Grid2) service;
 - the selenium server jar file `selenium-server-standalone-3.x.x.jar` can be downloaded from the Selenium releases page: https://selenium-release.storage.googleapis.com/index.html
 
 It's important to note that, while the Selenium Server was required with older Nightwatch versions (`v0.9` and prior), starting with version `1.0` Selenium is no longer necessary.
 
-##### Setup Gruides
+#### Setup Guides
 Specific WebDriver setup guides can be found on the [Docs website](http://nightwatchjs.org/gettingstarted/#browser-drivers-setup). Legacy Selenium drivers setup guides along with debugging instructions can be found on the [**Wiki**](https://github.com/nightwatchjs/nightwatch/wiki).
 
 ***
