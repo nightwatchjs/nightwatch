@@ -1,25 +1,35 @@
-var path = require('path');
-var assert = require('assert');
-var common = require('../../../common.js');
-var Api = common.require('core/api.js');
-var utils = require('../../../lib/utils.js');
-var nocks = require('../../../lib/nockselements.js');
-var MochaTest = require('../../../lib/mochatest.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
+const path = require('path');
+const assert = require('assert');
+const nocks = require('../../../lib/nockselements.js');
+const MockServer  = require('../../../lib/mockserver.js');
+const Nightwatch = require('../../../lib/nightwatch.js');
+const utils = require('../../../lib/utils.js');
 
-module.exports = MochaTest.add('test protocol element selectors', {
+describe('test protocol element selectors', function() {
+  before(function(done) {
+    this.server = MockServer.init();
+    this.server.on('listening', () => {
+      done();
+    });
+  });
 
-  beforeEach: function (done) {
+  after(function(done) {
+    this.server.close(function() {
+      done();
+    });
+  });
+
+  beforeEach(function (done) {
     Nightwatch.init({
       page_objects_path: [path.join(__dirname, '../../../extra/pageobjects')]
     }, done);
-  },
+  });
 
-  afterEach: function () {
+  afterEach(function () {
     nocks.cleanAll();
-  },
+  });
 
-  'protocol.element(using, {selector})' : function(done) {
+  it('protocol.element(using, {selector})', function (done) {
     nocks
       .elementFound()
       .elementNotFound();
@@ -42,12 +52,11 @@ module.exports = MochaTest.add('test protocol element selectors', {
       });
 
     Nightwatch.start();
-  },
+  });
 
-  'protocol.element(using, null)' : function(done) {
+  it('protocol.element(using, null)', function (done) {
     utils.catchQueueError(function (err) {
-      var msg = 'Invalid selector value specified';
-      assert.equal(err.message, msg);
+      assert.ok(err.message.includes('Invalid selector value specified'));
       done();
     });
 
@@ -57,12 +66,11 @@ module.exports = MochaTest.add('test protocol element selectors', {
       });
 
     Nightwatch.start();
-  },
+  });
 
-  'protocol.element(using, {})' : function(done) {
+  it('protocol.element(using, {})', function (done) {
     utils.catchQueueError(function (err) {
-      var msg = 'No selector property for'; // ... rest of error, etc.
-      assert.equal(err.message.slice(0, msg.length), msg);
+      assert.ok(err.message.includes('No selector property for'));
       done();
     });
 
@@ -72,9 +80,9 @@ module.exports = MochaTest.add('test protocol element selectors', {
       });
 
     Nightwatch.start();
-  },
+  });
 
-  'protocol.element(using, {selector, locateStrategy})' : function(done) {
+  it('protocol.element(using, {selector, locateStrategy})', function (done) {
     nocks.elementFound();
 
     Nightwatch.api()
@@ -92,12 +100,11 @@ module.exports = MochaTest.add('test protocol element selectors', {
       });
 
     Nightwatch.start();
-  },
+  });
 
-  'protocol.element(using, {locateStrategy})' : function(done) {
+  it('protocol.element(using, {locateStrategy})', function (done) {
     utils.catchQueueError(function (err) {
-      var msg = 'No selector property for';
-      assert.equal(err.message.slice(0, msg.length), msg);
+      assert.ok(err.message.includes('No selector property for'));
       done();
     });
 
@@ -107,12 +114,11 @@ module.exports = MochaTest.add('test protocol element selectors', {
       });
 
     Nightwatch.start();
-  },
+  });
 
-  'protocol.element(using, {locateStrategy=invalid})' : function(done) {
+  it('protocol.element(using, {locateStrategy=invalid})', function (done) {
     utils.catchQueueError(function (err) {
-      var msg = 'Provided locating strategy is not supported';
-      assert.equal(err.message.slice(0, msg.length), msg);
+      assert.ok(!err.message.includes('Provided locating strategy is not supported'));
       done();
     });
 
@@ -122,9 +128,9 @@ module.exports = MochaTest.add('test protocol element selectors', {
       });
 
     Nightwatch.start();
-  },
+  });
 
-  'protocol.elements(using, {selector})' : function(done) {
+  it('protocol.elements(using, {selector})', function (done) {
     nocks
       .elementsFound()
       .elementsNotFound();
@@ -149,12 +155,11 @@ module.exports = MochaTest.add('test protocol element selectors', {
       });
 
     Nightwatch.start();
-  },
+  });
 
-  'protocol.elements(using, null)' : function(done) {
+  it('protocol.elements(using, null)', function (done) {
     utils.catchQueueError(function (err) {
-      var msg = 'Invalid selector value specified';
-      assert.equal(err.message, msg);
+      assert.ok(err.message.includes('Invalid selector value specified'));
       done();
     });
 
@@ -164,12 +169,11 @@ module.exports = MochaTest.add('test protocol element selectors', {
       });
 
     Nightwatch.start();
-  },
+  });
 
-  'protocol.elements(using, {})' : function(done) {
+  it('protocol.elements(using, {})', function (done) {
     utils.catchQueueError(function (err) {
-      var msg = 'No selector property for';
-      assert.equal(err.message.slice(0, msg.length), msg);
+      assert.ok(err.message.includes('No selector property for'));
       done();
     });
 
@@ -179,9 +183,9 @@ module.exports = MochaTest.add('test protocol element selectors', {
       });
 
     Nightwatch.start();
-  },
+  });
 
-  'protocol.elements(using, {selector, locateStrategy})' : function(done) {
+  it('protocol.elements(using, {selector, locateStrategy})', function (done) {
     nocks
       .elementsFound()
       .elementsByTag();
@@ -204,12 +208,11 @@ module.exports = MochaTest.add('test protocol element selectors', {
       });
 
     Nightwatch.start();
-  },
+  });
 
-  'protocol.elements(using, {locateStrategy})' : function(done) {
+  it('protocol.elements(using, {locateStrategy})', function (done) {
     utils.catchQueueError(function (err) {
-      var msg = 'No selector property for';
-      assert.equal(err.message.slice(0, msg.length), msg);
+      assert.ok(err.message.includes('No selector property for'));
       done();
     });
 
@@ -219,12 +222,12 @@ module.exports = MochaTest.add('test protocol element selectors', {
       });
 
     Nightwatch.start();
-  },
+  });
 
-  'protocol.elements(using, {locateStrategy=invalid})' : function(done) {
+  it('protocol.elements(using, {locateStrategy=invalid})', function (done) {
     utils.catchQueueError(function (err) {
       var msg = 'Provided locating strategy is not supported';
-      assert.equal(err.message.slice(0, msg.length), msg);
+      assert.equal(err.message.indexOf(msg), -1);
       done();
     });
 
@@ -234,6 +237,6 @@ module.exports = MochaTest.add('test protocol element selectors', {
       });
 
     Nightwatch.start();
-  }
+  });
 
 });

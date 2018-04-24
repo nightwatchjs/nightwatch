@@ -8,7 +8,7 @@ module.exports = {
   _requestUri: 'http://localhost:10195',
   _protocolUri: '/wd/hub/session/1352110219202/',
 
-  elementFound : function(selector, using, foundElem) {
+  elementFound(selector, using, foundElem) {
     nock(this._requestUri)
       .persist()
       .post(this._protocolUri + 'element', {'using':using || 'css selector','value':selector || '#nock'})
@@ -20,7 +20,7 @@ module.exports = {
     return this;
   },
 
-  elementsFound : function(selector, foundArray, using) {
+  elementsFound(selector, foundArray, using) {
     nock(this._requestUri)
       .persist()
       .post(this._protocolUri + 'elements', {'using':using || 'css selector','value':selector || '.nock'})
@@ -32,7 +32,7 @@ module.exports = {
     return this;
   },
 
-  elementNotFound : function(selector) {
+  elementNotFound(selector) {
     nock(this._requestUri)
       .persist()
       .post(this._protocolUri + 'element', {'using':'css selector','value':selector || '#nock-none'})
@@ -45,7 +45,7 @@ module.exports = {
     return this;
   },
 
-  elementsNotFound : function(selector) {
+  elementsNotFound(selector) {
     nock(this._requestUri)
       .persist()
       .post(this._protocolUri + 'elements', {'using':'css selector','value':selector || '.nock-none'})
@@ -57,7 +57,7 @@ module.exports = {
     return this;
   },
 
-  elementByXpath : function(selector, foundElem) {
+  elementByXpath(selector, foundElem) {
     nock(this._requestUri)
       .persist()
       .post(this._protocolUri + 'element', {'using':'xpath','value':selector || '//[@id="nock"]'})
@@ -69,19 +69,19 @@ module.exports = {
     return this;
   },
 
-  elementsByXpath : function(selector, foundArray) {
+  elementsByXpath(selector = '//[@class="nock"]', foundArray = [{ELEMENT: '0'}, {ELEMENT: '1'}, {ELEMENT: '2'}]) {
     nock(this._requestUri)
       .persist()
-      .post(this._protocolUri + 'elements', {'using':'xpath','value':selector || '//[@class="nock"]'})
+      .post(this._protocolUri + 'elements', {'using':'xpath','value':selector})
       .reply(200, {
         status: 0,
         state: 'success',
-        value: foundArray || [ { ELEMENT: '0' }, { ELEMENT: '1' }, { ELEMENT: '2' } ]
+        value: foundArray
       });
     return this;
   },
 
-  elementId : function (id, selector, using, foundElem) {
+  elementId (id, selector, using, foundElem) {
     nock(this._requestUri)
       .persist()
       .post(this._protocolUri + 'element/' + (id || 0) + '/element',
@@ -94,20 +94,23 @@ module.exports = {
     return this;
   },
 
-  elementsId : function (id, selector, foundArray, using) {
+  elementsId(id = 0, selector = '.nock', foundArray = [{ELEMENT: '0'}, {ELEMENT: '1'}, {ELEMENT: '2'}], using = 'css selector') {
     nock(this._requestUri)
       .persist()
-      .post(this._protocolUri + 'element/' + (id || 0) + '/elements',
-        {'using':using || 'css selector','value':selector || '.nock'})
+      .post(this._protocolUri + 'element/' + id + '/elements', {
+        using: using,
+        value: selector
+      })
       .reply(200, {
         status: 0,
         state : 'success',
-        value: foundArray || [ { ELEMENT: '0' }, { ELEMENT: '1' }, { ELEMENT: '2' } ]
+        value: foundArray
       });
+
     return this;
   },
 
-  elementIdNotFound : function (id, selector, using) {
+  elementIdNotFound (id, selector, using) {
     nock(this._requestUri)
       .persist()
       .post(this._protocolUri + 'element/' + (id || 0) + '/element',
@@ -118,10 +121,11 @@ module.exports = {
         errorStatus: 7,
         error: 'An element could not be located on the page using the given search parameters.'
       });
+
     return this;
   },
 
-  elementsByTag : function(selector, foundArray) {
+  elementsByTag(selector, foundArray) {
     nock(this._requestUri)
       .persist()
       .post(this._protocolUri + 'elements', {'using':'tag name','value':selector || 'nock'})
@@ -133,7 +137,7 @@ module.exports = {
     return this;
   },
 
-  text : function (id, value) {
+  text (id, value) {
     nock(this._requestUri)
       .persist()
       .get(this._protocolUri + 'element/' + (id || 0) + '/text')

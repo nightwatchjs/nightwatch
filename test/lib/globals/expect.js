@@ -19,8 +19,9 @@ module.exports = {
     this.client = Nightwatch.client();
   },
 
-  afterEach() {
+  afterEach(done) {
     Nocks.deleteSession();
     Nocks.disable();
+    done();
   }
 };
