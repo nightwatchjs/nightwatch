@@ -8,6 +8,15 @@ UI automated testing framework powered by [Node.js](http://nodejs.org/). It uses
 
 #### [Homepage](http://nightwatchjs.org) | [Getting Started](http://nightwatchjs.org/gettingstarted) | [Developer Guide](http://nightwatchjs.org/guide) | [API Reference](http://nightwatchjs.org/api) | [Changelog](https://github.com/nightwatchjs/nightwatch/releases)
 
+### Nightwatch v1.0
+We're delighted to announce the release of Nightwatch v1.0 in BETA. To install it run: 
+
+```sh
+$ npm install nightwatch@1.0.3
+```
+
+Also please have a look at the [releases/v1.0](https://github.com/nightwatchjs/nightwatch/tree/releases/v1.0) branch.
+
 ### Selenium WebDriver standalone server
 Nightwatch works with the Selenium standalone server so the first thing you need to do is download the selenium server jar file `selenium-server-standalone-3.x.x.jar` from the Selenium releases page:
 **https://selenium-release.storage.googleapis.com/index.html**
