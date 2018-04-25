@@ -26,19 +26,12 @@ describe('client.keys()', function() {
       commandName: 'keys',
       args: ['A']
     });
-
-
-    // var command = protocol.keys('A', function callback() {
-    //   done();
-    // });
-    //
-    // assert.equal(command.data, '{"value":["A"]}');
   });
 
   it('testKeysUnicode', function () {
     Globals.protocolTest.call(this, {
       assertion: function(opts) {
-        assert.deepEqual(opts.data, { value: [ "" ] });
+        assert.deepEqual(opts.data, {value: ['']});
       },
       commandName: 'keys',
       args: ['\uE007']

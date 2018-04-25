@@ -1,5 +1,5 @@
 const assert = require('assert');
-const Nocks = require('../../../lib/Nocks.js');
+const Nocks = require('../../../lib/nocks.js');
 const ExpectGlobals = require('../../../lib/globals/expect.js');
 
 describe('expect.visible', function() {

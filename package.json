@@ -41,7 +41,7 @@
   },
   "man": "",
   "scripts": {
-    "eslint": "eslint lib --quiet",
+    "eslint": "eslint lib test --quiet",
     "mocha-coverage": "nyc --reporter=html mocha test/src/",
     "test": "mocha test/src",
     "coverage": "nyc report --reporter=text-lcov | coveralls"

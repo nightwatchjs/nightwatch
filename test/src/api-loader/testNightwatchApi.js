@@ -64,7 +64,7 @@ describe('test Nightwatch Api', function() {
   it('testLoadCustomAssertionsBadFolder', function() {
     mockery.registerMock('../core/queue.js', {
       add(commandName, command, context, args, originalStackTrace) {
-        done();
+
       }
     });
 

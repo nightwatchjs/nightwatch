@@ -645,7 +645,6 @@ describe('Test CLI Runner', function() {
           case 'tests/demoGroup2':
           case 'tests1/demoGroup1':
           case 'tests1/demoGroup2':
-          // no tests2/demoGroup1
           case 'tests2/demoGroup2':
             return {
               isDirectory: function() {
