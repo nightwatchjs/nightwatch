@@ -1,7 +1,7 @@
 {
   "name": "nightwatch",
   "description": "Easy to use Node.js based End-to-End testing solution for browser based apps and websites, using the W3C WebDriver API.",
-  "version": "0.9.20",
+  "version": "0.9.22",
   "author": {
     "name": "Andrei Rusu",
     "email": "andrei@nightwatchjs.org"
@@ -23,7 +23,7 @@
     "mkpath": "1.0.0",
     "mocha-nightwatch": "3.2.2",
     "optimist": "0.6.1",
-    "proxy-agent": "2.0.0",
+    "proxy-agent": "2.3.0",
     "q": "1.4.1"
   },
   "devDependencies": {
