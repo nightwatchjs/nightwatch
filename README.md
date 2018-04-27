@@ -10,7 +10,18 @@ Nightwatch is a complete and integrated solution for end-to-end testing of web a
 
 #### [Homepage](http://nightwatchjs.org) | [Getting Started](http://nightwatchjs.org/gettingstarted) | [Developer Guide](http://nightwatchjs.org/guide) | [API Reference](http://nightwatchjs.org/api) | [Blog](http://nightwatchjs.org/blog)
 
-### 1. Install Nightwatch
+## Nightwatch v1.0
+We're delighted to announce the release of Nightwatch v1.0 in BETA. Documentation and other updates will follow soon on the [homepage](http://nightwatchjs.org). 
+
+To install it run: 
+
+```sh
+$ npm install nightwatch@1.0.3
+```
+
+__Please try out the new version and let us know of any issues.__ 
+
+## 1. Install Nightwatch
 
 Install __Node.js__ (together with the NPM tool) by following instructions available on [nodejs.org](https://nodejs.org).
 
@@ -26,33 +37,36 @@ $ cd nightwatch
 $ npm install
 ```
 
-### 2. Download WebDriver
+## 2. Download WebDriver
 
 Nightwatch uses a [WebDriver](https://www.w3.org/TR/webdriver/) compatible server to control the browser. WebDriver is a W3C specification and industry standard which provides a platform and HTTP protocol to interact with a browser.
    
 Nightwatch includes support for automatically managing the following services:
-#### ChromeDriver 
+### ChromeDriver 
 - for running tests against the Chrome browser;
 - download url: [https://sites.google.com/a/chromium.org/chromedriver/downloads](https://sites.google.com/a/chromium.org/chromedriver/downloads).
 
-#### GeckoDriver
+### GeckoDriver
 - for running tests against the Mozilla Firefox browser;
 - download url: [https://github.com/mozilla/geckodriver/releases](https://github.com/mozilla/geckodriver/releases).
  
-#### Selenium Standalone Server 
+### Selenium Standalone Server 
 - allows managing multiple browser configurations in one place and also to make use of the [Selenium Grid](https://github.com/SeleniumHQ/selenium/wiki/Grid2) service;
 - the selenium server jar file `selenium-server-standalone-3.x.x.jar` can be downloaded from the Selenium releases page: https://selenium-release.storage.googleapis.com/index.html
 
 It's important to note that, while the Selenium Server was required with older Nightwatch versions (`v0.9` and prior), starting with version `1.0` Selenium is no longer necessary.
 
-#### Setup Guides
+### Setup Guides
 Specific WebDriver setup guides can be found on the [Docs website](http://nightwatchjs.org/gettingstarted/#browser-drivers-setup). Legacy Selenium drivers setup guides along with debugging instructions can be found on the [**Wiki**](https://github.com/nightwatchjs/nightwatch/wiki).
 
 ***
-### Example tests
-Various example tests are included in the [`examples`](https://github.com/nightwatchjs/nightwatch/tree/releases/v1.0/examples) folder which demonstrate the usage of several Nightwatch features. A sample [`nightwatch.json`](https://github.com/nightwatchjs/nightwatch/blob/releases/v1.0/bin/nightwatch.json) config file can be found in `bin` folder.
+## Example tests
+Various example tests are included in the [`examples`](https://github.com/nightwatchjs/nightwatch/tree/master/examples) folder which demonstrate the usage of several Nightwatch features. 
 
-### Running the Nightwatch unit tests
+## Example configuration
+A sample [`nightwatch.json`](https://github.com/nightwatchjs/nightwatch/blob/master/bin/nightwatch.json) config file can be found in `bin` folder.
+
+### Nightwatch unit tests
 The tests for Nightwatch are written using [Mocha](http://mochajs.org/).
 
 To run the complete test suite:
