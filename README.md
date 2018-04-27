@@ -12,7 +12,7 @@ UI automated testing framework powered by [Node.js](http://nodejs.org/). It uses
 We're delighted to announce the release of Nightwatch v1.0 in BETA. To install it run: 
 
 ```sh
-$ npm install nightwatch@1.0.3
+$ npm install --save-dev nightwatch@1.0.3
 ```
 
 Also please have a look at the [releases/v1.0](https://github.com/nightwatchjs/nightwatch/tree/releases/v1.0) branch.
