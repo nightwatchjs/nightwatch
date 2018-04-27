@@ -37,7 +37,12 @@ describe('url', function() {
       },
       commandName: 'url',
       args: [function() {
-        done();
+        try {
+          assert.equal(this.toString(), 'Nightwatch API');
+          done();
+        } catch (err) {
+          done(err);
+        }
       }]
     });
   });
