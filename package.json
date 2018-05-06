@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "assertion-error": "^1.1.0",
-    "chai": "^4.1.2",
     "chai-nightwatch": "~0.1.x",
     "ejs": "^2.5.9",
     "lodash.clone": "^3.0.3",
@@ -28,6 +27,7 @@
     "proxy-agent": "^3.0.0"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
     "coveralls": "^3.0.0",
     "eslint": "^3.17.1",
     "mock-spawn": "^0.2.1",
