@@ -1,8 +1,8 @@
 const assert = require('assert');
 const common = require('../../common.js');
-const HttpRequest = common.require('http/request.js');
 const MockServer = require('../../lib/mockserver.js');
 const Nightwatch = require('../../lib/nightwatch.js');
+const HttpRequest = common.require('http/request.js');
 
 describe('test NightwatchIndex', function () {
   beforeEach(function (done) {

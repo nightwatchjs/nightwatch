@@ -100,6 +100,9 @@ describe('clearValue', function() {
         version2: false,
         start_process: false
       },
+      webdriver:{
+        start_process: true
+      },
       silent: false,
       output: false
     }).then(client => {

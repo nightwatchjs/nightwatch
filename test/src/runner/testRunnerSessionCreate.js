@@ -58,6 +58,9 @@ describe('testRunnerSessionCreate', function() {
         version2: false,
         start_process: false
       },
+      webdriver: {
+        start_process: true
+      },
       output: false,
       silent: false,
       globals: globals,

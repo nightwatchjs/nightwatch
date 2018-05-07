@@ -18,3 +18,4 @@ output
 /bin/geckodriver*
 /coverage/
 /.nyc_output/
+screenshot.png
