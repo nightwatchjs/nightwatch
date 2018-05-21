@@ -1,1 +1,1 @@
-throw new Error('An error in a user file');
+throw new Error('Error thrown in a user file');

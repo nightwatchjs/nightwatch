@@ -9,7 +9,7 @@
     "server_path" : "./bin/selenium-server.jar"
   },
   "test_runner" : "mocha",
-  "test_settings" : {
+  "test_settings": {
     "default" : {
       "selenium_port" : 10195,
       "silent" : true,
@@ -17,7 +17,6 @@
       "globals" : {},
       "desiredCapabilities" : {
         "browserName" : "firefox",
-        "javascriptEnabled" : true,
         "acceptSslCerts" : true
       }
     }

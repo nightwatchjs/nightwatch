@@ -1,20 +1,20 @@
 var failFirstTime = true;
 
 module.exports = {
-  before: function (client) {
+  before(client) {
     client.url('http://localhost')
   },
 
-  after: function (client) {
+  after(client) {
     client.end();
   },
 
-  demoStep1 : function (client) {
+  demoStep1(client) {
     client
       .assert.elementPresent('#weblogin')
       .elements('css selector', '#weblogin', function() {
         if (failFirstTime) {
-          client.useRecursion();
+          client.useXpath();
         }
       })
       .perform(function() {

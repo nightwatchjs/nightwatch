@@ -13,7 +13,7 @@ module.exports = {
 
   // this will cause waitFor commands on elements to throw an error if multiple
   // elements are found using the given locate strategy and selector
-  throwOnMultipleElementsReturned : true,
+  throwOnMultipleElementsReturned : false,
 
   // controls the timeout time for async hooks. Expects the done() callback to be invoked within this time
   // or an error is thrown
@@ -33,23 +33,33 @@ module.exports = {
   },
 
   before : function(cb) {
+    //console.log('GLOBAL BEFORE')
     cb();
   },
 
   beforeEach : function(browser, cb) {
+    //console.log('GLOBAL beforeEach')
     cb();
   },
 
   after : function(cb) {
+    //console.log('GLOBAL AFTER')
     cb();
   },
 
   afterEach : function(browser, cb) {
-    cb();
+    browser.perform(function() {
+      console.log('GLOBAL afterEach')
+
+
+        cb();
+
+
+    })
+
   },
 
   reporter : function(results, cb) {
-    //console.log(results);
     cb();
   }
 };

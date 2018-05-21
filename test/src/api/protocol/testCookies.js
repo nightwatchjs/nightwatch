@@ -1,75 +1,68 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var MockServer = require('../../../lib/mockserver.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = MochaTest.add('cookie commands', {
-  beforeEach: function () {
-    this.client = Nightwatch.client();
-    this.protocol = common.require('api/protocol.js')(this.client);
-  },
+describe('cookie commands', function() {
+  before(function() {
+    Globals.protocolBefore.call(this);
+  });
 
-  testCookieGet: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.cookie('GET', function callback() {
-      done();
+  it('testCookieGet', function () {
+    Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202/cookie');
+      },
+      commandName: 'cookie',
+      args: ['GET']
     });
+  });
 
-    assert.equal(command.request.method, 'GET');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/cookie');
-  },
-
-  testCookiePost: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.cookie('POST', {name: 'test_cookie'}, function callback() {
-      done();
+  it('testCookiePost', function () {
+    Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/cookie');
+        assert.deepEqual(opts.data, {cookie: {name: 'test_cookie'}});
+      },
+      commandName: 'cookie',
+      args: ['POST', {name: 'test_cookie'}]
     });
+  });
 
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.data, '{"cookie":{"name":"test_cookie"}}');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/cookie');
-  },
-
-  testCookieDeleteAll: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.cookie('DELETE', function callback() {
-      done();
+  it('testCookieDeleteAll', function () {
+    Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'DELETE');
+        assert.equal(opts.path, '/session/1352110219202/cookie');
+      },
+      commandName: 'cookie',
+      args: ['DELETE']
     });
+  });
 
-    assert.equal(command.request.method, 'DELETE');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/cookie');
-  },
-
-  testCookieDeleteOne: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.cookie('DELETE', 'test_cookie', function callback() {
-      done();
+  it('testCookieDeleteOne', function () {
+    Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'DELETE');
+        assert.equal(opts.path, '/session/1352110219202/cookie/test_cookie');
+      },
+      commandName: 'cookie',
+      args: ['DELETE', 'test_cookie']
     });
+  });
 
-    assert.equal(command.request.method, 'DELETE');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/cookie/test_cookie');
-  },
-
-  testCookieErrors: function () {
+  it('testCookieErrors', function () {
     var protocol = this.protocol;
 
     assert.throws(
       function () {
         protocol.cookie('POST');
-      }, 'POST method without a cookie param throws an error'
-    );
+      }); 'POST method without a cookie param throws an error'
 
     assert.throws(
       function () {
         protocol.window('PUT');
-      }, 'PUT method throws an error'
-    );
-
-  }
+      }); 'PUT method throws an error'
+  });
 
 });

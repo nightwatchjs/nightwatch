@@ -1,45 +1,57 @@
-var assert = require('assert');
-var path = require('path');
-var common = require('../../common.js');
-var Reporter = common.require('runner/reporter.js');
+const assert = require('assert');
+const path = require('path');
+const common = require('../../common.js');
+const Reporter = common.require('runner/global-reporter.js');
 
-module.exports = {
-  'testReporter' : {
-    'test with unknown reporter' : function() {
+describe('testReporter', function() {
 
-      var reporter = new Reporter({}, {}, null, {
-        reporter : 'unknown'
+  it('test with unknown reporter', function() {
+    let reporter = new Reporter('unknown', {
+      globals: {
+        reporter(results, done) {
+          done();
+        }
+      },
+      output_folder: 'output'
+    });
+
+    return reporter.loadFile()
+      .catch(err => {
+        assert.ok(err instanceof Error);
+        assert.equal(err.message, 'The custom reporter file name "unknown" cannot be resolved.')
       });
+  });
 
-      assert.throws(function() {
-        reporter.get();
+  it('test with invalid reporter', function() {
+    let reporter = new Reporter(path.join(__dirname, '../../extra/reporter/notvalid.js'), {
+      globals: {
+        reporter(results, done) {
+          done();
+        }
+      },
+      output_folder: 'output'
+    });
+
+    return reporter.loadFile()
+      .catch(err => {
+        assert.equal(err.message, 'The reporter module must have a public ".write()" method defined.')
       });
-    },
+  });
 
-    'test with not valid reporter' : function() {
+  it('test with valid reporter', function() {
 
-      var reporter = new Reporter({}, {}, null, {
-        reporter : path.join(__dirname, '../../extra/reporter/notvalid.js')
-      });
+    let reporter = new Reporter(path.join(__dirname, '../../extra/reporter/custom.js'), {
+      globals: {
+        reporter(results, done) {
+          done();
+        }
+      },
+      output_folder: 'output'
+    });
 
-      assert.throws(function() {
-        reporter.get();
-      }, 'The reporter module must have a public `write` method defined.');
-    },
-
-    'test with valid reporter' : function(done) {
-
-      var reporter = new Reporter({}, {}, null, {
-        reporter : path.join(__dirname, '../../extra/reporter/custom.js'),
-        output_folder : 'output'
-      });
-
-      reporter.save().then(function(err) {
-        assert.equal(err, null);
-        done();
-      }).catch(function(err) {
-        done(err);
-      })
-    }
-  }
-};
+    return reporter.save().then(function(result) {
+      assert.ok(Array.isArray(result));
+      assert.equal(result.length, 2);
+    });
+  });
+});
