@@ -211,9 +211,9 @@ describe('testRunTestSuite', function() {
 
     let globals = {
       reporter(results, cb) {
-        assert.ok('simple/sample' in results.modules);
+        assert.ok('test/sample' in results.modules);
         assert.ok('mixed/sample' in results.modules);
-        assert.ok('demoTest' in results.modules['simple/sample'].completed);
+        assert.ok('demoTest' in results.modules['test/sample'].completed);
         assert.ok('demoTestMixed' in results.modules['mixed/sample'].completed);
 
         cb();
@@ -254,8 +254,8 @@ describe('testRunTestSuite', function() {
           if (results.lastError) {
             throw results.lastError;
           }
-          assert.ok('simple/sample' in results.modules);
-          assert.ok('demoTest' in results.modules['simple/sample'].completed);
+          assert.ok('test/sample' in results.modules);
+          assert.ok('demoTest' in results.modules['test/sample'].completed);
           assert.ok('srcfolders/other_sample' in results.modules);
           cb();
         }

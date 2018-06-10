@@ -16,11 +16,8 @@ describe('test Parallel Execution', function() {
         allArgs.push(args);
         allOpts.push(opts);
 
-        function Stdout() {
-        }
-
-        function Stderr() {
-        }
+        function Stdout() {}
+        function Stderr() {}
 
         util.inherits(Stdout, events.EventEmitter);
         util.inherits(Stderr, events.EventEmitter);
@@ -168,16 +165,16 @@ describe('test Parallel Execution', function() {
   });
 
   it('test parallel execution with workers and single source file', function() {
+    const WebDriver = common.require('runner/webdriver-server.js');
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: path.join(__dirname, '../../../extra/parallelism.json'),
-      _source: [path.join(__dirname, '../../../sampletests/async/sample.js')]
+      _source: [path.join(__dirname, '../../../sampletests/async/test/sample.js')]
     });
 
     runner.setup();
 
-    return runner.runTests().then(_ => {
-      assert.equal(allArgs.length, 0);
-    });
+    assert.strictEqual(runner.isConcurrencyEnabled([runner.argv._source]), false);
+
   });
 });

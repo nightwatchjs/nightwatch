@@ -224,6 +224,7 @@ describe('testRunTestcase', function() {
         version2: true,
         start_process: true
       },
+      silent: false,
       globals: globals,
       output: false,
       persist_globals: true,

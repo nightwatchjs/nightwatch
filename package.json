@@ -30,10 +30,10 @@
     "chai": "^4.1.2",
     "coveralls": "^3.0.0",
     "eslint": "^3.17.1",
+    "mocha": "^5.1.1",
     "mock-spawn": "^0.2.1",
     "mockery": "~1.4.0",
     "nock": "^9.1.4",
-    "mocha": "^5.1.1",
     "nyc": "^11.6.0"
   },
   "optionalDependencies": {

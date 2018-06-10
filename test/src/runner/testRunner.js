@@ -58,8 +58,8 @@ describe('testRunner', function() {
     let testsPath = path.join(__dirname, '../../sampletests/simple');
     let globals = {
       reporter(results) {
-        assert.ok('sample' in results.modules);
-        assert.ok('demoTest' in results.modules.sample.completed);
+        assert.ok('test/sample' in results.modules);
+        assert.ok('demoTest' in results.modules['test/sample'].completed);
 
         if (results.lastError) {
           throw results.lastError;

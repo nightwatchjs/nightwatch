@@ -49,7 +49,7 @@ describe('test Parallel Execution Exit Code', function() {
         return [0, 1, 2];
       }
     });
-  })
+  });
 
   afterEach(function() {
     mockery.deregisterAll();

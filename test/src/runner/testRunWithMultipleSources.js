@@ -26,7 +26,7 @@ describe('testRunWithMultipleSources', function() {
 
   it('testRunWithMultipleSourceFiles', function() {
     let testsPath = [
-      path.join(__dirname, '../../sampletests/async/sample.js'),
+      path.join(__dirname, '../../sampletests/async/test/sample.js'),
       path.join(__dirname, '../../sampletests/before-after/sampleSingleTest.js')
     ];
     let globals = {
@@ -57,7 +57,7 @@ describe('testRunWithMultipleSources', function() {
 
   it('testRunWithSourceFilesAndFolders', function() {
     let testsPath = [
-      path.join(__dirname, '../../sampletests/async/sample.js'),
+      path.join(__dirname, '../../sampletests/async/test/sample.js'),
       path.join(__dirname, '../../sampletests/before-after/')
     ];
 
@@ -98,8 +98,8 @@ describe('testRunWithMultipleSources', function() {
     let globals = {
       calls: 0,
       reporter(results) {
-        assert.ok('async/sample' in results.modules);
-        assert.ok('simple/sample' in results.modules);
+        assert.ok('async/test/sample' in results.modules);
+        assert.ok('simple/test/sample' in results.modules);
         assert.equal(Object.keys(results.modules).length, 2);
       }
     };
@@ -144,7 +144,7 @@ describe('testRunWithMultipleSources', function() {
     let globals = {
       calls: 0,
       reporter(results) {
-        assert.ok('async/sample' in results.modules);
+        assert.ok('test/sample' in results.modules);
         assert.ok('unittests/sample' in results.modules);
         assert.ok('unittests/sampleAnnotation' in results.modules);
         assert.equal(Object.keys(results.modules).length, 3);

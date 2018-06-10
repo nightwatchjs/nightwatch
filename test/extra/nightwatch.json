@@ -20,7 +20,7 @@
         "browserName" : "firefox",
         "acceptSslCerts" : true
       },
-      "filter" : ["async/*"]
+      "filter" : ["async/**"]
     },
 
     "mixed" : {

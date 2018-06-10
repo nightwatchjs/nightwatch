@@ -151,7 +151,7 @@ describe('testRunWithTags', function() {
       _source: [testsPath],
       skiptags: ['login']
     }, settings).catch(err => {
-      assert.ok(err.message.includes('No tests defined! using source folder'));
+      assert.ok(err.message.includes('No tests defined! using source folder'), err.message + '\n' + err.stack);
       assert.ok(err.detailedErr.includes('- using tags filter: other'));
       assert.ok(err.detailedErr.includes('- using skiptags filter: login'));
     });

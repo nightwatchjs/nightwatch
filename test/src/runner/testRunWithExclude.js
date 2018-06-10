@@ -20,7 +20,7 @@ describe('testRunWithExclude', function() {
   });
 
   it('testRunWithExcludeFolder', function() {
-    let originalCwd = process.cwd();
+    const originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../sampletests/'));
 
     let testsPath = ['./withexclude'];
@@ -52,7 +52,7 @@ describe('testRunWithExclude', function() {
   });
 
   it('testRun with exclude folder name and multiple src_folders', function() {
-    let originalCwd = process.cwd();
+    const originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../sampletests/'));
 
     let srcFolders = ['./withexclude/excluded', './withexclude/simple'];
@@ -83,7 +83,7 @@ describe('testRunWithExclude', function() {
   });
 
   it('testRun with exclude folder pattern and multiple src_folders', function() {
-    let originalCwd = process.cwd();
+    const originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../sampletests/'));
 
     let srcFolders = ['./withexclude/excluded', './withexclude/simple'];
@@ -114,7 +114,7 @@ describe('testRunWithExclude', function() {
   });
 
   it('testRun with filter folder name and multiple src_folders', function() {
-    let originalCwd = process.cwd();
+    const originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../sampletests/'));
 
     let srcFolders = ['./withexclude/excluded', './withexclude/simple'];
@@ -145,7 +145,7 @@ describe('testRunWithExclude', function() {
   });
 
   it('testRun with filter pattern and multiple src_folders', function() {
-    let originalCwd = process.cwd();
+    const originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../sampletests/'));
 
     let srcFolders = ['./withexclude/excluded', './withexclude/simple'];
@@ -176,7 +176,7 @@ describe('testRunWithExclude', function() {
   });
 
   it('testRun with filter pattern relative and single src_folders', function() {
-    let originalCwd = process.cwd();
+    const originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../sampletests/'));
 
     let srcFolders = ['./withexclude'];
@@ -207,7 +207,7 @@ describe('testRunWithExclude', function() {
   });
 
   it('testRun with both filter and exclude patterns and single src_folder', function() {
-    let originalCwd = process.cwd();
+    const originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../sampletests/'));
 
     let srcFolders = ['./withexclude'];
@@ -239,7 +239,7 @@ describe('testRunWithExclude', function() {
   });
 
   it('testRunWithExcludePattern', function() {
-    let originalCwd = process.cwd();
+    const originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../sampletests/'));
 
     let testsPath = ['./withexclude'];
@@ -274,10 +274,13 @@ describe('testRunWithExclude', function() {
   });
 
   it('testRunWithExcludeFile', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withexclude');
-    let testPattern = path.join('excluded', 'excluded-module.js');
+    const originalCwd = process.cwd();
+    const testsPath = path.join(__dirname, '../../sampletests/withexclude');
+    const testPattern = path.join('withexclude', 'excluded', 'excluded-module.js');
 
-    let settings = {
+    process.chdir(path.join(__dirname, '../../sampletests/'));
+
+    const settings = {
       selenium: {
         port: 10195,
         version2: true,
@@ -287,10 +290,10 @@ describe('testRunWithExclude', function() {
       output: false,
       globals: {
         reporter(results, cb) {
-          assert.ok(!('excluded-module' in results.modules));
+          assert.ok(!('excluded/excluded-module' in results.modules));
           assert.ok('excluded/not-excluded' in results.modules);
           assert.ok('simple/sample' in results.modules);
-
+          process.chdir(originalCwd);
           cb();
         }
       },

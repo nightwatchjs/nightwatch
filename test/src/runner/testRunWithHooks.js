@@ -87,8 +87,8 @@ describe('testRunWithHooks', function() {
       calls: 0,
       reporter(results) {
         assert.equal(globals.calls, 2);
-        assert.ok('sample' in results.modules);
-        assert.ok('demoTestAsync' in results.modules.sample.completed);
+        assert.ok('test/sample' in results.modules);
+        assert.ok('demoTestAsync' in results.modules['test/sample'].completed);
       }
     };
 

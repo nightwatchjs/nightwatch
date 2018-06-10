@@ -136,7 +136,7 @@ describe('test TagsMatcher', function() {
     let matcher = new TagsMatcher({
       skiptags: ['login']
     });
-    let matched = matcher.match(path.join(__dirname, '../../sampletests/simple/sample.js'));
+    let matched = matcher.match(path.join(__dirname, '../../sampletests/simple/test/sample.js'));
 
     assert.ok(matched === true);
   });
