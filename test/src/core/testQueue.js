@@ -27,8 +27,8 @@ describe('test Queue', function () {
     client.api.url('http://localhost').end();
 
     assert.equal(queue.list().length, 2);
-    urlCommand = queue.rootNode.children[0];
-    endCommand = queue.rootNode.children[1];
+    urlCommand = queue.rootNode.childNodes[0];
+    endCommand = queue.rootNode.childNodes[1];
 
     assert.equal(endCommand.done, false);
     assert.equal(urlCommand.done, false);
@@ -40,7 +40,7 @@ describe('test Queue', function () {
       }
 
       assert.equal(urlCommand.done, true);
-      assert.equal(endCommand.children.length, 0);
+      assert.equal(endCommand.childNodes.length, 0);
       assert.equal(endCommand.done, true);
       assert.equal(queue.list().length, 0);
       done();
