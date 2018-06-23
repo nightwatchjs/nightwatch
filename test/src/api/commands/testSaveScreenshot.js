@@ -1,6 +1,8 @@
 const assert = require('assert');
 const MockServer  = require('../../../lib/mockserver.js');
+const common = require('../../../common.js');
 const CommandGlobals = require('../../../lib/globals/commands.js');
+const Screenshots = common.require('testsuite/screenshots.js');
 
 describe('saveScreenshot', function() {
   before(function(done) {
@@ -24,7 +26,7 @@ describe('saveScreenshot', function() {
 
       this.client.api.options.log_screenshot_data = false;
 
-      this.client.api.saveScreenshotToFile = function(fileName, data, cb) {
+      Screenshots.writeScreenshotToFile = function(fileName, data, cb) {
         assert.equal(fileName, 'screenshot.png');
         assert.equal(data, 'screendata');
         cb();
@@ -32,7 +34,7 @@ describe('saveScreenshot', function() {
 
       this.client.api.saveScreenshot('screenshot.png', function(result) {
         assert.equal(result.value, 'screendata');
-        assert.equal(result.suppressBase64Data, true);
+        assert.strictEqual(result.suppressBase64Data, true);
       });
 
       this.client.start(done);
