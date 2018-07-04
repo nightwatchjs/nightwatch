@@ -90,8 +90,8 @@ describe('testRunnerUnitTests', function() {
     })
     .then(data => {
       let content = data.toString();
-      assert.ok(content.includes('<failure message="AssertionError: 1 == 0 - expected &#34;0&#34; but got: &#34;1&#34;">'), 'Report does not contain failure information.');
-    });
+      assert.ok(content.includes('<failure message="AssertionError [ERR_ASSERTION]: 1 == 0 - expected &#34;0&#34; but got: &#34;1&#34;">'), 'Report does not contain failure information.');
+    })
   });
 
   it('test async unit test with timeout error', function() {
