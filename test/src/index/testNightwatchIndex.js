@@ -342,6 +342,44 @@ module.exports = {
       });
 
       client.startSession();
+    },
+
+    'test multiple session retries': function (done) {
+      MockServer.addMock({
+        url : '/wd/hub/session',
+        postdata : JSON.stringify({
+          desiredCapabilities: {
+            browserName : 'safari',
+            javascriptEnabled: true,
+            acceptSslCerts:true,
+            platform:'ANY'
+          }
+        }),
+        response : '{"value":{"message":"Could not find device : iPhone 6"}}',
+        statusCode : 200,
+        method: 'POST'
+      });
+
+      var client = Nightwatch.createClient({
+        desiredCapabilities: {
+          browserName: 'safari'
+        }
+      });
+      let timesHit = 0;
+      let maxRetries = 5;
+      client.on('selenium:session_create_retry', function (data) {
+        timesHit++;
+      });
+
+      client.on('error', function (data) {
+        assert.equal(timesHit, maxRetries - 1,"This should have attempted creating a session several times")
+        assert.equal(typeof data, 'object');
+        assert.ok('value' in data);
+        assert.ok('message' in data.value);
+        assert.equal(data.value.message, 'Could not find device : iPhone 6');
+        done();
+      });
+      client.startSession(maxRetries);
     }
   }
 };
