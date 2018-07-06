@@ -365,8 +365,8 @@ module.exports = {
           browserName: 'safari'
         }
       });
-      let timesHit = 0;
-      let maxRetries = 5;
+      var timesHit = 0;
+      var maxRetries = 5;
       client.on('selenium:session_create_retry', function (data) {
         timesHit++;
       });
