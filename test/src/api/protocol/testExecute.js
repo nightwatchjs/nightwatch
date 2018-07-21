@@ -27,7 +27,7 @@ describe('client.execute', function() {
         });
       },
       commandName: 'execute',
-      args: [function() {
+      args: [function () {
         return test();
       }, ['arg1']]
     });
@@ -42,7 +42,7 @@ describe('client.execute', function() {
         });
       },
       commandName: 'execute',
-      args: [function() {
+      args: [function () {
         return test();
       }]
     });
@@ -57,7 +57,7 @@ describe('client.execute', function() {
         });
       },
       commandName: 'executeAsync',
-      args: [function() {
+      args: [function () {
         return test();
       }, ['arg1']]
     });
