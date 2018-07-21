@@ -90,7 +90,7 @@ describe('testRunnerSessionCreate', function() {
       webdriver: {
         start_process: true
       },
-      output: true,
+      output: false,
       silent: false,
       globals: globals,
       output_folder: false
@@ -126,7 +126,7 @@ describe('testRunnerSessionCreate', function() {
       webdriver: {
         start_process: true
       },
-      output: true,
+      output: false,
       silent: false,
       globals: globals,
       output_folder: false

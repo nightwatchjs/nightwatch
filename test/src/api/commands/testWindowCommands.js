@@ -27,6 +27,12 @@ describe('window', function () {
     this.client.start(done);
   });
 
+  it('client.switchWindow() - no callback', function (done) {
+    this.client.api.switchWindow('0');
+
+    this.client.start(done);
+  });
+
   it('client.resizeWindow()', function (done) {
     MockServer.addMock({
       url : '/wd/hub/session/1352110219202/window/current/size',

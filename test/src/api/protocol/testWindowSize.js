@@ -11,25 +11,25 @@ describe('windowSize', function() {
 
     assert.throws(
       function() {
-        protocol.windowSize(function() {});
+        Globals.runApiCommand('windowSize', [function() {}]);
       }, /First argument must be a window handle string/
     );
 
     assert.throws(
       function() {
-        protocol.windowSize('current', 'a', 10);
+        Globals.runApiCommand('windowSize', ['current', 'a', 10]);
       }, /Width argument passed to \.windowSize\(\) must be a number/
     );
 
     assert.throws(
       function() {
-        protocol.windowSize('current', 10, 'a');
+        Globals.runApiCommand('windowSize', ['current', 10, 'a']);
       }, /Height argument passed to \.windowSize\(\) must be a number/
     );
 
     assert.throws(
       function() {
-        protocol.windowSize('current', 10);
+        Globals.runApiCommand('windowSize', ['current', 10]);
       }, /Second argument passed to \.windowSize\(\) should be a callback when not passing width and height/
     );
   });

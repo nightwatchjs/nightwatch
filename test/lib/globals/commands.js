@@ -6,10 +6,16 @@ module.exports = {
     this.server = MockServer.init();
 
     this.server.on('listening', () => {
-      Nightwatch.init({silent : true}, client => {
-        this.client = Nightwatch.client();
-        done();
-      });
+
+      Nightwatch.initClient({
+        webdriver:{
+          start_process: false
+        },
+      })
+        .then(client => {
+          this.client = client;
+          done();
+        });
     });
   },
 

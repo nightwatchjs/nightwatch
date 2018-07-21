@@ -44,24 +44,21 @@ describe('windowPosition', function() {
   });
 
   it('testWindowPositionErrors', function() {
-    let protocol = this.protocol;
-
     assert.throws(
       function() {
-        protocol.windowPosition(function() {
-        });
+        Globals.runApiCommand('windowPosition', [function() {}]);
       }, /First argument must be a window handle string/
     );
 
     assert.throws(
       function() {
-        protocol.windowPosition('current', 'a', 10);
+        Globals.runApiCommand('windowPosition', ['current', 'a', 10]);
       }, /offsetX argument passed to \.windowPosition\(\) must be a number/
     );
 
     assert.throws(
       function() {
-        protocol.windowPosition('current', 10, 'a');
+        Globals.runApiCommand('windowPosition', ['current', 10, 'a']);
       }, /offsetY argument passed to \.windowPosition\(\) must be a number/
     );
   });

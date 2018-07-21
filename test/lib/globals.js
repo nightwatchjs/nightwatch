@@ -5,8 +5,10 @@ const common = require('../common.js');
 const Nightwatch = require('../lib/nightwatch.js');
 const Settings = common.require('settings/settings.js');
 const Runner = common.require('runner/runner.js');
+const ProtocolActions = common.require('api/protocol.js');
 
-module.exports = {
+let protocolInstance;
+const Globals = module.exports = {
   runGroupGlobal(client, hookName, done) {
     const groupGlobal = path.join(__dirname, './globals/', client.currentTest.group.toLowerCase() + '.js');
 
@@ -59,7 +61,7 @@ module.exports = {
     this.client = Nightwatch.createClient();
     this.client.session.sessionId = this.client.api.sessionId = '1352110219202';
 
-    this.protocol = common.require('api/protocol.js')(this.client);
+    protocolInstance = new ProtocolActions(this.client);
   },
 
   protocolTest(definition) {
@@ -70,7 +72,11 @@ module.exports = {
       return Promise.resolve();
     };
 
-    this.protocol[definition.commandName](...definition.args);
+    Globals.runApiCommand(definition.commandName, definition.args);
+  },
+
+  runApiCommand(commandName, args) {
+    protocolInstance.Actions[commandName].apply(protocolInstance, args);
   },
 
   startTestRunner(testsPath, suppliedSettings) {

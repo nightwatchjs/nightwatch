@@ -1,13 +1,13 @@
 const assert = require('assert');
 const common = require('../../common.js');
-const Selenium2 = common.require('protocol/selenium2.js');
-const WebDriver = common.require('protocol/webdriver.js');
-const JsonWire = common.require('protocol/jsonwire.js');
-const Selenium3 = common.require('protocol/selenium3.js');
+const Selenium2 = common.require('transport/selenium2.js');
+const WebDriver = common.require('transport/webdriver.js');
+const JsonWire = common.require('transport/jsonwire.js');
+const Selenium3 = common.require('transport/selenium3.js');
 
 describe('Transport.create()', function () {
   it('test create Transport for Selenium3 external with Firefox', function() {
-    const Transport = common.require('protocol/transport.js');
+    const Transport = common.require('transport/transport.js');
 
     let seleniumExternal = Transport.create({
       settings: {
@@ -25,7 +25,7 @@ describe('Transport.create()', function () {
   });
 
   it('test create Transport for Selenium3 external with Chrome', function() {
-    const Transport = common.require('protocol/transport.js');
+    const Transport = common.require('transport/transport.js');
 
     let seleniumExternal = Transport.create({
       settings: {
@@ -45,7 +45,7 @@ describe('Transport.create()', function () {
   });
 
   it('test create Transport for Selenium2 external', function() {
-    const Transport = common.require('protocol/transport.js');
+    const Transport = common.require('transport/transport.js');
 
     let seleniumExternal = Transport.create({
       settings: {
@@ -65,7 +65,7 @@ describe('Transport.create()', function () {
   });
 
   it('test create Transport for Selenium2 managed', function() {
-    const Transport = common.require('protocol/transport.js');
+    const Transport = common.require('transport/transport.js');
 
     let seleniumExternal = Transport.create({
       settings: {
@@ -85,7 +85,7 @@ describe('Transport.create()', function () {
   });
 
   it('test create Transport for Selenium2 managed explicit version2 setting', function() {
-    const Transport = common.require('protocol/transport.js');
+    const Transport = common.require('transport/transport.js');
 
     let seleniumExternal = Transport.create({
       settings: {
@@ -106,7 +106,7 @@ describe('Transport.create()', function () {
   });
 
   it('test create Transport for Firefox managed', function() {
-    const Transport = common.require('protocol/transport.js');
+    const Transport = common.require('transport/transport.js');
 
     let geckoDriver = Transport.create({
       settings: {
@@ -129,7 +129,7 @@ describe('Transport.create()', function () {
   });
 
   it('test create Transport for Chrome managed', function() {
-    const Transport = common.require('protocol/transport.js');
+    const Transport = common.require('transport/transport.js');
 
     let chromeDriver = Transport.create({
       settings: {
@@ -152,7 +152,7 @@ describe('Transport.create()', function () {
   });
 
   it('test create Transport for Chrome managed and no selenium settings', function() {
-    const Transport = common.require('protocol/transport.js');
+    const Transport = common.require('transport/transport.js');
 
     let chromeDriver = Transport.create({
       settings: {
@@ -172,7 +172,7 @@ describe('Transport.create()', function () {
   });
 
   it('test create Transport for Selenium3 managed', function() {
-    const Transport = common.require('protocol/transport.js');
+    const Transport = common.require('transport/transport.js');
 
     let seleniumExternal = Transport.create({
       settings: {
@@ -192,7 +192,7 @@ describe('Transport.create()', function () {
   });
 
   it('test create Transport for WebDriver managed and no selenium settings', function() {
-    const Transport = common.require('protocol/transport.js');
+    const Transport = common.require('transport/transport.js');
 
     let chromeDriver = Transport.create({
       settings: {

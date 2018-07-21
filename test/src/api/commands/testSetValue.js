@@ -1,5 +1,6 @@
 const assert = require('assert');
 const MockServer  = require('../../../lib/mockserver.js');
+const common = require('../../../common.js');
 const CommandGlobals = require('../../../lib/globals/commands.js');
 
 describe('setValue', function() {

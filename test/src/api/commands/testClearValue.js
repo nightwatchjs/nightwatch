@@ -103,7 +103,7 @@ describe('clearValue', function() {
       webdriver:{
         start_process: true
       },
-      silent: false,
+      silent: true,
       output: false
     }).then(client => {
       MockServer.addMock({

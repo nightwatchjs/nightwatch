@@ -29,6 +29,9 @@ module.exports = new function () {
         start_process: true,
         version2: true
       },
+      webdriver:{
+        start_process: false
+      },
       silent : true,
       output : false,
       globals : {

@@ -41,7 +41,7 @@ describe('client.source', function() {
       method: 'GET'
     });
 
-    this.protocol.source(function(result) {
+    Globals.runApiCommand('source', [function(result) {
       try {
         assert.equal(result.status, 0);
         assert.equal(result.name, 'getPageSource');
@@ -51,6 +51,7 @@ describe('client.source', function() {
       } catch (err) {
         done(err);
       }
-    });
+    }]);
+
   });
 });
