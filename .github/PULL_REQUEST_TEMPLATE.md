@@ -1,7 +1,5 @@
 Thanks in advance for your contribution. Please follow the below steps in submitting a pull request, as it will help us with addressing it quicker.
 
-IMPORTANT: please base your branch on releases/v0.9, not on master.
-
 - [ ] Create a new branch from master (e.g. `features/my-new-feature` or `issue/123-my-bugfix`)
 - [ ] If you're fixing a bug also create an issue if one doesn't exist yet
 - [ ] If it's a new feature explain why do you think it's necessary
