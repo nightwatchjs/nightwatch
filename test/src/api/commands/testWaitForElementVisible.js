@@ -125,34 +125,35 @@ describe('waitForElementVisible', function() {
       };
     };
 
-    MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/elements',
-      postdata : '{"using":"css selector","value":"#stale-element"}',
-      method: 'POST',
-      response: JSON.stringify({
-        status: 0,
-        state: 'success',
-        value: [{ELEMENT: '99'}]
+    MockServer
+      .addMock({
+        url: '/wd/hub/session/1352110219202/elements',
+        postdata : '{"using":"css selector","value":"#stale-element"}',
+        method: 'POST',
+        response: JSON.stringify({
+          status: 0,
+          state: 'success',
+          value: [{ELEMENT: '99'}]
+        })
       })
-    })
-    .addMock({
-      url: '/wd/hub/session/1352110219202/element/99/displayed',
-      method: 'GET',
-      response: JSON.stringify({
-        sessionId: '1352110219202',
-        state: 'stale element reference',
-        status: 10
-      })
-    }, true)
-    .addMock({
-      url: '/wd/hub/session/1352110219202/element/99/displayed',
-      method: 'GET',
-      response: JSON.stringify({
-        state: 'success',
-        status: 0,
-        value: true
-      })
-    }, true);
+      .addMock({
+        url: '/wd/hub/session/1352110219202/element/99/displayed',
+        method: 'GET',
+        response: JSON.stringify({
+          sessionId: '1352110219202',
+          state: 'stale element reference',
+          status: 10
+        })
+      }, true)
+      .addMock({
+        url: '/wd/hub/session/1352110219202/element/99/displayed',
+        method: 'GET',
+        response: JSON.stringify({
+          state: 'success',
+          status: 0,
+          value: true
+        })
+      }, true);
 
     this.client.api.waitForElementVisible('#stale-element', 110, 10, function callback(result, instance) {
       assert.equal(assertion[0], true);

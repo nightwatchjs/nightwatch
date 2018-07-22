@@ -395,114 +395,116 @@ describe('Test CLI Runner', function() {
   });
 
   it('testGetTestSourceSingle', function() {
-      let statCalled = false;
-      let statSyncCalled = false;
-      mockery.registerMock('fs', {
-        statSync : function(file) {
-          if (file == 'demoTest') {
-            statSyncCalled = true;
-            return {
-              isFile : function() {
-                return true;
-              }
-            };
-          }
-
-          if (file == 'demoTest.js' || file == './custom.js') {
-            return {isFile : function() {return true}};
-          }
-
-          throw new Error('Does not exist');
-        },
-
-        stat(file, cb) {
-          if (file == 'demoTest') {
-            statCalled = true;
-          }
-
-          if (file == 'demoTest' || file == 'demoTest.js' || file == './custom.js') {
-            return cb(null, {
-              isFile() {
-                return true;
-              }
-            });
-          }
-
-          throw new Error('Does not exist');
+    let statCalled = false;
+    let statSyncCalled = false;
+    mockery.registerMock('fs', {
+      statSync : function(file) {
+        if (file == 'demoTest') {
+          statSyncCalled = true;
+          return {
+            isFile : function() {
+              return true;
+            }
+          };
         }
-      });
 
-      const CliRunner = common.require('runner/cli/cli.js');
-      let runner = new CliRunner({
-        config: './custom.json',
-        env: 'default',
-        test: 'demoTest'
-      }).setup();
+        if (file == 'demoTest.js' || file == './custom.js') {
+          return {isFile : function() {return true}};
+        }
 
-      const Runner = common.require('runner/runner.js');
+        throw new Error('Does not exist');
+      },
 
-      return Runner.readTestSource(runner.test_settings, runner.argv)
-        .then(function(modules) {
-          assert.equal(modules[0], 'demoTest.js');
-          assert.ok(statSyncCalled);
-        });
+      stat(file, cb) {
+        if (file == 'demoTest') {
+          statCalled = true;
+        }
+
+        if (file == 'demoTest' || file == 'demoTest.js' || file == './custom.js') {
+          return cb(null, {
+            isFile() {
+              return true;
+            }
+          });
+        }
+
+        throw new Error('Does not exist');
+      }
     });
 
-    it('testGetTestSourceSingleWithAbsolutePath', function() {
-      let ABSOLUTE_PATH = '/path/to/test';
-      let ABSOLUTE_SRC_PATH = ABSOLUTE_PATH + '.js';
-      let statSyncCalled = false;
+    const CliRunner = common.require('runner/cli/cli.js');
+    let runner = new CliRunner({
+      config: './custom.json',
+      env: 'default',
+      test: 'demoTest'
+    }).setup();
 
-      mockery.registerMock('fs', {
-        statSync: function(file) {
-          if (file == ABSOLUTE_PATH) {
-            statSyncCalled = true;
-            return {
-              isFile: function() {
-                return true;
-              }
-            };
-          }
-          if (file == ABSOLUTE_SRC_PATH || file == './custom.json') {
-            return {
-              isFile: function() {
-                return true
-              }
-            };
-          }
-          throw new Error('Does not exist');
-        },
+    const Runner = common.require('runner/runner.js');
 
-        stat(file, cb) {
-          if (file == ABSOLUTE_SRC_PATH || file == './custom.js') {
-            return cb(null, {
-              isFile() {
-                return true;
-              }
-            });
-          }
-
-          throw new Error('Does not exist');
-        }
+    return Runner
+      .readTestSource(runner.test_settings, runner.argv)
+      .then(function(modules) {
+        assert.equal(modules[0], 'demoTest.js');
+        assert.ok(statSyncCalled);
       });
+  });
 
-      const CliRunner = common.require('runner/cli/cli.js');
-      let runner = new CliRunner({
-        config: './custom.json',
-        env: 'default',
-        test: ABSOLUTE_PATH
-      }).setup();
+  it('testGetTestSourceSingleWithAbsolutePath', function() {
+    let ABSOLUTE_PATH = '/path/to/test';
+    let ABSOLUTE_SRC_PATH = ABSOLUTE_PATH + '.js';
+    let statSyncCalled = false;
 
-      assert.equal(runner.test_settings.detailed_output, true);
+    mockery.registerMock('fs', {
+      statSync: function(file) {
+        if (file == ABSOLUTE_PATH) {
+          statSyncCalled = true;
+          return {
+            isFile: function() {
+              return true;
+            }
+          };
+        }
+        if (file == ABSOLUTE_SRC_PATH || file == './custom.json') {
+          return {
+            isFile: function() {
+              return true
+            }
+          };
+        }
+        throw new Error('Does not exist');
+      },
 
-      const Runner = common.require('runner/runner.js');
+      stat(file, cb) {
+        if (file == ABSOLUTE_SRC_PATH || file == './custom.js') {
+          return cb(null, {
+            isFile() {
+              return true;
+            }
+          });
+        }
 
-      return Runner.readTestSource(runner.test_settings, runner.argv)
-        .then(function(modules) {
-          assert.equal(modules[0], ABSOLUTE_SRC_PATH);
-          assert.ok(statSyncCalled);
-        });
+        throw new Error('Does not exist');
+      }
     });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+    let runner = new CliRunner({
+      config: './custom.json',
+      env: 'default',
+      test: ABSOLUTE_PATH
+    }).setup();
+
+    assert.equal(runner.test_settings.detailed_output, true);
+
+    const Runner = common.require('runner/runner.js');
+
+    return Runner
+      .readTestSource(runner.test_settings, runner.argv)
+      .then(function(modules) {
+        assert.equal(modules[0], ABSOLUTE_SRC_PATH);
+        assert.ok(statSyncCalled);
+      });
+  });
 
   it('testGetTestSourceSingleWithRelativePath', function() {
     let RELATIVE_PATH = '../path/to/test';

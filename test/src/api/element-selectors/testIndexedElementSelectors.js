@@ -218,8 +218,8 @@ describe('test index in element selectors', function() {
     let expect = api.expect.element({selector: '.nock', index: 999}).to.be.present.before(1);
 
     api.perform(function() {
-       assert.equal(expect.assertion.passed, false);
-       assert.ok(expect.assertion.message.includes('element was not found'), -1);
+      assert.equal(expect.assertion.passed, false);
+      assert.ok(expect.assertion.message.includes('element was not found'), -1);
     });
 
     Nightwatch.start(function(err) {

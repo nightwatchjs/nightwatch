@@ -74,25 +74,26 @@ describe('testRunnerUnitTests', function() {
       path.join(__dirname, '../../asynchookstests/unittest-failure')
     ];
 
-    return NightwatchClient.runTests(testsPath, {
-      output_folder: 'output',
-      unit_tests_mode: true,
-      output: false,
-      globals: {
-        reporter() {}
-      }
-    })
-    .then(runner => {
-      let sampleReportFile = 'output/unittest-failure.xml';
-      assert.ok(fileExistsSync(sampleReportFile), 'The sample file report was not created.');
+    return NightwatchClient
+      .runTests(testsPath, {
+        output_folder: 'output',
+        unit_tests_mode: true,
+        output: false,
+        globals: {
+          reporter() {}
+        }
+      })
+      .then(runner => {
+        let sampleReportFile = 'output/unittest-failure.xml';
+        assert.ok(fileExistsSync(sampleReportFile), 'The sample file report was not created.');
 
-      return readFilePromise(sampleReportFile);
-    })
-    .then(data => {
-      let content = data.toString();
+        return readFilePromise(sampleReportFile);
+      })
+      .then(data => {
+        let content = data.toString();
 
-      assert.ok(content.includes('<failure message="AssertionError [ERR_ASSERTION]: 1 == 0 - expected &#34;0&#34; but got: &#34;1&#34;">'), 'Report does not contain failure information.');
-    });
+        assert.ok(content.includes('<failure message="AssertionError [ERR_ASSERTION]: 1 == 0 - expected &#34;0&#34; but got: &#34;1&#34;">'), 'Report does not contain failure information.');
+      });
   });
 
   it('test async unit test with timeout error', function() {
@@ -117,19 +118,19 @@ describe('testRunnerUnitTests', function() {
     return Runner.readTestSource(settings, {
       _source: [testsPath]
     })
-    .then(modules => {
-      return runner.run(modules);
-    })
-    .then(hasFailed => {
-      assert.ok(hasFailed);
+      .then(modules => {
+        return runner.run(modules);
+      })
+      .then(hasFailed => {
+        assert.ok(hasFailed);
 
-      let err = runner.results.lastError;
-      assert.ok(err instanceof Error);
-      assert.ok(fileExistsSync('output/unittest-async-timeout.xml'));
-      assert.equal(err.name, 'TimeoutError');
-      assert.equal(err.message, 'done() callback timeout of 10ms was reached while executing "demoTest". ' +
+        let err = runner.results.lastError;
+        assert.ok(err instanceof Error);
+        assert.ok(fileExistsSync('output/unittest-async-timeout.xml'));
+        assert.equal(err.name, 'TimeoutError');
+        assert.equal(err.message, 'done() callback timeout of 10ms was reached while executing "demoTest". ' +
         'Make sure to call the done() callback when the operation finishes.');
-    });
+      });
   });
 });
 

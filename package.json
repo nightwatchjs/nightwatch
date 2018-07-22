@@ -29,7 +29,7 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "coveralls": "^3.0.0",
-    "eslint": "^3.17.1",
+    "eslint": "^5.2.0",
     "mocha": "^5.2.0",
     "mock-spawn": "^0.2.1",
     "mockery": "~1.4.0",
@@ -44,7 +44,7 @@
   },
   "man": "",
   "scripts": {
-    "eslint": "eslint lib test --quiet",
+    "eslint": "eslint . --quiet",
     "mocha-coverage": "nyc --reporter=html mocha test/src/",
     "test": "mocha test/src",
     "coverage": "nyc report --reporter=text-lcov | coveralls"

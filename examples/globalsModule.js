@@ -52,7 +52,7 @@ module.exports = {
       console.log('GLOBAL afterEach')
 
 
-        cb();
+      cb();
 
 
     })
