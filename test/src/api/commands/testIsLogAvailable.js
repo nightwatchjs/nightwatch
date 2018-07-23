@@ -30,20 +30,21 @@ describe('isLogAvailable', function() {
       })
     });
 
-    this.client.api.isLogAvailable( 'unknown', function callback(result) {
+    this.client.api
+      .isLogAvailable('unknown', function callback(result) {
         assert.equal(typeof result === 'boolean', true);
         assert.equal(result, false);
       })
-      .isLogAvailable( 'browser', function callback(result) {
+      .isLogAvailable('browser', function callback(result) {
         assert.equal(typeof result === 'boolean', true);
         assert.equal(result, true);
       });
 
-      this.client.start(done);
+    this.client.start(done);
   });
 
   it('client.isLogAvailable() failure', function(done) {
-     MockServer.addMock({
+    MockServer.addMock({
       url : '/wd/hub/session/1352110219202/log/types',
       method:'GET',
       response : JSON.stringify({
@@ -57,10 +58,10 @@ describe('isLogAvailable', function() {
       assert.equal(typeof result === 'boolean', true);
       assert.equal(result, false);
     })
-    .isLogAvailable( 'browser', function callback(result) {
-      assert.equal(typeof result === 'boolean', true);
-      assert.equal(result, false);
-    });
+      .isLogAvailable( 'browser', function callback(result) {
+        assert.equal(typeof result === 'boolean', true);
+        assert.equal(result, false);
+      });
 
     this.client.start(done);
   });

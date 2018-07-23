@@ -89,14 +89,15 @@ const Globals = module.exports = {
       testsPath = [testsPath];
     }
 
-    return Runner.readTestSource(settings, {
-      _source: testsPath
-    })
-    .then(modules => {
-      return runner.run(modules);
-    })
-    .then(_ => {
-      return runner;
-    });
+    return Runner
+      .readTestSource(settings, {
+        _source: testsPath
+      })
+      .then(modules => {
+        return runner.run(modules);
+      })
+      .then(_ => {
+        return runner;
+      });
   }
 };

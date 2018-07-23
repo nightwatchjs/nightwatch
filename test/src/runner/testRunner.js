@@ -31,17 +31,18 @@ describe('testRunner', function() {
   it('testRunEmptyFolder', function(done) {
     let testsPath = path.join(__dirname, '../../sampletests/empty');
 
-    Globals.startTestRunner(testsPath, {
-      output_folder: false
-    })
-    .catch(err => {
-      assert.ok(err instanceof Error);
-      if (err.message !== `No tests defined! using source folder: ${testsPath}`) {
-        done(err);
-      } else {
-        done();
-      }
-    });
+    Globals
+      .startTestRunner(testsPath, {
+        output_folder: false
+      })
+      .catch(err => {
+        assert.ok(err instanceof Error);
+        if (err.message !== `No tests defined! using source folder: ${testsPath}`) {
+          done(err);
+        } else {
+          done();
+        }
+      });
   });
 
   it('testRunNoSrcFoldersArgument', function() {

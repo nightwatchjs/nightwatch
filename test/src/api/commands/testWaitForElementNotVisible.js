@@ -43,7 +43,7 @@ describe('waitForElementNotVisible', function() {
 
 
     this.client.api.globals.abortOnAssertionFailure = false;
-      this.client.api.waitForElementNotVisible('#weblogin', 110, 50, function callback(result, instance) {
+    this.client.api.waitForElementNotVisible('#weblogin', 110, 50, function callback(result, instance) {
       assert.equal(assertion[0], true);
       assert.equal(assertion[4], false);
       NightwatchAssertion.create = createOrig;
