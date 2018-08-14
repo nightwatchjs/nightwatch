@@ -43,7 +43,7 @@ describe('element actions', function () {
   });
 
   it('testElementIdElementPlural', function () {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function (opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/element/0/elements');
@@ -229,6 +229,21 @@ describe('element actions', function () {
       },
       commandName: 'elementIdValue',
       args: ['TEST_ELEMENT', 'test']
+    });
+  });
+
+  it('testElementWithCallbackAndContext', function (done) {
+    Globals.protocolTest.call(this, {
+      assertion: function (opts) {},
+      commandName: 'element',
+      args: ['css selector', 'body', function() {
+        try {
+          assert.equal(typeof this.pause, 'function');
+          done();
+        } catch (err) {
+          done(err);
+        }
+      }]
     });
 
   });

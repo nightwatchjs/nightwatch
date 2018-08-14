@@ -66,13 +66,17 @@ const Globals = module.exports = {
 
   protocolTest(definition) {
     this.client.transport.runProtocolAction = function(opts) {
-      opts.method = opts.method || 'GET';
-      definition.assertion(opts);
+      try {
+        opts.method = opts.method || 'GET';
+        definition.assertion(opts);
 
-      return Promise.resolve();
+        return Promise.resolve();
+      } catch (err) {
+        return Promise.reject(err);
+      }
     };
 
-    Globals.runApiCommand(definition.commandName, definition.args);
+    return Globals.runApiCommand(definition.commandName, definition.args);
   },
 
   runApiCommand(commandName, args) {
