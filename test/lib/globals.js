@@ -8,6 +8,7 @@ const Runner = common.require('runner/runner.js');
 const ProtocolActions = common.require('api/protocol.js');
 
 let protocolInstance;
+let protocolWDInstance;
 const Globals = module.exports = {
   runGroupGlobal(client, hookName, done) {
     const groupGlobal = path.join(__dirname, './globals/', client.currentTest.group.toLowerCase() + '.js');
@@ -59,28 +60,50 @@ const Globals = module.exports = {
 
   protocolBefore() {
     this.client = Nightwatch.createClient();
+    this.wdClient = Nightwatch.createClient({
+      selenium: {
+        version2: false,
+        start_process: false
+      },
+      webdriver:{
+        start_process: true
+      }
+    });
+
     this.client.session.sessionId = this.client.api.sessionId = '1352110219202';
+    this.wdClient.session.sessionId = this.wdClient.api.sessionId = '1352110219202';
 
     protocolInstance = new ProtocolActions(this.client);
+    protocolWDInstance = new ProtocolActions(this.wdClient);
   },
 
   protocolTest(definition) {
-    this.client.transport.runProtocolAction = function(opts) {
-      try {
-        opts.method = opts.method || 'GET';
-        definition.assertion(opts);
-
-        return Promise.resolve();
-      } catch (err) {
-        return Promise.reject(err);
-      }
-    };
-
-    return Globals.runApiCommand(definition.commandName, definition.args);
+    return Globals.runProtocolTest(definition, this.client, protocolInstance);
   },
 
-  runApiCommand(commandName, args) {
-    protocolInstance.Actions[commandName].apply(protocolInstance, args);
+  protocolTestWebdriver(definition) {
+    return Globals.runProtocolTest(definition, this.wdClient, protocolWDInstance);
+  },
+
+  runProtocolTest(definition, client, instance) {
+    return new Promise((resolve, reject) => {
+      client.transport.runProtocolAction = function(opts) {
+        try {
+          opts.method = opts.method || 'GET';
+          definition.assertion(opts);
+
+          return resolve();
+        } catch (err) {
+          return reject(err);
+        }
+      };
+
+      Globals.runApiCommand(instance, definition.commandName, definition.args);
+    });
+  },
+
+  runApiCommand(instance, commandName, args) {
+    return instance.Actions[commandName].apply(instance, args);
   },
 
   startTestRunner(testsPath, suppliedSettings) {

@@ -7,7 +7,7 @@ describe('window commands', function() {
   });
 
   it('testWindowHandle', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/window_handle');
@@ -17,8 +17,18 @@ describe('window commands', function() {
     });
   });
 
+  it('testWindowHandle W3C WebDriver', function() {
+    return Globals.protocolTestWebdriver.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.path, '/session/1352110219202/window/handle');
+      },
+      commandName: 'windowHandle',
+      args: []
+    });
+  });
+
   it('testWindowHandlePlural', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/window_handles');
@@ -28,8 +38,19 @@ describe('window commands', function() {
     });
   });
 
+  it('testWindowHandlePlural W3C WebDriver', function() {
+    return Globals.protocolTestWebdriver.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202/window/handles');
+      },
+      commandName: 'windowHandles',
+      args: []
+    });
+  });
+
   it('testCloseWindow', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'DELETE');
         assert.equal(opts.path, '/session/1352110219202/window');
@@ -40,11 +61,22 @@ describe('window commands', function() {
   });
 
   it('testSwitchWindow', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/window');
         assert.deepEqual(opts.data, {name: 'other-window'});
+      },
+      commandName: 'window',
+      args: ['POST', 'other-window']
+    });
+  });
+
+  it('testSwitchWindow W3C WebDriver', function() {
+    return Globals.protocolTestWebdriver.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.path, '/session/1352110219202/window');
+        assert.deepEqual(opts.data, {handle: 'other-window'});
       },
       commandName: 'window',
       args: ['POST', 'other-window']
