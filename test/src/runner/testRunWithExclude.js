@@ -5,9 +5,20 @@ const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
 const NightwatchClient = common.require('index.js');
 
-describe('testRunWithExclude', function() {
+const originalCwd = process.cwd();
+const defaultSettings = {
+  selenium: {
+    port: 10195,
+    version2: true,
+    start_process: true
+  },
+  silent: true,
+  output: false,
+  output_folder: false,
+};
 
-  before(function(done) {
+describe('testRunWithExclude', () => {
+  before((done) => {
     this.server = MockServer.init();
 
     this.server.on('listening', () => {
@@ -15,295 +26,229 @@ describe('testRunWithExclude', function() {
     });
   });
 
-  after(function(done) {
+  beforeEach((done) => {
+    process.chdir(path.join(__dirname, '../../sampletests/'));
+    done();
+  });
+
+  afterEach((done) => {
+    process.chdir(originalCwd);
+    done();
+  });
+
+  after((done) => {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('testRunWithExcludeFolder', function() {
-    const originalCwd = process.cwd();
-    process.chdir(path.join(__dirname, '../../sampletests/'));
-
-    let testsPath = ['./withexclude'];
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
+  it('testRunWithExcludeFolder', () => {
+    const settings = Object.assign({
       globals: {
         reporter(results, cb) {
           assert.ok(!('excluded/excluded-module' in results.modules));
           assert.ok(!('excluded/not-excluded' in results.modules));
           assert.ok('simple/sample' in results.modules);
-          process.chdir(originalCwd);
 
           cb();
-        }
+        },
       },
       exclude: ['./withexclude/excluded'],
-      output_folder: false
-    };
+    }, defaultSettings);
 
     return NightwatchClient.runTests({
-      _source: testsPath
+      _source: ['./withexclude']
     }, settings);
   });
 
-  it('testRun with exclude folder name and multiple src_folders', function() {
-    const originalCwd = process.cwd();
-    process.chdir(path.join(__dirname, '../../sampletests/'));
-
-    let srcFolders = ['./withexclude/excluded', './withexclude/simple'];
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
+  it('testRun with exclude folder name and multiple src_folders', () => {
+    const settings = Object.assign({
       globals: {
         reporter(results, cb) {
           assert.ok('excluded/excluded-module' in results.modules);
           assert.ok('excluded/not-excluded' in results.modules);
           assert.ok(!('simple/sample' in results.modules));
-          process.chdir(originalCwd);
 
           cb();
         }
       },
-      src_folders: srcFolders,
+      src_folders: ['./withexclude/excluded', './withexclude/simple'],
       exclude: './withexclude/simple',
-      output_folder: false
-    };
+    }, defaultSettings);
 
     return NightwatchClient.runTests(settings);
   });
 
-  it('testRun with exclude folder pattern and multiple src_folders', function() {
-    const originalCwd = process.cwd();
-    process.chdir(path.join(__dirname, '../../sampletests/'));
-
-    let srcFolders = ['./withexclude/excluded', './withexclude/simple'];
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
+  it('testRun with exclude folder pattern and multiple src_folders', () => {
+    const settings = Object.assign({
       globals: {
         reporter(results, cb) {
           assert.ok('excluded/excluded-module' in results.modules);
           assert.ok('excluded/not-excluded' in results.modules);
           assert.ok(!('simple/sample' in results.modules));
-          process.chdir(originalCwd);
 
           cb();
         }
       },
-      src_folders: srcFolders,
+      src_folders: ['./withexclude/excluded', './withexclude/simple'],
       exclude: './withexclude/simple/*',
-      output_folder: false
-    };
+    }, defaultSettings);
 
     return NightwatchClient.runTests(settings);
   });
 
-  it('testRun with filter folder name and multiple src_folders', function() {
-    const originalCwd = process.cwd();
-    process.chdir(path.join(__dirname, '../../sampletests/'));
-
-    let srcFolders = ['./withexclude/excluded', './withexclude/simple'];
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
+  it('testRun with filter folder name and multiple src_folders', () => {
+    const settings = Object.assign({
       globals: {
         reporter(results, cb) {
           assert.ok(!('excluded/excluded-module' in results.modules));
           assert.ok(!('excluded/not-excluded' in results.modules));
           assert.ok('simple/sample' in results.modules);
-          process.chdir(originalCwd);
 
           cb();
         }
       },
-      src_folders: srcFolders,
+      src_folders: ['./withexclude/excluded', './withexclude/simple'],
       filter: 'withexclude/simple',
-      output_folder: false
-    };
+    }, defaultSettings);
 
     return NightwatchClient.runTests(settings);
   });
 
-  it('testRun with filter pattern and multiple src_folders', function() {
-    const originalCwd = process.cwd();
-    process.chdir(path.join(__dirname, '../../sampletests/'));
-
-    let srcFolders = ['./withexclude/excluded', './withexclude/simple'];
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
+  it('testRun with filter pattern and multiple src_folders', () => {
+    const settings = Object.assign({
       globals: {
         reporter(results, cb) {
           assert.ok(!('excluded/excluded-module' in results.modules));
           assert.ok(!('excluded/not-excluded' in results.modules));
           assert.ok('simple/sample' in results.modules);
-          process.chdir(originalCwd);
 
           cb();
         }
       },
-      src_folders: srcFolders,
+      src_folders: ['./withexclude/excluded', './withexclude/simple'],
       filter: 'withexclude/simple/*',
-      output_folder: false
-    };
+    }, defaultSettings);
 
     return NightwatchClient.runTests(settings);
   });
 
-  it('testRun with filter pattern relative and single src_folders', function() {
-    const originalCwd = process.cwd();
-    process.chdir(path.join(__dirname, '../../sampletests/'));
-
-    let srcFolders = ['./withexclude'];
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
+  it('testRun with filter pattern relative and single src_folders', () => {
+    const settings = Object.assign({
       globals: {
         reporter(results, cb) {
           assert.ok(!('excluded/excluded-module' in results.modules));
           assert.ok(!('excluded/not-excluded' in results.modules));
           assert.ok('simple/sample' in results.modules);
-          process.chdir(originalCwd);
 
           cb();
         }
       },
-      src_folders: srcFolders,
+      src_folders: ['./withexclude'],
       filter: 'simple/*',
-      output_folder: false
-    };
+    }, defaultSettings);
 
     return NightwatchClient.runTests(settings);
   });
 
-  it('testRun with both filter and exclude patterns and single src_folder', function() {
-    const originalCwd = process.cwd();
-    process.chdir(path.join(__dirname, '../../sampletests/'));
-
-    let srcFolders = ['./withexclude'];
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
+  it('testRun with both filter and exclude patterns and single src_folder', () => {
+    const settings = Object.assign({
       globals: {
         reporter(results, cb) {
           assert.ok(!('excluded/excluded-module' in results.modules));
           assert.ok('excluded/not-excluded' in results.modules);
           assert.ok(!('simple/sample' in results.modules));
-          process.chdir(originalCwd);
 
           cb();
         }
       },
-      src_folders: srcFolders,
+      src_folders: ['./withexclude'],
       filter: 'excluded/*',
       exclude: 'excluded/excluded-*',
-      output_folder: false
-    };
+    }, defaultSettings);
 
     return NightwatchClient.runTests(settings);
   });
 
-  it('testRunWithExcludePattern', function() {
-    const originalCwd = process.cwd();
-    process.chdir(path.join(__dirname, '../../sampletests/'));
-
-    let testsPath = ['./withexclude'];
-    let testPattern = ['withexclude/excluded/excluded-*'];
-
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
+  it('testRunWithExcludePattern', () => {
+    const settings = Object.assign({
       globals: {
         reporter(results, cb) {
           assert.ok(!('excluded/excluded-module' in results.modules));
           assert.ok('excluded/not-excluded' in results.modules);
           assert.ok('simple/sample' in results.modules);
-          process.chdir(originalCwd);
 
           cb();
         }
       },
-      exclude: testPattern,
-      output_folder: false,
-      start_session: true
-    };
+      exclude: ['withexclude/excluded/excluded-*'],
+      start_session: true,
+    }, defaultSettings);
 
     return NightwatchClient.runTests({
-      _source: testsPath
+      _source: ['./withexclude']
     }, settings);
   });
 
-  it('testRunWithExcludeFile', function() {
-    const originalCwd = process.cwd();
-    const testsPath = path.join(__dirname, '../../sampletests/withexclude');
-    const testPattern = path.join('withexclude', 'excluded', 'excluded-module.js');
-
-    process.chdir(path.join(__dirname, '../../sampletests/'));
-
-    const settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
+  it('testRunWithExcludeFile', () => {
+    const settings = Object.assign({
       globals: {
         reporter(results, cb) {
           assert.ok(!('excluded/excluded-module' in results.modules));
           assert.ok('excluded/not-excluded' in results.modules);
           assert.ok('simple/sample' in results.modules);
-          process.chdir(originalCwd);
           cb();
         }
       },
-      exclude: [testPattern],
-      output_folder: false,
-      start_session: true
-    };
+      exclude: [path.join('withexclude', 'excluded', 'excluded-module.js')],
+      start_session: true,
+    }, defaultSettings);
 
     return NightwatchClient.runTests({
-      _source: [testsPath]
+      _source: [path.join(__dirname, '../../sampletests/withexclude')]
     }, settings);
+  });
+
+  it('test running with multiple excludes will exclude all matches with single src folder', () => {
+    const settings = Object.assign({
+      globals: {
+        reporter(results, cb) {
+          assert.ok(!('excluded/excluded-module' in results.modules));
+          assert.ok('excluded/not-excluded' in results.modules);
+          assert.ok(!('simple/sample' in results.modules));
+
+          cb();
+        }
+      },
+      src_folders: './withexclude',
+      exclude: [
+        path.join('withexclude', 'excluded', 'excluded-module.js'),
+        path.join('withexclude', 'simple'),
+      ],
+    }, defaultSettings);
+
+    return NightwatchClient.runTests(settings);
+  });
+
+  it('test running with multiple excludes will exclude all matches with multiple src folders', () => {
+    const settings = Object.assign({
+      globals: {
+        reporter(results, cb) {
+          assert.ok(!('excluded/excluded-module' in results.modules));
+          assert.ok('excluded/not-excluded' in results.modules);
+          assert.ok(!('simple/sample' in results.modules));
+
+          cb();
+        }
+      },
+      src_folders: [
+        path.join('withexclude', 'excluded'),
+        path.join('withexclude', 'simple'),
+      ],
+      exclude: [
+        path.join('withexclude', 'excluded', 'excluded-module.js'),
+        path.join('withexclude', 'simple'),
+      ],
+    }, defaultSettings);
+
+    return NightwatchClient.runTests(settings);
   });
 });
