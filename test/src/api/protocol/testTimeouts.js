@@ -7,7 +7,7 @@ describe('timeouts commands', function() {
   });
 
   it('testTimeoutsValid', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/timeouts');
@@ -18,24 +18,34 @@ describe('timeouts commands', function() {
     });
   });
 
-  it('testTimeoutsInvalid', function() {
-    let protocol = this.protocol;
+  it('testTimeouts invalid type', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+      },
+      commandName: 'timeouts',
+      args: ['nonscript', 1000]
+    }).catch(err => {
+      assert.equal(err.message, 'Invalid timeouts type value: nonscript. Accepted values are: script, implicit, page load');
 
-    assert.throws(
-      function() {
-        protocol.timeouts('nonscript', 1000);
-      }
-    );
+      return true;
+    }).then(result => assert.strictEqual(result, true));
+  });
 
-    assert.throws(
-      function() {
-        protocol.timeouts('script');
-      }
-    );
+  it('testTimeouts invalid value', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+      },
+      commandName: 'timeouts',
+      args: ['script']
+    }).catch(err => {
+      assert.equal(err.message, 'Second argument to .timeouts() command must be a number. undefined given.');
+
+      return true;
+    }).then(result => assert.strictEqual(result, true));
   });
 
   it('testTimeoutsAsyncScript', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/timeouts/async_script');
@@ -47,7 +57,7 @@ describe('timeouts commands', function() {
   });
 
   it('testTimeoutsImplicitWait', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/timeouts/implicit_wait');

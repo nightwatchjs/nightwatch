@@ -7,7 +7,7 @@ describe('client.frame', function() {
   });
 
   it('testFrameDefault', function () {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/frame');
@@ -18,7 +18,7 @@ describe('client.frame', function() {
   });
 
   it('testFramePost', function () {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/frame');
@@ -30,7 +30,7 @@ describe('client.frame', function() {
   });
 
   it('testFrameParent', function () {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/frame/parent');

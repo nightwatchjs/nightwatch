@@ -7,7 +7,7 @@ describe('browser commands', function() {
   });
 
   it('testRefresh', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/refresh');
@@ -18,7 +18,7 @@ describe('browser commands', function() {
   });
 
   it('testBack', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/back');
@@ -29,7 +29,7 @@ describe('browser commands', function() {
   });
 
   it('testForward', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/forward');

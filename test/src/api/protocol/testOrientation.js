@@ -7,7 +7,7 @@ describe('orientation commands', function() {
   });
 
   it('testGetOrientation', function () {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/orientation');
@@ -18,7 +18,7 @@ describe('orientation commands', function() {
   });
 
   it('testSetOrientation', function () {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/orientation');
@@ -30,10 +30,16 @@ describe('orientation commands', function() {
   });
 
   it('testSetOrientationInvalid', function () {
-    var protocol = this.protocol;
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
 
-    assert.throws(function() {
-      protocol.setOrientation('TEST');
-    });
+      },
+      commandName: 'setOrientation',
+      args: ['TEST']
+    }).catch(err => {
+      assert.equal(err.message, 'Invalid screen orientation value specified. Accepted values are: LANDSCAPE, PORTRAIT');
+      
+      return true;
+    }).then(result => assert.strictEqual(result, true));
   });
 });

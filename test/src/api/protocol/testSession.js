@@ -7,7 +7,7 @@ describe('session commands', function() {
   });
 
   it('testSessions', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/sessions');
@@ -18,7 +18,7 @@ describe('session commands', function() {
   });
 
   it('testSessionDefault', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202');
@@ -29,7 +29,7 @@ describe('session commands', function() {
   });
 
   it('testSessionGETImplicit', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202');
@@ -40,7 +40,7 @@ describe('session commands', function() {
   });
 
   it('testSessionGETExplicit', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202');
@@ -51,7 +51,7 @@ describe('session commands', function() {
   });
 
   it('testSessionGETImplicitById', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202');
@@ -62,7 +62,7 @@ describe('session commands', function() {
   });
 
   it('testSessionGETExplicitById', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202');
@@ -73,7 +73,7 @@ describe('session commands', function() {
   });
 
   it('testSessionDELETE', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'DELETE');
         assert.equal(opts.path, '/session/1352110219202');
@@ -83,21 +83,21 @@ describe('session commands', function() {
     });
   });
 
-  it('testSessionDELETEWithCallback', function(done) {
-    Globals.protocolTest.call(this, {
+  it('testSessionDELETEWithCallback', function() {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'DELETE');
         assert.equal(opts.path, '/session/1352110219202');
       },
       commandName: 'session',
       args: ['DELETE', function() {
-        done();
+
       }]
     });
   });
 
   it('testSessionDELETEById', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'DELETE');
         assert.equal(opts.path, '/session/1352110219202');

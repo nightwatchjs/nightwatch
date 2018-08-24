@@ -8,7 +8,7 @@ describe('browser commands', function() {
 
   it('testMoveTo', function () {
 
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/moveto');

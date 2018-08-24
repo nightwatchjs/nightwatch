@@ -7,7 +7,7 @@ describe('url', function() {
   });
 
   it('client.url() get', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/url');
@@ -18,7 +18,7 @@ describe('url', function() {
   });
 
   it('client.url() new', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/url');
@@ -29,26 +29,21 @@ describe('url', function() {
     });
   });
 
-  it('client.url() get with callback', function(done) {
-    Globals.protocolTest.call(this, {
+  it('client.url() get with callback', function() {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/url');
       },
       commandName: 'url',
       args: [function() {
-        try {
-          assert.equal(this.toString(), 'Nightwatch API');
-          done();
-        } catch (err) {
-          done(err);
-        }
+        assert.equal(this.toString(), 'Nightwatch API');
       }]
     });
   });
 
-  it('client.url() new with callback', function(done) {
-    Globals.protocolTest.call(this, {
+  it('client.url() new with callback', function() {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/url');
@@ -56,7 +51,7 @@ describe('url', function() {
       },
       commandName: 'url',
       args: ['http://localhost', function() {
-        done();
+
       }]
     });
   });

@@ -7,7 +7,7 @@ describe('session log commands', function() {
   });
 
   it('testLog', function () {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/log');
@@ -18,7 +18,7 @@ describe('session log commands', function() {
   });
 
   it('testLogTypes', function () {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/log/types');

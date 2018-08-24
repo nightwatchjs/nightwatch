@@ -7,7 +7,7 @@ describe('client.status', function() {
   });
 
   it('testStatus', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/status');

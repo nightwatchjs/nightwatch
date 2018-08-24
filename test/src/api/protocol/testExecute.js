@@ -7,7 +7,7 @@ describe('client.execute', function() {
   });
 
   it('testExecuteString', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/execute');
@@ -18,8 +18,19 @@ describe('client.execute', function() {
     });
   });
 
+  it('testExecuteString W3C WebDriver', function() {
+    return Globals.protocolTestWebdriver.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/execute/sync');
+      },
+      commandName: 'execute',
+      args: ['<script>test();</script>', ['arg1']]
+    });
+  });
+
   it('testExecuteFunction', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.deepEqual(opts.data, {
           args: ['arg1'],
@@ -34,7 +45,7 @@ describe('client.execute', function() {
   });
 
   it('testExecuteFunctionNoArgs', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.deepEqual(opts.data, {
           args: [],
@@ -49,7 +60,7 @@ describe('client.execute', function() {
   });
 
   it('testExecuteAsyncFunction', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.deepEqual(opts.data, {
           args: ['arg1'],
@@ -64,7 +75,7 @@ describe('client.execute', function() {
   });
 
   it('testExecuteAsync', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/execute_async');
@@ -72,6 +83,17 @@ describe('client.execute', function() {
           args: ['arg1'],
           script: '<script>test();</script>'
         });
+      },
+      commandName: 'executeAsync',
+      args: ['<script>test();</script>', ['arg1']]
+    });
+  });
+
+  it('testExecuteAsync W3C WebDriver', function() {
+    return Globals.protocolTestWebdriver.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/execute/async');
       },
       commandName: 'executeAsync',
       args: ['<script>test();</script>', ['arg1']]
