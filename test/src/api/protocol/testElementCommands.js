@@ -209,7 +209,8 @@ describe('element actions', function () {
 
   it('testElementIdClick invalid element ID', function () {
     return Globals.protocolTest.call(this, {
-      assertion: function (opts) {},
+      assertion: function (opts) {
+      },
       commandName: 'elementIdClick',
       args: [false]
     }).catch(err => {
@@ -279,11 +280,11 @@ describe('element actions', function () {
       commandName: 'elementIdLocation',
       args: [false]
     })
-    .catch(err => {
-      assert.equal(err.message, 'First argument passed to .elementIdLocation() should be a web element ID string. Received boolean.');
+      .catch(err => {
+        assert.equal(err.message, 'First argument passed to .elementIdLocation() should be a web element ID string. Received boolean.');
 
-      return true;
-    }).then(result => assert.strictEqual(result, true));
+        return true;
+      }).then(result => assert.strictEqual(result, true));
   });
 
   it('testElementIdLocationInView', function () {
@@ -425,9 +426,10 @@ describe('element actions', function () {
 
   it('testElementWithCallbackAndContext', function (done) {
     Globals.protocolTest.call(this, {
-      assertion: function (opts) {},
+      assertion: function (opts) {
+      },
       commandName: 'element',
-      args: ['css selector', 'body', function() {
+      args: ['css selector', 'body', function () {
         try {
           assert.equal(typeof this.pause, 'function');
           done();
