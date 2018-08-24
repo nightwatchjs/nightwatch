@@ -17,8 +17,8 @@ const defaultSettings = {
   output_folder: false,
 };
 
-describe('testRunWithExclude', () => {
-  before((done) => {
+describe('testRunWithExclude', function() {
+  before(function(done) {
     this.server = MockServer.init();
 
     this.server.on('listening', () => {
@@ -26,21 +26,21 @@ describe('testRunWithExclude', () => {
     });
   });
 
-  beforeEach((done) => {
+  beforeEach(function(done) {
     process.chdir(path.join(__dirname, '../../sampletests/'));
     done();
   });
 
-  afterEach((done) => {
+  afterEach(function(done) {
     process.chdir(originalCwd);
     done();
   });
 
-  after((done) => {
+  after(function(done) {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('testRunWithExcludeFolder', () => {
+  it('testRunWithExcludeFolder', function() {
     const settings = Object.assign({
       globals: {
         reporter(results, cb) {
@@ -59,7 +59,7 @@ describe('testRunWithExclude', () => {
     }, settings);
   });
 
-  it('testRun with exclude folder name and multiple src_folders', () => {
+  it('testRun with exclude folder name and multiple src_folders', function()  {
     const settings = Object.assign({
       globals: {
         reporter(results, cb) {
@@ -77,7 +77,7 @@ describe('testRunWithExclude', () => {
     return NightwatchClient.runTests(settings);
   });
 
-  it('testRun with exclude folder pattern and multiple src_folders', () => {
+  it('testRun with exclude folder pattern and multiple src_folders', function()  {
     const settings = Object.assign({
       globals: {
         reporter(results, cb) {
@@ -95,7 +95,7 @@ describe('testRunWithExclude', () => {
     return NightwatchClient.runTests(settings);
   });
 
-  it('testRun with filter folder name and multiple src_folders', () => {
+  it('testRun with filter folder name and multiple src_folders', function()  {
     const settings = Object.assign({
       globals: {
         reporter(results, cb) {
@@ -113,7 +113,7 @@ describe('testRunWithExclude', () => {
     return NightwatchClient.runTests(settings);
   });
 
-  it('testRun with filter pattern and multiple src_folders', () => {
+  it('testRun with filter pattern and multiple src_folders', function()  {
     const settings = Object.assign({
       globals: {
         reporter(results, cb) {
@@ -131,7 +131,7 @@ describe('testRunWithExclude', () => {
     return NightwatchClient.runTests(settings);
   });
 
-  it('testRun with filter pattern relative and single src_folders', () => {
+  it('testRun with filter pattern relative and single src_folders', function()  {
     const settings = Object.assign({
       globals: {
         reporter(results, cb) {
@@ -149,7 +149,7 @@ describe('testRunWithExclude', () => {
     return NightwatchClient.runTests(settings);
   });
 
-  it('testRun with both filter and exclude patterns and single src_folder', () => {
+  it('testRun with both filter and exclude patterns and single src_folder', function()  {
     const settings = Object.assign({
       globals: {
         reporter(results, cb) {
@@ -168,7 +168,7 @@ describe('testRunWithExclude', () => {
     return NightwatchClient.runTests(settings);
   });
 
-  it('testRunWithExcludePattern', () => {
+  it('testRunWithExcludePattern', function()  {
     const settings = Object.assign({
       globals: {
         reporter(results, cb) {
@@ -188,7 +188,7 @@ describe('testRunWithExclude', () => {
     }, settings);
   });
 
-  it('testRunWithExcludeFile', () => {
+  it('testRunWithExcludeFile', function()  {
     const settings = Object.assign({
       globals: {
         reporter(results, cb) {
@@ -207,7 +207,7 @@ describe('testRunWithExclude', () => {
     }, settings);
   });
 
-  it('test running with multiple excludes will exclude all matches with single src folder', () => {
+  it('test running with multiple excludes will exclude all matches with single src folder', function()  {
     const settings = Object.assign({
       globals: {
         reporter(results, cb) {
@@ -228,7 +228,7 @@ describe('testRunWithExclude', () => {
     return NightwatchClient.runTests(settings);
   });
 
-  it('test running with multiple excludes will exclude all matches with multiple src folders', () => {
+  it('test running with multiple excludes will exclude all matches with multiple src folders', function()  {
     const settings = Object.assign({
       globals: {
         reporter(results, cb) {
