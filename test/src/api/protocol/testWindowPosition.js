@@ -6,17 +6,36 @@ describe('windowPosition', function() {
     Globals.protocolBefore.call(this);
   });
 
-  it('testWindowPositionGet without offsets and callback', function() {
-    assert.throws(() => {
-      Globals.protocolTest.call(this, {
-        assertion: function(opts) {
-          assert.equal(opts.method, 'GET');
-          assert.equal(opts.path, '/session/1352110219202/window/current/position');
-        },
-        commandName: 'windowPosition',
-        args: ['current']
-      });
-    }, /Second argument passed to \.windowPosition\(\) should be a callback when not passing offsetX and offsetY - undefined given/);
+  it('testWindowPositionGet without offsets and callback', function(done) {
+    Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202/window/current/position');
+      },
+      commandName: 'windowPosition',
+      args: ['current']
+    }).catch(err => {
+      assert.equal(err.message, 'Second argument passed to .windowPosition() should be a callback when not passing offsetX and offsetY - undefined given.');
+      done();
+    }).catch(err => done(err));
+  });
+
+  it('testWindowPositionErrors', function() {
+    assert.throws(function() {
+      Globals.runApiCommand.call(this, null, 'windowPosition', [function() {}]);
+    }.bind(this), /First argument must be a window handle string/);
+
+    assert.throws(
+      function() {
+        Globals.runApiCommand.call(this, null, 'windowPosition', ['current', 'a', 10]);
+      }.bind(this), /offsetX argument passed to \.windowPosition\(\) must be a number/
+    );
+
+    assert.throws(
+      function() {
+        Globals.runApiCommand.call(this, null, 'windowPosition', ['current', 10, 'a']);
+      }.bind(this), /offsetY argument passed to \.windowPosition\(\) must be a number/
+    );
   });
 
   it('testWindowPositionGet', function(done) {
@@ -26,14 +45,12 @@ describe('windowPosition', function() {
         assert.equal(opts.path, '/session/1352110219202/window/current/position');
       },
       commandName: 'windowPosition',
-      args: ['current', function() {
-        done();
-      }]
-    });
+      args: ['current', function() {}]
+    }).then(_ => done()).catch(err => done(err));
   });
 
   it('testWindowPositionPost', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/window/current/position');
@@ -41,26 +58,6 @@ describe('windowPosition', function() {
       commandName: 'windowPosition',
       args: ['current', 10, 10]
     });
-  });
-
-  it('testWindowPositionErrors', function() {
-    assert.throws(
-      function() {
-        Globals.runApiCommand('windowPosition', [function() {}]);
-      }, /First argument must be a window handle string/
-    );
-
-    assert.throws(
-      function() {
-        Globals.runApiCommand('windowPosition', ['current', 'a', 10]);
-      }, /offsetX argument passed to \.windowPosition\(\) must be a number/
-    );
-
-    assert.throws(
-      function() {
-        Globals.runApiCommand('windowPosition', ['current', 10, 'a']);
-      }, /offsetY argument passed to \.windowPosition\(\) must be a number/
-    );
   });
 
 });

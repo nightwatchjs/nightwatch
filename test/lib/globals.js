@@ -92,17 +92,31 @@ const Globals = module.exports = {
           opts.method = opts.method || 'GET';
           definition.assertion(opts);
 
-          return resolve();
+          return Promise.resolve({
+            status: 0
+          });
         } catch (err) {
-          return reject(err);
+          return Promise.reject(err);
         }
       };
 
-      Globals.runApiCommand(instance, definition.commandName, definition.args);
+      Globals.runApiCommand(instance, definition.commandName, definition.args)
+        .then(err => {
+          if (err instanceof Error) {
+            reject(err);
+            return;
+          }
+          resolve();
+        })
+        .catch(err => {
+          reject(err);
+        });
     });
   },
 
   runApiCommand(instance, commandName, args) {
+    instance = instance || protocolInstance;
+
     return instance.Actions[commandName].apply(instance, args);
   },
 

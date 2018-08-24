@@ -11,26 +11,26 @@ describe('windowSize', function() {
 
     assert.throws(
       function() {
-        Globals.runApiCommand('windowSize', [function() {}]);
-      }, /First argument must be a window handle string/
+        Globals.runApiCommand(null, 'windowSize', [function() {}]);
+      }.bind(this), /First argument must be a window handle string/
     );
 
     assert.throws(
       function() {
-        Globals.runApiCommand('windowSize', ['current', 'a', 10]);
-      }, /Width argument passed to \.windowSize\(\) must be a number/
+        Globals.runApiCommand(null, 'windowSize', ['current', 'a', 10]);
+      }.bind(this), /Width argument passed to \.windowSize\(\) must be a number/
     );
 
     assert.throws(
       function() {
-        Globals.runApiCommand('windowSize', ['current', 10, 'a']);
-      }, /Height argument passed to \.windowSize\(\) must be a number/
+        Globals.runApiCommand(null, 'windowSize', ['current', 10, 'a']);
+      }.bind(this), /Height argument passed to \.windowSize\(\) must be a number/
     );
 
     assert.throws(
       function() {
-        Globals.runApiCommand('windowSize', ['current', 10]);
-      }, /Second argument passed to \.windowSize\(\) should be a callback when not passing width and height/
+        Globals.runApiCommand(null, 'windowSize', ['current', 10]);
+      }.bind(this), /Second argument passed to \.windowSize\(\) should be a callback when not passing width and height/
     );
   });
 
@@ -48,7 +48,7 @@ describe('windowSize', function() {
   });
 
   it('testWindowSizePost', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/window/current/size');

@@ -21,7 +21,7 @@ describe('client.source', function() {
   it('client.source() get command', function() {
     let runAction = this.client.transport.runProtocolAction;
 
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest.call(this, {
       assertion: opts => {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/source');
@@ -35,13 +35,13 @@ describe('client.source', function() {
 
   it('client.source() get command callback', function(done) {
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/source',
+      url: '/session/1352110219202/source',
       response: '{"name":"getPageSource","sessionId":"1352110219202","status":0,"value":"<!DOCTYPE html><html><head><title>NightwatchJS</title></head><body><div id=\'some_id\'>some div content</div></body></html>"}',
       statusCode: 200,
       method: 'GET'
     });
 
-    Globals.runApiCommand('source', [function(result) {
+    Globals.runApiCommand(null, 'source', [function(result) {
       try {
         assert.equal(result.status, 0);
         assert.equal(result.name, 'getPageSource');
