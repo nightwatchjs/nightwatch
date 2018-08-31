@@ -21,6 +21,39 @@ describe('assert.urlContains', function () {
     }, done);
   });
 
+  it('urlContains assertion failed without value field in response', function (done) {
+    Globals.assertionTest({
+      assertionName: 'urlContains',
+      args: ['nightwatchjs'],
+      api: {
+        url(callback) {
+          callback({
+          });
+        }
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.equal(passed, false);
+        assert.strictEqual(value, '');
+      }
+    }, done);
+  });
+
+  it('urlContains assertion failed with empty response', function (done) {
+    Globals.assertionTest({
+      assertionName: 'urlContains',
+      args: ['nightwatchjs'],
+      api: {
+        url(callback) {
+          callback();
+        }
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.equal(passed, false);
+        assert.strictEqual(value, '');
+      }
+    }, done);
+  });
+
   it('urlContains assertion failed', function (done) {
     Globals.assertionTest({
       assertionName: 'urlContains',
