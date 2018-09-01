@@ -1,24 +1,21 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var MockServer = require('../../../lib/mockserver.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = MochaTest.add('browser commands', {
-  beforeEach: function () {
-    this.client = Nightwatch.client();
-    this.protocol = common.require('api/protocol.js')(this.client);
-  },
+describe('browser commands', function() {
+  before(function() {
+    Globals.protocolBefore.call(this);
+  });
 
-  testMoveTo: function (done) {
-    var protocol = this.protocol;
+  it('testMoveTo', function () {
 
-    var command = protocol.moveTo('testElement', 0, 1, function callback() {
-      done();
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/moveto');
+        assert.deepEqual(opts.data, { element: 'testElement', xoffset: 0, yoffset: 1 });
+      },
+      commandName: 'moveTo',
+      args: ['testElement', 0, 1]
     });
-
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.data, '{"element":"testElement","xoffset":0,"yoffset":1}');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/moveto');
-  }
+  });
 });

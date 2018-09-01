@@ -1,0 +1,6 @@
+{
+  "rules": {
+    "eqeqeq": ["warn", "smart"],
+    "no-empty": 1
+  }
+}

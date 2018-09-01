@@ -10,7 +10,7 @@
     "start_process" : false
   },
 
-  "test_settings" : {
+  "test_settings": {
     "default" : {
       "silent" : true,
       "desiredCapabilities" : {

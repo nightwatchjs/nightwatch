@@ -1,45 +1,41 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var MockServer = require('../../../lib/mockserver.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = MochaTest.add('client.keys()', {
-  beforeEach: function () {
-    this.client = Nightwatch.client();
-    this.protocol = common.require('api/protocol.js')(this.client);
-  },
+describe('client.keys()', function() {
+  before(function() {
+    Globals.protocolBefore.call(this);
+  });
 
-  testKeys: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.keys(['A', 'B'], function callback() {
-      done();
+  it('testKeys', function () {
+    Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/keys');
+        assert.deepEqual(opts.data, { value: [ 'A', 'B' ] });
+      },
+      commandName: 'keys',
+      args: [['A', 'B']]
     });
+  });
 
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.data, '{"value":["A","B"]}');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/keys');
-  },
-
-  testKeysSingle: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.keys('A', function callback() {
-      done();
+  it('testKeysSingle', function () {
+    Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.deepEqual(opts.data, { value: [ 'A' ] });
+      },
+      commandName: 'keys',
+      args: ['A']
     });
+  });
 
-    assert.equal(command.data, '{"value":["A"]}');
-  },
-
-  testKeysUnicode: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.keys('\uE007', function callback() {
-      done();
+  it('testKeysUnicode', function () {
+    Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.deepEqual(opts.data, {value: ['']});
+      },
+      commandName: 'keys',
+      args: ['\uE007']
     });
-
-    assert.equal(command.data, '{"value":["\\ue007"]}');
-  }
+  });
 
 });

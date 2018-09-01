@@ -1,43 +1,45 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var MockServer  = require('../../../lib/mockserver.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = MochaTest.add('orientation commands', {
-  beforeEach: function () {
-    this.client = Nightwatch.client();
-    this.protocol = common.require('api/protocol.js')(this.client);
-  },
+describe('orientation commands', function() {
+  before(function() {
+    Globals.protocolBefore.call(this);
+  });
 
-  testGetOrientation: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.getOrientation(function callback() {
-      done();
+  it('testGetOrientation', function () {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202/orientation');
+      },
+      commandName: 'getOrientation',
+      args: []
     });
+  });
 
-    assert.equal(command.request.method, 'GET');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/orientation');
-  },
-
-  testSetOrientation: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.setOrientation('LANDSCAPE',function callback() {
-      done();
+  it('testSetOrientation', function () {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/orientation');
+        assert.deepEqual(opts.data, {orientation: 'LANDSCAPE'});
+      },
+      commandName: 'setOrientation',
+      args: ['LANDSCAPE']
     });
+  });
 
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.data, '{"orientation":"LANDSCAPE"}');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/orientation');
-  },
+  it('testSetOrientationInvalid', function () {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
 
-  testSetOrientationInvalid: function () {
-    var protocol = this.protocol;
-
-    assert.throws(function() {
-      protocol.setOrientation('TEST');
-    });
-  }
+      },
+      commandName: 'setOrientation',
+      args: ['TEST']
+    }).catch(err => {
+      assert.equal(err.message, 'Invalid screen orientation value specified. Accepted values are: LANDSCAPE, PORTRAIT');
+      
+      return true;
+    }).then(result => assert.strictEqual(result, true));
+  });
 });

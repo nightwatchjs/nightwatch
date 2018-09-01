@@ -1,4 +1,7 @@
-Thanks in advance for your contribution. Please follow the below steps in submitting an issue, as it will help us with addressing it quicker.
+Thanks in advance for your contribution. Please follow the below steps in submitting an issue, as it will help us with addressing it quicker. 
+
+Important: please read https://github.com/nightwatchjs/nightwatch/issues/1778 if you haven't already.
+--
 
 Before submitting a new issue, try searching for a similar one here: https://github.com/nightwatchjs/nightwatch/search?state=open&type=Issues.
 

@@ -1,6 +1,7 @@
 .project
 *.DS_Store
 *.idea
+/*.log
 /nightwatch.json
 node_modules
 npm-debug.log
@@ -14,3 +15,7 @@ tests_output
 \.#*
 output
 /test/hooks_output
+/bin/geckodriver*
+/coverage/
+/.nyc_output/
+screenshot.png

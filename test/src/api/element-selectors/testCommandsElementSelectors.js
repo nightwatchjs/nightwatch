@@ -1,27 +1,35 @@
-var path = require('path');
-var assert = require('assert');
-var common = require('../../../common.js');
-var Api = common.require('core/api.js');
-var utils = require('../../../lib/utils.js');
-var nocks = require('../../../lib/nockselements.js');
-var MochaTest = require('../../../lib/mochatest.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
+const path = require('path');
+const assert = require('assert');
+const nocks = require('../../../lib/nockselements.js');
+const MockServer  = require('../../../lib/mockserver.js');
+const Nightwatch = require('../../../lib/nightwatch.js');
 
-module.exports = MochaTest.add('test commands element selectors', {
+describe('test commands element selectors', function() {
+  before(function(done) {
+    nocks.enable();
+    this.server = MockServer.init();
+    this.server.on('listening', () => {
+      done();
+    });
+  });
 
-  beforeEach: function (done) {
+  after(function(done) {
+    nocks.disable();
+    this.server.close(function() {
+      done();
+    });
+  });
+
+  beforeEach(function (done) {
+    nocks.cleanAll();
     Nightwatch.init({
       page_objects_path: [path.join(__dirname, '../../../extra/pageobjects')]
     }, done);
-  },
-
-  afterEach: function () {
-    nocks.cleanAll();
-  },
+  });
 
   // wrapped selenium command
 
-  'getText(<various>)' : function(done) {
+  it('getText(<various>)', function(done) {
     nocks
       .elementFound()
       .elementNotFound()
@@ -47,9 +55,9 @@ module.exports = MochaTest.add('test commands element selectors', {
       });
 
     Nightwatch.start();
-  },
+  });
 
-  'getText(<various>) locateStrategy' : function(done) {
+  it('getText(<various>) locateStrategy', function(done) {
     nocks
       .elementFound()
       .elementNotFound()
@@ -84,11 +92,11 @@ module.exports = MochaTest.add('test commands element selectors', {
       });
 
     Nightwatch.start();
-  },
+  });
 
   // custom command
 
-  'waitForElementPresent(<various>)' : function(done) {
+  it('waitForElementPresent(<various>)', function(done) {
     nocks
       .elementsFound()
       .elementsNotFound()
@@ -112,9 +120,9 @@ module.exports = MochaTest.add('test commands element selectors', {
       });
 
     Nightwatch.start();
-  },
+  });
 
-  'waitForElementPresent(<various>) locateStrategy' : function(done) {
+  it('waitForElementPresent(<various>) locateStrategy', function(done) {
     nocks
       .elementsFound()
       .elementsNotFound()
@@ -138,6 +146,6 @@ module.exports = MochaTest.add('test commands element selectors', {
       });
 
     Nightwatch.start();
-  }
+  });
 
 });

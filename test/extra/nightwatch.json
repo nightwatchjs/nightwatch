@@ -13,15 +13,14 @@
     "server_path" : "./bin/selenium-server.jar"
   },
 
-  "test_settings" : {
+  "test_settings": {
     "default" : {
       "silent" : true,
       "desiredCapabilities" : {
         "browserName" : "firefox",
-        "javascriptEnabled" : true,
         "acceptSslCerts" : true
       },
-      "filter" : ["async/*"]
+      "filter" : ["async/**"]
     },
 
     "mixed" : {

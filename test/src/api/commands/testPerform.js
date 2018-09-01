@@ -1,50 +1,41 @@
-var assert = require('assert');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var Globals = require('../../../lib/globals.js');
-var CommandGlobals = require('../../../lib/globals/commands.js');
+const assert = require('assert');
+const CommandGlobals = require('../../../lib/globals/commands.js');
 
-module.exports = {
-  perform : {
-    beforeEach : function(done) {
-      Globals.interceptStartFn();
-      CommandGlobals.beforeEach(done);
-    },
-    afterEach : function(done) {
-      Globals.restoreStartFn();
-      CommandGlobals.afterEach(done);
-    },
+describe('perform', function () {
+  before(function (done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
 
-    'client.perform()' : function(done) {
-      var api = Nightwatch.api();
+  after(function (done) {
+    CommandGlobals.afterEach.call(this, done);
+  });
 
-      api.perform(function() {
-        assert.deepEqual(api, this);
-      });
+  it('client.perform()', function (done) {
+    let client = this.client.api;
+    this.client.api.perform(function () {
+      assert.deepEqual(client, this);
+    });
 
-      Nightwatch.start(done);
-    },
+    this.client.start(done);
+  });
 
-    'client.perform() with async callback' : function(done) {
-      var api = Nightwatch.api();
+  it('client.perform() with async callback', function (done) {
+    this.client.api.perform(function (complete) {
+      assert.equal(typeof complete, 'function');
+      complete();
+    });
 
-      api.perform(function(complete) {
-        assert.equal(typeof complete, 'function');
-        complete();
-      });
+    this.client.start(done);
+  });
 
-      Nightwatch.start(done);
-    },
+  it('client.perform() with async callback and api param', function (done) {
+    let localClient = this.client.api;
+    this.client.api.perform(function (client, complete) {
+      assert.deepEqual(localClient, client);
+      assert.equal(typeof complete, 'function');
+      complete();
+    });
 
-    'client.perform() with async callback and api param' : function(done) {
-      var api = Nightwatch.api();
-
-      api.perform(function(client, complete) {
-        assert.deepEqual(api, client);
-        assert.equal(typeof complete, 'function');
-        complete();
-      });
-
-      Nightwatch.start(done);
-    }
-  }
-};
+    this.client.start(done);
+  });
+});

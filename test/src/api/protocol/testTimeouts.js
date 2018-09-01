@@ -1,65 +1,71 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var MockServer = require('../../../lib/mockserver.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = MochaTest.add('timeouts commands', {
-  beforeEach: function () {
-    this.client = Nightwatch.client();
-    this.protocol = common.require('api/protocol.js')(this.client);
-  },
+describe('timeouts commands', function() {
+  before(function() {
+    Globals.protocolBefore.call(this);
+  });
 
-  testTimeoutsValid: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.timeouts('script', 1000, function callback() {
-      done();
+  it('testTimeoutsValid', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/timeouts');
+        assert.deepEqual(opts.data, {type: 'script', ms: 1000});
+      },
+      commandName: 'timeouts',
+      args: ['script', 1000]
     });
+  });
 
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.data, '{"type":"script","ms":1000}');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/timeouts');
-  },
+  it('testTimeouts invalid type', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+      },
+      commandName: 'timeouts',
+      args: ['nonscript', 1000]
+    }).catch(err => {
+      assert.equal(err.message, 'Invalid timeouts type value: nonscript. Accepted values are: script, implicit, page load');
 
-  testTimeoutsInvalid: function () {
-    var protocol = this.protocol;
+      return true;
+    }).then(result => assert.strictEqual(result, true));
+  });
 
-    assert.throws(
-      function () {
-        protocol.timeouts('nonscript', 1000);
-      }
-    );
+  it('testTimeouts invalid value', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+      },
+      commandName: 'timeouts',
+      args: ['script']
+    }).catch(err => {
+      assert.equal(err.message, 'Second argument to .timeouts() command must be a number. undefined given.');
 
-    assert.throws(
-      function () {
-        protocol.timeouts('script');
-      }
-    );
-  },
+      return true;
+    }).then(result => assert.strictEqual(result, true));
+  });
 
-  testTimeoutsAsyncScript: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.timeoutsAsyncScript(1000, function callback() {
-      done();
+  it('testTimeoutsAsyncScript', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/timeouts/async_script');
+        assert.deepEqual(opts.data, {ms: 1000});
+      },
+      commandName: 'timeoutsAsyncScript',
+      args: [1000]
     });
+  });
 
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.data, '{"ms":1000}');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/timeouts/async_script');
-  },
-
-  testTimeoutsImplicitWait: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.timeoutsImplicitWait(1000, function callback() {
-      done();
+  it('testTimeoutsImplicitWait', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/timeouts/implicit_wait');
+        assert.deepEqual(opts.data, {ms: 1000});
+      },
+      commandName: 'timeoutsImplicitWait',
+      args: [1000]
     });
-
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.data, '{"ms":1000}');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/timeouts/implicit_wait');
-  }
+  });
 
 });

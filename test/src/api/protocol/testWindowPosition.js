@@ -1,65 +1,63 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var MockServer = require('../../../lib/mockserver.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = MochaTest.add('windowPosition', {
-  beforeEach: function () {
-    this.client = Nightwatch.client();
-    this.protocol = common.require('api/protocol.js')(this.client);
-  },
+describe('windowPosition', function() {
+  before(function() {
+    Globals.protocolBefore.call(this);
+  });
 
-  testWindowPositionGet: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.windowPosition('current', function callback() {
+  it('testWindowPositionGet without offsets and callback', function(done) {
+    Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202/window/current/position');
+      },
+      commandName: 'windowPosition',
+      args: ['current']
+    }).catch(err => {
+      assert.equal(err.message, 'Second argument passed to .windowPosition() should be a callback when not passing offsetX and offsetY - undefined given.');
       done();
+    }).catch(err => done(err));
+  });
+
+  it('testWindowPositionErrors', function() {
+    assert.throws(function() {
+      Globals.runApiCommand.call(this, null, 'windowPosition', [function() {}]);
+    }.bind(this), /First argument must be a window handle string/);
+
+    assert.throws(
+      function() {
+        Globals.runApiCommand.call(this, null, 'windowPosition', ['current', 'a', 10]);
+      }.bind(this), /offsetX argument passed to \.windowPosition\(\) must be a number/
+    );
+
+    assert.throws(
+      function() {
+        Globals.runApiCommand.call(this, null, 'windowPosition', ['current', 10, 'a']);
+      }.bind(this), /offsetY argument passed to \.windowPosition\(\) must be a number/
+    );
+  });
+
+  it('testWindowPositionGet', function(done) {
+    Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202/window/current/position');
+      },
+      commandName: 'windowPosition',
+      args: ['current', function() {}]
+    }).then(_ => done()).catch(err => done(err));
+  });
+
+  it('testWindowPositionPost', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/window/current/position');
+      },
+      commandName: 'windowPosition',
+      args: ['current', 10, 10]
     });
-
-    assert.equal(command.request.method, 'GET');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/window/current/position');
-  },
-
-  testWindowPositionPost: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.windowPosition('current', 10, 10, function callback() {
-      done();
-    });
-
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.data, '{"x":10,"y":10}');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/window/current/position');
-  },
-
-  testWindowPositionErrors: function () {
-    var protocol = this.protocol;
-
-    assert.throws(
-      function () {
-        protocol.windowPosition(function () {
-        });
-      }, 'First argument must be a window handle string.'
-    );
-
-    assert.throws(
-      function () {
-        protocol.windowPosition('current', 'a', 10);
-      }, 'Offset arguments must be passed as numbers.'
-    );
-
-    assert.throws(
-      function () {
-        protocol.windowPosition('current', 10);
-      }, 'Offset arguments must be passed as numbers.'
-    );
-
-    assert.throws(
-      function () {
-        protocol.windowPosition('current', 10, 'a');
-      }, 'Offset arguments must be passed as numbers.'
-    );
-  }
+  });
 
 });

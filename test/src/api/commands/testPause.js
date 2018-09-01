@@ -1,16 +1,18 @@
-var assert = require('assert');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const CommandGlobals = require('../../../lib/globals/commands.js');
 
-module.exports = MochaTest.add('pause', {
+describe('pause', function() {
+  before(function(done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
 
-  'client.pause()' : function(done) {
-    var client = Nightwatch.api();
+  after(function(done) {
+    CommandGlobals.afterEach.call(this, done);
+  });
 
-    client.pause(10, function() {
-      done();
+  it('client.pause()', function(done) {
+    this.client.api.pause(10, function() {
     });
 
-    Nightwatch.start();
-  }
+    this.client.start(done);
+  });
 });

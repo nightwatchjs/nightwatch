@@ -1,31 +1,34 @@
-var MockServer  = require('../../../lib/mockserver.js');
-var assert = require('assert');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const MockServer = require('../../../lib/mockserver.js');
+const CommandGlobals = require('../../../lib/globals/commands.js');
 
-module.exports = MochaTest.add('getLogTypes', {
+describe('getLogTypes', function() {
+  before(function(done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
 
-  'client.getLogTypes()' : function(done) {
-    var client = Nightwatch.api();
+  after(function(done) {
+    CommandGlobals.afterEach.call(this, done);
+  });
 
+  it('client.getLogTypes()', function(done) {
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/log/types',
-      method:'GET',
-      response : JSON.stringify({
+      url: '/wd/hub/session/1352110219202/log/types',
+      method: 'GET',
+      response: JSON.stringify({
         sessionId: '1352110219202',
-        status:0,
-        value : [ 'browser', 'har' ]
+        status: 0,
+        value: ['browser', 'har']
       })
     });
 
-    client.getLogTypes(function callback(result) {
+    this.client.api.getLogTypes(function callback(result) {
       assert.equal(Array.isArray(result), true);
       assert.equal(result.length, 2);
       assert.equal(result[0], 'browser');
       assert.equal(result[1], 'har');
-      done();
     });
 
-    Nightwatch.start();
-  }
+    this.client.start(done);
+  });
 });

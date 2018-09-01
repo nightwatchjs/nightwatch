@@ -1,134 +1,108 @@
-var assert = require('assert');
-var MockServer = require('../../../lib/mockserver.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var Globals = require('../../../lib/globals.js');
-var Nocks = require('../../../lib/nocks.js');
-var nock = require('nock');
+const assert = require('assert');
+const MockServer  = require('../../../lib/mockserver.js');
+const Nightwatch = require('../../../lib/nightwatch.js');
+const CommandGlobals = require('../../../lib/globals/commands.js');
 
-module.exports = {
-  'end' : {
-    beforeEach: function (done) {
-      Globals.interceptStartFn();
-      Nocks.cleanAll().createSession();
-      Nightwatch.init({}, function () {
-        done();
-      });
-      this.api = Nightwatch.api();
-    },
+describe('end', function() {
+  before(function(done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
 
-    afterEach: function () {
-      Globals.restoreStartFn();
-    },
+  after(function(done) {
+    CommandGlobals.afterEach.call(this, done);
+  });
 
-    'client.end();': function (done) {
-      nock('http://localhost:10195')
-        .delete('/wd/hub/session/1352110219202')
-        .reply(200, {
-          status: 0,
-          state: 'success',
-          value: null
-        });
+  it('client.end();', function (done) {
+    this.client.api.end(result => {
+      assert.equal(result.state, 'success');
+      assert.strictEqual(this.client.api.sessionId, null);
+    });
 
-      this.api.end(function callback(result) {
-        assert.equal(result.state, 'success');
-        assert.strictEqual(this.api.sessionId, null);
-      }.bind(this));
+    this.client.start(done);
+  });
 
-      Nightwatch.start(done);
-    },
+  it('client.end() - no session id', function (done) {
+    this.client.api.end();
+    this.client.api.end(function callback(result) {
+      assert.strictEqual(result, null);
+    });
 
-    'client.end() - no session id': function (done) {
-      nock('http://localhost:10195')
-        .delete('/wd/hub/session/1352110219202')
-        .times(2)
-        .reply(200, {
-          status: 0,
-          state: 'success',
-          value: null
-        });
+    this.client.start(done);
+  });
 
-      this.api.end();
+  it('client.end() - with screenshot', function (done) {
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/screenshot',
+      response: JSON.stringify({
+        status: 0,
+        state: 'success',
+        value: '==content'
+      })
+    }, true);
 
-      this.api.end(function callback(result) {
-        assert.strictEqual(result, null);
-      });
-
-      Nightwatch.start(done);
-    },
-
-    'client.end() - with screenshot': function (done) {
-      var client = Nightwatch.client();
-
-      client.results.failed = 1;
-      client.options.screenshots = {
+    Nightwatch.initClient({
+      screenshots: {
         enabled: true,
         on_failure: true,
         path: './screens'
-      };
-
+      }
+    }).then(client => {
       client.api.currentTest = {
         module: 'test_module',
-        name: 'test_name'
+        name: 'test_name',
+        results: {
+          failed: 1,
+          passed: 0
+        }
       };
 
-      nock('http://localhost:10195')
-        .delete('/wd/hub/session/1352110219202')
-        .reply(200, {
-          status: 0,
-          state: 'success',
-          value: null
-        });
-
-      nock('http://localhost:10195')
-        .get('/wd/hub/session/1352110219202/screenshot')
-        .reply(200, {
-          status: 0,
-          state: 'success',
-          value: '==content'
-        });
-
-      client.saveScreenshotToFile = function (file, content) {
-        assert.equal(content, '==content');
+      client.api.saveScreenshot = function (file, callback) {
         assert.ok(file.indexOf('screens/test_module/test_name') > -1);
-        setTimeout(function () {
-          done();
-        }, 10);
       };
 
       client.api.end(function callback(result) {
         assert.equal(result.value, null);
       });
 
-      Nightwatch.start();
-    },
+      client.start(done);
+    });
+  });
 
-    'client.end() - failures and screenshots disabled': function (done) {
-      var client = Nightwatch.client();
+  it('client.end() - failures and screenshots disabled', function (done) {
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/screenshot',
+      response: JSON.stringify({
+        status: 0,
+        state: 'success',
+        value: '==content'
+      })
+    }, true);
 
-      client.results.failed = 1;
-      client.currentTest = {
-        module: 'test_module',
-        name: 'test_name'
-      };
-      client.options.screenshots = {
+    Nightwatch.initClient({
+      screenshots: {
         enabled: true,
         on_failure: false,
         path: './screens'
+      }
+    }).then(client => {
+      client.api.currentTest = {
+        module: 'test_module',
+        name: 'test_name',
+        results: {
+          failed: 1,
+          passed: 0
+        }
       };
 
-      nock('http://localhost:10195')
-        .delete('/wd/hub/session/1352110219202')
-        .reply(200, {
-          status: 0,
-          state: 'success',
-          value: null
-        });
+      client.api.saveScreenshot = function (file, callback) {
+        throw new Error('saveScreenshot should not be called');
+      };
 
       client.api.end(function callback(result) {
-        assert.strictEqual(result.value, null);
+        assert.strictEqual(result.status, 0);
       });
 
-      Nightwatch.start(done);
-    }
-  }
-};
+      client.start(done);
+    });
+  });
+});

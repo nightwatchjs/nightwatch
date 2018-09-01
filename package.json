@@ -1,7 +1,7 @@
 {
   "name": "nightwatch",
-  "description": "A node.js bindings implementation for selenium 2.0/webdriver",
-  "version": "0.9.16",
+  "description": "Easy to use Node.js based End-to-End testing solution for browser based apps and websites, using the W3C WebDriver API.",
+  "version": "1.0.10",
   "author": {
     "name": "Andrei Rusu",
     "email": "andrei@nightwatchjs.org"
@@ -15,45 +15,57 @@
     "url": "git@github.com:nightwatchjs/nightwatch.git"
   },
   "dependencies": {
+    "assertion-error": "^1.1.0",
     "chai-nightwatch": "~0.1.x",
-    "ejs": "0.8.3",
-    "lodash.clone": "3.0.3",
-    "lodash.defaultsdeep": "4.3.2",
+    "ejs": "^2.5.9",
+    "lodash.clone": "^3.0.3",
+    "lodash.defaultsdeep": "^4.6.0",
+    "lodash.merge": "^4.6.1",
     "minimatch": "3.0.3",
     "mkpath": "1.0.0",
-    "mocha-nightwatch": "3.2.2",
-    "optimist": "0.6.1",
-    "proxy-agent": "2.0.0",
-    "q": "1.4.1"
+    "optimist": "^0.6.1",
+    "proxy-agent": "^3.0.0"
   },
   "devDependencies": {
-    "chai": "^3.2.0",
-    "coveralls": "latest",
-    "grunt": "~0.4.4",
-    "grunt-complexity": "^0.1.7",
-    "grunt-contrib-jshint": "~0.10.0",
-    "grunt-jsonlint": "~1.0.4",
-    "grunt-npm-release": "latest",
-    "jscoverage": "latest",
-    "jshint": "~2.4.4",
-    "jsonlint": "~1.6.0",
-    "mocha": "^2.3.4",
-    "mocha-lcov-reporter": "^1.2.0",
+    "chai": "^4.1.2",
+    "coveralls": "^3.0.0",
+    "eslint": "^5.2.0",
+    "mocha": "^5.2.0",
     "mock-spawn": "^0.2.1",
     "mockery": "~1.4.0",
-    "nock": "~0.45.0",
-    "xml2json": "^0.11.0"
+    "nock": "^9.1.4",
+    "nyc": "^11.6.0"
+  },
+  "optionalDependencies": {
+    "mocha": "^5.1.1"
   },
   "bin": {
     "nightwatch": "./bin/nightwatch"
   },
   "man": "",
   "scripts": {
-    "jshint": "./node_modules/.bin/jshint --verbose --config .jshintrc lib/",
-    "mocha-coverage": "jscoverage lib --exclude *.ejs,*.json && NIGHTWATCH_COV=1 ./node_modules/.bin/mocha test/src --reporter html-cov > coverage.html",
-    "mocha-lcov-coverage": "jscoverage lib --exclude *.ejs,*.json && NIGHTWATCH_COV=1 ./node_modules/.bin/mocha test/src --reporter mocha-lcov-reporter > lib-cov/coverage.lcov",
-    "test": "./node_modules/.bin/mocha test/src",
-    "unit-tests": "./bin/nightwatch -c test/nightwatch.json"
+    "eslint": "eslint . --quiet",
+    "mocha-coverage": "nyc --reporter=html mocha test/src/",
+    "test": "mocha test/src",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "env": {
+      "browser": false,
+      "node": true
+    },
+    "rules": {
+      "eqeqeq": "off",
+      "curly": [
+        "error",
+        "all"
+      ],
+      "quotes": [
+        "error",
+        "single"
+      ]
+    }
   },
   "files": [
     "bin",

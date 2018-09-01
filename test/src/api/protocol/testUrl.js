@@ -1,49 +1,58 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var MockServer  = require('../../../lib/mockserver.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = MochaTest.add('url', {
-  beforeEach: function () {
-    this.client = Nightwatch.client();
-    this.protocol = common.require('api/protocol.js')(this.client);
-  },
+describe('url', function() {
+  before(function() {
+    Globals.protocolBefore.call(this);
+  });
 
-  'client.url() get' : function(done) {
-    var protocol = this.protocol;
-    var command = protocol.url(function() {});
-
-    assert.equal(command.request.method, 'GET');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/url');
-    command.on('result', function() {
-      done();
+  it('client.url() get', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202/url');
+      },
+      commandName: 'url',
+      args: []
     });
+  });
 
-  },
-
-  'client.url() new' : function(done) {
-    var protocol = this.protocol;
-    var command = protocol.url('http://localhost');
-
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.data, '{"url":"http://localhost"}');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/url');
-    command.on('result', function() {
-      done();
+  it('client.url() new', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/url');
+        assert.deepEqual(opts.data, {url: 'http://localhost'});
+      },
+      commandName: 'url',
+      args: ['http://localhost']
     });
-  },
+  });
 
-  'client.url() get with callback' : function(done) {
-    var protocol = this.protocol;
-
-    protocol.url(function() {
-      assert.ok(true, 'Get callback called');
+  it('client.url() get with callback', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202/url');
+      },
+      commandName: 'url',
+      args: [function() {
+        assert.equal(this.toString(), 'Nightwatch API');
+      }]
     });
+  });
 
-    protocol.url('http://localhost', function() {
-      assert.ok(true, 'Post callback called');
-      done();
+  it('client.url() new with callback', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/url');
+        assert.deepEqual(opts.data, {url: 'http://localhost'});
+      },
+      commandName: 'url',
+      args: ['http://localhost', function() {
+
+      }]
     });
-  }
+  });
 });
