@@ -79,6 +79,21 @@ describe('test expect element selectors', function() {
     Nightwatch.start(done);
   });
 
+  it('unknown/invalid expect methods', function () {
+    nocks
+      .elementsFound()
+      .elementsFound('#signupSection', [{ELEMENT: '0'}]);
+
+    let api = Nightwatch.api();
+    api.globals.abortOnAssertionFailure = false;
+
+    assert.throws(function() {
+      api.expect.element('.nock').to.be.hidden;
+    }, /Error: Unknown property: "hidden"\. Please consult docs at: http:\/\/nightwatchjs\.org\/api\./);
+
+    Nightwatch.start();
+  });
+
   it('failing expect selectors - xpath @signUp', function () {
     nocks
       .elementsFound()
