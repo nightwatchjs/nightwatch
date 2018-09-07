@@ -16,7 +16,7 @@ We're delighted to announce the release of __Nightwatch v1.0__ in BETA. Document
 To install it run: 
 
 ```sh
-$ npm install nightwatch@1.0.8
+$ npm install nightwatch@1.0.11
 ```
 
 __Please try out the new version and let us know of any issues.__ 
