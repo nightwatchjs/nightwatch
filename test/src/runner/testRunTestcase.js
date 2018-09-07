@@ -35,6 +35,7 @@ describe('testRunTestcase', function() {
     let testsPath = path.join(__dirname, '../../sampletests/withfailures');
     let globals = {
       calls: 0,
+      retryAssertionTimeout: 0,
       reporter(results, cb) {
         assert.equal(globals.calls, 6);
         assert.equal(results.passed, 2);
@@ -72,7 +73,8 @@ describe('testRunTestcase', function() {
         assert.equal(results.errors, 0);
 
         cb();
-      }
+      },
+      retryAssertionTimeout: 0
     };
 
     let settings = {
@@ -83,7 +85,8 @@ describe('testRunTestcase', function() {
       },
       persist_globals: true,
       globals: globals,
-      output: false,
+      output: true,
+      silent: false,
       output_folder: false
     };
 
@@ -215,7 +218,8 @@ describe('testRunTestcase', function() {
         assert.equal(results.errors, 0);
         assert.equal(results.skipped, 0);
         cb();
-      }
+      },
+      retryAssertionTimeout: 0
     };
 
     let settings = {
@@ -247,7 +251,8 @@ describe('testRunTestcase', function() {
         assert.equal(results.failed, 2);
         assert.equal(results.errors, 0);
         cb();
-      }
+      },
+      retryAssertionTimeout: 0
     };
 
     let settings = {

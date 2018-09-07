@@ -34,6 +34,7 @@ describe('testRunTestSuite', function() {
     let testsPath = path.join(__dirname, '../../sampletests/withfailures');
     let globals = {
       calls: 0,
+      retryAssertionTimeout: 0,
       reporter(results, cb) {
         assert.equal(settings.globals.calls, 8);
         assert.deepEqual(results.errmessages, []);
@@ -67,6 +68,7 @@ describe('testRunTestSuite', function() {
     let testsPath = path.join(__dirname, '../../sampletests/withfailures');
     let globals = {
       calls: 0,
+      retryAssertionTimeout: 0,
       reporter(results, cb) {
         assert.equal(settings.globals.calls, 12);
         assert.equal(results.errors, 0);

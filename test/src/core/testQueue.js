@@ -40,9 +40,9 @@ describe('test Queue', function () {
       }
 
       assert.equal(urlCommand.done, true);
-      assert.equal(endCommand.childNodes.length, 0);
+      assert.equal(endCommand.childNodes.length, 1);
       assert.equal(endCommand.done, true);
-      assert.equal(queue.list().length, 0);
+      assert.equal(queue.list().length, 2);
       done();
     });
 
