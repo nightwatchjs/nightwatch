@@ -211,4 +211,39 @@ describe('Transport.create()', function () {
     assert.strictEqual(chromeDriver instanceof WebDriver, false);
   });
 
+  it('test create Transport for Selenium remote cloud service with Chrome', function() {
+    const Transport = common.require('transport/transport.js');
+
+    let seleniumExternal = Transport.create({
+      settings: {
+        selenium: {
+          start_process: true
+        },
+        desiredCapabilities: {
+          browserName: 'Chrome'
+        }
+      }
+    });
+
+    assert.ok(seleniumExternal instanceof Selenium2);
+  });
+
+  it('test create Transport for Selenium remote cloud service with MicrosoftEdge', function() {
+    const Transport = common.require('transport/transport.js');
+
+    let seleniumExternal = Transport.create({
+      settings: {
+        selenium: {
+          start_process: true
+        },
+        desiredCapabilities: {
+          browserName: 'MicrosoftEdge'
+        }
+      }
+    });
+
+    assert.ok(seleniumExternal instanceof Selenium2);
+    assert.strictEqual(seleniumExternal instanceof Selenium3, false);
+  });
+
 });
