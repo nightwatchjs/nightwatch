@@ -105,7 +105,7 @@ describe('test HttpRequest', function() {
     }).send();
 
     try {
-      var authHeader = new Buffer('test:test-key').toString('base64');
+      var authHeader = Buffer.from('test:test-key').toString('base64');
       assert.equal(request.httpRequest.getHeader('Authorization'), 'Basic ' + authHeader);
     } catch (err) {
       done(err);
