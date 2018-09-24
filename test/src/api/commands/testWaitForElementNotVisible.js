@@ -92,7 +92,7 @@ describe('waitForElementNotVisible', function() {
           if (err) {
             try {
               assert.equal(err.message,
-                `Timed out while waiting for element <#weblogin> to not be visible for 15 milliseconds. - expected \u001b[0;32m"not visible"\u001b[0m but got: \u001b[0;31m"visible"\u001b[0m`
+                'Timed out while waiting for element <#weblogin> to not be visible for 15 milliseconds. - expected \u001b[0;32m"not visible"\u001b[0m but got: \u001b[0;31m"visible"\u001b[0m'
               );
               done();
             } catch (err) {

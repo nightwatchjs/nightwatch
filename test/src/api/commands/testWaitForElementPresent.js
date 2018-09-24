@@ -55,7 +55,7 @@ describe('waitForElementPresent', function() {
           if (err) {
             try {
               assert.equal(err.message,
-                `Element .weblogin found in 15 milliseconds - expected \u001b[0;32m"found"\u001b[0m but got: \u001b[0;31m"not found"\u001b[0m`
+                'Element .weblogin found in 15 milliseconds - expected \u001b[0;32m"found"\u001b[0m but got: \u001b[0;31m"not found"\u001b[0m'
               );
               done();
             } catch (err) {
@@ -81,7 +81,7 @@ describe('waitForElementPresent', function() {
           if (err) {
             try {
               assert.equal(err.message,
-                `Timed out while waiting for element <.weblogin> to be present for 15 milliseconds. - expected \u001b[0;32m"found"\u001b[0m but got: \u001b[0;31m"not found"\u001b[0m`
+                'Timed out while waiting for element <.weblogin> to be present for 15 milliseconds. - expected \u001b[0;32m"found"\u001b[0m but got: \u001b[0;31m"not found"\u001b[0m'
               );
               done();
             } catch (err) {
@@ -96,7 +96,7 @@ describe('waitForElementPresent', function() {
 
   it('client.waitForElementPresent() failure no abort', function(done) {
     initClient()
-        .then(client => {
+      .then(client => {
         client.api.waitForElementPresent('.weblogin', 100, false, function callback(result) {
           assert.equal(result.value, false);
         });
