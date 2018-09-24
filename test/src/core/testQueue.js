@@ -6,7 +6,7 @@ describe('test Queue', function () {
   beforeEach(function (done) {
     Globals.beforeEach.call(this, {
       silent: true,
-          output: false
+      output: false
     }, () => {
       this.client.queue.reset();
       done();
