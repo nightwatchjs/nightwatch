@@ -3,6 +3,9 @@ const common = require('../../../common.js');
 const NightwatchAssertion = common.require('core/assertion.js');
 const MockServer  = require('../../../lib/mockserver.js');
 const CommandGlobals = require('../../../lib/globals/commands.js');
+const Nightwatch = require('../../../lib/nightwatch.js');
+
+const initClient = () => Nightwatch.initClient();
 
 describe('waitForElementNotVisible', function() {
   const createOrig = NightwatchAssertion.create;
@@ -41,15 +44,17 @@ describe('waitForElementNotVisible', function() {
       })
     });
 
+    initClient()
+      .then(client => {
+        client.api.globals.abortOnAssertionFailure = false;
+        client.api.waitForElementNotVisible('#weblogin', 110, 50, function callback(result, instance) {
+          assert.equal(assertion[0], true);
+          assert.equal(assertion[4], false);
+          NightwatchAssertion.create = createOrig;
+        });
 
-    this.client.api.globals.abortOnAssertionFailure = false;
-    this.client.api.waitForElementNotVisible('#weblogin', 110, 50, function callback(result, instance) {
-      assert.equal(assertion[0], true);
-      assert.equal(assertion[4], false);
-      NightwatchAssertion.create = createOrig;
-    });
-
-    this.client.start(done);
+        client.start(done);
+      });
   });
 
   it('client.waitForElementNotVisible() failure', function(done) {
@@ -70,18 +75,34 @@ describe('waitForElementNotVisible', function() {
       })
     });
 
-    this.client.api.globals.abortOnAssertionFailure = true;
+    initClient()
+      .then(client => {
+        this.client.api.globals.abortOnAssertionFailure = true;
 
-    this.client.api.waitForElementNotVisible('#weblogin', 15, 10, function callback(result) {
-      assert.equal(assertion[0], false);
-      assert.equal(assertion[1].actual, 'visible');
-      assert.equal(assertion[1].expected, 'not visible');
-      assert.equal(assertion[3], 'Timed out while waiting for element <#weblogin> to not be visible for 15 milliseconds.');
-      assert.equal(assertion[4], true); // abortOnFailure
-      assert.equal(result.status, 0);
-    });
+        this.client.api.waitForElementNotVisible('#weblogin', 15, 10, function callback(result) {
+          assert.equal(assertion[0], false);
+          assert.equal(assertion[1].actual, 'visible');
+          assert.equal(assertion[1].expected, 'not visible');
+          assert.equal(assertion[3], 'Timed out while waiting for element <#weblogin> to not be visible for 15 milliseconds.');
+          assert.equal(assertion[4], true); // abortOnFailure
+          assert.equal(result.status, 0);
+        });
 
-    this.client.start(done);
+        this.client.start(err => {
+          if (err) {
+            try {
+              assert.equal(err.message,
+                `Timed out while waiting for element <#weblogin> to not be visible for 15 milliseconds. - expected \u001b[0;32m"not visible"\u001b[0m but got: \u001b[0;31m"visible"\u001b[0m`
+              );
+              done();
+            } catch (err) {
+              done(err);
+            }
+            return;
+          }
+          done(Error('client.waitForElementNotVisible() failure should throw error'));
+        });
+      });
   });
 });
 

@@ -3,6 +3,9 @@ const common = require('../../../common.js');
 const MockServer  = require('../../../lib/mockserver.js');
 const CommandGlobals = require('../../../lib/globals/commands.js');
 const NightwatchAssertion = common.require('core/assertion.js');
+const Nightwatch = require('../../../lib/nightwatch.js');
+
+const initClient = () => Nightwatch.initClient();
 
 describe('waitForElementVisible', function() {
   const createOrig = NightwatchAssertion.create;
@@ -34,18 +37,21 @@ describe('waitForElementVisible', function() {
       })
     });
 
-    this.client.api.globals.abortOnAssertionFailure = false;
-    this.client.api.globals.waitForConditionPollInterval = 10;
-    this.client.api.waitForElementVisible('#weblogin', 15, 10, function (result, instance) {
-      assert.equal(assertion[0], false);
-      assert.equal(assertion[1].actual, 'not visible');
-      assert.equal(assertion[4], false);
-      NightwatchAssertion.create = createOrig;
-    });
+    initClient()
+      .then(client => {
+        client.api.globals.abortOnAssertionFailure = false;
+        client.api.globals.waitForConditionPollInterval = 10;
+        client.api.waitForElementVisible('#weblogin', 15, 10, function (result, instance) {
+          assert.equal(assertion[0], false);
+          assert.equal(assertion[1].actual, 'not visible');
+          assert.equal(assertion[4], false);
+          NightwatchAssertion.create = createOrig;
+        });
 
-    this.client.start(function(err) {
-      done(err);
-    });
+        client.start(function(err) {
+          done(err);
+        });
+      });
   });
 
   it('client.waitForElementVisible() fail with global timeout default', function (done) {
@@ -69,17 +75,21 @@ describe('waitForElementVisible', function() {
       })
     });
 
-    this.client.api.globals.waitForConditionTimeout = 15;
-    this.client.api.globals.waitForConditionPollInterval = 10;
-    this.client.api.waitForElementVisible('#weblogin', function callback(result, instance) {
-      assert.equal(assertion[0], false);
-      assert.equal(assertion[3], 'Timed out while waiting for element <#weblogin> to be visible for 15 milliseconds.');
-      assert.equal(assertion[1].actual, 'not visible');
+    initClient()
+      .then(client => {
+        client.api.globals.waitForConditionTimeout = 15;
+        client.api.globals.waitForConditionPollInterval = 10;
+        client.api.waitForElementVisible('#weblogin', function callback(result, instance) {
+          assert.equal(assertion[0], false);
+          assert.equal(assertion[3], 'Timed out while waiting for element <#weblogin> to be visible for 15 milliseconds.');
+          assert.equal(assertion[1].actual, 'not visible');
 
-      NightwatchAssertion.create = createOrig;
-    });
+          NightwatchAssertion.create = createOrig;
+          done();
+        });
 
-    this.client.start(done);
+        client.start(done);
+      });
   });
 
   it('client.waitForElementVisible() fail with global timeout default and custom message', function (done) {
@@ -103,15 +113,19 @@ describe('waitForElementVisible', function() {
       })
     });
 
-    this.client.api.globals.waitForConditionTimeout = 15;
-    this.client.api.globals.waitForConditionPollInterval = 10;
-    this.client.api.waitForElementVisible('#weblogin', function callback(result, instance) {
-      assert.equal(assertion[3], 'Test message <#weblogin> and a global 15 ms.');
+    initClient()
+      .then(client => {
+        client.api.globals.waitForConditionTimeout = 15;
+        client.api.globals.waitForConditionPollInterval = 10;
+        client.api.waitForElementVisible('#weblogin', function callback(result, instance) {
+          assert.equal(assertion[3], 'Test message <#weblogin> and a global 15 ms.');
 
-      NightwatchAssertion.create = createOrig;
-    }, 'Test message <%s> and a global %s ms.');
+          NightwatchAssertion.create = createOrig;
+          done();
+        }, 'Test message <%s> and a global %s ms.');
 
-    this.client.start(done);
+        client.start(done);
+      });
   });
 
   it('client.waitForElementVisible() StaleElementReference error', function (done) {
@@ -155,22 +169,25 @@ describe('waitForElementVisible', function() {
         })
       }, true);
 
-    this.client.api.waitForElementVisible('#stale-element', 110, 10, function callback(result, instance) {
-      assert.equal(assertion[0], true);
-      assert.equal(result.value, true);
 
-      NightwatchAssertion.create = createOrig;
-    });
+    initClient()
+      .then(client => {
+        client.api.waitForElementVisible('#stale-element', 110, 10, function callback(result, instance) {
+          assert.equal(assertion[0], true);
+          assert.equal(result.value, true);
 
-    this.client.start(function() {
-      MockServer.removeMock({
-        url: '/wd/hub/session/1352110219202/elements',
-        method: 'POST'
+          NightwatchAssertion.create = createOrig;
+        });
+
+        client.start(function() {
+          MockServer.removeMock({
+            url: '/wd/hub/session/1352110219202/elements',
+            method: 'POST'
+          });
+
+          done();
+        });
       });
-
-      done();
-    });
-
 
   });
 
