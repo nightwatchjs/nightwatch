@@ -23,7 +23,9 @@ describe('test page object element selectors', function() {
   beforeEach(function(done) {
     nocks.cleanAll();
     Nightwatch.init({
-      page_objects_path: [path.join(__dirname, '../../../extra/pageobjects')]
+      page_objects_path: [path.join(__dirname, '../../../extra/pageobjects')],
+      custom_commands_path: [path.join(__dirname, '../../../extra/commands')],
+      custom_assertions_path: [path.join(__dirname, '../../../extra/assertions')],
     }, done);
   });
 
@@ -126,6 +128,153 @@ describe('test page object element selectors', function() {
     });
 
     Nightwatch.start(done);
+  });
+
+  it('page object customCommand with selector', function(done) {
+    nocks
+      .elementFound('#signupSection')
+      .elementFound('#getStarted')
+      .elementFound('#helpBtn')
+      .elementIdNotFound(0, '#helpBtn', 'xpath')
+      .elementsId('0', '#helpBtn', [{ELEMENT: '0'}]);
+
+    let page = Nightwatch.api().page.simplePageObj();
+
+    page
+      .customCommandWithSelector('@loginAsString', function(result) {
+        assert.deepEqual(result, {
+          selector: '#weblogin',
+          locateStrategy: 'css selector',
+          name: 'loginAsString'
+        });
+      });
+
+    Nightwatch.start(done);
+  });
+
+  it('page object customCommand with selector called on section', function(done) {
+    nocks
+      .elementFound('#signupSection')
+      .elementFound('#getStarted')
+      .elementFound('#helpBtn')
+      .elementsId('0', '#helpBtn', [{ELEMENT: '0'}]);
+
+    let page = Nightwatch.api().page.simplePageObj();
+    let section = page.section.signUp;
+
+    section
+      .customCommandWithSelector('@help', function(result) {
+        assert.deepEqual(result, {
+          selector: '#helpBtn',
+          locateStrategy: 'css selector',
+          name: 'help',
+          response: {status: 0, value: '0'}
+        });
+      });
+
+    Nightwatch.start(done);
+  });
+
+  it('page object customAssertion with selector', function(done) {
+    nocks
+      .elementFound('#signupSection')
+      .elementFound('#getStarted')
+      .elementFound('#helpBtn')
+      .elementIdNotFound(0, '#helpBtn', 'xpath')
+      .elementsId('0', '#helpBtn', [{ELEMENT: '0'}]);
+
+    let page = Nightwatch.api().page.simplePageObj();
+
+    page
+      .assert.customAssertionWithSelector('@loginAsString', 0, function(result, assertion) {
+        try {
+          assert.strictEqual(result, true);
+          assert.deepEqual(assertion.element, {
+            selector: '#weblogin',
+            locateStrategy: 'css selector',
+            name: 'loginAsString'
+          });
+        } catch (err) {
+          done(err);
+        }
+      })
+      .assert.customAssertionWithSelector('@loginAsString', 1, function(result, assertion) {
+        try {
+          assert.ok(result instanceof Error);
+          assert.ok(result.message.includes('in 100 ms'));
+          assert.equal(assertion.rescheduleInterval, 50);
+          assert.equal(assertion.retryAssertionTimeout, 100);
+          assert.deepEqual(assertion.element, {
+            selector: '#weblogin',
+            locateStrategy: 'css selector',
+            name: 'loginAsString'
+          });
+
+          done();
+        } catch (err) {
+          done(err);
+        }
+      });
+
+    Nightwatch.start();
+  });
+
+  it('page object customAssertion with selector called on section', function(done) {
+    nocks
+      .elementFound('#signupSection')
+      .elementFound('#getStarted')
+      .elementFound('#helpBtn')
+      .elementsId('0', '#helpBtn', [{ELEMENT: '0'}]);
+
+    let page = Nightwatch.api().page.simplePageObj();
+    let section = page.section.signUp;
+
+    section.assert.customAssertionWithSelector('@help', 0, function(result, assertion) {
+      try {
+        assert.strictEqual(result, true);
+        assert.deepEqual(assertion.element, {
+          selector: '#helpBtn',
+          locateStrategy: 'css selector',
+          name: 'help',
+          response: {
+            status: 0, value: '0'
+          }
+        });
+        done();
+      } catch (err) {
+        done(err);
+      }
+    });
+
+    Nightwatch.start();
+  });
+
+  it('page object customAssertion with indexed element called on section', function(done) {
+    nocks
+      .elementFound('#signupSection') // page.section
+      .elementsId(0, '#helpBtn', [{ELEMENT: '1'},{ELEMENT: '2'}])
+      .elementId(0, '#helpBtn', null, {ELEMENT: '1'});
+
+    let page = Nightwatch.api().page.simplePageObj();
+    let section = page.section.signUp;
+
+    section.assert.customAssertionWithSelector({selector:'@help', index: 1}, 0, function(result, assertion) {
+      try {
+        assert.strictEqual(result, true);
+        assert.deepEqual(assertion.element, {
+          selector: '#helpBtn',
+          locateStrategy: 'css selector',
+          name: 'help',
+          index: 1,
+          response: {status: 0, value: '2'}
+        });
+        done();
+      } catch (err) {
+        done(err);
+      }
+    });
+
+    Nightwatch.start();
   });
 
 });

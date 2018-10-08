@@ -28,8 +28,11 @@ describe('test expect element selectors', function() {
     }, done);
   });
 
-
   it('passing expect selectors', function (done) {
+    const common = require('../../../common.js');
+    const Logger = common.require('util/logger.js');
+    Logger.setOutputEnabled(false);
+
     nocks
       .elementsFound()
       .elementsFound('#signupSection', [{ELEMENT: '0'}])

@@ -147,5 +147,4 @@ describe('test commands element selectors', function() {
 
     Nightwatch.start();
   });
-
 });

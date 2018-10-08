@@ -12,14 +12,14 @@ module.exports = function(commandName, assertionModule, assertCallback, done) {
       return this;
     }
 
-    runAssertion(passed, value, calleeFn, message) {
-      super.runAssertion(passed, value, calleeFn, message)
+    runAssertion() {
+      return super.runAssertion()
         .then(() => {
-          return assertCallback.call(this, passed, value, calleeFn, message);
+          return assertCallback.call(this, this.assertion.passed, this.assertion.actual, this.assertion.calleeFn, this.assertion.message);
         })
         .catch(err => {
           if (err instanceof NightwatchError) {
-            return assertCallback.call(this, passed, value, calleeFn, message);
+            return assertCallback.call(this, this.assertion.passed, this.assertion.actual, this.assertion.calleeFn, this.assertion.message);
           }
 
           throw err;

@@ -11,7 +11,6 @@ describe('waitForElementNotVisible', function() {
     CommandGlobals.beforeEach.call(this, done);
   });
 
-
   afterEach(function() {
     MockServer.removeMock({
       url : '/wd/hub/session/1352110219202/element/0/displayed',
@@ -53,12 +52,9 @@ describe('waitForElementNotVisible', function() {
   });
 
   it('client.waitForElementNotVisible() failure', function(done) {
-    const assertion = [];
-    NightwatchAssertion.create = function(...args) {
-      assertion.unshift(...args);
-
-      return createOrig(...args);
-    };
+    const Logger = common.require('util/logger.js');
+    Logger.setOutputEnabled(false);
+    Logger.enable();
 
     MockServer.addMock({
       url : '/wd/hub/session/1352110219202/element/0/displayed',
@@ -70,15 +66,22 @@ describe('waitForElementNotVisible', function() {
       })
     });
 
+    const assertion = [];
+    NightwatchAssertion.create = function(...args) {
+      assertion.unshift(...args);
+
+      return createOrig(...args);
+    };
+
     this.client.api.globals.abortOnAssertionFailure = true;
 
     this.client.api.waitForElementNotVisible('#weblogin', 15, 10, function callback(result) {
+      assert.equal(result.status, 0);
       assert.equal(assertion[0], false);
       assert.equal(assertion[1].actual, 'visible');
       assert.equal(assertion[1].expected, 'not visible');
       assert.equal(assertion[3], 'Timed out while waiting for element <#weblogin> to not be visible for 15 milliseconds.');
       assert.equal(assertion[4], true); // abortOnFailure
-      assert.equal(result.status, 0);
     });
 
     this.client.start(done);

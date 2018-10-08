@@ -118,7 +118,7 @@ describe('testRunTestSuite', function() {
         start_process: true
       },
       silent: true,
-      output: false,
+      output: true,
       persist_globals: true,
       globals: globals,
       skip_testcases_on_fail: false,
