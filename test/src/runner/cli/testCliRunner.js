@@ -33,6 +33,19 @@ describe('Test CLI Runner', function() {
     mockery.registerMock('./nightwatch.json', config);
     mockery.registerMock('./nightwatch.conf.js', config);
 
+    mockery.registerMock('./selenium_disabled.json', {
+      test_settings: {
+        selenium: {
+          start_process: true
+        },
+        test_settings: {
+          'default': {
+            selenium_port: 4441
+          }
+        }
+      }
+    });
+
     mockery.registerMock('./output_disabled.json', {
       src_folders: ['tests'],
       output_folder: false,
@@ -241,6 +254,9 @@ describe('Test CLI Runner', function() {
         if (b == './extra/globals-err.js') {
           return './extra/globals-err.js';
         }
+        if (b == './selenium_disabled.json') {
+          return './selenium_disabled.json'
+        }
         return './nightwatch.json';
       },
       resolve: function(a) {
@@ -392,6 +408,28 @@ describe('Test CLI Runner', function() {
     assert.equal(runner.test_settings.username, 'testuser');
     assert.equal(runner.test_settings.credentials.service.user, 'testuser');
     assert.equal(runner.test_settings.desiredCapabilities['test.user'], 'testuser');
+  });
+
+  it('testSeleniumPortWhenStartProcessDisabled', function() {
+    mockery.registerMock('fs', {
+      statSync: function(module) {
+        if (module == './selenium_disabled.json') {
+          return {
+            isFile: function() {
+              return true
+            }
+          };
+        }
+        throw new Error('Does not exist');
+      }
+    });
+    const CliRunner = common.require('runner/cli/cli.js');
+    let runner = new CliRunner({
+      config: './selenium_disabled.json',
+    }).setup();
+
+    assert.equal(runner.isWebDriverManaged(), false);
+    assert.notEqual(runner.test_settings.webdriver.port, 4444);
   });
 
   it('testGetTestSourceSingle', function() {
