@@ -15,10 +15,11 @@ describe('expect.type', function() {
     ExpectGlobals.afterEach.call(this, done);
   });
 
-  it('to be [PASSED]', function(done) {
+  it('to be [PASSED]', function() {
     Nocks.elementFound().name('input');
     let expect = this.client.api.expect.element('#weblogin').to.be.an('input');
-    this.client.api.perform(function() {
+
+    return this.client.start(function() {
       assert.equal(expect.assertion.selector, '#weblogin');
       assert.equal(expect.assertion.negate, false);
       assert.equal(expect.assertion.passed, true);
@@ -27,11 +28,9 @@ describe('expect.type', function() {
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be an input'));
       assert.equal(expect.assertion.messageParts.length, 1);
     });
-
-    this.client.start(done);
   });
 
-  it('to be [FAILED]', function(done) {
+  it('to be [FAILED]', function() {
     this.client.api.globals.waitForConditionTimeout = 40;
     this.client.api.globals.waitForConditionPollInterval = 20;
 
@@ -42,7 +41,8 @@ describe('expect.type', function() {
       .name('div');
 
     let expect = this.client.api.expect.element('#weblogin').to.be.an('input');
-    this.client.api.perform(function() {
+
+    return this.client.start(function() {
       assert.equal(expect.assertion.selector, '#weblogin');
       assert.equal(expect.assertion.negate, false);
       assert.equal(expect.assertion.waitForMs, 40);
@@ -54,15 +54,14 @@ describe('expect.type', function() {
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be an input'));
       assert.equal(expect.assertion.messageParts.length, 0);
     });
-
-    this.client.start(done);
   });
 
-  it('to not be [PASSED]', function(done) {
+  it('to not be [PASSED]', function() {
     Nocks.elementFound().name('input');
 
     let expect = this.client.api.expect.element('#weblogin').to.not.be.a('div');
-    this.client.api.perform(function() {
+
+    return this.client.start(function() {
       assert.equal(expect.assertion.selector, '#weblogin');
       assert.equal(expect.assertion.article, 'a');
       assert.equal(expect.assertion.negate, true);
@@ -73,11 +72,9 @@ describe('expect.type', function() {
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not be a div'));
       assert.equal(expect.assertion.messageParts.length, 1);
     });
-
-    this.client.start(done);
   });
 
-  it('to not be - element not found', function(done) {
+  it('to not be - element not found', function() {
     this.client.api.globals.waitForConditionTimeout = 40;
     this.client.api.globals.waitForConditionPollInterval = 20;
 
@@ -88,7 +85,8 @@ describe('expect.type', function() {
       .elementNotFound();
 
     let expect = this.client.api.expect.element('#weblogin').to.be.an('input');
-    this.client.api.perform(function() {
+
+    return this.client.start(function() {
       assert.equal(expect.assertion.selector, '#weblogin');
       assert.equal(expect.assertion.negate, false);
       assert.equal(expect.assertion.waitForMs, 40);
@@ -99,11 +97,9 @@ describe('expect.type', function() {
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be an input - element was not found'));
       assert.deepEqual(expect.assertion.messageParts, [' - element was not found']);
     });
-
-    this.client.start(done);
   });
 
-  it('to be with message [PASSED]', function(done) {
+  it('to be with message [PASSED]', function() {
     this.client.api.globals.waitForConditionTimeout = 40;
     this.client.api.globals.waitForConditionPollInterval = 20;
 
@@ -113,7 +109,8 @@ describe('expect.type', function() {
       .name('input');
 
     let expect = this.client.api.expect.element('#weblogin').to.be.an('input', 'weblogin should be an input');
-    this.client.api.perform(function() {
+
+    return this.client.start(function() {
       assert.equal(expect.assertion.selector, '#weblogin');
       assert.equal(expect.assertion.negate, false);
       assert.equal(expect.assertion.waitForMs, 40);
@@ -123,11 +120,9 @@ describe('expect.type', function() {
       assert.ok(expect.assertion.message.startsWith('weblogin should be an input'));
       assert.equal(expect.assertion.messageParts.length, 1);
     });
-
-    this.client.start(done);
   });
 
-  it('to be with message [FAILED]', function(done) {
+  it('to be with message [FAILED]', function() {
     this.client.api.globals.waitForConditionTimeout = 40;
     this.client.api.globals.waitForConditionPollInterval = 20;
 
@@ -137,7 +132,8 @@ describe('expect.type', function() {
       .name('div');
 
     let expect = this.client.api.expect.element('#weblogin').to.be.an('input', 'weblogin should be an input');
-    this.client.api.perform(function() {
+
+    return this.client.start(function() {
       assert.equal(expect.assertion.selector, '#weblogin');
       assert.equal(expect.assertion.negate, false);
       assert.equal(expect.assertion.waitForMs, 40);
@@ -149,11 +145,9 @@ describe('expect.type', function() {
       assert.equal(expect.assertion.message, 'weblogin should be an input');
       assert.equal(expect.assertion.messageParts.length, 0);
     });
-
-    this.client.start(done);
   });
 
-  it('to be with message - element not found', function(done) {
+  it('to be with message - element not found', function() {
     this.client.api.globals.waitForConditionTimeout = 40;
     this.client.api.globals.waitForConditionPollInterval = 20;
 
@@ -164,7 +158,8 @@ describe('expect.type', function() {
       .elementNotFound();
 
     let expect = this.client.api.expect.element('#weblogin').to.be.an('input', 'weblogin should be an input');
-    this.client.api.perform(function() {
+
+    return this.client.start(function() {
       assert.equal(expect.assertion.selector, '#weblogin');
       assert.equal(expect.assertion.negate, false);
       assert.equal(expect.assertion.waitForMs, 40);
@@ -175,37 +170,33 @@ describe('expect.type', function() {
       assert.equal(expect.assertion.message, 'weblogin should be an input - element was not found');
       assert.deepEqual(expect.assertion.messageParts, [' - element was not found']);
     });
-
-    this.client.start(done);
   });
 
-  it('to be with waitFor - element not found', function(done) {
+  it('to be with waitFor - element not found', function() {
     this.client.api.globals.waitForConditionPollInterval = 50;
 
     Nocks.elementNotFound().elementNotFound().elementNotFound();
 
     let expect = this.client.api.expect.element('#weblogin').to.be.an('input').before(60);
-    this.client.api.perform(function() {
+
+    return this.client.start(function() {
       assert.equal(expect.assertion.waitForMs, 60);
       assert.equal(expect.assertion.passed, false);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be an input in 60ms - element was not found'));
     });
-
-    this.client.start(done);
   });
 
-  it('to be with waitFor - element found on retry', function(done) {
+  it('to be with waitFor - element found on retry', function() {
     this.client.api.globals.waitForConditionPollInterval = 50;
 
     Nocks.elementNotFound().elementFound().name('input');
 
     let expect = this.client.api.expect.element('#weblogin').to.be.an('input').before(60);
-    this.client.api.perform(function() {
+
+    return this.client.start(function() {
       assert.equal(expect.assertion.waitForMs, 60);
       assert.equal(expect.assertion.passed, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be an input in 60ms - condition was met in ' + expect.assertion.elapsedTime + 'ms'));
     });
-
-    this.client.start(done);
   });
 });

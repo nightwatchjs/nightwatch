@@ -41,7 +41,7 @@ class AssertionLoaderMock {
    * @param {function} doneCallback
    */
   loadAssertion(assertCallback, doneCallback) {
-    const AssertionLoader = common.requireMock('api-loader/assertion.js', this.commandName, this.assertionModule, assertCallback, doneCallback);
+    const AssertionLoader = common.requireMock('api-loader/assertion-loader.js', this.commandName, this.assertionModule, assertCallback, doneCallback);
     let loader = new AssertionLoader(this.client);
 
     loader.loadModule()

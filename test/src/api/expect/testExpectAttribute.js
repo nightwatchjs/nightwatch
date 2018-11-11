@@ -81,7 +81,7 @@ describe('expect.attribute', function() {
     this.client.start(done);
   });
 
-  it('to have attribute with waitFor [FAILED]', function(done) {
+  it('to have attribute with waitFor [FAILED]', function() {
     this.client.api.globals.waitForConditionPollInterval = 50;
 
     Nocks.elementFound()
@@ -90,17 +90,16 @@ describe('expect.attribute', function() {
       .attributeValue(null);
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').before(60);
-    this.client.api.perform(function() {
+
+    return this.client.start(function() {
       assert.equal(expect.assertion.waitForMs, 60);
-      assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.abortOnFailure, false);
+      assert.strictEqual(expect.assertion.passed, false);
+      assert.strictEqual(expect.assertion.abortOnFailure, false);
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" in 60ms - attribute was not found');
     });
-
-    this.client.start(done);
   });
 
-  it('to have attribute with implicit and custom waitFor [FAILED]', function(done) {
+  it('to have attribute with implicit and custom waitFor [FAILED]', function() {
     this.client.api.globals.waitForConditionPollInterval = 50;
     Nocks.elementFound()
       .attributeValue(null)
@@ -110,13 +109,12 @@ describe('expect.attribute', function() {
     this.client.api.globals.waitForConditionTimeout = 65;
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').before(100);
-    this.client.api.perform(function() {
+
+    return this.client.start(function() {
       assert.equal(expect.assertion.waitForMs, 100);
       assert.equal(expect.assertion.passed, false);
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" in 100ms - attribute was not found');
     });
-
-    this.client.start(done);
   });
 
   it('to have attribute with message [PASSED]', function(done) {
@@ -131,7 +129,7 @@ describe('expect.attribute', function() {
     this.client.start(done);
   });
 
-  it('to have attribute with message [FAILED]', function(done) {
+  it('to have attribute with message [FAILED]', function() {
     this.client.api.globals.abortOnAssertionFailure = true;
     this.client.api.globals.waitForConditionTimeout = 40;
     this.client.api.globals.waitForConditionPollInterval = 20;
@@ -143,19 +141,15 @@ describe('expect.attribute', function() {
       .attributeValue(null);
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class', 'Testing if #weblogin has "class"');
-    this.client.start(function(err) {
-      try {
-        assert.ok(err instanceof Error);
-        assert.equal(expect.assertion.passed, false);
-        assert.ok(expect.assertion.message.includes('Testing if #weblogin has "class" - attribute was not found'));
-        done();
-      } catch (err) {
-        done(err);
-      }
+
+    return this.client.start(function(err) {
+      assert.ok(err instanceof Error);
+      assert.equal(expect.assertion.passed, false);
+      assert.ok(expect.assertion.message.includes('Testing if #weblogin has "class" - attribute was not found'));
     });
   });
 
-  it('to have attribute [FAILED]', function(done) {
+  it('to have attribute [FAILED]', function() {
     this.client.api.globals.waitForConditionTimeout = 40;
     this.client.api.globals.waitForConditionPollInterval = 20;
 
@@ -166,7 +160,9 @@ describe('expect.attribute', function() {
       .attributeValue(null);
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class');
-    this.client.api.perform(function() {
+
+    return this.client.start(function(err) {
+      assert.ok(err instanceof Error);
       assert.equal(expect.assertion.selector, '#weblogin');
       assert.equal(expect.assertion.negate, false);
       assert.equal(expect.assertion.waitForMs, 40);
@@ -178,8 +174,6 @@ describe('expect.attribute', function() {
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" - attribute was not found');
       assert.deepEqual(expect.assertion.messageParts, [' - attribute was not found']);
     });
-
-    this.client.start(done);
   });
 
   it('to not have attribute [PASSED]', function(done) {
@@ -200,7 +194,7 @@ describe('expect.attribute', function() {
     this.client.start(done);
   });
 
-  it('to not have attribute [FAILED]', function(done) {
+  it('to not have attribute [FAILED]', function() {
     this.client.api.globals.waitForConditionTimeout = 40;
     this.client.api.globals.waitForConditionPollInterval = 20;
 
@@ -211,7 +205,9 @@ describe('expect.attribute', function() {
       .attributeValue('');
 
     let expect = this.client.api.expect.element('#weblogin').to.not.have.attribute('class');
-    this.client.api.perform(function() {
+
+    return this.client.start(function(err) {
+      assert.ok(err instanceof Error);
       assert.equal(expect.assertion.selector, '#weblogin');
       assert.equal(expect.assertion.negate, true);
       assert.equal(expect.assertion.passed, false);
@@ -221,11 +217,9 @@ describe('expect.attribute', function() {
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to not have attribute "class"');
       assert.deepEqual(expect.assertion.messageParts, []);
     });
-
-    this.client.start(done);
   });
 
-  it('to have attribute - element not found', function(done) {
+  it('to have attribute - element not found', function() {
     this.client.api.globals.waitForConditionTimeout = 40;
     this.client.api.globals.waitForConditionPollInterval = 20;
 
@@ -234,7 +228,8 @@ describe('expect.attribute', function() {
       .elementNotFound();
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class');
-    this.client.api.perform(function() {
+
+    return this.client.start(function() {
       assert.equal(expect.assertion.selector, '#weblogin');
       assert.equal(expect.assertion.negate, false);
       assert.equal(expect.assertion.waitForMs, 40);
@@ -245,8 +240,6 @@ describe('expect.attribute', function() {
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" - element was not found');
       assert.deepEqual(expect.assertion.messageParts, [' - element was not found']);
     });
-
-    this.client.start(done);
   });
 
   it('to have attribute equal to [PASSED]', function(done) {
@@ -271,7 +264,7 @@ describe('expect.attribute', function() {
     this.client.start(done);
   });
 
-  it('to have attribute equal to [FAILED]', function(done) {
+  it('to have attribute equal to [FAILED]', function() {
     this.client.api.globals.waitForConditionTimeout = 40;
     this.client.api.globals.waitForConditionPollInterval = 20;
 
@@ -282,7 +275,9 @@ describe('expect.attribute', function() {
       .attributeValue('hp vasq');
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').equal('vasq');
-    this.client.api.perform(function() {
+
+    return this.client.start(function(err) {
+      assert.ok(err instanceof Error);
       assert.equal(expect.assertion.expected, 'equal to \'vasq\'');
       assert.equal(expect.assertion.negate, false);
       assert.equal(expect.assertion.actual, 'hp vasq');
@@ -291,8 +286,6 @@ describe('expect.attribute', function() {
       assert.deepEqual(expect.assertion.messageParts, [ ' equal to: "vasq"'] );
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" equal to: "vasq"');
     });
-
-    this.client.start(done);
   });
 
   it('to have attribute NOT equal to [PASSED]', function(done) {
@@ -311,7 +304,7 @@ describe('expect.attribute', function() {
     this.client.start(done);
   });
 
-  it('to have attribute NOT equal to [FAILED]', function(done) {
+  it('to have attribute NOT equal to [FAILED]', function() {
     this.client.api.globals.waitForConditionTimeout = 40;
     this.client.api.globals.waitForConditionPollInterval = 20;
 
@@ -322,7 +315,9 @@ describe('expect.attribute', function() {
       .attributeValue('hp vasq');
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').not.equal('hp vasq');
-    this.client.api.perform(function() {
+
+    return this.client.start(function(err) {
+      assert.ok(err instanceof Error);
       assert.equal(expect.assertion.expected, 'not equal to \'hp vasq\'');
       assert.equal(expect.assertion.negate, true);
       assert.equal(expect.assertion.actual, 'hp vasq');
@@ -331,48 +326,42 @@ describe('expect.attribute', function() {
       assert.equal(expect.assertion.messageParts[0], ' not equal to: "hp vasq"');
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" not equal to: "hp vasq"');
     });
-
-    this.client.start(done);
   });
 
-  it('to have attribute equal with waitFor [PASSED]', function(done) {
+  it('to have attribute equal with waitFor [PASSED]', function() {
     this.client.api.globals.waitForConditionTimeout = 10;
     this.client.api.globals.waitForConditionPollInterval = 20;
 
     Nocks.elementFound();
-
-    let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').equal('hp vasq').before(110);
     Nocks.attributeValue(null).attributeValue('hp vasq');
 
-    this.client.api.perform(function() {
+    let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').equal('hp vasq').before(110);
+
+    return this.client.start(function() {
       assert.equal(expect.assertion.waitForMs, 110);
       assert.equal(expect.assertion.passed, true);
       assert.equal(expect.assertion.retries, 1);
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" equal to: "hp vasq" in 110ms - condition was met in ' + expect.assertion.elapsedTime + 'ms');
     });
-
-    this.client.start(done);
   });
 
-  it('to have attribute equal with custom waitFor [PASSED]', function(done) {
+  it('to have attribute equal with custom waitFor [PASSED]', function() {
     this.client.api.globals.waitForConditionPollInterval = 50;
     this.client.api.globals.waitForConditionTimeout = 100;
     Nocks.elementFound();
-
-    let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').equal('hp vasq').before(60);
     Nocks.attributeValue(null).attributeValue('hp vasq');
 
-    this.client.api.perform(function() {
+    let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').equal('hp vasq').before(60);
+
+    return this.client.start(function() {
+      assert.equal(expect.assertion.retries, 1);
       assert.equal(expect.assertion.waitForMs, 60);
       assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.retries, 1);
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" equal to: "hp vasq" in 60ms - condition was met in ' + expect.assertion.elapsedTime + 'ms');
     });
-
-    this.client.start(done);
   });
 
-  it('to have attribute equal and waitFor [FAILED] - attribute not found', function(done) {
+  it('to have attribute equal and waitFor [FAILED] - attribute not found', function() {
     this.client.api.globals.waitForConditionPollInterval = 50;
 
     Nocks.elementFound();
@@ -382,17 +371,16 @@ describe('expect.attribute', function() {
       .attributeValue(null)
       .attributeValue(null);
 
-    this.client.api.perform(function() {
+    return this.client.start(function(err) {
+      assert.ok(err instanceof Error);
       assert.equal(expect.assertion.waitForMs, 110);
       assert.equal(expect.assertion.passed, false);
       assert.ok(expect.assertion.retries > 1);
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" equal to: "hp vasq" in 110ms - attribute was not found');
     });
-
-    this.client.start(done);
   });
 
-  it('to have attribute equal and custom waitFor [FAILED] - attribute not found', function(done) {
+  it('to have attribute equal and custom waitFor [FAILED] - attribute not found', function() {
     this.client.api.globals.waitForConditionPollInterval = 35;
     this.client.api.globals.waitForConditionTimeout = 100;
     Nocks.elementFound();
@@ -403,22 +391,23 @@ describe('expect.attribute', function() {
       .attributeValue(null)
       .attributeValue(null);
 
-    this.client.api.perform(function() {
+    return this.client.start(function(err) {
+      assert.ok(err instanceof Error);
       assert.equal(expect.assertion.waitForMs, 60);
       assert.equal(expect.assertion.passed, false);
       assert.ok(expect.assertion.retries > 1);
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" equal to: "hp vasq" in 60ms - attribute was not found');
     });
-
-    this.client.start(done);
   });
 
-  it('to have attribute equal and waitFor [FAILED] - attribute not equal', function(done) {
+  it('to have attribute equal and waitFor [FAILED] - attribute not equal', function() {
     this.client.api.globals.waitForConditionPollInterval = 10;
     Nocks.elementFound().attributeValue('xx').attributeValue('xx');
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').equal('hp vasq').before(11);
-    this.client.api.perform(function() {
+
+    return this.client.start(function(err) {
+      assert.ok(err instanceof Error);
       assert.equal(expect.assertion.waitForMs, 11);
       assert.equal(expect.assertion.passed, false);
       assert.ok(expect.assertion.retries >= 1);
@@ -427,8 +416,6 @@ describe('expect.attribute', function() {
       assert.equal(expect.assertion.actual, 'xx');
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" equal to: "hp vasq" in 11ms');
     });
-
-    this.client.start(done);
   });
 
   it('to have attribute equal to with message [PASSED]', function(done) {
@@ -443,7 +430,7 @@ describe('expect.attribute', function() {
     this.client.start(done);
   });
 
-  it('to have attribute equal with message [FAILED] - attribute not found', function(done) {
+  it('to have attribute equal with message [FAILED] - attribute not found', function() {
     Nocks.elementFound()
       .attributeValue(null)
       .attributeValue(null)
@@ -455,15 +442,13 @@ describe('expect.attribute', function() {
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class', 'Testing if #weblogin has class which equals hp vasq').equal('hp vasq');
 
-    this.client.api.perform(function() {
+    return this.client.start(function(err) {
       assert.equal(expect.assertion.passed, false);
       assert.equal(expect.assertion.message, 'Testing if #weblogin has class which equals hp vasq - attribute was not found');
     });
-
-    this.client.start(done);
   });
 
-  it('to have attribute equal with message [FAILED] - attribute not equal', function(done) {
+  it('to have attribute equal with message [FAILED] - attribute not equal', function() {
     Nocks.elementFound()
       .attributeValue('xx')
       .attributeValue('xx')
@@ -473,13 +458,12 @@ describe('expect.attribute', function() {
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class', 'Testing if #weblogin has class which equals hp vasq').equal('hp vasq');
 
-    this.client.api.perform(function() {
+    return this.client.start(function(err) {
+      assert.ok(err instanceof Error);
       assert.equal(expect.assertion.passed, false);
       assert.equal(expect.assertion.actual, 'xx');
       assert.ok(expect.assertion.message.startsWith('Testing if #weblogin has class which equals hp vasq'));
     });
-
-    this.client.start(done);
   });
 
   it('to have attribute not contains [PASSED]', function(done) {
@@ -521,7 +505,7 @@ describe('expect.attribute', function() {
     this.client.start(done);
   });
 
-  it('to have attribute not contains [FAILED]', function(done) {
+  it('to have attribute not contains [FAILED]', function() {
     Nocks.elementFound()
       .attributeValue('xx')
       .attributeValue('xx')
@@ -533,7 +517,9 @@ describe('expect.attribute', function() {
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').not.contains('xx');
     assert.equal(expect.assertion.message, 'Expected element <%s> to have attribute "class"');
-    this.client.api.perform(function() {
+
+    return this.client.start(function(err) {
+      assert.ok(err instanceof Error);
       assert.equal(expect.assertion.expected, 'not contain \'xx\'');
       assert.equal(expect.assertion.actual, 'xx');
       assert.equal(expect.assertion.negate, true);
@@ -542,8 +528,6 @@ describe('expect.attribute', function() {
       assert.equal(expect.assertion.messageParts[0], ' not contain: "xx"' );
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" not contain: "xx"');
     });
-
-    this.client.start(done);
   });
 
   it('to have attribute which matches [PASSED]', function(done) {
@@ -586,7 +570,7 @@ describe('expect.attribute', function() {
     this.client.start(done);
   });
 
-  it('to have attribute not match [FAILED]', function(done) {
+  it('to have attribute not match [FAILED]', function() {
     Nocks.elementFound()
       .attributeValue('xx')
       .attributeValue('xx')
@@ -598,7 +582,9 @@ describe('expect.attribute', function() {
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').not.match(/xx/);
     assert.equal(expect.assertion.message, 'Expected element <%s> to have attribute "class"');
-    this.client.api.perform(function() {
+
+    return this.client.start(function(err) {
+      assert.ok(err instanceof Error);
       assert.equal(expect.assertion.expected, 'not match \'/xx/\'');
       assert.equal(expect.assertion.actual, 'xx');
       assert.equal(expect.assertion.negate, true);
@@ -607,11 +593,9 @@ describe('expect.attribute', function() {
       assert.equal(expect.assertion.messageParts[0], ' not match: "/xx/"');
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" not match: "/xx/"');
     });
-
-    this.client.start(done);
   });
 
-  it('to have attribute equal to - element not found', function(done) {
+  it('to have attribute equal to - element not found', function() {
     this.client.api.globals.waitForConditionTimeout = 40;
     this.client.api.globals.waitForConditionPollInterval = 20;
 
@@ -622,7 +606,9 @@ describe('expect.attribute', function() {
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').equal('vasq');
     assert.equal(expect.assertion.message, 'Expected element <%s> to have attribute "class"');
-    this.client.api.perform(function() {
+
+    return this.client.start(function(err) {
+      assert.ok(err instanceof Error);
       assert.equal(expect.assertion.expected, 'present');
       assert.equal(expect.assertion.actual, 'not present');
       assert.equal(expect.assertion.negate, false);
@@ -631,11 +617,9 @@ describe('expect.attribute', function() {
       assert.equal(expect.assertion.messageParts[0], ' equal to: "vasq"', ' - element was not found');
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" equal to: "vasq" - element was not found');
     });
-
-    this.client.start(done);
   });
 
-  it('to have attribute contains - element not found', function(done) {
+  it('to have attribute contains - element not found', function() {
     this.client.api.globals.waitForConditionTimeout = 40;
     this.client.api.globals.waitForConditionPollInterval = 20;
 
@@ -643,7 +627,7 @@ describe('expect.attribute', function() {
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').which.contains('vasq');
 
-    this.client.api.perform(function() {
+    return this.client.start(function(err) {
       assert.equal(expect.assertion.expected, 'present');
       assert.equal(expect.assertion.actual, 'not present');
       assert.equal(expect.assertion.passed, false);
@@ -651,11 +635,9 @@ describe('expect.attribute', function() {
       assert.equal(expect.assertion.messageParts[1], 'contains: "vasq"');
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" which contains: "vasq" - element was not found');
     });
-
-    this.client.start(done);
   });
 
-  it('to have attribute match - element not found', function(done) {
+  it('to have attribute match - element not found', function() {
     this.client.api.globals.waitForConditionTimeout = 40;
     this.client.api.globals.waitForConditionPollInterval = 20;
 
@@ -663,46 +645,42 @@ describe('expect.attribute', function() {
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').which.matches(/vasq$/);
 
-    this.client.api.perform(function() {
+    return this.client.start(function() {
       assert.equal(expect.assertion.expected, 'present');
       assert.equal(expect.assertion.actual, 'not present');
       assert.equal(expect.assertion.passed, false);
       assert.deepEqual(expect.assertion.messageParts, [' which ', 'matches: "/vasq$/"', ' - element was not found']);
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" which matches: "/vasq$/" - element was not found');
     });
-
-    this.client.start(done);
   });
 
-  it('to have attribute with waitFor - element not found', function(done) {
+  it('to have attribute with waitFor - element not found', function() {
     this.client.api.globals.waitForConditionPollInterval = 50;
 
     Nocks.elementNotFound().elementNotFound().elementNotFound();
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').before(60);
-    this.client.api.perform(function() {
+
+    return this.client.start(function() {
       assert.equal(expect.assertion.waitForMs, 60);
       assert.equal(expect.assertion.passed, false);
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" in 60ms - element was not found');
     });
-
-    this.client.start(done);
   });
 
-  it('to have attribute with custom waitFor - element not found', function(done) {
+  it('to have attribute with custom waitFor - element not found', function() {
     this.client.api.globals.waitForConditionPollInterval = 50;
     this.client.api.globals.waitForConditionTimeout = 40;
 
     Nocks.elementNotFound().elementNotFound().elementNotFound();
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').before(100);
-    this.client.api.perform(function() {
+
+    return this.client.start(function() {
       assert.equal(expect.assertion.waitForMs, 100);
       assert.equal(expect.assertion.passed, false);
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" in 100ms - element was not found');
     });
-
-    this.client.start(done);
   });
 
   it('to have attribute with waitFor - element found on retry', function(done) {

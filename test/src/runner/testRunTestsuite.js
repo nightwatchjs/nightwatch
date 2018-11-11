@@ -4,8 +4,13 @@ const common = require('../../common.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
 const NightwatchClient = common.require('index.js');
+const Logger = common.require('util/logger.js');
 
 describe('testRunTestSuite', function() {
+
+  // Logger.enable();
+  // Logger.setOutputEnabled(true);
+
   before(function(done) {
     this.server = MockServer.init();
 
@@ -53,6 +58,7 @@ describe('testRunTestSuite', function() {
         start_process: true
       },
       output: false,
+      silent: true,
       persist_globals: true,
       globals: globals,
       output_folder: false
@@ -97,8 +103,6 @@ describe('testRunTestSuite', function() {
   });
 
   it('testRunner with suiteRetries and locate strategy change', function() {
-    const Logger = common.require('util/logger.js');
-    Logger.setOutputEnabled(false);
     let testsPath = path.join(__dirname, '../../sampletests/suiteretries/locate-strategy');
     let globals = {
       calls: 0,
@@ -107,6 +111,10 @@ describe('testRunTestSuite', function() {
         cb();
       }
     };
+
+    const Logger = common.require('util/logger.js');
+    Logger.disable();
+    Logger.setOutputEnabled(false);
 
     const Runner = common.require('runner/runner.js');
     const Settings = common.require('settings/settings.js');
@@ -118,7 +126,7 @@ describe('testRunTestSuite', function() {
         start_process: true
       },
       silent: true,
-      output: true,
+      output: false,
       persist_globals: true,
       globals: globals,
       skip_testcases_on_fail: false,
@@ -157,6 +165,7 @@ describe('testRunTestSuite', function() {
         start_process: true
       },
       output: false,
+      silent: true,
       persist_globals: true,
       globals: globals,
       output_folder: false

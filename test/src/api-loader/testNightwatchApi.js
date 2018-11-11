@@ -38,7 +38,13 @@ describe('test Nightwatch Api', function() {
           }
         }
       },
-      api: {},
+      api: {
+        globals: {
+          abortOnAssertionFailure: true,
+          retryAssertionTimeout: 10,
+          rescheduleInterval: 100
+        }
+      },
       isApiMethodDefined(commandName, namespace) {
         return false;
       },
@@ -74,7 +80,13 @@ describe('test Nightwatch Api', function() {
       options: {
         custom_assertions_path: './bad-folder'
       },
-      api: {},
+      api: {
+        globals: {
+          abortOnAssertionFailure: true,
+          retryAssertionTimeout: 10,
+          rescheduleInterval: 100
+        }
+      },
       isApiMethodDefined: function (commandName, namespace) {
         return false;
       },
@@ -102,7 +114,7 @@ describe('test Nightwatch Api', function() {
       session: {
         commandQueue: {
           add(commandName, command, context, args, originalStackTrace) {
-            let instance = command(...args);
+            let instance = command.apply(context, args);
             if (commandName == 'customPerform') {
               instance.on('complete', () => {
                 assert.strictEqual(paramFnCalled, true);
@@ -115,6 +127,11 @@ describe('test Nightwatch Api', function() {
       api: {
         perform(fn) {
           fn();
+        },
+        globals: {
+          abortOnAssertionFailure: true,
+          retryAssertionTimeout: 10,
+          rescheduleInterval: 100
         }
       },
       isApiMethodDefined: function (commandName, namespace) {
@@ -148,7 +165,7 @@ describe('test Nightwatch Api', function() {
         commandQueue: {
           add(commandName, command, context, args, originalStackTrace) {
             commandQueue.push(commandName);
-            let instance = command(...args);
+            let instance = command.apply(context, args);
 
             if (commandName == 'customCommand') {
               assert.equal(instance.toString(), 'CommandInstance [name=customCommand]');
@@ -160,6 +177,11 @@ describe('test Nightwatch Api', function() {
         perform(fn) {
           commandQueue.push('perform');
           fn();
+        },
+        globals: {
+          abortOnAssertionFailure: true,
+          retryAssertionTimeout: 10,
+          rescheduleInterval: 100
         }
       },
       isApiMethodDefined: function (commandName, namespace) {
@@ -242,6 +264,11 @@ describe('test Nightwatch Api', function() {
       api: {
         perform(fn) {
           fn();
+        },
+        globals: {
+          abortOnAssertionFailure: true,
+          retryAssertionTimeout: 10,
+          rescheduleInterval: 100
         }
       },
       isApiMethodDefined: function (commandName, namespace) {

@@ -1,8 +1,10 @@
 const path = require('path');
 const assert = require('assert');
+const common = require('../../../common.js');
 const nocks = require('../../../lib/nockselements.js');
 const MockServer  = require('../../../lib/mockserver.js');
 const Nightwatch = require('../../../lib/nightwatch.js');
+const Logger = common.require('util/logger.js');
 
 describe('test expect element selectors', function() {
 
@@ -29,10 +31,6 @@ describe('test expect element selectors', function() {
   });
 
   it('passing expect selectors', function (done) {
-    const common = require('../../../common.js');
-    const Logger = common.require('util/logger.js');
-    Logger.setOutputEnabled(false);
-
     nocks
       .elementsFound()
       .elementsFound('#signupSection', [{ELEMENT: '0'}])
@@ -74,12 +72,12 @@ describe('test expect element selectors', function() {
 
     let expect = api.expect.element({selector: '.nock', locateStrategy: 'xpath'}).to.be.present.before(1);
 
-    api.perform(function() {
+    Nightwatch.start(function(err) {
       assert.equal(expect.assertion.passed, false);
       assert.ok(expect.assertion.message.includes('element was not found'));
+      assert.ok(err instanceof Error);
+      done();
     });
-
-    Nightwatch.start(done);
   });
 
   it('unknown/invalid expect methods', function () {

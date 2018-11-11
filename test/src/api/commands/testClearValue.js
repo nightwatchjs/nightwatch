@@ -1,8 +1,13 @@
 const assert = require('assert');
 const MockServer  = require('../../../lib/mockserver.js');
 const Nightwatch = require('../../../lib/nightwatch.js');
+const common = require('../../../common.js');
+const Logger = common.require('util/logger.js');
 
 describe('clearValue', function() {
+  Logger.disable();
+  Logger.setOutputEnabled(false);
+
   before(function(done) {
     this.server = MockServer.init();
     this.server.on('listening', () => {
@@ -17,7 +22,10 @@ describe('clearValue', function() {
   });
 
   it('client.clearValue()', function(done) {
-    Nightwatch.initClient()
+    Nightwatch.initClient({
+      output: false,
+      silent: true
+    })
       .then(client => {
         MockServer.addMock({
           'url': '/wd/hub/session/1352110219202/element/0/clear',

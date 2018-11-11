@@ -6,7 +6,7 @@ module.exports = function(assertCallback) {
 
   class NightwatchAssertionMock extends NightwatchAssertion {
     runAssertion(passed, value, calleeFn, message) {
-      super.runAssertion(passed, value, calleeFn, message);
+      super.assert(passed, value, calleeFn, message);
 
       assertCallback.call(this, passed, value, calleeFn, message);
     }

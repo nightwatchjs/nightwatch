@@ -213,17 +213,14 @@ describe('test index in element selectors', function() {
     nocks.elementsFound();
 
     let api = Nightwatch.api();
-    api.globals.abortOnAssertionFailure = false;
-
     let expect = api.expect.element({selector: '.nock', index: 999}).to.be.present.before(1);
 
-    api.perform(function() {
+    Nightwatch.start(function(err) {
       assert.equal(expect.assertion.passed, false);
       assert.ok(expect.assertion.message.includes('element was not found'), -1);
-    });
-
-    Nightwatch.start(function(err) {
-      done(err || nocks.checkIfMocksDone());
+      assert.ok(err instanceof Error);
+      nocks.checkIfMocksDone();
+      done();
     });
   });
 
@@ -239,13 +236,12 @@ describe('test index in element selectors', function() {
 
     let expect = section.expect.element({selector: '@help', index: 999}).to.be.present.before(1);
 
-    api.perform(function() {
+    Nightwatch.start(function(err) {
       assert.equal(expect.assertion.passed, false);
       assert.ok(expect.assertion.message.includes('element was not found'), -1);
-    });
-
-    Nightwatch.start(function(err) {
-      done(err || nocks.checkIfMocksDone());
+      assert.ok(err instanceof Error);
+      nocks.checkIfMocksDone();
+      done();
     });
   });
 });

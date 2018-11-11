@@ -57,7 +57,7 @@ describe('testRunTestcase', function() {
       globals: globals,
       output_folder: false,
       output: false,
-      silent: false
+      silent: true
     };
 
     return NightwatchClient.runTests(testsPath, settings);
@@ -86,8 +86,8 @@ describe('testRunTestcase', function() {
       },
       persist_globals: true,
       globals: globals,
-      output: true,
-      silent: false,
+      output: false,
+      silent: true,
       output_folder: false
     };
 
@@ -102,7 +102,7 @@ describe('testRunTestcase', function() {
         version2: true,
         start_process: true
       },
-      silent: false,
+      silent: true,
       output: false,
       globals: {
         reporter(results, cb) {
@@ -129,7 +129,7 @@ describe('testRunTestcase', function() {
         version2: true,
         start_process: true
       },
-      silent: false,
+      silent: true,
       output: false,
       globals: {
         reporter(results, cb) {
@@ -161,6 +161,8 @@ describe('testRunTestcase', function() {
         version2: true,
         start_process: true
       },
+      silent: true,
+      output: false,
       globals: {
         beforeEach(client, cb) {
           assert.equal(client.currentTest.name, '');
@@ -194,6 +196,8 @@ describe('testRunTestcase', function() {
         version2: true,
         start_process: true
       },
+      silent: true,
+      output: false,
       globals: {
         reporter(results, cb) {
           if (results.lastError instanceof Error) {
@@ -231,7 +235,7 @@ describe('testRunTestcase', function() {
       },
       silent: true,
       globals: globals,
-      output: true,
+      output: false,
       persist_globals: true,
       output_folder: false
     };
@@ -243,7 +247,8 @@ describe('testRunTestcase', function() {
   });
 
   it('testRunner with retries and skip_testcases_on_fail=false', function() {
-    this.timeout(100000)
+    this.timeout(100000);
+
     let testsPath = path.join(__dirname, '../../sampletests/withfailures');
     let globals = {
       calls: 0,
@@ -267,8 +272,8 @@ describe('testRunTestcase', function() {
       skip_testcases_on_fail: false,
       persist_globals: true,
       output_folder: false,
-      output: true,
-      silent: false
+      output: false,
+      silent: true
     };
 
     return NightwatchClient.runTests({

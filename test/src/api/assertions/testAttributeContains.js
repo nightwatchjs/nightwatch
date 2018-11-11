@@ -17,7 +17,7 @@ describe('assert.attributeContains', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, true);
+        assert.strictEqual(passed, true);
         assert.equal(value, 'http://www.google.com');
         assert.ok(message.startsWith('Test message'));
       }

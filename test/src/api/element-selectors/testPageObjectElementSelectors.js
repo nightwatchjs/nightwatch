@@ -3,8 +3,13 @@ const assert = require('assert');
 const nocks = require('../../../lib/nockselements.js');
 const MockServer = require('../../../lib/mockserver.js');
 const Nightwatch = require('../../../lib/nightwatch.js');
+const common = require('../../../common.js');
+const Logger = common.require('util/logger.js');
 
 describe('test page object element selectors', function() {
+  //Logger.enable();
+  //Logger.setOutputEnabled(true);
+
   before(function(done) {
     nocks.enable();
     this.server = MockServer.init();
@@ -99,14 +104,14 @@ describe('test page object element selectors', function() {
         assert.equal(result.value, 'first', 'child section element selector string value');
       })
       .getText({selector: '#helpBtn'}, function callback(result) {
-        assert.equal(result.status, 0, 'child section element selector property found');
+        assert.strictEqual(result.status, 0, 'child section element selector property found');
         assert.equal(result.value, 'first', 'child section element selector property value');
       });
 
     Nightwatch.start(done);
   });
 
-  it('page section elements - section element not found', function(done) {
+  it('page section elements - section element not found', function() {
     nocks
       .elementsNotFound('#signupSection')
       .elementsId('0', '#getStartedStart', [{ELEMENT: '1'}])
@@ -121,13 +126,12 @@ describe('test page object element selectors', function() {
 
     let expect = section.expect.element('@help').to.be.visible.before(15);
 
-    Nightwatch.api().perform(function() {
-      assert.equal(expect.assertion.passed, false);
+    return Nightwatch.start(function(err) {
+      assert.equal(err.name, 'AssertionError');
+      assert.strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.message.includes('Expected element <Section [name=signUp],Element [name=@help]> to be visible'));
       assert.ok(expect.assertion.message.includes('element was not found'));
     });
-
-    Nightwatch.start(done);
   });
 
   it('page object customCommand with selector', function(done) {
@@ -138,18 +142,18 @@ describe('test page object element selectors', function() {
       .elementIdNotFound(0, '#helpBtn', 'xpath')
       .elementsId('0', '#helpBtn', [{ELEMENT: '0'}]);
 
-    let page = Nightwatch.api().page.simplePageObj();
-
-    page
-      .customCommandWithSelector('@loginAsString', function(result) {
-        assert.deepEqual(result, {
-          selector: '#weblogin',
-          locateStrategy: 'css selector',
-          name: 'loginAsString'
-        });
+    const page = Nightwatch.api().page.simplePageObj();
+    page.customCommandWithSelector('@loginAsString', function(result) {
+      assert.deepEqual(result, {
+        selector: '#weblogin',
+        locateStrategy: 'css selector',
+        name: 'loginAsString'
       });
+    });
 
-    Nightwatch.start(done);
+    Nightwatch.start(function() {
+      done();
+    });
   });
 
   it('page object customCommand with selector called on section', function(done) {
@@ -209,7 +213,6 @@ describe('test page object element selectors', function() {
             locateStrategy: 'css selector',
             name: 'loginAsString'
           });
-
           done();
         } catch (err) {
           done(err);

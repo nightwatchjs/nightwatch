@@ -54,7 +54,6 @@ describe('waitForElementNotVisible', function() {
   it('client.waitForElementNotVisible() failure', function(done) {
     const Logger = common.require('util/logger.js');
     Logger.setOutputEnabled(false);
-    Logger.enable();
 
     MockServer.addMock({
       url : '/wd/hub/session/1352110219202/element/0/displayed',

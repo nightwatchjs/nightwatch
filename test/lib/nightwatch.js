@@ -12,7 +12,7 @@ module.exports = new function () {
 
   function extendClient(client) {
     client.start = function(done = function() {}) {
-      return this.queue.run(function(err) {
+      return this.queue.run().then(function(err) {
         if (err) {
           return done(err);
         }

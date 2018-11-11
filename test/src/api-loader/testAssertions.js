@@ -181,8 +181,8 @@ describe('test Assertions', function() {
       assert.equal(this.assertion.passed, false);
       assert.equal(this.assertion.expected, 'text result');
       assert.equal(this.retries, 1);
-      assert.equal(this.timeout, 5);
-      assert.equal(this.rescheduleInterval, 10);
+      assert.equal(this.opts.timeout, 5);
+      assert.equal(this.opts.rescheduleInterval, 10);
       assert.ok(this.assertion.message.startsWith('Test message in'));
 
       assert.equal(reporterCalls.passedNo, 0);

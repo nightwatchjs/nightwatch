@@ -15,7 +15,6 @@ module.exports = {
       .perform(function() {
         client.globals.calls++;
       });
-
   },
 
   demoStep2 : function (client) {

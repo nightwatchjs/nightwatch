@@ -17,7 +17,7 @@ describe('test Queue', function () {
     Globals.afterEach.call(this, done);
   });
 
-  it('Test commands queue', function (done) {
+  it('Test commands queue', function () {
     let client = this.client;
     let queue = client.queue;
     let urlCommand;
@@ -26,26 +26,23 @@ describe('test Queue', function () {
 
     client.api.url('http://localhost').end();
 
-    assert.equal(queue.list().length, 2);
-    urlCommand = queue.rootNode.childNodes[0];
-    endCommand = queue.rootNode.childNodes[1];
+    assert.equal(queue.tree.rootNode.childNodes.length, 2);
+    urlCommand = queue.tree.rootNode.childNodes[0];
+    endCommand = queue.tree.rootNode.childNodes[1];
 
     assert.equal(endCommand.done, false);
     assert.equal(urlCommand.done, false);
     assert.equal(endCommand.started, false);
 
-    this.client.start(err => {
+    return this.client.start(err => {
       if (err) {
-        return done(err);
+        throw err;
       }
-
+      assert.equal(urlCommand.started, true);
       assert.equal(urlCommand.done, true);
       assert.equal(endCommand.childNodes.length, 1);
       assert.equal(endCommand.done, true);
-      assert.equal(queue.list().length, 2);
-      done();
+      assert.equal(queue.tree.rootNode.childNodes.length, 0);
     });
-
-    assert.equal(urlCommand.started, true);
   });
 });

@@ -55,7 +55,7 @@ describe('assert.visible', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, false);
+        assert.equal(passed, false, 'Assertion failed');
         assert.equal(value, null);
         assert.ok(message.startsWith('Testing if element <.test_element> is visible. Element could not be located'));
       }
