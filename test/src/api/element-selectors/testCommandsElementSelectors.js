@@ -49,12 +49,9 @@ describe('test commands element selectors', function() {
       })
       .getText({selector: '//[@id="nock"]', locateStrategy: 'xpath'}, function callback(result) {
         assert.equal(result.value, 'first', 'getText xpath locateStrategy');
-      })
-      .perform(function() {
-        done();
       });
 
-    Nightwatch.start();
+    Nightwatch.start(done);
   });
 
   it('getText(<various>) locateStrategy', function(done) {
@@ -86,40 +83,47 @@ describe('test commands element selectors', function() {
       })
       .getText('xpath', {selector: '//[@id="nock"]'}, function callback(result) {
         assert.equal(result.value, 'first', 'getText using as xpath');
-      })
-      .perform(function() {
-        done();
       });
 
-    Nightwatch.start();
+    Nightwatch.start(done);
   });
 
   // custom command
 
   it('waitForElementPresent(<various>)', function(done) {
-    nocks
-      .elementsFound()
-      .elementsNotFound()
-      .elementsByXpath();
+    nocks.elementsFound();
 
     Nightwatch.api()
       .waitForElementPresent('.nock', 1, false, function callback(result) {
         assert.equal(result.value.length, 3, 'waitforPresent result expected found');
       })
-      .waitForElementPresent('.nock-none', 1, false, function callback(result) {
-        assert.equal(result.value, false, 'waitforPresent result expected false');
-      })
       .waitForElementPresent({selector: '.nock'}, 1, false, function callback(result) {
         assert.equal(result.value.length, 3, 'waitforPresent selector property result expected found');
-      })
-      .waitForElementPresent({selector: '.nock-none'}, 1, false, function callback(result) {
-        assert.equal(result.value, false, 'waitforPresent selector property result expected false');
-      })
-      .perform(function() {
-        done();
       });
 
-    Nightwatch.start();
+    Nightwatch.start(done);
+  });
+
+  it('waitForElementPresent(<string>) failure', function(done) {
+    nocks.elementsNotFound();
+
+    Nightwatch.api()
+      .waitForElementPresent('.nock-none', 1, false, function callback(result) {
+        assert.equal(result.value, false, 'waitforPresent result expected false');
+      });
+
+    Nightwatch.start(done);
+  });
+
+  it('waitForElementPresent(<{selector}>) failure', function(done) {
+    nocks.elementsNotFound();
+
+    Nightwatch.api()
+      .waitForElementPresent({selector: '.nock-none'}, 1, false, function callback(result) {
+        assert.equal(result.value, false, 'waitforPresent selector property result expected false');
+      });
+
+    Nightwatch.start(done);
   });
 
   it('waitForElementPresent(<various>) locateStrategy', function(done) {

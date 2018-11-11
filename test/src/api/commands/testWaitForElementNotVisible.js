@@ -75,15 +75,20 @@ describe('waitForElementNotVisible', function() {
     this.client.api.globals.abortOnAssertionFailure = true;
 
     this.client.api.waitForElementNotVisible('#weblogin', 15, 10, function callback(result) {
-      assert.equal(result.status, 0);
-      assert.equal(assertion[0], false);
-      assert.equal(assertion[1].actual, 'visible');
-      assert.equal(assertion[1].expected, 'not visible');
-      assert.equal(assertion[3], 'Timed out while waiting for element <#weblogin> to not be visible for 15 milliseconds.');
-      assert.equal(assertion[4], true); // abortOnFailure
+      try {
+        assert.equal(result.status, 0);
+        assert.equal(assertion[0], false);
+        assert.equal(assertion[1].actual, 'visible');
+        assert.equal(assertion[1].expected, 'not visible');
+        assert.equal(assertion[3], 'Timed out while waiting for element <#weblogin> to not be visible for 15 milliseconds.');
+        assert.equal(assertion[4], true); // abortOnFailure
+        done();
+      } catch (err) {
+        done(err);
+      }
     });
 
-    this.client.start(done);
+    this.client.start();
   });
 });
 

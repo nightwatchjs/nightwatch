@@ -11,7 +11,7 @@ describe('expect.attribute', function() {
 
   beforeEach(function(done) {
     ExpectGlobals.beforeEach.call(this, () => {
-      this.client.api.globals.abortOnAssertionFailure = false;
+      this.client.api.globals.abortOnAssertionFailure = true;
       done();
     });
   });
@@ -44,7 +44,7 @@ describe('expect.attribute', function() {
     this.client.api.perform(function() {
       assert.equal(expect.assertion.waitForMs, 100);
       assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.abortOnFailure, false);
+      assert.equal(expect.assertion.abortOnFailure, true);
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" in 100ms - attribute was present in ' + expect.assertion.elapsedTime + 'ms');
     });
 
@@ -94,7 +94,7 @@ describe('expect.attribute', function() {
     return this.client.start(function() {
       assert.equal(expect.assertion.waitForMs, 60);
       assert.strictEqual(expect.assertion.passed, false);
-      assert.strictEqual(expect.assertion.abortOnFailure, false);
+      assert.strictEqual(expect.assertion.abortOnFailure, true);
       assert.equal(expect.assertion.message, 'Expected element <#weblogin> to have attribute "class" in 60ms - attribute was not found');
     });
   });

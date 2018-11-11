@@ -31,6 +31,9 @@ describe('test page object element selectors', function() {
       page_objects_path: [path.join(__dirname, '../../../extra/pageobjects')],
       custom_commands_path: [path.join(__dirname, '../../../extra/commands')],
       custom_assertions_path: [path.join(__dirname, '../../../extra/assertions')],
+      globals: {
+        abortOnAssertionFailure: true
+      }
     }, done);
   });
 
@@ -118,7 +121,6 @@ describe('test page object element selectors', function() {
       .text(0, 'first')
       .text(1, 'second');
 
-    Nightwatch.api().globals.abortOnAssertionFailure = false;
     Nightwatch.api().globals.waitForConditionPollInterval = 10;
 
     let page = Nightwatch.api().page.simplePageObj();

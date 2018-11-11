@@ -68,7 +68,7 @@ describe('test expect element selectors', function() {
       .elementsByXpathError();
 
     let api = Nightwatch.api();
-    api.globals.abortOnAssertionFailure = false;
+    api.globals.abortOnAssertionFailure = true;
 
     let expect = api.expect.element({selector: '.nock', locateStrategy: 'xpath'}).to.be.present.before(1);
 

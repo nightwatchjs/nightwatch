@@ -37,15 +37,18 @@ describe('waitForElementVisible', function() {
     this.client.api.globals.abortOnAssertionFailure = false;
     this.client.api.globals.waitForConditionPollInterval = 10;
     this.client.api.waitForElementVisible('#weblogin', 15, 10, function (result, instance) {
-      assert.equal(assertion[0], false);
-      assert.equal(assertion[1].actual, 'not visible');
-      assert.equal(assertion[4], false);
-      NightwatchAssertion.create = createOrig;
+      try {
+        assert.equal(assertion[0], false);
+        assert.equal(assertion[1].actual, 'not visible');
+        assert.equal(assertion[4], false);
+        NightwatchAssertion.create = createOrig;
+        done();
+      } catch (err) {
+        done(err);
+      }
     });
 
-    this.client.start(function(err) {
-      done(err);
-    });
+    this.client.start();
   });
 
   it('client.waitForElementVisible() fail with global timeout default', function (done) {
@@ -55,7 +58,9 @@ describe('waitForElementVisible', function() {
       assertion.unshift(...args);
 
       return {
-        run: function() {}
+        run: function() {
+          return Promise.resolve();
+        }
       };
     };
 
@@ -72,14 +77,19 @@ describe('waitForElementVisible', function() {
     this.client.api.globals.waitForConditionTimeout = 15;
     this.client.api.globals.waitForConditionPollInterval = 10;
     this.client.api.waitForElementVisible('#weblogin', function callback(result, instance) {
-      assert.equal(assertion[0], false);
-      assert.equal(assertion[3], 'Timed out while waiting for element <#weblogin> to be visible for 15 milliseconds.');
-      assert.equal(assertion[1].actual, 'not visible');
+      try {
+        assert.equal(assertion[0], false);
+        assert.equal(assertion[3], 'Timed out while waiting for element <#weblogin> to be visible for 15 milliseconds.');
+        assert.equal(assertion[1].actual, 'not visible');
 
-      NightwatchAssertion.create = createOrig;
+        NightwatchAssertion.create = createOrig;
+        done();
+      } catch (err) {
+        done(err);
+      }
     });
 
-    this.client.start(done);
+    this.client.start();
   });
 
   it('client.waitForElementVisible() fail with global timeout default and custom message', function (done) {
@@ -89,7 +99,9 @@ describe('waitForElementVisible', function() {
       assertion.unshift(...args);
 
       return {
-        run: function() {}
+        run: function() {
+          return Promise.resolve();
+        }
       };
     };
 
@@ -106,12 +118,17 @@ describe('waitForElementVisible', function() {
     this.client.api.globals.waitForConditionTimeout = 15;
     this.client.api.globals.waitForConditionPollInterval = 10;
     this.client.api.waitForElementVisible('#weblogin', function callback(result, instance) {
-      assert.equal(assertion[3], 'Test message <#weblogin> and a global 15 ms.');
+      try {
+        assert.equal(assertion[3], 'Test message <#weblogin> and a global 15 ms.');
 
-      NightwatchAssertion.create = createOrig;
+        NightwatchAssertion.create = createOrig;
+        done();
+      } catch (err) {
+        done(err);
+      }
     }, 'Test message <%s> and a global %s ms.');
 
-    this.client.start(done);
+    this.client.start();
   });
 
   it('client.waitForElementVisible() StaleElementReference error', function (done) {
@@ -121,7 +138,9 @@ describe('waitForElementVisible', function() {
       assertion.unshift(...args);
 
       return {
-        run: function() {}
+        run: function() {
+          return Promise.resolve();
+        }
       };
     };
 
@@ -156,10 +175,14 @@ describe('waitForElementVisible', function() {
       }, true);
 
     this.client.api.waitForElementVisible('#stale-element', 110, 10, function callback(result, instance) {
-      assert.equal(assertion[0], true);
-      assert.equal(result.value, true);
+      try {
+        assert.equal(assertion[0], true);
+        assert.equal(result.value, true);
 
-      NightwatchAssertion.create = createOrig;
+        NightwatchAssertion.create = createOrig;
+      } catch (err) {
+        done(err);
+      }
     });
 
     this.client.start(function() {
@@ -167,7 +190,6 @@ describe('waitForElementVisible', function() {
         url: '/wd/hub/session/1352110219202/elements',
         method: 'POST'
       });
-
       done();
     });
 

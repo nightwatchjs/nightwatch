@@ -50,28 +50,43 @@ describe('waitForElementPresent', function() {
   it('client.waitForElementPresent() failure with custom message', function(done) {
     this.client.api.globals.waitForConditionPollInterval = 10;
     this.client.api.waitForElementPresent('.weblogin', 15, function callback(result, instance) {
-      assert.equal(instance.message, 'Element .weblogin found in 15 milliseconds');
-      assert.equal(result.value, false);
+      try {
+        assert.equal(instance.message, 'Element .weblogin found in 15 milliseconds');
+        assert.equal(result.value, false);
+        done();
+      } catch (err) {
+        done(err);
+      }
     }, 'Element %s found in %d milliseconds');
 
-    this.client.start(done);
+    this.client.start();
   });
 
   it('client.waitForElementPresent() failure', function(done) {
     this.client.api.globals.waitForConditionPollInterval = 10;
 
     this.client.api.waitForElementPresent('.weblogin', 15, function callback(result) {
-      assert.equal(result.value, false);
+      try {
+        assert.equal(result.value, false);
+        done();
+      } catch (err) {
+        done(err);
+      }
     });
 
-    this.client.start(done);
+    this.client.start();
   });
 
   it('client.waitForElementPresent() failure no abort', function(done) {
     this.client.api.waitForElementPresent('.weblogin', 100, false, function callback(result) {
-      assert.equal(result.value, false);
+      try {
+        assert.equal(result.value, false);
+        done();
+      } catch (err) {
+        done(err);
+      }
     });
 
-    this.client.start(done);
+    this.client.start();
   });
 });

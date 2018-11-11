@@ -48,24 +48,34 @@ describe('waitForElementNotPresent', function () {
 
     this.client.api.globals.waitForConditionPollInterval = 10;
     this.client.api.waitForElementNotPresent('#weblogin', 15, false, function(result, instance) {
-      assert.strictEqual(assertion[0], false);
-      assert.equal(result.status, 0);
-      assert.equal(instance.abortOnFailure, false);
-      NightwatchAssertion.create = createOrig;
+      try {
+        assert.strictEqual(assertion[0], false);
+        assert.equal(result.status, 0);
+        assert.equal(instance.abortOnFailure, false);
+        NightwatchAssertion.create = createOrig;
+        done();
+      } catch (err) {
+        done(err);
+      }
     });
 
-    this.client.start(done);
+    this.client.start();
   });
 
   it('client.waitForElementNotPresent() failure no abort with custom interval', function (done) {
     this.client.api.globals.waitForConditionPollInterval = 10;
     this.client.api.waitForElementNotPresent('#weblogin', 15, 10, false, function(result, instance) {
-      assert.equal(result.status, 0);
-      assert.equal(instance.rescheduleInterval, 10);
-      assert.equal(instance.ms, 15);
-      assert.equal(instance.abortOnFailure, false);
+      try {
+        assert.equal(result.status, 0);
+        assert.equal(instance.rescheduleInterval, 10);
+        assert.equal(instance.ms, 15);
+        assert.equal(instance.abortOnFailure, false);
+        done()
+      } catch (err) {
+        done(err);
+      }
     });
 
-    this.client.start(done);
+    this.client.start();
   });
 });
