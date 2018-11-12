@@ -1,4 +1,5 @@
 const assert = require('assert');
+const path = require('path');
 const common = require('../../common.js');
 const MockServer = require('../../lib/mockserver.js');
 const Nightwatch = require('../../lib/nightwatch.js');
@@ -262,6 +263,32 @@ describe('test NightwatchIndex', function () {
       assert.ok(err.message.indexOf('Could not find device : iPhone 6') > 0);
       done();
     }).catch(err => done(err));
+  });
+
+  it('test runner API', function(done) {
+    const Nightwatch = common.require('index.js');
+    const CliRunner = common.require('runner/cli/cli.js');
+    const init = CliRunner.prototype.initTestSettings;
+    CliRunner.prototype.initTestSettings = function(opts = {}, baseSettings = null, argv = null, testEnv = null) {
+      assert.deepEqual(argv, {
+        config: path.resolve('./test/extra/nightwatch.json'),
+        verbose: true,
+        reporter: 'junit',
+        source: 'test.js',
+        _source: 'test.js'
+      });
+
+      init.call(this, opts, baseSettings, argv, testEnv);
+    };
+
+    Nightwatch.runner({
+      config: './test/extra/nightwatch.json',
+      verbose: true,
+      source: 'test.js'
+    }, function(err) {
+      CliRunner.prototype.initTestSettings = init;
+      done();
+    });
   });
 
 });
