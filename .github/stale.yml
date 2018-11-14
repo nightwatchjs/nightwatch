@@ -14,6 +14,6 @@ markComment: >
   This issue has been automatically marked as stale because it has not had any recent activity. 
   
   If possible, please retry using the latest Nightwatch version and update the issue with any relevant details.
-  If no further activity occurs, it will be closed. Thank you for your contributions.
+  If no further activity occurs, it will be closed. Thank you for your contribution.
 # Comment to post when closing a stale issue. Set to `false` to disable
 closeComment: false
