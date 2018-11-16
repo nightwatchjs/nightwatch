@@ -1,6 +1,7 @@
 .project
 *.DS_Store
 *.idea
+/*.log
 /nightwatch.json
 node_modules
 npm-debug.log
@@ -9,7 +10,12 @@ coverage.html
 selenium-debug.log
 phantomjsdriver.log
 tests_output
-output
 *~
 \#*
 \.#*
+output
+/test/hooks_output
+/bin/geckodriver*
+/coverage/
+/.nyc_output/
+screenshot.png

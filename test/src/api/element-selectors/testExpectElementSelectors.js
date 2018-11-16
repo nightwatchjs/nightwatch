@@ -1,40 +1,49 @@
-var path = require('path');
-var assert = require('assert');
-var common = require('../../../common.js');
-var Api = common.require('core/api.js');
-var utils = require('../../../lib/utils.js');
-var nocks = require('../../../lib/nockselements.js');
-var MochaTest = require('../../../lib/mochatest.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
+const path = require('path');
+const assert = require('assert');
+const common = require('../../../common.js');
+const nocks = require('../../../lib/nockselements.js');
+const MockServer  = require('../../../lib/mockserver.js');
+const Nightwatch = require('../../../lib/nightwatch.js');
+const Logger = common.require('util/logger.js');
 
-module.exports = MochaTest.add('test expect element selectors', {
+describe('test expect element selectors', function() {
 
-  beforeEach: function (done) {
+  before(function(done) {
+    nocks.enable();
+    this.server = MockServer.init();
+    this.server.on('listening', () => {
+      done();
+    });
+  });
+
+  after(function(done) {
+    nocks.disable();
+    this.server.close(function() {
+      done();
+    });
+  });
+
+  beforeEach(function (done) {
+    nocks.cleanAll();
     Nightwatch.init({
       page_objects_path: [path.join(__dirname, '../../../extra/pageobjects')]
     }, done);
-  },
+  });
 
-  afterEach: function () {
-    nocks.cleanAll();
-  },
-
-  'expect selectors' : function (done) {
+  it('passing expect selectors', function (done) {
     nocks
       .elementsFound()
       .elementsFound('#signupSection', [{ELEMENT: '0'}])
-      .elementsId(0, '#helpBtn', [{ELEMENT: '0'}])
+      .elementsId(0, '#helpBtn', [{ELEMENT: '0'}, {ELEMENT: '1'}])
       .elementsByXpath();
 
-    var client = Nightwatch.client();
-    Api.init(client);
-    var api = client.api;
+    let api = Nightwatch.api();
     api.globals.abortOnAssertionFailure = false;
 
-    var page = api.page.simplePageObj();
-    var section = page.section.signUp;
+    let page = api.page.simplePageObj();
+    let section = page.section.signUp;
 
-    var passes = [
+    let passingAssertions = [
       api.expect.element('.nock').to.be.present.before(1),
       api.expect.element({selector: '.nock'}).to.be.present.before(1),
       api.expect.element({selector: '//[@class="nock"]', locateStrategy: 'xpath'}).to.be.present.before(1),
@@ -43,35 +52,65 @@ module.exports = MochaTest.add('test expect element selectors', {
       section.expect.element('@help').to.be.present.before(1)
     ];
 
-    var fails = [
-      [api.expect.element({selector: '.nock', locateStrategy: 'xpath'}).to.be.present.before(1),
-        'element was not found'],
-      [page.expect.section({selector: '@signUp', locateStrategy: 'xpath'}).to.be.present.before(1),
-        'element was not found']
-    ];
-
-    api.perform(function(performDone) {
-      process.nextTick(function(){ // keep assertions from being swallowed by perform
-
-        passes.forEach(function(expect, index) {
-          assert.equal(expect.assertion.passed, true, 'passing [' + index + ']: ' + expect.assertion.message);
-        });
-
-        fails.forEach(function(expectArr, index) {
-          var expect = expectArr[0];
-          var msgPartial = expectArr[1];
-
-          assert.equal(expect.assertion.passed, false, 'failing [' + index + ']: ' + expect.assertion.message);
-          assert.notEqual(expect.assertion.message.indexOf(msgPartial), -1, 'Message contains: ' + msgPartial);
-        });
-        
-        performDone();
-        done();
-
+    api.perform(function() {
+      passingAssertions.forEach(function(expect, index) {
+        assert.equal(expect.assertion.passed, true, 'passing [' + index + ']: ' + expect.assertion.message);
       });
     });
 
-    Nightwatch.start();
-  }
+    Nightwatch.start(done);
+  });
 
+
+  it('failing expect selectors - xpath .nock', function (done) {
+    nocks
+      .elementsFound()
+      .elementsByXpathError();
+
+    let api = Nightwatch.api();
+    api.globals.abortOnAssertionFailure = true;
+
+    let expect = api.expect.element({selector: '.nock', locateStrategy: 'xpath'}).to.be.present.before(1);
+
+    Nightwatch.start(function(err) {
+      assert.equal(expect.assertion.passed, false);
+      assert.ok(expect.assertion.message.includes('element was not found'));
+      assert.ok(err instanceof Error);
+      done();
+    });
+  });
+
+  it('unknown/invalid expect methods', function () {
+    nocks
+      .elementsFound()
+      .elementsFound('#signupSection', [{ELEMENT: '0'}]);
+
+    let api = Nightwatch.api();
+    api.globals.abortOnAssertionFailure = false;
+
+    assert.throws(function() {
+      api.expect.element('.nock').to.be.hidden;
+    }, /Error: Unknown property: "hidden"\. Please consult docs at: http:\/\/nightwatchjs\.org\/api\./);
+
+    Nightwatch.start();
+  });
+
+  it('failing expect selectors - xpath @signUp', function () {
+    nocks
+      .elementsFound()
+      .elementsFound('#signupSection')
+      .elementsByXpath();
+
+    let api = Nightwatch.api();
+    api.globals.abortOnAssertionFailure = false;
+
+    let page = api.page.simplePageObj();
+    try {
+      page.expect.section({selector: '@signUp', locateStrategy: 'xpath'}).to.be.present;
+    } catch (err) {
+      assert.ok(err instanceof Error);
+      assert.equal(err.message, 'Section "signUp[locateStrategy=\'xpath\']" was not found in "simplePageObj". Available sections: signUp[locateStrategy=\'css selector\'], propTest[locateStrategy=\'css selector\']');
+    }
+    Nightwatch.start();
+  });
 });

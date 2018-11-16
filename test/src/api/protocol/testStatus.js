@@ -1,24 +1,20 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var MockServer = require('../../../lib/mockserver.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = MochaTest.add('client.status', {
-  beforeEach: function () {
-    this.client = Nightwatch.client();
-    this.protocol = common.require('api/protocol.js')(this.client);
-  },
+describe('client.status', function() {
+  before(function() {
+    Globals.protocolBefore.call(this);
+  });
 
-  testStatus: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.status(function callback() {
-      done();
+  it('testStatus', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/status');
+      },
+      commandName: 'status',
+      args: []
     });
-
-    assert.equal(command.request.method, 'GET');
-    assert.equal(command.request.path, '/wd/hub/status');
-  }
+  });
 
 });

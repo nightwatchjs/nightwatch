@@ -1,36 +1,52 @@
-var assert = require('assert');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const MockServer  = require('../../../lib/mockserver.js');
+const CommandGlobals = require('../../../lib/globals/commands.js');
 
-module.exports = MochaTest.add('window', {
+describe('window', function () {
+  before(function (done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
 
-  'client.closeWindow()' : function(done) {
-    var client = Nightwatch.api();
+  after(function (done) {
+    CommandGlobals.afterEach.call(this, done);
+  });
 
-    client.closeWindow(function callback() {
-      done();
+  it('client.closeWindow()', function (done) {
+    this.client.api.closeWindow(function(res) {
+      assert.strictEqual(res.status, 0);
     });
 
-    Nightwatch.start();
-  },
+    this.client.start(done);
+  });
 
-  //'client.switchWindow()' : function(done) {
-  //  var client = Nightwatch.api();
-  //
-  //  client.switchWindow(function callback() {
-  //    done();
-  //  });
-  //
-  //  Nightwatch.start();
-  //},
-
-  'client.resizeWindow()' : function(done) {
-    var client = Nightwatch.api();
-
-    client.resizeWindow(100, 100, function callback() {
-      done();
+  it('client.switchWindow()', function (done) {
+    this.client.api.switchWindow('0', function(res) {
+      assert.strictEqual(res.status, 0);
     });
 
-    Nightwatch.start();
-  }
+    this.client.start(done);
+  });
+
+  it('client.switchWindow() - no callback', function (done) {
+    this.client.api.switchWindow('0');
+
+    this.client.start(done);
+  });
+
+  it('client.resizeWindow()', function (done) {
+    MockServer.addMock({
+      url : '/wd/hub/session/1352110219202/window/current/size',
+      method:'POST',
+      response : JSON.stringify({
+        sessionId: '1352110219202',
+        status:0
+      })
+    });
+
+    this.client.api.resizeWindow(100, 100, function(res) {
+      assert.strictEqual(res.status, 0);
+    });
+
+    this.client.start(done);
+  });
 });

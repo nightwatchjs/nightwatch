@@ -1,41 +1,48 @@
-var assert = require('assert');
-var Globals = require('../../lib/globals/expect.js');
-var common = require('../../common.js');
-var CommandQueue = common.require('core/queue.js');
+const assert = require('assert');
+const Globals = require('../../lib/globals/expect.js');
+const Nocks = require('../../lib/nocks.js');
 
-module.exports = {
-  'test Queue' : {
-    beforeEach: function (done) {
-      CommandQueue.reset();
-      Globals.beforeEach.call(this, done);
-    },
+describe('test Queue', function () {
+  beforeEach(function (done) {
+    Globals.beforeEach.call(this, {
+      silent: true,
+      output: false
+    }, () => {
+      this.client.queue.reset();
+      done();
+    });
+  });
 
-    afterEach: function() {
-      Globals.afterEach.call(this);
-    },
+  afterEach(function (done) {
+    Globals.afterEach.call(this, done);
+  });
 
-    'Test commands queue' : function(done) {
-      var client = this.client, urlCommand, endCommand;
-      this.client.once('nightwatch:finished', function() {
-        assert.equal(urlCommand.done, true);
-        assert.equal(endCommand.children.length, 0);
-        assert.equal(endCommand.done, true);
-        assert.equal(CommandQueue.list().length, 0);
-        done();
-      });
+  it('Test commands queue', function () {
+    let client = this.client;
+    let queue = client.queue;
+    let urlCommand;
+    let endCommand;
+    Nocks.url().deleteSession();
 
-      client.api.url('http://localhost').end();
+    client.api.url('http://localhost').end();
 
-      assert.equal(CommandQueue.list().length, 2);
-      urlCommand = CommandQueue.instance().rootNode.children[0];
-      endCommand = CommandQueue.instance().rootNode.children[1];
+    assert.equal(queue.tree.rootNode.childNodes.length, 2);
+    urlCommand = queue.tree.rootNode.childNodes[0];
+    endCommand = queue.tree.rootNode.childNodes[1];
 
-      assert.equal(endCommand.done, false);
-      assert.equal(urlCommand.done, false);
-      assert.equal(endCommand.started, false);
+    assert.equal(endCommand.done, false);
+    assert.equal(urlCommand.done, false);
+    assert.equal(endCommand.started, false);
 
-      this.client.start();
+    return this.client.start(err => {
+      if (err) {
+        throw err;
+      }
       assert.equal(urlCommand.started, true);
-    }
-  }
-};
+      assert.equal(urlCommand.done, true);
+      assert.equal(endCommand.childNodes.length, 1);
+      assert.equal(endCommand.done, true);
+      assert.equal(queue.tree.rootNode.childNodes.length, 0);
+    });
+  });
+});

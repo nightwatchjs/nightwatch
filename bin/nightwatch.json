@@ -1,113 +1,95 @@
 {
-  "src_folders" : ["./examples/tests"],
+  "src_folders" : ["./examples/tests", "./examples/mocha", "./examples/unittests"],
   "output_folder" : "./examples/reports",
   "custom_commands_path" : "./examples/custom-commands",
+  "custom_assertions_path" : "./examples/custom-assertions",
   "page_objects_path" : "./examples/pages",
-  "custom_assertions_path" : "",
-  "globals_path" : "",
-  "live_output" : false,
-  "parallel_process_delay" : 10,
+  "globals_path" : "./examples/globalsModule.js",
   "disable_colors": false,
   "test_workers" : false,
 
-  "selenium" : {
-    "start_process" : false,
-    "server_path" : "",
-    "log_path" : "",
-    "host" : "127.0.0.1",
-    "port" : 4444,
-    "cli_args" : {
-      "webdriver.chrome.driver" : "",
-      "webdriver.ie.driver" : "",
-      "webdriver.firefox.profile" : ""
-    }
+  "webdriver" : {
+    "start_process": false,
+    "host": "localhost",
+    "port": 4444
   },
 
   "test_settings" : {
     "default" : {
-      "launch_url" : "http://localhost",
-      "selenium_host" : "127.0.0.1",
-      "selenium_port" : 4444,
-      "silent" : true,
+      "webdriver": {
+        "server_path": "./bin/geckodriver-0.20",
+        "cli_args": [
+          "--log", "debug"
+        ]
+      },
       "disable_colors": false,
       "screenshots" : {
         "enabled" : false,
         "path" : ""
       },
+      "request_timeout_options": {
+        "timeout": 60000,
+        "retry_attempts": 5
+      },
+      "filter": ["./examples/tests"],
       "desiredCapabilities" : {
         "browserName" : "firefox",
-        "javascriptEnabled" : true,
-        "acceptSslCerts" : true
+        "acceptInsecureCerts" : true
       }
     },
 
-    "saucelabs" : {
-      "selenium_host" : "ondemand.saucelabs.com",
-      "selenium_port" : 80,
-      "username" : "${SAUCE_USERNAME}",
-      "access_key" : "${SAUCE_ACCESS_KEY}",
-      "use_ssl" : false,
-      "silent" : true,
-      "output" : true,
-      "screenshots" : {
-        "enabled" : false,
-        "on_failure" : true,
-        "path" : ""
+    "chrome" : {
+      "webdriver": {
+        "port": 9515,
+        "default_path_prefix": "",
+        "server_path": "./bin/chromedriver-2.32",
+        "cli_args": [
+          "--verbose"
+        ]
       },
-      "desiredCapabilities": {
-        "name" : "test-example",
-        "browserName": "firefox"
-      },
-      "globals" : {
-        "myGlobal" : "some_sauce_global"
-      },
-      "selenium" : {
-        "start_process" : false
-      }
-    },
-
-    "phantomjs" : {
       "desiredCapabilities" : {
-        "browserName" : "phantomjs",
-        "javascriptEnabled" : true,
-        "acceptSslCerts" : true,
-        "phantomjs.binary.path" : "/path/to/phantomjs"
+        "browserName" : "chrome",
+        "loggingPrefs": {"driver": "INFO", "server": "OFF", "browser": "INFO"}
       }
     },
 
-    "browserstack" : {
-      "selenium" : {
-        "start_process" : false
+    "unit_tests" : {
+      "unit_tests_mode" : true,
+      "filter" : "./examples/unittests/*",
+      "exclude" : ""
+    },
+
+    "mocha" : {
+      "webdriver" : {
+        "default_path_prefix": "",
+        "server_path": "./bin/chromedriver-2.32",
+        "cli_args": [
+          "--verbose"
+        ]
       },
-      "selenium_host" : "hub.browserstack.com",
-      "selenium_port" : 80,
-      "silent" : true,
-      "desiredCapabilities": {
-        "name" : "test-example",
-        "browserName": "firefox",
-        "browserstack.user" : "...",
-        "browserstack.key" : "..."
+      "desiredCapabilities" : {
+        "browserName" : "chrome"
+      },
+      "test_runner" : {
+        "type" : "mocha"
       }
     },
-    
-    "testingbot" : {
-      "selenium_host" : "hub.testingbot.com",
-      "selenium_port" : 80,
-      "apiKey" : "${TB_KEY}",
-      "apiSecret" : "${TB_SECRET}",
-      "silent" : true,
-      "output" : true,
-      "screenshots" : {
-        "enabled" : false,
-        "on_failure" : true,
-        "path" : ""
-      },
-      "desiredCapabilities": {
-        "name" : "test-example",
-        "browserName": "firefox"
-      },
+
+    "selenium_server" : {
       "selenium" : {
-        "start_process" : false
+        "start_process": true,
+        "host": "localhost",
+        "port": 4444,
+        "server_path": "./bin/selenium-server-standalone-3.10.0.jar",
+        "cli_args": {
+          "webdriver.gecko.driver": "./bin/geckodriver-0.19",
+          "webdriver.chrome.driver": "./bin/chromedriver-2.32"
+        }
+      },
+
+      "desiredCapabilities" : {
+        "browserName" : "firefox",
+        "acceptSslCerts": true
       }
     }
   }

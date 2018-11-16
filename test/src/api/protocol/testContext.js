@@ -1,46 +1,44 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var MockServer = require('../../../lib/mockserver.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = MochaTest.add('context commands', {
-  beforeEach: function () {
-    this.client = Nightwatch.client();
-    this.protocol = common.require('api/protocol.js')(this.client);
-  },
+describe('context commands', function() {
+  before(function() {
+    Globals.protocolBefore.call(this);
+  });
 
-  testContexts: function (done) {
-    var protocol = this.protocol;
+  it('testContexts', function() {
 
-    var command = protocol.contexts(function callback() {
-      done();
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202/contexts');
+      },
+      commandName: 'contexts',
+      args: []
     });
+  });
 
-    assert.equal(command.request.method, 'GET');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/contexts');
-  },
-
-  testCurrentContext: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.currentContext(function callback() {
-      done();
+  it('testCurrentContext', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202/context');
+      },
+      commandName: 'currentContext',
+      args: []
     });
+  });
 
-    assert.equal(command.request.method, 'GET');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/context');
-  },
-
-  testSetContext: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.setContext('NATIVE', function callback() {
-      done();
+  it('testSetContext', function() {
+    let text = 'NATIVE';
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/context');
+        assert.deepEqual(opts.data, {'name': text});
+      },
+      commandName: 'setContext',
+      args: [text]
     });
-
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.data, '{"name":"NATIVE"}');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/context');
-  }
+  });
 });

@@ -1,109 +1,108 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var MockServer = require('../../../lib/mockserver.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = MochaTest.add('client.mouseButtonClick', {
-  beforeEach: function () {
-    this.client = Nightwatch.client();
-    this.protocol = common.require('api/protocol.js')(this.client);
-  },
+describe('client.mouseButtonClick', function() {
+  before(function() {
+    Globals.protocolBefore.call(this);
+  });
 
-  'test mouseButtonClick click left': function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.mouseButtonClick('left', function callback() {
-      done();
+  it('test mouseButtonClick click left', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/click');
+        assert.deepEqual(opts.data, { button: 0 });
+      },
+      commandName: 'mouseButtonClick',
+      args: ['left']
     });
+  });
 
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.data, '{"button":0}');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/click');
-  },
-
-  'test mouseButtonClick click right': function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.mouseButtonClick('right', function callback() {
-      done();
+  it('test mouseButtonClick click right', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.deepEqual(opts.data, { button: 2 });
+      },
+      commandName: 'mouseButtonClick',
+      args: ['right']
     });
+  });
 
-    assert.equal(command.data, '{"button":2}');
-  },
-
-  'test mouseButtonClick click middle': function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.mouseButtonClick('middle', function callback() {
-      done();
+  it('test mouseButtonClick click middle', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.deepEqual(opts.data, { button: 1 });
+      },
+      commandName: 'mouseButtonClick',
+      args: ['middle']
     });
+  });
 
-    assert.equal(command.data, '{"button":1}');
-  },
+  it('test mouseButtonClick with callback only', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.deepEqual(opts.data, { button: 0 });
+      },
+      commandName: 'mouseButtonClick',
+      args: [function() {
 
-  'test mouseButtonClick with callback only': function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.mouseButtonClick(function callback() {
-      done();
+      }]
     });
+  });
 
-    assert.equal(command.data, '{"button":0}');
-  },
-
-  'test mouseButtonClick with no args': function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.mouseButtonClick();
-    command.on('complete', function () {
-      done();
+  it('test mouseButtonClick with no args', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.deepEqual(opts.data, { button: 0 });
+      },
+      commandName: 'mouseButtonClick',
+      args: []
     });
+  });
 
-    assert.equal(command.data, '{"button":0}');
-  },
-
-  'test mouseButtonDown click left': function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.mouseButtonDown('left', function callback() {
-      done();
+  it('test mouseButtonDown click left', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/buttondown');
+        assert.deepEqual(opts.data, { button: 0 });
+      },
+      commandName: 'mouseButtonDown',
+      args: ['left']
     });
+  });
 
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.data, '{"button":0}');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/buttondown');
-  },
-
-  'test mouseButtonDown click middle': function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.mouseButtonDown('middle', function callback() {
-      done();
+  it('test mouseButtonDown click middle', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.deepEqual(opts.data, { button: 1 });
+      },
+      commandName: 'mouseButtonDown',
+      args: ['middle']
     });
+  });
 
-    assert.equal(command.data, '{"button":1}');
-  },
+  it('test mouseButtonDown with callback only', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.deepEqual(opts.data, { button: 0 });
+      },
+      commandName: 'mouseButtonDown',
+      args: [function() {
 
-  'test mouseButtonDown with callback only': function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.mouseButtonDown(function callback() {
-      done();
+      }]
     });
+  });
 
-    assert.equal(command.data, '{"button":0}');
-  },
-
-  'test mouseButtonUp click right': function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.mouseButtonUp('right', function callback() {
-      done();
+  it('test mouseButtonUp click right', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/buttonup');
+        assert.deepEqual(opts.data, { button: 2 });
+      },
+      commandName: 'mouseButtonUp',
+      args: ['right']
     });
-
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.data, '{"button":2}');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/buttonup');
-  }
+  });
 });

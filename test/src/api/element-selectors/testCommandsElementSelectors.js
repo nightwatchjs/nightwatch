@@ -1,27 +1,35 @@
-var path = require('path');
-var assert = require('assert');
-var common = require('../../../common.js');
-var Api = common.require('core/api.js');
-var utils = require('../../../lib/utils.js');
-var nocks = require('../../../lib/nockselements.js');
-var MochaTest = require('../../../lib/mochatest.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
+const path = require('path');
+const assert = require('assert');
+const nocks = require('../../../lib/nockselements.js');
+const MockServer  = require('../../../lib/mockserver.js');
+const Nightwatch = require('../../../lib/nightwatch.js');
 
-module.exports = MochaTest.add('test commands element selectors', {
+describe('test commands element selectors', function() {
+  before(function(done) {
+    nocks.enable();
+    this.server = MockServer.init();
+    this.server.on('listening', () => {
+      done();
+    });
+  });
 
-  beforeEach: function (done) {
+  after(function(done) {
+    nocks.disable();
+    this.server.close(function() {
+      done();
+    });
+  });
+
+  beforeEach(function (done) {
+    nocks.cleanAll();
     Nightwatch.init({
       page_objects_path: [path.join(__dirname, '../../../extra/pageobjects')]
     }, done);
-  },
-
-  afterEach: function () {
-    nocks.cleanAll();
-  },
+  });
 
   // wrapped selenium command
 
-  'getText(<various>)' : function(done) {
+  it('getText(<various>)', function(done) {
     nocks
       .elementFound()
       .elementNotFound()
@@ -41,15 +49,12 @@ module.exports = MochaTest.add('test commands element selectors', {
       })
       .getText({selector: '//[@id="nock"]', locateStrategy: 'xpath'}, function callback(result) {
         assert.equal(result.value, 'first', 'getText xpath locateStrategy');
-      })
-      .perform(function() {
-        done();
       });
 
-    Nightwatch.start();
-  },
+    Nightwatch.start(done);
+  });
 
-  'getText(<various>) locateStrategy' : function(done) {
+  it('getText(<various>) locateStrategy', function(done) {
     nocks
       .elementFound()
       .elementNotFound()
@@ -78,43 +83,50 @@ module.exports = MochaTest.add('test commands element selectors', {
       })
       .getText('xpath', {selector: '//[@id="nock"]'}, function callback(result) {
         assert.equal(result.value, 'first', 'getText using as xpath');
-      })
-      .perform(function() {
-        done();
       });
 
-    Nightwatch.start();
-  },
+    Nightwatch.start(done);
+  });
 
   // custom command
 
-  'waitForElementPresent(<various>)' : function(done) {
-    nocks
-      .elementsFound()
-      .elementsNotFound()
-      .elementsByXpath();
+  it('waitForElementPresent(<various>)', function(done) {
+    nocks.elementsFound();
 
     Nightwatch.api()
       .waitForElementPresent('.nock', 1, false, function callback(result) {
         assert.equal(result.value.length, 3, 'waitforPresent result expected found');
       })
-      .waitForElementPresent('.nock-none', 1, false, function callback(result) {
-        assert.equal(result.value, false, 'waitforPresent result expected false');
-      })
       .waitForElementPresent({selector: '.nock'}, 1, false, function callback(result) {
         assert.equal(result.value.length, 3, 'waitforPresent selector property result expected found');
-      })
-      .waitForElementPresent({selector: '.nock-none'}, 1, false, function callback(result) {
-        assert.equal(result.value, false, 'waitforPresent selector property result expected false');
-      })
-      .perform(function() {
-        done();
       });
 
-    Nightwatch.start();
-  },
+    Nightwatch.start(done);
+  });
 
-  'waitForElementPresent(<various>) locateStrategy' : function(done) {
+  it('waitForElementPresent(<string>) failure', function(done) {
+    nocks.elementsNotFound();
+
+    Nightwatch.api()
+      .waitForElementPresent('.nock-none', 1, false, function callback(result) {
+        assert.equal(result.value, false, 'waitforPresent result expected false');
+      });
+
+    Nightwatch.start(done);
+  });
+
+  it('waitForElementPresent(<{selector}>) failure', function(done) {
+    nocks.elementsNotFound();
+
+    Nightwatch.api()
+      .waitForElementPresent({selector: '.nock-none'}, 1, false, function callback(result) {
+        assert.equal(result.value, false, 'waitforPresent selector property result expected false');
+      });
+
+    Nightwatch.start(done);
+  });
+
+  it('waitForElementPresent(<various>) locateStrategy', function(done) {
     nocks
       .elementsFound()
       .elementsNotFound()
@@ -138,6 +150,5 @@ module.exports = MochaTest.add('test commands element selectors', {
       });
 
     Nightwatch.start();
-  }
-
+  });
 });

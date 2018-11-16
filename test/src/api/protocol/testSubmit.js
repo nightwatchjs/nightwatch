@@ -1,25 +1,21 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var MockServer = require('../../../lib/mockserver.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = MochaTest.add('client.submit', {
-  beforeEach: function () {
-    this.client = Nightwatch.client();
-    this.protocol = common.require('api/protocol.js')(this.client);
-  },
+describe('client.submit', function() {
+  before(function() {
+    Globals.protocolBefore.call(this);
+  });
 
-  testSubmit: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.submit('TEST_ELEMENT', function callback() {
-      done();
+  it('testSubmit', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/element/TEST_ELEMENT/submit');
+        assert.deepEqual(opts.data, '');
+      },
+      commandName: 'submit',
+      args: ['TEST_ELEMENT']
     });
-
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.data, '');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/element/TEST_ELEMENT/submit');
-  }
+  });
 
 });

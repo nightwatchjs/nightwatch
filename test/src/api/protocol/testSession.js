@@ -1,113 +1,121 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var MockServer = require('../../../lib/mockserver.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = MochaTest.add('session commands', {
-  beforeEach: function () {
-    this.client = Nightwatch.client();
-    this.protocol = common.require('api/protocol.js')(this.client);
-  },
+describe('session commands', function() {
+  before(function() {
+    Globals.protocolBefore.call(this);
+  });
 
-  testSessions: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.sessions(function callback() {
-      done();
+  it('testSessions', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/sessions');
+      },
+      commandName: 'sessions',
+      args: []
     });
+  });
 
-    assert.equal(command.request.method, 'GET');
-    assert.equal(command.request.path, '/wd/hub/sessions');
-  },
-
-  testSessionDefault: function (done) {
-    var protocol = this.protocol;
-
-
-    var command = protocol.session(function callback() {
-      done();
+  it('testSessionDefault', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202');
+      },
+      commandName: 'session',
+      args: []
     });
+  });
 
-    assert.equal(command.request.method, 'GET');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202');
-  },
-
-  testSessionGETImplicit: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.session(function callback() {
-      done();
+  it('testSessionGETImplicit', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202');
+      },
+      commandName: 'session',
+      args: []
     });
+  });
 
-    assert.equal(command.request.method, 'GET');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202');
-  },
-
-  testSessionGETExplicit: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.session('GET', function callback() {
-      done();
+  it('testSessionGETExplicit', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202');
+      },
+      commandName: 'session',
+      args: ['GET']
     });
+  });
 
-    assert.equal(command.request.method, 'GET');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202');
-  },
-
-  testSessionGETImplicitById: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.session('1352110219203', function callback() {
-      done();
+  it('testSessionGETImplicitById', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202');
+      },
+      commandName: 'session',
+      args: ['1352110219202']
     });
+  });
 
-    assert.equal(command.request.method, 'GET');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219203');
-  },
-
-  testSessionGETExplicitById: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.session('GET', '1352110219203', function callback() {
-      done();
+  it('testSessionGETExplicitById', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202');
+      },
+      commandName: 'session',
+      args: ['GET', '1352110219202']
     });
+  });
 
-    assert.equal(command.request.method, 'GET');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219203');
-  },
-
-  testSessionDELETE: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.session('DELETE', function callback() {
-      done();
+  it('testSessionDELETE', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'DELETE');
+        assert.equal(opts.path, '/session/1352110219202');
+      },
+      commandName: 'session',
+      args: ['DELETE']
     });
+  });
 
-    assert.equal(command.request.method, 'DELETE');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202');
-  },
+  it('testSessionDELETEWithCallback', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'DELETE');
+        assert.equal(opts.path, '/session/1352110219202');
+      },
+      commandName: 'session',
+      args: ['DELETE', function() {
 
-  testSessionDELETEById: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.session('DELETE', '1352110219203', function callback() {
-      done();
+      }]
     });
+  });
 
-    assert.equal(command.request.method, 'DELETE');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219203');
-  },
-
-  testSessionPOST: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.session('POST', function callback() {
-      done();
+  it('testSessionDELETEById', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'DELETE');
+        assert.equal(opts.path, '/session/1352110219202');
+      },
+      commandName: 'session',
+      args: ['DELETE', '1352110219202']
     });
+  });
 
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.request.path, '/wd/hub/session');
-  }
+  it('testSessionPOST', function() {
+    Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session');
+      },
+      commandName: 'session',
+      args: ['POST']
+    });
+  });
 
 });

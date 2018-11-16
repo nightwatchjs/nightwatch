@@ -1,19 +1,25 @@
-var MockServer  = require('../mockserver.js');
-var Nightwatch = require('../nightwatch.js');
-var common = require('../../common.js');
+const MockServer  = require('../mockserver.js');
+const Nightwatch = require('../nightwatch.js');
 
 module.exports = {
-  beforeEach : function(done) {
+  beforeEach(done) {
     this.server = MockServer.init();
 
-    this.server.on('listening', function() {
-      Nightwatch.init({silent : true}, function() {
-        done();
-      });
+    this.server.on('listening', () => {
+
+      Nightwatch.initClient({
+        webdriver:{
+          start_process: false
+        },
+      })
+        .then(client => {
+          this.client = client;
+          done();
+        });
     });
   },
 
-  afterEach : function(done) {
+  afterEach(done) {
     this.server.close(function() {
       done();
     });

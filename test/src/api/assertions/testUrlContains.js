@@ -1,56 +1,74 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var Api = common.require('core/api.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = {
-  'assert.urlContains' : {
-    'urlContains assertion passed' : function(done) {
-      var assertionFn = common.require('api/assertions/urlContains.js');
-      var client = {
-        options : {},
-        api : {
-          url : function(callback) {
-            callback({
-              value : 'http://www.nightwatchjs.org'
-            });
-          }
-        },
-        assertion : function(passed, result, expected, msg, abortOnFailure) {
-          assert.equal(passed, true);
-          assert.equal(result, 'http://www.nightwatchjs.org');
-          assert.equal(expected, 'nightwatchjs');
-          assert.equal(msg, 'Testing if the URL contains "nightwatchjs".');
-          assert.equal(abortOnFailure, true);
-          done();
+describe('assert.urlContains', function () {
+  it('urlContains assertion passed', function (done) {
+    Globals.assertionTest({
+      assertionName: 'urlContains',
+      args: ['nightwatchjs'],
+      api: {
+        url(callback) {
+          callback({
+            value: 'http://www.nightwatchjs.org'
+          });
         }
-      };
-      Api.init(client);
-      var m = Api.createAssertion('urlContains', assertionFn, true, client);
-      m._commandFn('nightwatchjs');
-    },
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.equal(passed, true);
+        assert.equal(value, 'http://www.nightwatchjs.org');
+        assert.ok(message.startsWith('Testing if the URL contains "nightwatchjs"'));
+      }
+    }, done);
+  });
 
-    'urlContains assertion failed' : function(done) {
-      var assertionFn = common.require('api/assertions/urlContains.js');
-      var client = {
-        options : {},
-        api : {
-          url : function(callback) {
-            callback({
-              value : 'http://www.nightwatchjs.org'
-            });
-          }
-        },
-        assertion : function(passed, result, expected, msg, abortOnFailure) {
-          assert.equal(passed, false);
-          assert.equal(result, 'http://www.nightwatchjs.org');
-          assert.equal(expected, 'google');
-          assert.equal(abortOnFailure, true);
-          done();
+  it('urlContains assertion failed without value field in response', function (done) {
+    Globals.assertionTest({
+      assertionName: 'urlContains',
+      args: ['nightwatchjs'],
+      api: {
+        url(callback) {
+          callback({
+          });
         }
-      };
-      Api.init(client);
-      var m = Api.createAssertion('urlContains', assertionFn, true, client);
-      m._commandFn('google');
-    }
-  }
-};
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.equal(passed, false);
+        assert.strictEqual(value, '');
+      }
+    }, done);
+  });
+
+  it('urlContains assertion failed with empty response', function (done) {
+    Globals.assertionTest({
+      assertionName: 'urlContains',
+      args: ['nightwatchjs'],
+      api: {
+        url(callback) {
+          callback();
+        }
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.equal(passed, false);
+        assert.strictEqual(value, '');
+      }
+    }, done);
+  });
+
+  it('urlContains assertion failed', function (done) {
+    Globals.assertionTest({
+      assertionName: 'urlContains',
+      args: ['google'],
+      api: {
+        url(callback) {
+          callback({
+            value: 'http://www.nightwatchjs.org'
+          });
+        }
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.equal(passed, false);
+        assert.equal(value, 'http://www.nightwatchjs.org');
+      }
+    }, done);
+  });
+});

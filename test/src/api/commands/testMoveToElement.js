@@ -1,13 +1,17 @@
-var MockServer  = require('../../../lib/mockserver.js');
-var assert = require('assert');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const MockServer  = require('../../../lib/mockserver.js');
+const CommandGlobals = require('../../../lib/globals/commands.js');
 
-module.exports = MochaTest.add('moveToElement', {
+describe('moveToElement', function() {
+  before(function(done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
 
-  'client.moveToElement()' : function(done) {
-    var client = Nightwatch.api();
+  after(function(done) {
+    CommandGlobals.afterEach.call(this, done);
+  });
 
+  it('client.moveToElement()', function(done) {
     MockServer.addMock({
       url : '/wd/hub/session/1352110219202/moveto',
       method:'POST',
@@ -18,13 +22,26 @@ module.exports = MochaTest.add('moveToElement', {
       })
     });
 
-    client.moveTo('css selector', '#weblogin', null, null, function callback(result) {
-      assert.equal(result.status, 0);
-    }).moveToElement('#weblogin', null, null, function callback(result) {
-      assert.equal(result.status, 0);
-      done();
+    MockServer.addMock({
+      url : '/wd/hub/session/1352110219202/moveto',
+      method:'POST',
+      postdata: '{"element":"0","xoffset":1,"yoffset":1}',
+      response : JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0
+      })
     });
 
-    Nightwatch.start();
-  }
+    this.client.api.moveToElement('css selector', '#weblogin', null, null, function(result) {
+      assert.equal(result.status, 0);
+    }).moveToElement('#weblogin', null, null, function(result) {
+      assert.equal(result.status, 0);
+    }).moveTo('0', null, null, function(result) {
+      assert.equal(result.status, 0);
+    }).moveToElement('#weblogin', 1, 1, function(result) {
+      assert.equal(result.status, 0);
+    });
+
+    this.client.start(done);
+  });
 });

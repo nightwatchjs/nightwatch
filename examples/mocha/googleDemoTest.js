@@ -29,9 +29,10 @@ describe('Google demo test for Mocha', function() {
         .url('http://google.com')
         .expect.element('body').to.be.present.before(1000);
 
-      client.setValue('input[type=text]', ['nightwatch', client.Keys.ENTER])
+      client
+        .setValue('input[type=text]', ['nightwatch', client.Keys.ENTER])
         .pause(1000)
-        .assert.containsText('#main', 'Night Watch');
+        .assert.containsText('#main', 'Night Watch')
     });
 
   });

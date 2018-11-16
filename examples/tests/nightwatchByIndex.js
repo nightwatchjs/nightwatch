@@ -1,4 +1,6 @@
 module.exports = {
+  '@disabled': true,
+
   'Show getting Nightwatch features using index' : function (client) {
 
     client.url('http://nightwatchjs.org');
@@ -20,6 +22,6 @@ module.exports = {
 
       });
       
-      client.end();
+    client.end();
   }
 };

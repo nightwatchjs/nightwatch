@@ -1,15 +1,12 @@
-var Globals = require('./globals.js');
-var CommandGlobals = require('./globals/commands.js');
+const CommandGlobals = require('./globals/commands.js');
 
 module.exports = {
   addBefore : function(done) {
-    Globals.interceptStartFn();
     CommandGlobals.beforeEach.call(this, done);
   },
 
   addAfter : function(done) {
     CommandGlobals.afterEach.call(this, function() {
-      Globals.restoreStartFn();
       done();
     });
   },

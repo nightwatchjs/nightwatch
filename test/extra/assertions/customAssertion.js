@@ -1,5 +1,5 @@
 var assert = require('assert');
-exports.assertion = function(testVal) {
+exports.assertion = function(testVal, done) {
   this.expected = true;
   this.message = '';
 
@@ -16,10 +16,15 @@ exports.assertion = function(testVal) {
   };
 
   this.command = function(callback) {
+    assert.equal(callback.length, 1, 'Callback expects 1 single argument.');
+    assert.ok(callback.name.indexOf('commandCallback') > -1);
+    assert.ok(typeof this.api !== 'undefined');
+
     callback({
       value : testVal
     });
 
+    done();
     return this;
   };
 

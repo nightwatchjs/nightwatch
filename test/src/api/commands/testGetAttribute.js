@@ -1,13 +1,18 @@
-var MockServer  = require('../../../lib/mockserver.js');
-var assert = require('assert');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const MockServer  = require('../../../lib/mockserver.js');
+const CommandGlobals = require('../../../lib/globals/commands.js');
 
-module.exports = MochaTest.add('getAttribute', {
+describe('getAttribute', function() {
 
-  'client.getAttribute()' : function(done) {
-    var client = Nightwatch.api();
+  before(function(done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
 
+  after(function(done) {
+    CommandGlobals.afterEach.call(this, done);
+  });
+
+  it('client.getAttribute()', function(done) {
     MockServer.addMock({
       url : '/wd/hub/session/1352110219202/element/0/attribute/class',
       method:'GET',
@@ -18,13 +23,12 @@ module.exports = MochaTest.add('getAttribute', {
       })
     });
 
-    client.getAttribute('#weblogin', 'class', function callback(result) {
+    this.client.api.getAttribute('#weblogin', 'class', function callback(result) {
       assert.equal(result.value, 'test_class');
     }).getAttribute('css selector', '#weblogin', 'class', function callback(result) {
       assert.equal(result.value, 'test_class');
-      done();
     });
 
-    Nightwatch.start();
-  }
+    this.client.start(done);
+  });
 });

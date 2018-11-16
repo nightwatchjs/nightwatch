@@ -1,13 +1,16 @@
-var MockServer  = require('../../../lib/mockserver.js');
-var assert = require('assert');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const MockServer  = require('../../../lib/mockserver.js');
+const CommandGlobals = require('../../../lib/globals/commands.js');
 
-module.exports = MochaTest.add('getTitle', {
+describe('getTitle', function() {
+  before(function(done) {
+    CommandGlobals.beforeEach.call(this, done);
+  });
 
-  'client.getTitle()' : function(done) {
-    var client = Nightwatch.api();
-
+  after(function(done) {
+    CommandGlobals.afterEach.call(this, done);
+  });
+  it('client.getTitle()', function(done) {
     MockServer.addMock({
       url : '/wd/hub/session/1352110219202/title',
       method:'GET',
@@ -18,11 +21,10 @@ module.exports = MochaTest.add('getTitle', {
       })
     });
 
-    client.getTitle(function callback(result) {
+    this.client.api.getTitle(function callback(result) {
       assert.equal(result, 'sample Title');
-      done();
     });
 
-    Nightwatch.start();
-  }
+    this.client.start(done);
+  });
 });

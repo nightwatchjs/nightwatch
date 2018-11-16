@@ -1,52 +1,75 @@
-var nock = require('nock');
+const nock = require('nock');
 
 /**
  * More granular nocks definitions for element apis
  */
 module.exports = {
-
+  _currentNocks: [],
   _requestUri: 'http://localhost:10195',
   _protocolUri: '/wd/hub/session/1352110219202/',
 
-  elementFound : function(selector, using, foundElem) {
-    nock(this._requestUri)
+  _addNock(...args) {
+    let item = nock(...args);
+
+    this._currentNocks.push(item);
+
+    return item;
+  },
+
+  checkIfMocksDone() {
+    try {
+      this._currentNocks.forEach(nock => nock.done());
+    } catch (err) {
+      return err;
+    }
+  },
+
+  elementFound(selector = '#nock', using = 'css selector', foundElem = {ELEMENT: '0'}) {
+    this._addNock(this._requestUri)
       .persist()
-      .post(this._protocolUri + 'element', {'using':using || 'css selector','value':selector || '#nock'})
+      .post(this._protocolUri + 'element', {using:using, value: selector})
       .reply(200, {
         status: 0,
         state: 'success',
-        value: foundElem || { ELEMENT: '0' }
+        value: foundElem
       });
+
     return this;
   },
 
-  elementsFound : function(selector, foundArray, using) {
-    nock(this._requestUri)
+  elementsFound(selector, foundArray, using) {
+    this._addNock(this._requestUri)
       .persist()
       .post(this._protocolUri + 'elements', {'using':using || 'css selector','value':selector || '.nock'})
       .reply(200, {
         status: 0,
         state: 'success',
-        value: foundArray || [ { ELEMENT: '0' }, { ELEMENT: '1' }, { ELEMENT: '2' } ]
+        value: foundArray || [{ELEMENT: '0'}, {ELEMENT: '1'}, {ELEMENT: '2'}]
       });
+
     return this;
   },
 
-  elementNotFound : function(selector) {
-    nock(this._requestUri)
+  elementNotFound(selector = '#nock-none') {
+    this._addNock(this._requestUri)
       .persist()
-      .post(this._protocolUri + 'element', {'using':'css selector','value':selector || '#nock-none'})
+      .post(this._protocolUri + 'element',
+        {
+          using: 'css selector',
+          value: selector
+        })
       .reply(200, {
         status: -1,
         value: {},
         errorStatus: 7,
         error: 'An element could not be located on the page using the given search parameters.'
       });
+
     return this;
   },
 
-  elementsNotFound : function(selector) {
-    nock(this._requestUri)
+  elementsNotFound(selector) {
+    this._addNock(this._requestUri)
       .persist()
       .post(this._protocolUri + 'elements', {'using':'css selector','value':selector || '.nock-none'})
       .reply(200, {
@@ -54,11 +77,12 @@ module.exports = {
         state: 'success',
         value: []
       });
+
     return this;
   },
 
-  elementByXpath : function(selector, foundElem) {
-    nock(this._requestUri)
+  elementByXpath(selector, foundElem) {
+    this._addNock(this._requestUri)
       .persist()
       .post(this._protocolUri + 'element', {'using':'xpath','value':selector || '//[@id="nock"]'})
       .reply(200, {
@@ -66,23 +90,37 @@ module.exports = {
         state: 'success',
         value: foundElem || { ELEMENT: '0' }
       });
+
     return this;
   },
 
-  elementsByXpath : function(selector, foundArray) {
-    nock(this._requestUri)
+  elementsByXpath(selector = '//[@class="nock"]', foundArray = [{ELEMENT: '0'}, {ELEMENT: '1'}, {ELEMENT: '2'}]) {
+    this._addNock(this._requestUri)
       .persist()
-      .post(this._protocolUri + 'elements', {'using':'xpath','value':selector || '//[@class="nock"]'})
+      .post(this._protocolUri + 'elements', {'using':'xpath','value':selector})
       .reply(200, {
         status: 0,
         state: 'success',
-        value: foundArray || [ { ELEMENT: '0' }, { ELEMENT: '1' }, { ELEMENT: '2' } ]
+        value: foundArray
       });
+
     return this;
   },
 
-  elementId : function (id, selector, using, foundElem) {
-    nock(this._requestUri)
+  elementsByXpathError(selector = '.nock') {
+    this._addNock(this._requestUri)
+      .post(this._protocolUri + 'elements', {using: 'xpath', value: selector})
+      .reply(500, {
+        status: 19,
+        state: 'XPathLookupError',
+        value: null
+      });
+
+    return this;
+  },
+
+  elementId (id, selector, using, foundElem) {
+    this._addNock(this._requestUri)
       .persist()
       .post(this._protocolUri + 'element/' + (id || 0) + '/element',
         {'using':using || 'css selector','value':selector || '#nock'})
@@ -91,24 +129,28 @@ module.exports = {
         state : 'success',
         value: foundElem || { ELEMENT: '0' }
       });
+
     return this;
   },
 
-  elementsId : function (id, selector, foundArray, using) {
-    nock(this._requestUri)
+  elementsId(id = 0, selector = '.nock', foundArray = [{ELEMENT: '0'}, {ELEMENT: '1'}, {ELEMENT: '2'}], using = 'css selector') {
+    this._addNock(this._requestUri)
       .persist()
-      .post(this._protocolUri + 'element/' + (id || 0) + '/elements',
-        {'using':using || 'css selector','value':selector || '.nock'})
+      .post(this._protocolUri + 'element/' + id + '/elements', {
+        using: using,
+        value: selector
+      })
       .reply(200, {
         status: 0,
         state : 'success',
-        value: foundArray || [ { ELEMENT: '0' }, { ELEMENT: '1' }, { ELEMENT: '2' } ]
+        value: foundArray
       });
+
     return this;
   },
 
-  elementIdNotFound : function (id, selector, using) {
-    nock(this._requestUri)
+  elementIdNotFound (id, selector, using) {
+    this._addNock(this._requestUri)
       .persist()
       .post(this._protocolUri + 'element/' + (id || 0) + '/element',
         {'using':using || 'css selector','value':selector || '#nock'})
@@ -118,11 +160,12 @@ module.exports = {
         errorStatus: 7,
         error: 'An element could not be located on the page using the given search parameters.'
       });
+
     return this;
   },
 
-  elementsByTag : function(selector, foundArray) {
-    nock(this._requestUri)
+  elementsByTag(selector, foundArray) {
+    this._addNock(this._requestUri)
       .persist()
       .post(this._protocolUri + 'elements', {'using':'tag name','value':selector || 'nock'})
       .reply(200, {
@@ -130,11 +173,12 @@ module.exports = {
         state: 'success',
         value: foundArray || [ { ELEMENT: '0' }, { ELEMENT: '1' }, { ELEMENT: '2' } ]
       });
+
     return this;
   },
 
-  text : function (id, value) {
-    nock(this._requestUri)
+  text(id, value) {
+    this._addNock(this._requestUri)
       .persist()
       .get(this._protocolUri + 'element/' + (id || 0) + '/text')
       .reply(200, {
@@ -142,10 +186,28 @@ module.exports = {
         state : 'success',
         value: value || 'textValue'
       });
+
     return this;
   },
 
-  cleanAll: function () {
+  cleanAll () {
+    this._currentNocks = [];
     nock.cleanAll();
-  }
+  },
+
+  disabled: false,
+  disable() {
+    this.disabled = true;
+    nock.restore();
+
+    return this;
+  },
+
+  enable() {
+    if (this.disabled) {
+      nock.activate();
+    }
+
+    return this;
+  },
 };

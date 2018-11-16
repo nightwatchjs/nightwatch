@@ -1,75 +1,103 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var MockServer = require('../../../lib/mockserver.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = MochaTest.add('window commands', {
-  beforeEach: function () {
-    this.client = Nightwatch.client();
-    this.protocol = common.require('api/protocol.js')(this.client);
-  },
+describe('window commands', function() {
+  before(function() {
+    Globals.protocolBefore.call(this);
+  });
 
-  testWindowHandle: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.windowHandle(function callback() {
-      done();
+  it('testWindowHandle', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202/window_handle');
+      },
+      commandName: 'windowHandle',
+      args: []
     });
+  });
 
-    assert.equal(command.request.method, 'GET');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/window_handle');
-  },
-
-  testWindowHandlePlural: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.windowHandles(function callback() {
-      done();
+  it('testWindowHandle W3C WebDriver', function() {
+    return Globals.protocolTestWebdriver.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.path, '/session/1352110219202/window/handle');
+      },
+      commandName: 'windowHandle',
+      args: []
     });
+  });
 
-    assert.equal(command.request.method, 'GET');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/window_handles');
-  },
-
-  testCloseWindow: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.window('DELETE', function callback() {
-      done();
+  it('testWindowHandlePlural', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202/window_handles');
+      },
+      commandName: 'windowHandles',
+      args: []
     });
+  });
 
-    assert.equal(command.request.method, 'DELETE');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/window');
-  },
-
-  testSwitchWindow: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.window('POST', 'other-window', function callback() {
-      done();
+  it('testWindowHandlePlural W3C WebDriver', function() {
+    return Globals.protocolTestWebdriver.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202/window/handles');
+      },
+      commandName: 'windowHandles',
+      args: []
     });
+  });
 
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.data, '{"name":"other-window"}');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/window');
-  },
+  it('testCloseWindow', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'DELETE');
+        assert.equal(opts.path, '/session/1352110219202/window');
+      },
+      commandName: 'window',
+      args: ['DELETE']
+    });
+  });
 
-  testWindowCommand: function () {
-    var protocol = this.protocol;
+  it('testSwitchWindow', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/window');
+        assert.deepEqual(opts.data, {name: 'other-window'});
+      },
+      commandName: 'window',
+      args: ['POST', 'other-window']
+    });
+  });
+
+  it('testSwitchWindow W3C WebDriver', function() {
+    return Globals.protocolTestWebdriver.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.path, '/session/1352110219202/window');
+        assert.deepEqual(opts.data, {handle: 'other-window'});
+      },
+      commandName: 'window',
+      args: ['POST', 'other-window']
+    });
+  });
+
+  it('testWindowCommand', function() {
+    let protocol = this.protocol;
 
     assert.throws(
-      function () {
+      function() {
         protocol.window('POST');
       }, 'POST method without a name param throws an error'
     );
 
     assert.throws(
-      function () {
+      function() {
         protocol.window('GET');
       }, 'GET method throws an error'
     );
 
-  }
+  });
 
 });

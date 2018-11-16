@@ -6,7 +6,7 @@
     "start_session" : false
   },
 
-  "test_settings" : {
+  "test_settings": {
     "default" : {
       "filter" : "**/*.js",
       "compatible_testcase_support" : true

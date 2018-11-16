@@ -1,69 +1,102 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var MockServer  = require('../../../lib/mockserver.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = MochaTest.add('client.execute', {
-  beforeEach: function () {
-    this.client = Nightwatch.client();
-    this.protocol = common.require('api/protocol.js')(this.client);
-  },
+describe('client.execute', function() {
+  before(function() {
+    Globals.protocolBefore.call(this);
+  });
 
-  testExecuteString : function(done) {
-    var protocol = this.protocol;
-
-    var command = protocol.execute('<script>test();</script>', ['arg1'], function callback() {
-      done();
+  it('testExecuteString', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/execute');
+        assert.deepEqual(opts.data, {script: '<script>test();</script>', args: ['arg1']});
+      },
+      commandName: 'execute',
+      args: ['<script>test();</script>', ['arg1']]
     });
+  });
 
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.data, '{"script":"<script>test();</script>","args":["arg1"]}');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/execute');
-  },
-
-  testExecuteFunction : function(done) {
-    var protocol = this.protocol;
-
-    var command = protocol.execute(function() {return test();},
-      ['arg1'], function callback() {
-        done();
-      });
-
-    assert.equal(command.data, '{"script":"var passedArgs = Array.prototype.slice.call(arguments,0); ' +
-      'return function () {return test();}.apply(window, passedArgs);","args":["arg1"]}');
-  },
-
-  testExecuteFunctionNoArgs : function(done) {
-    var protocol = this.protocol;
-
-    var command = protocol.execute(function() {return test();})
-      .on('complete', function() {
-        done();
-      });
-
-    assert.equal(command.data, '{"script":"var passedArgs = Array.prototype.slice.call(arguments,0); ' +
-      'return function () {return test();}.apply(window, passedArgs);","args":[]}');
-  },
-
-  testExecuteAsyncFunction : function() {
-    var protocol = this.protocol;
-
-    var command = protocol.executeAsync(function() {return test();}, ['arg1']);
-
-    assert.equal(command.data, '{"script":"var passedArgs = Array.prototype.slice.call(arguments,0); ' +
-      'return function () {return test();}.apply(window, passedArgs);","args":["arg1"]}');
-  },
-
-  testExecuteAsync : function(done) {
-    var protocol = this.protocol;
-
-    var command = protocol.executeAsync('<script>test();</script>', ['arg1'], function callback() {
-      done();
+  it('testExecuteString W3C WebDriver', function() {
+    return Globals.protocolTestWebdriver.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/execute/sync');
+      },
+      commandName: 'execute',
+      args: ['<script>test();</script>', ['arg1']]
     });
+  });
 
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.data, '{"script":"<script>test();</script>","args":["arg1"]}');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/execute_async');
-  }
+  it('testExecuteFunction', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.deepEqual(opts.data, {
+          args: ['arg1'],
+          script: 'var passedArgs = Array.prototype.slice.call(arguments,0); return function () {\n        return test();\n      }.apply(window, passedArgs);'
+        });
+      },
+      commandName: 'execute',
+      args: [function () {
+        return test();
+      }, ['arg1']]
+    });
+  });
+
+  it('testExecuteFunctionNoArgs', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.deepEqual(opts.data, {
+          args: [],
+          script: 'var passedArgs = Array.prototype.slice.call(arguments,0); return function () {\n        return test();\n      }.apply(window, passedArgs);'
+        });
+      },
+      commandName: 'execute',
+      args: [function () {
+        return test();
+      }]
+    });
+  });
+
+  it('testExecuteAsyncFunction', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.deepEqual(opts.data, {
+          args: ['arg1'],
+          script: 'var passedArgs = Array.prototype.slice.call(arguments,0); return function () {\n        return test();\n      }.apply(window, passedArgs);'
+        });
+      },
+      commandName: 'executeAsync',
+      args: [function () {
+        return test();
+      }, ['arg1']]
+    });
+  });
+
+  it('testExecuteAsync', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/execute_async');
+        assert.deepEqual(opts.data, {
+          args: ['arg1'],
+          script: '<script>test();</script>'
+        });
+      },
+      commandName: 'executeAsync',
+      args: ['<script>test();</script>', ['arg1']]
+    });
+  });
+
+  it('testExecuteAsync W3C WebDriver', function() {
+    return Globals.protocolTestWebdriver.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/execute/async');
+      },
+      commandName: 'executeAsync',
+      args: ['<script>test();</script>', ['arg1']]
+    });
+  });
 });

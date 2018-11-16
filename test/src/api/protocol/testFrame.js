@@ -1,46 +1,42 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var MockServer = require('../../../lib/mockserver.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = MochaTest.add('client.frame', {
-  beforeEach: function () {
-    this.client = Nightwatch.client();
-    this.protocol = common.require('api/protocol.js')(this.client);
-  },
+describe('client.frame', function() {
+  before(function() {
+    Globals.protocolBefore.call(this);
+  });
 
-  testFrameDefault: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.frame(function callback() {
-      done();
+  it('testFrameDefault', function () {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/frame');
+      },
+      commandName: 'frame',
+      args: []
     });
+  });
 
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/frame');
-  },
-
-  testFramePost: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.frame('testFrame', function callback() {
-      done();
+  it('testFramePost', function () {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/frame');
+        assert.deepEqual(opts.data, { id: 'testFrame' });
+      },
+      commandName: 'frame',
+      args: ['testFrame']
     });
+  });
 
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.data, '{"id":"testFrame"}');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/frame');
-  },
-
-  testFrameParent: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.frameParent(function callback() {
-      done();
+  it('testFrameParent', function () {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/frame/parent');
+      },
+      commandName: 'frameParent',
+      args: []
     });
-
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/frame/parent');
-  }
+  });
 });

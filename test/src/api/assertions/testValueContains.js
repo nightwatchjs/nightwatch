@@ -1,112 +1,128 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var Api = common.require('core/api.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = {
-  'assert.valueContains' : {
-    'valueContains assertion passed' : function(done) {
-      var assertionFn = common.require('api/assertions/valueContains.js');
-      var client = {
-        options : {},
-        api : {
-          getValue : function(cssSelector, callback) {
-            assert.equal(cssSelector, '.test_element');
-            callback({
-              status : 0,
-              value : 'contains-some-value'
-            });
-          }
-        },
-        assertion : function(passed, result, expected, msg, abortOnFailure) {
-          assert.equal(passed, true);
-          assert.equal(result, 'contains-some-value');
-          assert.equal(expected, true);
-          assert.equal(msg, 'Testing if value of <.test_element> contains: "some-value".');
-          assert.equal(abortOnFailure, true);
-          done();
+describe('assert.valueContains', function () {
+  it('valueContains assertion passed', function (done) {
+    Globals.assertionTest({
+      assertionName: 'valueContains',
+      args: ['.test_element', 'some-value'],
+      api: {
+        getValue(cssSelector, callback) {
+          assert.equal(cssSelector, '.test_element');
+          callback({
+            status: 0,
+            value: 'contains-some-value'
+          });
         }
-      };
-      Api.init(client);
-      var m = Api.createAssertion('valueContains', assertionFn, true, client);
-      m._commandFn('.test_element', 'some-value');
-    },
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.equal(passed, true);
+        assert.equal(value, 'contains-some-value');
+        assert.ok(message.startsWith('Testing if value of <.test_element> contains: "some-value"'));
+      }
+    }, done);
+  });
 
-    'valueContains assertion failed' : function(done) {
-      var assertionFn = common.require('api/assertions/valueContains.js');
-      var client = {
-        options : {},
-        api : {
-          getValue : function(cssSelector, callback) {
-            assert.equal(cssSelector, '.test_element');
-            callback({
-              status : 0,
-              value : 'wrong-value'
-            });
-          }
-        },
-        assertion : function(passed, result, expected, msg, abortOnFailure) {
-          assert.equal(passed, false);
-          assert.equal(result, 'wrong-value');
-          assert.equal(expected, true);
-          assert.equal(abortOnFailure, true);
-          done();
+  it('valueContains assertion failed', function (done) {
+    Globals.assertionTest({
+      assertionName: 'valueContains',
+      args: ['.test_element', 'some-value'],
+      api: {
+        getValue(cssSelector, callback) {
+          assert.equal(cssSelector, '.test_element');
+          callback({
+            status: 0,
+            value: 'wrong-value'
+          });
         }
-      };
-      Api.init(client);
-      var m = Api.createAssertion('valueContains', assertionFn, true, client);
-      m._commandFn('.test_element', 'some-value');
-    },
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.equal(passed, false);
+        assert.equal(value, 'wrong-value');
+      }
+    }, done);
+  });
 
-    'valueContains assertion element not found' : function(done) {
-      var assertionFn = common.require('api/assertions/valueContains.js');
-      var client = {
-        options : {},
-        api : {
-          getValue : function(cssSelector, callback) {
-            callback({
-              status : -1
-            });
-          }
-        },
-        assertion : function(passed, result, expected, msg, abortOnFailure) {
-          assert.equal(passed, false);
-          assert.equal(result, null);
-          assert.equal(expected, true);
-          assert.equal(msg, 'Testing if value of <.test_element> contains: "some-value". Element could not be located.');
-          assert.equal(abortOnFailure, true);
-          done();
+  it('valueContains assertion element not found', function (done) {
+    Globals.assertionTest({
+      assertionName: 'valueContains',
+      args: ['.test_element', 'some-value'],
+      api: {
+        getValue(cssSelector, callback) {
+          assert.equal(cssSelector, '.test_element');
+          callback({
+            status: -1
+          });
         }
-      };
-      Api.init(client);
-      var m = Api.createAssertion('valueContains', assertionFn, true, client);
-      m._commandFn('.test_element', 'some-value');
-    },
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.equal(passed, false);
+        assert.equal(value, null);
+        assert.ok(message.startsWith('Testing if value of <.test_element> contains: "some-value". Element could not be located'));
+      }
+    }, done);
+  });
 
-    'valueContains assertion value attribute not found' : function(done) {
-      var assertionFn = common.require('api/assertions/valueContains.js');
-      var client = {
-        options : {},
-        api : {
-          getValue : function(cssSelector, callback) {
-            callback({
-              status : 0,
-              value : null
-            });
-          }
-        },
-        assertion : function(passed, result, expected, msg, abortOnFailure) {
-          assert.equal(passed, false);
-          assert.equal(result, null);
-          assert.equal(expected, true);
-          assert.equal(msg, 'Testing if value of <.test_element> contains: "some-value". Element does not have a value attribute.');
-          assert.equal(abortOnFailure, true);
-          done();
+  it('valueContains assertion stale element reference', function (done) {
+    let calls = 0;
+    Globals.assertionTest({
+      assertionName: 'valueContains',
+      args: ['.test_element', 'some-value'],
+      settings: {
+        globals: {
+          retryAssertionTimeout: 100,
+          waitForConditionPollInterval: 10
         }
-      };
-      Api.init(client);
-      var m = Api.createAssertion('valueContains', assertionFn, true, client);
-      m._commandFn('.test_element', 'some-value');
-    }
-  }
-};
+      },
+      api: {
+        elements(using, selector, callback) {
+          if (calls < 2) {
+            callback({
+              state: 'stale element reference',
+              status: -1,
+              errorStatus: 10
+            });
+            calls++;
 
+            return;
+          }
+
+          callback({
+            status: 0,
+            value: 'contains-some-value'
+          });
+        },
+
+        getValue(cssSelector, callback) {
+          this.elements('css selector', '.test_element', callback);
+        }
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.equal(passed, true);
+        assert.equal(value, 'contains-some-value');
+        assert.equal(calls, 2);
+        assert.ok(message.startsWith('Testing if value of <.test_element> contains: "some-value". Element could not be located'));
+      }
+    }, done);
+  });
+
+  it('valueContains assertion value attribute not found', function (done) {
+    Globals.assertionTest({
+      assertionName: 'valueContains',
+      args: ['.test_element', 'some-value'],
+      api: {
+        getValue(cssSelector, callback) {
+          callback({
+            status: 0,
+            value: null
+          });
+        }
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.equal(passed, false);
+        assert.equal(value, null);
+        assert.ok(message.startsWith('Testing if value of <.test_element> contains: "some-value". Element does not have a value attribute'));
+      }
+    }, done);
+  });
+});

@@ -1,35 +1,31 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var MockServer = require('../../../lib/mockserver.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = MochaTest.add('session log commands', {
-  beforeEach: function () {
-    this.client = Nightwatch.client();
-    this.protocol = common.require('api/protocol.js')(this.client);
-  },
+describe('session log commands', function() {
+  before(function() {
+    Globals.protocolBefore.call(this);
+  });
 
-  testLog: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.sessionLog('browser', function callback() {
-      done();
+  it('testLog', function () {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/log');
+      },
+      commandName: 'sessionLog',
+      args: []
     });
+  });
 
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/log');
-  },
-
-  testLogTypes: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.sessionLogTypes(function callback() {
-      done();
+  it('testLogTypes', function () {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202/log/types');
+      },
+      commandName: 'sessionLogTypes',
+      args: []
     });
-
-    assert.equal(command.request.method, 'GET');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/log/types');
-  }
+  });
 
 });

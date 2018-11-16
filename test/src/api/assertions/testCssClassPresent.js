@@ -1,83 +1,61 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var Api = common.require('core/api.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = {
-  'assert.cssClassPresent' : {
-    'cssClassPresent assertion passed' : function(done) {
-      var assertionFn = common.require('api/assertions/cssClassPresent.js');
-      var client = {
-        options : {},
-        api : {
-          getAttribute : function(cssSelector, attribute, callback) {
-            assert.equal(cssSelector, '.test_element');
-            assert.equal(attribute, 'class');
-            callback({
-              value : 'other-css-class test-css-class'
-            });
-          }
-        },
-        assertion : function(passed, result, expected, msg, abortOnFailure) {
-          assert.equal(passed, true);
-          assert.equal(result, 'other-css-class test-css-class');
-          assert.equal(expected, 'has test-css-class');
-          assert.equal(msg, 'Testing if element <.test_element> has css class: "test-css-class".');
-          assert.equal(abortOnFailure, true);
-          done();
+describe('assert.cssClassPresent', function () {
+  it('cssClassPresent assertion passed', function (done) {
+    Globals.assertionTest({
+      assertionName: 'cssClassPresent',
+      args: ['.test_element', 'test-css-class'],
+      api: {
+        getAttribute(cssSelector, attribute, callback) {
+          assert.equal(cssSelector, '.test_element');
+          assert.equal(attribute, 'class');
+          callback({
+            value: 'other-css-class test-css-class'
+          });
         }
-      };
-      Api.init(client);
-      var m = Api.createAssertion('cssClassPresent', assertionFn, true, client);
-      m._commandFn('.test_element', 'test-css-class');
-    },
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.strictEqual(passed, true);
+        assert.equal(value, 'other-css-class test-css-class');
+        assert.ok(message.startsWith('Testing if element <.test_element> has css class: "test-css-class"'));
+      }
+    }, done);
+  });
 
-    'cssClassPresent assertion failed' : function(done) {
-      var assertionFn = common.require('api/assertions/cssClassPresent.js');
-      var client = {
-        options : {},
-        api : {
-          getAttribute : function(cssSelector, attribute, callback) {
-            callback({
-              value : 'other-css-class'
-            });
-          }
-        },
-        assertion : function(passed, result, expected, msg, abortOnFailure) {
-          assert.equal(passed, false);
-          assert.equal(result, 'other-css-class');
-          assert.equal(expected, 'has test-css-class');
-          assert.equal(abortOnFailure, true);
-          done();
+  it('cssClassPresent assertion failed', function (done) {
+    Globals.assertionTest({
+      assertionName: 'cssClassPresent',
+      args: ['.test_element', 'test-css-class'],
+      api: {
+        getAttribute(cssSelector, attribute, callback) {
+          callback({
+            value: 'other-css-class'
+          });
         }
-      };
-      Api.init(client);
-      var m = Api.createAssertion('cssClassPresent', assertionFn, true, client);
-      m._commandFn('.test_element', 'test-css-class');
-    },
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.strictEqual(passed, false);
+        assert.equal(value, 'other-css-class');
+      }
+    }, done);
+  });
 
-    'cssClassPresent assertion not found' : function(done) {
-      var assertionFn = common.require('api/assertions/cssClassPresent.js');
-      var client = {
-        options : {},
-        api : {
-          getAttribute : function(cssSelector, attribute, callback) {
-            callback({
-              status : -1
-            });
-          }
-        },
-        assertion : function(passed, result, expected, msg, abortOnFailure) {
-          assert.equal(passed, false);
-          assert.equal(result, null);
-          assert.equal(expected, 'has test-css-class');
-          assert.equal(abortOnFailure, true);
-          done();
+  it('cssClassPresent assertion not found', function (done) {
+    Globals.assertionTest({
+      assertionName: 'cssClassPresent',
+      args: ['.test_element', 'test-css-class'],
+      api: {
+        getAttribute(cssSelector, attribute, callback) {
+          callback({
+            status: -1
+          });
         }
-      };
-      Api.init(client);
-      var m = Api.createAssertion('cssClassPresent', assertionFn, true, client);
-      m._commandFn('.test_element', 'test-css-class');
-    }
-  }
-};
-
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.equal(passed, false);
+        assert.equal(value, null);
+      }
+    }, done);
+  });
+});

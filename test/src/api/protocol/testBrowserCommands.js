@@ -1,46 +1,42 @@
-var assert = require('assert');
-var common = require('../../../common.js');
-var MockServer = require('../../../lib/mockserver.js');
-var Nightwatch = require('../../../lib/nightwatch.js');
-var MochaTest = require('../../../lib/mochatest.js');
+const assert = require('assert');
+const Globals = require('../../../lib/globals.js');
 
-module.exports = MochaTest.add('browser commands', {
-  beforeEach: function () {
-    this.client = Nightwatch.client();
-    this.protocol = common.require('api/protocol.js')(this.client);
-  },
+describe('browser commands', function() {
+  before(function() {
+    Globals.protocolBefore.call(this);
+  });
 
-  testRefresh: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.refresh(function callback() {
-      done();
+  it('testRefresh', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/refresh');
+      },
+      commandName: 'refresh',
+      args: []
     });
+  });
 
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/refresh');
-  },
-
-  testBack: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.back(function callback() {
-      done();
+  it('testBack', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/back');
+      },
+      commandName: 'back',
+      args: []
     });
+  });
 
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/back');
-  },
-
-  testForward: function (done) {
-    var protocol = this.protocol;
-
-    var command = protocol.forward(function callback() {
-      done();
+  it('testForward', function() {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/forward');
+      },
+      commandName: 'forward',
+      args: []
     });
-
-    assert.equal(command.request.method, 'POST');
-    assert.equal(command.request.path, '/wd/hub/session/1352110219202/forward');
-  }
+  });
 
 });
