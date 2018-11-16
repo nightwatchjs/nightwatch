@@ -45,6 +45,29 @@ describe('clearValue', function() {
       });
   });
 
+  it('client.clearValue() with no callback', function(done) {
+    Nightwatch.initClient({
+      output: true,
+      silent: false
+    })
+      .then(client => {
+        MockServer.addMock({
+          'url': '/wd/hub/session/1352110219202/element/0/clear',
+          'response': JSON.stringify({
+            sessionId: '1352110219202',
+            status: 0
+          })
+        });
+
+
+        client.api.elements('css selector', 'body', res => {
+          client.api.clearValue('#weblogin');
+        });
+
+        client.start(done);
+      });
+  });
+
   it('client.clearValue() with webdriver protocol', function(done) {
     Nightwatch.initClient({
       selenium : {

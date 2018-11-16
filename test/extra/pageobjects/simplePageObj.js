@@ -1,5 +1,11 @@
 var testCommands = {
   testCommand: function () {
+
+    this.api.elements('css selector', '#weblogin', res => {
+      console.log('CLEAR COMMANDS')
+      this.clearValue('#weblogin', false)
+    });
+
     return this;
   }
 };

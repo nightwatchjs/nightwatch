@@ -124,11 +124,13 @@ describe('test page object element selectors', function() {
     Nightwatch.api().globals.waitForConditionPollInterval = 10;
 
     let page = Nightwatch.api().page.simplePageObj();
+    page.testCommand();
     let section = page.section.signUp;
 
     let expect = section.expect.element('@help').to.be.visible.before(15);
 
     return Nightwatch.start(function(err) {
+      console.log(err.message)
       assert.equal(err.name, 'AssertionError');
       assert.strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.message.includes('Expected element <Section [name=signUp],Element [name=@help]> to be visible'));
