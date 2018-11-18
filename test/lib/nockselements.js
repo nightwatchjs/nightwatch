@@ -190,6 +190,23 @@ module.exports = {
     return this;
   },
 
+  clearValue(id, persist = false) {
+    const mock = this._addNock(this._requestUri);
+    if (persist) {
+      mock.persist();
+    }
+
+    mock
+      .post(this._protocolUri + 'element/' + (id || 0) + '/clear')
+      .reply(200, {
+        status: 0,
+        state : 'success',
+        value: null
+      });
+
+    return this;
+  },
+
   cleanAll () {
     this._currentNocks = [];
     nock.cleanAll();
