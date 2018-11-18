@@ -7,8 +7,8 @@ const common = require('../../../common.js');
 const Logger = common.require('util/logger.js');
 
 describe('test page object element selectors', function() {
-  //Logger.enable();
-  //Logger.setOutputEnabled(true);
+  // Logger.enable();
+  // Logger.setOutputEnabled(true);
 
   before(function(done) {
     nocks.enable();
@@ -117,6 +117,9 @@ describe('test page object element selectors', function() {
   it('page section elements - section element not found', function() {
     nocks
       .elementsNotFound('#signupSection')
+      .elementsFound('#weblogin')
+      .elementFound('#weblogin')
+      .clearValue('0')
       .elementsId('0', '#getStartedStart', [{ELEMENT: '1'}])
       .text(0, 'first')
       .text(1, 'second');
@@ -130,7 +133,7 @@ describe('test page object element selectors', function() {
     let expect = section.expect.element('@help').to.be.visible.before(15);
 
     return Nightwatch.start(function(err) {
-      console.log(err.message)
+      assert.ok(err instanceof Error, 'Expected err to be an Error but found: ' + typeof err);
       assert.equal(err.name, 'AssertionError');
       assert.strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.message.includes('Expected element <Section [name=signUp],Element [name=@help]> to be visible'));

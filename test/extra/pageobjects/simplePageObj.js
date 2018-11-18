@@ -2,8 +2,9 @@ var testCommands = {
   testCommand: function () {
 
     this.api.elements('css selector', '#weblogin', res => {
-      console.log('CLEAR COMMANDS')
-      this.clearValue('#weblogin', false)
+      this.clearValue('#weblogin');
+      this.perform(function() {
+      });
     });
 
     return this;
