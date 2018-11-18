@@ -20,7 +20,7 @@ describe('test PageObject Commands', function () {
 
   beforeEach(function (done) {
     Nightwatch.init({
-      page_objects_path: path.join(__dirname, '../../extra/pageobjects'),
+      page_objects_path: path.join(__dirname, '../../extra/pageobjects/pages'),
       custom_commands_path: [path.join(__dirname, '../../extra/commands')]
     }, function () {
       done();
@@ -43,6 +43,20 @@ describe('test PageObject Commands', function () {
       });
 
     this.client.start();
+  });
+
+  it('testPageObject - error loading custom commands', function (done) {
+    let api = this.client.api;
+
+    try {
+      api.page.simplePageObjWithError();
+    } catch (err) {
+      assert.ok(err instanceof Error);
+      assert.equal(err.message, 'Trying to overwrite page object/section "simplePageObjWithError"  method/property "name".');
+      assert.equal(err.detailedErr, 'Using dropdownSelect, dropdownSelectByText, scrollToElement, name, testCommand.' );
+      
+      done();
+    }
   });
 });
 

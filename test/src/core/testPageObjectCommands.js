@@ -20,7 +20,7 @@ describe('test PageObject Commands', function () {
 
   beforeEach(function (done) {
     Nightwatch.init({
-      page_objects_path: path.join(__dirname, '../../extra/pageobjects')
+      page_objects_path: path.join(__dirname, '../../extra/pageobjects/pages')
     }, function () {
       done();
     });
