@@ -28,7 +28,7 @@ describe('test page object element selectors', function() {
   beforeEach(function(done) {
     nocks.cleanAll();
     Nightwatch.init({
-      page_objects_path: [path.join(__dirname, '../../../extra/pageobjects')],
+      page_objects_path: [path.join(__dirname, '../../../extra/pageobjects/pages')],
       custom_commands_path: [path.join(__dirname, '../../../extra/commands')],
       custom_assertions_path: [path.join(__dirname, '../../../extra/assertions')],
       globals: {

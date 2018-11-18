@@ -7,7 +7,7 @@ describe('test PageObjectApi', function () {
   beforeEach(function (done) {
     Nocks.enable().cleanAll().createSession();
     Nightwatch.init({
-      page_objects_path: path.join(__dirname, '../../extra/pageobjects')
+      page_objects_path: path.join(__dirname, '../../extra/pageobjects/pages')
     }, function () {
       done();
     });
