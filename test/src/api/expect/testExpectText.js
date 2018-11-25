@@ -192,6 +192,42 @@ describe('expect.text', function() {
     });
   });
 
+  it('text to startWith [PASSED]', function() {
+    Nocks.elementFound().text('vasq');
+
+    let expect = this.client.api.expect.element('#weblogin').text.to.startWith('va');
+
+    assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
+
+    return this.client.start(function() {
+      assert.equal(expect.assertion.expected, 'start with \'va\'');
+      assert.equal(expect.assertion.actual, 'vasq');
+      assert.equal(expect.assertion.negate, false);
+      assert.equal(expect.assertion.resultValue, 'vasq');
+      assert.equal(expect.assertion.passed, true);
+      assert.equal(expect.assertion.messageParts[0], ' start with: "va"');
+      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to start with: "va"'));
+    });
+  });
+
+  it('text to endWith [PASSED]', function() {
+    Nocks.elementFound().text('vasq');
+
+    let expect = this.client.api.expect.element('#weblogin').text.to.endWith('sq');
+
+    assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
+
+    return this.client.start(function() {
+      assert.equal(expect.assertion.expected, 'end with \'sq\'');
+      assert.equal(expect.assertion.actual, 'vasq');
+      assert.equal(expect.assertion.negate, false);
+      assert.equal(expect.assertion.resultValue, 'vasq');
+      assert.equal(expect.assertion.passed, true);
+      assert.equal(expect.assertion.messageParts[0], ' end with: "sq"');
+      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to end with: "sq"'));
+    });
+  });
+
   it('text to not contain [FAILED]', function() {
     this.client.api.globals.waitForConditionTimeout = 40;
     this.client.api.globals.waitForConditionPollInterval = 20;
