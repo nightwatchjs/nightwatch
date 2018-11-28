@@ -27,7 +27,7 @@ module.exports = {
 
     client
       .url('http://github.com/nightwatchjs/nightwatch')
-      .expect.title().to.contain('uuuf').before(18000)
+      .expect.title().to.contain('uuuf').before(4000)
     // // .expect.title().to.be.present
     // .waitForElementVisible('body', 1000)
     // .pause()

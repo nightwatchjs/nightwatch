@@ -19,11 +19,7 @@ describe('expect.title', function() {
     Nocks.title('hp vasq');
     let expect = this.client.api.expect.title().to.contain('hp vasq');
 
-    console.log(expect.assertion.message);
-
     return this.client.start(function() {
-
-      console.log(expect.assertion.message);
       assert.equal(expect.assertion.passed, true);
       assert.ok(expect.assertion.message.startsWith('Expected page title to contain: "hp vasq"'));
     });
@@ -37,12 +33,7 @@ describe('expect.title', function() {
 
     let expect = this.client.api.expect.title().contains('hp vasq');
 
-    console.log(expect.assertion.message);
-
     return this.client.start(function() {
-
-      console.log(expect.assertion.message);
-
       assert.equal(expect.assertion.waitForMs, 40);
       assert.equal(expect.assertion.passed, true);
       assert.ok(expect.assertion.message.startsWith('Expected page title to contain: "hp vasq"'));
@@ -57,15 +48,10 @@ describe('expect.title', function() {
 
     let expect = this.client.api.expect.title().to.equal('vasq');
 
-    console.log(expect.assertion.message);
-
     return this.client.start(function() {
-
-      console.log(expect.assertion.message);
-
-      assert.equal(expect.assertion.expected, 'equal \'vasq\'');
+      assert.equal(expect.assertion.expected, 'present');
       assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.actual, 'hp vasq');
+      assert.equal(expect.assertion.actual, 'not present');
       assert.equal(expect.assertion.resultValue, 'hp vasq');
       assert.equal(expect.assertion.passed, false);
       assert.equal(expect.assertion.messageParts[0], ' equal: "vasq"');
@@ -96,12 +82,12 @@ describe('expect.title', function() {
     let expect = this.client.api.expect.title().to.not.equal('hp vasq');
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'not equal \'hp vasq\'');
+      assert.equal(expect.assertion.expected, 'present');
       assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.actual, 'hp vasq');
+      assert.equal(expect.assertion.actual, 'not present');
       assert.equal(expect.assertion.resultValue, 'hp vasq');
       assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.messageParts, ' not equal: "hp vasq"' );
+      assert.equal(expect.assertion.messageParts[0], ' not equal: "hp vasq"' );
       assert.ok(expect.assertion.message.startsWith('Expected page title to not equal: "hp vasq"'));
     });
   });
@@ -133,7 +119,7 @@ describe('expect.title', function() {
       assert.equal(expect.assertion.passed, false);
       assert.ok(expect.assertion.retries >= 1);
       assert.ok(expect.assertion.elapsedTime >= 110);
-      assert.equal(expect.assertion.expected, 'equal \'hp vasq\'');
+      assert.equal(expect.assertion.expected, 'present');
       //assert.equal(expect.assertion.actual, 'xx');
       assert.ok(expect.assertion.message.startsWith('Expected page title to equal: "hp vasq" in 110ms'));
     });
@@ -166,12 +152,12 @@ describe('expect.title', function() {
     assert.ok(expect.assertion.message.startsWith('Expected page title to'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'not equal \'xx\'');
-      assert.equal(expect.assertion.actual, 'xx');
+      assert.equal(expect.assertion.expected, 'present');
+      assert.equal(expect.assertion.actual, 'not present');
       assert.equal(expect.assertion.negate, true);
       assert.equal(expect.assertion.resultValue, 'xx');
       assert.equal(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts, [' not equal: "xx"']);
+      assert.deepEqual(expect.assertion.messageParts[0], ' not equal: "xx"');
       assert.ok(expect.assertion.message.startsWith('Expected page title to not equal: "xx"'));
     });
   });
@@ -202,8 +188,6 @@ describe('expect.title', function() {
 
     assert.ok(expect.assertion.message.startsWith('Expected page title to'));
 
-    console.log(expect.assertion.message);
-
     return this.client.start(function() {
       assert.equal(expect.assertion.expected, 'contain \'vasq\'');
       assert.equal(expect.assertion.actual, 'vasq');
@@ -225,12 +209,12 @@ describe('expect.title', function() {
     assert.ok(expect.assertion.message.startsWith('Expected page title to'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'not contain \'xx\'');
-      assert.equal(expect.assertion.actual, 'xx');
+      assert.equal(expect.assertion.expected, 'present');
+      assert.equal(expect.assertion.actual, 'not present');
       assert.equal(expect.assertion.negate, true);
       assert.equal(expect.assertion.resultValue, 'xx');
       assert.equal(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts, [ ' not contain: "xx"' ]);
+      assert.deepEqual(expect.assertion.messageParts[0], ' not contain: "xx"');
       assert.ok(expect.assertion.message.startsWith('Expected page title to not contain: "xx"'));
     });
   });
@@ -241,9 +225,6 @@ describe('expect.title', function() {
     let expect = this.client.api.expect.title().to.not.match(/vasq/);
 
     assert.ok(expect.assertion.message.startsWith('Expected page title to'));
-
-    console.log(expect.assertion.message);
-    console.log(expect.assertion.messageParts);
 
     return this.client.start(function() {
       assert.equal(expect.assertion.expected, 'not match \'/vasq/\'');
@@ -268,12 +249,12 @@ describe('expect.title', function() {
     assert.ok(expect.assertion.message.startsWith('Expected page title to'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'not match \'/xx/\'');
-      assert.equal(expect.assertion.actual, 'xx');
+      assert.equal(expect.assertion.expected, 'present');
+      assert.equal(expect.assertion.actual, 'not present');
       assert.equal(expect.assertion.negate, true);
       assert.equal(expect.assertion.resultValue, 'xx');
       assert.equal(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts, [' not match: "/xx/"']);
+      assert.deepEqual(expect.assertion.messageParts[0], ' not match: "/xx/"');
       assert.ok(expect.assertion.message.startsWith('Expected page title to not match: "/xx/"'));
     });
   });
@@ -293,8 +274,8 @@ describe('expect.title', function() {
       assert.equal(expect.assertion.negate, false);
       assert.equal(expect.assertion.resultValue, null);
       assert.equal(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts, [' equal to: "vasq"', ' - element was not found']);
-      assert.ok(expect.assertion.message.startsWith('Expected page title to  equal to: "vasq" - element was not found'));
+      assert.deepEqual(expect.assertion.messageParts, [' equal: "vasq"', ' - element was not found']);
+      assert.ok(expect.assertion.message.startsWith('Expected page title to equal: "vasq" - element was not found'));
     });
   });
 
@@ -311,7 +292,7 @@ describe('expect.title', function() {
       assert.equal(expect.assertion.actual, 'not present');
       assert.equal(expect.assertion.passed, false);
       assert.deepEqual(expect.assertion.messageParts, [' which ', 'contains: "vasq"', ' - element was not found']);
-      assert.ok(expect.assertion.message.startsWith('Expected page title to  which contains: "vasq" - element was not found'));
+      assert.ok(expect.assertion.message.startsWith('Expected page title to which contains: "vasq" - element was not found'));
     });
   });
 
@@ -328,7 +309,7 @@ describe('expect.title', function() {
       assert.equal(expect.assertion.actual, 'not present');
       assert.equal(expect.assertion.passed, false);
       assert.deepEqual(expect.assertion.messageParts, [' which ', 'matches: "/vasq$/"', ' - element was not found' ]);
-      assert.ok(expect.assertion.message.startsWith('Expected page title to  which matches: "/vasq$/" - element was not found'));
+      assert.ok(expect.assertion.message.startsWith('Expected page title to which matches: "/vasq$/" - element was not found'));
     });
   });
 
@@ -342,7 +323,7 @@ describe('expect.title', function() {
     return this.client.start(function() {
       assert.equal(expect.assertion.waitForMs, 60);
       assert.equal(expect.assertion.passed, false);
-      assert.ok(expect.assertion.message.startsWith('Expected page title to  equal to: "hp vasq" in 60ms - element was not found'));
+      assert.ok(expect.assertion.message.startsWith('Expected page title to equal: "hp vasq" in 60ms - element was not found'));
     });
   });
 
@@ -385,7 +366,7 @@ describe('expect.title', function() {
       assert.equal(expect.assertion.waitForMs, 110);
       assert.equal(expect.assertion.passed, false);
       assert.ok(expect.assertion.retries > 1);
-      assert.ok(expect.assertion.message.startsWith('Expected page title to  equal to: "hp vasq" in 110ms'));
+      assert.ok(expect.assertion.message.startsWith('Expected page title to equal: "hp vasq" in 110ms'));
     });
   });
 });
