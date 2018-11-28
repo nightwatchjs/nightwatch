@@ -23,12 +23,27 @@ module.exports = {
   //   // .assert.containsText('.container h1 strong a', 'nightwatch', 'Checking project title is set to nightwatch')
   // },
 
-  'part3 - should fail ' : function (client) {
+  'active - success' : function (client) {
 
     client
       .url('http://github.com/nightwatchjs/nightwatch')
-      .expect.title().to.contain('uuuf').before(4000)
+      .expect.title().to.contain('GitHub - nightwatchjs/nightwatch');
+
+    client
+      .expect.element('.branch-select-menu button').to.be.active;
     // // .expect.title().to.be.present
+    // .waitForElementVisible('body', 1000)
+    // .pause()
+    // // .expect.title().contains('something...')
+    // .waitForElementVisible('.container h1 strong a')
+    // .assert.containsText('.container h1 strong a', 'nightwatch', 'Checking project title is set to nightwatch')
+  },
+
+  'not active - fail ' : function (client) {
+
+    client
+      .expect.element('.new-pull-request-btn').to.not.be.active
+
     // .waitForElementVisible('body', 1000)
     // .pause()
     // // .expect.title().contains('something...')
