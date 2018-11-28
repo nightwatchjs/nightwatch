@@ -269,37 +269,13 @@ module.exports = {
     return this;
   },
 
-  titleFound() {
+  title(value) {
     nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/elements', {'using': 'css selector', 'value': 'title'})
+      .get('/wd/hub/session/1352110219202/title')
       .reply(200, {
         status: 0,
         state: 'success',
-        value: [{ELEMENT: '0'}]
-      });
-
-    return this;
-  },
-
-  titleNotFound() {
-    nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/elements', {'using': 'css selector', 'value': 'title'})
-      .reply(200, {
-        status: 0,
-        state: 'success',
-        value: []
-      });
-
-    return this;
-  },
-
-  titleFoundXpath() {
-    nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/elements', {'using': 'xpath', 'value': '//title'})
-      .reply(200, {
-        status: 0,
-        state: 'success',
-        value: [{ELEMENT: '0'}]
+        value: value
       });
 
     return this;
