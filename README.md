@@ -11,15 +11,13 @@ Nightwatch is a complete and integrated solution for end-to-end testing of web a
 #### [Homepage](http://nightwatchjs.org) | [Getting Started](http://nightwatchjs.org/gettingstarted) | [Developer Guide](http://nightwatchjs.org/guide) | [API Reference](http://nightwatchjs.org/api) | [Blog](http://nightwatchjs.org/blog)
 
 ## Nightwatch v1.0
-We're delighted to announce the release of __Nightwatch v1.0__ in BETA. Documentation and other updates will follow soon on the [homepage](http://nightwatchjs.org). 
+We're delighted to announce the release of __Nightwatch v1.0__ in BETA. Please see the [migraion guide](https://github.com/nightwatchjs/nightwatch/wiki/Migrating-to-Nightwatch-1.0) if you are upgrading from an earlier version. 
 
 To install it run: 
 
 ```sh
 $ npm install nightwatch@1.0.14
 ```
-
-__Please try out the new version and let us know of any issues.__ 
 
 ## 1. Install Nightwatch
 
