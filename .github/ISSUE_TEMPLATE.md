@@ -1,15 +1,12 @@
 Thanks in advance for your contribution. Please follow the below steps in submitting an issue, as it will help us with addressing it quicker. 
 
-Important: please read https://github.com/nightwatchjs/nightwatch/issues/1778 if you haven't already.
---
-
 Before submitting a new issue, try searching for a similar one here: https://github.com/nightwatchjs/nightwatch/search?state=open&type=Issues.
 
-- [ ] Please do not ask for assistance in the Issues list. Use the [Mailing List](https://groups.google.com/forum/#!forum/nightwatchjs) or [StackOverflow](http://stackoverflow.com/questions/tagged/nightwatch.js) to ask questions or seek help. 
+- [ ] Please do not ask for assistance in the Issues list. Use the [Mailing List](https://groups.google.com/forum/#!forum/nightwatchjs) or [StackOverflow](http://stackoverflow.com/questions/tagged/nightwatch.js) to ask questions or seek help. Usually, assistance requests posted in the Issues list are closed right away.
 - [ ] Use a meaningful title that would clearly and concisely explain the problem. For instance:
 - not helpful: "Issue with tags"
 - much better: "Tags don't work when combined with --skiptags option in some cases"
-- [ ] Include a sample test (for complex scenarios) which would reproduce the problem you're experiencing. The test should be against a public url. The test and other info should be posted inline, attachments will not be accepted;
+- [ ] Include a sample test (for complex scenarios) which would reproduce the problem you're experiencing. The test should be against a public url. The test and other info should be posted inline, attachments will most likely be ignored;
 - [ ] Include the verbose output, if possible (run nightwatch with --verbose argument);
-- [ ] Also include: Nightwatch version, Node.js version, OS version and Selenium server version (including any driver version if applicable);
-- [ ] Please try to avoid sending issues you have with Selenium (e.g. works perfectly in ChromeDriver but not in Safari)
+- [ ] Also include: Nightwatch version, Node.js version, OS version and Selenium version (including any driver version if applicable);
+- [ ] Please try to avoid sending issues you have with WebDriver or Selenium (e.g. works perfectly in ChromeDriver but not in Safari), unless you are certain that the problem can be fixed in Nightwatch.
