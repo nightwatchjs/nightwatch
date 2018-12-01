@@ -28,6 +28,7 @@ try {
       });
   });
 } catch (err) {
+  err.message = 'An error occurred while trying to start the Nightwatch Runner: ' + err.message;
   Logger.error(err);
   process.exit(2);
 }
