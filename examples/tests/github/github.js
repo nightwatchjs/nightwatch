@@ -30,7 +30,22 @@ module.exports = {
       .expect.title().to.contain('GitHub - nightwatchjs/nightwatch');
 
     client
+      .expect.element('.new-pull-request-btn').value.to.equal('');
+
+    client
+      // .pause()
+      .expect.element('.new-pull-request-btn').height.to.equal(28);
+
+    client
+    // .pause()
+      .expect.element('.new-pull-request-btn').height.to.not.equal(33);
+
+    client
       .expect.element('body').to.be.active;
+
+
+
+
     // // .expect.title().to.be.present
     // .waitForElementVisible('body', 1000)
     // .pause()
