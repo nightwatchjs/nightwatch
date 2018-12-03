@@ -30,7 +30,7 @@ module.exports = {
       .expect.title().to.contain('GitHub - nightwatchjs/nightwatch');
 
     client
-      .expect.element('.branch-select-menu button').to.be.active;
+      .expect.element('body').to.be.active;
     // // .expect.title().to.be.present
     // .waitForElementVisible('body', 1000)
     // .pause()
