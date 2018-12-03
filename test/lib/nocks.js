@@ -281,6 +281,30 @@ module.exports = {
     return this;
   },
 
+  active() {
+    nock('http://localhost:10195')
+      .post('/wd/hub/session/1352110219202/element/active')
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value: {ELEMENT: '0'}
+      });
+
+    return this;
+  },
+
+  notActive() {
+    nock('http://localhost:10195')
+      .post('/wd/hub/session/1352110219202/element/active')
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value: {ELEMENT: 'other'}
+      });
+
+    return this;
+  },
+
   cleanAll() {
     nock.cleanAll();
 

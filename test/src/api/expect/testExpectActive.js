@@ -19,9 +19,7 @@ describe('expect.active', function() {
     this.client.api.globals.waitForConditionTimeout = 40;
     this.client.api.globals.waitForConditionPollInterval = 20;
 
-    Nocks.elementFound()
-      .elementFound()
-      .elementFound();
+    Nocks.elementFound().active();
 
     let expect = this.client.api.expect.element('#weblogin').to.be.active;
 
@@ -36,30 +34,31 @@ describe('expect.active', function() {
   });
 
   it('to be active with waitFor [PASSED]', function() {
-    Nocks.elementFound();
+    Nocks.elementFound().active();
 
     let expect = this.client.api.expect.element('#weblogin').to.be.active.before(100);
 
     return this.client.start(function() {
       assert.equal(expect.assertion.waitForMs, 100);
       assert.equal(expect.assertion.passed, true);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be active in 100ms - element was active in ' + expect.assertion.elapsedTime + 'ms'));
+      assert.ok(expect.assertion.message.startsWith(`Expected element <#weblogin> to be active in 100ms - condition was met in ${expect.assertion.elapsedTime}ms`));
     });
   });
 
   it('to be active with waitFor [FAILED]', function() {
     this.client.api.globals.waitForConditionPollInterval = 50;
 
-    Nocks.elementNotFound()
-      .elementNotFound()
-      .elementNotFound();
+    Nocks.elementFound()
+      .notActive()
+      .notActive()
+      .notActive();
 
     let expect = this.client.api.expect.element('#weblogin').to.be.active.before(60);
 
     return this.client.start(function() {
       assert.equal(expect.assertion.waitForMs, 60);
       assert.equal(expect.assertion.passed, false);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be active in 60ms - element was not found'));
+      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be active in 60ms'));
     });
   });
 
@@ -67,9 +66,10 @@ describe('expect.active', function() {
     this.client.api.globals.waitForConditionTimeout = 40;
     this.client.api.globals.waitForConditionPollInterval = 20;
 
-    Nocks.elementNotFound()
-      .elementNotFound()
-      .elementNotFound();
+    Nocks.elementFound()
+      .notActive()
+      .notActive()
+      .notActive();
 
     let expect = this.client.api.expect.element('#weblogin').to.be.active;
 
@@ -78,23 +78,38 @@ describe('expect.active', function() {
       assert.equal(expect.assertion.negate, false);
       assert.equal(expect.assertion.waitForMs, 40);
       assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.expected, 'present');
-      assert.equal(expect.assertion.actual, 'not present');
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be active - element was not found'));
-      assert.equal(expect.assertion.messageParts[0], ' - element was not found');
+      assert.equal(expect.assertion.expected, 'active');
+      assert.equal(expect.assertion.actual, 'not active');
+      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be active'));
     });
   });
 
   it('to be active with waitFor [PASSED on retry]', function() {
     this.client.api.globals.waitForConditionPollInterval = 50;
-    Nocks.elementNotFound().elementFound();
+    Nocks.elementNotFound().elementFound().active();
 
     let expect = this.client.api.expect.element('#weblogin').to.be.active.before(60);
 
     return this.client.start(function() {
       assert.equal(expect.assertion.waitForMs, 60);
       assert.equal(expect.assertion.passed, true);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be active in 60ms - element was active in ' + expect.assertion.elapsedTime + 'ms'));
+      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be active in 60ms - condition was met in ' + expect.assertion.elapsedTime + 'ms'));
+    });
+  });
+
+  it('to not be active [PASSED]', function() {
+    Nocks.elementFound().notActive();
+
+    let expect = this.client.api.expect.element('#weblogin').to.not.be.active;
+
+    return this.client.start(function() {
+      assert.equal(expect.assertion.selector, '#weblogin');
+      assert.equal(expect.assertion.negate, true);
+      assert.equal(expect.assertion.passed, true);
+      assert.equal(expect.assertion.expected, 'not active');
+      assert.equal(expect.assertion.actual, 'not active');
+      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not be active'));
+      assert.equal(expect.assertion.messageParts.length, 1);
     });
   });
 
@@ -102,9 +117,13 @@ describe('expect.active', function() {
     this.client.api.globals.waitForConditionTimeout = 40;
     this.client.api.globals.waitForConditionPollInterval = 20;
 
-    Nocks.elementFound()
+    Nocks
       .elementFound()
-      .elementFound();
+      .elementFound()
+      .elementFound()
+      .active()
+      .active()
+      .active();
 
     let expect = this.client.api.expect.element('#weblogin').to.not.be.active;
 
@@ -114,14 +133,12 @@ describe('expect.active', function() {
       assert.equal(expect.assertion.passed, false);
       assert.equal(expect.assertion.expected, 'not active');
       assert.equal(expect.assertion.actual, 'active');
-      assert.equal(typeof expect.assertion.resultValue, 'undefined');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not be active'));
-      assert.equal(expect.assertion.messageParts.length, 1);
     });
   });
 
   it('to be active - xpath via useXpath [PASSED]', function() {
-    Nocks.elementFoundXpath();
+    Nocks.elementFoundXpath().active();
 
     this.client.api.useXpath();
     let expect = this.client.api.expect.element('//weblogin').to.be.active;
@@ -134,7 +151,7 @@ describe('expect.active', function() {
   });
 
   it('to be active - xpath via argument [PASSED]', function() {
-    Nocks.elementFoundXpath();
+    Nocks.elementFoundXpath().active();
 
     let expect = this.client.api.expect.element('//weblogin', 'xpath').to.be.active;
 
