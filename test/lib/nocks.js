@@ -333,6 +333,35 @@ module.exports = {
     return this;
   },
 
+  xPosition(value) {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/element/0/location_in_view')
+      .reply(200, {
+        status: 0,
+        sessionId: '1352110219202',
+        value: {
+          x: value
+        },
+      });
+
+    return this;
+  },
+
+  yPosition(value) {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/element/0/location_in_view')
+      .reply(200, {
+        status: 0,
+        sessionId: '1352110219202',
+        value: {
+          y: value
+        },
+      });
+
+    return this;
+  },
+
+
   cleanAll() {
     nock.cleanAll();
 
