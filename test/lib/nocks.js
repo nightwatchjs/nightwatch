@@ -55,6 +55,18 @@ module.exports = {
     return this;
   },
 
+  getUrl() {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/url')
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value: 'http://localhost'
+      });
+
+    return this;
+  },
+
   elementFound() {
     nock('http://localhost:10195')
       .post('/wd/hub/session/1352110219202/elements', {'using': 'css selector', 'value': '#weblogin'})
@@ -360,7 +372,6 @@ module.exports = {
 
     return this;
   },
-
 
   cleanAll() {
     nock.cleanAll();

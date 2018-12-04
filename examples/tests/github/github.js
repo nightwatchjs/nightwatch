@@ -26,8 +26,15 @@ module.exports = {
   'active - success': function(client) {
 
     client
-      .url('http://github.com/nightwatchjs/nightwatch')
-      .expect.title().to.contain('GitHub - nightwatchjs/nightwatch');
+      .url('http://github.com/nightwatchjs/nightwatch');
+
+    client.expect.url().to.contain('whatever');
+
+    client.expect.url().to.contain('nightwatchjs/nightwatch');
+    client.expect.url().to.not.contain('whatever');
+
+
+    client.expect.title().to.contain('GitHub - nightwatchjs/nightwatch');
 
     client.expect.element('.new-pull-request-btn').yPosition.to.equal(555);
     client.expect.element('.new-pull-request-btn').yPosition.to.not.equal(88888);
@@ -36,7 +43,6 @@ module.exports = {
     client.expect.element('.new-pull-request-btn').xPosition.to.not.equal(88888);
 
     client.expect.element('#user-content-homepage--getting-started--developer-guide--api-reference--blog').to.have.locationInView;
-    client.expect.element('.new-pull-request-btn').to.have.locationInView;
 
     client.expect.element('.new-pull-request-btn').value.to.equal('');
 
