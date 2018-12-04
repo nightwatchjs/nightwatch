@@ -33,12 +33,21 @@ module.exports = {
       .expect.element('.new-pull-request-btn').value.to.equal('');
 
     client
+    // .pause()
+      .expect.element('.new-pull-request-btn').width.to.equal(122);
+
+    client
+    // .pause()
+      .expect.element('.new-pull-request-btn').width.to.not.equal(33333);
+
+
+    client
       // .pause()
       .expect.element('.new-pull-request-btn').height.to.equal(28);
 
     client
     // .pause()
-      .expect.element('.new-pull-request-btn').height.to.not.equal(33);
+      .expect.element('.new-pull-request-btn').height.to.not.equal(333333);
 
     client
       .expect.element('body').to.be.active;

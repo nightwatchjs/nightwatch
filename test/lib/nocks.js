@@ -319,6 +319,20 @@ module.exports = {
     return this;
   },
 
+  width(value) {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/element/0/size')
+      .reply(200, {
+        status: 0,
+        sessionId: '1352110219202',
+        value: {
+          width: value
+        },
+      });
+
+    return this;
+  },
+
   cleanAll() {
     nock.cleanAll();
 
