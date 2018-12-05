@@ -23,16 +23,19 @@ module.exports = {
   //   // .assert.containsText('.container h1 strong a', 'nightwatch', 'Checking project title is set to nightwatch')
   // },
 
-  'active - success': function(client) {
+  'expects - success': function(client) {
 
     client
       .url('http://github.com/nightwatchjs/nightwatch');
 
-    client.expect.url().to.contain('whatever');
+    // client.expect.element('wathever').to.be.active.before(1000);
+
+    client.expect.elements('.topic-tag').count.to.equal(5);
+    client.expect.elements('.topic-tag').count.to.not.equal(99999);
+    // client.expect.elements('.whatever').count.to.equal(5).before(1000);
 
     client.expect.url().to.contain('nightwatchjs/nightwatch');
     client.expect.url().to.not.contain('whatever');
-
 
     client.expect.title().to.contain('GitHub - nightwatchjs/nightwatch');
 
@@ -42,19 +45,13 @@ module.exports = {
     client.expect.element('.new-pull-request-btn').xPosition.to.equal(238);
     client.expect.element('.new-pull-request-btn').xPosition.to.not.equal(88888);
 
-    client.expect.element('#user-content-homepage--getting-started--developer-guide--api-reference--blog').to.have.locationInView;
-
     client.expect.element('.new-pull-request-btn').value.to.equal('');
 
     client.expect.element('.new-pull-request-btn').width.to.equal(122);
-
     client.expect.element('.new-pull-request-btn').width.to.not.equal(33333);
 
     client.expect.element('.new-pull-request-btn').height.to.equal(28);
-
     client.expect.element('.new-pull-request-btn').height.to.not.equal(333333);
-
-    client.expect.element('body').to.be.active;
 
   },
 

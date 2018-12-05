@@ -373,6 +373,35 @@ module.exports = {
     return this;
   },
 
+  elementsFound(selector) {
+    nock('http://localhost:10195')
+      .post('/wd/hub/session/1352110219202/elements', {'using': 'css selector', 'value': selector})
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value: [
+          {ELEMENT: '0'},
+          {ELEMENT: '1'},
+          {ELEMENT: '2'},
+          {ELEMENT: '3'}
+        ]
+      });
+
+    return this;
+  },
+
+  elementsNotFound(selector) {
+    nock('http://localhost:10195')
+      .post('/wd/hub/session/1352110219202/elements', {'using': 'css selector', 'value': selector})
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value: []
+      });
+
+    return this;
+  },
+
   cleanAll() {
     nock.cleanAll();
 
