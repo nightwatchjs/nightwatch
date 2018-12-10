@@ -402,6 +402,26 @@ module.exports = {
     return this;
   },
 
+  cookie(name, value) {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/cookie')
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value: [
+          {
+            domain: 'cookie-domain',
+            name: name,
+            value: value
+          }
+        ]
+      });
+
+    return this;
+  },
+
+
+
   cleanAll() {
     nock.cleanAll();
 

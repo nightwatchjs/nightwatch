@@ -28,7 +28,12 @@ module.exports = {
     client
       .url('http://github.com/nightwatchjs/nightwatch');
 
-    // client.expect.element('wathever').to.be.active.before(1000);
+    client.expect.cookie('_ga').to.contain('GA1.2.');
+    client.expect.cookie('_ga', '.github.com').to.contain('GA1.2.');
+    // client.expect.cookie('_ga', 'whatever').to.contain('GA1.2.').before(200);
+    // client.expect.cookie('_ga').to.not.contain('GA1.1.').before(1000);
+    // client.expect.cookie('whatever').to.equal(null);
+
 
     client.expect.elements('.topic-tag').count.to.equal(5);
     client.expect.elements('.topic-tag').count.to.not.equal(99999);
