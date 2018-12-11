@@ -34,6 +34,11 @@ describe('testRunnerSessionCreate', function() {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
+        capabilities: {
+          browserName: 'firefox',
+          acceptSslCerts: true,
+          name: 'Async/Test/Sample'
+        },
         desiredCapabilities: {
           browserName: 'firefox',
           acceptSslCerts: true,
@@ -53,6 +58,11 @@ describe('testRunnerSessionCreate', function() {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
+        capabilities: {
+          browserName: 'firefox',
+          acceptSslCerts: true,
+          name: 'test-Name'
+        },
         desiredCapabilities: {
           browserName: 'firefox',
           acceptSslCerts: true,

@@ -108,6 +108,10 @@ describe('clearValue', function() {
     MockServer.addMock({
       url: '/session',
       postdata: JSON.stringify({
+        capabilities: {
+          browserName: 'firefox',
+          acceptSslCerts: true
+        },
         desiredCapabilities: {
           browserName: 'firefox',
           acceptSslCerts: true,

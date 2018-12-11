@@ -116,6 +116,8 @@ describe('test NightwatchIndex', function () {
         browserName: 'firefox',
         platform: 'TEST'
       },
+      selenium_host: 'localhost',
+      selenium_port: 10195,
       silent: false,
       output: true,
       selenium: {

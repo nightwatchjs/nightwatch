@@ -56,8 +56,8 @@ describe('testRunTestcase', function() {
       persist_globals: true,
       globals: globals,
       output_folder: false,
-      output: false,
-      silent: true
+      output: true,
+      silent: false
     };
 
     return NightwatchClient.runTests(testsPath, settings);
