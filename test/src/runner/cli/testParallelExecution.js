@@ -136,6 +136,18 @@ describe('test Parallel Execution', function() {
     });
   });
 
+  it('testParallelExecutionWithWorkers and multiple environments', function() {
+    const CliRunner = common.require('runner/cli/cli.js');
+    let runner = new CliRunner({
+      config: path.join(__dirname, '../../../extra/parallelism-auto.json'),
+      env: 'default,default'
+    });
+
+    runner.setup();
+    assert.strictEqual(runner.settings.test_workers.enabled, false);
+    assert.ok(!runner.settings.testWorkersEnabled);
+  });
+
   it('test parallel execution with workers count', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
