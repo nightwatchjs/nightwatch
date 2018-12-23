@@ -56,7 +56,7 @@ describe('testRunTestcase', function() {
       persist_globals: true,
       globals: globals,
       output_folder: false,
-      output: true,
+      output: false,
       silent: false
     };
 

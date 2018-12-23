@@ -44,9 +44,9 @@ describe('testRunWithGlobalHooks', function() {
         afterEachCount++;
       },
       reporter(results, cb) {
-        assert.equal(globals.calls, 17);
-        assert.equal(beforeEachCount, 3);
-        assert.equal(afterEachCount, 3);
+        assert.equal(globals.calls, 19);
+        assert.equal(beforeEachCount, 4);
+        assert.equal(afterEachCount, 4);
         cb();
       }
     };
@@ -86,9 +86,9 @@ describe('testRunWithGlobalHooks', function() {
         }, 15);
       },
       reporter(results, cb) {
-        assert.equal(beforeEachCount, 3);
-        assert.equal(afterEachCount, 3);
-        assert.equal(globals.calls, 17);
+        assert.equal(beforeEachCount, 4);
+        assert.equal(afterEachCount, 4);
+        assert.equal(globals.calls, 19);
         cb();
       }
     };
@@ -128,9 +128,9 @@ describe('testRunWithGlobalHooks', function() {
         }, 10);
       },
       reporter(results, cb) {
-        assert.equal(globals.calls, 17);
-        assert.equal(beforeEachCount, 3);
-        assert.equal(afterEachCount, 3);
+        assert.equal(globals.calls, 19);
+        assert.equal(beforeEachCount, 4);
+        assert.equal(afterEachCount, 4);
         cb();
       }
     };
@@ -175,8 +175,8 @@ describe('testRunWithGlobalHooks', function() {
         },
         reporter(results, cb) {
           assert.ok(results.lastError instanceof Error);
-          assert.equal(results.failed, 3);
-          assert.equal(beforeEachCount, 3);
+          assert.equal(results.failed, 4);
+          assert.equal(beforeEachCount, 4);
           cb();
         }
       },
