@@ -12,14 +12,15 @@ Before submitting a new issues, try searching for a similar one here: https://gi
  
 If you are filing a bug report, regression issue or what it appears to be strange behaviour, please follow the steps below:
 
-1. Please write a meaningful  title that would clearly and concisely explain the problem. 
+1. Please write an elaborate title which explains the problem as accurate as possible
   For instance:
   - __not helpful__: "Issue with tags"
-  - __much better__: "Tags don't work when combined with --skiptags option in some cases"
-2. Include a sample test (for complex scenarios) which would reproduce the problem you're experiencing. The test should be against a **public url**. The test and other info should be posted inline, attachments will not be accepted;
+  - __much better__: "Tags don't work when combined with --skiptags option"
+2. Include a sample test which reproduces the problem you're experiencing. The test should be against a **public url**. The test and other info should be posted inline, attachments will be ignored;
 3. Include the verbose output, if possible (run nightwatch with `--verbose` argument);
-4. Also include: Nightwatch version, Node.js version, OS version and Webdriver/Selenium Server version;
-5. Please do not report issues you have with Selenium or the individual browser drivers that cannot or should not be solved in Nightwatch
+4. Include your configuration (try to leave out the irrelevant bits);
+5. Also include: Nightwatch version, Node.js version, OS version and Webdriver/Selenium Server version;
+6. Please try not to report issues you have with individual browser drivers which cannot or should not be solved in Nightwatch.
 
 ## Requesting a feature
 Feature requests are welcome. 
