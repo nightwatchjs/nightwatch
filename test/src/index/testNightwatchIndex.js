@@ -189,6 +189,27 @@ describe('test NightwatchIndex', function () {
     eq(request.defaultPathPrefix, '');
   });
 
+  it('testSetSeleniumPort', function () {
+    const Nightwatch = common.require('index.js');
+    const Settings = common.require('settings/settings.js');
+
+    let settings = Settings.parse({
+      selenium : {
+        start_process: false
+      },
+      selenium_host: 'localhost.org',
+      selenium_port: 80
+    });
+
+    Nightwatch.client(settings, null);
+
+    let eq = assert.equal;
+    let HttpRequest = common.require('http/request.js');
+    let request = new HttpRequest({});
+
+    eq(request.reqOptions.port, 80);
+  });
+
   it('testSetOptionsCredentials', function () {
     let client = Nightwatch.createClient({
       username: 'test-user',
