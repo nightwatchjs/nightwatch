@@ -90,7 +90,7 @@ describe('test Parallel Execution', function() {
     assert.ok(runner.test_settings.test_workers);
 
     return runner.runTests().then(_ => {
-      assert.equal(allArgs.length, 24);
+      assert.equal(allArgs.length, 25);
       assert.strictEqual(runner.concurrency.globalExitCode, 0);
     });
   });
@@ -132,7 +132,7 @@ describe('test Parallel Execution', function() {
     });
 
     return runner.runTests().then(_ => {
-      assert.equal(allArgs.length, 24);
+      assert.equal(allArgs.length, 25);
     });
   });
 
@@ -161,7 +161,7 @@ describe('test Parallel Execution', function() {
     });
 
     return runner.runTests().then(_ => {
-      assert.equal(allArgs.length, 24);
+      assert.equal(allArgs.length, 25);
     });
   });
 
