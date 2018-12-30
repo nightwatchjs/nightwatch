@@ -178,10 +178,37 @@ describe('testRunTestSuite', function() {
   });
 
   it('testRunModuleSyncName', function() {
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/elements',
+      postdata : '{"using":"css selector","value":"#finlandia"}',
+      response: JSON.stringify({sessionId:"1352110219202",status:0,value:[{ELEMENT: '10'}]})
+    });
+
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/element/10/displayed',
+      statusCode: 200,
+      method: 'GET',
+      response: JSON.stringify({"sessionId":"1352110219202","status":0,"value":true})
+    });
+
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/element',
+      statusCode: 200,
+      response: JSON.stringify({"sessionId":"1352110219202","status":0,"value": {ELEMENT: '10'}})
+    });
+
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/element/10/text',
+      statusCode: 200,
+      method: 'GET',
+      response: JSON.stringify({"sessionId":"1352110219202","status":0,"value":'jean sibelius'})
+    }, true);
+
     let globals = {
       calls: 0,
       reporter(results, cb) {
         assert.ok('sampleTest' in results.modules);
+        assert.strictEqual(results.errors, 0);
         if (results.lastError) {
           throw results.lastError;
         }
@@ -200,7 +227,7 @@ describe('testRunTestSuite', function() {
         version2: true,
         start_process: true
       },
-      silent: true,
+      silent: false,
       output: false,
       sync_test_names: true,
       persist_globals: true,
