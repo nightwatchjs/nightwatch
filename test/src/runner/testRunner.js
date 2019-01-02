@@ -81,6 +81,54 @@ describe('testRunner', function() {
     });
   });
 
+  it('testRunWithJUnitOutputAndFailures', function () {
+
+    let testsPath = [
+      path.join(__dirname, '../../sampletests/withfailures')
+    ];
+
+    let settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      output_folder: 'output',
+      silent: true,
+      globals: {
+        reporter: function () {
+        }
+      },
+      output: false,
+      screenshots: {
+        enabled: true,
+        on_failure: true,
+        on_error: true,
+        path: ''
+      }
+    };
+
+    MockServer.addMock({
+      url : '/wd/hub/session/1352110219202/screenshot',
+      method:'GET',
+      response : JSON.stringify({
+        sessionId: '1352110219202',
+        status:0,
+        value:'screendata'
+      })
+    });
+
+
+    return NightwatchClient.runTests(testsPath, settings)
+      .then(_ => {
+        return readFilePromise('output/FIREFOX_TEST_TEST_sample.xml');
+      })
+      .then(data => {
+        let content = data.toString();
+        assert.ok(content.indexOf('<system-out>[[ATTACHMENT|') > 0);
+      });
+  });
+
   it('testRunWithJUnitOutput', function() {
     let testsPath = [
       path.join(__dirname, '../../sampletests/withsubfolders')
