@@ -387,6 +387,17 @@ describe('element actions', function () {
     });
   });
 
+  it('testElementIdValueGet with callback', function () {
+    return Globals.protocolTest.call(this, {
+      assertion: function (opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202/element/TEST_ELEMENT/attribute/value');
+      },
+      commandName: 'elementIdValue',
+      args: ['TEST_ELEMENT', function (){}]
+    });
+  });
+
   it('testElementIdValueGet invalid element ID', function () {
     return Globals.protocolTest.call(this, {
       assertion: function (opts) {
