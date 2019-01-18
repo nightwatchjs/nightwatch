@@ -63,4 +63,8 @@ describe('test Utils', function() {
     assert.equal(Utils.getTestSuiteName('test.case.one'), 'Test Case One');
     assert.equal(Utils.getTestSuiteName('testCaseOne'), 'Test Case One');
   });
+
+  it('testFlattenArrayDeep', function() {
+    assert.equal(Utils.flattenArrayDeep(null), null);
+  });
 });
