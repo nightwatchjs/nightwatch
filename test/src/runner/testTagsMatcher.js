@@ -1,4 +1,4 @@
-const assert = require('assert');
+const expect = require('chai').expect;
 const path = require('path');
 const common = require('../../common.js');
 const TagsMatcher = common.require('runner/matchers/tags.js');
@@ -16,7 +16,7 @@ describe('test TagsMatcher', function() {
     });
     let matched = matcher.checkModuleTags(testModule);
 
-    assert.ok(matched === true);
+    expect(matched).to.equal(true);
   });
 
   it('tag: test non-matching tags', function() {
@@ -30,7 +30,7 @@ describe('test TagsMatcher', function() {
     });
     let matched = matcher.checkModuleTags(testModule);
 
-    assert.ok(matched === false);
+    expect(matched).to.equal(false);
   });
 
   it('tag: test undefined tags', function() {
@@ -42,7 +42,7 @@ describe('test TagsMatcher', function() {
     });
     let matched = matcher.checkModuleTags(testModule);
 
-    assert.ok(matched === false);
+    expect(matched).to.equal(false);
   });
 
   it('tag: test loading module with tags', function() {
@@ -53,7 +53,7 @@ describe('test TagsMatcher', function() {
     });
     let matched = matcher.match(path.join(__dirname, '../../sampletests/tags/sample.js'));
 
-    assert.ok(matched === true);
+    expect(matched).to.equal(true);
   });
 
   it('tag: test loading modules containing an error should not be silent', function() {
@@ -63,7 +63,7 @@ describe('test TagsMatcher', function() {
     });
     let matched = matcher.match(path.join(__dirname, '../../extra/mock-errors/sample-error.js'));
 
-    assert.strictEqual(matched, false);
+    expect(matched).to.equal(false);
   });
 
   it('tag: test matching numeric tags', function() {
@@ -76,7 +76,7 @@ describe('test TagsMatcher', function() {
       tag_filter: tags
     });
     let matched = matcher.checkModuleTags(testModule);
-    assert.ok(matched === true);
+    expect(matched).to.equal(true);
   });
 
   it('tag: test matching numeric tags single', function() {
@@ -89,7 +89,7 @@ describe('test TagsMatcher', function() {
       tag_filter: tags
     });
     let matched = matcher.checkModuleTags(testModule);
-    assert.ok(matched === true);
+    expect(matched).to.equal(true);
   });
 
   it('skiptag test not matching', function() {
@@ -100,7 +100,7 @@ describe('test TagsMatcher', function() {
       tags: ['room', 101]
     });
 
-    assert.ok(matched === false);
+    expect(matched).to.equal(false);
   });
 
   it('skiptag test matching', function() {
@@ -111,7 +111,7 @@ describe('test TagsMatcher', function() {
       tags: ['room', 101]
     });
 
-    assert.ok(matched === true);
+    expect(matched).to.equal(true);
   });
 
   it('skiptag test matching - undefined local tags', function() {
@@ -120,7 +120,7 @@ describe('test TagsMatcher', function() {
     });
     let matched = matcher.checkModuleTags({});
 
-    assert.ok(matched === true);
+    expect(matched).to.equal(true)
   });
 
   it('skiptag test loading module with matching tags', function() {
@@ -129,7 +129,7 @@ describe('test TagsMatcher', function() {
     });
     let matched = matcher.match(path.join(__dirname, '../../sampletests/tags/sample.js'));
 
-    assert.ok(matched === false);
+    expect(matched).to.equal(false);
   });
 
   it('skiptag test loading module with no tags', function() {
@@ -138,7 +138,7 @@ describe('test TagsMatcher', function() {
     });
     let matched = matcher.match(path.join(__dirname, '../../sampletests/simple/test/sample.js'));
 
-    assert.ok(matched === true);
+    expect(matched).to.equal(true)
   });
 
   it('tag filter does not find module, but skiptag does and excludes it', function() {
@@ -150,7 +150,7 @@ describe('test TagsMatcher', function() {
       tags: ['room', 101]
     });
 
-    assert.ok(matched === false);
+    expect(matched).to.equal(false);
   });
 
   it('tag filter finds module, skiptag also does and excludes it', function() {
@@ -162,7 +162,7 @@ describe('test TagsMatcher', function() {
       tags: ['room', 101]
     });
 
-    assert.ok(matched === false);
+    expect(matched).to.equal(false);
   });
 
   it('tag filter finds module, and skiptag does not', function() {
@@ -174,6 +174,6 @@ describe('test TagsMatcher', function() {
       tags: ['room', 101]
     });
 
-    assert.ok(matched === true);
+    expect(matched).to.equal(true);
   });
 });

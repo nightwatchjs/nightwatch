@@ -258,7 +258,7 @@ describe('Test CLI Runner', function() {
     mockery.disable();
   });
 
-  it('testInitDefaults', function() {
+  function registerNoSettingsJsonMock(){
     mockery.registerMock('fs', {
       statSync: function(module) {
         if (module == './settings.json') {
@@ -271,14 +271,16 @@ describe('Test CLI Runner', function() {
         };
       }
     });
+  }
+
+  it('testInitDefaults', function() {
+    registerNoSettingsJsonMock();
 
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: './nightwatch.json',
       env: 'default',
       output: 'output',
-      skiptags: 'home,arctic',
-      tag: 'danger'
     }).setup();
 
     assert.deepEqual(runner.settings.src_folders, ['tests']);
@@ -286,12 +288,36 @@ describe('Test CLI Runner', function() {
     assert.strictEqual(runner.test_settings.custom_commands_path, null);
     assert.strictEqual(runner.test_settings.custom_assertions_path, null);
     assert.strictEqual(runner.test_settings.output, true);
-    assert.strictEqual(runner.test_settings.tag_filter, 'danger');
-    assert.deepEqual(runner.test_settings.skiptags, ['home', 'arctic']);
+    assert.deepEqual(runner.test_settings.tag_filter, []);
+    assert.deepEqual(runner.test_settings.skiptags, []);
     assert.equal(runner.globals.settings.output_folder, 'output');
     assert.equal(runner.globals.settings.parallel_mode, false);
     assert.equal(runner.isWebDriverManaged(), false);
     assert.equal(runner.globals.settings.start_session, true);
+  });
+
+  it('should configure empty tags as empty arrays', function() {
+    registerNoSettingsJsonMock();
+    const CliRunner = common.require('runner/cli/cli.js');
+    let runner = new CliRunner({
+      config: './nightwatch.json',
+    }).setup();
+
+    assert.deepEqual(runner.test_settings.tag_filter, []);
+    assert.deepEqual(runner.test_settings.skiptags, []);
+  });
+
+  it('should parse comma-separated tags to arrays', function() {
+    registerNoSettingsJsonMock();
+    const CliRunner = common.require('runner/cli/cli.js');
+    let runner = new CliRunner({
+      config: './nightwatch.json',
+      skiptags: 'home,arctic',
+      tag: 'danger'
+    }).setup();
+
+    assert.deepEqual(runner.test_settings.tag_filter, ['danger']);
+    assert.deepEqual(runner.test_settings.skiptags, ['home', 'arctic']);
   });
 
   it('testSetOutputFolder', function() {
