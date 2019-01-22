@@ -10,7 +10,12 @@ const Settings = common.require('settings/settings.js');
 const NightwatchClient = common.require('index.js');
 
 describe('testRunner', function() {
+  let emptyPath;
+
   before(function(done) {
+    this.emptyPath = path.join(__dirname, '../../sampletests/empty/testdir');
+    fs.mkdirSync(this.emptyPath);
+
     this.server = MockServer.init();
 
     this.server.on('listening', () => {
@@ -20,6 +25,7 @@ describe('testRunner', function() {
 
   after(function(done) {
     CommandGlobals.afterEach.call(this, done);
+    fs.rmdirSync(this.emptyPath);
   });
 
   beforeEach(function() {
@@ -29,7 +35,22 @@ describe('testRunner', function() {
   });
 
   it('testRunEmptyFolder', function(done) {
-    let testsPath = path.join(__dirname, '../../sampletests/empty');
+    Globals
+      .startTestRunner(this.emptyPath, {
+        output_folder: false
+      })
+      .catch(err => {
+        assert.ok(err instanceof Error);
+        if (err.message !== `No tests defined! using source folder: ${this.emptyPath}`) {
+          done(err);
+        } else {
+          done();
+        }
+      });
+  });
+
+  it('testRunEmptySubFolder', function(done) {
+    let testsPath = path.dirname(this.emptyPath);
 
     Globals
       .startTestRunner(testsPath, {

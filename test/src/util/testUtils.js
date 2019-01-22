@@ -65,6 +65,15 @@ describe('test Utils', function() {
   });
 
   it('testFlattenArrayDeep', function() {
-    assert.equal(Utils.flattenArrayDeep(null), null);
+
+    assert.throws(() => {
+      Utils.flattenArrayDeep(null);
+    }, Error);
+    assert.throws(() => {
+      Utils.flattenArrayDeep({name: 'test'});
+    }, Error);
+    assert.throws(() => {
+      Utils.flattenArrayDeep('test');
+    }, Error);
   });
 });
