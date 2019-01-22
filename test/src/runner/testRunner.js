@@ -59,7 +59,7 @@ describe('testRunner', function() {
   });
 
   it('testRunEmptySubFolder', function(done) {
-    let testsPath = path.dirname(this.emptyPath);
+    let testsPath = path.dirname(emptyPath);
 
     Globals
       .startTestRunner(testsPath, {
