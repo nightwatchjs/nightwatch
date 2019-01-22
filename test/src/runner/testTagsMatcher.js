@@ -5,6 +5,26 @@ const TagsMatcher = common.require('runner/matchers/tags.js');
 
 describe('test TagsMatcher', function() {
 
+  describe('reading tag settings', function() {
+    const testCases = [
+      ['undefined', undefined, []],
+      ['null', null, []],
+      ['empty string', '', []],
+      ['string with one tag', 'a', ['a']],
+      ['string with multiple tags', 'a,b,c', ['a', 'b', 'c']],
+      ['empty array', [], []],
+      ['array with one tag', ['a'], ['a']],
+      ['array with multiple tags', ['a','b','c'], ['a', 'b', 'c']],
+    ];
+
+    testCases.forEach(([description, given, expected]) => {
+      it(`${description}`, function() {
+        const result = TagsMatcher.convertTags(given);
+        expect(result).to.deep.equal(expected);
+      });
+    });
+  });
+
   it('tag: test matching tags', function() {
     let tags = ['home', 'login', 'sign-up'];
     let testModule = {
