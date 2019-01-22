@@ -286,14 +286,14 @@ describe('Test CLI Runner', function() {
     assert.strictEqual(runner.test_settings.custom_commands_path, null);
     assert.strictEqual(runner.test_settings.custom_assertions_path, null);
     assert.strictEqual(runner.test_settings.output, true);
-    assert.equal(runner.test_settings.tag_filter, null);
-    assert.equal(runner.test_settings.skiptags, '');
-    assert.equal(runner.test_settings.filename_filter, undefined);
-    assert.equal(runner.test_settings.skipgroup, '');
-    assert.equal(runner.globals.settings.output_folder, 'tests_output');
-    assert.equal(runner.globals.settings.parallel_mode, false);
-    assert.equal(runner.isWebDriverManaged(), false);
-    assert.equal(runner.globals.settings.start_session, true);
+    assert.strictEqual(runner.test_settings.tag_filter, undefined);
+    assert.strictEqual(runner.test_settings.skiptags, '');
+    assert.strictEqual(runner.test_settings.filename_filter, undefined);
+    assert.strictEqual(runner.test_settings.skipgroup, '');
+    assert.strictEqual(runner.globals.settings.output_folder, 'tests_output');
+    assert.strictEqual(runner.globals.settings.parallel_mode, false);
+    assert.strictEqual(runner.isWebDriverManaged(), false);
+    assert.strictEqual(runner.globals.settings.start_session, true);
   });
 
   it('should override settings with CLI arguments', function() {
@@ -310,11 +310,11 @@ describe('Test CLI Runner', function() {
     }).setup();
 
     assert.strictEqual(runner.test_settings.silent, false);
-    assert.equal(runner.test_settings.tag_filter, 'danger');
-    assert.equal(runner.test_settings.skiptags, 'home,arctic');
-    assert.equal(runner.test_settings.filename_filter, 'test-filename-filter');
-    assert.equal(runner.test_settings.skipgroup, 'test-skip-group');
-    assert.equal(runner.globals.settings.output_folder, 'test-output-folder');
+    assert.strictEqual(runner.test_settings.tag_filter, 'danger');
+    assert.strictEqual(runner.test_settings.skiptags, 'home,arctic');
+    assert.strictEqual(runner.test_settings.filename_filter, 'test-filename-filter');
+    assert.deepEqual(runner.test_settings.skipgroup, ['test-skip-group']);
+    assert.strictEqual(runner.globals.settings.output_folder, 'test-output-folder');
   });
 
   it('testSetOutputFolder', function() {
