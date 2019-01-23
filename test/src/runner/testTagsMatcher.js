@@ -9,12 +9,14 @@ describe('test TagsMatcher', function() {
     const testCases = [
       ['undefined', undefined, []],
       ['null', null, []],
+      ['number', 777, ['777']],
+      ['number array', [777, 888], ['777', '888']],
       ['empty string', '', []],
       ['string with one tag', 'a', ['a']],
-      ['string with multiple tags', 'a,b,c', ['a', 'b', 'c']],
+      ['string with multiple tags', 'A,b,C,777', ['a', 'b', 'c', '777']],
       ['empty array', [], []],
       ['array with one tag', ['a'], ['a']],
-      ['array with multiple tags', ['a','b','c'], ['a', 'b', 'c']],
+      ['array with multiple tags', ['a','B','c', 777], ['a', 'b', 'c', '777']],
     ];
 
     testCases.forEach(([description, given, expected]) => {
