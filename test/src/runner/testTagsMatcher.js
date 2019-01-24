@@ -175,6 +175,18 @@ describe('test TagsMatcher', function() {
     expect(matched).to.equal(false);
   });
 
+  it('tag filter does not find module, and skiptag does not and excludes it', function() {
+    let matcher = new TagsMatcher({
+      tag_filter: ['other'],
+      skiptags: ['777']
+    });
+    let matched = matcher.checkModuleTags({
+      tags: ['room', 101]
+    });
+
+    expect(matched).to.equal(false);
+  });
+
   it('tag filter finds module, skiptag also does and excludes it', function() {
     let matcher = new TagsMatcher({
       tag_filter: ['room'],
