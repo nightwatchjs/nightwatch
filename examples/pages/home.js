@@ -7,7 +7,7 @@ const searchCommands = {
     return this; // Return page object for chaining
   },
   setPurposelyBroken() {
-    this.setValue('@searchBarPurposelyBroken', "Purposely Broken");
+    this.setValue('@searchBarPurposelyBroken', 'Purposely Broken');
     return this; // Return page object for chaining
   }
 };

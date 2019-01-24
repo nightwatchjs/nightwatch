@@ -6,7 +6,7 @@ module.exports = {
 
     homePage.setValue('@searchBar', 'Nightwatch.js');
     homePage.submit();
-    homePage.setValue('#purposelyBroken', "Purposely Broken");
+    homePage.setValue('#purposelyBroken', 'Purposely Broken');
     homePage.setPurposelyBroken(); // calls setValue from a pageObject
 
     var resultsPage = client.page.searchResults();
