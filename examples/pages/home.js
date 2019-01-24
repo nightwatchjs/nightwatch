@@ -5,6 +5,10 @@ const searchCommands = {
       .api.pause(1000);
 
     return this; // Return page object for chaining
+  },
+  setPurposelyBroken() {
+    this.setValue('@searchBarPurposelyBroken', "Purposely Broken");
+    return this; // Return page object for chaining
   }
 };
 
@@ -13,6 +17,7 @@ module.exports = {
   commands: [searchCommands],
   elements: {
     searchBar: {selector: 'input[name=q]'},
+    searchBarPurposelyBroken: {selector: '#purposelyBroken'},
     submitButton: {selector: 'input[value="Google Search"]'}
   }
 };
