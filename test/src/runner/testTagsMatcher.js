@@ -1,9 +1,31 @@
-const assert = require('assert');
+const expect = require('chai').expect;
 const path = require('path');
 const common = require('../../common.js');
 const TagsMatcher = common.require('runner/matchers/tags.js');
 
 describe('test TagsMatcher', function() {
+
+  describe('reading tag settings', function() {
+    const testCases = [
+      ['undefined', undefined, []],
+      ['null', null, []],
+      ['number', 777, ['777']],
+      ['number array', [777, 888], ['777', '888']],
+      ['empty string', '', []],
+      ['string with one tag', 'a', ['a']],
+      ['string with multiple tags', 'A,b,C,777', ['a', 'b', 'c', '777']],
+      ['empty array', [], []],
+      ['array with one tag', ['a'], ['a']],
+      ['array with multiple tags', ['a','B','c', 777], ['a', 'b', 'c', '777']],
+    ];
+
+    testCases.forEach(([description, given, expected]) => {
+      it(`${description}`, function() {
+        const result = TagsMatcher.convertTags(given);
+        expect(result).to.deep.equal(expected);
+      });
+    });
+  });
 
   it('tag: test matching tags', function() {
     let tags = ['home', 'login', 'sign-up'];
@@ -16,7 +38,7 @@ describe('test TagsMatcher', function() {
     });
     let matched = matcher.checkModuleTags(testModule);
 
-    assert.ok(matched === true);
+    expect(matched).to.equal(true);
   });
 
   it('tag: test non-matching tags', function() {
@@ -30,7 +52,7 @@ describe('test TagsMatcher', function() {
     });
     let matched = matcher.checkModuleTags(testModule);
 
-    assert.ok(matched === false);
+    expect(matched).to.equal(false);
   });
 
   it('tag: test undefined tags', function() {
@@ -42,7 +64,7 @@ describe('test TagsMatcher', function() {
     });
     let matched = matcher.checkModuleTags(testModule);
 
-    assert.ok(matched === false);
+    expect(matched).to.equal(false);
   });
 
   it('tag: test loading module with tags', function() {
@@ -53,7 +75,7 @@ describe('test TagsMatcher', function() {
     });
     let matched = matcher.match(path.join(__dirname, '../../sampletests/tags/sample.js'));
 
-    assert.ok(matched === true);
+    expect(matched).to.equal(true);
   });
 
   it('tag: test loading modules containing an error should not be silent', function() {
@@ -63,7 +85,7 @@ describe('test TagsMatcher', function() {
     });
     let matched = matcher.match(path.join(__dirname, '../../extra/mock-errors/sample-error.js'));
 
-    assert.strictEqual(matched, false);
+    expect(matched).to.equal(false);
   });
 
   it('tag: test matching numeric tags', function() {
@@ -76,7 +98,7 @@ describe('test TagsMatcher', function() {
       tag_filter: tags
     });
     let matched = matcher.checkModuleTags(testModule);
-    assert.ok(matched === true);
+    expect(matched).to.equal(true);
   });
 
   it('tag: test matching numeric tags single', function() {
@@ -89,7 +111,7 @@ describe('test TagsMatcher', function() {
       tag_filter: tags
     });
     let matched = matcher.checkModuleTags(testModule);
-    assert.ok(matched === true);
+    expect(matched).to.equal(true);
   });
 
   it('skiptag test not matching', function() {
@@ -100,7 +122,7 @@ describe('test TagsMatcher', function() {
       tags: ['room', 101]
     });
 
-    assert.ok(matched === false);
+    expect(matched).to.equal(false);
   });
 
   it('skiptag test matching', function() {
@@ -111,7 +133,7 @@ describe('test TagsMatcher', function() {
       tags: ['room', 101]
     });
 
-    assert.ok(matched === true);
+    expect(matched).to.equal(true);
   });
 
   it('skiptag test matching - undefined local tags', function() {
@@ -120,7 +142,7 @@ describe('test TagsMatcher', function() {
     });
     let matched = matcher.checkModuleTags({});
 
-    assert.ok(matched === true);
+    expect(matched).to.equal(true)
   });
 
   it('skiptag test loading module with matching tags', function() {
@@ -129,7 +151,7 @@ describe('test TagsMatcher', function() {
     });
     let matched = matcher.match(path.join(__dirname, '../../sampletests/tags/sample.js'));
 
-    assert.ok(matched === false);
+    expect(matched).to.equal(false);
   });
 
   it('skiptag test loading module with no tags', function() {
@@ -138,7 +160,7 @@ describe('test TagsMatcher', function() {
     });
     let matched = matcher.match(path.join(__dirname, '../../sampletests/simple/test/sample.js'));
 
-    assert.ok(matched === true);
+    expect(matched).to.equal(true)
   });
 
   it('tag filter does not find module, but skiptag does and excludes it', function() {
@@ -150,7 +172,19 @@ describe('test TagsMatcher', function() {
       tags: ['room', 101]
     });
 
-    assert.ok(matched === false);
+    expect(matched).to.equal(false);
+  });
+
+  it('tag filter does not find module, and skiptag does not and excludes it', function() {
+    let matcher = new TagsMatcher({
+      tag_filter: ['other'],
+      skiptags: ['777']
+    });
+    let matched = matcher.checkModuleTags({
+      tags: ['room', 101]
+    });
+
+    expect(matched).to.equal(false);
   });
 
   it('tag filter finds module, skiptag also does and excludes it', function() {
@@ -162,7 +196,7 @@ describe('test TagsMatcher', function() {
       tags: ['room', 101]
     });
 
-    assert.ok(matched === false);
+    expect(matched).to.equal(false);
   });
 
   it('tag filter finds module, and skiptag does not', function() {
@@ -174,6 +208,6 @@ describe('test TagsMatcher', function() {
       tags: ['room', 101]
     });
 
-    assert.ok(matched === true);
+    expect(matched).to.equal(true);
   });
 });
