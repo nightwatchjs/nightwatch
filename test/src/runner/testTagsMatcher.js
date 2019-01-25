@@ -27,187 +27,156 @@ describe('test TagsMatcher', function() {
     });
   });
 
-  it('tag: test matching tags', function() {
-    let tags = ['home', 'login', 'sign-up'];
-    let testModule = {
-      tags: ['home', 'siberia']
-    };
+  describe('matching', function () {
+    const testCases = [
+      [
+        'matching tags',
+        ['home', 'login', 'sign-up'],
+        ['home', 'siberia'],
+        undefined,
+        true,
+      ],
+      [
+        'non-matching tags',
+        ['boroboro', 'siberia'],
+        ['home', 'login', 'sign-up'],
+        undefined,
+        false,
+      ],
+      [
+        'undefined module tags',
+        undefined,
+        ['home', 'login', 'sign-up'],
+        undefined,
+        false,
+      ],
+      [
+        'numeric tags',
+        ['101'],
+        ['room', 101],
+        undefined,
+        true,
+      ],
+      [
+        'numeric tags single',
+        ['101'],
+        101,
+        undefined,
+        true,
+      ],
+      [
+        'skiptag not matching',
+        ['room', 101],
+        undefined,
+        ['101'],
+        false,
+      ],
+      [
+        'skiptag matching',
+        ['room', 101],
+        undefined,
+        ['other'],
+        true,
+      ],
+      [
+        'skiptag matching - undefined local tags',
+        undefined,
+        undefined,
+        ['other'],
+        true,
+      ],
+      [
+        'tag filter does not find module, but skiptag does and excludes it',
+        ['room', 101],
+        ['other'],
+        ['101'],
+        false,
+      ],
+      [
+        'tag filter does not find module, and skiptag does not and excludes it',
+        ['room', 101],
+        ['other'],
+        ['777'],
+        false,
+      ],
+      [
+        'tag filter finds module, skiptag also does and excludes it',
+        ['room', 101],
+        ['room'],
+        ['101'],
+        false,
+      ],
+      [
+        'tag filter finds module, and skiptag does not',
+        ['room', 101],
+        ['room'],
+        ['other'],
+        true,
+      ],
+    ];
+    testCases.forEach(([description, moduleTags, tag_filter, skiptags, expected]) => {
+      it(`${description}`, function () {
+        const testModule = {
+          tags: moduleTags
+        };
 
-    let matcher = new TagsMatcher({
-      tag_filter: tags
+        const matcher = new TagsMatcher({
+          tag_filter: tag_filter,
+          skiptags: skiptags,
+        });
+
+        const matched = matcher.checkModuleTags(testModule);
+
+        expect(matched).to.equal(expected);
+      });
     });
-    let matched = matcher.checkModuleTags(testModule);
-
-    expect(matched).to.equal(true);
   });
 
-  it('tag: test non-matching tags', function() {
-    let tags = ['home', 'login', 'sign-up'];
-    let testModule = {
-      tags: ['boroboro', 'siberia']
-    };
+  describe('loading and matching', function(){
+    const testCases = [
+      [
+        'module with tags',
+        'sampletests/tags/sample.js',
+        ['home', 'login', 'sign-up'],
+        undefined,
+        true,
+      ],
+      [
+        'loading modules containing an error should not be silent',
+        'extra/mock-errors/sample-error.js',
+        ['home', 'login', 'sign-up'],
+        undefined,
+        false,
+      ],
+      [
+        'skiptag test loading module with matching tags',
+        'sampletests/tags/sample.js',
+        undefined,
+        ['login'],
+        false,
+      ],
+      [
+        'skiptag test loading module with no tags',
+        'sampletests/simple/test/sample.js',
+        undefined,
+        ['login'],
+        true,
+      ],
+    ];
 
-    let matcher = new TagsMatcher({
-      tag_filter: tags
+    testCases.forEach(([description, modulePath, tag_filter, skiptags, expected]) => {
+      it(`${description}`, function () {
+        const fullModulePath = path.join(__dirname, '../../' + modulePath);
+
+        const matcher = new TagsMatcher({
+          tag_filter: tag_filter,
+          skiptags: skiptags,
+        });
+
+        const matched = matcher.match(fullModulePath);
+
+        expect(matched).to.equal(expected);
+      });
     });
-    let matched = matcher.checkModuleTags(testModule);
-
-    expect(matched).to.equal(false);
-  });
-
-  it('tag: test undefined tags', function() {
-    let tags = ['home', 'login', 'sign-up'];
-    let testModule = {};
-
-    let matcher = new TagsMatcher({
-      tag_filter: tags
-    });
-    let matched = matcher.checkModuleTags(testModule);
-
-    expect(matched).to.equal(false);
-  });
-
-  it('tag: test loading module with tags', function() {
-    let tags = ['home', 'login', 'sign-up'];
-
-    let matcher = new TagsMatcher({
-      tag_filter: tags
-    });
-    let matched = matcher.match(path.join(__dirname, '../../sampletests/tags/sample.js'));
-
-    expect(matched).to.equal(true);
-  });
-
-  it('tag: test loading modules containing an error should not be silent', function() {
-    let tags = ['home', 'login', 'sign-up'];
-    let matcher = new TagsMatcher({
-      tag_filter: tags
-    });
-    let matched = matcher.match(path.join(__dirname, '../../extra/mock-errors/sample-error.js'));
-
-    expect(matched).to.equal(false);
-  });
-
-  it('tag: test matching numeric tags', function() {
-    let tags = ['room', 101];
-    let testModule = {
-      tags: ['101']
-    };
-
-    let matcher = new TagsMatcher({
-      tag_filter: tags
-    });
-    let matched = matcher.checkModuleTags(testModule);
-    expect(matched).to.equal(true);
-  });
-
-  it('tag: test matching numeric tags single', function() {
-    let tags = 101;
-    let testModule = {
-      tags: ['101']
-    };
-
-    let matcher = new TagsMatcher({
-      tag_filter: tags
-    });
-    let matched = matcher.checkModuleTags(testModule);
-    expect(matched).to.equal(true);
-  });
-
-  it('skiptag test not matching', function() {
-    let matcher = new TagsMatcher({
-      skiptags: ['101']
-    });
-    let matched = matcher.checkModuleTags({
-      tags: ['room', 101]
-    });
-
-    expect(matched).to.equal(false);
-  });
-
-  it('skiptag test matching', function() {
-    let matcher = new TagsMatcher({
-      skiptags: ['other']
-    });
-    let matched = matcher.checkModuleTags({
-      tags: ['room', 101]
-    });
-
-    expect(matched).to.equal(true);
-  });
-
-  it('skiptag test matching - undefined local tags', function() {
-    let matcher = new TagsMatcher({
-      skiptags: ['other']
-    });
-    let matched = matcher.checkModuleTags({});
-
-    expect(matched).to.equal(true)
-  });
-
-  it('skiptag test loading module with matching tags', function() {
-    let matcher = new TagsMatcher({
-      skiptags: ['login']
-    });
-    let matched = matcher.match(path.join(__dirname, '../../sampletests/tags/sample.js'));
-
-    expect(matched).to.equal(false);
-  });
-
-  it('skiptag test loading module with no tags', function() {
-    let matcher = new TagsMatcher({
-      skiptags: ['login']
-    });
-    let matched = matcher.match(path.join(__dirname, '../../sampletests/simple/test/sample.js'));
-
-    expect(matched).to.equal(true)
-  });
-
-  it('tag filter does not find module, but skiptag does and excludes it', function() {
-    let matcher = new TagsMatcher({
-      tag_filter: ['other'],
-      skiptags: ['101']
-    });
-    let matched = matcher.checkModuleTags({
-      tags: ['room', 101]
-    });
-
-    expect(matched).to.equal(false);
-  });
-
-  it('tag filter does not find module, and skiptag does not and excludes it', function() {
-    let matcher = new TagsMatcher({
-      tag_filter: ['other'],
-      skiptags: ['777']
-    });
-    let matched = matcher.checkModuleTags({
-      tags: ['room', 101]
-    });
-
-    expect(matched).to.equal(false);
-  });
-
-  it('tag filter finds module, skiptag also does and excludes it', function() {
-    let matcher = new TagsMatcher({
-      tag_filter: ['room'],
-      skiptags: ['101']
-    });
-    let matched = matcher.checkModuleTags({
-      tags: ['room', 101]
-    });
-
-    expect(matched).to.equal(false);
-  });
-
-  it('tag filter finds module, and skiptag does not', function() {
-    let matcher = new TagsMatcher({
-      tag_filter: ['room'],
-      skiptags: ['other']
-    });
-    let matched = matcher.checkModuleTags({
-      tags: ['room', 101]
-    });
-
-    expect(matched).to.equal(true);
   });
 });
