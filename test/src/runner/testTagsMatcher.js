@@ -5,7 +5,7 @@ const TagsMatcher = common.require('runner/matchers/tags.js');
 
 describe('test TagsMatcher', function() {
 
-  describe('reading tag settings', function() {
+  describe('reading module tags and skiptags from settings', function() {
     const testCases = [
       ['undefined', undefined, []],
       ['null', null, []],
@@ -27,6 +27,28 @@ describe('test TagsMatcher', function() {
     });
   });
 
+  describe('reading filter tags from settings', function () {
+    const testCases = [
+      ['undefined', undefined, []],
+      ['null', null, []],
+      ['empty string', '', []],
+      ['empty array', [], []],
+      ['number', 777, [['777']]],
+      ['number array: --tag 777 --tag 888', [777, 888], [['777'], ['888']]],
+      ['string with one tag: --tag a', 'a', [['a']]],
+      ['AND tags: --tag A,b,C,777', 'A,b,C,777', [['a', 'b', 'c', '777']]],
+      ['OR tags: --tag A --tag b --tag C --tag 777', ['A', 'b', 'C', '777'], [['a'], ['b'], ['c'], ['777']]],
+      ['AND and OR tags: --tag A,b --tag c,D --tag e,777', ['A,b', 'c,D', 'e,777'], [['a', 'b'], ['c', 'd'], ['e', '777']]],
+    ];
+
+    testCases.forEach(([description, given, expected]) => {
+      it(`${description}`, function () {
+        const result = TagsMatcher.convertFilterTags(given);
+        expect(result).to.deep.equal(expected);
+      });
+    });
+  });
+
   describe('matching', function () {
     const testCases = [
       [
@@ -35,6 +57,27 @@ describe('test TagsMatcher', function() {
         ['home', 'siberia'],
         undefined,
         true,
+      ],
+      [
+        'matching single filter tag',
+        ['home', 'login', 'sign-up'],
+        ['home'],
+        undefined,
+        true,
+      ],
+      [
+        'multiple filter tags as AND match',
+        ['home', 'login', 'siberia', 'sign-up'],
+        ['home,siberia'],
+        undefined,
+        true,
+      ],
+      [
+        'multiple filter tags as AND do not match',
+        ['home', 'login', 'sign-up'],
+        ['home,siberia'],
+        undefined,
+        false,
       ],
       [
         'non-matching tags',
@@ -138,6 +181,20 @@ describe('test TagsMatcher', function() {
         'module with tags',
         'sampletests/tags/sample.js',
         ['home', 'login', 'sign-up'],
+        undefined,
+        true,
+      ],
+      [
+        'module with tags single filter tag',
+        'sampletests/tags/sample.js',
+        ['login'],
+        undefined,
+        true,
+      ],
+      [
+        'module with tags multiple AND filter tags',
+        'sampletests/tags/sample.js',
+        ['login,other'],
         undefined,
         true,
       ],
