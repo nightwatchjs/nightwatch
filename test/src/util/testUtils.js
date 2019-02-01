@@ -80,9 +80,33 @@ describe('test Utils', function() {
   it('testStripControlChars', function() {
 
     assert.doesNotThrow(() => Utils.stripControlChars(null));
-    assert.equal(Utils.stripControlChars('\x00rendered output'), 'rendered output');
-    assert.equal(Utils.stripControlChars('rendered \x1Foutput'), 'rendered output');
-    assert.equal(Utils.stripControlChars('rendered output\x7F'), 'rendered output');
-    assert.equal(Utils.stripControlChars('\x00rendered\x1F \x1Boutput\x9F\x00'), 'rendered output');
+    assert.equal(
+      Utils.stripControlChars('\x00rendered output'),
+      'rendered output'
+    );
+    assert.equal(
+      Utils.stripControlChars('rendered \x1Foutput'),
+      'rendered output'
+    );
+    assert.equal(
+      Utils.stripControlChars('rendered output\x7F'),
+      'rendered output'
+    );
+    assert.equal(
+      Utils.stripControlChars('\x00rendered\x1F \x1Boutput\x9F\x00'),
+      'rendered output'
+    );
+    assert.equal(
+      Utils.stripControlChars(
+        '\x00rendered output\nrendered \x1Foutput\nrendered output\x7F'
+      ),
+      'rendered output\nrendered output\nrendered output'
+    );
+    assert.equal(
+      Utils.stripControlChars(
+        '\x00rendered output\rrendered \x1Foutput\rrendered output\x7F'
+      ),
+      'rendered output\rrendered output\rrendered output'
+    );
   });
 });
