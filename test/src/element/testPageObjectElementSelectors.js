@@ -1,9 +1,9 @@
 const path = require('path');
 const assert = require('assert');
-const nocks = require('../../../lib/nockselements.js');
-const MockServer = require('../../../lib/mockserver.js');
-const Nightwatch = require('../../../lib/nightwatch.js');
-const common = require('../../../common.js');
+const nocks = require('../../lib/nockselements.js');
+const MockServer = require('../../lib/mockserver.js');
+const Nightwatch = require('../../lib/nightwatch.js');
+const common = require('../../common.js');
 const Logger = common.require('util/logger.js');
 
 describe('test page object element selectors', function() {
@@ -28,9 +28,9 @@ describe('test page object element selectors', function() {
   beforeEach(function(done) {
     nocks.cleanAll();
     Nightwatch.init({
-      page_objects_path: [path.join(__dirname, '../../../extra/pageobjects/pages')],
-      custom_commands_path: [path.join(__dirname, '../../../extra/commands')],
-      custom_assertions_path: [path.join(__dirname, '../../../extra/assertions')],
+      page_objects_path: [path.join(__dirname, '../../extra/pageobjects/pages')],
+      custom_commands_path: [path.join(__dirname, '../../extra/commands')],
+      custom_assertions_path: [path.join(__dirname, '../../extra/assertions')],
       globals: {
         abortOnAssertionFailure: true
       }
