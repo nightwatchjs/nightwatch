@@ -1,14 +1,17 @@
 const path = require('path');
 const assert = require('assert');
-const common = require('../../../common.js');
-const nocks = require('../../../lib/nockselements.js');
-const MockServer  = require('../../../lib/mockserver.js');
-const Nightwatch = require('../../../lib/nightwatch.js');
+const common = require('../../common.js');
+const nocks = require('../../lib/nockselements.js');
+const MockServer  = require('../../lib/mockserver.js');
+const Nightwatch = require('../../lib/nightwatch.js');
 const Logger = common.require('util/logger.js');
 
 describe('test expect element selectors', function() {
 
   before(function(done) {
+    Logger.setOutputEnabled(true);
+    Logger.enable();
+
     nocks.enable();
     this.server = MockServer.init();
     this.server.on('listening', () => {
@@ -26,7 +29,9 @@ describe('test expect element selectors', function() {
   beforeEach(function (done) {
     nocks.cleanAll();
     Nightwatch.init({
-      page_objects_path: [path.join(__dirname, '../../../extra/pageobjects/pages')]
+      output: true,
+      silent: false,
+      page_objects_path: [path.join(__dirname, '../../extra/pageobjects/pages')]
     }, done);
   });
 
@@ -39,16 +44,17 @@ describe('test expect element selectors', function() {
 
     let api = Nightwatch.api();
     api.globals.abortOnAssertionFailure = false;
+    api.globals.suppressWarningsOnMultipleElementsReturned = true;
 
     let page = api.page.simplePageObj();
     let section = page.section.signUp;
 
     let passingAssertions = [
-      api.expect.element('.nock').to.be.present.before(1),
-      api.expect.element({selector: '.nock'}).to.be.present.before(1),
-      api.expect.element({selector: '//[@class="nock"]', locateStrategy: 'xpath'}).to.be.present.before(1),
-      page.expect.section('@signUp').to.be.present.before(1),
-      page.expect.section({selector: '@signUp', locateStrategy: 'css selector'}).to.be.present.before(1),
+      // api.expect.element('.nock').to.be.present.before(1),
+      // api.expect.element({selector: '.nock'}).to.be.present.before(1),
+      // api.expect.element({selector: '//[@class="nock"]', locateStrategy: 'xpath'}).to.be.present.before(1),
+      // page.expect.section('@signUp').to.be.present.before(1),
+      // page.expect.section({selector: '@signUp', locateStrategy: 'css selector'}).to.be.present.before(1),
       section.expect.element('@help').to.be.present.before(1)
     ];
 
