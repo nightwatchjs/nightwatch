@@ -84,4 +84,4 @@ The [Mailing List/Google Group](https://groups.google.com/forum/#!forum/nightwat
 ## Support Nightwatch on OpenCollective
 Please consider supporting Nightwatch by becoming a backer on the [OpenCollective](https://opencollective.com/nightwatch/) platform.
 
-[![Open Collective](https://opencollective.com/nightwatch/tiers/backers.svg?avatarHeight=60)](https://opencollective.com/nightwatch/contribute/tier/7349-backers)
+[![Open Collective](https://opencollective.com/nightwatch/tiers/backers.svg?avatarHeight=60)](https://opencollective.com/nightwatch/contribute/tier/7349-backers) [![Greenkeeper badge](https://badges.greenkeeper.io/nightwatchjs/nightwatch.svg)](https://greenkeeper.io/)
