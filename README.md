@@ -17,8 +17,6 @@ We're delighted to announce the release of __Nightwatch v1.0__. Please see the [
 
 ## 1. Install Nightwatch
 
-Install __Node.js__ (together with the NPM tool) by following instructions available on [nodejs.org](https://nodejs.org).
-
 From NPM:
 ```sh
 $ npm install nightwatch
