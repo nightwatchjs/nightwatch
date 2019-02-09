@@ -36,9 +36,6 @@
     "nock": "^10.0.6",
     "nyc": "^13.2.0"
   },
-  "optionalDependencies": {
-    "mocha": "^5.1.1"
-  },
   "bin": {
     "nightwatch": "./bin/nightwatch"
   },
