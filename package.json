@@ -18,10 +18,10 @@
     "assertion-error": "^1.1.0",
     "chai-nightwatch": "0.2.1",
     "ejs": "^2.5.9",
-    "lodash.clone": "^3.0.3",
+    "lodash.clone": "^4.5.0",
     "lodash.defaultsdeep": "^4.6.0",
     "lodash.merge": "^4.6.1",
-    "minimatch": "3.0.3",
+    "minimatch": "3.0.4",
     "mkpath": "1.0.0",
     "optimist": "^0.6.1",
     "proxy-agent": "^3.0.0"
@@ -32,9 +32,9 @@
     "eslint": "^5.2.0",
     "mocha": "^5.2.0",
     "mock-spawn": "^0.2.1",
-    "mockery": "~1.4.0",
-    "nock": "^9.1.4",
-    "nyc": "^11.6.0"
+    "mockery": "~2.1.0",
+    "nock": "^10.0.6",
+    "nyc": "^13.2.0"
   },
   "optionalDependencies": {
     "mocha": "^5.1.1"
