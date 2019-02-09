@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "assertion-error": "^1.1.0",
-    "chai-nightwatch": "0.2.2",
+    "chai-nightwatch": "0.2.1",
     "ejs": "^2.5.9",
     "lodash.clone": "^4.5.0",
     "lodash.defaultsdeep": "^4.6.0",
