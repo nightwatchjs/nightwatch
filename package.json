@@ -18,7 +18,7 @@
     "assertion-error": "^1.1.0",
     "chai-nightwatch": "0.2.1",
     "ejs": "^2.5.9",
-    "lodash.clone": "^4.5.0",
+    "lodash.clone": "3.0.3",
     "lodash.defaultsdeep": "^4.6.0",
     "lodash.merge": "^4.6.1",
     "minimatch": "3.0.4",
@@ -35,6 +35,9 @@
     "mockery": "~2.1.0",
     "nock": "^10.0.6",
     "nyc": "^13.2.0"
+  },
+  "optionalDependencies": {
+    "mocha": "^5.1.1"
   },
   "bin": {
     "nightwatch": "./bin/nightwatch"
