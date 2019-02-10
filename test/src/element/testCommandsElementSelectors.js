@@ -3,10 +3,15 @@ const assert = require('assert');
 const nocks = require('../../lib/nockselements.js');
 const MockServer  = require('../../lib/mockserver.js');
 const Nightwatch = require('../../lib/nightwatch.js');
+const common = require('../../common.js');
+const Logger = common.require('util/logger.js');
 
 describe('test commands element selectors', function() {
   before(function(done) {
     nocks.enable();
+    Logger.enable();
+    Logger.setOutputEnabled();
+
     this.server = MockServer.init();
     this.server.on('listening', () => {
       done();
@@ -23,6 +28,8 @@ describe('test commands element selectors', function() {
   beforeEach(function (done) {
     nocks.cleanAll();
     Nightwatch.init({
+      output: true,
+      silent: false,
       page_objects_path: [path.join(__dirname, '../../extra/pageobjects/pages')]
     }, done);
   });
@@ -31,9 +38,9 @@ describe('test commands element selectors', function() {
 
   it('getText(<various>)', function(done) {
     nocks
-      .elementFound()
-      .elementNotFound()
-      .elementByXpath()
+      .elementsFound('#nock')
+      .elementsNotFound('#nock-none')
+      .elementsByXpath('//[@id="nock"]')
       .text(0, 'first')
       .text(1, 'second');
 
