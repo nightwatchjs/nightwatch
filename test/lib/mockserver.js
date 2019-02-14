@@ -1,152 +1,209 @@
-var http = require('http');
-var mocks = null;
+const http = require('http');
+const defaultsDeep = require('lodash.defaultsdeep');
 
-/**
- * @param options
- * @param callback
- */
-function MockServer(options, callback) {
-  // The default options:
-  var defaultOptions = {
-    postdata: '',
-    weakURLVerification: false,
-    responseHeaders: {},
-    responseType: 'application/json'
-  };
+class MockServer {
 
-  callback = callback || function() {};
-
-  for (var k in defaultOptions) {
-    options[k] = (options[k] || defaultOptions[k]);
+  static get defaultOptions() {
+    return {
+      postdata: '',
+      weakURLVerification: false,
+      responseHeaders: {},
+      responseType: 'application/json',
+      mocks: [],
+      finishedCallback() {}
+    };
   }
 
-  if (Array.isArray(options.mocks)) {
-    mocks = options.mocks;
+  get options() {
+    return this.__options;
   }
-  // Prepare the next request:
-  function nextInLine(req, postdata) {
-    var item;
-    var generic = null;
 
-    for (var i = 0; i < mocks.length; i++) {
-      item = mocks[i];
+  get mocks() {
+    return this.__mocks;
+  }
+
+  constructor(opts = {}, callback = function () {}) {
+    this.__options = opts;
+    defaultsDeep(this.__options, MockServer.defaultOptions);
+    this.__mocks = this.options.mocks;
+    this.cb = callback;
+
+    this.createServer();
+  }
+
+  listen() {
+    this.server.listen(this.options.port, this.cb);
+
+    return this.server;
+  }
+
+  createServer() {
+    this.server = http.createServer((req, res) => {
+      let postdata = '';
+      let headers;
+      req.setEncoding('utf8');
+      req.on('data', function(chunk) {
+        postdata += chunk;
+      });
+
+      req.on('end', () => {
+        let item = this.nextInLine(req, postdata);
+        let responsedata = '';
+
+        if (item) {
+          headers = item.responseHeaders;
+          responsedata = JSON.stringify(item.response);
+          headers['Content-Type']   = this.options.responseType;
+          headers['Content-Length'] = responsedata.length;
+          res.writeHead(Number(item.statusCode), headers);
+
+          if (item.__once) {
+            this.removeMock(item);
+          }
+        } else {
+          headers = {};
+          headers['Content-Type'] = 'text/plain';
+          headers['Content-Length'] = 0;
+          res.writeHead(404, 'Not Found', headers);
+        }
+
+        this.options.finishedCallback(req, res);
+
+        if (item && item.socketDelay) {
+          const timeoutId = setTimeout(function() {
+            res.end(responsedata);
+          }, item.socketDelay);
+
+          req.on('close', function(err) {
+            clearTimeout(timeoutId);
+          });
+
+          return;
+        }
+
+        res.end(responsedata);
+      });
+    });
+  }
+
+  /**
+   * @param {} item
+   * @param {boolean} once
+   */
+  addMock(item, once = false) {
+    if (once) {
+      item.__once = true;
+    }
+
+    this.mocks.push(item);
+  }
+
+  removeMock(mock) {
+    const normalizedPostData = mock.postdata && normalizeJSONString(mock.postdata);
+    const mockMethod = mock.method || 'get';
+
+    for (let i = 0; i < this.mocks.length; i++) {
+      let item = this.mocks[i];
+
+      if (
+        item.url === mock.url && item.method.toLowerCase() === mockMethod.toLowerCase() &&
+        (!mock.postdata || isPostDataEqual(item.postdata, normalizedPostData))
+      ) {
+        this.mocks.splice(i, 1);
+        break;
+      }
+    }
+  }
+
+  nextInLine(req, postdata) {
+    const data = normalizeJSONString(postdata);
+
+    for (let i = 0; i < this.mocks.length; i++) {
+      let item = this.mocks[i];
 
       item.postdata = item.postdata || '';
       item.method = item.method || 'POST';
       item.statusCode = item.statusCode || 200;
 
-      if (item.url == req.url && item.method == req.method) {
+      if (item.url === req.url && item.method.toLowerCase() === req.method.toLowerCase()) {
         item.responseHeaders = item.responseHeaders || {};
         item.response = item.response || '';
 
-        if (item.postdata == postdata) {
+        if (!item.postdata) {
           return item;
         }
 
-        if (!item.postdata) {
-          generic = item;
+        if (isPostDataEqual(item.postdata, data)) {
+          return item;
         }
       }
     }
 
-    return generic;
+    return null;
   }
 
-  var s = http.createServer(function(req, res) {
-    var postdata = '';
-    var headers;
-    req.setEncoding('utf8');
-    req.on('data', function(chunk) {
-      postdata += chunk;
-    });
-
-    req.on('end', function() {
-      var item = nextInLine(req, postdata);
-      var responsedata = '';
-
-      if (item) {
-        headers = item.responseHeaders;
-        headers['Content-Type']   = options.responseType;
-        headers['Content-Length'] = item.response.length;
-        res.writeHead(Number(item.statusCode), headers);
-        responsedata = item.response;
-      } else {
-        headers = {};
-        headers['Content-Type'] = 'text/plain';
-        headers['Content-Length'] = 0;
-        res.writeHead(404, 'Not Found', headers);
-      }
-
-      if (typeof options.finishedCallback == 'function') {
-        options.finishedCallback(req, res);
-      }
-
-      if (item && item.__once) {
-        removeMock(item);
-      }
-
-      if (item && item.socketDelay) {
-        var timeoutId = setTimeout(function() {
-          res.end(responsedata);
-        }, item.socketDelay);
-
-        req.on('close', function(err) {
-          clearTimeout(timeoutId);
-        });
-
-        return;
-      }
-
-      res.end(responsedata);
-    });
-  });
-
-  s.listen(options.port, callback);
-
-  return s;
 }
 
-function removeMock(mock) {
-  var item;
+const isPostDataEqual = (notNormalizedData, normalizedData) => {
+  let normalized;
 
-  for (var i = 0; i < mocks.length; i++) {
-    item = mocks[i];
-
-    if ((item.url == mock.url) && (item.method == mock.method) && (!mock.postdata || item.postdata == mock.postdata)) {
-      break;
-    }
+  if (typeof notNormalizedData == 'string') {
+    normalized = normalizeJSONString(notNormalizedData);
+  } else if (typeof normalized == 'object') {
+    normalized = JSON.stringify(notNormalizedData);
   }
 
-  if (i > 0) {
-    mocks.splice(i, 1);
+  return normalizedData === normalized;
+};
+
+const normalizeJSONString = (data) => {
+  try {
+    return JSON.stringify(JSON.parse(data));
+  } catch (err) {
+    console.error('Unabled to parse: "', data, '"');
+    console.error(err);
   }
-}
+};
+
+let server;
 
 module.exports = {
-  init : function(callback) {
+  init(callback = function() {}) {
     Object.keys(require.cache).forEach(function(module) {
       if (module.indexOf('/mocks.json') > -1) {
         delete require.cache[module];
       }
     });
 
-    var mockoptions = require('./mocks.json');
+    const mocks = require('./mocks.json').mocks;
+
+    server = new MockServer({
+      port: 10195,
+      mocks
+    }, callback);
+
     try {
-      var i = new MockServer(mockoptions, callback);
+      return server.listen();
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      process.exit(1);
     }
-    return i;
   },
 
-  addMock : function(item, once) {
-    if (once) {
-      item.__once = true;
-    }
-    mocks.push(item);
-
-    return this;
+  /**
+   *
+   * @param {Object} item
+   * @param {boolean} once
+   */
+  addMock(item, once) {
+    return server.addMock(item, once);
   },
 
-  removeMock : removeMock
+  /**
+   *
+   * @param {Object} mock
+   */
+  removeMock(mock) {
+    return server.removeMock(mock);
+  }
 };
