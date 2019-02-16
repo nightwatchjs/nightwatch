@@ -1,4 +1,7 @@
 const http = require('http');
+const jsYaml = require('js-yaml');
+const fs   = require('fs');
+const path   = require('path');
 const defaultsDeep = require('lodash.defaultsdeep');
 
 class MockServer {
@@ -149,7 +152,7 @@ const isPostDataEqual = (notNormalizedData, normalizedData) => {
 
   if (typeof notNormalizedData == 'string') {
     normalized = normalizeJSONString(notNormalizedData);
-  } else if (typeof normalized == 'object') {
+  } else if (typeof notNormalizedData == 'object') {
     normalized = JSON.stringify(notNormalizedData);
   }
 
@@ -175,11 +178,16 @@ module.exports = {
       }
     });
 
-    const mocks = require('./mocks.json').mocks;
+    const mockObjectsJsonWire = jsYaml.safeLoad(
+      fs.readFileSync(path.join(__dirname, './mocks/mocks-jsonwire.yaml'), 'utf8')
+    );
+    const mockObjectsW3C = jsYaml.safeLoad(
+      fs.readFileSync(path.join(__dirname, './mocks/mocks-w3c.yaml'), 'utf8')
+    );
 
     server = new MockServer({
       port: 10195,
-      mocks
+      mocks: mockObjectsJsonWire.mocks
     }, callback);
 
     try {

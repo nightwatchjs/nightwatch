@@ -22,15 +22,14 @@ module.exports = new function () {
     });
   };
 
-  const stopMockServer = (opts = {}) => {
-    if (!_mockServer || !opts.mockServer) {
+  const stopMockServer = (done) => {
+    if (!_mockServer) {
       return Promise.resolve();
     }
 
-    return new Promise((resolve) => {
-      _mockServer.close(function() {
-        resolve();
-      });
+    _mockServer.close(function() {
+      console.log('MockServer stopped');
+      done();
     });
   };
 
@@ -88,6 +87,25 @@ module.exports = new function () {
     _client.startSession();
   };
 
+  this.initAsync = function(options) {
+    _client = this.createClient(options);
+    _client.start = function() {
+      return this.queue.run().then(err => {
+        if (err instanceof Error) {
+          throw err;
+        }
+      });
+    };
+
+    return new Promise((resolve, reject) => {
+      _client
+        .once('nightwatch:session.create', id => resolve(id))
+        .once('nightwatch:session.error', err => reject(err));
+
+      _client.createSession().catch(err => reject(err));
+    });
+  };
+
   this.initClient = function(options, reporter) {
     let client = this.createClient(options, reporter);
 
@@ -116,8 +134,11 @@ module.exports = new function () {
     return _client.start(done);
   };
 
-  this.stop = async function(done = function() {}) {
-    await stopMockServer();
-    done();
+  this.stop = function(done = function() {}) {
+    stopMockServer(done);
+  };
+
+  this.addMock = function(mock, once = false) {
+    return MockServer.addMock(mock, once);
   };
 };
