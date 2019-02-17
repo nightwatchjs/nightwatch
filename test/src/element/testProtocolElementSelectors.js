@@ -1,198 +1,238 @@
 const path = require('path');
 const assert = require('assert');
+const common = require('../../common.js');
 const nocks = require('../../lib/nockselements.js');
-const MockServer  = require('../../lib/mockserver.js');
 const Nightwatch = require('../../lib/nightwatch.js');
+const Logger = common.require('util/logger.js');
 
 describe('test protocol element selectors', function() {
   before(function(done) {
     nocks.enable();
-    this.server = MockServer.init();
-    this.server.on('listening', () => {
-      done();
-    });
+    //Logger.enable();
+    Logger.setOutputEnabled(false);
+
+    Nightwatch.startMockServer(done);
   });
 
   after(function(done) {
     nocks.disable();
-    this.server.close(function() {
-      done();
-    });
+    Nightwatch.stop(done);
   });
 
-  beforeEach(function (done) {
+  beforeEach(function () {
     nocks.cleanAll();
-    Nightwatch.init({
+
+    return Nightwatch.initAsync({
       page_objects_path: [path.join(__dirname, '../../extra/pageobjects/pages')],
       globals: {
         abortOnAssertionFailure: true
       }
-    }, done);
+    });
   });
 
-  it('protocol.element(using, {selector})', function (done) {
+  it('protocol.element(using, {selector})', function () {
     nocks
       .elementFound()
       .elementNotFound();
 
     Nightwatch.api()
       .element('css selector', '#nock', function callback(result) {
-        assert.equal(result.value.ELEMENT, '0', 'Found element for string selector');
+        assert.strictEqual(result.value.ELEMENT, '0');
       })
       .element('css selector', '#nock-none', function callback(result) {
-        assert.equal(result.status, -1, 'Not found for string selector');
+        assert.strictEqual(result.status, -1);
       })
       .element('css selector', {selector: '#nock'}, function callback(result) {
-        assert.equal(result.value.ELEMENT, '0', 'Found element for selector property');
+        assert.strictEqual(result.value.ELEMENT, '0');
       })
       .element('css selector', {selector: '#nock-none'}, function callback(result) {
-        assert.equal(result.status, -1, 'Not found for selector property');
+        assert.strictEqual(result.status, -1);
       });
 
-    Nightwatch.start(done);
+    return Nightwatch.start();
   });
 
-  it('protocol.element(using, null)', function (done) {
+  it('protocol.element(using, null)', async function () {
     Nightwatch.api().element('css selector', null);
 
-    Nightwatch.start(function(err) {
-      assert.ok(err instanceof Error);
-      assert.ok(err.message.includes('Invalid selector value specified'));
-      done();
-    });
+    let thrown;
+
+    try {
+      await Nightwatch.start();
+    } catch (err) {
+      thrown = err;
+    }
+
+    assert.ok(thrown instanceof Error);
+    assert.ok(thrown.message.includes('Invalid selector value specified'));
   });
 
-  it('protocol.element(using, {})', function (done) {
+  it('protocol.element(using, {})', async function () {
     Nightwatch.api().element('css selector', {});
 
-    Nightwatch.start(function(err) {
-      assert.ok(err instanceof Error);
-      assert.ok(err.message.includes('No selector property for selector object'));
-      done();
-    });
+    let thrown;
+
+    try {
+      await Nightwatch.start();
+    } catch (err) {
+      thrown = err;
+    }
+
+    assert.ok(thrown instanceof Error);
+    assert.ok(thrown.message.includes('No selector property for selector object'));
   });
 
-  it('protocol.element(using, {selector, locateStrategy})', function (done) {
+  it('protocol.element(using, {selector, locateStrategy})', function () {
     nocks.elementFound();
 
     Nightwatch.api()
       .element('css selector', {selector: '#nock', locateStrategy: 'css selector'}, function callback(result) {
-        assert.equal(result.value.ELEMENT, '0', 'Found element, same locateStrategy');
+        assert.strictEqual(result.value.ELEMENT, '0');
       })
       .element('xpath', {selector: '#nock', locateStrategy: 'css selector'}, function callback(result) {
-        assert.equal(result.value.ELEMENT, '0', 'Found element, overridden locateStrategy');
+        assert.strictEqual(result.value.ELEMENT, '0');
       })
       .element('css selector', {selector: '#nock', locateStrategy: null}, function callback(result) {
-        assert.equal(result.value.ELEMENT, '0', 'Found element, null locateStrategy');
+        assert.strictEqual(result.value.ELEMENT, '0');
       });
 
-    Nightwatch.start(done);
+    return Nightwatch.start();
   });
 
-  it('protocol.element(using, {locateStrategy})', function (done) {
+  it('protocol.element(using, {locateStrategy})', async function () {
     Nightwatch.api().element('css selector', {locateStrategy: 'css selector'});
 
-    Nightwatch.start(function(err) {
-      assert.ok(err instanceof Error);
-      assert.ok(err.message.includes('No selector property for selector object'));
-      done();
-    });
+    let thrown;
+
+    try {
+      await Nightwatch.start();
+    } catch (err) {
+      thrown = err;
+    }
+
+    assert.ok(thrown instanceof Error);
+    assert.ok(thrown.message.includes('No selector property for selector object'));
   });
 
-  it('protocol.element(using, {locateStrategy=invalid})', function (done) {
+  it('protocol.element(using, {locateStrategy=invalid})', async function () {
     Nightwatch.api().element('css selector', {selector: '.nock', locateStrategy: 'unsupported'});
 
-    Nightwatch.start(function(err) {
-      assert.ok(err instanceof Error);
-      assert.ok(err.message.includes('Provided locating strategy "unsupported" is not supported'));
-      done();
-    });
+    let thrown;
+
+    try {
+      await Nightwatch.start();
+    } catch (err) {
+      thrown = err;
+    }
+
+    assert.ok(thrown instanceof Error);
+    assert.ok(thrown.message.includes('Provided locating strategy "unsupported" is not supported'));
   });
 
-  it('protocol.elements(using, {selector})', function (done) {
+  it('protocol.elements(using, {selector})', async function () {
     nocks
       .elementsFound()
       .elementsNotFound();
 
     Nightwatch.api()
       .elements('css selector', '.nock', function callback(result) {
-        assert.equal(result.value[0].ELEMENT, '0', 'Found elements for string selector');
+        assert.strictEqual(result.value[0].ELEMENT, '0', 'Found elements for string selector');
       })
       .elements('css selector', '.nock-none', function callback(result) {
-        assert.equal(result.status, 0, 'No error for string selector');
-        assert.equal(result.value.length, 0, 'No results for string selector');
+        assert.strictEqual(result.status, 0);
+        assert.strictEqual(result.value.length, 0);
       })
       .elements('css selector', {selector: '.nock'}, function callback(result) {
-        assert.equal(result.value[0].ELEMENT, '0', 'Found elements for selector property');
+        assert.strictEqual(result.value[0].ELEMENT, '0');
       })
       .elements('css selector', {selector: '.nock-none'}, function callback(result) {
-        assert.equal(result.status, 0, 'Not found for selector property');
-        assert.equal(result.value.length, 0, 'No results for selector property');
+        assert.strictEqual(result.status, 0);
+        assert.strictEqual(result.value.length, 0);
       });
 
-    Nightwatch.start(done);
+    return Nightwatch.start();
   });
 
-  it('protocol.elements(using, null)', function (done) {
+  it('protocol.elements(using, null)', async function () {
     Nightwatch.api().elements('css selector', null);
 
-    Nightwatch.start(function(err) {
-      assert.ok(err instanceof Error);
-      assert.ok(err.message.includes('Invalid selector value specified'));
-      done();
-    });
+    let thrown;
+
+    try {
+      await Nightwatch.start();
+    } catch (err) {
+      thrown = err;
+    }
+
+    assert.ok(thrown instanceof Error);
+    assert.ok(thrown.message.includes('Invalid selector value specified'));
   });
 
-  it('protocol.elements(using, {})', function (done) {
+  it('protocol.elements(using, {})', async function () {
     Nightwatch.api().elements('css selector', {});
 
-    Nightwatch.start(function(err) {
-      assert.ok(err instanceof Error);
-      assert.ok(err.message.includes('No selector property for selector object'));
-      done();
-    });
+    let thrown;
+
+    try {
+      await Nightwatch.start();
+    } catch (err) {
+      thrown = err;
+    }
+
+    assert.ok(thrown instanceof Error);
+    assert.ok(thrown.message.includes('No selector property for selector object'));
   });
 
-  it('protocol.elements(using, {selector, locateStrategy})', function (done) {
+  it('protocol.elements(using, {selector, locateStrategy})', function () {
     nocks
       .elementsFound()
       .elementsByTag();
 
     Nightwatch.api()
       .elements('css selector', {selector: '.nock', locateStrategy: 'css selector'}, function callback(result) {
-        assert.equal(result.value[0].ELEMENT, '0', 'Found element, same locateStrategy');
+        assert.strictEqual(result.value[0].ELEMENT, '0');
       })
       .elements('xpath', {selector: '.nock', locateStrategy: 'css selector'}, function callback(result) {
-        assert.equal(result.value[0].ELEMENT, '0', 'Found element, overridden locateStrategy');
+        assert.strictEqual(result.value[0].ELEMENT, '0');
       })
       .elements('xpath', {selector: 'nock', locateStrategy: 'tag name'}, function callback(result) {
-        assert.equal(result.value[0].ELEMENT, '0', 'Found element, by tag name');
+        assert.strictEqual(result.value[0].ELEMENT, '0');
       })
       .elements('css selector', {selector: '.nock', locateStrategy: null}, function callback(result) {
-        assert.equal(result.value[0].ELEMENT, '0', 'Found element, null locateStrategy');
+        assert.strictEqual(result.value[0].ELEMENT, '0');
       });
 
-    Nightwatch.start(done);
+    return Nightwatch.start();
   });
 
-  it('protocol.elements(using, {locateStrategy})', function (done) {
+  it('protocol.elements(using, {locateStrategy})', async function () {
     Nightwatch.api().elements('css selector', {locateStrategy: 'css selector'});
 
-    Nightwatch.start(function(err) {
-      assert.ok(err instanceof Error);
-      assert.ok(err.message.includes('No selector property for selector object'));
-      done();
-    });
+    let thrown;
+
+    try {
+      await Nightwatch.start();
+    } catch (err) {
+      thrown = err;
+    }
+
+    assert.ok(thrown instanceof Error);
+    assert.ok(thrown.message.includes('No selector property for selector object'));
   });
 
-  it('protocol.elements(using, {locateStrategy=invalid})', function (done) {
+  it('protocol.elements(using, {locateStrategy=invalid})', async function () {
     Nightwatch.api().elements('css selector', {selector: '.nock', locateStrategy: 'unsupported'});
 
-    Nightwatch.start(function(err) {
-      assert.ok(err instanceof Error);
-      assert.ok(err.message.includes('Provided locating strategy "unsupported" is not supported'));
-      done();
-    });
+    let thrown;
+
+    try {
+      await Nightwatch.start();
+    } catch (err) {
+      thrown = err;
+    }
+
+    assert.ok(thrown instanceof Error);
+    assert.ok(thrown.message.includes('Provided locating strategy "unsupported" is not supported'));
   });
 
 });

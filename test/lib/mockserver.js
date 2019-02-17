@@ -161,7 +161,11 @@ const isPostDataEqual = (notNormalizedData, normalizedData) => {
 
 const normalizeJSONString = (data) => {
   try {
-    return JSON.stringify(JSON.parse(data));
+    if (typeof data == 'string') {
+      return JSON.stringify(JSON.parse(data));
+    }
+
+    return JSON.stringify(data);
   } catch (err) {
     console.error('Unabled to parse: "', data, '"');
     console.error(err);
@@ -187,7 +191,7 @@ module.exports = {
 
     server = new MockServer({
       port: 10195,
-      mocks: mockObjectsJsonWire.mocks
+      mocks: mockObjectsJsonWire.mocks.concat(mockObjectsW3C.mocks)
     }, callback);
 
     try {

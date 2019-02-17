@@ -10,7 +10,7 @@ describe('test commands element selectors', function() {
   before(function(done) {
     nocks.enable();
     Logger.enable();
-    Logger.setOutputEnabled();
+    Logger.setOutputEnabled(true);
 
     this.server = MockServer.init();
     this.server.on('listening', () => {
@@ -46,16 +46,19 @@ describe('test commands element selectors', function() {
 
     Nightwatch.api()
       .getText('#nock', function callback(result) {
-        assert.equal(result.value, 'first', 'getText string selector value');
+        assert.strictEqual(result.value, 'first');
       })
       .getText({selector: '#nock'}, function callback(result) {
-        assert.equal(result.value, 'first', 'getText selector property');
+        assert.strictEqual(result.value, 'first');
+      })
+      .getText({selector: '#nock', index: 1}, function callback(result) {
+        assert.strictEqual(result.value, 'second');
       })
       .getText({selector: '#nock-none'}, function callback(result) {
-        assert.equal(result.status, -1, 'getText not found status');
+        assert.strictEqual(result.status, -1);
       })
       .getText({selector: '//[@id="nock"]', locateStrategy: 'xpath'}, function callback(result) {
-        assert.equal(result.value, 'first', 'getText xpath locateStrategy');
+        assert.strictEqual(result.value, 'first');
       });
 
     Nightwatch.start(done);
@@ -63,49 +66,49 @@ describe('test commands element selectors', function() {
 
   it('getText(<various>) locateStrategy', function(done) {
     nocks
-      .elementFound()
-      .elementNotFound()
-      .elementByXpath()
+      .elementsFound('#nock')
+      .elementsByXpath('//[@id="nock"]')
       .text(0, 'first')
       .text(1, 'second');
 
     Nightwatch.api()
       .useCss()
       .getText('#nock', function callback(result) {
-        assert.equal(result.value, 'first', 'getText string selector useCss');
+        assert.strictEqual(result.value, 'first');
       })
       .useXpath()
       .getText('//[@id="nock"]', function callback(result) {
-        assert.equal(result.value, 'first', 'getText string selector useXpath');
+        assert.strictEqual(result.value, 'first');
       })
       .useCss()
       .getText({selector: '//[@id="nock"]', locateStrategy: 'xpath'}, function callback(result) {
-        assert.equal(result.value, 'first', 'getText useCss override with xpath');
+        assert.strictEqual(result.value, 'first');
+      })
+      .getText({selector: '//[@id="nock"]', locateStrategy: 'xpath', index: 1}, function callback(result) {
+        assert.strictEqual(result.value, 'second');
       })
       .getText('#nock', function callback(result) {
-        assert.equal(result.value, 'first', 'getText back to css after override with xpath');
+        assert.strictEqual(result.value, 'first');
       })
       .getText('css selector', {selector: '//[@id="nock"]', locateStrategy: 'xpath'}, function callback(result) {
-        assert.equal(result.value, 'first', 'getText using override with xpath');
+        assert.strictEqual(result.value, 'first');
       })
       .getText('xpath', {selector: '//[@id="nock"]'}, function callback(result) {
-        assert.equal(result.value, 'first', 'getText using as xpath');
+        assert.strictEqual(result.value, 'first');
       });
 
     Nightwatch.start(done);
   });
-
-  // custom command
 
   it('waitForElementPresent(<various>)', function(done) {
     nocks.elementsFound();
 
     Nightwatch.api()
       .waitForElementPresent('.nock', 1, false, function callback(result) {
-        assert.equal(result.value.length, 3, 'waitforPresent result expected found');
+        assert.strictEqual(result.value.length, 3, 'waitforPresent result expected found');
       })
       .waitForElementPresent({selector: '.nock'}, 1, false, function callback(result) {
-        assert.equal(result.value.length, 3, 'waitforPresent selector property result expected found');
+        assert.strictEqual(result.value.length, 3, 'waitforPresent selector property result expected found');
       });
 
     Nightwatch.start(done);
@@ -116,7 +119,7 @@ describe('test commands element selectors', function() {
 
     Nightwatch.api()
       .waitForElementPresent('.nock-none', 1, false, function callback(result) {
-        assert.equal(result.value, false, 'waitforPresent result expected false');
+        assert.strictEqual(result.value, false, 'waitforPresent result expected false');
       });
 
     Nightwatch.start(done);
@@ -127,7 +130,7 @@ describe('test commands element selectors', function() {
 
     Nightwatch.api()
       .waitForElementPresent({selector: '.nock-none'}, 1, false, function callback(result) {
-        assert.equal(result.value, false, 'waitforPresent selector property result expected false');
+        assert.strictEqual(result.value, false, 'waitforPresent selector property result expected false');
       });
 
     Nightwatch.start(done);
@@ -142,15 +145,15 @@ describe('test commands element selectors', function() {
     Nightwatch.api()
       .useCss()
       .waitForElementPresent('.nock', 1, false, function callback(result) {
-        assert.equal(result.value.length, 3, 'waitforPresent using css');
+        assert.strictEqual(result.value.length, 3, 'waitforPresent using css');
       })
       .useXpath()
       .waitForElementPresent('//[@class="nock"]', 1, false, function callback(result) {
-        assert.equal(result.value.length, 3, 'waitforPresent using xpath');
+        assert.strictEqual(result.value.length, 3, 'waitforPresent using xpath');
       })
       .useCss()
       .waitForElementPresent({selector: '//[@class="nock"]', locateStrategy: 'xpath'}, 1, false, function callback(result) {
-        assert.equal(result.value.length, 3, 'waitforPresent locateStrategy override to xpath found');
+        assert.strictEqual(result.value.length, 3, 'waitforPresent locateStrategy override to xpath found');
       })
       .perform(function() {
         done();
