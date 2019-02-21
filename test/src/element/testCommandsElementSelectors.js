@@ -30,6 +30,10 @@ describe('test commands element selectors', function() {
     Nightwatch.init({
       output: true,
       silent: false,
+      globals: {
+        waitForConditionTimeout: 100,
+        waitForConditionPollInterval: 10
+      },
       page_objects_path: [path.join(__dirname, '../../extra/pageobjects/pages')]
     }, done);
   });
@@ -54,7 +58,7 @@ describe('test commands element selectors', function() {
       .getText({selector: '#nock', index: 1}, function callback(result) {
         assert.strictEqual(result.value, 'second');
       })
-      .getText({selector: '#nock-none'}, function callback(result) {
+      .getText({selector: '#nock-none', timeout: 19}, function callback(result) {
         assert.strictEqual(result.status, -1);
       })
       .getText({selector: '//[@id="nock"]', locateStrategy: 'xpath'}, function callback(result) {
@@ -105,10 +109,10 @@ describe('test commands element selectors', function() {
 
     Nightwatch.api()
       .waitForElementPresent('.nock', 1, false, function callback(result) {
-        assert.strictEqual(result.value.length, 3, 'waitforPresent result expected found');
+        assert.strictEqual(result.value.length, 3);
       })
       .waitForElementPresent({selector: '.nock'}, 1, false, function callback(result) {
-        assert.strictEqual(result.value.length, 3, 'waitforPresent selector property result expected found');
+        assert.strictEqual(result.value.length, 3);
       });
 
     Nightwatch.start(done);
@@ -119,10 +123,13 @@ describe('test commands element selectors', function() {
 
     Nightwatch.api()
       .waitForElementPresent('.nock-none', 1, false, function callback(result) {
-        assert.strictEqual(result.value, false, 'waitforPresent result expected false');
+        assert.strictEqual(result.value, null, 'waitforPresent result expected false');
       });
 
-    Nightwatch.start(done);
+    Nightwatch.start(function(err) {
+
+      done(err);
+    });
   });
 
   it('waitForElementPresent(<{selector}>) failure', function(done) {
@@ -130,7 +137,7 @@ describe('test commands element selectors', function() {
 
     Nightwatch.api()
       .waitForElementPresent({selector: '.nock-none'}, 1, false, function callback(result) {
-        assert.strictEqual(result.value, false, 'waitforPresent selector property result expected false');
+        assert.strictEqual(result.value, null, 'waitforPresent selector property result expected false');
       });
 
     Nightwatch.start(done);
@@ -154,11 +161,8 @@ describe('test commands element selectors', function() {
       .useCss()
       .waitForElementPresent({selector: '//[@class="nock"]', locateStrategy: 'xpath'}, 1, false, function callback(result) {
         assert.strictEqual(result.value.length, 3, 'waitforPresent locateStrategy override to xpath found');
-      })
-      .perform(function() {
-        done();
       });
 
-    Nightwatch.start();
+    Nightwatch.start(done);
   });
 });

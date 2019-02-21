@@ -19,19 +19,19 @@ mocks:
   statusCode: 201
   method: POST
 
-- url: '/wd/hub/session'
-  postdata: ''
-  response:
-    status: 0
-    sessionId: *sessionId
-    value:
-      browserName: firefox
-      version: TEST
-      platform: TEST
-    state:
-  responseHeaders: {}
-  statusCode: 201
-  method: POST
+#- url: '/wd/hub/session'
+#  postdata: ''
+#  response:
+#    status: 0
+#    sessionId: *sessionId
+#    value:
+#      browserName: firefox
+#      version: TEST
+#      platform: TEST
+#    state:
+#  responseHeaders: {}
+#  statusCode: 201
+#  method: POST
 
 - url: '/wd/hub/session/1352110219202'
   method: DELETE

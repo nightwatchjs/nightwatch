@@ -98,6 +98,9 @@ class MockServer {
       item.__once = true;
     }
 
+    if (item.response && typeof item.response == 'string') {
+      item.response = JSON.parse(item.response);
+    }
     this.mocks.push(item);
   }
 
@@ -119,7 +122,7 @@ class MockServer {
   }
 
   nextInLine(req, postdata) {
-    const data = normalizeJSONString(postdata);
+    const data = postdata ? normalizeJSONString(postdata) : null;
 
     for (let i = 0; i < this.mocks.length; i++) {
       let item = this.mocks[i];
@@ -136,7 +139,11 @@ class MockServer {
           return item;
         }
 
-        if (isPostDataEqual(item.postdata, data)) {
+        if (data && isPostDataEqual(item.postdata, data)) {
+          return item;
+        }
+
+        if (!data) {
           return item;
         }
       }

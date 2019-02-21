@@ -50,11 +50,11 @@ describe('test expect element selectors', function() {
     let section = page.section.signUp;
 
     let passingAssertions = [
-      // api.expect.element('.nock').to.be.present.before(1),
-      // api.expect.element({selector: '.nock'}).to.be.present.before(1),
-      // api.expect.element({selector: '//[@class="nock"]', locateStrategy: 'xpath'}).to.be.present.before(1),
-      // page.expect.section('@signUp').to.be.present.before(1),
-      // page.expect.section({selector: '@signUp', locateStrategy: 'css selector'}).to.be.present.before(1),
+      api.expect.element('.nock').to.be.present.before(1),
+      api.expect.element({selector: '.nock'}).to.be.present.before(1),
+      api.expect.element({selector: '//[@class="nock"]', locateStrategy: 'xpath'}).to.be.present.before(1),
+      page.expect.section('@signUp').to.be.present.before(1),
+      page.expect.section({selector: '@signUp', locateStrategy: 'css selector'}).to.be.present.before(1),
       section.expect.element('@help').to.be.present.before(1)
     ];
 

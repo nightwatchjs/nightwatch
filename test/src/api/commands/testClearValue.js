@@ -1,13 +1,8 @@
 const assert = require('assert');
 const MockServer  = require('../../../lib/mockserver.js');
 const Nightwatch = require('../../../lib/nightwatch.js');
-const common = require('../../../common.js');
-const Logger = common.require('util/logger.js');
 
 describe('clearValue', function() {
-  Logger.disable();
-  Logger.setOutputEnabled(false);
-
   before(function(done) {
     this.server = MockServer.init();
     this.server.on('listening', () => {
@@ -29,10 +24,10 @@ describe('clearValue', function() {
       .then(client => {
         MockServer.addMock({
           'url': '/wd/hub/session/1352110219202/element/0/clear',
-          'response': JSON.stringify({
+          'response': {
             sessionId: '1352110219202',
             status: 0
-          })
+          }
         });
 
         client.api.clearValue('#weblogin', function callback(result) {
@@ -53,10 +48,10 @@ describe('clearValue', function() {
       .then(client => {
         MockServer.addMock({
           'url': '/wd/hub/session/1352110219202/element/0/clear',
-          'response': JSON.stringify({
+          'response': {
             sessionId: '1352110219202',
             status: 0
-          })
+          }
         });
 
 
@@ -71,29 +66,27 @@ describe('clearValue', function() {
   it('client.clearValue() with webdriver protocol', function(done) {
     Nightwatch.initClient({
       selenium : {
-        version2: false
-      }
+        version2: false,
+        start_process: false
+      },
+      webdriver:{
+        start_process: true
+      },
     }).then(client => {
       MockServer.addMock({
-        url: '/wd/hub/session/1352110219202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/clear',
-        response: JSON.stringify({
-          sessionId: '1352110219202',
-          status: 0
-        })
+        url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/clear',
+        response: { value: null }
       }, true);
 
       MockServer.addMock({
-        url: '/wd/hub/session/1352110219202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/clear',
-        response: JSON.stringify({
-          sessionId: '1352110219202',
-          status: 0
-        })
+        url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/clear',
+        response: { value: null }
       }, true);
 
       client.api.clearValue('#webdriver', function(result) {
-        assert.equal(result.status, 0);
+        assert.strictEqual(result.value, null);
       }).clearValue('css selector', '#webdriver', function(result) {
-        assert.equal(result.status, 0);
+        assert.strictEqual(result.value, null);
       });
 
       client.start(done);
@@ -104,31 +97,6 @@ describe('clearValue', function() {
     const common = require('../../../common.js');
     const Logger = common.require('util/logger.js');
     const loggerError = Logger.error;
-
-    MockServer.addMock({
-      url: '/session',
-      postdata: JSON.stringify({
-        capabilities: {
-          browserName: 'firefox',
-          acceptSslCerts: true
-        },
-        desiredCapabilities: {
-          browserName: 'firefox',
-          acceptSslCerts: true,
-          platform: 'ANY'
-        }
-      }),
-      response: JSON.stringify({
-        value: {
-          sessionId: 'af8b7f38-4ea7-984b-b534-a206cd7c3afa',
-          capabilities: {
-            acceptInsecureCerts: false,
-            browserName: 'firefox',
-            browserVersion: '59.0.2'
-          }
-        }
-      })
-    }, true);
 
     Nightwatch.initClient({
       selenium : {
@@ -143,30 +111,30 @@ describe('clearValue', function() {
     }).then(client => {
       MockServer.addMock({
         statusCode: 404,
-        url: '/session/af8b7f38-4ea7-984b-b534-a206cd7c3afa/element',
-        postdata: JSON.stringify({ using: 'css selector', value: '#webdriver-notfound' }),
-        response: JSON.stringify({
+        url: '/session/13521-10219-202/elements',
+        postdata: { using: 'css selector', value: '#webdriver-notfound' },
+        response: {
           value: {
             error: 'no such element',
             message: 'Unable to locate element: #webdriver-notfound',
             stacktrace: 'WebDriverError@chrome://marionette/content/error.js:172:5\nNoSuchElementError@chrome://marionette/content/error.js:400:5'
           }
-        })
+        }
       }, true);
 
       let loggedErr;
       Logger.error = function(err) {
         try {
-          assert.equal(err, 'Error while running .locateSingleElement() protocol action: Unable to locate element: #webdriver-notfound\n');
+          assert.equal(err.message, 'Timed out while waiting for element "#webdriver-notfound" with "css selector" to be present for 0 milliseconds.');
         } catch (ex) {
           loggedErr = ex;
         }
       };
 
-      client.api.clearValue('#webdriver-notfound', function(result) {
-        assert.equal(result.status, -1);
-        assert.equal(result.value.error, 'no such element');
-        assert.equal(result.value.message, 'Unable to locate element: #webdriver-notfound');
+      client.api.clearValue({selector: '#webdriver-notfound', timeout: 0}, function(result) {
+        assert.strictEqual(result.status, -1);
+        assert.equal(result.value.error, 'Timed out while waiting for element "#webdriver-notfound" with "css selector" to be present for 0 milliseconds.');
+        assert.equal(result.value.message, 'Timed out while waiting for element "#webdriver-notfound" with "css selector" to be present for 0 milliseconds.');
       });
 
       client.start(function(err) {

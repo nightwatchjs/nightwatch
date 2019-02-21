@@ -9,8 +9,8 @@ module.exports = new function () {
   let _client = null;
   let _mockServer = null;
 
-  Logger.setOutputEnabled(false);
-  Logger.disable(false);
+  Logger.setOutputEnabled(true);
+  //Logger.disable(false);
 
   this.startMockServer = function (done = function() {}) {
     return new Promise((resolve) => {
@@ -28,7 +28,6 @@ module.exports = new function () {
     }
 
     _mockServer.close(function() {
-      console.log('MockServer stopped');
       done();
     });
   };

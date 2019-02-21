@@ -7,8 +7,8 @@ const common = require('../../common.js');
 const Logger = common.require('util/logger.js');
 
 describe('test page object element selectors', function() {
-  // Logger.enable();
-  // Logger.setOutputEnabled(true);
+  Logger.enable();
+  Logger.setOutputEnabled(true);
 
   before(function(done) {
     nocks.enable();
@@ -39,10 +39,10 @@ describe('test page object element selectors', function() {
 
   it('page elements', function(done) {
     nocks
-      .elementFound('#weblogin')
-      .elementFound('weblogin', 'id')
-      .elementByXpath('//weblogin')
-      .elementByXpath('#weblogin', [])
+      .elementsFound('#weblogin')
+      .elementsFound('weblogin', [{ELEMENT: '0'}], 'id')
+      .elementsByXpath('//weblogin')
+      .elementsByXpath('#weblogin', [])
       .text(0, 'first')
       .text(1, 'second');
 
@@ -50,24 +50,24 @@ describe('test page object element selectors', function() {
 
     page
       .getText('@loginAsString', function callback(result) {
-        assert.equal(result.status, 0, 'element selector string found');
-        assert.equal(result.value, 'first', 'element selector string value');
+        assert.strictEqual(result.status, 0, 'element selector string found');
+        assert.strictEqual(result.value, 'first', 'element selector string value');
       })
       .getText({selector: '@loginAsString'}, function callback(result) {
-        assert.equal(result.status, 0, 'element selector property found');
-        assert.equal(result.value, 'first', 'element selector property value');
+        assert.strictEqual(result.status, 0, 'element selector property found');
+        assert.strictEqual(result.value, 'first', 'element selector property value');
       })
       .getText('@loginXpath', function callback(result) {
-        assert.equal(result.status, 0, 'element selector xpath found');
-        assert.equal(result.value, 'first', 'element selector xpath value');
+        assert.strictEqual(result.status, 0, 'element selector xpath found');
+        assert.strictEqual(result.value, 'first', 'element selector xpath value');
       })
       .getText('@loginCss', function callback(result) {
-        assert.equal(result.status, 0, 'element selector css found');
-        assert.equal(result.value, 'first', 'element selector css value');
+        assert.strictEqual(result.status, 0, 'element selector css found');
+        assert.strictEqual(result.value, 'first', 'element selector css value');
       })
       .getText('@loginId', function callback(result) {
-        assert.equal(result.status, 0, 'element selector id found');
-        assert.equal(result.value, 'first', 'element selector id value');
+        assert.strictEqual(result.status, 0, 'element selector id found');
+        assert.strictEqual(result.value, 'first', 'element selector id value');
       });
 
     Nightwatch.start(done);
@@ -75,9 +75,9 @@ describe('test page object element selectors', function() {
 
   it('page section elements', function(done) {
     nocks
-      .elementFound('#signupSection')
-      .elementFound('#getStarted')
-      .elementFound('#helpBtn')
+      .elementsFound('#signupSection')
+      .elementsFound('#getStarted')
+      .elementsFound('#helpBtn')
       .elementIdNotFound(0, '#helpBtn', 'xpath')
       .elementsId('0', '#helpBtn', [{ELEMENT: '0'}])
       .text(0, 'first')
@@ -89,12 +89,12 @@ describe('test page object element selectors', function() {
 
     section
       .getText('@help', function callback(result) {
-        assert.equal(result.status, 0, 'section element selector string found');
-        assert.equal(result.value, 'first', 'section element selector string value');
+        assert.strictEqual(result.status, 0, 'section element selector string found');
+        assert.strictEqual(result.value, 'first', 'section element selector string value');
       })
       .getText({selector: '@help'}, function callback(result) {
-        assert.equal(result.status, 0, 'section element selector property found');
-        assert.equal(result.value, 'first', 'section element selector property value');
+        assert.strictEqual(result.status, 0, 'section element selector property found');
+        assert.strictEqual(result.value, 'first', 'section element selector property value');
       });
 
     assert.throws(function() {
@@ -103,12 +103,12 @@ describe('test page object element selectors', function() {
 
     sectionChild
       .getText('#helpBtn', function callback(result) {
-        assert.equal(result.status, 0, 'child section element selector string found');
-        assert.equal(result.value, 'first', 'child section element selector string value');
+        assert.strictEqual(result.status, 0, 'child section element selector string found');
+        assert.strictEqual(result.value, 'first', 'child section element selector string value');
       })
       .getText({selector: '#helpBtn'}, function callback(result) {
         assert.strictEqual(result.status, 0, 'child section element selector property found');
-        assert.equal(result.value, 'first', 'child section element selector property value');
+        assert.strictEqual(result.value, 'first', 'child section element selector property value');
       });
 
     Nightwatch.start(done);
@@ -134,7 +134,7 @@ describe('test page object element selectors', function() {
 
     return Nightwatch.start(function(err) {
       assert.ok(err instanceof Error, 'Expected err to be an Error but found: ' + typeof err);
-      assert.equal(err.name, 'AssertionError');
+      assert.strictEqual(err.name, 'AssertionError');
       assert.strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.message.includes('Expected element <Section [name=signUp],Element [name=@help]> to be visible'));
       assert.ok(expect.assertion.message.includes('element was not found'));
@@ -165,7 +165,7 @@ describe('test page object element selectors', function() {
 
   it('page object customCommand with selector called on section', function(done) {
     nocks
-      .elementFound('#signupSection')
+      .elementsFound('#signupSection')
       .elementFound('#getStarted')
       .elementFound('#helpBtn')
       .elementsId('0', '#helpBtn', [{ELEMENT: '0'}]);
@@ -200,11 +200,10 @@ describe('test page object element selectors', function() {
       .assert.customAssertionWithSelector('@loginAsString', 0, function(result, assertion) {
         try {
           assert.strictEqual(result, true);
-          assert.deepEqual(assertion.element, {
-            selector: '#weblogin',
-            locateStrategy: 'css selector',
-            name: 'loginAsString'
-          });
+          assert.strictEqual(assertion.element.selector, '#weblogin');
+          assert.strictEqual(assertion.element.locateStrategy, 'css selector');
+          assert.strictEqual(assertion.element.name, 'loginAsString');
+
         } catch (err) {
           done(err);
         }
@@ -213,13 +212,11 @@ describe('test page object element selectors', function() {
         try {
           assert.ok(result instanceof Error);
           assert.ok(result.message.includes('in 100 ms'));
-          assert.equal(assertion.rescheduleInterval, 50);
-          assert.equal(assertion.retryAssertionTimeout, 100);
-          assert.deepEqual(assertion.element, {
-            selector: '#weblogin',
-            locateStrategy: 'css selector',
-            name: 'loginAsString'
-          });
+          assert.strictEqual(assertion.rescheduleInterval, 50);
+          assert.strictEqual(assertion.retryAssertionTimeout, 100);
+          assert.strictEqual(assertion.element.selector, '#weblogin');
+          assert.strictEqual(assertion.element.locateStrategy, 'css selector');
+          assert.strictEqual(assertion.element.name, 'loginAsString');
           done();
         } catch (err) {
           done(err);
@@ -231,7 +228,7 @@ describe('test page object element selectors', function() {
 
   it('page object customAssertion with selector called on section', function(done) {
     nocks
-      .elementFound('#signupSection')
+      .elementsFound('#signupSection')
       .elementFound('#getStarted')
       .elementFound('#helpBtn')
       .elementsId('0', '#helpBtn', [{ELEMENT: '0'}]);
@@ -261,7 +258,7 @@ describe('test page object element selectors', function() {
 
   it('page object customAssertion with indexed element called on section', function(done) {
     nocks
-      .elementFound('#signupSection') // page.section
+      .elementsFound('#signupSection') // page.section
       .elementsId(0, '#helpBtn', [{ELEMENT: '1'},{ELEMENT: '2'}])
       .elementId(0, '#helpBtn', null, {ELEMENT: '1'});
 
