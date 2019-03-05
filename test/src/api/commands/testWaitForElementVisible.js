@@ -37,18 +37,13 @@ describe('waitForElementVisible', function() {
     this.client.api.globals.abortOnAssertionFailure = false;
     this.client.api.globals.waitForConditionPollInterval = 10;
     this.client.api.waitForElementVisible('#weblogin', 15, 10, function (result, instance) {
-      try {
-        assert.equal(assertion[0], false);
-        assert.equal(assertion[1].actual, 'not visible');
-        assert.equal(assertion[4], false);
-        NightwatchAssertion.create = createOrig;
-        done();
-      } catch (err) {
-        done(err);
-      }
+      assert.equal(assertion[0], false);
+      assert.equal(assertion[1].actual, 'not visible');
+      assert.equal(assertion[4], false);
+      NightwatchAssertion.create = createOrig;
     });
 
-    this.client.start();
+    this.client.start(done);
   });
 
   it('client.waitForElementVisible() fail with global timeout default', function (done) {

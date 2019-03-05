@@ -43,8 +43,8 @@ describe('waitForElementNotVisible', function() {
 
     this.client.api.globals.abortOnAssertionFailure = false;
     this.client.api.waitForElementNotVisible('#weblogin', 110, 50, function callback(result, instance) {
-      assert.equal(assertion[0], true);
-      assert.equal(assertion[4], false);
+      assert.strictEqual(assertion[0], true);
+      assert.strictEqual(assertion[4], false);
       NightwatchAssertion.create = createOrig;
     });
 
@@ -52,9 +52,6 @@ describe('waitForElementNotVisible', function() {
   });
 
   it('client.waitForElementNotVisible() failure', function(done) {
-    const Logger = common.require('util/logger.js');
-    Logger.setOutputEnabled(false);
-
     MockServer.addMock({
       url : '/wd/hub/session/1352110219202/element/0/displayed',
       method:'GET',
@@ -75,20 +72,19 @@ describe('waitForElementNotVisible', function() {
     this.client.api.globals.abortOnAssertionFailure = true;
 
     this.client.api.waitForElementNotVisible('#weblogin', 15, 10, function callback(result) {
-      try {
-        assert.equal(result.status, 0);
-        assert.equal(assertion[0], false);
-        assert.equal(assertion[1].actual, 'visible');
-        assert.equal(assertion[1].expected, 'not visible');
-        assert.equal(assertion[3], 'Timed out while waiting for element <#weblogin> to not be visible for 15 milliseconds.');
-        assert.equal(assertion[4], true); // abortOnFailure
-        done();
-      } catch (err) {
-        done(err);
-      }
+      assert.strictEqual(result.status, 0);
+      assert.strictEqual(assertion[0], false);
+      assert.strictEqual(assertion[1].actual, 'visible');
+      assert.strictEqual(assertion[1].expected, 'not visible');
+      assert.strictEqual(assertion[3], 'Timed out while waiting for element <#weblogin> to not be visible for 15 milliseconds.');
+      assert.strictEqual(assertion[4], true); // abortOnFailure
     });
 
-    this.client.start();
+    this.client.start(function(err) {
+      assert.strictEqual(err.abortOnFailure, true);
+      assert.ok(err instanceof Error);
+      done();
+    });
   });
 });
 
