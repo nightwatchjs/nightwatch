@@ -47,15 +47,20 @@ describe('waitForElementPresent', function() {
 
   });
 
-  it('client.waitForElementPresent() failure with custom message', function() {
+  it('client.waitForElementPresent() failure with custom message', function(done) {
     this.client.api.globals.waitForConditionPollInterval = 10;
     this.client.api.waitForElementPresent('.weblogin', 15, function callback(result, instance) {
       assert.strictEqual(instance.message, 'Element .weblogin found in 15 milliseconds');
       assert.strictEqual(result.value, false);
     }, 'Element %s found in %d milliseconds');
 
-    return this.client.start(function(err) {
+    this.client.start(function(err) {
       assert.ok(err instanceof Error);
+      if (err.name != 'NightwatchAssertError') {
+        done(err);
+      } else {
+        done();
+      }
     });
   });
 
@@ -68,11 +73,14 @@ describe('waitForElementPresent', function() {
 
     return this.client.start(function (err) {
       assert.ok(err instanceof Error);
+      if (err.name != 'NightwatchAssertError') {
+        throw err;
+      }
     });
   });
 
   it('client.waitForElementPresent() failure no abort', function(done) {
-    this.client.api.waitForElementPresent('.weblogin', 100, false, function callback(result) {
+    this.client.api.waitForElementPresent('.weblogin', 15, 10, false, function callback(result) {
       assert.strictEqual(result.value, false);
     });
 
