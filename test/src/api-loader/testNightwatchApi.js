@@ -204,29 +204,6 @@ describe('test Nightwatch Api', function() {
     });
   });
 
-  it('testRunElementCommand', function(done) {
-    const MockSession = require('../../lib/mocks/core/session.js');
-    mockery.registerMock('./core/session.js', MockSession);
-
-    MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/element/0/value',
-      method:'POST',
-      postdata : '{"value":["1"]}',
-      response : JSON.stringify({
-        sessionId: '1352110219202',
-        status:0
-      })
-    });
-
-    const Nightwatch = require('../../lib/nightwatch.js');
-    let client = Nightwatch.createClient();
-
-    client.api.setValue('#weblogin', '1', function (result) {
-      assert.strictEqual(result.status, 0);
-      done();
-    });
-  });
-
   it('testRunClientCommand', function(done) {
     const MockSession = require('../../lib/mocks/core/session.js');
     mockery.registerMock('./core/session.js', MockSession);

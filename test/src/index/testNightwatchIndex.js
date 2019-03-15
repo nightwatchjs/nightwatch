@@ -119,7 +119,7 @@ describe('test NightwatchIndex', function () {
       selenium_host: 'localhost',
       selenium_port: 10195,
       silent: false,
-      output: true,
+      output: false,
       selenium: {
         version2: false,
         start_process: false

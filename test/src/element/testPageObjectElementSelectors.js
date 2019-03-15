@@ -1,32 +1,21 @@
 const path = require('path');
 const assert = require('assert');
 const nocks = require('../../lib/nockselements.js');
-const MockServer = require('../../lib/mockserver.js');
 const Nightwatch = require('../../lib/nightwatch.js');
-const common = require('../../common.js');
-const Logger = common.require('util/logger.js');
 
 describe('test page object element selectors', function() {
-  Logger.enable();
-  Logger.setOutputEnabled(true);
 
-  before(function(done) {
+  before(function() {
     nocks.enable();
-    this.server = MockServer.init();
-    this.server.on('listening', () => {
-      done();
-    });
   });
 
-  after(function(done) {
+  after(function() {
     nocks.disable();
-    this.server.close(function() {
-      done();
-    });
   });
 
   beforeEach(function(done) {
-    nocks.cleanAll();
+    nocks.cleanAll().enable().createSession();
+
     Nightwatch.init({
       page_objects_path: [path.join(__dirname, '../../extra/pageobjects/pages')],
       custom_commands_path: [path.join(__dirname, '../../extra/commands')],
@@ -134,7 +123,7 @@ describe('test page object element selectors', function() {
 
     return Nightwatch.start(function(err) {
       assert.ok(err instanceof Error, 'Expected err to be an Error but found: ' + typeof err);
-      assert.strictEqual(err.name, 'AssertionError');
+      assert.strictEqual(err.name, 'NightwatchAssertError');
       assert.strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.message.includes('Expected element <Section [name=signUp],Element [name=@help]> to be visible'));
       assert.ok(expect.assertion.message.includes('element was not found'));

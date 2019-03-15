@@ -1,34 +1,24 @@
 const path = require('path');
 const assert = require('assert');
 const nocks = require('../../lib/nockselements.js');
-const MockServer  = require('../../lib/mockserver.js');
 const Nightwatch = require('../../lib/nightwatch.js');
-const common = require('../../common.js');
-const Logger = common.require('util/logger.js');
 
 describe('test commands element selectors', function() {
-  before(function(done) {
-    nocks.enable();
-    Logger.enable();
-    Logger.setOutputEnabled(true);
-
-    this.server = MockServer.init();
-    this.server.on('listening', () => {
-      done();
-    });
-  });
-
   after(function(done) {
     nocks.disable();
-    this.server.close(function() {
-      done();
-    });
+    nocks.cleanAll();
+    done();
+  });
+
+  before(function (done) {
+    nocks.enable();
+    done();
   });
 
   beforeEach(function (done) {
-    nocks.cleanAll();
+    nocks.cleanAll().createSession();
     Nightwatch.init({
-      output: true,
+      output: false,
       silent: false,
       globals: {
         waitForConditionTimeout: 100,
@@ -123,7 +113,7 @@ describe('test commands element selectors', function() {
 
     Nightwatch.api()
       .waitForElementPresent('.nock-none', 1, false, function callback(result) {
-        assert.strictEqual(result.value, null, 'waitforPresent result expected false');
+        assert.strictEqual(result.value, false, 'waitforPresent result expected false');
       });
 
     Nightwatch.start(function(err) {
@@ -137,7 +127,7 @@ describe('test commands element selectors', function() {
 
     Nightwatch.api()
       .waitForElementPresent({selector: '.nock-none'}, 1, false, function callback(result) {
-        assert.strictEqual(result.value, null, 'waitforPresent selector property result expected false');
+        assert.strictEqual(result.value, false, 'waitforPresent selector property result expected false');
       });
 
     Nightwatch.start(done);

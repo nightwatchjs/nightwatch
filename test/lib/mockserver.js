@@ -113,7 +113,7 @@ class MockServer {
 
       if (
         item.url === mock.url && item.method.toLowerCase() === mockMethod.toLowerCase() &&
-        (!mock.postdata || isPostDataEqual(item.postdata, normalizedPostData))
+        (!mock.postdata || isPostDataEqual(item.postdata, normalizedPostData, item.matchEmpty))
       ) {
         this.mocks.splice(i, 1);
         break;
@@ -139,7 +139,7 @@ class MockServer {
           return item;
         }
 
-        if (data && isPostDataEqual(item.postdata, data)) {
+        if (data && isPostDataEqual(item.postdata, data, item.matchEmpty)) {
           return item;
         }
 
@@ -154,7 +154,7 @@ class MockServer {
 
 }
 
-const isPostDataEqual = (notNormalizedData, normalizedData) => {
+const isPostDataEqual = (notNormalizedData, normalizedData, matchEmpty = false) => {
   let normalized;
 
   if (typeof notNormalizedData == 'string') {
@@ -163,7 +163,29 @@ const isPostDataEqual = (notNormalizedData, normalizedData) => {
     normalized = JSON.stringify(notNormalizedData);
   }
 
-  return normalizedData === normalized;
+  const postDataEquals = normalizedData === normalized;
+  if (matchEmpty && !postDataEquals) {
+    const incomingPostData = JSON.parse(normalized);
+    const matchData = JSON.parse(normalizedData);
+
+    return objectIncludes(matchData, incomingPostData);
+  }
+
+  return postDataEquals;
+};
+
+const objectIncludes = (target, source) => {
+  return Object.keys(target).every(function(key) {
+    if (!(key in source)) {
+      return false;
+    }
+
+    if (source[key] && typeof source[key] == 'object') {
+      return objectIncludes(target[key], source[key]);
+    }
+
+    return (target[key] === source[key] || source[key] === '');
+  });
 };
 
 const normalizeJSONString = (data) => {
@@ -215,7 +237,8 @@ module.exports = {
    * @param {boolean} once
    */
   addMock(item, once) {
-    return server.addMock(item, once);
+    server.addMock(item, once);
+    return this;
   },
 
   /**

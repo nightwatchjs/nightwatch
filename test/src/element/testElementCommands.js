@@ -1,12 +1,8 @@
 const assert = require('assert');
 const Nightwatch = require('../../lib/nightwatch.js');
-const common = require('../../common.js');
-const Logger = common.require('util/logger.js');
 
 describe('element base commands', function() {
   before(function(done) {
-    Logger.enable();
-    Logger.setOutputEnabled();
     Nightwatch.startMockServer(done);
   });
 
@@ -19,7 +15,7 @@ describe('element base commands', function() {
   //////////////////////////////////////////////////////////////////////////////////////
   it('client.element()', async function() {
     await Nightwatch.initAsync({
-      output: true,
+      output: false,
       silent: false
     });
 
@@ -34,7 +30,7 @@ describe('element base commands', function() {
 
   it('client.element() W3C Webdriver prototcol', async function() {
     await Nightwatch.initAsync({
-      output: true,
+      output: false,
       silent: false,
       selenium : {
         start_process: false,
@@ -68,7 +64,7 @@ describe('element base commands', function() {
     }, true);
 
     await Nightwatch.initAsync({
-      output: true,
+      output: false,
       silent: false,
       selenium : {
         start_process: false,
@@ -106,7 +102,7 @@ describe('element base commands', function() {
     }, true);
 
     await Nightwatch.initAsync({
-      output: true,
+      output: false,
       silent: false,
       selenium : {
         start_process: false,
@@ -136,7 +132,7 @@ describe('element base commands', function() {
   //////////////////////////////////////////////////////////////////////////////////////
   it('client.elements()', async function() {
     await Nightwatch.initAsync({
-      output: true,
+      output: false,
       silent: false
     });
 
@@ -151,7 +147,7 @@ describe('element base commands', function() {
 
   it('client.elements() W3C Webdriver prototcol', async function() {
     await Nightwatch.initAsync({
-      output: true,
+      output: false,
       silent: false,
       selenium : {
         start_process: false,
@@ -191,7 +187,7 @@ describe('element base commands', function() {
     }, true);
 
     await Nightwatch.initAsync({
-      output: true,
+      output: false,
       silent: false,
       selenium : {
         start_process: false,
@@ -218,7 +214,7 @@ describe('element base commands', function() {
   //////////////////////////////////////////////////////////////////////////////////////
   it('client.elementIdElement()', async function() {
     await Nightwatch.initAsync({
-      output: true,
+      output: false,
       silent: false
     });
 
@@ -233,7 +229,7 @@ describe('element base commands', function() {
 
   it('client.elementIdElement() with selector object', async function() {
     await Nightwatch.initAsync({
-      output: true,
+      output: false,
       silent: false
     });
 
@@ -248,7 +244,7 @@ describe('element base commands', function() {
 
   it('client.elementIdElement() with wrong selector object', async function() {
     await Nightwatch.initAsync({
-      output: true,
+      output: false,
       silent: false
     });
 
@@ -271,7 +267,7 @@ describe('element base commands', function() {
   //////////////////////////////////////////////////////////////////////////////////////
   it('client.elementIdElements()', async function() {
     await Nightwatch.initAsync({
-      output: true,
+      output: false,
       silent: false
     });
 
@@ -286,7 +282,7 @@ describe('element base commands', function() {
 
   it('client.elementIdElements() with index', async function() {
     await Nightwatch.initAsync({
-      output: true,
+      output: false,
       silent: false
     });
 
@@ -301,7 +297,7 @@ describe('element base commands', function() {
 
   it('client.elementIdElements() with wrong index', async function() {
     await Nightwatch.initAsync({
-      output: true,
+      output: false,
       silent: false
     });
 
@@ -316,7 +312,7 @@ describe('element base commands', function() {
 
   it('client.elementIdElements() with wrong selector object', async function() {
     await Nightwatch.initAsync({
-      output: true,
+      output: false,
       silent: false
     });
 

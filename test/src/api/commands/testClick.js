@@ -102,7 +102,9 @@ describe('click', function() {
         }
       }, true);
 
-      client.api.click('#webdriver', function(result) {
+      client.api.click({
+        selector: '#webdriver',
+      }, function(result) {
         assert.deepEqual(result.value, {
           error: 'element not interactable',
           message: 'element not interactable',

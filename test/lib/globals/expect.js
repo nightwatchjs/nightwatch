@@ -8,9 +8,7 @@ module.exports = {
       opts = {};
     }
 
-    Nocks.cleanAll().createSession();
-
-    Nocks.enable();
+    Nocks.cleanAll().createSession().enable();
     Nightwatch.init(opts, function () {
       done();
     });
@@ -19,8 +17,7 @@ module.exports = {
   },
 
   afterEach(done) {
-    Nocks.cleanAll();
-    Nocks.deleteSession();
+    //Nocks.deleteSession();
     Nocks.disable();
     done();
   }

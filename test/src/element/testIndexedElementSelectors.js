@@ -1,33 +1,23 @@
 const path = require('path');
 const assert = require('assert');
 const nocks = require('../../lib/nockselements.js');
-const MockServer  = require('../../lib/mockserver.js');
 const Nightwatch = require('../../lib/nightwatch.js');
-const common = require('../../common.js');
-const Logger = common.require('util/logger.js');
 
 describe('test index in element selectors', function() {
-  before(function(done) {
-    Logger.enable();
-    Logger.setOutputEnabled();
+  before(function() {
     nocks.enable();
-    this.server = MockServer.init();
-    this.server.on('listening', () => {
-      done();
-    });
   });
 
   after(function(done) {
     nocks.disable();
-    this.server.close(function() {
-      done();
-    });
+    nocks.cleanAll();
+    done();
   });
 
   beforeEach(function (done) {
-    nocks.cleanAll();
+    nocks.cleanAll().createSession();
     Nightwatch.init({
-      output: true,
+      output: false,
       silent: false,
       page_objects_path: [path.join(__dirname, '../../extra/pageobjects/pages')]
     }, done);
@@ -107,7 +97,7 @@ describe('test index in element selectors', function() {
 
     Nightwatch.api()
       .waitForElementPresent({selector: '.nock', index: 999}, 1, false, function callback(result) {
-        assert.strictEqual(result.value, null, 'waitforPresent out of bounds index expected false');
+        assert.strictEqual(result.value, false, 'waitforPresent out of bounds index expected false');
       });
 
     Nightwatch.start(done);

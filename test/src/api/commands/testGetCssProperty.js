@@ -23,7 +23,7 @@ describe('getCssProperty', function() {
     });
 
     this.client.api.getCssProperty('#weblogin', 'display', function callback(result) {
-      assert.equal(result.value, 'block');
+      assert.strictEqual(result.value, 'block');
     });
 
     this.client.start(done);

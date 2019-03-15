@@ -1,35 +1,21 @@
 const path = require('path');
 const assert = require('assert');
-const common = require('../../common.js');
 const nocks = require('../../lib/nockselements.js');
-const MockServer  = require('../../lib/mockserver.js');
 const Nightwatch = require('../../lib/nightwatch.js');
-const Logger = common.require('util/logger.js');
 
 describe('test expect element selectors', function() {
 
-  before(function(done) {
-    Logger.setOutputEnabled(true);
-    Logger.enable();
-
-    nocks.enable();
-    this.server = MockServer.init();
-    this.server.on('listening', () => {
-      done();
-    });
-  });
-
+  before(() => nocks.enable());
   after(function(done) {
     nocks.disable();
-    this.server.close(function() {
-      done();
-    });
+    nocks.cleanAll();
+    done();
   });
 
   beforeEach(function (done) {
-    nocks.cleanAll();
+    nocks.cleanAll().createSession();
     Nightwatch.init({
-      output: true,
+      output: false,
       silent: false,
       page_objects_path: [path.join(__dirname, '../../extra/pageobjects/pages')]
     }, done);

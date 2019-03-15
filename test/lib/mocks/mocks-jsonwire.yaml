@@ -1,12 +1,13 @@
 ---
 mocks:
-# Default JSONWIre session request with Selenium
+# Default JSON Wire session request with Selenium
 - url: '/wd/hub/session'
   postdata:
     desiredCapabilities:
       browserName: firefox
       acceptSslCerts: true
       platform: ANY
+      name: ''
   response:
     status: 0
     sessionId: &sessionId '1352110219202'
@@ -18,20 +19,7 @@ mocks:
   responseHeaders: {}
   statusCode: 201
   method: POST
-
-#- url: '/wd/hub/session'
-#  postdata: ''
-#  response:
-#    status: 0
-#    sessionId: *sessionId
-#    value:
-#      browserName: firefox
-#      version: TEST
-#      platform: TEST
-#    state:
-#  responseHeaders: {}
-#  statusCode: 201
-#  method: POST
+  matchEmpty: true
 
 - url: '/wd/hub/session/1352110219202'
   method: DELETE

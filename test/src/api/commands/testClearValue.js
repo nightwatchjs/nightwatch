@@ -31,9 +31,9 @@ describe('clearValue', function() {
         });
 
         client.api.clearValue('#weblogin', function callback(result) {
-          assert.equal(result.status, 0);
+          assert.strictEqual(result.status, 0);
         }).clearValue('css selector', '#weblogin', function callback(result) {
-          assert.equal(result.status, 0);
+          assert.strictEqual(result.status, 0);
         });
 
         client.start(done);
@@ -42,7 +42,7 @@ describe('clearValue', function() {
 
   it('client.clearValue() with no callback', function(done) {
     Nightwatch.initClient({
-      output: true,
+      output: false,
       silent: false
     })
       .then(client => {
@@ -94,10 +94,6 @@ describe('clearValue', function() {
   });
 
   it('client.clearValue() with webdriver protocol - element not found', function(done) {
-    const common = require('../../../common.js');
-    const Logger = common.require('util/logger.js');
-    const loggerError = Logger.error;
-
     Nightwatch.initClient({
       selenium : {
         version2: false,
@@ -122,26 +118,13 @@ describe('clearValue', function() {
         }
       }, true);
 
-      let loggedErr;
-      Logger.error = function(err) {
-        try {
-          assert.equal(err.message, 'Timed out while waiting for element "#webdriver-notfound" with "css selector" to be present for 0 milliseconds.');
-        } catch (ex) {
-          loggedErr = ex;
-        }
-      };
-
       client.api.clearValue({selector: '#webdriver-notfound', timeout: 0}, function(result) {
         assert.strictEqual(result.status, -1);
-        assert.equal(result.value.error, 'Timed out while waiting for element "#webdriver-notfound" with "css selector" to be present for 0 milliseconds.');
-        assert.equal(result.value.message, 'Timed out while waiting for element "#webdriver-notfound" with "css selector" to be present for 0 milliseconds.');
+        assert.strictEqual(result.value.error, 'An error occurred while running .clearValue() command on <#webdriver-notfound>:');
+        assert.strictEqual(result.value.message, 'An error occurred while running .clearValue() command on <#webdriver-notfound>:');
       });
 
-      client.start(function(err) {
-        done(loggedErr ? loggedErr : err);
-
-        Logger.error = loggerError;
-      });
+      client.start(done);
     });
   });
 });

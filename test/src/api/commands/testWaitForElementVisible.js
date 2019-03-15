@@ -37,9 +37,9 @@ describe('waitForElementVisible', function() {
     this.client.api.globals.abortOnAssertionFailure = false;
     this.client.api.globals.waitForConditionPollInterval = 10;
     this.client.api.waitForElementVisible('#weblogin', 15, 10, function (result, instance) {
-      assert.equal(assertion[0], false);
-      assert.equal(assertion[1].actual, 'not visible');
-      assert.equal(assertion[4], false);
+      assert.strictEqual(assertion[0], false);
+      assert.strictEqual(assertion[1].actual, 'not visible');
+      assert.strictEqual(assertion[4], false);
       NightwatchAssertion.create = createOrig;
     });
 
@@ -73,9 +73,9 @@ describe('waitForElementVisible', function() {
     this.client.api.globals.waitForConditionPollInterval = 10;
     this.client.api.waitForElementVisible('#weblogin', function callback(result, instance) {
       try {
-        assert.equal(assertion[0], false);
-        assert.equal(assertion[3], 'Timed out while waiting for element <#weblogin> to be visible for 15 milliseconds.');
-        assert.equal(assertion[1].actual, 'not visible');
+        assert.strictEqual(assertion[0], false);
+        assert.strictEqual(assertion[3], 'Timed out while waiting for element <#weblogin> to be visible for 15 milliseconds.');
+        assert.strictEqual(assertion[1].actual, 'not visible');
 
         NightwatchAssertion.create = createOrig;
         done();
@@ -114,7 +114,7 @@ describe('waitForElementVisible', function() {
     this.client.api.globals.waitForConditionPollInterval = 10;
     this.client.api.waitForElementVisible('#weblogin', function callback(result, instance) {
       try {
-        assert.equal(assertion[3], 'Test message <#weblogin> and a global 15 ms.');
+        assert.strictEqual(assertion[3], 'Test message <#weblogin> and a global 15 ms.');
 
         NightwatchAssertion.create = createOrig;
         done();
@@ -171,8 +171,8 @@ describe('waitForElementVisible', function() {
 
     this.client.api.waitForElementVisible('#stale-element', 110, 10, function callback(result, instance) {
       try {
-        assert.equal(assertion[0], true);
-        assert.equal(result.value, true);
+        assert.strictEqual(assertion[0], true);
+        assert.strictEqual(result.value, true);
 
         NightwatchAssertion.create = createOrig;
       } catch (err) {
@@ -191,15 +191,14 @@ describe('waitForElementVisible', function() {
 
   });
 
-  it('client.waitForElementVisible() fail with no args and global timeout not set', function (done) {
+  it('client.waitForElementVisible() fail with no args and global timeout not set', function () {
     this.client.api.globals.waitForConditionTimeout = null;
 
     this.client.api.waitForElementVisible('foo');
 
-    this.client.start(function(err) {
+    return this.client.start(function(err) {
       assert.ok(err instanceof Error);
       assert.ok(err.message.includes('waitForElement expects second parameter to have a global default (waitForConditionTimeout) to be specified if not passed as the second parameter'));
-      done();
     });
   });
 });

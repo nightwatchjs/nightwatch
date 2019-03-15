@@ -5,8 +5,6 @@ const CommandGlobals = require('../../../lib/globals/commands.js');
 const Logger = common.require('util/logger.js');
 
 describe('setValue', function() {
-  Logger.enable();
-  Logger.setOutputEnabled(true);
 
   before(function(done) {
     CommandGlobals.beforeEach.call(this, done);

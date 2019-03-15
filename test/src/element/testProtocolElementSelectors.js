@@ -9,7 +9,7 @@ describe('test protocol element selectors', function() {
   before(function(done) {
     nocks.enable();
     //Logger.enable();
-    Logger.setOutputEnabled(false);
+    //Logger.setOutputEnabled(false);
 
     Nightwatch.startMockServer(done);
   });

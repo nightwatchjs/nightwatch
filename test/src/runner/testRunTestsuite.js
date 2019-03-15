@@ -4,12 +4,8 @@ const common = require('../../common.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
 const NightwatchClient = common.require('index.js');
-const Logger = common.require('util/logger.js');
 
 describe('testRunTestSuite', function() {
-
-  // Logger.enable();
-  // Logger.setOutputEnabled(true);
 
   before(function(done) {
     this.server = MockServer.init();
@@ -111,10 +107,6 @@ describe('testRunTestSuite', function() {
         cb();
       }
     };
-
-    const Logger = common.require('util/logger.js');
-    Logger.disable();
-    Logger.setOutputEnabled(false);
 
     const Runner = common.require('runner/runner.js');
     const Settings = common.require('settings/settings.js');
@@ -227,7 +219,7 @@ describe('testRunTestSuite', function() {
         version2: true,
         start_process: true
       },
-      silent: false,
+      silent: true,
       output: false,
       sync_test_names: true,
       persist_globals: true,

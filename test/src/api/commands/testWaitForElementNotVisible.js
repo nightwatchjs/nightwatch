@@ -42,7 +42,7 @@ describe('waitForElementNotVisible', function() {
 
 
     this.client.api.globals.abortOnAssertionFailure = false;
-    this.client.api.waitForElementNotVisible('#weblogin', 110, 50, function callback(result, instance) {
+    this.client.api.waitForElementNotVisible('#weblogin', 11, 5, function callback(result, instance) {
       assert.strictEqual(assertion[0], true);
       assert.strictEqual(assertion[4], false);
       NightwatchAssertion.create = createOrig;
@@ -72,7 +72,6 @@ describe('waitForElementNotVisible', function() {
     this.client.api.globals.abortOnAssertionFailure = true;
 
     this.client.api.waitForElementNotVisible('#weblogin', 15, 10, function callback(result) {
-      console.trace()
       assert.strictEqual(result.status, 0);
       assert.strictEqual(assertion[0], false);
       assert.strictEqual(assertion[1].actual, 'visible');
@@ -82,10 +81,14 @@ describe('waitForElementNotVisible', function() {
     });
 
     this.client.start(function(err) {
-      //assert.strictEqual(err.abortOnFailure, true);
-      //assert.ok(err instanceof Error);
+      assert.ok(err instanceof Error);
+      assert.strictEqual(err.abortOnFailure, true);
+      if (err.name !== 'NightwatchAssertError') {
+        throw err;
+      }
+
       done();
-    });
+    }).catch(err => done(err));
   });
 });
 
