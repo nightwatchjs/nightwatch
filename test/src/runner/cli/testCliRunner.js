@@ -258,7 +258,7 @@ describe('Test CLI Runner', function() {
     mockery.disable();
   });
 
-  it('testInitDefaults', function() {
+  function registerNoSettingsJsonMock(){
     mockery.registerMock('fs', {
       statSync: function(module) {
         if (module == './settings.json') {
@@ -271,14 +271,14 @@ describe('Test CLI Runner', function() {
         };
       }
     });
+  }
+
+  it('should have reasonable defaults for CLI arguments', function() {
+    registerNoSettingsJsonMock();
 
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: './nightwatch.json',
-      env: 'default',
-      output: 'output',
-      skiptags: 'home,arctic',
-      tag: 'danger'
     }).setup();
 
     assert.deepEqual(runner.settings.src_folders, ['tests']);
@@ -286,12 +286,35 @@ describe('Test CLI Runner', function() {
     assert.strictEqual(runner.test_settings.custom_commands_path, null);
     assert.strictEqual(runner.test_settings.custom_assertions_path, null);
     assert.strictEqual(runner.test_settings.output, true);
+    assert.strictEqual(runner.test_settings.tag_filter, undefined);
+    assert.strictEqual(runner.test_settings.skiptags, '');
+    assert.strictEqual(runner.test_settings.filename_filter, undefined);
+    assert.strictEqual(runner.test_settings.skipgroup, '');
+    assert.strictEqual(runner.globals.settings.output_folder, 'tests_output');
+    assert.strictEqual(runner.globals.settings.parallel_mode, false);
+    assert.strictEqual(runner.isWebDriverManaged(), false);
+    assert.strictEqual(runner.globals.settings.start_session, true);
+  });
+
+  it('should override settings with CLI arguments', function() {
+    registerNoSettingsJsonMock();
+    const CliRunner = common.require('runner/cli/cli.js');
+    let runner = new CliRunner({
+      config: './nightwatch.json',
+      verbose: 'yes',
+      output: 'test-output-folder',
+      skiptags: 'home,arctic',
+      tag: 'danger',
+      filter: 'test-filename-filter',
+      skipgroup: 'test-skip-group',
+    }).setup();
+
+    assert.strictEqual(runner.test_settings.silent, false);
     assert.strictEqual(runner.test_settings.tag_filter, 'danger');
-    assert.deepEqual(runner.test_settings.skiptags, ['home', 'arctic']);
-    assert.equal(runner.globals.settings.output_folder, 'output');
-    assert.equal(runner.globals.settings.parallel_mode, false);
-    assert.equal(runner.isWebDriverManaged(), false);
-    assert.equal(runner.globals.settings.start_session, true);
+    assert.strictEqual(runner.test_settings.skiptags, 'home,arctic');
+    assert.strictEqual(runner.test_settings.filename_filter, 'test-filename-filter');
+    assert.deepEqual(runner.test_settings.skipgroup, ['test-skip-group']);
+    assert.strictEqual(runner.globals.settings.output_folder, 'test-output-folder');
   });
 
   it('testSetOutputFolder', function() {

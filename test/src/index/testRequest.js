@@ -4,7 +4,6 @@ const mockery = require('mockery');
 
 const common = require('../../common.js');
 const HttpRequest = common.require('http/request.js');
-const Logger = common.require('util/logger');
 
 describe('test HttpRequest', function() {
 
@@ -14,7 +13,6 @@ describe('test HttpRequest', function() {
     } catch (err) {}
 
     mockery.enable();
-    Logger.setOutputEnabled(false);
 
     HttpRequest.globalSettings = {
       default_path: '/wd/hub',

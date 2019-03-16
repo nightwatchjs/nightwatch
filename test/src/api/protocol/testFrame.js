@@ -29,6 +29,18 @@ describe('client.frame', function() {
     });
   });
 
+  it('testFramePostWithZeroIndex', function () {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/frame');
+        assert.deepEqual(opts.data, { id: 0 });
+      },
+      commandName: 'frame',
+      args: [0]
+    });
+  });
+
   it('testFrameParent', function () {
     return Globals.protocolTest.call(this, {
       assertion: function(opts) {

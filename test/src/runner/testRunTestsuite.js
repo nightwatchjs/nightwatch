@@ -4,12 +4,8 @@ const common = require('../../common.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
 const NightwatchClient = common.require('index.js');
-const Logger = common.require('util/logger.js');
 
 describe('testRunTestSuite', function() {
-
-  // Logger.enable();
-  // Logger.setOutputEnabled(true);
 
   before(function(done) {
     this.server = MockServer.init();
@@ -112,10 +108,6 @@ describe('testRunTestSuite', function() {
       }
     };
 
-    const Logger = common.require('util/logger.js');
-    Logger.disable();
-    Logger.setOutputEnabled(false);
-
     const Runner = common.require('runner/runner.js');
     const Settings = common.require('settings/settings.js');
 
@@ -178,10 +170,37 @@ describe('testRunTestSuite', function() {
   });
 
   it('testRunModuleSyncName', function() {
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/elements',
+      postdata : '{"using":"css selector","value":"#finlandia"}',
+      response: JSON.stringify({sessionId:'1352110219202',status:0,value:[{ELEMENT: '10'}]})
+    });
+
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/element/10/displayed',
+      statusCode: 200,
+      method: 'GET',
+      response: JSON.stringify({sessionId:'1352110219202',status:0,value:true})
+    });
+
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/element',
+      statusCode: 200,
+      response: JSON.stringify({sessionId:'1352110219202',status:0,value: {ELEMENT: '10'}})
+    });
+
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/element/10/text',
+      statusCode: 200,
+      method: 'GET',
+      response: JSON.stringify({sessionId:'1352110219202',status:0,value:'jean sibelius'})
+    }, true);
+
     let globals = {
       calls: 0,
       reporter(results, cb) {
         assert.ok('sampleTest' in results.modules);
+        assert.strictEqual(results.errors, 0);
         if (results.lastError) {
           throw results.lastError;
         }

@@ -1,14 +1,36 @@
 const common = require('../common.js');
 const lodashMerge = require('lodash.merge');
-const nightwatch = common.require('index.js');
+const Nightwatch = common.require('index.js');
 const Settings = common.require('settings/settings.js');
+const MockServer  = require('./mockserver.js');
 const Logger = common.require('util/logger.js');
 
 module.exports = new function () {
   let _client = null;
+  let _mockServer = null;
 
   Logger.setOutputEnabled(false);
-  Logger.disable(false);
+  Logger.disable();
+
+  this.startMockServer = function (done = function() {}) {
+    return new Promise((resolve) => {
+      _mockServer = MockServer.init();
+      _mockServer.on('listening', () => {
+        done();
+        resolve();
+      });
+    });
+  };
+
+  const stopMockServer = (done) => {
+    if (!_mockServer) {
+      return Promise.resolve();
+    }
+
+    _mockServer.close(function() {
+      done();
+    });
+  };
 
   function extendClient(client) {
     client.start = function(done = function() {}) {
@@ -43,26 +65,44 @@ module.exports = new function () {
 
     let settings = Settings.parse(opts);
 
-    return nightwatch.client(settings, reporter);
+    return Nightwatch.client(settings, reporter);
   };
 
   this.createClientDefaults = function() {
-    return nightwatch.client();
+    return Nightwatch.client();
   };
 
   this.init = function(options, callback = function() {}) {
     _client = this.createClient(options);
-
     extendClient(_client);
 
     _client.once('nightwatch:session.create', function(id) {
       callback();
     }).once('nightwatch:session.error', function(err) {
-      callback();
+      callback(err);
       process.exit(1);
     });
 
     _client.startSession();
+  };
+
+  this.initAsync = function(options) {
+    _client = this.createClient(options);
+    _client.start = function() {
+      return this.queue.run().then(err => {
+        if (err instanceof Error) {
+          throw err;
+        }
+      });
+    };
+
+    return new Promise((resolve, reject) => {
+      _client
+        .once('nightwatch:session.create', id => resolve(id))
+        .once('nightwatch:session.error', err => reject(err));
+
+      _client.createSession().catch(err => reject(err));
+    });
   };
 
   this.initClient = function(options, reporter) {
@@ -91,5 +131,13 @@ module.exports = new function () {
 
   this.start = function(done) {
     return _client.start(done);
+  };
+
+  this.stop = function(done = function() {}) {
+    stopMockServer(done);
+  };
+
+  this.addMock = function(mock, once = false) {
+    return MockServer.addMock(mock, once);
   };
 };

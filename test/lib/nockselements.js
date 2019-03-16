@@ -16,6 +16,22 @@ module.exports = {
     return item;
   },
 
+  createSession() {
+    nock('http://localhost:10195')
+      .post('/wd/hub/session')
+      .reply(201, {
+        status: 0,
+        sessionId: '1352110219202',
+        value: {
+          browserName: 'firefox',
+          version: 'TEST',
+          platform: 'TEST'
+        }
+      });
+
+    return this;
+  },
+
   checkIfMocksDone() {
     try {
       this._currentNocks.forEach(nock => nock.done());
@@ -208,8 +224,10 @@ module.exports = {
   },
 
   cleanAll () {
-    this._currentNocks = [];
     nock.cleanAll();
+    this._currentNocks = [];
+
+    return this;
   },
 
   disabled: false,
@@ -220,9 +238,11 @@ module.exports = {
     return this;
   },
 
-  enable() {
-    if (this.disabled) {
-      nock.activate();
+  enable(force = false) {
+    if (this.disabled || force) {
+      try {
+        nock.activate();
+      } catch (err) {}
     }
 
     return this;

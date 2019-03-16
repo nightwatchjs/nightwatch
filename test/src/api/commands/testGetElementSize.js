@@ -23,9 +23,9 @@ describe('getElementSize', function() {
     });
 
     this.client.api.getElementSize('#weblogin', function callback(result) {
-      assert.equal(result.value, 100);
+      assert.strictEqual(result.value, 100);
     }).getElementSize('css selector', '#weblogin', function callback(result) {
-      assert.equal(result.value, 100);
+      assert.strictEqual(result.value, 100);
     });
 
     this.client.start(done);

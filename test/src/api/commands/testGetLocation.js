@@ -15,14 +15,14 @@ describe('getLocation', function() {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element/0/location',
       method: 'GET',
-      response: JSON.stringify({
+      response: {
         sessionId: '1352110219202',
         status: 0,
         value: {
           x: 1,
           y: 0
         }
-      })
+      }
     });
 
     this.client.api.getLocation('css selector', '#weblogin', function callback(result) {

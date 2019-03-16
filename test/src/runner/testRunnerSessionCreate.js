@@ -34,6 +34,11 @@ describe('testRunnerSessionCreate', function() {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
+        capabilities: {
+          browserName: 'firefox',
+          acceptSslCerts: true,
+          name: 'Async/Test/Sample'
+        },
         desiredCapabilities: {
           browserName: 'firefox',
           acceptSslCerts: true,
@@ -53,6 +58,11 @@ describe('testRunnerSessionCreate', function() {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
+        capabilities: {
+          browserName: 'firefox',
+          acceptSslCerts: true,
+          name: 'test-Name'
+        },
         desiredCapabilities: {
           browserName: 'firefox',
           acceptSslCerts: true,
@@ -76,7 +86,7 @@ describe('testRunnerSessionCreate', function() {
         assert.ok(Object.keys(results.modules).includes(`async${sep}test${sep}sample`));
         assert.ok(Object.keys(results.modules).includes(`simple${sep}test${sep}sample`));
         assert.ok(results.lastError instanceof Error);
-        assert.ok(results.lastError.message.includes('An occurred error while retrieving a new session: ' +
+        assert.ok(results.lastError.message.includes('An error occurred while retrieving a new session: ' +
           '"Session is already started"'));
       }
     };
@@ -113,7 +123,7 @@ describe('testRunnerSessionCreate', function() {
         assert.strictEqual(results.lastError.sessionConnectionRefused, true);
         assert.ok(results.lastError instanceof Error);
         assert.equal(results.lastError.code, 'ECONNREFUSED');
-        assert.ok(results.lastError.message.includes('An occurred error while retrieving a new session: "Connection refused to 127.0.0.1:1000". If the Webdriver/Selenium service is managed by Nightwatch, check if "start_process" is set to "true".'));
+        assert.ok(results.lastError.message.includes('An error occurred while retrieving a new session: "Connection refused to 127.0.0.1:1000". If the Webdriver/Selenium service is managed by Nightwatch, check if "start_process" is set to "true".'));
       }
     };
 

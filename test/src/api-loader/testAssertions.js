@@ -1,22 +1,19 @@
 const assert = require('assert');
 const mockery = require('mockery');
-const Globals = require('../../lib/globals/expect.js');
+const CommandGlobals = require('../../lib/globals/commands.js');
 
 describe('test Assertions', function() {
-  beforeEach(function(done) {
-    Globals.beforeEach.call(this, {
-      silent: true,
-      output: false
-    }, function() {
-      mockery.enable({useCleanCache: true, warnOnUnregistered: false});
-      done();
-    });
+  before(CommandGlobals.beforeEach);
+  after(CommandGlobals.afterEach);
+
+  beforeEach(function() {
+    mockery.enable({useCleanCache: true, warnOnUnregistered: false});
   });
 
   afterEach(function(done) {
     mockery.deregisterAll();
     mockery.disable();
-    Globals.afterEach.call(this, done);
+    done();
   });
 
   it('Testing assertions loaded', function() {
@@ -144,7 +141,7 @@ describe('test Assertions', function() {
       },
       logFailedAssertion(error) {
         assert.ok(error instanceof Error);
-        assert.equal(error.name, 'AssertionError');
+        assert.equal(error.name, 'NightwatchAssertError');
       },
       registerFailed() {
         reporterCalls.failedNo++;

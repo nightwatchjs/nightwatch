@@ -33,13 +33,13 @@ describe('moveToElement', function() {
     });
 
     this.client.api.moveToElement('css selector', '#weblogin', null, null, function(result) {
-      assert.equal(result.status, 0);
+      assert.strictEqual(result.status, 0);
     }).moveToElement('#weblogin', null, null, function(result) {
-      assert.equal(result.status, 0);
+      assert.strictEqual(result.status, 0);
     }).moveTo('0', null, null, function(result) {
-      assert.equal(result.status, 0);
+      assert.strictEqual(result.status, 0);
     }).moveToElement('#weblogin', 1, 1, function(result) {
-      assert.equal(result.status, 0);
+      assert.strictEqual(result.status, 0);
     });
 
     this.client.start(done);

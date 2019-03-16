@@ -64,8 +64,8 @@ describe('testRunWithMultipleSources', function() {
     let globals = {
       calls: 0,
       reporter(results) {
-        assert.equal(globals.calls, 19);
-        assert.equal(Object.keys(results.modules).length, 4);
+        assert.equal(globals.calls, 21);
+        assert.equal(Object.keys(results.modules).length, 5);
         assert.ok('sample' in results.modules);
         assert.ok('sampleSingleTest' in results.modules);
         assert.ok('sampleWithBeforeAndAfter' in results.modules);

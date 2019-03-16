@@ -1,32 +1,23 @@
 const path = require('path');
 const assert = require('assert');
-const common = require('../../../common.js');
-const nocks = require('../../../lib/nockselements.js');
-const MockServer  = require('../../../lib/mockserver.js');
-const Nightwatch = require('../../../lib/nightwatch.js');
-const Logger = common.require('util/logger.js');
+const nocks = require('../../lib/nockselements.js');
+const Nightwatch = require('../../lib/nightwatch.js');
 
 describe('test expect element selectors', function() {
 
-  before(function(done) {
-    nocks.enable();
-    this.server = MockServer.init();
-    this.server.on('listening', () => {
-      done();
-    });
-  });
-
+  before(() => nocks.enable());
   after(function(done) {
     nocks.disable();
-    this.server.close(function() {
-      done();
-    });
+    nocks.cleanAll();
+    done();
   });
 
   beforeEach(function (done) {
-    nocks.cleanAll();
+    nocks.cleanAll().createSession();
     Nightwatch.init({
-      page_objects_path: [path.join(__dirname, '../../../extra/pageobjects/pages')]
+      output: false,
+      silent: false,
+      page_objects_path: [path.join(__dirname, '../../extra/pageobjects/pages')]
     }, done);
   });
 
@@ -39,6 +30,7 @@ describe('test expect element selectors', function() {
 
     let api = Nightwatch.api();
     api.globals.abortOnAssertionFailure = false;
+    api.globals.suppressWarningsOnMultipleElementsReturned = true;
 
     let page = api.page.simplePageObj();
     let section = page.section.signUp;

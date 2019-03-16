@@ -24,9 +24,9 @@ describe('getAttribute', function() {
     });
 
     this.client.api.getAttribute('#weblogin', 'class', function callback(result) {
-      assert.equal(result.value, 'test_class');
+      assert.strictEqual(result.value, 'test_class');
     }).getAttribute('css selector', '#weblogin', 'class', function callback(result) {
-      assert.equal(result.value, 'test_class');
+      assert.strictEqual(result.value, 'test_class');
     });
 
     this.client.start(done);

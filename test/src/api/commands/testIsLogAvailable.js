@@ -58,8 +58,6 @@ describe('isLogAvailable', function() {
       })
     });
 
-    Logger.setOutputEnabled(false);
-
     this.client.api.isLogAvailable('unknown', function callback(result) {
       assert.equal(typeof result === 'boolean', true);
       assert.equal(result, false);

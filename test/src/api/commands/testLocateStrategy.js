@@ -27,23 +27,4 @@ describe('locateStrategies', function() {
 
     this.client.start(done);
   });
-  /*
-  it('test run sample test with xpath', function(done) {
-    //test.expect(3);
-    var Runner = common.require('runner/run.js');
-    Runner.run([process.cwd() + '/sampletests/usexpath'], {
-      seleniumPort : 10195,
-      silent : true,
-      output : false,
-      globals : {
-        test : assert
-      }
-    }, {
-      output_folder : false,
-      start_session : true
-    }, function(err, results) {
-      done();
-    });
-  }
-  */
 });

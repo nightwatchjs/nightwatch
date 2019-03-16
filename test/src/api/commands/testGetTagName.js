@@ -16,11 +16,11 @@ describe('getTagName', function() {
     MockServer.addMock({
       url : '/wd/hub/session/1352110219202/element/0/name',
       method:'GET',
-      response : JSON.stringify({
+      response : {
         sessionId: '1352110219202',
         status:0,
         value : 'div'
-      })
+      }
     });
 
     this.client.api.getTagName('css selector', '#weblogin', function callback(result) {

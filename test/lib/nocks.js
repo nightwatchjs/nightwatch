@@ -1,9 +1,12 @@
 const nock = require('nock');
+const ElementNocks = require('./nockselements.js');
 
 module.exports = {
   disabled: false,
   disable() {
     this.disabled = true;
+    ElementNocks.disabled = true;
+    nock.cleanAll();
     nock.restore();
 
     return this;

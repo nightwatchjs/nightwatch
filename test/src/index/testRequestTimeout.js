@@ -1,13 +1,11 @@
 const common = require('../../common.js');
 const HttpRequest = common.require('http/request.js');
 const MockServer  = require('../../lib/mockserver.js');
-const Logger = common.require('util/logger');
 const assert = require('assert');
 
 describe('test HttpRequestTimeout', function() {
   beforeEach(function(done) {
     this.server = MockServer.init();
-    Logger.setOutputEnabled(false);
 
     this.server.on('listening', function() {
       done();

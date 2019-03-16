@@ -1,15 +1,23 @@
-Thanks in advance for your contribution. Please follow the below steps in submitting an issue, as it will help us with addressing it quicker. 
+__Please do not ask for assistance in the Issues list.__ Use the [Mailing List](https://groups.google.com/forum/#!forum/nightwatchjs) or [StackOverflow](http://stackoverflow.com/questions/tagged/nightwatch.js) to ask questions and seek help. 
 
-Important: please read https://github.com/nightwatchjs/nightwatch/issues/1778 if you haven't already.
---
+Before submitting a new issues, try searching for a similar one here: https://github.com/nightwatchjs/nightwatch/search?type=Issues and add your scenario there and anything else which you think will help with fixing it;
+ 
+## Reporting a bug
+- [ ] Please write an elaborate title which explains the problem as accurate as possible
+  For instance:
+  - __not helpful__: "Issue with tags"
+  - __much better__: "Tags don't work when combined with --skiptags option"
+- [ ] Include a sample test which reproduces the problem you're experiencing. The test should be against a **public url**. The test and other info should be posted inline, attachments will be ignored;
+- [ ] Include the verbose output, if possible (run nightwatch with `--verbose` argument);
+- [ ] Include your configuration (try to leave out the irrelevant bits);
+- [ ] Also include: Nightwatch version, Node.js version, OS version and Webdriver/Selenium Server version;
+- [ ] Please try not to report issues you have with individual browser drivers which cannot or should not be solved in Nightwatch.
 
-Before submitting a new issue, try searching for a similar one here: https://github.com/nightwatchjs/nightwatch/search?state=open&type=Issues.
+## Requesting a feature
+Feature requests are welcome. 
 
-- [ ] Please do not ask for assistance in the Issues list. Use the [Mailing List](https://groups.google.com/forum/#!forum/nightwatchjs) or [StackOverflow](http://stackoverflow.com/questions/tagged/nightwatch.js) to ask questions or seek help. 
-- [ ] Use a meaningful title that would clearly and concisely explain the problem. For instance:
-- not helpful: "Issue with tags"
-- much better: "Tags don't work when combined with --skiptags option in some cases"
-- [ ] Include a sample test (for complex scenarios) which would reproduce the problem you're experiencing. The test should be against a public url. The test and other info should be posted inline, attachments will not be accepted;
-- [ ] Include the verbose output, if possible (run nightwatch with --verbose argument);
-- [ ] Also include: Nightwatch version, Node.js version, OS version and Selenium server version (including any driver version if applicable);
-- [ ] Please try to avoid sending issues you have with Selenium (e.g. works perfectly in ChromeDriver but not in Safari)
+- [ ] Indicate in the issue title that it is a feature/enhancement request
+- [ ] Explain the use case and include a sample test case and/or usage, if possible 
+- [ ] Try to submit enhancements that you cannot build with custom commands/assertions and something that will benefit the community
+
+Please make sure you've formatted the code samples, verbose output, configuration and other inline debug information (use the __Preview__  functionality). Check out the GitHub Markdown guide: https://guides.github.com/features/mastering-markdown/

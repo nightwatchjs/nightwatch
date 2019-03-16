@@ -32,7 +32,6 @@ describe('testRunWithGlobalReporter', function() {
 
   it('testRunWithGlobalReporter', function() {
     let testsPath = path.join(__dirname, '../../sampletests/before-after');
-    let reporterCount = 0;
 
     let settings = {
       selenium: {
@@ -42,17 +41,16 @@ describe('testRunWithGlobalReporter', function() {
       },
       silent: true,
       output: false,
+      persist_globals: true,
       globals: {
-        reporter(results) {
-          assert.ok('modules' in results);
-          reporterCount++;
-        }
+        reporterCount: 0
       },
+      globals_path: path.join(__dirname, '../../extra/external-globals.js'),
       output_folder: false
     };
 
     return NightwatchClient.runTests(testsPath, settings).then(_ => {
-      assert.equal(reporterCount, 1);
+      assert.equal(settings.globals.reporterCount, 1);
     });
   });
 

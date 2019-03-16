@@ -41,7 +41,7 @@ describe('test PageObject Commands', function () {
 
     let page = this.client.api.page.simplePageObj();
     page.setValue('@loginCss', '1', function callback(result) {
-      assert.equal(result.status, 0);
+      assert.strictEqual(result.status, 0);
       done();
     });
 
@@ -74,12 +74,12 @@ describe('test PageObject Commands', function () {
     let client = this.client;
     let page = client.api.page.simplePageObj();
 
-    assert.equal(client.locateStrategy, 'css selector', 'locateStrategy should default to css selector');
+    assert.strictEqual(client.locateStrategy, 'css selector', 'locateStrategy should default to css selector');
 
     page
       .waitForElementPresent('@loginXpath', 1000, true, function callback(result) {
         assert.ok(result.value, 'Element was not found.');
-        assert.equal(client.locateStrategy, 'css selector', 'locateStrategy should restore to previous css selector in callback when using xpath element');
+        assert.strictEqual(client.locateStrategy, 'css selector', 'locateStrategy should restore to previous css selector in callback when using xpath element');
 
         done();
       });
@@ -102,11 +102,11 @@ describe('test PageObject Commands', function () {
     let client = this.client;
     let section = client.api.page.simplePageObj().section.signUp;
     section.click('@help', function callback(result) {
-      assert.equal(result.status, 0, result.value && result.value.message || 'An error occurred:\n' + JSON.stringify(result));
+      assert.strictEqual(result.status, 0, result.value && result.value.message || 'An error occurred:\n' + JSON.stringify(result));
     });
 
     client.api.perform(function () {
-      assert.equal(client.locateStrategy, 'css selector');
+      assert.strictEqual(client.locateStrategy, 'css selector');
     });
     this.client.start(err => done(err));
   });
@@ -124,9 +124,10 @@ describe('test PageObject Commands', function () {
 
     let section = this.client.api.page.simplePageObj().section.signUp;
     section.waitForElementPresent('@help', 1000, true, function callback(result) {
-      assert.equal(result.status, 0);
-      assert.equal(result.value.length, 1);
-      assert.equal(result.value[0], '1');
+      assert.strictEqual(result.status, 0);
+      assert.strictEqual(result.value.length, 1);
+      assert.deepEqual(result.value[0], { ELEMENT: '1'});
+      assert.strictEqual(result.WebdriverElementId, '1');
     });
 
     this.client.start(function(err) {
@@ -153,9 +154,9 @@ describe('test PageObject Commands', function () {
     let page = this.client.api.page.simplePageObj();
 
     page.click('@loginCss', function callback(result) {
-      assert.equal(result.status, 0);
+      assert.strictEqual(result.status, 0);
     }).click('@loginXpath', function callback(result) {
-      assert.equal(result.status, 0);
+      assert.strictEqual(result.status, 0);
       done();
     });
 
@@ -176,16 +177,16 @@ describe('test PageObject Commands', function () {
   it('testPageObjectPropsFunctionReturnsObject', function() {
     let page = this.client.api.page.simplePageObj();
 
-    assert.equal(typeof page.props, 'object', 'props function should be called and set page.props equals its returned object');
-    assert.equal(page.props.url, page.url, 'props function should be called with page context');
+    assert.strictEqual(typeof page.props, 'object', 'props function should be called and set page.props equals its returned object');
+    assert.strictEqual(page.props.url, page.url, 'props function should be called with page context');
   });
 
   it('testSectionObjectPropsFunctionReturnsObject', function() {
     let page = this.client.api.page.simplePageObj();
 
-    assert.equal(typeof page.section.propTest.props, 'object', 'props function should be called and set page.props equals its returned object');
+    assert.strictEqual(typeof page.section.propTest.props, 'object', 'props function should be called and set page.props equals its returned object');
     assert.ok(page.section.propTest.props.defaults.propTest, 'props function should be called with page context');
-    assert.equal(page.section.propTest.props.defaults.propTest, '#propTest Value');
+    assert.strictEqual(page.section.propTest.props.defaults.propTest, '#propTest Value');
   });
 
   it('testPageObjectWithUrlChanged', function (done) {

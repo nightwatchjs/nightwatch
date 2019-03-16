@@ -153,7 +153,7 @@ describe('testRunWithHooks', function() {
         if (results.lastError) {
           throw results.lastError;
         }
-        assert.equal(settings.globals.calls, 17);
+        assert.equal(settings.globals.calls, 19);
         assert.ok('sampleWithBeforeAndAfter' in results.modules);
 
         let result = results.modules.sampleWithBeforeAndAfter.completed;
@@ -189,6 +189,37 @@ describe('testRunWithHooks', function() {
 
     return NightwatchClient.runTests(testsPath, settings);
   });
+
+  it('testRunner before and after without callback', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/before-after/sampleWithBeforeAndAfterNoCallback.js');
+    let globals = {
+      calls: 0,
+      reporter(results) {
+        if (results.lastError) {
+          throw results.lastError;
+        }
+        assert.equal(settings.globals.calls, 2);
+        assert.ok('sampleWithBeforeAndAfterNoCallback' in results.modules);
+      }
+    };
+
+    let settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      seleniumPort: 10195,
+      silent: false,
+      output: false,
+      persist_globals: true,
+      globals: globals,
+      output_folder: false
+    };
+
+    return NightwatchClient.runTests(testsPath, settings);
+  });
+
 
   it('testRunner with --testcase and before and after', function() {
     let testsPath = path.join(__dirname, '../../sampletests/before-after/syncBeforeAndAfter.js');
