@@ -3,11 +3,11 @@ const Nocks = require('../../../lib/nocks.js');
 const ExpectGlobals = require('../../../lib/globals/expect.js');
 
 describe('expect.attribute', function() {
-  before(function() {
-    try {
-      Nocks.enable(true);
-    } catch (e) {}
-  });
+  // before(function() {
+  //   try {
+  //     Nocks.enable(true);
+  //   } catch (e) {}
+  // });
 
   beforeEach(function(done) {
     ExpectGlobals.beforeEach.call(this, () => {
@@ -889,7 +889,7 @@ describe('expect.attribute', function() {
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class');
     assert.throws(function() {
       expect.which.matches('');
-    }, /Error: matches requires first paramter to be a RegExp\. string given/);
+    }, /Error: matches requires first parameter to be a RegExp\. string given/);
 
     this.client.start(done);
   });
