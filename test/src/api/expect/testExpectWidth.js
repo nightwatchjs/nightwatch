@@ -108,6 +108,7 @@ describe('expect.width', function() {
     Nocks.elementFound()
       .width('xx')
       .width('xx')
+      .width('xx')
       .width('xx');
 
     let expect = this.client.api.expect.element('#weblogin').width.to.equal('33').before(25);

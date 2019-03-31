@@ -30,7 +30,7 @@ describe('test Nightwatch Api', function() {
       },
       session: {
         commandQueue: {
-          add(commandName, command, context, args, originalStackTrace) {
+          add({commandName, commandFn, context, args, stackTrace}) {
             assert.equal(commandName, 'customAssertion');
             assert.equal(args.length, 1);
             assert.strictEqual(args[0], true);
@@ -113,8 +113,8 @@ describe('test Nightwatch Api', function() {
       },
       session: {
         commandQueue: {
-          add(commandName, command, context, args, originalStackTrace) {
-            let instance = command.apply(context, args);
+          add({commandName, commandFn, context, args, stackTrace}) {
+            let instance = commandFn.apply(context, args);
             if (commandName == 'customPerform') {
               instance.on('complete', () => {
                 assert.strictEqual(paramFnCalled, true);
@@ -163,9 +163,9 @@ describe('test Nightwatch Api', function() {
       },
       session: {
         commandQueue: {
-          add(commandName, command, context, args, originalStackTrace) {
+          add({commandName, commandFn, context, args, stackTrace}) {
             commandQueue.push(commandName);
-            let instance = command.apply(context, args);
+            let instance = commandFn.apply(context, args);
 
             if (commandName == 'customCommand') {
               assert.equal(instance.toString(), 'CommandInstance [name=customCommand]');

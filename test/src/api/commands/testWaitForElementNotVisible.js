@@ -90,5 +90,48 @@ describe('waitForElementNotVisible', function() {
       done();
     }).catch(err => done(err));
   });
+
+  it('client.waitForElementNotVisible() success after retry', function (done) {
+    const assertion = [];
+
+    NightwatchAssertion.create = function(...args) {
+      assertion.unshift(...args);
+
+      return {
+        run: function() {
+          return Promise.resolve();
+        }
+      };
+    };
+
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/element/0/displayed',
+      method: 'GET',
+      response: JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0,
+        value: true
+      })
+    }, true);
+
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/element/0/displayed',
+      method: 'GET',
+      response: JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0,
+        value: false
+      })
+    }, true);
+
+    this.client.api.globals.abortOnAssertionFailure = false;
+    this.client.api.globals.waitForConditionPollInterval = 50;
+    this.client.api.waitForElementNotVisible('#weblogin', 150, function (result, instance) {
+      assert.strictEqual(assertion[0], true);
+      NightwatchAssertion.create = createOrig;
+    });
+
+    this.client.start(done);
+  });
 });
 

@@ -103,7 +103,7 @@ describe('expect.height', function() {
   });
 
   it('height to equal and waitFor [FAILED] - height not equal', function() {
-    this.client.api.globals.waitForConditionPollInterval = 10;
+    this.client.api.globals.waitForConditionPollInterval = 20;
 
     Nocks.elementFound()
       .height('xx')

@@ -112,8 +112,8 @@ describe('test Assertions', function() {
       callback({
         value : 'expected text result'
       });
-    }).setAddToQueueFn(function(commandName, command, context, args, stackTrace) {
-      command.apply(context, args);
+    }).setAddToQueueFn(function({commandName, commandFn, context, args, namespace, stackTrace}) {
+      commandFn.apply(context, args);
     }).loadAssertion(function(passed, value, calleeFn, message) {
       assert.equal(passed, true);
       assert.equal(this.assertion.expected, 'text result');
@@ -168,9 +168,9 @@ describe('test Assertions', function() {
       callback({
         value : 'not_expected'
       });
-    }).setAddToQueueFn(function(commandName, command, context, args, stackTrace) {
-      command.stackTrace = stackTrace;
-      command.apply(context, args);
+    }).setAddToQueueFn(function({commandName, commandFn, context, args, namespace, stackTrace}) {
+      commandFn.stackTrace = stackTrace;
+      commandFn.apply(context, args);
     }).loadAssertion(function(passed, value, calleeFn, message) {
       assert.equal(passed, false);
       assert.equal(value, 'not_expected');

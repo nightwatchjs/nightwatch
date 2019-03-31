@@ -9,6 +9,8 @@ describe('test Parallel Execution', function() {
   const allArgs = [];
   const allOpts = [];
 
+  this.timeout(5000);
+
   beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
     mockery.registerMock('child_process', {
@@ -90,7 +92,7 @@ describe('test Parallel Execution', function() {
     assert.ok(runner.test_settings.test_workers);
 
     return runner.runTests().then(_ => {
-      assert.equal(allArgs.length, 25);
+      assert.equal(allArgs.length, 27);
       assert.strictEqual(runner.concurrency.globalExitCode, 0);
     });
   });
@@ -132,7 +134,7 @@ describe('test Parallel Execution', function() {
     });
 
     return runner.runTests().then(_ => {
-      assert.equal(allArgs.length, 25);
+      assert.equal(allArgs.length, 27);
     });
   });
 
@@ -161,7 +163,7 @@ describe('test Parallel Execution', function() {
     });
 
     return runner.runTests().then(_ => {
-      assert.equal(allArgs.length, 25);
+      assert.equal(allArgs.length, 27);
     });
   });
 

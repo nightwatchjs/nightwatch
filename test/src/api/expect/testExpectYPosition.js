@@ -105,7 +105,7 @@ describe('expect.yPosition', function() {
   });
 
   it('yPosition to equal and waitFor [FAILED] - yPosition not equal', function() {
-    this.client.api.globals.waitForConditionPollInterval = 10;
+    this.client.api.globals.waitForConditionPollInterval = 20;
 
     Nocks.elementFound()
       .yPosition('xx')

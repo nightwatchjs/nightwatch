@@ -17,8 +17,7 @@ describe('testRunner', function() {
     this.server.on('listening', () => {
       fs.mkdir(emptyPath, function(err) {
         if (err) {
-          done(err);
-          return;
+          return done();
         }
         done();
       });
@@ -29,8 +28,7 @@ describe('testRunner', function() {
     CommandGlobals.afterEach.call(this, function() {
       fs.rmdir(emptyPath, function(err) {
         if (err) {
-          done(err);
-          return;
+          return done();
         }
         done();
       });
@@ -124,12 +122,15 @@ describe('testRunner', function() {
         start_process: true
       },
       output_folder: 'output',
-      silent: true,
+      silent: false,
       globals: {
+        waitForConditionPollInterval: 20,
+        waitForConditionTimeout: 50,
+        retryAssertionTimeout: 50,
         reporter: function () {
         }
       },
-      output: false,
+      output: true,
       screenshots: {
         enabled: true,
         on_failure: true,
@@ -198,6 +199,61 @@ describe('testRunner', function() {
         assert.ok(/<testcase[\s]+name="simpleDemoTest"[\s]+classname="simple\.sample"[\s]+time="[.\d]+"[\s]+assertions="1">/.test(content),
           'Report does not contain the correct testcase element.');
       });
+  });
+
+  it('test Runner with ES6 async/await tests', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/es6await');
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/cookie',
+      method: 'GET',
+      response: JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0,
+        value: [{
+          name: 'test_cookie',
+          value: '123456',
+          path: '/',
+          domain: 'example.org',
+          secure: false,
+          class: 'org.openqa.selenium.Cookie',
+          hCode: 91423566
+        }]
+      })
+    }, true);
+
+    let globals = {
+      waitForConditionPollInterval: 50,
+
+      reporter(results) {
+        assert.ok('failures/sampleWithFailures' in results.modules, 'sampleWithFailures module not found in results');
+        assert.ok('basicSampleTest' in results.modules);
+        if (results.modules.basicSampleTest.lastError) {
+          throw results.modules.basicSampleTest.lastError;
+        }
+
+        if (results.modules['failures/sampleWithFailures'].completed.asyncGetCookiesTest.lastError) {
+          throw results.modules['failures/sampleWithFailures'].completed.asyncGetCookiesTest.lastError;
+        }
+
+        assert.ok(results.lastError instanceof Error);
+        assert.ok(results.lastError.message.includes('is present in 15 ms.'));
+        assert.strictEqual(results.lastError.name, 'NightwatchAssertError');
+      }
+    };
+
+    return NightwatchClient.runTests(testsPath, {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      output: true,
+      skip_testcases_on_fail: false,
+      silent: false,
+      persist_globals: true,
+      globals: globals,
+      output_folder: false
+    });
   });
 });
 

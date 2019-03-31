@@ -96,7 +96,7 @@ describe('expect.elements count', function() {
   });
 
   it('count to equal and waitFor [FAILED] - count not equal', function() {
-    this.client.api.globals.waitForConditionPollInterval = 10;
+    this.client.api.globals.waitForConditionPollInterval = 20;
 
     Nocks.elementsFound('.classname');
     Nocks.elementsFound('.classname');

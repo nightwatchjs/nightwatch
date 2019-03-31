@@ -31,6 +31,12 @@ mocks:
   postdata:
     url: http://localhost
 
+- url: '/wd/hub/session/1352110219202/url'
+  method: GET
+  response:
+    status: 0
+    value: http://localhost
+
 - url: '/wd/hub/test'
   response:
     status: 0

@@ -8,8 +8,8 @@ class MockSession extends Session {
 
   get commandQueue() {
     return {
-      add(commandName, command, context, args, originalStackTrace) {
-        command(...args);
+      add({commandName, commandFn, context, args, stackTrace}) {
+        commandFn(...args);
       },
 
       empty() {
