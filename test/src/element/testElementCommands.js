@@ -19,7 +19,7 @@ describe('element base commands', function() {
       silent: false
     });
 
-    Nightwatch.api()
+    await Nightwatch.api()
       .element('css selector', '#weblogin', function callback(result) {
         assert.strictEqual(result.status, 0);
         assert.deepEqual(result.value, { ELEMENT: '0' });
@@ -40,7 +40,7 @@ describe('element base commands', function() {
       },
     });
 
-    Nightwatch.api()
+    await Nightwatch.api()
       .element('css selector', '#webdriver', function callback(result) {
         assert.strictEqual(typeof result.status, 'undefined');
         assert.deepEqual(result.value, { 'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b' });
@@ -74,7 +74,7 @@ describe('element base commands', function() {
       },
     });
 
-    Nightwatch.api()
+    await Nightwatch.api()
       .element('xpath', '//weblogin', function callback(result) {
         assert.deepEqual(result.value, {
           'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
@@ -112,17 +112,16 @@ describe('element base commands', function() {
       },
     });
 
-    Nightwatch.api()
-      .element('css selector', '.not_found', function callback(result) {
-        assert.strictEqual(result.error, 'Unable to locate element: .not_found');
-        assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.httpStatusCode, 404);
-        assert.deepEqual(result.value, {
-          error: 'no such element',
-          message: 'Unable to locate element: .not_found',
-          stacktrace: ''
-        });
+    Nightwatch.api().element('css selector', '.not_found', function(result) {
+      assert.strictEqual(result.error, 'Unable to locate element: .not_found');
+      assert.strictEqual(result.status, -1);
+      assert.strictEqual(result.httpStatusCode, 404);
+      assert.deepEqual(result.value, {
+        error: 'no such element',
+        message: 'Unable to locate element: .not_found',
+        stacktrace: ''
       });
+    });
 
     return Nightwatch.start();
   });
@@ -136,7 +135,7 @@ describe('element base commands', function() {
       silent: false
     });
 
-    Nightwatch.api()
+    await Nightwatch.api()
       .elements('css selector', '#weblogin', function callback(result) {
         assert.strictEqual(result.status, 0);
         assert.deepEqual(result.value, [ { ELEMENT: '0' } ]);
@@ -157,7 +156,7 @@ describe('element base commands', function() {
       },
     });
 
-    Nightwatch.api()
+    await Nightwatch.api()
       .elements('css selector', '#webdriver', function callback(result) {
         assert.strictEqual(typeof result.status, 'undefined');
         assert.deepEqual(result.value, [{
@@ -197,7 +196,7 @@ describe('element base commands', function() {
       },
     });
 
-    Nightwatch.api()
+    await Nightwatch.api()
       .elements('xpath', '//weblogin', function callback(result) {
         assert.deepEqual(result.value, [{
           'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
@@ -218,7 +217,7 @@ describe('element base commands', function() {
       silent: false
     });
 
-    Nightwatch.api()
+    await Nightwatch.api()
       .elementIdElement('0', 'css selector', '#helpBtn', function callback(result) {
         assert.strictEqual(result.status, 0);
         assert.deepEqual(result.value, { ELEMENT: '1' });
@@ -233,7 +232,7 @@ describe('element base commands', function() {
       silent: false
     });
 
-    Nightwatch.api()
+    await Nightwatch.api()
       .elementIdElement('0', 'css selector', {selector: '#helpBtn'}, function callback(result) {
         assert.strictEqual(result.status, 0);
         assert.deepEqual(result.value, { ELEMENT: '1' });
@@ -248,11 +247,10 @@ describe('element base commands', function() {
       silent: false
     });
 
-    Nightwatch.api().elementIdElement('0', 'css selector', {});
-
     let thrown;
 
     try {
+      await Nightwatch.api().elementIdElement('0', 'css selector', {});
       await Nightwatch.start();
     } catch (err) {
       thrown = err;
@@ -271,7 +269,7 @@ describe('element base commands', function() {
       silent: false
     });
 
-    Nightwatch.api()
+    await Nightwatch.api()
       .elementIdElements('0', 'css selector', '#helpBtn', function callback(result) {
         assert.strictEqual(result.status, 0);
         assert.deepEqual(result.value, [{ ELEMENT: '1' }]);
@@ -286,7 +284,7 @@ describe('element base commands', function() {
       silent: false
     });
 
-    Nightwatch.api()
+    await Nightwatch.api()
       .elementIdElements('0', 'css selector', {selector: '#helpBtn', index: 0}, function callback(result) {
         assert.strictEqual(result.status, 0);
         assert.deepEqual(result.value, [{ ELEMENT: '1' }]);
@@ -301,7 +299,7 @@ describe('element base commands', function() {
       silent: false
     });
 
-    Nightwatch.api()
+    await Nightwatch.api()
       .elementIdElements('0', 'css selector', {selector: '#helpBtn', index: 1}, function callback(result) {
         assert.strictEqual(result.status, -1);
         assert.strictEqual(result.value, null);
@@ -316,11 +314,10 @@ describe('element base commands', function() {
       silent: false
     });
 
-    Nightwatch.api().elementIdElements('0', 'css selector', {});
-
     let thrown;
 
     try {
+      await Nightwatch.api().elementIdElements('0', 'css selector', {});
       await Nightwatch.start();
     } catch (err) {
       thrown = err;
