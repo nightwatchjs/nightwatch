@@ -9,7 +9,7 @@ module.exports = {
 
   // default timeout value in milliseconds for waitFor commands and implicit waitFor value for
   // expect assertions
-  waitForConditionTimeout : 5000,
+  waitForConditionTimeout: 5000,
 
   // this will cause waitFor commands on elements to throw an error if multiple
   // elements are found using the given locate strategy and selector
@@ -17,11 +17,11 @@ module.exports = {
 
   // controls the timeout value for async hooks. Expects the done() callback to be invoked within this time
   // or an error is thrown
-  asyncHookTimeout : 10000,
+  asyncHookTimeout: 10000,
 
   // controls the timeout value for when running async unit tests. Expects the done() callback to be invoked within this time
   // or an error is thrown
-  unitTestsTimeout : 2000,
+  unitTestsTimeout: 2000,
 
   // controls the timeout value for when executing the global async reporter. Expects the done() callback to be invoked within this time
   // or an error is thrown
