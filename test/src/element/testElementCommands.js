@@ -58,7 +58,7 @@ describe('element base commands', function() {
       }),
       response : {
         value: {
-          "element-6066-11e4-a52e-4f735466cecf": "5cc459b8-36a8-3042-8b4a-258883ea642b"
+          'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
         }
       }
     }, true);
