@@ -12,8 +12,8 @@ Nightwatch is a complete and integrated solution for end-to-end testing of web a
 [![Greenkeeper badge](https://badges.greenkeeper.io/nightwatchjs/nightwatch.svg)](https://greenkeeper.io/)
 ***
 
-## Nightwatch v1.0
-We're delighted to announce the release of __Nightwatch v1.0__. Please see the [upgrade guide](https://github.com/nightwatchjs/nightwatch/wiki/Migrating-to-Nightwatch-1.0) if you are upgrading from an earlier version. 
+## Nightwatch v1.1
+We're delighted to announce the release of __Nightwatch v1.1__. Please see the [upgrade guide](https://github.com/nightwatchjs/nightwatch/wiki/Migrating-to-Nightwatch-1.0) if you are upgrading from an earlier version. 
 
 ## 1. Install Nightwatch
 
