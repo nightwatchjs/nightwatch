@@ -35,7 +35,7 @@
     "mock-spawn": "^0.2.1",
     "mockery": "~2.1.0",
     "nock": "^10.0.6",
-    "nyc": "^13.2.0"
+    "nyc": "^14.0.0"
   },
   "optionalDependencies": {
     "mocha": "^5.1.1"
