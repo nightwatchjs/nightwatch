@@ -189,6 +189,30 @@ describe('waitForElementVisible', function() {
     });
   });
 
+  it('client.waitForElementVisible() with element not found', function () {
+    const assertion = [];
+
+    NightwatchAssertion.create = function(...args) {
+      assertion.unshift(...args);
+
+      return {
+        run: function() {
+          return Promise.resolve();
+        }
+      };
+    };
+
+    this.client.api.globals.abortOnAssertionFailure = false;
+    this.client.api.globals.waitForConditionPollInterval = 5;
+    this.client.api.waitForElementVisible('.weblogin', 11, function (result, instance) {
+      NightwatchAssertion.create = createOrig;
+    });
+
+    return this.client.start(function(err) {
+      assert.strictEqual(err.name, 'NoSuchElementError');
+    });
+  });
+
   it('client.waitForElementVisible() success after retry', function (done) {
     const assertion = [];
 
