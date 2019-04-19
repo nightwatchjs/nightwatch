@@ -24,7 +24,8 @@ describe('waitForElementNotPresent', function () {
     };
 
     this.client.api.globals.waitForConditionPollInterval = 10;
-    this.client.api.waitForElementNotPresent('.weblogin', 10, 5, function(result, instance) {
+    this.client.api.waitForElementNotPresent('.weblogin', 50, 5, function(result, instance) {
+      assert.strictEqual(instance.executor.retries, 0);
       assert.strictEqual(instance.expectedValue, 'not found');
       assert.strictEqual(instance.rescheduleInterval, 5);
 
