@@ -49,7 +49,7 @@ describe('expect.title', function() {
     let expect = this.client.api.expect.title().to.equal('vasq');
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, "equal 'vasq'");
+      assert.equal(expect.assertion.expected, 'equal \'vasq\'');
       assert.equal(expect.assertion.negate, false);
       assert.equal(expect.assertion.actual, 'hp vasq');
       assert.equal(expect.assertion.resultValue, 'hp vasq');
@@ -84,7 +84,7 @@ describe('expect.title', function() {
     let expect = this.client.api.expect.title().to.not.equal('hp vasq');
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, "not equal 'hp vasq'");
+      assert.equal(expect.assertion.expected, 'not equal \'hp vasq\'');
       assert.equal(expect.assertion.negate, true);
       assert.equal(expect.assertion.actual, 'hp vasq');
       assert.equal(expect.assertion.resultValue, 'hp vasq');
@@ -123,7 +123,7 @@ describe('expect.title', function() {
       assert.equal(expect.assertion.passed, false);
       assert.ok(expect.assertion.retries >= 1);
       assert.ok(expect.assertion.elapsedTime >= 40);
-      assert.equal(expect.assertion.expected, "equal 'hp vasq'");
+      assert.equal(expect.assertion.expected, 'equal \'hp vasq\'');
       //assert.equal(expect.assertion.actual, 'xx');
       assert.ok(expect.assertion.message.startsWith('Expected page title to equal: "hp vasq" in 40ms'));
     });

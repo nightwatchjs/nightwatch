@@ -36,7 +36,7 @@ describe('expect.elements count', function() {
     let expect = this.client.api.expect.elements('.classname').count.to.equal(5);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, "equal '5'");
+      assert.equal(expect.assertion.expected, 'equal \'5\'');
       assert.strictEqual(expect.assertion.negate, false);
       assert.equal(expect.assertion.actual, 4);
       assert.equal(expect.assertion.resultValue, 4);
@@ -70,7 +70,7 @@ describe('expect.elements count', function() {
     let expect = this.client.api.expect.elements('.classname').count.to.not.equal(4);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, "not equal '4'");
+      assert.equal(expect.assertion.expected, 'not equal \'4\'');
       assert.strictEqual(expect.assertion.negate, true);
       assert.equal(expect.assertion.actual, 4);
       assert.equal(expect.assertion.resultValue, 4);
@@ -109,7 +109,7 @@ describe('expect.elements count', function() {
       assert.strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.retries >= 1);
       assert.ok(expect.assertion.elapsedTime >= 25);
-      assert.equal(expect.assertion.expected, "equal '888'");
+      assert.equal(expect.assertion.expected, 'equal \'888\'');
       assert.ok(expect.assertion.message.startsWith('Expected elements <.classname> count to equal: "888" in 25ms'));
     });
   });
@@ -125,7 +125,7 @@ describe('expect.elements count', function() {
     assert.ok(expect.assertion.message.startsWith('Expected elements <%s> count to'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, "equal '4'");
+      assert.equal(expect.assertion.expected, 'equal \'4\'');
       assert.strictEqual(expect.assertion.negate, false);
       assert.equal(expect.assertion.resultValue, 0);
       assert.strictEqual(expect.assertion.passed, false);
