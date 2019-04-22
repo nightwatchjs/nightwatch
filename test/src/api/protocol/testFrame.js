@@ -40,6 +40,30 @@ describe('client.frame', function() {
       args: [0]
     });
   });
+  
+  it('testFramePostWithNull', function () {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/frame');
+        assert.deepEqual(opts.data, { id: null });
+      },
+      commandName: 'frame',
+      args: [null]
+    });
+  });
+
+  it('testFramePostWithUndefined', function () {
+    return Globals.protocolTest.call(this, {
+      assertion: function(opts) {
+        assert.equal(opts.method, 'POST');
+        assert.equal(opts.path, '/session/1352110219202/frame');
+        assert.deepEqual(opts.data, { id: null });
+      },
+      commandName: 'frame',
+      args: []
+    });
+  });
 
   it('testFrameParent', function () {
     return Globals.protocolTest.call(this, {
