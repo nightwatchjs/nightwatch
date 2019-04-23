@@ -237,6 +237,7 @@ describe('test Nightwatch Api', function() {
       options: {
         page_objects_path: [path.join(__dirname, '../../extra/otherPageobjects')]
       },
+      settings: {},
       session: {},
       api: {
         perform(fn) {
@@ -265,6 +266,11 @@ describe('test Nightwatch Api', function() {
 
     assert.ok(typeof mockClient.api.page == 'object');
     assert.ok('otherPage' in mockClient.api.page);
+
+    assert.throws(function() {
+      mockClient.api.page.otherPage().navigate();
+    }, /Error: Invalid URL in "otherPage" page object. When using relative uris, you must define a "launch_url" setting in your config which serves as the base url./);
+
   });
 
 });
