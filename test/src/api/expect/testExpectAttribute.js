@@ -3,12 +3,6 @@ const Nocks = require('../../../lib/nocks.js');
 const ExpectGlobals = require('../../../lib/globals/expect.js');
 
 describe('expect.attribute', function() {
-  // before(function() {
-  //   try {
-  //     Nocks.enable(true);
-  //   } catch (e) {}
-  // });
-
   beforeEach(function(done) {
     ExpectGlobals.beforeEach.call(this, () => {
       this.client.api.globals.abortOnAssertionFailure = true;
@@ -883,14 +877,17 @@ describe('expect.attribute', function() {
     this.client.start(done);
   });
 
-  it('to have attribute match - throws exception on invalid regex', function(done) {
+  it('to have attribute match - throws exception on invalid regex', function() {
     Nocks.elementFound().attributeValue('xx');
-
+    let expectedError;
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class');
-    assert.throws(function() {
+    try {
       expect.which.matches('');
-    }, /Error: matches requires first parameter to be a RegExp\. string given/);
+    } catch (err) {
+      expectedError = err;
+    }
 
-    this.client.start(done);
+    assert.ok(expectedError instanceof Error);
+    assert.strictEqual(expectedError.message, 'matches requires first paramter to be a RegExp. string given.');
   });
 });

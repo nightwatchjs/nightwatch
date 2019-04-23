@@ -20,12 +20,12 @@ describe('expect.enabled', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.enabled;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '#weblogin');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.resultValue, true);
+      assert.strictEqual(expect.assertion.selector, '#weblogin');
+      assert.strictEqual(expect.assertion.negate, false);
+      assert.strictEqual(expect.assertion.passed, true);
+      assert.strictEqual(expect.assertion.resultValue, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be enabled'));
-      assert.equal(expect.assertion.messageParts.length, 1);
+      assert.strictEqual(expect.assertion.messageParts.length, 1);
     });
   });
 
@@ -35,8 +35,8 @@ describe('expect.enabled', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.enabled.before(100);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 100);
-      assert.equal(expect.assertion.passed, true);
+      assert.strictEqual(expect.assertion.waitForMs, 100);
+      assert.strictEqual(expect.assertion.passed, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be enabled in 100ms - condition was met in ' + expect.assertion.elapsedTime + 'ms'));
     });
   });
@@ -49,8 +49,8 @@ describe('expect.enabled', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.enabled.before(60);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 60);
-      assert.equal(expect.assertion.passed, false);
+      assert.strictEqual(expect.assertion.waitForMs, 60);
+      assert.strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be enabled in 60ms'));
     });
   });
@@ -67,15 +67,15 @@ describe('expect.enabled', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.enabled;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '#weblogin');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.waitForMs, 40);
-      assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.expected, 'enabled');
-      assert.equal(expect.assertion.actual, 'not enabled');
-      assert.equal(expect.assertion.resultValue, false);
+      assert.strictEqual(expect.assertion.selector, '#weblogin');
+      assert.strictEqual(expect.assertion.negate, false);
+      assert.strictEqual(expect.assertion.waitForMs, 40);
+      assert.strictEqual(expect.assertion.passed, false);
+      assert.strictEqual(expect.assertion.expected, 'enabled');
+      assert.strictEqual(expect.assertion.actual, 'not enabled');
+      assert.strictEqual(expect.assertion.resultValue, false);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be enabled'));
-      assert.equal(expect.assertion.messageParts.length, 0);
+      assert.strictEqual(expect.assertion.messageParts.length, 0);
     });
   });
 
@@ -91,14 +91,14 @@ describe('expect.enabled', function() {
     let expect = this.client.api.expect.element('#weblogin').to.not.be.enabled;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '#weblogin');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.expected, 'not enabled');
-      assert.equal(expect.assertion.actual, 'not enabled');
-      assert.equal(expect.assertion.resultValue, false);
+      assert.strictEqual(expect.assertion.selector, '#weblogin');
+      assert.strictEqual(expect.assertion.negate, true);
+      assert.strictEqual(expect.assertion.passed, true);
+      assert.strictEqual(expect.assertion.expected, 'not enabled');
+      assert.strictEqual(expect.assertion.actual, 'not enabled');
+      assert.strictEqual(expect.assertion.resultValue, false);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not be enabled'));
-      assert.equal(expect.assertion.messageParts.length, 1);
+      assert.strictEqual(expect.assertion.messageParts.length, 1);
     });
   });
 
@@ -114,14 +114,14 @@ describe('expect.enabled', function() {
     let expect = this.client.api.expect.element('#weblogin').to.not.be.enabled;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '#weblogin');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.expected, 'not enabled');
-      assert.equal(expect.assertion.actual, 'enabled');
-      assert.equal(expect.assertion.resultValue, true);
+      assert.strictEqual(expect.assertion.selector, '#weblogin');
+      assert.strictEqual(expect.assertion.negate, true);
+      assert.strictEqual(expect.assertion.passed, false);
+      assert.strictEqual(expect.assertion.expected, 'not enabled');
+      assert.strictEqual(expect.assertion.actual, 'enabled');
+      assert.strictEqual(expect.assertion.resultValue, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not be enabled'));
-      assert.equal(expect.assertion.messageParts.length, 0);
+      assert.strictEqual(expect.assertion.messageParts.length, 0);
     });
   });
 
@@ -137,13 +137,12 @@ describe('expect.enabled', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.enabled;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '#weblogin');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.waitForMs, 40);
-      assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.expected, 'enabled');
-      assert.equal(expect.assertion.actual, 'not found');
-      assert.equal(expect.assertion.resultValue, null);
+      assert.strictEqual(expect.assertion.selector, '#weblogin');
+      assert.strictEqual(expect.assertion.negate, false);
+      assert.strictEqual(expect.assertion.waitForMs, 40);
+      assert.strictEqual(expect.assertion.passed, false);
+      assert.strictEqual(expect.assertion.expected, 'enabled');
+      assert.strictEqual(expect.assertion.actual, 'not found');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be enabled - element was not found'));
       assert.deepEqual(expect.assertion.messageParts, [' - element was not found']);
     });
@@ -157,8 +156,8 @@ describe('expect.enabled', function() {
     let expect = this.client.api.expect.element('#weblogin').to.not.be.enabled.before(120);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 120);
-      assert.equal(expect.assertion.passed, false);
+      assert.strictEqual(expect.assertion.waitForMs, 120);
+      assert.strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not be enabled in 120ms'));
     });
   });
@@ -171,23 +170,23 @@ describe('expect.enabled', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.enabled.before(60);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 60);
-      assert.equal(expect.assertion.passed, false);
+      assert.strictEqual(expect.assertion.waitForMs, 60);
+      assert.strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be enabled in 60ms - element was not found'));
     });
   });
 
   it('to be enabled with waitFor - element found on retry', function() {
-    this.client.api.globals.waitForConditionPollInterval = 50;
+    this.client.api.globals.waitForConditionPollInterval = 10;
 
     Nocks.elementNotFound().elementFound().enabled();
 
-    let expect = this.client.api.expect.element('#weblogin').to.be.enabled.before(60);
+    let expect = this.client.api.expect.element('#weblogin').to.be.enabled.before(11);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 60);
-      assert.equal(expect.assertion.passed, true);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be enabled in 60ms - condition was met in ' + expect.assertion.elapsedTime + 'ms'));
+      assert.strictEqual(expect.assertion.passed, true);
+      assert.strictEqual(expect.assertion.waitForMs, 11);
+      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be enabled in 11ms - condition was met in ' + expect.assertion.elapsedTime + 'ms'));
     });
   });
 });

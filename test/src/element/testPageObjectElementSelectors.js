@@ -273,4 +273,11 @@ describe('test page object element selectors', function() {
     Nightwatch.start();
   });
 
+  it('nested folder page object is loaded properly', function() {
+    let page = Nightwatch.api().page.api.method.index();
+    let section = page.section.container;
+
+    assert.strictEqual(section.name, 'container');
+  });
+
 });
