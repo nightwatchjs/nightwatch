@@ -32,11 +32,14 @@
     "coveralls": "^3.0.0",
     "eslint": "^5.2.0",
     "js-yaml": "^3.13.1",
-    "mocha": "^5.2.0",
     "mock-spawn": "^0.2.1",
     "mockery": "~2.1.0",
     "nock": "^10.0.6",
-    "nyc": "^14.0.0"
+    "nyc": "^14.0.0",
+    "mocha": "^5.2.0"
+  },
+  "optionalDependencies": {
+    "mocha": "^5.2.0"
   },
   "bin": {
     "nightwatch": "./bin/nightwatch"
