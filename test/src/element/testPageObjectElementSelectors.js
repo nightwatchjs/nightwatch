@@ -274,10 +274,13 @@ describe('test page object element selectors', function() {
   });
 
   it('nested folder page object is loaded properly', function() {
-    let page = Nightwatch.api().page.api.method.index();
-    let section = page.section.container;
+    let fooPage = Nightwatch.api().page.api.method.foo();
+    let fooSection = fooPage.section.foo;
+    assert.strictEqual(fooSection.name, 'foo');
 
-    assert.strictEqual(section.name, 'container');
+    let barPage = Nightwatch.api().page.api.method.bar();
+    let barSection = barPage.section.bar;
+    assert.strictEqual(barSection.name, 'bar');
   });
 
 });
