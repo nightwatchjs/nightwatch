@@ -1,7 +1,7 @@
 module.exports = {
   sections: {
-    container: {
-      selector: '#container'
+    bar: {
+      selector: '#bar'
     }
   }
 };
