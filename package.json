@@ -17,7 +17,7 @@
   "dependencies": {
     "assertion-error": "^1.1.0",
     "chai-nightwatch": "^0.3.0",
-    "dotenv": "7.0.0",
+    "dotenv": "8.0.0",
     "ejs": "^2.5.9",
     "lodash.clone": "3.0.3",
     "lodash.defaultsdeep": "^4.6.0",
