@@ -10,7 +10,7 @@ module.exports = new function () {
   let _mockServer = null;
 
   Logger.setOutputEnabled(false);
-  Logger.disable();
+  Logger.enable();
 
   this.startMockServer = function (done = function() {}) {
     return new Promise((resolve) => {
