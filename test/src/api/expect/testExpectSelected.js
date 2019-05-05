@@ -171,16 +171,16 @@ describe('expect.selected', function() {
   });
 
   it('to be selected with waitFor - element found on retry', function() {
-    this.client.api.globals.waitForConditionPollInterval = 50;
+    this.client.api.globals.waitForConditionPollInterval = 10;
 
     Nocks.elementNotFound().elementFound().selected();
 
-    let expect = this.client.api.expect.element('#weblogin').to.be.selected.before(60);
+    let expect = this.client.api.expect.element('#weblogin').to.be.selected.before(11);
 
     return this.client.start(function() {
-      assert.strictEqual(expect.assertion.waitForMs, 60);
+      assert.strictEqual(expect.assertion.waitForMs, 11);
       assert.strictEqual(expect.assertion.passed, true);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be selected in 60ms - condition was met in ' + expect.assertion.elapsedTime + 'ms'));
+      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be selected in 11ms - condition was met in ' + expect.assertion.elapsedTime + 'ms'));
     });
   });
 });
