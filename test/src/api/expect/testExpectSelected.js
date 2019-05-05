@@ -20,12 +20,12 @@ describe('expect.selected', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.selected;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '#weblogin');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.resultValue, true);
+      assert.strictEqual(expect.assertion.selector, '#weblogin');
+      assert.strictEqual(expect.assertion.negate, false);
+      assert.strictEqual(expect.assertion.passed, true);
+      assert.strictEqual(expect.assertion.resultValue, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be selected'));
-      assert.equal(expect.assertion.messageParts.length, 1);
+      assert.strictEqual(expect.assertion.messageParts.length, 1);
     });
   });
 
@@ -35,8 +35,8 @@ describe('expect.selected', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.selected.before(100);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 100);
-      assert.equal(expect.assertion.passed, true);
+      assert.strictEqual(expect.assertion.waitForMs, 100);
+      assert.strictEqual(expect.assertion.passed, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be selected in 100ms - condition was met in ' + expect.assertion.elapsedTime + 'ms'));
     });
   });
@@ -49,8 +49,8 @@ describe('expect.selected', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.selected.before(60);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 60);
-      assert.equal(expect.assertion.passed, false);
+      assert.strictEqual(expect.assertion.waitForMs, 60);
+      assert.strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be selected in 60ms'));
     });
   });
@@ -67,15 +67,15 @@ describe('expect.selected', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.selected;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '#weblogin');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.waitForMs, 40);
-      assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.expected, 'selected');
-      assert.equal(expect.assertion.actual, 'not selected');
-      assert.equal(expect.assertion.resultValue, false);
+      assert.strictEqual(expect.assertion.selector, '#weblogin');
+      assert.strictEqual(expect.assertion.negate, false);
+      assert.strictEqual(expect.assertion.waitForMs, 40);
+      assert.strictEqual(expect.assertion.passed, false);
+      assert.strictEqual(expect.assertion.expected, 'selected');
+      assert.strictEqual(expect.assertion.actual, 'not selected');
+      assert.strictEqual(expect.assertion.resultValue, false);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be selected'));
-      assert.equal(expect.assertion.messageParts.length, 0);
+      assert.strictEqual(expect.assertion.messageParts.length, 0);
     });
   });
 
@@ -85,14 +85,14 @@ describe('expect.selected', function() {
     let expect = this.client.api.expect.element('#weblogin').to.not.be.selected;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '#weblogin');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.expected, 'not selected');
-      assert.equal(expect.assertion.actual, 'not selected');
-      assert.equal(expect.assertion.resultValue, false);
+      assert.strictEqual(expect.assertion.selector, '#weblogin');
+      assert.strictEqual(expect.assertion.negate, true);
+      assert.strictEqual(expect.assertion.passed, true);
+      assert.strictEqual(expect.assertion.expected, 'not selected');
+      assert.strictEqual(expect.assertion.actual, 'not selected');
+      assert.strictEqual(expect.assertion.resultValue, false);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not be selected'));
-      assert.equal(expect.assertion.messageParts.length, 1);
+      assert.strictEqual(expect.assertion.messageParts.length, 1);
     });
   });
 
@@ -108,14 +108,14 @@ describe('expect.selected', function() {
     let expect = this.client.api.expect.element('#weblogin').to.not.be.selected;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '#weblogin');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.expected, 'not selected');
-      assert.equal(expect.assertion.actual, 'selected');
-      assert.equal(expect.assertion.resultValue, true);
+      assert.strictEqual(expect.assertion.selector, '#weblogin');
+      assert.strictEqual(expect.assertion.negate, true);
+      assert.strictEqual(expect.assertion.passed, false);
+      assert.strictEqual(expect.assertion.expected, 'not selected');
+      assert.strictEqual(expect.assertion.actual, 'selected');
+      assert.strictEqual(expect.assertion.resultValue, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not be selected'));
-      assert.equal(expect.assertion.messageParts.length, 0);
+      assert.strictEqual(expect.assertion.messageParts.length, 0);
     });
   });
 
@@ -131,13 +131,12 @@ describe('expect.selected', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.selected;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '#weblogin');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.waitForMs, 40);
-      assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.expected, 'selected');
-      assert.equal(expect.assertion.actual, 'not found');
-      assert.equal(expect.assertion.resultValue, null);
+      assert.strictEqual(expect.assertion.selector, '#weblogin');
+      assert.strictEqual(expect.assertion.negate, false);
+      assert.strictEqual(expect.assertion.waitForMs, 40);
+      assert.strictEqual(expect.assertion.passed, false);
+      assert.strictEqual(expect.assertion.expected, 'selected');
+      assert.strictEqual(expect.assertion.actual, 'not found');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be selected - element was not found'));
       assert.deepEqual(expect.assertion.messageParts, [' - element was not found']);
     });
@@ -151,8 +150,8 @@ describe('expect.selected', function() {
     let expect = this.client.api.expect.element('#weblogin').to.not.be.selected.before(120);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 120);
-      assert.equal(expect.assertion.passed, false);
+      assert.strictEqual(expect.assertion.waitForMs, 120);
+      assert.strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not be selected in 120ms'));
     });
   });
@@ -165,8 +164,8 @@ describe('expect.selected', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.selected.before(60);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 60);
-      assert.equal(expect.assertion.passed, false);
+      assert.strictEqual(expect.assertion.waitForMs, 60);
+      assert.strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be selected in 60ms - element was not found'));
     });
   });
@@ -179,8 +178,8 @@ describe('expect.selected', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.selected.before(60);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 60);
-      assert.equal(expect.assertion.passed, true);
+      assert.strictEqual(expect.assertion.waitForMs, 60);
+      assert.strictEqual(expect.assertion.passed, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be selected in 60ms - condition was met in ' + expect.assertion.elapsedTime + 'ms'));
     });
   });

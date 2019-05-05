@@ -50,7 +50,6 @@ describe('waitForElementNotPresent', function () {
     this.client.api.globals.waitForConditionPollInterval = 10;
     this.client.api.waitForElementNotPresent('#weblogin', 15, false, function(result, instance) {
       assert.strictEqual(assertion[0], false);
-
       assert.strictEqual(result.status, 0);
       assert.strictEqual(instance.abortOnFailure, false);
       NightwatchAssertion.create = createOrig;

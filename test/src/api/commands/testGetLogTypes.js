@@ -22,11 +22,13 @@ describe('getLogTypes', function() {
       })
     });
 
+    const api = this.client.api;
     this.client.api.getLogTypes(function callback(result) {
-      assert.equal(Array.isArray(result), true);
-      assert.equal(result.length, 2);
-      assert.equal(result[0], 'browser');
-      assert.equal(result[1], 'har');
+      assert.strictEqual(this, api);
+      assert.ok(Array.isArray(result));
+      assert.strictEqual(result.length, 2);
+      assert.strictEqual(result[0], 'browser');
+      assert.strictEqual(result[1], 'har');
     });
 
     this.client.start(done);

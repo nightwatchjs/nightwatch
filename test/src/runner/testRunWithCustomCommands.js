@@ -64,4 +64,48 @@ describe('testRunWithCustomCommands', function() {
       _source: [testsPath]
     }, settings);
   });
+
+  it('testRunner with ES6 Async custom commands', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/withes6asynccommands');
+    let testResults;
+    const origExit = process.exit;
+    process.exit = function() {};
+
+    let globals = {
+      increment: 0,
+      logResult: null,
+      retryAssertionTimeout: 0,
+      reporter(results, cb) {
+        testResults = results;
+
+        cb();
+      }
+    };
+
+    let settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      output: true,
+      silent: false,
+      custom_commands_path: [path.join(__dirname, '../../extra/commands/es6async')],
+      persist_globals: true,
+      globals,
+      output_folder: false
+    };
+
+    return NightwatchClient.runTests({
+      _source: [testsPath]
+    }, settings).then(_ => {
+      process.exit = origExit;
+      assert.strictEqual(globals.increment, 3);
+      assert.deepEqual(globals.logResult.value, [
+        {level: 'info', timestamp: 534547832, message: 'Test log'},
+        {level: 'info', timestamp: 534547442, message: 'Test log2'}
+      ]);
+      assert.strictEqual(testResults.errmessages.length, 1);
+    });
+  });
 });

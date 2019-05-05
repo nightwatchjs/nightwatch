@@ -32,6 +32,7 @@ describe('clearValue', function() {
 
         client.api.clearValue('#weblogin', function callback(result) {
           assert.strictEqual(result.status, 0);
+          assert.strictEqual(this, client.api);
         }).clearValue('css selector', '#weblogin', function callback(result) {
           assert.strictEqual(result.status, 0);
         });

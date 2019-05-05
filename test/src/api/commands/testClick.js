@@ -20,9 +20,10 @@ describe('click', function() {
         status:0
       }
     });
-
+    const api = this.client.api;
     this.client.api.click('#weblogin', function callback(result) {
       assert.strictEqual(result.status, 0);
+      assert.strictEqual(this, api);
     }).click('css selector', '#weblogin', function callback(result) {
       assert.strictEqual(result.status, 0);
     });

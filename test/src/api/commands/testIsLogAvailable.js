@@ -34,14 +34,17 @@ describe('isLogAvailable', function() {
       })
     });
 
+    const api = this.client.api;
+
     this.client.api
       .isLogAvailable('unknown', function callback(result) {
-        assert.equal(typeof result, 'boolean');
-        assert.equal(result, false);
+        assert.strictEqual(this, api);
+        assert.strictEqual(typeof result, 'boolean');
+        assert.strictEqual(result, false);
       })
       .isLogAvailable('browser', function callback(result) {
-        assert.equal(typeof result, 'boolean');
-        assert.equal(result, true);
+        assert.strictEqual(typeof result, 'boolean');
+        assert.strictEqual(result, true);
       });
 
     this.client.start(done);
@@ -59,12 +62,12 @@ describe('isLogAvailable', function() {
     });
 
     this.client.api.isLogAvailable('unknown', function callback(result) {
-      assert.equal(typeof result === 'boolean', true);
-      assert.equal(result, false);
+      assert.strictEqual(typeof result === 'boolean', true);
+      assert.strictEqual(result, false);
     })
       .isLogAvailable('browser', function callback(result) {
-        assert.equal(typeof result === 'boolean', true);
-        assert.equal(result, false);
+        assert.strictEqual(typeof result === 'boolean', true);
+        assert.strictEqual(result, false);
       });
 
     this.client.start(done);

@@ -92,7 +92,7 @@ describe('test Parallel Execution', function() {
     assert.ok(runner.test_settings.test_workers);
 
     return runner.runTests().then(_ => {
-      assert.equal(allArgs.length, 27);
+      assert.strictEqual(allArgs.length, 29);
       assert.strictEqual(runner.concurrency.globalExitCode, 0);
     });
   });
@@ -134,7 +134,7 @@ describe('test Parallel Execution', function() {
     });
 
     return runner.runTests().then(_ => {
-      assert.equal(allArgs.length, 27);
+      assert.strictEqual(allArgs.length, 29);
     });
   });
 
@@ -163,7 +163,7 @@ describe('test Parallel Execution', function() {
     });
 
     return runner.runTests().then(_ => {
-      assert.equal(allArgs.length, 27);
+      assert.strictEqual(allArgs.length, 29);
     });
   });
 
@@ -179,7 +179,6 @@ describe('test Parallel Execution', function() {
   });
 
   it('test parallel execution with workers and single source file', function() {
-    const WebDriver = common.require('runner/webdriver-server.js');
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: path.join(__dirname, '../../../extra/parallelism.json'),
