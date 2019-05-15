@@ -103,6 +103,74 @@ describe('test page object element selectors', function() {
     Nightwatch.start(done);
   });
 
+  it('page section protocol .elements()', function(done) {
+    nocks
+      .elementsFound('#signupSection')
+      .elementsId('0', '#helpBtn', [{ELEMENT: '12345'}]);
+
+    let page = Nightwatch.api().page.simplePageObj();
+    let section = page.section.signUp;
+
+    section.api.elements('@help', function callback(response) {
+      assert.strictEqual(response.status, 0, 'section element selector string found');
+      assert.strictEqual(response.result.value.length, 1);
+      assert.strictEqual(response.value, '12345');
+    });
+
+    Nightwatch.start(done);
+  });
+
+  it('page section protocol .element()', function(done) {
+    nocks
+      .elementsFound('#signupSection')
+      .elementId('0', '#helpBtn', 'css selector', {ELEMENT: '12345'});
+
+    let page = Nightwatch.api().page.simplePageObj();
+    let section = page.section.signUp;
+
+    section.api.element('@help', function callback(response) {
+      assert.strictEqual(response.status, 0, 'section element selector string found');
+      assert.strictEqual(response.result.value.ELEMENT, '12345');
+      assert.strictEqual(response.value, '12345');
+    });
+
+    Nightwatch.start(done);
+  });
+
+  it('page section protocol .elementIdElements()', function(done) {
+    nocks
+      .elementsFound('#signupSection')
+      .elementsId('0', '#helpBtn', {ELEMENT: '12345'})
+      .elementsId('12345', 'a', [{ELEMENT: 'abc-12345'}]);
+
+    let page = Nightwatch.api().page.simplePageObj();
+    let section = page.section.signUp;
+
+    section.api.elementIdElements('@help', 'css selector', 'a', function callback(response) {
+      assert.strictEqual(response.status, 0, 'section element selector string found');
+      assert.strictEqual(response.value[0].ELEMENT, 'abc-12345');
+    });
+
+    Nightwatch.start(done);
+  });
+
+  it('page section protocol .elementIdElement()', function(done) {
+    nocks
+      .elementsFound('#signupSection')
+      .elementsId('0', '#helpBtn', [{ELEMENT: '12345'}])
+      .elementId('12345', 'a', 'css selector', {ELEMENT: 'abc-12345'})
+
+    let page = Nightwatch.api().page.simplePageObj();
+    let section = page.section.signUp;
+
+    section.api.elementIdElement('@help', 'css selector', 'a', function callback(response) {
+      assert.strictEqual(response.status, 0, 'section element selector string found');
+      assert.strictEqual(response.value.ELEMENT, 'abc-12345');
+    });
+
+    Nightwatch.start(done);
+  });
+
   it('page section elements - section element not found', function() {
     nocks
       .elementsNotFound('#signupSection')
