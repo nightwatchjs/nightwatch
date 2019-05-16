@@ -9,7 +9,7 @@ module.exports = new function () {
   let _client = null;
   let _mockServer = null;
 
-  Logger.setOutputEnabled(true);
+  Logger.setOutputEnabled(process.env.VERBOSE === '1' || false);
   Logger.enable();
 
   this.startMockServer = function (done = function() {}) {

@@ -148,10 +148,7 @@ describe('Transport.create()', function () {
       }
     });
 
-    assert.ok(safariDriver instanceof JsonWire);
-    assert.strictEqual(safariDriver instanceof Selenium2, false);
-    assert.strictEqual(safariDriver instanceof Selenium3, false);
-    assert.strictEqual(safariDriver instanceof WebDriver, false);
+    assert.ok(safariDriver instanceof WebDriver);
   });
 
   it('test create Transport for Safari remote', function() {
@@ -208,10 +205,9 @@ describe('Transport.create()', function () {
       }
     });
 
-    assert.ok(client.transport instanceof JsonWire);
+    assert.ok(client.transport instanceof WebDriver);
     assert.strictEqual(client.transport instanceof Selenium2, false);
     assert.strictEqual(client.transport instanceof Selenium3, false);
-    assert.strictEqual(client.transport instanceof WebDriver, false);
   });
 
   it('test create Transport for Selenium remote cloud service with Chrome', function() {

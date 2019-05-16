@@ -100,7 +100,7 @@ describe('testRunnerSessionCreate', function() {
       webdriver: {
         start_process: true
       },
-      output: false,
+      output: process.env.VERBOSE === '1' || false,
       silent: false,
       globals: globals,
       output_folder: false
@@ -136,7 +136,7 @@ describe('testRunnerSessionCreate', function() {
       webdriver: {
         start_process: true
       },
-      output: false,
+      output: process.env.VERBOSE === '1' || false,
       silent: false,
       globals: globals,
       output_folder: false
