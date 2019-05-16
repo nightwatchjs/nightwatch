@@ -17,17 +17,17 @@ We're delighted to announce the release of __Nightwatch v1.1__ (currently in BET
 
 ## 1. Install Nightwatch
 
-From [NPM](https://npmjs.com/package/nightwatch):
+__From [NPM](https://npmjs.com/package/nightwatch):__
 ```sh
 $ npm install nightwatch
 ```
-This will install a relatively stable version - [`v1.0.19`](https://www.npmjs.com/package/nightwatch/v/1.0.19). 
+This will install the latest stable version - [`v1.0.19`](https://www.npmjs.com/package/nightwatch/v/1.0.19). 
 
 - to install the [beta version](https://www.npmjs.com/package/nightwatch/v/1.1.8) with the latest features run `npm install nightwatch@1.1.8`.
 - add `-g` if you wish to install Nightwatch globally on your system.
 
 
-From GitHub:
+__From GitHub__:
 ```sh
 $ git clone https://github.com/nightwatchjs/nightwatch.git
 $ cd nightwatch
