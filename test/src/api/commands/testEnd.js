@@ -33,6 +33,7 @@ describe('end', function() {
   it('client.end() - with screenshot', function (done) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/screenshot',
+      method: 'GET',
       response: JSON.stringify({
         status: 0,
         state: 'success',
@@ -56,12 +57,8 @@ describe('end', function() {
         }
       };
 
-      client.api.saveScreenshot = function (file, callback) {
-        assert.ok(file.indexOf('screens/test_module/test_name') > -1);
-      };
-
       client.api.end(function callback(result) {
-        assert.equal(result.value, null);
+        assert.strictEqual(result.status, 0);
       });
 
       client.start(done);
