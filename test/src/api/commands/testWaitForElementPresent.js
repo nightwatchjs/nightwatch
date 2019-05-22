@@ -77,13 +77,12 @@ describe('waitForElementPresent', function() {
     }).catch(done);
   });
 
-  it('client.waitForElementPresent() with no params and invalid locate strategy', function(done) {
+  it('client.waitForElementPresent() with no params', function(done) {
     this.client.api.globals.waitForConditionPollInterval = 10;
 
-    this.client.api.waitForElementPresent('invalid strategy', '#weblogin');
+    this.client.api.waitForElementPresent('#weblogin');
     this.client.start(function(err) {
-      assert.ok(err instanceof Error);
-      assert.ok(err.message.includes('Provided locating strategy "invalid strategy" is not supported.'));
+      assert.strictEqual(typeof err, 'undefined');
       done();
     }).catch(done);
   });
