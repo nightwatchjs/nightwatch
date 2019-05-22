@@ -105,7 +105,7 @@ describe('test Nightwatch Api', function() {
     }, /ENOENT: no such file or directory, scandir '/);
   });
 
-  it('testRunCustomPerformCommand', function(done) {
+  it('test run customPerform command', function(done) {
     const ApiLoader = common.require('api-loader/api.js');
     let mockClient = {
       options: {
@@ -115,7 +115,7 @@ describe('test Nightwatch Api', function() {
         commandQueue: {
           add({commandName, commandFn, context, args, stackTrace}) {
             let instance = commandFn.apply(context, args);
-            if (commandName == 'customPerform') {
+            if (commandName === 'customPerform') {
               instance.on('complete', () => {
                 assert.strictEqual(paramFnCalled, true);
                 done();
@@ -137,8 +137,18 @@ describe('test Nightwatch Api', function() {
       isApiMethodDefined: function (commandName, namespace) {
         return false;
       },
-      setApiMethod: function (commandName, commandFn) {
-        mockClient.api[commandName] = commandFn;
+      setApiMethod: function (commandName, ...args) {
+        if (args.length === 1) {
+          mockClient.api[commandName] = args[0];
+        } else {
+          let context = mockClient.api;
+          let namespace = typeof args[0] == 'string' ? context[args[0]] : args[0];
+          if (namespace) {
+            context = namespace;
+          }
+
+          context[commandName] = args[1];
+        }
       },
       transport: {
         Actions: {}
@@ -152,9 +162,12 @@ describe('test Nightwatch Api', function() {
     mockClient.api.customPerform(function() {
       paramFnCalled = true;
     });
+
+    assert.ok('other' in mockClient.api);
+    assert.strictEqual(typeof mockClient.api.other.otherCommand, 'function');
   });
 
-  it('testRunCustomCommandDeprecated', function(done) {
+  it('test run custom command deprecated', function(done) {
     let commandQueue = [];
     const ApiLoader = common.require('api-loader/api.js');
     let mockClient = {
@@ -167,7 +180,7 @@ describe('test Nightwatch Api', function() {
             commandQueue.push(commandName);
             let instance = commandFn.apply(context, args);
 
-            if (commandName == 'customCommand') {
+            if (commandName === 'customCommand') {
               assert.equal(instance.toString(), 'CommandInstance [name=customCommand]');
             }
           }

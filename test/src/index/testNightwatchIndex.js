@@ -407,5 +407,4 @@ describe('test NightwatchIndex', function () {
       done();
     });
   });
-
 });

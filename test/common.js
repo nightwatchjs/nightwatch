@@ -6,6 +6,10 @@ module.exports = {
     return require(path.join('../', BASE_PATH, relativeFilePath));
   },
 
+  requireApi(relativeFilePath) {
+    return require(path.join('../api', relativeFilePath));
+  },
+
   resolve(relativeFilePath) {
     return path.join('../', BASE_PATH, relativeFilePath);
   },
