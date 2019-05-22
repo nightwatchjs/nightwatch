@@ -64,6 +64,30 @@ describe('waitForElementPresent', function() {
     }).catch(done);
   });
 
+  it('client.waitForElementPresent() with custom message and no params', function(done) {
+    this.client.api.globals.waitForConditionPollInterval = 10;
+
+    this.client.api.waitForElementPresent({selector: '#weblogin'}, 'Element found');
+    this.client.start(function(err) {
+      if (err) {
+        done(err);
+      } else {
+        done();
+      }
+    }).catch(done);
+  });
+
+  it('client.waitForElementPresent() with no params and invalid locate strategy', function(done) {
+    this.client.api.globals.waitForConditionPollInterval = 10;
+
+    this.client.api.waitForElementPresent('invalid strategy', '#weblogin');
+    this.client.start(function(err) {
+      assert.ok(err instanceof Error);
+      assert.ok(err.message.includes('Provided locating strategy "invalid strategy" is not supported.'));
+      done();
+    }).catch(done);
+  });
+
   it('client.waitForElementPresent() failure', function() {
     this.client.api.globals.waitForConditionPollInterval = 10;
 
