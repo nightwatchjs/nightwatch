@@ -24,6 +24,27 @@ describe('assert.elementNotPresent', function () {
     }, done);
   });
 
+  it('elementPresent assertion passed - with W3C Webdriver', function(done) {
+    Globals.assertionTest({
+      assertionName: 'elementNotPresent',
+      args: ['.test_element'],
+      api: {
+        elements(using, selector, callback) {
+          assert.equal(selector, '.test_element');
+          assert.equal(using, 'css selector');
+          callback({
+            value: []
+          });
+        }
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.strictEqual(passed, true);
+        assert.equal(value, 'not present');
+        assert.ok(message.startsWith('Testing if element <.test_element> is not present'));
+      }
+    }, done);
+  });
+
   it('elementNotPresent assertion passed when exceptions are passed', function (done) {
     Globals.assertionTest({
       assertionName: 'elementNotPresent',
