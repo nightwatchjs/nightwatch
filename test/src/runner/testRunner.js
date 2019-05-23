@@ -130,7 +130,7 @@ describe('testRunner', function() {
         reporter: function () {
         }
       },
-      output: true,
+      output: false,
       screenshots: {
         enabled: true,
         on_failure: true,

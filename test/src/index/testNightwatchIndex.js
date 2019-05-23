@@ -120,7 +120,7 @@ describe('test NightwatchIndex', function () {
         browserName: 'chrome'
       },
       silent: false,
-      output: true
+      output: false
     });
 
     client.startSession().catch(err => {

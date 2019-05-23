@@ -4,12 +4,8 @@ const common = require('../../common.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
 const NightwatchClient = common.require('index.js');
-const Logger = common.require('util/logger.js');
 
 describe('testRunWithCustomCommands', function() {
-
-  //Logger.enable();
-  //Logger.setOutputEnabled(true);
 
   before(function(done) {
     this.server = MockServer.init();
@@ -88,7 +84,7 @@ describe('testRunWithCustomCommands', function() {
         version2: true,
         start_process: true
       },
-      output: true,
+      output: false,
       silent: false,
       custom_commands_path: [path.join(__dirname, '../../extra/commands/es6async')],
       persist_globals: true,
@@ -132,7 +128,7 @@ describe('testRunWithCustomCommands', function() {
         version2: true,
         start_process: true
       },
-      output: true,
+      output: false,
       silent: false,
       custom_commands_path: [path.join(__dirname, '../../extra/commands')],
       persist_globals: true,
