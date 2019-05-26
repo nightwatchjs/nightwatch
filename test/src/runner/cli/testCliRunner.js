@@ -4,6 +4,8 @@ const assert = require('assert');
 
 describe('Test CLI Runner', function() {
 
+  const SOME_INVALID_CHROME_ARGUMENT = '--someEscapedArgument=hello there';
+
   beforeEach(function() {
     process.env['ENV_USERNAME'] = 'testuser';
 
@@ -39,6 +41,23 @@ describe('Test CLI Runner', function() {
       test_settings: {
         'default': {
           silent: true
+        }
+      }
+    });
+
+    mockery.registerMock('./invalid_chromeOptionArgument.json', {
+      test_settings: {
+        'default': {
+          'desiredCapabilities' :{
+            'chromeOptions' : {
+              args: [
+                '--someArgument',
+                '--someEscapedArgument="hello"',
+                SOME_INVALID_CHROME_ARGUMENT
+                ,
+              ]
+            }
+          }
         }
       }
     });
@@ -315,6 +334,16 @@ describe('Test CLI Runner', function() {
     assert.strictEqual(runner.test_settings.filename_filter, 'test-filename-filter');
     assert.deepEqual(runner.test_settings.skipgroup, ['test-skip-group']);
     assert.strictEqual(runner.globals.settings.output_folder, 'test-output-folder');
+  });
+
+  it('testShowsErrorForInvalidChromeArgument', function() {
+    const CliRunner = common.require('runner/cli/cli.js');
+    let runner = new CliRunner({
+      config: './invalid_chromeOptionArgument.json',
+    }).setup();
+
+    assert.equal(runner.invalidChromeArguments.length,1);
+    assert.equal(runner.invalidChromeArguments[0],SOME_INVALID_CHROME_ARGUMENT);
   });
 
   it('testSetOutputFolder', function() {
