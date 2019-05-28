@@ -33,11 +33,34 @@ describe('clearValue', function() {
         client.api.clearValue('#weblogin', function callback(result) {
           assert.strictEqual(result.status, 0);
           assert.strictEqual(this, client.api);
-        }).clearValue('css selector', '#weblogin', function callback(result) {
+        })
+          .clearValue('css selector', '#weblogin', function callback(result) {
+            assert.strictEqual(result.status, 0);
+          });
+
+        client.start(done);
+      });
+  });
+
+  it('client.clearValue() with invalid locate strategy', function(done) {
+    Nightwatch.initClient({
+      output: false,
+      silent: true
+    })
+      .then(client => {
+        client.api.clearValue('invalid strategy', '#weblogin', function callback(result) {
           assert.strictEqual(result.status, 0);
         });
 
-        client.start(done);
+        client.start(function(err) {
+          try {
+            assert.ok(err instanceof Error);
+            assert.ok(err.message.includes('Provided locating strategy "invalid strategy" is not supported for .clearValue()'));
+            done();
+          } catch (e) {
+            done(e);
+          }
+        });
       });
   });
 

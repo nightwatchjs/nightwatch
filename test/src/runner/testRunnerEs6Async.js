@@ -25,7 +25,7 @@ describe('testRunner ES6 Async', function() {
   });
 
   it('test Runner with ES6 async/await tests basic sample', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/es6await');
+    let testsPath = path.join(__dirname, '../../sampletests/es6await/selenium');
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/cookie',
       method: 'GET',
@@ -80,7 +80,7 @@ describe('testRunner ES6 Async', function() {
   });
 
   it('test Runner with ES6 async/await tests getLog example', function() {
-    const testsPath = path.join(__dirname, '../../sampletests/es6await/getlog');
+    const testsPath = path.join(__dirname, '../../sampletests/es6await/selenium/getlog');
     const globals = {
       waitForConditionPollInterval: 50,
 
@@ -106,8 +106,86 @@ describe('testRunner ES6 Async', function() {
     });
   });
 
+  it('test Runner with ES6 async/await tests getText example', function() {
+    MockServer.addMock({
+      url: '/session',
+      statusCode: 201,
+      response: JSON.stringify({
+        value: {
+          sessionId: '13521-10219-202',
+          capabilities: {
+            acceptInsecureCerts: false,
+            browserName: 'firefox',
+            browserVersion: '65.0.1'
+          }
+        }
+      })
+    }, true);
+
+    MockServer.addMock({
+      url: '/session/13521-10219-202/url',
+      statusCode: 200,
+      response: JSON.stringify({
+        value: null
+      })
+    }, true);
+
+    MockServer.addMock({
+      url: '/session/13521-10219-202/elements',
+      postdata: {
+        using: 'css selector',
+        value: '#element-selector'
+      },
+
+      method: 'POST',
+      response: JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0,
+        value: [{
+          'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
+        }]
+      })
+    }, true);
+
+    MockServer.addMock({
+      url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/text',
+      method: 'GET',
+      response: JSON.stringify({
+        value: 'sample text value'
+      })
+    }, true);
+
+    const testsPath = path.join(__dirname, '../../sampletests/es6await/webdriver/getText');
+    const globals = {
+      waitForConditionPollInterval: 50,
+
+      reporter(results) {
+        if (results.lastError) {
+          throw results.lastError;
+        }
+      }
+    };
+
+    return NightwatchClient.runTests(testsPath, {
+      selenium: {
+        port: 10195,
+        version2: false,
+        start_process: false
+      },
+      webdriver: {
+        start_process: true
+      },
+      output: false,
+      skip_testcases_on_fail: false,
+      silent: false,
+      persist_globals: true,
+      globals: globals,
+      output_folder: false
+    });
+  });
+
   it('test Runner with ES6 async commands', function() {
-    const testsPath = path.join(__dirname, '../../sampletests/es6await/getlog');
+    const testsPath = path.join(__dirname, '../../sampletests/es6await/selenium/getlog');
     const globals = {
       waitForConditionPollInterval: 50,
 

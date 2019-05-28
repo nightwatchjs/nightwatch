@@ -1,16 +1,11 @@
 const path = require('path');
 const assert = require('assert');
-const common = require('../../common.js');
 const nocks = require('../../lib/nockselements.js');
 const Nightwatch = require('../../lib/nightwatch.js');
-const Logger = common.require('util/logger.js');
 
 describe('test protocol element selectors', function() {
   before(function(done) {
     nocks.enable();
-    //Logger.enable();
-    //Logger.setOutputEnabled(false);
-
     Nightwatch.startMockServer(done);
   });
 

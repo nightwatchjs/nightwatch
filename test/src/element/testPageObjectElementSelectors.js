@@ -220,6 +220,29 @@ describe('test page object element selectors', function() {
     });
   });
 
+  it('page object element command with custom message and no args', function(done) {
+    nocks.elementsFound('#weblogin');
+
+    const page = Nightwatch.api().page.simplePageObj();
+    page.waitForElementPresent('@loginAsString', 'element found');
+
+    const client = Nightwatch.client();
+    client.session.commandQueue.tree.on('asynctree:finished', function(tree) {
+      const command = tree.currentNode.childNodes[0];
+      try {
+        assert.strictEqual(command.args.length, 2);
+        const element = command.args[0];
+        assert.strictEqual(element.name, 'loginAsString');
+        assert.strictEqual(command.args[1], 'element found');
+        done();
+      } catch (e) {
+        done(e);
+      }
+    });
+
+    Nightwatch.start();
+  });
+
   it('page object customCommand with selector called on section', function(done) {
     nocks
       .elementsFound('#signupSection')

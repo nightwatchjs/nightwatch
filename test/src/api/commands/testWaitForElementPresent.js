@@ -64,6 +64,29 @@ describe('waitForElementPresent', function() {
     }).catch(done);
   });
 
+  it('client.waitForElementPresent() with custom message and no params', function(done) {
+    this.client.api.globals.waitForConditionPollInterval = 10;
+
+    this.client.api.waitForElementPresent({selector: '#weblogin'}, 'Element found');
+    this.client.start(function(err) {
+      if (err) {
+        done(err);
+      } else {
+        done();
+      }
+    }).catch(done);
+  });
+
+  it('client.waitForElementPresent() with no params', function(done) {
+    this.client.api.globals.waitForConditionPollInterval = 10;
+
+    this.client.api.waitForElementPresent('#weblogin');
+    this.client.start(function(err) {
+      assert.strictEqual(typeof err, 'undefined');
+      done();
+    }).catch(done);
+  });
+
   it('client.waitForElementPresent() failure', function() {
     this.client.api.globals.waitForConditionPollInterval = 10;
 
