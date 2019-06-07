@@ -11,7 +11,7 @@ describe('client.submit', function() {
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/element/TEST_ELEMENT/submit');
-        assert.deepEqual(opts.data, '');
+        assert.deepEqual(opts.data, {id: 'TEST_ELEMENT'});
       },
       commandName: 'submit',
       args: ['TEST_ELEMENT']
