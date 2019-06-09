@@ -77,7 +77,7 @@ describe('element actions', function () {
       assertion: function (opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/element/active');
-        assert.deepEqual(opts.data, '');
+        assert.deepEqual(opts.data, {});
       },
       commandName: 'elementActive',
       args: []
@@ -89,7 +89,7 @@ describe('element actions', function () {
       assertion: function (opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/element/TEST_ELEMENT/clear');
-        assert.deepEqual(opts.data, {id: 'TEST_ELEMENT'});
+        assert.deepEqual(opts.data, {});
       },
       commandName: 'elementIdClear',
       args: ['TEST_ELEMENT']
@@ -201,7 +201,7 @@ describe('element actions', function () {
       assertion: function (opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/element/TEST_ELEMENT/click');
-        assert.deepEqual(opts.data, {id: 'TEST_ELEMENT'});
+        assert.deepEqual(opts.data, {});
       },
       commandName: 'elementIdClick',
       args: ['TEST_ELEMENT']
