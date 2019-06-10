@@ -109,4 +109,34 @@ describe('test Utils', function() {
       'rendered output\rrendered output\rrendered output'
     );
   });
+
+  it('testGetBrowserString', function() {
+		const settingsWithBrowserAndVersion = {
+			desiredCapabilities: {
+				browser: 'IE',
+				browser_version: '11.0'
+			}
+		}
+
+		const settingsWithBrowser = {
+			desiredCapabilities: {
+				browser: 'IE'
+			}
+		}
+
+		const settingsWithDevice = {
+			desiredCapabilities: {
+				device: 'Samsung Galaxy S8'
+			}
+		}
+
+		const settingsWithNothing = {
+			desiredCapabilities: {}
+		}
+
+		assert.equal(Utils.getBrowserString(settingsWithBrowserAndVersion), 'IE 11.0');
+		assert.equal(Utils.getBrowserString(settingsWithBrowser), 'IE');
+		assert.equal(Utils.getBrowserString(settingsWithDevice), 'SAMSUNG GALAXY S8');
+		assert.equal(Utils.getBrowserString(settingsWithNothing), '');
+	});
 });
