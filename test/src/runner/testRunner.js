@@ -160,6 +160,48 @@ describe('testRunner', function() {
       });
   });
 
+  it('testRunWithJUnitOutputAndErrors', function () {
+
+    let testsPath = [
+      path.join(__dirname, '../../sampletests/witherrors')
+    ];
+
+    let settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      output_folder: 'output',
+      silent: false,
+      globals: {
+        waitForConditionPollInterval: 20,
+        waitForConditionTimeout: 50,
+        retryAssertionTimeout: 50,
+        reporter: function () {
+        }
+      },
+      output: false,
+      screenshots: {
+        enabled: false
+      }
+    };
+
+    return NightwatchClient.runTests(testsPath, settings)
+      .then(_ => {
+        return readFilePromise('output/FIREFOX_TEST_TEST_sample.xml');
+      })
+      .then(data => {
+        let content = data.toString();
+        const regexErrorText = /(?:<error(?:[^>]*)>)([^>]*)(?:<\/error>)/; 
+        const regexResult = regexErrorText.exec(content);
+        const errorText = regexResult.length > 1 ? regexResult[1] : '';
+        
+        assert.ok(content.indexOf('<error message="Error in test script"') > 0, 'Report should contain error message');
+        assert.ok(errorText.indexOf('sample.js') > -1, 'Report should contain stack trace');
+      });
+  });
+
   it('testRunWithJUnitOutput', function() {
     let testsPath = [
       path.join(__dirname, '../../sampletests/withsubfolders')
