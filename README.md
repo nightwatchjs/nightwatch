@@ -39,7 +39,7 @@ Nightwatch includes support for automatically managing the following services:
 - for running tests against the Chrome browser;
 - download url: [https://sites.google.com/a/chromium.org/chromedriver/downloads](https://sites.google.com/a/chromium.org/chromedriver/downloads).
 
-Starting with __version 75__, Chromedriver has W3C Webdriver protocol enabled by default. However we recommend sticking to the JSONWire for now as some endpoints aren't implemented yet, such as [/displayed](https://www.w3.org/TR/webdriver1/#c-element-displayedness). To do so, adjust the `chromeOptions`:
+Starting with __version 75__, Chromedriver has [W3C Webdriver](https://www.w3.org/TR/webdriver1) protocol enabled by default. If you'd like to stick to the JSONWire for now adjust the `chromeOptions`:
 ```js
 desiredCapabilities : {
   browserName : 'chrome',
