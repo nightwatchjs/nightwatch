@@ -135,6 +135,8 @@ describe('Webdriver Manager', function () {
       let settings = Settings.parse({
         selenium: {
           check_process_delay: 1000,
+          max_status_poll_tries: 10,
+          status_poll_interval: 200,
           start_process: true,
           server_path: './selenium.jar',
           log_path: false,
