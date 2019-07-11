@@ -67,6 +67,18 @@ describe('test PageObject Commands', function () {
     return this.client.start();
   });
 
+  it('testPageObject - custom command with args[0] as Object', function () {
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/execute',
+      method: 'POST'
+    });
+    let api = this.client.api;
+
+    const page = api.page.simplePageObjWithCommandsObject().customExecute({ prop: true });
+
+    return this.client.start();
+  });
+
   it('testPageObject - error loading custom commands', function (done) {
     let api = this.client.api;
 
