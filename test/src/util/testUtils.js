@@ -109,4 +109,13 @@ describe('test Utils', function() {
       'rendered output\rrendered output\rrendered output'
     );
   });
+
+  it('testRelativeUrl', function() {
+    assert.equal(Utils.relativeUrl('https://nightwatchjs.org'), false);
+    assert.equal(Utils.relativeUrl('http://nightwatchjs.org'), false);
+    assert.equal(Utils.relativeUrl('chrome-extension://pkehgijcmpdhfbdbbnkijodmdjhbjlgp/skin/options.html'), false);
+    assert.equal(Utils.relativeUrl('nightwatchjs.org'), true);
+    assert.equal(Utils.relativeUrl('nightwatchjs.org/guide'), true);
+    assert.equal(Utils.relativeUrl('/guide'), true);
+  });
 });
