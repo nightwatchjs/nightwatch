@@ -189,8 +189,9 @@ describe('waitForElementVisible', function() {
     });
   });
 
-  it('client.waitForElementVisible() with element not found', function () {
+  it('client.waitForElementVisible() with element not found', function (done) {
     const assertion = [];
+    let result;
 
     NightwatchAssertion.create = function(...args) {
       assertion.unshift(...args);
@@ -204,12 +205,23 @@ describe('waitForElementVisible', function() {
 
     this.client.api.globals.abortOnAssertionFailure = false;
     this.client.api.globals.waitForConditionPollInterval = 5;
-    this.client.api.waitForElementVisible('.weblogin', 11, function (result, instance) {
-      NightwatchAssertion.create = createOrig;
+    this.client.api.waitForElementVisible('.weblogin', 11, function (res, instance) {
+      result = res;
     });
 
-    return this.client.start(function(err) {
-      assert.strictEqual(err.name, 'NoSuchElementError');
+    this.client.start(function(e) {
+      try {
+        assert.strictEqual(result.value, false);
+        assert.strictEqual(result.status, -1);
+        assert.strictEqual(result.err.value, null);
+        assert.strictEqual(assertion[0], false);
+        assert.deepStrictEqual(assertion[1], { actual: 'not found', expected: 'visible' });
+
+        NightwatchAssertion.create = createOrig;
+        done();
+      } catch (err) {
+        done(err);
+      }
     });
   });
 

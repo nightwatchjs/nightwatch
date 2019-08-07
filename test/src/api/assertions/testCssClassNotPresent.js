@@ -8,16 +8,35 @@ describe('assert.cssClassNotPresent', function () {
       args: ['.test_element', 'test-css-class'],
       api: {
         getAttribute(cssSelector, attribute, callback) {
-          assert.equal(cssSelector, '.test_element');
-          assert.equal(attribute, 'class');
+          assert.strictEqual(cssSelector, '.test_element');
+          assert.strictEqual(attribute, 'class');
           callback({
             value: 'other-css-class some-css-class'
           });
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, true);
-        assert.equal(value, 'other-css-class some-css-class');
+        assert.strictEqual(passed, true);
+        assert.strictEqual(value, 'other-css-class some-css-class');
+        assert.ok(message.startsWith('Testing if element <.test_element> does not have css class: "test-css-class"'));
+      }
+    }, done);
+  });
+
+  it('cssClassNotPresent assertion passed with selector object', function (done) {
+    Globals.assertionTest({
+      assertionName: 'cssClassNotPresent',
+      args: [{selector: '.test_element'}, 'test-css-class'],
+      api: {
+        getAttribute(cssSelector, attribute, callback) {
+          assert.deepStrictEqual(cssSelector, {selector: '.test_element'});
+          callback({
+            value: 'other-css-class some-css-class'
+          });
+        }
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.strictEqual(passed, true);
         assert.ok(message.startsWith('Testing if element <.test_element> does not have css class: "test-css-class"'));
       }
     }, done);
@@ -35,8 +54,8 @@ describe('assert.cssClassNotPresent', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, false);
-        assert.equal(value, 'test-css-class other-css-class');
+        assert.strictEqual(passed, false);
+        assert.strictEqual(value, 'test-css-class other-css-class');
       }
     }, done);
   });
@@ -53,8 +72,8 @@ describe('assert.cssClassNotPresent', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, false);
-        assert.equal(value, null);
+        assert.strictEqual(passed, false);
+        assert.strictEqual(value, null);
       }
     }, done);
   });

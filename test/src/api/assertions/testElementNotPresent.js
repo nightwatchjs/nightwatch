@@ -8,8 +8,8 @@ describe('assert.elementNotPresent', function () {
       args: ['.test_element'],
       api: {
         elements(using, selector, callback) {
-          assert.equal(selector, '.test_element');
-          assert.equal(using, 'css selector');
+          assert.strictEqual(selector.selector, '.test_element');
+          assert.strictEqual(using, 'css selector');
           callback({
             status: 0,
             value: []
@@ -17,8 +17,30 @@ describe('assert.elementNotPresent', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, true);
-        assert.equal(value, 'not present');
+        assert.strictEqual(passed, true);
+        assert.strictEqual(value, 'not present');
+        assert.ok(message.startsWith('Testing if element <.test_element> is not present'));
+      }
+    }, done);
+  });
+
+  it('elementNotPresent assertion passed with selector object', function (done) {
+    Globals.assertionTest({
+      assertionName: 'elementNotPresent',
+      args: [{selector: '.test_element'}],
+      api: {
+        elements(using, selector, callback) {
+          assert.strictEqual(selector.selector, '.test_element');
+
+          callback({
+            status: 0,
+            value: []
+          });
+        }
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.strictEqual(passed, true);
+        assert.strictEqual(value, 'not present');
         assert.ok(message.startsWith('Testing if element <.test_element> is not present'));
       }
     }, done);
@@ -30,8 +52,8 @@ describe('assert.elementNotPresent', function () {
       args: ['.test_element'],
       api: {
         elements(using, selector, callback) {
-          assert.equal(selector, '.test_element');
-          assert.equal(using, 'css selector');
+          assert.strictEqual(selector.selector, '.test_element');
+          assert.strictEqual(using, 'css selector');
           callback({
             value: []
           });
@@ -39,7 +61,7 @@ describe('assert.elementNotPresent', function () {
       },
       assertion(passed, value, calleeFn, message) {
         assert.strictEqual(passed, true);
-        assert.equal(value, 'not present');
+        assert.strictEqual(value, 'not present');
         assert.ok(message.startsWith('Testing if element <.test_element> is not present'));
       }
     }, done);
@@ -51,8 +73,8 @@ describe('assert.elementNotPresent', function () {
       args: ['.test_element'],
       api: {
         elements(using, selector, callback) {
-          assert.equal(selector, '.test_element');
-          assert.equal(using, 'css selector');
+          assert.strictEqual(selector.selector, '.test_element');
+          assert.strictEqual(using, 'css selector');
           callback({
             status: -1,
             value: null
@@ -60,8 +82,8 @@ describe('assert.elementNotPresent', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, true);
-        assert.equal(value, 'not present');
+        assert.strictEqual(passed, true);
+        assert.strictEqual(value, 'not present');
         assert.ok(message.startsWith('Testing if element <.test_element> is not present'));
       }
     }, done);
@@ -73,8 +95,8 @@ describe('assert.elementNotPresent', function () {
       args: ['.test_element'],
       api: {
         elements(using, selector, callback) {
-          assert.equal(selector, '.test_element');
-          assert.equal(using, 'css selector');
+          assert.strictEqual(selector.selector, '.test_element');
+          assert.strictEqual(using, 'css selector');
           callback({
             status: 0,
             value: [{
@@ -84,8 +106,8 @@ describe('assert.elementNotPresent', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, false);
-        assert.equal(value, 'present');
+        assert.strictEqual(passed, false);
+        assert.strictEqual(value, 'present');
       }
     }, done);
   });

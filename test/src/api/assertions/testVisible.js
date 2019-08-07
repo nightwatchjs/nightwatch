@@ -8,7 +8,7 @@ describe('assert.visible', function () {
       args: ['.test_element'],
       api: {
         isVisible(cssSelector, callback) {
-          assert.equal(cssSelector, '.test_element');
+          assert.strictEqual(cssSelector, '.test_element');
           callback({
             status: 0,
             value: true
@@ -16,8 +16,29 @@ describe('assert.visible', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, true);
-        assert.equal(value, true);
+        assert.strictEqual(passed, true);
+        assert.strictEqual(value, true);
+        assert.ok(message.startsWith('Testing if element <.test_element> is visible'));
+      }
+    }, done);
+  });
+
+  it('visible assertion passed with selector object', function (done) {
+    Globals.assertionTest({
+      assertionName: 'visible',
+      args: [{selector: '.test_element'}],
+      api: {
+        isVisible(cssSelector, callback) {
+          assert.deepStrictEqual(cssSelector, {selector: '.test_element'});
+          callback({
+            status: 0,
+            value: true
+          });
+        }
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.strictEqual(passed, true);
+        assert.strictEqual(value, true);
         assert.ok(message.startsWith('Testing if element <.test_element> is visible'));
       }
     }, done);
@@ -29,7 +50,7 @@ describe('assert.visible', function () {
       args: ['.test_element'],
       api: {
         isVisible(cssSelector, callback) {
-          assert.equal(cssSelector, '.test_element');
+          assert.strictEqual(cssSelector, '.test_element');
           callback({
             status: 0,
             value: false
@@ -37,13 +58,13 @@ describe('assert.visible', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, false);
-        assert.equal(value, false);
+        assert.strictEqual(passed, false);
+        assert.strictEqual(value, false);
       }
     }, done);
   });
 
-  it('visible assertion not found', function (done) {
+  it('visible assertion not - element not found', function (done) {
     Globals.assertionTest({
       assertionName: 'visible',
       args: ['.test_element'],
@@ -55,8 +76,8 @@ describe('assert.visible', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, false, 'Assertion failed');
-        assert.equal(value, null);
+        assert.strictEqual(passed, false, 'Assertion failed');
+        assert.strictEqual(value, null);
         assert.ok(message.startsWith('Testing if element <.test_element> is visible. Element could not be located'));
       }
     }, done);
