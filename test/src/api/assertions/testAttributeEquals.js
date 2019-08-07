@@ -8,16 +8,35 @@ describe('assert.attributeEquals', function () {
       args: ['.test_element', 'role', 'main', 'Test message'],
       api: {
         getAttribute(cssSelector, attribute, callback) {
-          assert.equal(cssSelector, '.test_element');
-          assert.equal(attribute, 'role');
+          assert.strictEqual(cssSelector, '.test_element');
+          assert.strictEqual(attribute, 'role');
           callback({
             value: 'main'
           });
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, true);
-        assert.equal(value, 'main');
+        assert.strictEqual(passed, true);
+        assert.strictEqual(value, 'main');
+      }
+    }, done);
+  });
+
+  it('attributeEquals assertion passed with selector object', function (done) {
+    Globals.assertionTest({
+      assertionName: 'attributeEquals',
+      args: [{selector: '.test_element'}, 'role', 'main'],
+      api: {
+        getAttribute(cssSelector, attribute, callback) {
+          assert.deepStrictEqual(cssSelector, {selector: '.test_element'});
+          callback({
+            value: 'main'
+          });
+        }
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.strictEqual(passed, true);
+        assert.ok(message.startsWith('Testing if attribute role of <.test_element> equals "main"'));
       }
     }, done);
   });
@@ -34,8 +53,8 @@ describe('assert.attributeEquals', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, false);
-        assert.equal(value, 'not_expected');
+        assert.strictEqual(passed, false);
+        assert.strictEqual(value, 'not_expected');
       }
     }, done);
   });
@@ -52,8 +71,8 @@ describe('assert.attributeEquals', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, false);
-        assert.equal(value, null);
+        assert.strictEqual(passed, false);
+        assert.strictEqual(value, null);
       }
     }, done);
   });
@@ -71,8 +90,8 @@ describe('assert.attributeEquals', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, false);
-        assert.equal(value, null);
+        assert.strictEqual(passed, false);
+        assert.strictEqual(value, null);
         assert.ok(message.startsWith('Testing if attribute role of <.test_element> equals "main". Element does not have a role attribute'));
       }
     }, done);

@@ -8,7 +8,7 @@ describe('assert.valueContains', function () {
       args: ['.test_element', 'some-value'],
       api: {
         getValue(cssSelector, callback) {
-          assert.equal(cssSelector, '.test_element');
+          assert.strictEqual(cssSelector, '.test_element');
           callback({
             status: 0,
             value: 'contains-some-value'
@@ -16,8 +16,29 @@ describe('assert.valueContains', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, true);
-        assert.equal(value, 'contains-some-value');
+        assert.strictEqual(passed, true);
+        assert.strictEqual(value, 'contains-some-value');
+        assert.ok(message.startsWith('Testing if value of <.test_element> contains: "some-value"'));
+      }
+    }, done);
+  });
+
+  it('valueContains assertion passed with selector object', function (done) {
+    Globals.assertionTest({
+      assertionName: 'valueContains',
+      args: [{selector: '.test_element'}, 'some-value'],
+      api: {
+        getValue(cssSelector, callback) {
+          assert.deepStrictEqual(cssSelector, {selector: '.test_element'});
+          callback({
+            status: 0,
+            value: 'contains-some-value'
+          });
+        }
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.strictEqual(passed, true);
+        assert.strictEqual(value, 'contains-some-value');
         assert.ok(message.startsWith('Testing if value of <.test_element> contains: "some-value"'));
       }
     }, done);
@@ -29,7 +50,7 @@ describe('assert.valueContains', function () {
       args: ['.test_element', 'some-value'],
       api: {
         getValue(cssSelector, callback) {
-          assert.equal(cssSelector, '.test_element');
+          assert.strictEqual(cssSelector, '.test_element');
           callback({
             status: 0,
             value: 'wrong-value'
@@ -37,8 +58,8 @@ describe('assert.valueContains', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, false);
-        assert.equal(value, 'wrong-value');
+        assert.strictEqual(passed, false);
+        assert.strictEqual(value, 'wrong-value');
       }
     }, done);
   });
@@ -49,15 +70,15 @@ describe('assert.valueContains', function () {
       args: ['.test_element', 'some-value'],
       api: {
         getValue(cssSelector, callback) {
-          assert.equal(cssSelector, '.test_element');
+          assert.strictEqual(cssSelector, '.test_element');
           callback({
             status: -1
           });
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, false);
-        assert.equal(value, null);
+        assert.strictEqual(passed, false);
+        assert.strictEqual(value, null);
         assert.ok(message.startsWith('Testing if value of <.test_element> contains: "some-value". Element could not be located'));
       }
     }, done);
@@ -98,9 +119,9 @@ describe('assert.valueContains', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, true);
-        assert.equal(value, 'contains-some-value');
-        assert.equal(calls, 2);
+        assert.strictEqual(passed, true);
+        assert.strictEqual(value, 'contains-some-value');
+        assert.strictEqual(calls, 2);
         assert.ok(message.startsWith('Testing if value of <.test_element> contains: "some-value". Element could not be located'));
       }
     }, done);
@@ -119,8 +140,8 @@ describe('assert.valueContains', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, false);
-        assert.equal(value, null);
+        assert.strictEqual(passed, false);
+        assert.strictEqual(value, null);
         assert.ok(message.startsWith('Testing if value of <.test_element> contains: "some-value". Element does not have a value attribute'));
       }
     }, done);

@@ -8,7 +8,7 @@ describe('assert.hidden', function () {
       args: ['.test_element'],
       api: {
         isVisible(cssSelector, callback) {
-          assert.equal(cssSelector, '.test_element');
+          assert.strictEqual(cssSelector, '.test_element');
           callback({
             status: 0,
             value: false
@@ -16,8 +16,29 @@ describe('assert.hidden', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, true);
-        assert.equal(value, true);
+        assert.strictEqual(passed, true);
+        assert.strictEqual(value, true);
+        assert.ok(message.startsWith('Testing if element <.test_element> is hidden'));
+      }
+    }, done);
+  });
+
+  it('hidden assertion passed with selector object', function (done) {
+    Globals.assertionTest({
+      assertionName: 'hidden',
+      args: [{selector: '.test_element'}],
+      api: {
+        isVisible(cssSelector, callback) {
+          assert.deepStrictEqual(cssSelector, {selector: '.test_element'});
+          callback({
+            status: 0,
+            value: false
+          });
+        }
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.strictEqual(passed, true);
+        assert.strictEqual(value, true);
         assert.ok(message.startsWith('Testing if element <.test_element> is hidden'));
       }
     }, done);
@@ -29,7 +50,7 @@ describe('assert.hidden', function () {
       args: ['.test_element'],
       api: {
         isVisible(cssSelector, callback) {
-          assert.equal(cssSelector, '.test_element');
+          assert.strictEqual(cssSelector, '.test_element');
           callback({
             status: 0,
             value: true
@@ -37,8 +58,8 @@ describe('assert.hidden', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, false);
-        assert.equal(value, false);
+        assert.strictEqual(passed, false);
+        assert.strictEqual(value, false);
       }
     }, done);
   });
@@ -49,15 +70,15 @@ describe('assert.hidden', function () {
       args: ['.test_element'],
       api: {
         isVisible(cssSelector, callback) {
-          assert.equal(cssSelector, '.test_element');
+          assert.strictEqual(cssSelector, '.test_element');
           callback({
             status: -1
           });
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, false);
-        assert.equal(value, null);
+        assert.strictEqual(passed, false);
+        assert.strictEqual(value, null);
         assert.ok(message.startsWith('Testing if element <.test_element> is hidden. Element could not be located'));
       }
     }, done);

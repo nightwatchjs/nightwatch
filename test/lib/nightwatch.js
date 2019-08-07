@@ -86,8 +86,8 @@ module.exports = new function () {
     _client.startSession();
   };
 
-  this.initAsync = function(options) {
-    _client = this.createClient(options);
+  this.initAsync = function(options, reporter) {
+    _client = this.createClient(options, reporter);
     _client.start = function() {
       return this.queue.run().then(err => {
         if (err instanceof Error) {

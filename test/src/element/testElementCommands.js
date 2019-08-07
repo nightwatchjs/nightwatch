@@ -28,7 +28,7 @@ describe('element base commands', function() {
     return Nightwatch.start();
   });
 
-  it('client.element() W3C Webdriver prototcol', async function() {
+  it('client.element() W3C Webdriver protocol', async function() {
     await Nightwatch.initAsync({
       output: false,
       silent: false,
@@ -84,7 +84,7 @@ describe('element base commands', function() {
     return Nightwatch.start();
   });
 
-  it('client.element() NOT FOUND with W3C Webdriver prototcol', async function() {
+  it('client.element() NOT FOUND with W3C Webdriver protocol', async function() {
     Nightwatch.addMock({
       url : '/session/13521-10219-202/element',
       postdata: {
@@ -144,7 +144,7 @@ describe('element base commands', function() {
     return Nightwatch.start();
   });
 
-  it('client.elements() W3C Webdriver prototcol', async function() {
+  it('client.elements() W3C Webdriver protocol', async function() {
     await Nightwatch.initAsync({
       output: false,
       silent: false,
@@ -325,5 +325,140 @@ describe('element base commands', function() {
 
     assert.ok(thrown instanceof Error);
     assert.ok(thrown.message.includes('No selector property for selector object'));
+  });
+
+  //////////////////////////////////////////////////////////////////////////////////////
+  // .isVisible({selector, suppressNotFoundErrors})
+  //////////////////////////////////////////////////////////////////////////////////////
+  it('client.isVisible() NOT FOUND with W3C Webdriver protocol', async function() {
+    Nightwatch.addMock({
+      url : '/session/13521-10219-202/elements',
+      postdata: {
+        using: 'css selector',
+        value: '.not_found'
+      },
+      statusCode: 404,
+      response: {
+        value: {
+          error: 'no such element',
+          message: 'Unable to locate element: .not_found',
+          stacktrace: ''
+        }
+      }
+    }, true);
+
+    Nightwatch.addMock({
+      url : '/session/13521-10219-202/elements',
+      postdata: {
+        using: 'css selector',
+        value: '.not_found'
+      },
+      statusCode: 404,
+      response: {
+        value: {
+          error: 'no such element',
+          message: 'Unable to locate element: .not_found',
+          stacktrace: ''
+        }
+      }
+    }, true);
+
+    let expectedError;
+
+    await Nightwatch.initAsync({
+      output: false,
+      silent: false,
+      selenium : {
+        start_process: false,
+      },
+      webdriver:{
+        start_process: true
+      }
+    }, {
+      registerTestError(err) {
+        expectedError = err;
+      }
+    });
+
+    Nightwatch.api().isVisible({selector: '.not_found', timeout: 10, retryInterval: 100, supressNotFoundErrors: false}, function(result, instance) {
+      assert.ok(expectedError instanceof Error);
+      assert.strictEqual(expectedError.name, 'NoSuchElementError');
+      assert.strictEqual(instance.supressNotFoundErrors, false);
+      assert.strictEqual(result.status, -1);
+      assert.strictEqual(result.value.error,'An error occurred while running .isVisible() command on <.not_found>:');
+    });
+
+    return Nightwatch.start();
+  });
+
+  it('client.isVisible() NOT FOUND with suppressed errors', async function() {
+    Nightwatch.addMock({
+      url : '/session/13521-10219-202/elements',
+      postdata: {
+        using: 'css selector',
+        value: '.not_found'
+      },
+      statusCode: 404,
+      response: {
+        value: {
+          error: 'no such element',
+          message: 'Unable to locate element: .not_found',
+          stacktrace: ''
+        }
+      }
+    }, true);
+
+    Nightwatch.addMock({
+      url : '/session/13521-10219-202/elements',
+      postdata: {
+        using: 'css selector',
+        value: '.not_found'
+      },
+      statusCode: 404,
+      response: {
+        value: {
+          error: 'no such element',
+          message: 'Unable to locate element: .not_found',
+          stacktrace: ''
+        }
+      }
+    }, true);
+
+    let expectedError;
+
+    await Nightwatch.initAsync({
+      output: false,
+      silent: false,
+      selenium : {
+        start_process: false,
+      },
+      webdriver:{
+        start_process: true
+      }
+    }, {
+      registerTestError(err) {
+        expectedError = err;
+      }
+    });
+
+    Nightwatch.api().isVisible({selector: '.not_found', timeout: 10, retryInterval: 100, supressNotFoundErrors: true}, function(result, instance) {
+      assert.strictEqual(typeof expectedError, 'undefined');
+      assert.strictEqual(instance.supressNotFoundErrors, true);
+      assert.deepStrictEqual(result, {
+        status: -1,
+        value:
+          {
+            error: 'no such element',
+            message: 'Unable to locate element: .not_found',
+            stacktrace: ''
+          },
+        errorStatus: '',
+        error: 'Unable to locate element: .not_found',
+        httpStatusCode: 404
+      });
+
+    });
+
+    return Nightwatch.start();
   });
 });
