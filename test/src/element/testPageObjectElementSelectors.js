@@ -3,6 +3,13 @@ const assert = require('assert');
 const nocks = require('../../lib/nockselements.js');
 const Nightwatch = require('../../lib/nightwatch.js');
 
+// FIXME:
+// TypeError: Cannot read property 'args' of undefined (and Mocha's done() called multiple times)
+// at AsyncTree.<anonymous> (test/src/element/testPageObjectElementSelectors.js:233:36)
+//   at AsyncTree.done (lib/core/asynctree.js:111:10)
+//   at AsyncTree.traverse (lib/core/asynctree.js:47:19)
+//   at CommandQueue.traverse (lib/core/queue.js:82:8)
+//   at Timeout.scheduleTimeoutId.setTimeout [as _onTimeout] (lib/core/queue.js:59:52)
 describe('test page object element selectors', function() {
 
   before(function() {
