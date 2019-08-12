@@ -114,6 +114,7 @@ describe('window commands', function() {
   it('test .windowMaximize() W3C WebDriver', function() {
     return Globals.protocolTestWebdriver.call(this, {
       assertion: function(opts) {
+        assert.strictEqual(opts.method, 'POST');
         assert.strictEqual(opts.path, '/session/1352110219202/window/maximize');
       },
       commandName: 'windowMaximize',
