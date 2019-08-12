@@ -380,10 +380,10 @@ describe('element base commands', function() {
       }
     });
 
-    Nightwatch.api().isVisible({selector: '.not_found', timeout: 10, retryInterval: 100, supressNotFoundErrors: false}, function(result, instance) {
+    Nightwatch.api().isVisible({selector: '.not_found', timeout: 10, retryInterval: 100, suppressNotFoundErrors: false}, function(result, instance) {
       assert.ok(expectedError instanceof Error);
       assert.strictEqual(expectedError.name, 'NoSuchElementError');
-      assert.strictEqual(instance.supressNotFoundErrors, false);
+      assert.strictEqual(instance.suppressNotFoundErrors, false);
       assert.strictEqual(result.status, -1);
       assert.strictEqual(result.value.error,'An error occurred while running .isVisible() command on <.not_found>:');
     });
@@ -441,9 +441,9 @@ describe('element base commands', function() {
       }
     });
 
-    Nightwatch.api().isVisible({selector: '.not_found', timeout: 10, retryInterval: 100, supressNotFoundErrors: true}, function(result, instance) {
+    Nightwatch.api().isVisible({selector: '.not_found', timeout: 10, retryInterval: 100, suppressNotFoundErrors: true}, function(result, instance) {
       assert.strictEqual(typeof expectedError, 'undefined');
-      assert.strictEqual(instance.supressNotFoundErrors, true);
+      assert.strictEqual(instance.suppressNotFoundErrors, true);
       assert.deepStrictEqual(result, {
         status: -1,
         value:
