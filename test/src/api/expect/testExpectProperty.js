@@ -46,7 +46,7 @@ describe('expect.property', function() {
     this.client.api.globals.waitForConditionPollInterval = 15;
     this.client.api.globals.waitForConditionTimeout = 50;
 
-    Nocks.elementFound().property('', 4);
+    Nocks.elementFound().property(null);
     
     let expect = this.client.api.expect.element('#weblogin').to.have.property('display').before(40);
 
@@ -72,9 +72,9 @@ describe('expect.property', function() {
     this.client.api.globals.waitForConditionPollInterval = 20;
 
     Nocks.elementFound()
-      .property('')
-      .property('')
-      .property('');
+      .property(null)
+      .property(null)
+      .property(null);
 
     let expect = this.client.api.expect.element('#weblogin').to.have.property('display', 'Testing if #weblogin has display');
 
@@ -91,9 +91,9 @@ describe('expect.property', function() {
     this.client.api.globals.waitForConditionPollInterval = 20;
 
     Nocks.elementFound()
-      .property('')
-      .property('')
-      .property('');
+      .property(null)
+      .property(null)
+      .property(null);
 
     let expect = this.client.api.expect.element('#weblogin').to.have.property('display');
 
@@ -102,12 +102,12 @@ describe('expect.property', function() {
       assert.equal(expect.assertion.negate, false);
       assert.equal(expect.assertion.waitForMs, 40);
       assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.expected, 'present');
-      assert.equal(expect.assertion.actual, 'not present');
+      assert.equal(expect.assertion.expected, 'found');
+      assert.equal(expect.assertion.actual, 'not found');
       assert.equal(expect.assertion.property, 'display');
-      assert.equal(expect.assertion.resultValue, '');
+      assert.equal(expect.assertion.resultValue, null);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have property "display"'));
-      assert.deepEqual(expect.assertion.messageParts, []);
+      assert.deepEqual(expect.assertion.messageParts, [' - property was not found']);
     });
   });
 
@@ -116,9 +116,9 @@ describe('expect.property', function() {
     this.client.api.globals.waitForConditionPollInterval = 20;
 
     Nocks.elementFound()
-      .property('')
-      .property('')
-      .property('');
+      .property(null)
+      .property(null)
+      .property(null);
 
     let expect = this.client.api.expect.element('#weblogin').to.not.have.property('display');
 
@@ -126,11 +126,11 @@ describe('expect.property', function() {
       assert.equal(expect.assertion.selector, '#weblogin');
       assert.equal(expect.assertion.negate, true);
       assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.expected, 'not present');
-      assert.equal(expect.assertion.actual, 'not present');
-      assert.equal(expect.assertion.resultValue, '');
+      assert.equal(expect.assertion.expected, 'not found');
+      assert.equal(expect.assertion.actual, 'not found');
+      assert.equal(expect.assertion.resultValue, null);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not have property "display"'));
-      assert.equal(expect.assertion.messageParts.length, 1);
+      assert.deepEqual(expect.assertion.messageParts, []);
     });
   });
 
@@ -149,8 +149,8 @@ describe('expect.property', function() {
       assert.equal(expect.assertion.selector, '#weblogin');
       assert.equal(expect.assertion.negate, true);
       assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.expected, 'not present');
-      assert.equal(expect.assertion.actual, 'present');
+      assert.equal(expect.assertion.expected, 'not found');
+      assert.equal(expect.assertion.actual, 'found');
       assert.equal(expect.assertion.resultValue, 'x');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not have property "display"'));
       assert.deepEqual(expect.assertion.messageParts, []);
@@ -280,7 +280,7 @@ describe('expect.property', function() {
 
   it('to have property equal and waitFor [FAILED] - property not set', function() {
     this.client.api.globals.waitForConditionPollInterval = 50;
-    Nocks.elementFound().property('', 3);
+    Nocks.elementFound().property(null);
 
     let expect = this.client.api.expect.element('#weblogin').to.have.property('display').equal('block').before(120);
 
@@ -343,9 +343,9 @@ describe('expect.property', function() {
     this.client.api.globals.waitForConditionPollInterval = 20;
 
     Nocks.elementFound()
-      .property('')
-      .property('')
-      .property('');
+      .property(null)
+      .property(null)
+      .property(null);
 
     let expect = this.client.api.expect.element('#weblogin').to.have.property('display', 'Testing if #weblogin has display which equals block').equal('block');
 
