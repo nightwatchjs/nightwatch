@@ -46,6 +46,9 @@ describe('test Assertions', function() {
     assert.ok('cssProperty' in this.client.api.assert);
     assert.ok('cssProperty' in this.client.api.verify);
 
+    assert.ok('property' in this.client.api.assert);
+    assert.ok('property' in this.client.api.verify);
+
     assert.ok('valueContains' in this.client.api.assert);
     assert.ok('valueContains' in this.client.api.verify);
 

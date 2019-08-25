@@ -243,6 +243,28 @@ describe('element actions', function () {
     }).then(result => assert.strictEqual(result, true));
   });
 
+  it('testElementIdProperty', function () {
+    return Globals.protocolTest.call(this, {
+      assertion: function (opts) {
+        assert.equal(opts.method, 'GET');
+        assert.equal(opts.path, '/session/1352110219202/element/TEST_ELEMENT/property/test_property');
+      },
+      commandName: 'elementIdProperty',
+      args: ['TEST_ELEMENT', 'test_property']
+    });
+  });
+
+  it('testElementIdProperty invalid element ID', function () {
+    return Globals.protocolTest.call(this, {
+      commandName: 'elementIdProperty',
+      args: [false, 'test_property']
+    }).catch(err => {
+      assert.equal(err.message, 'First argument passed to .elementIdProperty() should be a web element ID string. Received boolean.');
+
+      return true;
+    }).then(result => assert.strictEqual(result, true));
+  });
+
   it('testElementIdDisplayed', function () {
     return Globals.protocolTest.call(this, {
       assertion: function (opts) {

@@ -137,6 +137,24 @@ module.exports = {
     return this;
   },
 
+  property(value, times) {
+    var mock = nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/element/0/property/display');
+
+    if (times) {
+      mock.times(times);
+    }
+
+    mock.reply(200, {
+      status: 0,
+      sessionId: '1352110219202',
+      value: value,
+      state: 'success'
+    });
+
+    return this;
+  },
+  
   enabled(times) {
     var mock = nock('http://localhost:10195')
       .get('/wd/hub/session/1352110219202/element/0/enabled');
