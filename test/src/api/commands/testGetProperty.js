@@ -2,7 +2,7 @@ const assert = require('assert');
 const MockServer  = require('../../../lib/mockserver.js');
 const CommandGlobals = require('../../../lib/globals/commands.js');
 
-describe('getProperty', function() {
+describe('getElementProperty', function() {
   before(function(done) {
     CommandGlobals.beforeEach.call(this, done);
   });
@@ -11,7 +11,7 @@ describe('getProperty', function() {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('client.getProperty()', function(done) {
+  it('client.getElementProperty()', function(done) {
     MockServer.addMock({
       url : '/wd/hub/session/1352110219202/element/0/property/display',
       method:'GET',
@@ -22,7 +22,7 @@ describe('getProperty', function() {
       })
     });
 
-    this.client.api.getProperty('#weblogin', 'display', function callback(result) {
+    this.client.api.getElementProperty('#weblogin', 'display', function callback(result) {
       assert.strictEqual(result.value, 'block');
     });
 
