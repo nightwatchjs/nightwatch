@@ -1,6 +1,6 @@
-# Nightwatch
-
 ![Nightwatch.js](https://pbs.twimg.com/profile_banners/2298221131/1566906900/1500x500)
+
+# Nightwatch.js
 
 #### [Homepage](https://nightwatchjs.org) | [Getting Started](https://nightwatchjs.org/gettingstarted) | [Developer Guide](https://nightwatchjs.org/guide) | [API Reference](https://nightwatchjs.org/api) | [About](https://nightwatchjs.org/about)
 ***
