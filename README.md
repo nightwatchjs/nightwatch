@@ -1,5 +1,3 @@
-![Nightwatch.js](https://pbs.twimg.com/profile_banners/2298221131/1566906900/1500x500)
-
 # Nightwatch.js
 
 #### [Homepage](https://nightwatchjs.org) | [Getting Started](https://nightwatchjs.org/gettingstarted) | [Developer Guide](https://nightwatchjs.org/guide) | [API Reference](https://nightwatchjs.org/api) | [About](https://nightwatchjs.org/about)
@@ -90,6 +88,6 @@ and then open the generated _coverage/index.html_ file in your browser.
 ## Support Nightwatch
 Nightwatch is built by [@pineviewlabs](https://github.com/pineviewlabs/) - an independent software consultancy based in Oslo, Norway, with help from [our contributors](https://github.com/nightwatchjs/nightwatch/graphs/contributors). 
 
-Please consider supporting Nightwatch by becoming a backer or a sponsor on the [OpenCollective](https://opencollective.com/nightwatch/) platform.
+Please consider supporting Nightwatch by becoming a backer or sponsor on the [OpenCollective](https://opencollective.com/nightwatch/) platform.
 
 [![Open Collective](https://opencollective.com/nightwatch/tiers/backers.svg?avatarHeight=60)](https://opencollective.com/nightwatch/contribute/tier/7349-backers)
