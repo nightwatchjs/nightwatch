@@ -11,7 +11,6 @@ Nightwatch is a complete and integrated solution for end-to-end testing of web a
 [![npm](https://img.shields.io/npm/v/nightwatch.svg)](https://www.npmjs.com/package/nightwatch)
 [![Build Status](https://travis-ci.org/nightwatchjs/nightwatch.svg?branch=master)](https://travis-ci.org/nightwatchjs/nightwatch) 
 [![Coverage Status](https://coveralls.io/repos/nightwatchjs/nightwatch/badge.svg?branch=master&service=github)](https://coveralls.io/github/nightwatchjs/nightwatch?branch=master)
-[![Greenkeeper badge](https://badges.greenkeeper.io/nightwatchjs/nightwatch.svg)](https://greenkeeper.io/)
 
 [Changelog](https://github.com/nightwatchjs/nightwatch/releases) | [Mailing List](https://groups.google.com/forum/#!forum/nightwatchjs) | [nightwatch.js tag on StackOverflow](https://stackoverflow.com/questions/tagged/nightwatch.js) | [__@nightwatchjs__ on Twitter](https://twitter.com/nightwatchjs)
 ***
