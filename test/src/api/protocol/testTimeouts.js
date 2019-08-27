@@ -25,7 +25,7 @@ describe('timeouts commands', function() {
       commandName: 'timeouts',
       args: ['nonscript', 1000]
     }).catch(err => {
-      assert.equal(err.message, 'Invalid timeouts type value: nonscript. Accepted values are: script, implicit, page load');
+      assert.equal(err.message, 'Invalid timeouts type value: nonscript. Accepted values are: script, implicit, page load, pageLoad');
 
       return true;
     }).then(result => assert.strictEqual(result, true));

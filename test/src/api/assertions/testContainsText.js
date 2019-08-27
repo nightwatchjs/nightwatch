@@ -8,15 +8,34 @@ describe('assert.containsText', function () {
       args: ['.test_element', 'text result', 'Test message'],
       api: {
         getText(cssSelector, callback) {
-          assert.equal(cssSelector, '.test_element');
+          assert.strictEqual(cssSelector, '.test_element');
           callback({
             value: 'expected text result'
           });
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, true);
-        assert.equal(value, 'expected text result');
+        assert.strictEqual(passed, true);
+        assert.strictEqual(value, 'expected text result');
+      }
+    }, done);
+  });
+
+  it('containsText assertion passed with selector object', function (done) {
+    Globals.assertionTest({
+      assertionName: 'containsText',
+      args: [{selector: '.test_element'}, 'text result'],
+      api: {
+        getText(cssSelector, callback) {
+          assert.deepStrictEqual(cssSelector, {selector: '.test_element'});
+          callback({
+            value: 'expected text result'
+          });
+        }
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.strictEqual(passed, true);
+        assert.ok(message.startsWith('Testing if element <.test_element> contains text: "text result"'));
       }
     }, done);
   });
@@ -33,8 +52,8 @@ describe('assert.containsText', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, false);
-        assert.equal(value, 'not_expected');
+        assert.strictEqual(passed, false);
+        assert.strictEqual(value, 'not_expected');
       }
     }, done);
   });
@@ -51,8 +70,8 @@ describe('assert.containsText', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, false);
-        assert.equal(value, null);
+        assert.strictEqual(passed, false);
+        assert.strictEqual(value, null);
       }
     }, done);
   });

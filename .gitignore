@@ -19,3 +19,6 @@ output
 /coverage/
 /.nyc_output/
 screenshot.png
+/sample
+/screens
+

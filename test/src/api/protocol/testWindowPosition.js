@@ -6,7 +6,7 @@ describe('windowPosition', function() {
     Globals.protocolBefore.call(this);
   });
 
-  it('testWindowPositionGet without offsets and callback', function(done) {
+  it('test .windowPosition() without offsets and callback', function(done) {
     Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');
@@ -20,7 +20,7 @@ describe('windowPosition', function() {
     }).catch(err => done(err));
   });
 
-  it('testWindowPositionErrors', function() {
+  it('test .windowPosition() validation errors', function() {
     assert.throws(function() {
       Globals.runApiCommand.call(this, null, 'windowPosition', [function() {}]);
     }.bind(this), /First argument must be a window handle string/);
@@ -38,7 +38,7 @@ describe('windowPosition', function() {
     );
   });
 
-  it('testWindowPositionGet', function(done) {
+  it('test .windowPosition() GET', function(done) {
     Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');
@@ -49,7 +49,7 @@ describe('windowPosition', function() {
     }).then(_ => done()).catch(err => done(err));
   });
 
-  it('testWindowPositionPost', function() {
+  it('test .windowPosition() POST', function() {
     return Globals.protocolTest.call(this, {
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
@@ -60,4 +60,26 @@ describe('windowPosition', function() {
     });
   });
 
+  it('test .windowPosition() with W3C Webdriver API - POST', function() {
+    return Globals.protocolTestWebdriver.call(this, {
+      assertion: function(opts) {
+        assert.strictEqual(opts.method, 'POST');
+        assert.deepEqual(opts.data, { x: 10, y: 10 });
+        assert.strictEqual(opts.path, '/session/1352110219202/window/rect');
+      },
+      commandName: 'windowPosition',
+      args: ['current', 10, 10]
+    });
+  });
+
+  it('test .windowPosition() with W3C Webdriver API - GET', function() {
+    return Globals.protocolTestWebdriver.call(this, {
+      assertion: function(opts) {
+        assert.strictEqual(opts.method, 'GET');
+        assert.strictEqual(opts.path, '/session/1352110219202/window/rect');
+      },
+      commandName: 'windowPosition',
+      args: ['current', function() {}]
+    });
+  });
 });

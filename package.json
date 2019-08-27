@@ -1,7 +1,7 @@
 {
   "name": "nightwatch",
   "description": "Easy to use Node.js based End-to-End testing solution for browser based apps and websites, using the W3C WebDriver API.",
-  "version": "1.1.11",
+  "version": "1.2.1",
   "author": {
     "name": "Andrei Rusu",
     "email": "andrei@nightwatchjs.org"
@@ -20,8 +20,8 @@
     "dotenv": "7.0.0",
     "ejs": "^2.5.9",
     "lodash.clone": "3.0.3",
-    "lodash.defaultsdeep": "^4.6.0",
-    "lodash.merge": "^4.6.1",
+    "lodash.defaultsdeep": "^4.6.1",
+    "lodash.merge": "^4.6.2",
     "minimatch": "3.0.4",
     "mkpath": "1.0.0",
     "optimist": "^0.6.1",

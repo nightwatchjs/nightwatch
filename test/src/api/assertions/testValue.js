@@ -8,7 +8,7 @@ describe('assert.value', function () {
       args: ['.test_element', 'some-value'],
       api: {
         getValue(cssSelector, callback) {
-          assert.equal(cssSelector, '.test_element');
+          assert.strictEqual(cssSelector, '.test_element');
           callback({
             status: 0,
             value: 'some-value'
@@ -16,8 +16,29 @@ describe('assert.value', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, true);
-        assert.equal(value, 'some-value');
+        assert.strictEqual(passed, true);
+        assert.strictEqual(value, 'some-value');
+        assert.ok(message.startsWith('Testing if value of <.test_element> equals: "some-value"'));
+      }
+    }, done);
+  });
+
+  it('value assertion passed with selector object', function (done) {
+    Globals.assertionTest({
+      assertionName: 'value',
+      args: [{selector: '.test_element'}, 'some-value'],
+      api: {
+        getValue(cssSelector, callback) {
+          assert.deepStrictEqual(cssSelector, {selector: '.test_element'});
+          callback({
+            status: 0,
+            value: 'some-value'
+          });
+        }
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.strictEqual(passed, true);
+        assert.strictEqual(value, 'some-value');
         assert.ok(message.startsWith('Testing if value of <.test_element> equals: "some-value"'));
       }
     }, done);
@@ -29,7 +50,7 @@ describe('assert.value', function () {
       args: ['.test_element', 'some-value'],
       api: {
         getValue(cssSelector, callback) {
-          assert.equal(cssSelector, '.test_element');
+          assert.strictEqual(cssSelector, '.test_element');
           callback({
             status: 0,
             value: 'wrong-value'
@@ -37,8 +58,8 @@ describe('assert.value', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, false);
-        assert.equal(value, 'wrong-value');
+        assert.strictEqual(passed, false);
+        assert.strictEqual(value, 'wrong-value');
       }
     }, done);
   });
@@ -55,8 +76,8 @@ describe('assert.value', function () {
         }
       },
       assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, false);
-        assert.equal(value, null);
+        assert.strictEqual(passed, false);
+        assert.strictEqual(value, null);
         assert.ok(message.startsWith('Testing if value of <.test_element> equals: "some-value". Element or attribute could not be located'));
       }
     }, done);

@@ -8,8 +8,8 @@ describe('assert.elementPresent', function() {
       args: ['.test_element'],
       api: {
         elements(using, selector, callback) {
-          assert.equal(selector, '.test_element');
-          assert.equal(using, 'css selector');
+          assert.strictEqual(selector.selector, '.test_element');
+          assert.strictEqual(using, 'css selector');
           callback({
             status : 0,
             value : [{
@@ -20,7 +20,31 @@ describe('assert.elementPresent', function() {
       },
       assertion(passed, value, calleeFn, message) {
         assert.strictEqual(passed, true);
-        assert.equal(value, 'present');
+        assert.strictEqual(value, 'present');
+        assert.ok(message.startsWith('Testing if element <.test_element> is present'));
+      }
+    }, done);
+  });
+
+  it('elementPresent assertion passed with selector object', function(done) {
+    Globals.assertionTest({
+      assertionName: 'elementPresent',
+      args: [{selector: '.test_element'}],
+      api: {
+        elements(using, selector, callback) {
+          assert.strictEqual(selector.selector, '.test_element');
+          assert.strictEqual(using, 'css selector');
+          callback({
+            status : 0,
+            value : [{
+              ELEMENT : '0'
+            }]
+          });
+        }
+      },
+      assertion(passed, value, calleeFn, message) {
+        assert.strictEqual(passed, true);
+        assert.strictEqual(value, 'present');
         assert.ok(message.startsWith('Testing if element <.test_element> is present'));
       }
     }, done);
@@ -32,8 +56,8 @@ describe('assert.elementPresent', function() {
       args: ['.test_element'],
       api: {
         elements(using, selector, callback) {
-          assert.equal(selector, '.test_element');
-          assert.equal(using, 'css selector');
+          assert.strictEqual(selector.selector, '.test_element');
+          assert.strictEqual(using, 'css selector');
           callback({
             value:
               [{'element-6066-11e4-a52e-4f735466cecf': 'b8461b6b-7c4b-ac46-8b1a-7071c3b111f1'}]
@@ -42,7 +66,7 @@ describe('assert.elementPresent', function() {
       },
       assertion(passed, value, calleeFn, message) {
         assert.strictEqual(passed, true);
-        assert.equal(value, 'present');
+        assert.strictEqual(value, 'present');
         assert.ok(message.startsWith('Testing if element <.test_element> is present'));
       }
     }, done);
@@ -54,8 +78,8 @@ describe('assert.elementPresent', function() {
       args: ['.test_element'],
       api: {
         elements(using, selector, callback) {
-          assert.equal(selector, '.test_element');
-          assert.equal(using, 'css selector');
+          assert.strictEqual(selector.selector, '.test_element');
+          assert.strictEqual(using, 'css selector');
           callback({
             status : 0,
             value : []
@@ -64,7 +88,7 @@ describe('assert.elementPresent', function() {
       },
       assertion(passed, value, calleeFn, message) {
         assert.strictEqual(passed, false);
-        assert.equal(value, 'not present');
+        assert.strictEqual(value, 'not present');
         assert.ok(message.startsWith('Testing if element <.test_element> is present'));
       }
     }, done);

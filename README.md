@@ -1,8 +1,8 @@
 # Nightwatch
 
-#### [Homepage](http://nightwatchjs.org) | [Getting Started](http://nightwatchjs.org/gettingstarted) | [Developer Guide](http://nightwatchjs.org/guide) | [API Reference](http://nightwatchjs.org/api) | [Twitter](https://twitter.com/nightwatchjs) |  [OpenCollective](https://opencollective.com/nightwatch)
+#### [Homepage](https://nightwatchjs.org) | [Getting Started](https://nightwatchjs.org/gettingstarted) | [Developer Guide](https://nightwatchjs.org/guide) | [API Reference](https://nightwatchjs.org/api) | [About](https://nightwatchjs.org/about)
 ***
-Automated testing framework powered by [Node.js](http://nodejs.org/) and using [W3C Webdriver](https://www.w3.org/TR/webdriver/) (formerly [Selenium](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol)).
+Automated end-to-end testing framework powered by [Node.js](http://nodejs.org/) and using [W3C Webdriver](https://www.w3.org/TR/webdriver/) (formerly [Selenium](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol)).
 
 Nightwatch is a complete and integrated solution for end-to-end testing of web applications and websites, and also for Node.js unit and integration testing. 
 
@@ -12,8 +12,8 @@ Nightwatch is a complete and integrated solution for end-to-end testing of web a
 [![Greenkeeper badge](https://badges.greenkeeper.io/nightwatchjs/nightwatch.svg)](https://greenkeeper.io/)
 ***
 
-## Nightwatch v1.1
-We're delighted to announce the release of __Nightwatch v1.1__ (currently in BETA). Please see the [upgrade guide](https://github.com/nightwatchjs/nightwatch/wiki/Migrating-to-Nightwatch-1.0) if you are upgrading from an earlier version. 
+## Nightwatch v1.2
+We're delighted to announce the release of __Nightwatch v1.2__. Please see the [upgrade guide](https://github.com/nightwatchjs/nightwatch/wiki/Migrating-to-Nightwatch-1.0) if you are upgrading from a pre v1.0 version. 
 
 ## 1. Install Nightwatch
 
@@ -21,11 +21,7 @@ __From [NPM](https://npmjs.com/package/nightwatch):__
 ```sh
 $ npm install nightwatch
 ```
-This will install the latest stable version - [`v1.0.19`](https://www.npmjs.com/package/nightwatch/v/1.0.19). 
-
-- to install the [beta version](https://www.npmjs.com/package/nightwatch/v/1.1.8) with the latest features run `npm install nightwatch@1.1.8`.
 - add `-g` if you wish to install Nightwatch globally on your system.
-
 
 __From GitHub__:
 ```sh
@@ -43,6 +39,16 @@ Nightwatch includes support for automatically managing the following services:
 - for running tests against the Chrome browser;
 - download url: [https://sites.google.com/a/chromium.org/chromedriver/downloads](https://sites.google.com/a/chromium.org/chromedriver/downloads).
 
+Starting with __version 75__, Chromedriver has [W3C Webdriver](https://www.w3.org/TR/webdriver1) protocol enabled by default. If you'd like to stick to the JSONWire for now adjust the `chromeOptions`:
+```js
+desiredCapabilities : {
+  browserName : 'chrome',
+  chromeOptions: {
+    w3c: false
+  }
+}
+```
+
 #### GeckoDriver
 - for running tests against the Mozilla Firefox browser;
 - download url: [https://github.com/mozilla/geckodriver/releases](https://github.com/mozilla/geckodriver/releases).
@@ -57,7 +63,9 @@ Nightwatch includes support for automatically managing the following services:
 Specific WebDriver setup guides can be found on the [Docs website](http://nightwatchjs.org/gettingstarted/#browser-drivers-setup). Legacy Selenium drivers setup guides along with debugging instructions can be found on the [**Wiki**](https://github.com/nightwatchjs/nightwatch/wiki).
 
 ### Example tests
-Various example tests are included in the [`examples`](https://github.com/nightwatchjs/nightwatch/tree/master/examples) folder which demonstrate the usage of several Nightwatch features. 
+Example tests are included in the [`examples`](https://github.com/nightwatchjs/nightwatch/tree/master/examples) folder which demonstrate the usage of several Nightwatch features. 
+
+You can also check out the [nightwatch-website-tests](https://github.com/nightwatchjs/nightwatch-website-tests) repo for example tests against the (nightwatchjs.org)[https://nightwatchjs.org] website.
 
 #### Example configuration
 A sample [`nightwatch.json`](https://github.com/nightwatchjs/nightwatch/blob/master/bin/nightwatch.json) config file can be found in `bin` folder.
