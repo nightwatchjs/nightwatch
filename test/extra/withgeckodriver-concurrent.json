@@ -17,7 +17,9 @@
       },
       "webdriver": {
         "start_process": true,
-        "server_path": "./geckodriver"
+        "server_path": "./geckodriver",
+        "max_status_poll_tries": 10,
+        "status_poll_interval": 200
       }
     }
   }

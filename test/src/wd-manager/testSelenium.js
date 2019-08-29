@@ -138,7 +138,9 @@ describe('Webdriver Manager', function () {
           start_process: true,
           server_path: './selenium.jar',
           log_path: false,
-          port: 1024
+          port: 1024,
+          max_status_poll_tries: 10,
+          status_poll_interval: 200
         }
       });
 
