@@ -30,7 +30,7 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "coveralls": "^3.0.0",
-    "eslint": "^5.16.0",
+    "eslint": "^6.3.0",
     "js-yaml": "^3.13.1",
     "mocha": "^5.2.0",
     "mock-spawn": "^0.2.1",
