@@ -157,8 +157,8 @@ describe('Webdriver Manager', function () {
         // Simulate an error thrown
         assert.ok(false, 'Selenium Server should have failed to start.');
       }).catch(err => {
-        assert.strictEqual(wdServer.settings.webdriver.max_status_poll_tries, 5);
-        assert.strictEqual(wdServer.settings.webdriver.status_poll_interval, 100);
+        assert.strictEqual(wdServer.settings.webdriver.max_status_poll_tries, 15);
+        assert.strictEqual(wdServer.settings.webdriver.status_poll_interval, 200);
         assert.strictEqual(wdServer.settings.webdriver.check_process_delay, 1000);
         assert.strictEqual(wdServer.settings.webdriver.process_create_timeout, 2000);
         assert.ok(err.message.includes('Selenium Server process exited with code: 1'));

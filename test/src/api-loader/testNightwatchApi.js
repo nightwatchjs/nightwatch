@@ -114,7 +114,7 @@ describe('test Nightwatch Api', function() {
       session: {
         commandQueue: {
           add({commandName, commandFn, context, args, stackTrace}) {
-            let instance = commandFn.apply(context, args);
+            let instance = commandFn.call(context, {args, stackTrace});
             if (commandName === 'customPerform') {
               instance.on('complete', () => {
                 assert.strictEqual(paramFnCalled, true);
@@ -178,7 +178,7 @@ describe('test Nightwatch Api', function() {
         commandQueue: {
           add({commandName, commandFn, context, args, stackTrace}) {
             commandQueue.push(commandName);
-            let instance = commandFn.apply(context, args);
+            let instance = commandFn.call(context, {args, stackTrace});
 
             if (commandName === 'customCommand') {
               assert.equal(instance.toString(), 'CommandInstance [name=customCommand]');
