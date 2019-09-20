@@ -1,3 +1,5 @@
+![Nightwatch.js - end2end testing, the easy way](https://nightwatchjs.org/img/banner-small.png)
+
 # Nightwatch.js
 
 #### [Homepage](https://nightwatchjs.org) | [Getting Started](https://nightwatchjs.org/gettingstarted) | [Developer Guide](https://nightwatchjs.org/guide) | [API Reference](https://nightwatchjs.org/api) | [About](https://nightwatchjs.org/about)
