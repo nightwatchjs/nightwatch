@@ -1,4 +1,4 @@
-# Nightwatch
+# Nightwatch.js
 
 #### [Homepage](https://nightwatchjs.org) | [Getting Started](https://nightwatchjs.org/gettingstarted) | [Developer Guide](https://nightwatchjs.org/guide) | [API Reference](https://nightwatchjs.org/api) | [About](https://nightwatchjs.org/about)
 ***
@@ -9,13 +9,16 @@ Nightwatch is a complete and integrated solution for end-to-end testing of web a
 [![npm](https://img.shields.io/npm/v/nightwatch.svg)](https://www.npmjs.com/package/nightwatch)
 [![Build Status](https://travis-ci.org/nightwatchjs/nightwatch.svg?branch=master)](https://travis-ci.org/nightwatchjs/nightwatch) 
 [![Coverage Status](https://coveralls.io/repos/nightwatchjs/nightwatch/badge.svg?branch=master&service=github)](https://coveralls.io/github/nightwatchjs/nightwatch?branch=master)
-[![Greenkeeper badge](https://badges.greenkeeper.io/nightwatchjs/nightwatch.svg)](https://greenkeeper.io/)
+[![npm package](https://img.shields.io/npm/dm/nightwatch.svg)](https://www.npmjs.com/package/nightwatch)
+[![Twitter Follow](https://img.shields.io/twitter/follow/nightwatchjs.svg?style=social)](https://twitter.com/nightwatchjs)
+
+[Changelog](https://github.com/nightwatchjs/nightwatch/releases) | [Mailing List](https://groups.google.com/forum/#!forum/nightwatchjs) | [nightwatch.js tag on StackOverflow](https://stackoverflow.com/questions/tagged/nightwatch.js)
 ***
 
 ## Nightwatch v1.2
 We're delighted to announce the release of __Nightwatch v1.2__. Please see the [upgrade guide](https://github.com/nightwatchjs/nightwatch/wiki/Migrating-to-Nightwatch-1.0) if you are upgrading from a pre v1.0 version. 
 
-## 1. Install Nightwatch
+### 1. Install Nightwatch
 
 __From [NPM](https://npmjs.com/package/nightwatch):__
 ```sh
@@ -30,7 +33,7 @@ $ cd nightwatch
 $ npm install
 ```
 
-## 2. Download WebDriver
+### 2. Download WebDriver
 
 Nightwatch uses a [WebDriver](https://www.w3.org/TR/webdriver/) compatible server to control the browser. WebDriver is a W3C specification and industry standard which provides a platform and HTTP protocol to interact with a browser.
    
@@ -59,18 +62,16 @@ desiredCapabilities : {
 
 > It's important to note that, while the Selenium Server was required with older Nightwatch versions (`v0.9` and prior), starting with version `1.0` Selenium is no longer necessary.
 
-## Setup Guides
 Specific WebDriver setup guides can be found on the [Docs website](http://nightwatchjs.org/gettingstarted/#browser-drivers-setup). Legacy Selenium drivers setup guides along with debugging instructions can be found on the [**Wiki**](https://github.com/nightwatchjs/nightwatch/wiki).
 
-### Example tests
+## Examples
 Example tests are included in the [`examples`](https://github.com/nightwatchjs/nightwatch/tree/master/examples) folder which demonstrate the usage of several Nightwatch features. 
 
-You can also check out the [nightwatch-website-tests](https://github.com/nightwatchjs/nightwatch-website-tests) repo for example tests against the (nightwatchjs.org)[https://nightwatchjs.org] website.
+You can also check out the [nightwatch-website-tests](https://github.com/nightwatchjs/nightwatch-website-tests) repo for example tests against the [nightwatchjs.org](https://nightwatchjs.org) website.
 
-#### Example configuration
 A sample [`nightwatch.json`](https://github.com/nightwatchjs/nightwatch/blob/master/bin/nightwatch.json) config file can be found in `bin` folder.
 
-#### Nightwatch unit tests
+## Nightwatch unit tests
 The tests for Nightwatch are written using [Mocha](http://mochajs.org/).
 
 To run the complete test suite:
@@ -86,16 +87,9 @@ $ npm run mocha-coverage
 ```
 and then open the generated _coverage/index.html_ file in your browser.
 
-## Changelog
-The release history and changelog is available on the [GitHub Releases](https://github.com/nightwatchjs/nightwatch/releases) page.
+## Support Nightwatch
+Nightwatch is built by [@pineviewlabs](https://github.com/pineviewlabs/) - an independent software consultancy based in Oslo, Norway, with help from [our contributors](https://github.com/nightwatchjs/nightwatch/graphs/contributors). 
 
-#### Updates
-We use [Twitter](https://twitter.com/nightwatchjs) to communicate updates regarding development and to announce releases. Follow [@nightwatchjs](https://twitter.com/nightwatchjs) to get the latest or if you wish to get in touch. 
-
-#### Discuss / Support
-The [Mailing List/Google Group](https://groups.google.com/forum/#!forum/nightwatchjs) is the most appropriate tool for Nightwatch related discussions. In addition, there is a [StackOverflow Nightwatch.js tag](http://stackoverflow.com/questions/tagged/nightwatch.js) at your disposal.
-
-## Support Nightwatch on OpenCollective
-Please consider supporting Nightwatch by becoming a backer on the [OpenCollective](https://opencollective.com/nightwatch/) platform.
+Please consider supporting Nightwatch by becoming a backer or sponsor on the [OpenCollective](https://opencollective.com/nightwatch/) platform.
 
 [![Open Collective](https://opencollective.com/nightwatch/tiers/backers.svg?avatarHeight=60)](https://opencollective.com/nightwatch/contribute/tier/7349-backers)

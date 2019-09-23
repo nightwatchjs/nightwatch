@@ -113,7 +113,7 @@ describe('test Assertions', function() {
         value : 'expected text result'
       });
     }).setAddToQueueFn(function({commandName, commandFn, context, args, namespace, stackTrace}) {
-      commandFn.apply(context, args);
+      commandFn.call(context, {args, stackTrace});
     }).loadAssertion(function(passed, value, calleeFn, message) {
       assert.equal(passed, true);
       assert.equal(this.assertion.expected, 'text result');
@@ -170,7 +170,7 @@ describe('test Assertions', function() {
       });
     }).setAddToQueueFn(function({commandName, commandFn, context, args, namespace, stackTrace}) {
       commandFn.stackTrace = stackTrace;
-      commandFn.apply(context, args);
+      commandFn.call(context, {args, stackTrace});
     }).loadAssertion(function(passed, value, calleeFn, message) {
       assert.equal(passed, false);
       assert.equal(value, 'not_expected');

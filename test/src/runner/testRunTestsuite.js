@@ -287,6 +287,9 @@ describe('testRunTestSuite', function() {
           assert.ok('test/sample' in results.modules);
           assert.ok('demoTest' in results.modules['test/sample'].completed);
           assert.ok('srcfolders/other_sample' in results.modules);
+
+          const stringPath = ['test', 'sampletests', 'simple', 'test', 'sample.js'].join(path.sep);
+          assert.strictEqual(results.modules['test/sample'].modulePath.endsWith(stringPath), true);
           cb();
         }
       },

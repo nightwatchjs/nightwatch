@@ -9,7 +9,7 @@ class MockSession extends Session {
   get commandQueue() {
     return {
       add({commandName, commandFn, context, args, stackTrace}) {
-        commandFn(...args);
+        commandFn({args, stackTrace});
       },
 
       empty() {

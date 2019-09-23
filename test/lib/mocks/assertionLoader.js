@@ -67,7 +67,7 @@ class AssertionLoaderMock {
     let loader = new AssertionLoaderMock(module, commandName, settings, mockReporter);
 
     loader.setAddToQueueFn(function({commandName, commandFn, context, args, stackTrace}) {
-      commandFn.apply(context, args);
+      commandFn.call(context, {args, stackTrace});
     });
 
     return loader;
