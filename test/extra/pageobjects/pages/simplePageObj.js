@@ -16,7 +16,8 @@ module.exports = {
     loginCss: {selector: '#weblogin'},
     loginIndexed: {selector: '#weblogin', index: 1},
     loginXpath: {selector: '//weblogin', locateStrategy: 'xpath'},
-    loginId: {selector: 'weblogin', locateStrategy: 'id'}
+    loginId: {selector: 'weblogin', locateStrategy: 'id'},
+    loginAccessibilityId: {selector: 'mobilelogin', locateStrategy: 'accessibility id'}
   },
   sections: {
     signUp: {

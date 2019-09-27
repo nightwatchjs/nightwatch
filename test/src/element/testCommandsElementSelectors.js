@@ -36,6 +36,7 @@ describe('test commands element selectors', function() {
       .elementsFound('#nock')
       .elementsNotFound('#nock-none')
       .elementsByXpath('//[@id="nock"]')
+      .elementsByAccessibilityId('nock')
       .text(0, 'first')
       .text(1, 'second');
 
@@ -54,6 +55,9 @@ describe('test commands element selectors', function() {
       })
       .getText({selector: '//[@id="nock"]', locateStrategy: 'xpath'}, function callback(result) {
         assert.strictEqual(result.value, 'first');
+      })
+      .getText({selector: 'nock', locateStrategy: 'accessibility id'}, function callback(result) {
+        assert.strictEqual(result.value, 'first');
       });
 
     Nightwatch.start(done);
@@ -63,6 +67,7 @@ describe('test commands element selectors', function() {
     nocks
       .elementsFound('#nock')
       .elementsByXpath('//[@id="nock"]')
+      .elementsByAccessibilityId('nock')
       .text(0, 'first')
       .text(1, 'second');
 
@@ -89,6 +94,23 @@ describe('test commands element selectors', function() {
         assert.strictEqual(result.value, 'first');
       })
       .getText('xpath', {selector: '//[@id="nock"]'}, function callback(result) {
+        assert.strictEqual(result.value, 'first');
+      })
+      .useAccessibilityId()
+      .getText('nock', function callback(result) {
+        assert.strictEqual(result.value, 'first');
+      })
+      .useCss()
+      .getText({selector: 'nock', locateStrategy: 'accessibility id'}, function callback(result) {
+        assert.strictEqual(result.value, 'first');
+      })
+      .getText({selector: 'nock', locateStrategy: 'accessibility id', index: 1}, function callback(result) {
+        assert.strictEqual(result.value, 'second');
+      })
+      .getText('css selector', {selector: 'nock', locateStrategy: 'accessibility id'}, function callback(result) {
+        assert.strictEqual(result.value, 'first');
+      })
+      .getText('accessibility id', {selector: 'nock'}, function callback(result) {
         assert.strictEqual(result.value, 'first');
       });
 
@@ -138,7 +160,8 @@ describe('test commands element selectors', function() {
     nocks
       .elementsFound()
       .elementsNotFound()
-      .elementsByXpath();
+      .elementsByXpath()
+      .elementsByAccessibilityId();
 
     Nightwatch.api()
       .useCss()
@@ -152,6 +175,14 @@ describe('test commands element selectors', function() {
       .useCss()
       .waitForElementPresent({selector: '//[@class="nock"]', locateStrategy: 'xpath'}, 1, false, function callback(result) {
         assert.strictEqual(result.value.length, 3, 'waitforPresent locateStrategy override to xpath found');
+      })
+      .useAccessibilityId()
+      .waitForElementPresent('nock', 1, false, function callback(result) {
+        assert.strictEqual(result.value.length, 3, 'waitforPresent using accessibility id');
+      })
+      .useCss()
+      .waitForElementPresent({selector: 'nock', locateStrategy: 'accessibility id'}, 1, false, function callback(result) {
+        assert.strictEqual(result.value.length, 3, 'waitforPresent locateStrategy override to accessibility id found');
       });
 
     Nightwatch.start(done);

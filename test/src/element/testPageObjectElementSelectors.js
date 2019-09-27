@@ -39,6 +39,7 @@ describe('test page object element selectors', function() {
       .elementsFound('weblogin', [{ELEMENT: '0'}], 'id')
       .elementsByXpath('//weblogin')
       .elementsByXpath('#weblogin', [])
+      .elementsByAccessibilityId('mobilelogin')
       .text(0, 'first')
       .text(1, 'second');
 
@@ -64,7 +65,12 @@ describe('test page object element selectors', function() {
       .getText('@loginId', function callback(result) {
         assert.strictEqual(result.status, 0, 'element selector id found');
         assert.strictEqual(result.value, 'first', 'element selector id value');
+      })
+      .getText('@loginAccessibilityId', function callback(result) {
+        assert.strictEqual(result.status, 0, 'element selector accessibility id found');
+        assert.strictEqual(result.value, 'first', 'element selector accessibility id value');
       });
+
 
     Nightwatch.start(done);
   });

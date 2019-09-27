@@ -53,6 +53,7 @@ describe('test index in element selectors', function() {
     nocks
       .elementsFound()
       .elementsByXpath()
+      .elementsByAccessibilityId()
       .text(0, 'first')
       .text(1, 'second');
 
@@ -62,6 +63,9 @@ describe('test index in element selectors', function() {
       })
       .getText({selector: '//[@class="nock"]', locateStrategy: 'xpath', index: 1}, function callback(result) {
         assert.strictEqual(result.value, 'second', 'getText xpath locateStrategy index 1');
+      })
+      .getText({selector: 'nock', locateStrategy: 'accessibility id', index: 1}, function callback(result) {
+        assert.strictEqual(result.value, 'second', 'getText accessibility id locateStrategy index 1');
       })
       .getText({
         selector: '//[@class="nock"]',

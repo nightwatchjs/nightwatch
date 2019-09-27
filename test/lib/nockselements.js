@@ -135,6 +135,19 @@ module.exports = {
     return this;
   },
 
+  elementsByAccessibilityId(selector = 'nock', foundArray = [{ELEMENT: '0'}, {ELEMENT: '1'}, {ELEMENT: '2'}]) {
+    this._addNock(this._requestUri)
+      .persist()
+      .post(this._protocolUri + 'elements', {'using':'accessibility id', 'value':selector})
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value: foundArray
+      });
+
+    return this;
+  },
+
   elementId (id, selector, using, foundElem) {
     this._addNock(this._requestUri)
       .persist()
