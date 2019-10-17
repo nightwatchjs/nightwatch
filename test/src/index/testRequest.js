@@ -59,18 +59,17 @@ describe('test HttpRequest', function() {
     }).send();
 
     var data = '{"desiredCapabilities":{"browserName":"firefox"}}';
-    assert.equal(request.data, data);
-    assert.equal(request.contentLength, data.length);
+    assert.strictEqual(request.data, data);
+    assert.strictEqual(request.contentLength, data.length);
 
     var opts = request.reqOptions;
-    assert.equal(opts.path, '/wd/hub/session');
-    assert.equal(opts.hostname, 'localhost');
-    assert.equal(opts.port, 4444);
-    assert.equal(opts.method, 'POST');
-    assert.deepEqual(opts.headers, {
-      'content-type': 'application/json; charset=utf-8',
-      'content-length': data.length
-    });
+    assert.strictEqual(opts.path, '/wd/hub/session');
+    assert.strictEqual(opts.hostname, 'localhost');
+    assert.strictEqual(opts.port, 4444);
+    assert.strictEqual(opts.method, 'POST');
+    assert.strictEqual(opts.headers['content-type'], 'application/json; charset=utf-8');
+    assert.strictEqual(opts.headers['content-length'], data.length);
+    assert.ok(opts.headers['User-Agent'].startsWith('nightwatch.js/'));
   });
 
   it('testSendPostRequestWithCredentials', function (done) {
@@ -104,7 +103,7 @@ describe('test HttpRequest', function() {
 
     try {
       var authHeader = Buffer.from('test:test-key').toString('base64');
-      assert.equal(request.httpRequest.getHeader('Authorization'), 'Basic ' + authHeader);
+      assert.strictEqual(request.httpRequest.getHeader('Authorization'), 'Basic ' + authHeader);
     } catch (err) {
       done(err);
     }
@@ -183,8 +182,8 @@ describe('test HttpRequest', function() {
       done();
     }).send();
 
-    assert.equal(request.httpRequest.getHeader('Accept'), 'application/json');
-    assert.equal(request.reqOptions.path, '/wd/hub/123456/element');
+    assert.strictEqual(request.httpRequest.getHeader('Accept'), 'application/json');
+    assert.strictEqual(request.reqOptions.path, '/wd/hub/123456/element');
   });
 
   it('testErrorResponse', function (done) {
@@ -206,8 +205,8 @@ describe('test HttpRequest', function() {
 
     var request = new HttpRequest(options);
     request.on('error', function (result, response, screenshotContent) {
-      assert.equal(typeof result.stackTrace, 'undefined');
-      assert.equal(typeof result.message, 'undefined');
+      assert.strictEqual(typeof result.stackTrace, 'undefined');
+      assert.strictEqual(typeof result.message, 'undefined');
       done();
     }).send();
 
@@ -239,5 +238,97 @@ describe('test HttpRequest', function() {
       assert.ok(typeof result.message == 'undefined');
       done();
     }).send();
+  });
+
+  it('test send post request with keep alive', function (done) {
+    const options = {
+      path: '/session',
+      method: 'POST',
+      port: 4444,
+      data: {
+        desiredCapabilities: {
+          browserName: 'firefox'
+        }
+      }
+    };
+
+    HttpRequest.globalSettings = {
+      default_path: '/wd/hub',
+      port: 4444,
+      keep_alive: true
+    };
+
+    const request = new HttpRequest(options);
+    request.on('success', function () {
+      done();
+    }).send();
+
+    const opts = request.reqOptions;
+    const http = require('http');
+    assert.ok(opts.agent instanceof http.Agent);
+    assert.ok('agent' in opts);
+  });
+
+  it('test send post request with keep alive extended', function (done) {
+    const options = {
+      path: '/session',
+      method: 'POST',
+      port: 4444,
+      data: {
+        desiredCapabilities: {
+          browserName: 'firefox'
+        }
+      }
+    };
+
+    HttpRequest.globalSettings = {
+      default_path: '/wd/hub',
+      port: 4444,
+      keep_alive: {
+        keepAliveMsecs: 1000,
+        enabled: true
+      }
+    };
+
+    const request = new HttpRequest(options);
+    request.on('success', function () {
+      done();
+    }).send();
+
+    const opts = request.reqOptions;
+    const http = require('http');
+    assert.ok(opts.agent instanceof http.Agent);
+    assert.strictEqual(opts.agent.keepAliveMsecs, 1000);
+    assert.ok('agent' in opts);
+  });
+
+  it('test send post request with keep alive extended - disabled', function (done) {
+    const options = {
+      path: '/session',
+      method: 'POST',
+      port: 4444,
+      data: {
+        desiredCapabilities: {
+          browserName: 'firefox'
+        }
+      }
+    };
+
+    HttpRequest.globalSettings = {
+      default_path: '/wd/hub',
+      port: 4444,
+      keep_alive: {
+        keepAliveMsecs: 1000,
+        enabled: false
+      }
+    };
+
+    const request = new HttpRequest(options);
+    request.on('success', function () {
+      done();
+    }).send();
+
+    const opts = request.reqOptions;
+    assert.equal(typeof opts.agent, 'undefined');
   });
 });
