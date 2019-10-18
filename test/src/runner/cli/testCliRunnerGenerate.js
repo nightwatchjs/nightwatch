@@ -118,6 +118,11 @@ describe('Test CLI Runner Generate', function() {
           selenium: {
             host: 'hub-cloud.browserstack.com',
             port: 443
+          },
+
+          disable_error_log: true,
+          webdriver: {
+            keep_alive: true
           }
         });
 
