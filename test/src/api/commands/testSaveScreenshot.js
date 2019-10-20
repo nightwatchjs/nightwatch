@@ -2,7 +2,7 @@ const assert = require('assert');
 const MockServer  = require('../../../lib/mockserver.js');
 const common = require('../../../common.js');
 const CommandGlobals = require('../../../lib/globals/commands.js');
-const Screenshots = common.require('testsuite/screenshots.js');
+const Screenshots = common.require('util/screenshots.js');
 
 describe('saveScreenshot', function() {
   before(function(done) {
