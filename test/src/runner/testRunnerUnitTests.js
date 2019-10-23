@@ -52,6 +52,28 @@ describe('testRunnerUnitTests', function() {
     return NightwatchClient.runTests(testsPath, settings);
   });
 
+  it('testRunner unit tests with annotation and describe', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/withdescribe/unittests/');
+
+    const settings = {
+      output_folder: false,
+      output: false,
+      persist_globals: true,
+      globals: {
+        calls: 0,
+        reporter(results) {
+          if (results.lastError) {
+            throw results.lastError;
+          }
+
+          assert.equal(settings.globals.calls, 2);
+        }
+      }
+    };
+
+    return NightwatchClient.runTests(testsPath, settings);
+  });
+
   it('testRunner unit tests with annotation and error thrown', function() {
     let testsPath = path.join(__dirname, '../../asynchookstests/unittest-error.js');
 

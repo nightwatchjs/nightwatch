@@ -37,12 +37,12 @@ describe('testRunTestSuite', function() {
       calls: 0,
       retryAssertionTimeout: 0,
       reporter(results, cb) {
-        assert.equal(settings.globals.calls, 8);
+        assert.strictEqual(settings.globals.calls, 8);
         assert.deepEqual(results.errmessages, []);
-        assert.equal(results.passed, 1);
-        assert.equal(results.failed, 1);
-        assert.equal(results.errors, 0);
-        assert.equal(results.skipped, 0);
+        assert.strictEqual(results.passed, 1);
+        assert.strictEqual(results.failed, 1);
+        assert.strictEqual(results.errors, 0);
+        assert.strictEqual(results.skipped, 0);
         cb();
       }
     };
@@ -66,14 +66,117 @@ describe('testRunTestSuite', function() {
     }, settings);
   });
 
+  it('testRunner with suiteRetries and describe interface', function() {
+    const testsPath = path.join(__dirname, '../../sampletests/withdescribe/suite-retries/sample.js');
+
+    const globals = {
+      calls: 0,
+      retryAssertionTimeout: 0,
+      reporter(results, cb) {
+        assert.strictEqual(settings.globals.calls, 8);
+        assert.deepEqual(results.errmessages, []);
+        assert.strictEqual(results.passed, 1);
+        assert.strictEqual(results.failed, 1);
+        assert.strictEqual(results.errors, 0);
+        assert.strictEqual(results.skipped, 0);
+        cb();
+      }
+    };
+
+    const settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      output: false,
+      silent: true,
+      persist_globals: true,
+      globals,
+      output_folder: false
+    };
+
+    return NightwatchClient.runTests({
+      suiteRetries: 1,
+      _source: [testsPath]
+    }, settings);
+  });
+
+  it('testRunner with suiteRetries and describe interface with attribute', function() {
+    const testsPath = path.join(__dirname, '../../sampletests/withdescribe/suite-retries/sampleWithAttribute.js');
+
+    const globals = {
+      calls: 0,
+      retryAssertionTimeout: 0,
+      reporter(results, cb) {
+        assert.strictEqual(settings.globals.calls, 8);
+        assert.deepEqual(results.errmessages, []);
+        assert.strictEqual(results.passed, 1);
+        assert.strictEqual(results.failed, 1);
+        assert.strictEqual(results.errors, 0);
+        assert.strictEqual(results.skipped, 0);
+        cb();
+      }
+    };
+
+    const settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      output: false,
+      silent: true,
+      persist_globals: true,
+      globals,
+      output_folder: false
+    };
+
+    return NightwatchClient.runTests({
+      _source: [testsPath]
+    }, settings);
+  });
+
+  it('testRunner with suiteRetries and describe interface with both attribute and argument', function() {
+    const testsPath = path.join(__dirname,
+      '../../sampletests/withdescribe/suite-retries/sampleWithAttribute.js');
+
+    const globals = {
+      calls: 0,
+      retryAssertionTimeout: 0,
+      reporter(results, cb) {
+        assert.strictEqual(settings.globals.calls, 8);
+        cb();
+      }
+    };
+
+    const settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      output: false,
+      silent: true,
+      persist_globals: true,
+      globals,
+      output_folder: false
+    };
+
+    return NightwatchClient.runTests({
+      suiteRetries:2,
+      _source: [testsPath]
+    }, settings);
+  });
+
   it('testRunner with suiteRetries and skip_testcases_on_fail=false', function() {
     let testsPath = path.join(__dirname, '../../sampletests/withfailures');
     let globals = {
       calls: 0,
       retryAssertionTimeout: 0,
       reporter(results, cb) {
-        assert.equal(settings.globals.calls, 12);
-        assert.equal(results.errors, 0);
+        assert.strictEqual(settings.globals.calls, 12);
+        assert.strictEqual(results.errors, 0);
         cb();
       }
     };
@@ -103,7 +206,7 @@ describe('testRunTestSuite', function() {
     let globals = {
       calls: 0,
       reporter(results, cb) {
-        assert.equal(runner.currentSuite.client.locateStrategy, 'css selector');
+        assert.strictEqual(runner.currentSuite.client.locateStrategy, 'css selector');
         cb();
       }
     };
@@ -144,8 +247,8 @@ describe('testRunTestSuite', function() {
     let globals = {
       calls: 0,
       reporter(results, cb) {
-        assert.equal(globals.calls, 3);
-        assert.equal(results.passed, 2);
+        assert.strictEqual(globals.calls, 3);
+        assert.strictEqual(results.passed, 2);
         cb();
       }
     };
@@ -207,7 +310,7 @@ describe('testRunTestSuite', function() {
         cb();
       },
       afterEach(client, cb) {
-        assert.equal(client.options.desiredCapabilities.name, 'Sample Test');
+        assert.strictEqual(client.options.desiredCapabilities.name, 'Sample Test');
         cb();
       }
     };
@@ -290,6 +393,45 @@ describe('testRunTestSuite', function() {
 
           const stringPath = ['test', 'sampletests', 'simple', 'test', 'sample.js'].join(path.sep);
           assert.strictEqual(results.modules['test/sample'].modulePath.endsWith(stringPath), true);
+          cb();
+        }
+      },
+      silent: true,
+      output: false,
+      output_folder: false,
+      src_folders: srcFolders
+    };
+
+    return NightwatchClient.runTests(settings);
+  });
+
+  it('test runner with multiple test interfaces - exports/describe', function() {
+    let srcFolders = [
+      path.join(__dirname, '../../sampletests/simple'),
+      path.join(__dirname, '../../sampletests/withdescribe/basic')
+    ];
+
+    const settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      globals: {
+        reporter(results, cb) {
+          if (results.lastError) {
+            throw results.lastError;
+          }
+          assert.ok('test/sample' in results.modules);
+          assert.ok('demoTest' in results.modules['test/sample'].completed);
+          let test = results.modules['test/sample'].completed.demoTest;
+          assert.strictEqual(test.assertions.length, 2);
+          assert.strictEqual(test.passed, 2);
+
+          assert.ok('basic/sample' in results.modules);
+          test = results.modules['basic/sample'].completed.demoTest;
+          assert.strictEqual(test.assertions.length, 2);
+          assert.strictEqual(test.passed, 2);
           cb();
         }
       },
