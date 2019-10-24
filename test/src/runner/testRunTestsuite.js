@@ -443,4 +443,67 @@ describe('testRunTestSuite', function() {
 
     return NightwatchClient.runTests(settings);
   });
+
+  it('test runner with describe and .only()', function() {
+    let srcFolders = [
+      path.join(__dirname, '../../sampletests/withdescribe/basic/sampleWithOnly.js')
+    ];
+
+    const settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      globals: {
+        reporter(results, cb) {
+          if (results.lastError) {
+            throw results.lastError;
+          }
+
+          const testcases = results.modules.sampleWithOnly.completed;
+          assert.deepStrictEqual(Object.keys(testcases), ['demoTest two']);
+          cb();
+        }
+      },
+      silent: true,
+      output: false,
+      output_folder: false,
+      src_folders: srcFolders
+    };
+
+    return NightwatchClient.runTests(settings);
+  });
+
+  it('testRunner with describe and skipTestcasesOnFail=true', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/withdescribe/failures/sampleSkipTestcases.js');
+    let globals = {
+      calls: 0,
+      retryAssertionTimeout: 0,
+      reporter(results, cb) {
+        assert.strictEqual(settings.globals.calls, 2);
+        assert.strictEqual(results.errors, 0);
+        assert.strictEqual(results.failed, 2);
+        cb();
+      }
+    };
+
+    const settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: false,
+      output: false,
+      persist_globals: true,
+      globals,
+      skip_testcases_on_fail: true,
+      output_folder: false,
+    };
+
+    return NightwatchClient.runTests({
+      _source: [testsPath]
+    }, settings);
+  });
 });
