@@ -3,7 +3,7 @@ const lodashMerge = require('lodash.merge');
 const Nightwatch = common.require('index.js');
 const Settings = common.require('settings/settings.js');
 const MockServer  = require('./mockserver.js');
-const Logger = common.require('util/logger.js');
+const Logger = common.require('utils').Logger;
 
 module.exports = new function () {
   let _client = null;

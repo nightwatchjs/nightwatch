@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const semver = require('semver');
-const Logger = require('../lib/util/logger.js');
+const {Logger} = require('../lib/utils');
 const requiredVersion = require('../package.json').engines.node;
 
 function checkNodeVersion (wanted, id) {
