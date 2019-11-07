@@ -3,11 +3,11 @@ const Globals = require('../../../lib/globals.js');
 
 describe('client.status', function() {
   before(function() {
-    Globals.protocolBefore.call(this);
+    Globals.protocolBefore();
   });
 
   it('testStatus', function() {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/status');

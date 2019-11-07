@@ -3,11 +3,11 @@ const Globals = require('../../../lib/globals.js');
 
 describe('client.keys()', function() {
   before(function() {
-    Globals.protocolBefore.call(this);
+    Globals.protocolBefore();
   });
 
   it('testKeys', function () {
-    Globals.protocolTest.call(this, {
+    Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/keys');
@@ -19,7 +19,7 @@ describe('client.keys()', function() {
   });
 
   it('testKeysSingle', function () {
-    Globals.protocolTest.call(this, {
+    Globals.protocolTest({
       assertion: function(opts) {
         assert.deepEqual(opts.data, { value: [ 'A' ] });
       },
@@ -29,7 +29,7 @@ describe('client.keys()', function() {
   });
 
   it('testKeysUnicode', function () {
-    Globals.protocolTest.call(this, {
+    Globals.protocolTest({
       assertion: function(opts) {
         assert.deepEqual(opts.data, {value: ['']});
       },

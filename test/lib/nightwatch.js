@@ -56,6 +56,7 @@ module.exports = new function () {
       },
       silent : true,
       output : false,
+      disable_colors: true,
       globals : {
         myGlobal : 'test'
       }

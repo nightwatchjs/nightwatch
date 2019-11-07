@@ -3,11 +3,11 @@ const Globals = require('../../../lib/globals.js');
 
 describe('cookie commands', function() {
   before(function() {
-    Globals.protocolBefore.call(this);
+    Globals.protocolBefore();
   });
 
   it('testCookieGet', function () {
-    Globals.protocolTest.call(this, {
+    Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/cookie');
@@ -18,7 +18,7 @@ describe('cookie commands', function() {
   });
 
   it('testCookiePost', function () {
-    Globals.protocolTest.call(this, {
+    Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/cookie');
@@ -30,7 +30,7 @@ describe('cookie commands', function() {
   });
 
   it('testCookieDeleteAll', function () {
-    Globals.protocolTest.call(this, {
+    Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'DELETE');
         assert.equal(opts.path, '/session/1352110219202/cookie');
@@ -41,7 +41,7 @@ describe('cookie commands', function() {
   });
 
   it('testCookieDeleteOne', function () {
-    Globals.protocolTest.call(this, {
+    Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'DELETE');
         assert.equal(opts.path, '/session/1352110219202/cookie/test_cookie');

@@ -3,11 +3,11 @@ const Globals = require('../../../lib/globals.js');
 
 describe('session log commands', function() {
   before(function() {
-    Globals.protocolBefore.call(this);
+    Globals.protocolBefore();
   });
 
   it('testLog', function () {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/log');
@@ -18,7 +18,7 @@ describe('session log commands', function() {
   });
 
   it('testLogTypes', function () {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/log/types');
