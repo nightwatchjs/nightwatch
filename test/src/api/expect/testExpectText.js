@@ -47,7 +47,7 @@ describe('expect.text', function() {
         strictEqual(resultValue, 'hp vasq');
         strictEqual(passed, false);
         strictEqual(messageParts.length, 3);
-        strictEqual(message, `Expected element <#weblogin> text to equal: "vasq" - expected "equal \'vasq\'" but got: "hp vasq" (${elapsedTime}ms)`);
+        strictEqual(message, `Expected element <#weblogin> text to equal: "vasq" - expected "equal 'vasq'" but got: "hp vasq" (${elapsedTime}ms)`);
       }
     });
 
@@ -84,7 +84,7 @@ describe('expect.text', function() {
       strictEqual(expect.assertion.actual, 'hp vasq');
       strictEqual(expect.assertion.resultValue, 'hp vasq');
       strictEqual(expect.assertion.passed, false);
-      strictEqual(expect.assertion.message, `Expected element <#weblogin> text to not equal: "hp vasq" - expected "not equal \'hp vasq\'" but got: "hp vasq" (${expect.assertion.elapsedTime}ms)`);
+      strictEqual(expect.assertion.message, `Expected element <#weblogin> text to not equal: "hp vasq" - expected "not equal 'hp vasq'" but got: "hp vasq" (${expect.assertion.elapsedTime}ms)`);
     });
   });
 
@@ -251,7 +251,7 @@ describe('expect.text', function() {
       strictEqual(expect.assertion.negate, true);
       strictEqual(expect.assertion.resultValue, 'xx');
       strictEqual(expect.assertion.passed, false);
-      strictEqual(expect.assertion.message, `Expected element <#weblogin> text to not contain: "xx" - expected "not contain \'xx\'" but got: "xx" (${expect.assertion.elapsedTime}ms)`);
+      strictEqual(expect.assertion.message, `Expected element <#weblogin> text to not contain: "xx" - expected "not contain 'xx'" but got: "xx" (${expect.assertion.elapsedTime}ms)`);
     });
   });
 
@@ -309,7 +309,7 @@ describe('expect.text', function() {
       strictEqual(expect.assertion.negate, true);
       strictEqual(expect.assertion.resultValue, 'xx');
       strictEqual(expect.assertion.passed, false);
-      strictEqual(expect.assertion.message, `Expected element <#weblogin> text to not match: "/xx/" - expected "not match \'/xx/\'" but got: "xx" (${expect.assertion.elapsedTime}ms)`);
+      strictEqual(expect.assertion.message, `Expected element <#weblogin> text to not match: "/xx/" - expected "not match '/xx/'" but got: "xx" (${expect.assertion.elapsedTime}ms)`);
     });
   });
 
@@ -336,7 +336,7 @@ describe('expect.text', function() {
         strictEqual(passed, false);
         assert.ok(messageParts.includes(' equal: "vasq"'));
         assert.ok(messageParts.includes(' - element was not found'));
-        strictEqual(message, `Expected element <#weblogin> text to equal: "vasq" - element was not found - expected "equal \'vasq\'" but got: "not present" (${elapsedTime}ms)`);
+        strictEqual(message, `Expected element <#weblogin> text to equal: "vasq" - element was not found - expected "equal 'vasq'" but got: "not present" (${elapsedTime}ms)`);
       }
     });
   });
@@ -356,7 +356,7 @@ describe('expect.text', function() {
       strictEqual(expect.assertion.expected, 'contain \'vasq\'');
       strictEqual(expect.assertion.actual, 'not present');
       strictEqual(expect.assertion.passed, false);
-      strictEqual(expect.assertion.message, `Expected element <#weblogin> text to contain: "vasq" - element was not found - expected "contain \'vasq\'" but got: "not present" (${expect.assertion.elapsedTime}ms)`);
+      strictEqual(expect.assertion.message, `Expected element <#weblogin> text to contain: "vasq" - element was not found - expected "contain 'vasq'" but got: "not present" (${expect.assertion.elapsedTime}ms)`);
     });
   });
 
@@ -375,7 +375,7 @@ describe('expect.text', function() {
       strictEqual(expect.assertion.expected, 'match \'/vasq$/\'');
       strictEqual(expect.assertion.actual, 'not present');
       strictEqual(expect.assertion.passed, false);
-      strictEqual(expect.assertion.message, `Expected element <#weblogin> text to match: "/vasq$/" - element was not found - expected "match \'/vasq$/\'" but got: "not present" (${expect.assertion.elapsedTime}ms)`);
+      strictEqual(expect.assertion.message, `Expected element <#weblogin> text to match: "/vasq$/" - element was not found - expected "match '/vasq$/'" but got: "not present" (${expect.assertion.elapsedTime}ms)`);
     });
   });
 

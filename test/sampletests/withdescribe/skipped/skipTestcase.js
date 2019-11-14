@@ -27,7 +27,7 @@ describe('sample test with failures', function() {
       .end();
   });
 
-  xtest('demoTest5', function (client) {
+  xtest('demoTest5', function (client) { // eslint-disable-line no-undef
     client.globals.calls++;
     client.url('http://localhost')
       .assert.elementPresent('#weblogin')
