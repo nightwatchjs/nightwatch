@@ -37,7 +37,7 @@ describe('expect.enabled', function() {
     return this.client.start(function() {
       assert.strictEqual(expect.assertion.waitForMs, 100);
       assert.strictEqual(expect.assertion.passed, true);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be enabled in 100ms - condition was met in ' + expect.assertion.elapsedTime + 'ms'));
+      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be enabled in 100ms (' + expect.assertion.elapsedTime + 'ms)'));
     });
   });
 
@@ -51,7 +51,7 @@ describe('expect.enabled', function() {
     return this.client.start(function() {
       assert.strictEqual(expect.assertion.waitForMs, 60);
       assert.strictEqual(expect.assertion.passed, false);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be enabled in 60ms'));
+      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be enabled in 60ms'), expect.assertion.message);
     });
   });
 
@@ -75,7 +75,7 @@ describe('expect.enabled', function() {
       assert.strictEqual(expect.assertion.actual, 'not enabled');
       assert.strictEqual(expect.assertion.resultValue, false);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be enabled'));
-      assert.strictEqual(expect.assertion.messageParts.length, 0);
+      assert.strictEqual(expect.assertion.messageParts.length, 2);
     });
   });
 
@@ -121,7 +121,7 @@ describe('expect.enabled', function() {
       assert.strictEqual(expect.assertion.actual, 'enabled');
       assert.strictEqual(expect.assertion.resultValue, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not be enabled'));
-      assert.strictEqual(expect.assertion.messageParts.length, 0);
+      assert.strictEqual(expect.assertion.messageParts.length, 2);
     });
   });
 
@@ -144,7 +144,7 @@ describe('expect.enabled', function() {
       assert.strictEqual(expect.assertion.expected, 'enabled');
       assert.strictEqual(expect.assertion.actual, 'not found');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be enabled - element was not found'));
-      assert.deepEqual(expect.assertion.messageParts, [' - element was not found']);
+      assert.ok(expect.assertion.messageParts.includes(' - element was not found'));
     });
   });
 
@@ -172,6 +172,8 @@ describe('expect.enabled', function() {
     return this.client.start(function() {
       assert.strictEqual(expect.assertion.waitForMs, 60);
       assert.strictEqual(expect.assertion.passed, false);
+      assert.strictEqual(expect.assertion.expected, 'enabled');
+      assert.strictEqual(expect.assertion.actual, 'not found');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be enabled in 60ms - element was not found'));
     });
   });
@@ -186,7 +188,7 @@ describe('expect.enabled', function() {
     return this.client.start(function() {
       assert.strictEqual(expect.assertion.passed, true);
       assert.strictEqual(expect.assertion.waitForMs, 11);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be enabled in 11ms - condition was met in ' + expect.assertion.elapsedTime + 'ms'));
+      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be enabled in 11ms (' + expect.assertion.elapsedTime + 'ms)'));
     });
   });
 });

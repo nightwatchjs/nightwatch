@@ -454,7 +454,27 @@ module.exports = {
     return this;
   },
 
+  multipleCookiesFound(value) {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/cookie')
+      .reply(200, {
+        value
+      });
 
+    return this;
+  },
+
+  cookieNotFound() {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/cookie')
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value: []
+      });
+
+    return this;
+  },
 
   cleanAll() {
     nock.cleanAll();
