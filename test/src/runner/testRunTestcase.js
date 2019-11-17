@@ -162,7 +162,7 @@ describe('testRunTestcase', function() {
         start_process: true
       },
       silent: false,
-      output: true,
+      output: false,
       globals: {
         beforeEach(client, cb) {
           assert.strictEqual(client.currentTest.name, '');

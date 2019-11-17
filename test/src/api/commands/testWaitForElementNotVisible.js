@@ -67,7 +67,7 @@ describe('waitForElementNotVisible', function() {
       }
 
       assert.strictEqual(commandResult.status, 0);
-      assert.strictEqual(err.message, 'Timed out while waiting for element <#weblogin> to not be visible for 15 milliseconds. - expected "not visible" but got: "visible"');
+      assert.strictEqual(err.message, `Timed out while waiting for element <#weblogin> to not be visible for 15 milliseconds. - expected "not visible" but got: "visible" (${commandInstance.elapsedTime}ms)`);
     });
   });
 

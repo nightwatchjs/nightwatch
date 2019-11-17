@@ -7,7 +7,6 @@ describe('context commands', function() {
   });
 
   it('testContexts', function() {
-
     return Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');

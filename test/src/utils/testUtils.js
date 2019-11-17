@@ -1,6 +1,6 @@
 const assert = require('assert');
 const common = require('../../common.js');
-const Utils = common.require('util/utils.js');
+const Utils = common.require('utils');
 
 describe('test Utils', function() {
 

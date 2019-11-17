@@ -223,7 +223,7 @@ describe('testRunTestSuite', function() {
       silent: true,
       output: false,
       persist_globals: true,
-      globals: globals,
+      globals,
       skip_testcases_on_fail: false,
       output_folder: false,
     });

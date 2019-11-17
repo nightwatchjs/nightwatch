@@ -17,7 +17,8 @@ module.exports = {
     var testName = client.currentTest.name;
     client.assert.ok('Test OK');
     client.assert.equal(1, 1);
-    assert.equal(testName, 'demoTest');
+    client.assert.not.equal(1, 0);
+    assert.strictEqual(testName, 'demoTest');
     client.end();
   },
 
@@ -25,11 +26,11 @@ module.exports = {
     var testName = client.currentTest.name;
     var results = client.currentTest.results;
 
-    assert.equal(results.passed, 2);
-    assert.equal(results.failed, 0);
-    assert.equal(results.tests, 2);
+    assert.strictEqual(results.passed, 3);
+    assert.strictEqual(results.failed, 0);
+    assert.strictEqual(results.tests, 3);
     assert.ok('demoTest' in results.testcases);
-    assert.equal(results.testcases.demoTest.assertions.length, 2);
+    assert.strictEqual(results.testcases.demoTest.assertions.length, 3);
     assert.deepEqual(testName, 'demoTest');
     callback();
   },

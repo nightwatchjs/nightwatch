@@ -58,7 +58,7 @@ describe('assert.cssProperty', function () {
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.getValue(), 'none');
         assert.strictEqual(instance.getActual(), 'none');
-        assert.strictEqual(err.message, 'Error while running "cssProperty" command: Testing if element <.test_element> doesn\'t have css property \'display: none\' in 5ms - expected "not none" but got: "none"');
+        assert.strictEqual(err.message, `Error while running "cssProperty" command: Testing if element <.test_element> doesn't have css property 'display: none' in 5ms - expected "not none" but got: "none" (${instance.elapsedTime}ms)`);
       }
     });
   });
@@ -109,7 +109,7 @@ describe('assert.cssProperty', function () {
         assert.strictEqual(instance.expected(), 'none');
         assert.strictEqual(instance.getValue(), null);
         assert.strictEqual(failure, 'Expected "none" but got: "element could not be located"');
-        assert.strictEqual(err.message, 'Error while running "cssProperty" command: Test attribute <.test_element> from element "\'display" == none\' in 5ms - expected "none" but got: "element could not be located"');
+        assert.strictEqual(err.message, `Error while running "cssProperty" command: Test attribute <.test_element> from element "'display" == none' in 5ms - expected "none" but got: "element could not be located" (${instance.elapsedTime}ms)`);
       }
     });
   });
@@ -124,7 +124,7 @@ describe('assert.cssProperty', function () {
       assertError: true,
       assertResult: true,
       assertion({instance, message, failure}) {
-        assert.strictEqual(message, 'Testing if element <.test_element> has css property \'display: none\' in 5ms - expected "none" but got: "Element does not have a \'display\' css property"');
+        assert.strictEqual(message, `Testing if element <.test_element> has css property 'display: none' in 5ms - expected "none" but got: "Element does not have a 'display' css property" (${instance.elapsedTime}ms)`);
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.getValue(), null);
         assert.strictEqual(instance.getActual(), 'Element does not have a \'display\' css property');

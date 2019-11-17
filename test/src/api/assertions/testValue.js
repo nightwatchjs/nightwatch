@@ -59,7 +59,7 @@ describe('assert.value', function () {
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.getValue(), 'some-value');
         assert.strictEqual(instance.getActual(), 'some-value');
-        assert.strictEqual(err.message, 'Error while running "value" command: Testing if value of element <.test_element> doesn\'t equal \'some-value\' in 5ms - expected "not equals \'some-value\'" but got: "some-value"');
+        assert.strictEqual(err.message, `Error while running "value" command: Testing if value of element <.test_element> doesn't equal 'some-value' in 5ms - expected "not equals 'some-value'" but got: "some-value" (${instance.elapsedTime}ms)`);
       }
     });
   });
@@ -113,7 +113,7 @@ describe('assert.value', function () {
         assert.strictEqual(instance.expected(), 'equals \'some-value\'');
         assert.strictEqual(instance.getValue(), null);
         assert.strictEqual(failure, 'Expected "equals \'some-value\'" but got: "element could not be located"');
-        assert.strictEqual(err.message, 'Error while running "value" command: Test value of element <.test_element> == \'some-value\' in 5ms - expected "equals \'some-value\'" but got: "element could not be located"');
+        assert.strictEqual(err.message, `Error while running "value" command: Test value of element <.test_element> == 'some-value' in 5ms - expected "equals 'some-value'" but got: "element could not be located" (${instance.elapsedTime}ms)`);
       }
     });
   });
@@ -128,7 +128,7 @@ describe('assert.value', function () {
       assertError: true,
       assertResult: true,
       assertion({instance, message, failure}) {
-        assert.strictEqual(message, 'Testing if value of element <.test_element> equals \'some-value\' in 5ms - expected "equals \'some-value\'" but got: "Element does not have a value attribute"');
+        assert.strictEqual(message, `Testing if value of element <.test_element> equals 'some-value' in 5ms - expected "equals 'some-value'" but got: "Element does not have a value attribute" (${instance.elapsedTime}ms)`);
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.getValue(), null);
         assert.strictEqual(instance.getActual(), 'Element does not have a value attribute');

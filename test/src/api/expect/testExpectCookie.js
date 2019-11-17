@@ -6,7 +6,7 @@ const {strictEqual} = assert;
 describe('expect.cookie', function() {
   beforeEach(function(done) {
     ExpectGlobals.beforeEach.call(this, {
-      output: true,
+      output: false,
       silent: true
     }, () => {
       this.client.api.globals.abortOnAssertionFailure = false;

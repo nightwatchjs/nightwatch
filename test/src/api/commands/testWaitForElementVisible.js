@@ -11,6 +11,7 @@ describe('waitForElementVisible', function() {
     CommandGlobals.afterEach.call(this, done);
   });
 
+  let commandInstance;
   it('client.waitForElementVisible() failure', function(done) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element/0/displayed',
@@ -55,6 +56,7 @@ describe('waitForElementVisible', function() {
     this.client.api.globals.waitForConditionTimeout = 15;
     this.client.api.globals.waitForConditionPollInterval = 10;
     this.client.api.waitForElementVisible('#weblogin', function callback(result, instance) {
+      commandInstance = instance;
       assert.strictEqual(instance.expectedValue, 'visible');
       assert.strictEqual(instance.message, 'Timed out while waiting for element <#weblogin> to be visible for 15 milliseconds.');
       assert.strictEqual(result.status, 0);
@@ -67,7 +69,7 @@ describe('waitForElementVisible', function() {
 
       if (err.name === 'NightwatchAssertError') {
         assert.strictEqual(err.abortOnFailure, true);
-        assert.strictEqual(err.message, 'Timed out while waiting for element <#weblogin> to be visible for 15 milliseconds. - expected "visible" but got: "not visible"');
+        assert.strictEqual(err.message, `Timed out while waiting for element <#weblogin> to be visible for 15 milliseconds. - expected "visible" but got: "not visible" (${commandInstance.elapsedTime}ms)`);
 
         return;
       }
@@ -90,6 +92,7 @@ describe('waitForElementVisible', function() {
     this.client.api.globals.waitForConditionTimeout = 15;
     this.client.api.globals.waitForConditionPollInterval = 10;
     this.client.api.waitForElementVisible('#weblogin', function callback(result, instance) {
+      commandInstance = instance;
       assert.strictEqual(instance.message, 'Test message <#weblogin> and a global 15 ms.');
     }, 'Test message <%s> and a global %s ms.');
 
@@ -99,7 +102,7 @@ describe('waitForElementVisible', function() {
       }
 
       if (err.name === 'NightwatchAssertError') {
-        assert.strictEqual(err.message, 'Test message <#weblogin> and a global 15 ms. - expected "visible" but got: "not visible"');
+        assert.strictEqual(err.message, `Test message <#weblogin> and a global 15 ms. - expected "visible" but got: "not visible" (${commandInstance.elapsedTime}ms)`);
 
         return;
       }
@@ -161,6 +164,7 @@ describe('waitForElementVisible', function() {
 
     this.client.api.globals.waitForConditionPollInterval = 5;
     this.client.api.waitForElementVisible('.weblogin', 11, function (res, instance) {
+      commandInstance = instance;
       result = res;
     });
 
@@ -168,7 +172,7 @@ describe('waitForElementVisible', function() {
       assert.strictEqual(result.value, false);
       assert.strictEqual(result.status, -1);
       assert.strictEqual(result.err.value, null);
-      assert.strictEqual(e.message, 'Timed out while waiting for element <.weblogin> to be present for 11 milliseconds. - expected "visible" but got: "not found"');
+      assert.strictEqual(e.message, `Timed out while waiting for element <.weblogin> to be present for 11 milliseconds. - expected "visible" but got: "not found" (${commandInstance.elapsedTime}ms)`);
     });
   });
 

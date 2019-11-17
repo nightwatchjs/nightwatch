@@ -7,7 +7,7 @@ describe('client.doubleClick', function() {
   });
 
   it('testDoubleClick', function() {
-    Globals.protocolTest({
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/doubleclick');

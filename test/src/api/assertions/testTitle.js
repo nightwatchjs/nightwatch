@@ -62,7 +62,7 @@ describe('assert.title', function () {
         assert.strictEqual(instance.expected(), 'is \'Test Title\'');
         assert.strictEqual(instance.getValue(), 'Wrong Title');
         assert.strictEqual(failure, 'Expected "is \'Test Title\'" but got: "Wrong Title"');
-        assert.strictEqual(err.message, 'Error while running "title" command: Testing if the page title equals \'Test Title\' in 5ms - expected "is \'Test Title\'" but got: "Wrong Title"');
+        assert.strictEqual(err.message, `Error while running "title" command: Testing if the page title equals 'Test Title' in 5ms - expected "is 'Test Title'" but got: "Wrong Title" (${instance.elapsedTime}ms)`);
       }
     });
   });

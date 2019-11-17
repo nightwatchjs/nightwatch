@@ -110,7 +110,7 @@ describe('assert.domPropertyEquals', function () {
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.getValue(), 'visible-element');
         assert.strictEqual(instance.getActual(), 'visible-element');
-        assert.strictEqual(err.message, 'Error while running "domPropertyContains" command: Testing if dom property \'className\' of element <.test_element> doesn\'t contain \'visible-element\' in 5ms - expected "not contains \'visible-element\'" but got: "visible-element"');
+        assert.strictEqual(err.message, `Error while running "domPropertyContains" command: Testing if dom property 'className' of element <.test_element> doesn't contain 'visible-element' in 5ms - expected "not contains 'visible-element'" but got: "visible-element" (${instance.elapsedTime}ms)`);
       }
     });
   });
@@ -161,7 +161,7 @@ describe('assert.domPropertyEquals', function () {
         assert.strictEqual(instance.expected(), 'contains \'visible-element\'');
         assert.strictEqual(instance.getValue(), null);
         assert.strictEqual(failure, 'Expected "contains \'visible-element\'" but got: "element could not be located"');
-        assert.strictEqual(err.message, 'Error while running "domPropertyContains" command: Test attribute \'className\' from element "<.test_element>" == \'visible-element\' in 5ms - expected "contains \'visible-element\'" but got: "element could not be located"');
+        assert.strictEqual(err.message, `Error while running "domPropertyContains" command: Test attribute 'className' from element "<.test_element>" == 'visible-element' in 5ms - expected "contains 'visible-element'" but got: "element could not be located" (${instance.elapsedTime}ms)`);
       }
     });
   });
@@ -176,7 +176,7 @@ describe('assert.domPropertyEquals', function () {
       assertError: true,
       assertResult: true,
       assertion({instance, message, failure}) {
-        assert.strictEqual(message, 'Testing if dom property \'className\' of element <.test_element> contains \'visible-element\' in 5ms - expected "contains \'visible-element\'" but got: "Element does not have a \'className\' dom property"');
+        assert.strictEqual(message, `Testing if dom property 'className' of element <.test_element> contains 'visible-element' in 5ms - expected "contains 'visible-element'" but got: "Element does not have a 'className' dom property" (${instance.elapsedTime}ms)`);
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.getValue(), null);
         assert.strictEqual(instance.getActual(), 'Element does not have a \'className\' dom property');

@@ -88,7 +88,9 @@ describe('test Parallel Execution', function() {
     });
 
     runner.setup();
-
+    runner.test_settings.globals.retryAssertionTimeout = 10;
+    runner.test_settings.globals.waitForConditionTimeout = 10;
+    runner.test_settings.globals.waitForConditionPollInterval = 9;
     assert.ok(runner.test_settings.test_workers);
 
     return runner.runTests().then(_ => {

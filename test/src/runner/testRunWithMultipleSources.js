@@ -81,7 +81,7 @@ describe('testRunWithMultipleSources', function() {
       },
       silent: true,
       output: false,
-      globals: globals,
+      globals,
       persist_globals: true,
       output_folder: false
     };

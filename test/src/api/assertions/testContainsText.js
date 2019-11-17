@@ -58,7 +58,7 @@ describe('assert.containsText', function () {
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.getValue(), 'expected text result');
         assert.strictEqual(instance.getActual(), 'contains \'text result\'');
-        assert.strictEqual(err.message, 'Error while running "containsText" command: Test message in 5ms - expected "does not contain text \'text result\'" but got: "contains \'text result\'"');
+        assert.strictEqual(err.message, `Error while running "containsText" command: Test message in 5ms - expected "does not contain text 'text result'" but got: "contains 'text result'" (${instance.elapsedTime}ms)`);
       }
     });
   });
@@ -111,7 +111,7 @@ describe('assert.containsText', function () {
         assert.strictEqual(instance.expected(), 'contains text \'text result\'');
         assert.strictEqual(instance.getValue(), null);
         assert.strictEqual(failure, 'Expected "contains text \'text result\'" but got: "element could not be located"');
-        assert.strictEqual(err.message, 'Error while running "containsText" command: Test message in 5ms - expected "contains text \'text result\'" but got: "element could not be located"');
+        assert.strictEqual(err.message, `Error while running "containsText" command: Test message in 5ms - expected "contains text 'text result'" but got: "element could not be located" (${instance.elapsedTime}ms)`);
       }
     });
   });

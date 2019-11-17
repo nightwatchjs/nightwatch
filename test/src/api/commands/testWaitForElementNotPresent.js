@@ -41,7 +41,7 @@ describe('waitForElementNotPresent', function () {
     return this.client.start(function (err) {
       assert.ok(err instanceof Error);
       assert.deepStrictEqual(commandResult.value, [{ELEMENT: '0'}]);
-      strictEqual(err.message, 'Timed out while waiting for element <#weblogin> to be removed for 15 milliseconds. - expected "not found" but got: "found"');
+      strictEqual(err.message, `Timed out while waiting for element <#weblogin> to be removed for 15 milliseconds. - expected "not found" but got: "found" (${commandInstance.elapsedTime}ms)`);
     });
   });
 

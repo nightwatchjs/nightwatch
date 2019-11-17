@@ -341,23 +341,6 @@ describe('Test CLI Runner', function() {
   });
 
   it('testReadSettingsDeprecated', function(done) {
-    let disableColorsCalled = false;
-    mockery.registerMock('../../util/logger.js', {
-      setOutputEnabled() {
-
-      },
-      setDetailedOutput() {
-
-      },
-      setErrorLog() {
-
-      },
-      disableColors() {
-        disableColorsCalled = true;
-      },
-      enable() {}
-    });
-
     mockery.registerMock('fs', {
       statSync: function(module) {
         if (module == './settings.json') {
@@ -385,8 +368,10 @@ describe('Test CLI Runner', function() {
     assert.deepEqual(runner.test_settings.skipgroup, ['tobeskipped']);
     assert.strictEqual(runner.test_settings.output, false);
     assert.strictEqual(runner.test_settings.silent, false);
+    assert.strictEqual(runner.test_settings.disable_error_log, false);
+    assert.strictEqual(runner.test_settings.disable_colors, true);
     assert.strictEqual(runner.test_settings.filename_filter, 'tests*.js');
-    assert.ok(disableColorsCalled, 'disable colors not called');
+
     done();
   });
 

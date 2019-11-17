@@ -1,42 +1,41 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
-describe('browser commands', function() {
-  before(function() {
+describe('browser commands', function () {
+  before(function () {
     Globals.protocolBefore();
   });
 
-  it('testRefresh', function() {
+  it('testRefresh', function () {
     return Globals.protocolTest({
-      assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.equal(opts.path, '/session/1352110219202/refresh');
+      assertion: function (opts) {
+        assert.strictEqual(opts.method, 'POST');
+        assert.strictEqual(opts.path, '/session/1352110219202/refresh');
       },
       commandName: 'refresh',
       args: []
     });
   });
 
-  it('testBack', function() {
+  it('testBack', function () {
     return Globals.protocolTest({
-      assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.equal(opts.path, '/session/1352110219202/back');
+      assertion: function (opts) {
+        assert.strictEqual(opts.method, 'POST');
+        assert.strictEqual(opts.path, '/session/1352110219202/back');
       },
       commandName: 'back',
       args: []
     });
   });
 
-  it('testForward', function() {
+  it('testForward', function () {
     return Globals.protocolTest({
-      assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.equal(opts.path, '/session/1352110219202/forward');
+      assertion: function (opts) {
+        assert.strictEqual(opts.method, 'POST');
+        assert.strictEqual(opts.path, '/session/1352110219202/forward');
       },
       commandName: 'forward',
       args: []
     });
   });
-
 });

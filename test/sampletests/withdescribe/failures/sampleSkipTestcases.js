@@ -2,6 +2,9 @@ describe('sample test with skipTestcasesOnFail', function () {
   this.skipTestcasesOnFail = false;
   this.endSessionOnFail = false;
   this.timeout(10);
+  this.retryInterval(5);
+
+  this.tags = ['login'];
 
   let endFn;
 
