@@ -16,8 +16,8 @@ describe('test defaultPathPrefix', function () {
     Nightwatch.createClient({
       default_path_prefix: '/wd/hub'
     });
-    HttpRequest.globalSettings = {
-    };
+    HttpRequest.globalSettings = {};
+
     this.server.close(function () {
       done();
     });

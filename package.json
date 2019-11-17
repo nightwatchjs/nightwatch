@@ -16,9 +16,10 @@
   },
   "dependencies": {
     "assertion-error": "^1.1.0",
-    "chai-nightwatch": "^0.3.0",
+    "chai-nightwatch": "^0.4.0",
     "dotenv": "7.0.0",
     "ejs": "^2.5.9",
+    "is-ci": "^2.0.0",
     "lodash.clone": "3.0.3",
     "lodash.defaultsdeep": "^4.6.1",
     "lodash.merge": "^4.6.2",
@@ -36,7 +37,6 @@
     "coveralls": "^3.0.0",
     "eslint": "^6.3.0",
     "js-yaml": "^3.13.1",
-    "mocha": "^5.2.0",
     "mock-spawn": "^0.2.1",
     "mockery": "~2.1.0",
     "nock": "^10.0.6",
@@ -55,7 +55,7 @@
     }
   },
   "optionalDependencies": {
-    "mocha": "^5.2.0"
+    "mocha": "^6.2.2"
   },
   "bin": {
     "nightwatch": "./bin/nightwatch"
