@@ -178,6 +178,5 @@ describe('test Settings', function () {
     let client = Nightwatch.createClient(settings);
     eq(client.settings.globals.waitForConditionTimeout, 11);
     eq(client.settings.globals.retryAssertionTimeout, 11);
-    eq(client.settings.disable_colors, true);
   });
 });
