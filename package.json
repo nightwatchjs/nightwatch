@@ -64,7 +64,7 @@
   "scripts": {
     "eslint": "eslint . --quiet",
     "mocha-coverage": "nyc --reporter=html mocha test/src/",
-    "test": "mocha test/src",
+    "test": "mocha test/src/",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "eslintConfig": {

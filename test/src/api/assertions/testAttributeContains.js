@@ -161,7 +161,7 @@ describe('assert.attributeContains', function () {
         assert.strictEqual(typeof err, 'undefined');
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.getValue(), null);
-        assert.strictEqual(instance.getActual(), 'Element does nxot have a \'role\' attribute');
+        assert.strictEqual(instance.getActual(), 'Element does not have a \'role\' attribute');
       }
     });
   });
