@@ -174,7 +174,6 @@ describe('Test CLI Runner Generate', function() {
 
     assert.equal(runner.argv.config, path.join(process.cwd(), 'nightwatch.conf.js'));
     assert.deepStrictEqual(runner.test_settings.desiredCapabilities, {
-      acceptSslCerts: true,
       browserName: 'IE',
       browserVersion: '11.0',
       'bstack:options' : {

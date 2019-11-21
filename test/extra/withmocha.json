@@ -16,8 +16,7 @@
       "persist_globals" : true,
       "globals" : {},
       "desiredCapabilities" : {
-        "browserName" : "firefox",
-        "acceptSslCerts" : true
+        "browserName" : "firefox"
       }
     }
   }

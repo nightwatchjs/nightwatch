@@ -78,7 +78,6 @@ describe('test Request With Credentials', function () {
     });
 
     assert.deepStrictEqual(client.settings.desiredCapabilities, {
-      acceptSslCerts: true,
       alwaysMatch: {
         'moz:firefoxOptions': {
           args: ['-headless']
@@ -116,7 +115,6 @@ describe('test Request With Credentials', function () {
     });
 
     assert.deepStrictEqual(client.settings.desiredCapabilities, {
-      acceptSslCerts: true,
       chromeOptions: {
         args: ['--headless']
       },
@@ -155,7 +153,6 @@ describe('test Request With Credentials', function () {
     });
 
     assert.deepStrictEqual(client.settings.desiredCapabilities, {
-      acceptSslCerts: true,
       chromeOptions: {
         args: ['--no-sandbox', '--headless']
       },

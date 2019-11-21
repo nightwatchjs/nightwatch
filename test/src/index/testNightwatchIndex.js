@@ -40,7 +40,6 @@ describe('test NightwatchIndex', function () {
       postdata: JSON.stringify({
         desiredCapabilities: {
           browserName: 'chrome',
-          acceptSslCerts: true,
           platform: 'ANY'
         }
       }),
@@ -90,7 +89,6 @@ describe('test NightwatchIndex', function () {
       postdata: {
         desiredCapabilities: {
           browserName: 'chrome',
-          acceptSslCerts: true,
           platform: 'ANY'
         }
       },
@@ -136,7 +134,6 @@ describe('test NightwatchIndex', function () {
       postdata: JSON.stringify({
         desiredCapabilities: {
           browserName: 'firefox',
-          acceptSslCerts: true,
           platform: 'TEST'
         }
       }),
@@ -186,7 +183,6 @@ describe('test NightwatchIndex', function () {
       postdata: JSON.stringify({
         desiredCapabilities: {
           browserName: 'safari',
-          acceptSslCerts: true,
           platform: 'ANY'
         }
       }),
