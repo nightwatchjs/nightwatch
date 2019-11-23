@@ -25,7 +25,6 @@ We're delighted to announce the release of __Nightwatch v1.3__. Please see the [
 ```sh
 $ npm install nightwatch --save-dev
 ```
-- add `-g` if you wish to install Nightwatch globally on your system.
 
 #### 2. Install Browser Drivers:
 
