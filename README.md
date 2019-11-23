@@ -20,23 +20,23 @@ We're delighted to announce the release of __Nightwatch v1.3__. Please see the [
 
 ## Up &amp; Running in 2 Minutes:
 
-### 1. Install Nightwatch from NPM
+#### 1. Install Nightwatch from NPM
 
 ```sh
 $ npm install nightwatch --save-dev
 ```
 - add `-g` if you wish to install Nightwatch globally on your system.
 
-### 2. Install Browser Drivers:
+#### 2. Install Browser Drivers:
 
-### Geckodriver (Firefox):
+##### Geckodriver (Firefox):
 Geckodriver is the WebDriver service used to drive the [Mozilla Firefox Browser](https://www.mozilla.org/en-US/firefox/new/).
 
 ```sh
 $ npm install geckodriver --save-dev
 ```
 
-### Chromedriver:
+##### Chromedriver:
 Chromedriver is the WebDriver service used to drive the [Google Chrome Browser](https://www.google.com/chrome/).
 ```sh
 $ npm install chromedriver --save-dev
@@ -48,7 +48,7 @@ or install everything with one line:
 $ npm i nightwatch geckodriver chromedriver --save-dev
 ```
 
-### 3. Run a Demo Test:
+#### 3. Run a Demo Test:
 
 Nightwatch comes with an `examples` folder containing a few sample tests.
 
