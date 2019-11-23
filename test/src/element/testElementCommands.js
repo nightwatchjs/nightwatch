@@ -385,7 +385,7 @@ describe('element base commands', function() {
       assert.strictEqual(expectedError.name, 'NoSuchElementError');
       assert.strictEqual(instance.suppressNotFoundErrors, false);
       assert.strictEqual(result.status, -1);
-      assert.strictEqual(result.value.error,'An error occurred while running .isVisible() command on <.not_found>:');
+      assert.strictEqual(result.value.error,'An error occurred while running .isVisible() command on <.not_found>: no such element; Unable to locate element: .not_found');
     });
 
     return Nightwatch.start();

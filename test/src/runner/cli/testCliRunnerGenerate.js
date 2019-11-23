@@ -72,11 +72,11 @@ describe('Test CLI Runner Generate', function() {
         mockery.registerMock(path.join(process.cwd(), 'nightwatch.conf.js'), configData);
 
         assert.equal(typeof configData.safari, 'undefined');
+
         assert.deepStrictEqual(configData.test_settings.chrome, {
           desiredCapabilities: {
             browserName: 'chrome',
             chromeOptions: {
-              w3c: false,
               args: []
             }
           },
@@ -122,7 +122,8 @@ describe('Test CLI Runner Generate', function() {
 
           disable_error_log: true,
           webdriver: {
-            keep_alive: true
+            keep_alive: true,
+            start_process: false
           }
         });
 

@@ -11,6 +11,8 @@ module.exports = {
         webdriver:{
           start_process: false
         },
+        output: false,
+        silent: false
       })
         .then(client => {
           this.client = client;
