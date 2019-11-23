@@ -55,7 +55,7 @@ Nightwatch comes with an `examples` folder containing a few sample tests.
 Below will run a basic test which opens the search engine [Ecosia.org](https://ecosia.org), searches for the term "nightwatch", and verifies if the term first result is the Nightwatch.js website.
 
 ```sh
-$ nightwatch node_modules/nightwatch/examples/tests/ecosia.js
+$ ./node_modules/.bin/nightwatch node_modules/nightwatch/examples/tests/ecosia.js
 ```
 
 ---
