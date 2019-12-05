@@ -113,47 +113,6 @@ describe('test page object element selectors', function() {
     Nightwatch.start(done);
   });
 
-  it('page section elements', function(done) {
-    nocks
-      .elementsFound('#signupSection')
-      .elementsFound('#getStarted')
-      .elementsFound('#helpBtn')
-      .elementIdNotFound(0, '#helpBtn', 'xpath')
-      .elementsId('0', '#helpBtn', [{ELEMENT: '0'}])
-      .text(0, 'first')
-      .text(1, 'second');
-
-    let page = Nightwatch.api().page.simplePageObj();
-    let section = page.section.signUp;
-    let sectionChild = section.section.getStarted;
-
-    section
-      .getText('@help', function callback(result) {
-        strictEqual(result.status, 0, 'section element selector string found');
-        strictEqual(result.value, 'first', 'section element selector string value');
-      })
-      .getText({selector: '@help'}, function callback(result) {
-        strictEqual(result.status, 0, 'section element selector property found');
-        strictEqual(result.value, 'first', 'section element selector property value');
-      });
-
-    assert.throws(function() {
-      section.getText({selector: '@help', locateStrategy: 'xpath'});
-    }, /^Error: Element "help\[locateStrategy='xpath'\]" was not found in "signUp"/);
-
-    sectionChild
-      .getText('#helpBtn', function callback(result) {
-        strictEqual(result.status, 0, 'child section element selector string found');
-        strictEqual(result.value, 'first', 'child section element selector string value');
-      })
-      .getText({selector: '#helpBtn'}, function callback(result) {
-        strictEqual(result.status, 0, 'child section element selector property found');
-        strictEqual(result.value, 'first', 'child section element selector property value');
-      });
-
-    Nightwatch.start(done);
-  });
-
   it('page section protocol .elements()', function(done) {
     nocks
       .elementsFound('#signupSection')
@@ -342,6 +301,24 @@ describe('test page object element selectors', function() {
           name: 'help',
           response: {status: 0, value: '0'}
         });
+      });
+
+    Nightwatch.start(done);
+  });
+
+  it('page object customCommand without selector called on section', function(done) {
+    nocks
+      .elementsFound('#signupSection')
+      .elementFound('#getStarted')
+      .elementFound('#helpBtn')
+      .elementsId('0', '#helpBtn', [{ELEMENT: '0'}]);
+
+    let page = Nightwatch.api().page.simplePageObj();
+    let section = page.section.signUp;
+
+    section
+      .customCommandWithSelector('test message', function(result) {
+        assert.strictEqual(result, 'test message');
       });
 
     Nightwatch.start(done);
