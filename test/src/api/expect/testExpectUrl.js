@@ -159,9 +159,7 @@ describe('expect.url', function() {
       assert.ok(expect.assertion.message.startsWith('Expected current url to not contain: "vasq"'));
     });
   });
-
-
-
+  
   it('to not contain [FAILED]', function() {
     this.client.api.globals.waitForConditionTimeout = 10;
     this.client.api.globals.waitForConditionPollInterval = 9;

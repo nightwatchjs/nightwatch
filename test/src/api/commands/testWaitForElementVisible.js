@@ -27,7 +27,7 @@ describe('waitForElementVisible', function() {
     this.client.api.globals.waitForConditionPollInterval = 10;
     this.client.api.waitForElementVisible('#weblogin', 15, 10, function (result, instance) {
       assert.deepStrictEqual(instance.args, [15, 10]);
-      assert.strictEqual(instance.executor.retries, 1);
+      assert.strictEqual(instance.executor.retries, 2);
       assert.strictEqual(instance.message, 'Timed out while waiting for element <#weblogin> to be visible for 15 milliseconds.');
       assert.strictEqual(instance.expectedValue, 'visible');
       assert.strictEqual(instance.selector, '#weblogin');
