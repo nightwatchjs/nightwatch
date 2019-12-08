@@ -12,7 +12,7 @@ describe('test HttpRequest', function() {
       nock.activate();
     } catch (err) {}
 
-    mockery.enable();
+    mockery.enable({useCleanCache: true, warnOnUnregistered: false});
 
     HttpRequest.globalSettings = {
       default_path: '/wd/hub',
