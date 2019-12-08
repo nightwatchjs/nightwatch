@@ -4,13 +4,6 @@ const nocks = require('../../lib/nockselements.js');
 const Nightwatch = require('../../lib/nightwatch.js');
 const {strictEqual} = assert;
 
-// FIXME:
-// TypeError: Cannot read property 'args' of undefined (and Mocha's done() called multiple times)
-// at AsyncTree.<anonymous> (test/src/element/testPageObjectElementSelectors.js:233:36)
-//   at AsyncTree.done (lib/core/asynctree.js:111:10)
-//   at AsyncTree.traverse (lib/core/asynctree.js:47:19)
-//   at CommandQueue.traverse (lib/core/queue.js:82:8)
-//   at Timeout.scheduleTimeoutId.setTimeout [as _onTimeout] (lib/core/queue.js:59:52)
 describe('test page object element selectors', function() {
 
   before(function() {
@@ -267,7 +260,8 @@ describe('test page object element selectors', function() {
     page.waitForElementPresent('@loginAsString', 'element found');
 
     const client = Nightwatch.client();
-    client.session.commandQueue.tree.on('asynctree:finished', function(tree) {
+    const verifyEvent = function(tree) {
+      client.session.commandQueue.tree.removeListener('asynctree:finished', verifyEvent);
       const command = tree.currentNode.childNodes[0];
       try {
         strictEqual(command.args.length, 2);
@@ -278,7 +272,8 @@ describe('test page object element selectors', function() {
       } catch (e) {
         done(e);
       }
-    });
+    };
+    client.session.commandQueue.tree.on('asynctree:finished', verifyEvent);
 
     Nightwatch.start();
   });
