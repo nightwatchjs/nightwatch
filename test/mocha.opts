@@ -1,2 +1,2 @@
 --recursive
---file ./test/clean-up-from-tests.js
+--file ./test/cleanUpFromTests.js
