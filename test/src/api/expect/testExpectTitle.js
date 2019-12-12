@@ -41,6 +41,9 @@ describe('expect.title', function() {
     this.client.api.globals.waitForConditionPollInterval = 9;
     this.client.api.globals.abortOnAssertionFailure = true;
 
+    // This is probably not a great sign that we need to support it calling multiple times,
+    // But only returning it twice is insufficient for Node 8.16.2
+    Nocks.title('hp vasq');
     Nocks.title('hp vasq');
     Nocks.title('hp vasq');
     let api = this.client.api.expect.title().to.toEqual('vasq');
