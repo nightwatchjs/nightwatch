@@ -119,9 +119,40 @@ module.exports = {
     return this;
   },
 
+  propertyValue(value, propertyName = 'className') {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/element/0/property/' + propertyName)
+      .reply(200, {
+        status: 0,
+        sessionId: '1352110219202',
+        value,
+        state: 'success'
+      });
+
+    return this;
+  },
+
   cssProperty(value, times) {
     var mock = nock('http://localhost:10195')
       .get('/wd/hub/session/1352110219202/element/0/css/display');
+
+    if (times) {
+      mock.times(times);
+    }
+
+    mock.reply(200, {
+      status: 0,
+      sessionId: '1352110219202',
+      value: value,
+      state: 'success'
+    });
+
+    return this;
+  },
+
+  property(value, times) {
+    var mock = nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/element/0/property/display');
 
     if (times) {
       mock.times(times);
@@ -423,7 +454,27 @@ module.exports = {
     return this;
   },
 
+  multipleCookiesFound(value) {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/cookie')
+      .reply(200, {
+        value
+      });
 
+    return this;
+  },
+
+  cookieNotFound() {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/cookie')
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value: []
+      });
+
+    return this;
+  },
 
   cleanAll() {
     nock.cleanAll();

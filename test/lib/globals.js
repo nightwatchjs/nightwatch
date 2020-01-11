@@ -1,15 +1,28 @@
 const fs = require('fs');
 const path = require('path');
-const ApiLoader = require('../lib/mocks/assertionLoader.js');
+const assert = require('assert');
+const lodashMerge = require('lodash.merge');
 const common = require('../common.js');
 const Nightwatch = require('../lib/nightwatch.js');
 const Settings = common.require('settings/settings.js');
 const Runner = common.require('runner/runner.js');
-const ProtocolActions = common.require('api/protocol.js');
+const Reporter = common.require('reporter/index.js');
 
-let protocolInstance;
-let protocolWDInstance;
-const Globals = module.exports = {
+class ExtendedReporter extends Reporter {
+  registerPassed(message) {
+    this.assertionMessage = message;
+
+    super.registerPassed(message);
+  }
+
+  logAssertResult(result) {
+    this.assertionResult = result;
+
+    super.logAssertResult(result);
+  }
+}
+
+class Globals {
   runGroupGlobal(client, hookName, done) {
     const groupGlobal = path.join(__dirname, './globals/', client.currentTest.group.toLowerCase() + '.js');
 
@@ -26,7 +39,7 @@ const Globals = module.exports = {
         done();
       }
     });
-  },
+  }
 
   beforeEach(client, done) {
     if (client.currentTest.group) {
@@ -34,7 +47,7 @@ const Globals = module.exports = {
     } else {
       done();
     }
-  },
+  }
 
   afterEach(client, done) {
     if (client.currentTest.group) {
@@ -42,24 +55,10 @@ const Globals = module.exports = {
     } else {
       done();
     }
-  },
+  }
 
-  assertionTest(definition, done) {
-    const loader = ApiLoader.create(`api/assertions/${definition.assertionName}.js`, definition.assertionName, definition.settings);
-
-    if (definition.api) {
-      Object.keys(definition.api).forEach(key => {
-        loader.setApiMethod(key, definition.api[key]);
-      });
-    }
-
-    loader.loadAssertion(definition.assertion, done);
-
-    return loader.client.api.assert[definition.assertionName](...definition.args);
-  },
-
-  protocolBefore() {
-    this.client = Nightwatch.createClient();
+  protocolBefore(opts = {}) {
+    this.client = Nightwatch.createClient(opts);
     this.wdClient = Nightwatch.createClient({
       selenium: {
         version2: false,
@@ -72,53 +71,65 @@ const Globals = module.exports = {
 
     this.client.session.sessionId = this.client.api.sessionId = '1352110219202';
     this.wdClient.session.sessionId = this.wdClient.api.sessionId = '1352110219202';
-
-    protocolInstance = new ProtocolActions(this.client);
-    protocolWDInstance = new ProtocolActions(this.wdClient);
-  },
+  }
 
   protocolTest(definition) {
-    return Globals.runProtocolTest(definition, this.client, protocolInstance);
-  },
+    return this.runProtocolTest(definition, this.client);
+  }
 
   protocolTestWebdriver(definition) {
-    return Globals.runProtocolTest(definition, this.wdClient, protocolWDInstance);
-  },
+    return this.runProtocolTest(definition, this.wdClient);
+  }
 
-  runProtocolTest(definition, client, instance) {
+  runProtocolTest({assertion = function() {}, commandName, args = []}, client) {
+    const originalFn = client.transport.runProtocolAction;
+
     return new Promise((resolve, reject) => {
+      client.queue.once('queue:finished', err => {
+        if (err) {
+          reject(err);
+        }
+      });
+
       client.transport.runProtocolAction = function(opts) {
         try {
           opts.method = opts.method || 'GET';
-          definition.assertion(opts);
+          assertion(opts);
 
-          return Promise.resolve({
-            status: 0
-          });
+          resolve();
         } catch (err) {
-          return Promise.reject(err);
+          reject(err);
         }
+
+        client.transport.runProtocolAction = originalFn;
+
+        return Promise.resolve();
       };
 
-      Globals.runApiCommand(instance, definition.commandName, definition.args)
-        .then(err => {
-          if (err instanceof Error) {
-            reject(err);
-            return;
-          }
-          resolve();
-        })
-        .catch(err => {
-          reject(err);
-        });
+      this.runApiCommand(commandName, args, client);
     });
-  },
+  }
 
-  runApiCommand(instance, commandName, args) {
-    instance = instance || protocolInstance;
+  runApiCommand(commandName, args, client = this.client) {
+    let context;
+    let commandFn;
+    const namespace = commandName.split('.');
 
-    return instance.Actions[commandName].apply(instance, args);
-  },
+    if (namespace.length === 1) {
+      context = client.api;
+      commandFn = context[commandName];
+    } else {
+      context = client.api[namespace[0]];
+      if (namespace[2]) {
+        context = context[namespace[1]];
+        commandFn = context[namespace[2]];
+      } else {
+        commandFn = context[namespace[1]];
+      }
+    }
+
+    return commandFn.apply(client.api, args);
+  }
 
   startTestRunner(testsPath, suppliedSettings) {
     let settings = Settings.parse(suppliedSettings);
@@ -141,4 +152,134 @@ const Globals = module.exports = {
         return runner;
       });
   }
+
+  createReporter() {
+    const reporter = new ExtendedReporter({
+      settings: this.client.settings
+    });
+
+    this.client.setReporter(reporter);
+  }
+}
+
+module.exports = new Globals();
+function addSettings(settings) {
+  return lodashMerge({
+    globals: {
+      retryAssertionTimeout: 5,
+      waitForConditionPollInterval: 3
+    },
+    output: true,
+    silent: false
+  }, settings);
+}
+
+module.exports.assertion = function(assertionName, api, {
+  args = [],
+  commandResult = {},
+  assertArgs = false,
+  assertError = false,
+  assertMessage = false,
+  assertFailure = false,
+  assertResult = false,
+  negate = false,
+  assertApiCommandArgs,
+  assertion = function() {},
+  settings = {}
+}) {
+  return new Promise((resolve, reject) => {
+    // initialize
+    const instance = new Globals();
+    const options = addSettings(settings);
+    instance.protocolBefore(options);
+
+    let context;
+    let queueOpts;
+
+    // add API command
+    if (api) {
+      instance.client.api[api] = function(...fnArgs) {
+        if (assertArgs) {
+          if (typeof args[0] == 'string') {
+            assert.strictEqual(fnArgs[0], args[0]);
+          } else {
+            assert.deepStrictEqual(fnArgs[0], args[0]);
+          }
+
+          if (fnArgs.length > 2) {
+            assert.strictEqual(fnArgs[1], args[1]);
+          }
+        } else if (assertApiCommandArgs) {
+          assertApiCommandArgs(fnArgs);
+        }
+
+        const callback = fnArgs[fnArgs.length - 1];
+        callback(typeof commandResult == 'function' ? commandResult() : commandResult);
+      };
+    }
+
+    // intercept add to queue and store the context and options
+    const {client} = instance;
+    const addToQueue = client.queue.add;
+    client.queue.add = function(opts) {
+      context = opts.context;
+      queueOpts = opts.options;
+      addToQueue.call(this, opts);
+    };
+
+    // create an extended reporter so we can intercept the results
+    instance.createReporter();
+
+    // when the queue has finished running, signal the end of the test
+    client.queue.once('queue:finished', err => {
+      if (err && err.name !== 'NightwatchAssertError') {
+        reject(err);
+
+        return;
+      }
+
+      try {
+        // Run common assertions
+        if (assertError) {
+          assert.ok(err instanceof Error);
+          assert.strictEqual(err.name, 'NightwatchAssertError');
+        }
+
+        const assertionInstance = context.instance;
+        const {reporter} = client;
+
+        if (assertArgs) {
+          assert.deepStrictEqual(assertionInstance.args, args);
+        }
+
+        if (assertFailure) {
+          assert.strictEqual(assertionInstance.hasFailure(), true);
+          assert.strictEqual(assertionInstance.isOk(assertionInstance.getValue()), false);
+        }
+
+        if (assertMessage) {
+          const message = args[args.length - 1];
+          assert.strictEqual(assertionInstance.message, message);
+          assert.ok(typeof reporter.assertionMessage != 'undefined', 'assertionMessage is undefined');
+          assert.ok(reporter.assertionMessage.startsWith(message), reporter.assertionMessage);
+        }
+
+        if (assertResult) {
+          assert.deepStrictEqual(assertionInstance.result, commandResult);
+        }
+
+        const {failure, message} = client.reporter.assertionResult;
+        assertion({reporter, instance: assertionInstance, err, queueOpts, failure, message});
+
+        resolve();
+      } catch (ex) {
+        reject(ex);
+      }
+    });
+
+    // run the assertion
+    const negateStr = negate ? 'not.' : '';
+    instance.runApiCommand(`assert.${negateStr}${assertionName}`, args);
+  });
+
 };

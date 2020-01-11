@@ -370,20 +370,6 @@ describe('Test CLI Runner', function() {
   });
 
   it('testReadSettingsDeprecated', function(done) {
-    let disableColorsCalled = false;
-    mockery.registerMock('../../util/logger.js', {
-      setOutputEnabled() {
-
-      },
-      setDetailedOutput() {
-
-      },
-      disableColors() {
-        disableColorsCalled = true;
-      },
-      enable() {}
-    });
-
     mockery.registerMock('fs', {
       statSync: function(module) {
         if (module == './settings.json') {
@@ -409,10 +395,12 @@ describe('Test CLI Runner', function() {
 
     assert.deepEqual(runner.test_settings.src_folders, ['tests']);
     assert.deepEqual(runner.test_settings.skipgroup, ['tobeskipped']);
-    assert.equal(runner.test_settings.output, false);
-    assert.equal(runner.test_settings.silent, false);
-    assert.equal(runner.test_settings.filename_filter, 'tests*.js');
-    assert.ok(disableColorsCalled, 'disable colors not called');
+    assert.strictEqual(runner.test_settings.output, false);
+    assert.strictEqual(runner.test_settings.silent, false);
+    assert.strictEqual(runner.test_settings.disable_error_log, false);
+    assert.strictEqual(runner.test_settings.disable_colors, true);
+    assert.strictEqual(runner.test_settings.filename_filter, 'tests*.js');
+
     done();
   });
 
@@ -436,14 +424,14 @@ describe('Test CLI Runner', function() {
       env: 'extra'
     }).setup();
 
-    assert.equal(runner.isWebDriverManaged(), true);
-    assert.equal(runner.test_settings.selenium.host, 'other.host');
-    assert.equal(runner.test_settings.detailed_output, false);
-    assert.equal(runner.test_settings.output, false);
-    assert.equal(runner.test_settings.disable_colors, true);
-    assert.equal(runner.test_settings.username, 'testuser');
-    assert.equal(runner.test_settings.credentials.service.user, 'testuser');
-    assert.equal(runner.test_settings.desiredCapabilities['test.user'], 'testuser');
+    assert.strictEqual(runner.isWebDriverManaged(), true);
+    assert.strictEqual(runner.test_settings.selenium.host, 'other.host');
+    assert.strictEqual(runner.test_settings.detailed_output, false);
+    assert.strictEqual(runner.test_settings.output, false);
+    assert.strictEqual(runner.test_settings.disable_colors, true);
+    assert.strictEqual(runner.test_settings.username, 'testuser');
+    assert.strictEqual(runner.test_settings.credentials.service.user, 'testuser');
+    assert.strictEqual(runner.test_settings.desiredCapabilities['test.user'], 'testuser');
   });
 
   it('testGetTestSourceSingle', function() {

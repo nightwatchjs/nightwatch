@@ -1,9 +1,9 @@
 /**
  * @param {object} element
  * @param variable
- * @param cb
+ * @params {function} [done]
  */
-exports.assertion = function(element, variable, cb) {
+exports.assertion = function(element, variable, done) {
   this.expected = true;
   this.selector = element.selector;
   this.element = element;
@@ -20,16 +20,10 @@ exports.assertion = function(element, variable, cb) {
     return result.value;
   };
 
-  this.callback = function(result) {
-    cb(result, this);
-  };
-
   this.command = function(callback) {
     callback({
       value : 0
     });
-
-    return this;
   };
 
 };

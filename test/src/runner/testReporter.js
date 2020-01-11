@@ -1,7 +1,7 @@
 const assert = require('assert');
 const path = require('path');
 const common = require('../../common.js');
-const Reporter = common.require('runner/global-reporter.js');
+const Reporter = common.require('reporter/global-reporter.js');
 
 describe('testReporter', function() {
 

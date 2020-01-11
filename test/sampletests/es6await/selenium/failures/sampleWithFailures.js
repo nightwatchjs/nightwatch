@@ -14,13 +14,12 @@ module.exports = {
   demoTest2 : async function (client) {
     await client.url('http://localhost');
 
-    client
-      .assert.elementPresent('#weblogin')
-      .assert.elementPresent({
-        selector: '#badElement',
-        timeout: 15,
-        retryInterval: 15
-      });
+    client.assert.elementPresent('#weblogin');
+    await client.assert.elementPresent({
+      selector: '#badElement',
+      timeout: 15,
+      retryInterval: 15
+    });
 
     client.end();
   }

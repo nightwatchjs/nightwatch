@@ -144,8 +144,8 @@ describe('clearValue', function() {
 
       client.api.clearValue({selector: '#webdriver-notfound', timeout: 0}, function(result) {
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.value.error, 'An error occurred while running .clearValue() command on <#webdriver-notfound>:');
-        assert.strictEqual(result.value.message, 'An error occurred while running .clearValue() command on <#webdriver-notfound>:');
+        assert.strictEqual(result.value.error, 'An error occurred while running .clearValue() command on <#webdriver-notfound>: no such element; Unable to locate element: #webdriver-notfound');
+        assert.strictEqual(result.value.message, 'An error occurred while running .clearValue() command on <#webdriver-notfound>: no such element; Unable to locate element: #webdriver-notfound');
       });
 
       client.start(done);

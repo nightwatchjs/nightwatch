@@ -59,7 +59,7 @@ describe('testRunner ES6 Async', function() {
         }
 
         assert.ok(results.lastError instanceof Error);
-        assert.ok(results.lastError.message.includes('is present in 15 ms.'));
+        assert.ok(results.lastError.message.includes('is present in 15ms'), results.lastError.message);
         assert.strictEqual(results.lastError.name, 'NightwatchAssertError');
       }
     };
@@ -101,7 +101,7 @@ describe('testRunner ES6 Async', function() {
       skip_testcases_on_fail: false,
       silent: false,
       persist_globals: true,
-      globals: globals,
+      globals,
       output_folder: false
     });
   });

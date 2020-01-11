@@ -3,6 +3,7 @@
 *.idea
 /*.log
 /nightwatch.json
+/nightwatch.conf.js
 node_modules
 npm-debug.log
 lib-cov
@@ -19,3 +20,6 @@ output
 /coverage/
 /.nyc_output/
 screenshot.png
+/sample
+/screens
+

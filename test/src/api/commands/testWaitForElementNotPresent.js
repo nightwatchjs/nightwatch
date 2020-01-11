@@ -1,10 +1,15 @@
 const assert = require('assert');
-const common = require('../../../common.js');
-const NightwatchAssertion = common.require('core/assertion.js');
 const CommandGlobals = require('../../../lib/globals/commands.js');
+const {strictEqual} = assert;
 
 describe('waitForElementNotPresent', function () {
-  const createOrig = NightwatchAssertion.create;
+  let commandResult;
+  let commandInstance;
+
+  function commandCallback(result, instance) {
+    commandResult = result;
+    commandInstance = instance;
+  }
 
   before(function (done) {
     CommandGlobals.beforeEach.call(this, done);
@@ -14,86 +19,60 @@ describe('waitForElementNotPresent', function () {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('client.waitForElementNotPresent() success', function (done) {
-    const assertion = [];
-
-    NightwatchAssertion.create = function(...args) {
-      assertion.unshift(...args);
-
-      return createOrig(...args);
-    };
-
+  it('client.waitForElementNotPresent() success', function () {
     this.client.api.globals.waitForConditionPollInterval = 10;
-    this.client.api.waitForElementNotPresent('.weblogin', 50, 5, function(result, instance) {
-      assert.strictEqual(instance.executor.retries, 0);
-      assert.strictEqual(instance.expectedValue, 'not found');
-      assert.strictEqual(instance.rescheduleInterval, 5);
+    this.client.api.waitForElementNotPresent('.weblogin', 50, 5, commandCallback);
 
-      assert.strictEqual(assertion[0], true);
-      assert.ok(instance.message.startsWith('Element <.weblogin> was not present after'));
-      assert.strictEqual(instance.abortOnFailure, true);
-      NightwatchAssertion.create = createOrig;
+    return this.client.start(function(err) {
+      strictEqual(err, undefined);
+      assert.deepStrictEqual(commandResult.value, []);
+      strictEqual(commandInstance.executor.retries, 0);
+      strictEqual(commandInstance.expectedValue, 'not found');
+      strictEqual(commandInstance.rescheduleInterval, 5);
+      strictEqual(commandInstance.abortOnFailure, true);
+      assert.ok(commandInstance.message.startsWith('Element <.weblogin> was not present after'));
     });
-
-    this.client.start(done);
   });
 
   it('client.waitForElementNotPresent() failure', function () {
-    const assertion = [];
-
-    NightwatchAssertion.create = function(...args) {
-      assertion.unshift(...args);
-
-      return createOrig(...args);
-    };
-
     this.client.api.globals.waitForConditionPollInterval = 10;
-    this.client.api.waitForElementNotPresent('#weblogin', 15, function(result, instance) {
-      assert.strictEqual(assertion[0], false);
-      assert.strictEqual(result.status, 0);
-      assert.strictEqual(instance.abortOnFailure, true);
-      NightwatchAssertion.create = createOrig;
-    });
+    this.client.api.waitForElementNotPresent('#weblogin', 15, commandCallback);
 
     return this.client.start(function (err) {
-      assert.strictEqual(assertion.length, 6);
       assert.ok(err instanceof Error);
-      assert.ok(err.message.startsWith('Error while running "waitForElementNotPresent" command: Timed out while waiting for element <#weblogin> to be removed for 15 milliseconds.'));
+      assert.deepStrictEqual(commandResult.value, [{ELEMENT: '0'}]);
+      strictEqual(err.message, `Timed out while waiting for element <#weblogin> to be removed for 15 milliseconds. - expected "not found" but got: "found" (${commandInstance.elapsedTime}ms)`);
     });
   });
 
   it('client.waitForElementNotPresent() failure no abort', function () {
-    const assertion = [];
-
-    NightwatchAssertion.create = function(...args) {
-      assertion.unshift(...args);
-
-      return createOrig(...args);
-    };
-
     this.client.api.globals.waitForConditionPollInterval = 10;
-    this.client.api.waitForElementNotPresent('#weblogin', 15, false, function(result, instance) {
-      assert.strictEqual(assertion[0], false);
-      assert.strictEqual(result.status, 0);
-      assert.strictEqual(instance.abortOnFailure, false);
-      NightwatchAssertion.create = createOrig;
-    });
+    this.client.api.waitForElementNotPresent('#weblogin', 15, false, commandCallback);
 
     return this.client.start(function (err) {
-      assert.strictEqual(assertion.length, 6);
-      assert.strictEqual(typeof err, 'undefined');
+      strictEqual(err, undefined);
+      strictEqual(commandResult.status, 0);
+      strictEqual(commandInstance.abortOnFailure, false);
+      strictEqual(commandInstance.elementId, null);
     });
   });
 
-  it('client.waitForElementNotPresent() failure no abort with custom interval', function (done) {
+  it('client.waitForElementNotPresent() failure no abort with custom interval', function () {
     this.client.api.globals.waitForConditionPollInterval = 10;
+    this.client.api.waitForElementNotPresent('#weblogin', 15, 10, false, commandCallback);
+
     this.client.api.waitForElementNotPresent('#weblogin', 15, 10, false, function(result, instance) {
-      assert.strictEqual(result.status, 0);
-      assert.strictEqual(instance.rescheduleInterval, 10);
-      assert.strictEqual(instance.ms, 15);
-      assert.strictEqual(instance.abortOnFailure, false);
+      strictEqual(result.status, 0);
+      strictEqual(instance.rescheduleInterval, 10);
+      strictEqual(instance.ms, 15);
+      strictEqual(instance.abortOnFailure, false);
     });
 
-    this.client.start(done);
+    return this.client.start(function (err) {
+      strictEqual(err, undefined);
+      strictEqual(commandResult.status, 0);
+      strictEqual(commandInstance.ms, 15);
+      strictEqual(commandInstance.rescheduleInterval, 10);
+    });
   });
 });

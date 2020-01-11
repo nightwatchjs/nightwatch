@@ -3,11 +3,11 @@ const Globals = require('../../../lib/globals.js');
 
 describe('client.frame', function() {
   before(function() {
-    Globals.protocolBefore.call(this);
+    Globals.protocolBefore();
   });
 
   it('testFrameDefault', function () {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/frame');
@@ -18,7 +18,7 @@ describe('client.frame', function() {
   });
 
   it('testFramePost', function () {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/frame');
@@ -30,7 +30,7 @@ describe('client.frame', function() {
   });
 
   it('testFramePostWithZeroIndex', function () {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/frame');
@@ -40,9 +40,9 @@ describe('client.frame', function() {
       args: [0]
     });
   });
-  
+
   it('testFramePostWithNull', function () {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/frame');
@@ -54,7 +54,7 @@ describe('client.frame', function() {
   });
 
   it('testFramePostWithUndefined', function () {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/frame');
@@ -66,7 +66,7 @@ describe('client.frame', function() {
   });
 
   it('testFrameParent', function () {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/frame/parent');

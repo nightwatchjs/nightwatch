@@ -34,7 +34,6 @@ describe('isLogAvailable', function() {
     this.client.api
       .isLogAvailable('unknown', function callback(result) {
         assert.strictEqual(this, api);
-        assert.strictEqual(typeof result, 'boolean');
         assert.strictEqual(result, false);
       })
       .isLogAvailable('browser', function callback(result) {
