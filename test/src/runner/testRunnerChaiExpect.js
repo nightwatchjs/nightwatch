@@ -3,8 +3,6 @@ const assert = require('assert');
 const common = require('../../common.js');
 const MockServer = require('../../lib/mockserver.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
-const Settings = common.require('settings/settings.js');
-const Globals = require('../../lib/globals.js');
 
 describe('testRunnerChaiExpect', function() {
   before(function(done) {
@@ -21,6 +19,7 @@ describe('testRunnerChaiExpect', function() {
 
   it('testRunWithChaiExpect', function() {
     const testsPath = path.join(__dirname, '../../sampletests/withchaiexpect');
+    const Settings = common.require('settings/settings.js');
     let settings = Settings.parse({
       selenium: {
         port: 10195,
@@ -29,12 +28,17 @@ describe('testRunnerChaiExpect', function() {
       },
       globals: {
         test: assert,
-        reporter() {}
+        reporter() {
+
+        }
       },
       output_folder: false,
-      silent: true,
+      tag_filter: null,
+      silent: false,
       output: false
     });
+
+    const Globals = require('../../lib/globals.js');
 
     return Globals.startTestRunner(testsPath, settings)
       .then(runner => {

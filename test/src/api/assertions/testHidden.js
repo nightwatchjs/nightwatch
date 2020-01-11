@@ -2,65 +2,79 @@ const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
 describe('assert.hidden', function () {
-  it('hidden assertion passed', function (done) {
-    Globals.assertionTest({
-      assertionName: 'hidden',
-      args: ['.test_element'],
-      api: {
-        isVisible(cssSelector, callback) {
-          assert.equal(cssSelector, '.test_element');
-          callback({
-            status: 0,
-            value: false
-          });
-        }
+  const assertionName = 'hidden';
+  const api = 'isVisible';
+
+  function assertionTest(opts) {
+    return Globals.assertion(assertionName, api, opts);
+  }
+
+  it('hidden assertion passed', function () {
+    return assertionTest({
+      args: ['.test_element', 'Test message'],
+      assertMessage: true,
+      assertArgs: true,
+      commandResult: {
+        status: 0,
+        value: false
       },
-      assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, true);
-        assert.equal(value, true);
-        assert.ok(message.startsWith('Testing if element <.test_element> is hidden'));
+      assertion({reporter, instance, failure}) {
+        assert.strictEqual(failure, false);
+        assert.strictEqual(instance.hasFailure(), false);
       }
-    }, done);
+    });
   });
 
-  it('hidden assertion failed', function (done) {
-    Globals.assertionTest({
-      assertionName: 'hidden',
-      args: ['.test_element'],
-      api: {
-        isVisible(cssSelector, callback) {
-          assert.equal(cssSelector, '.test_element');
-          callback({
-            status: 0,
-            value: true
-          });
-        }
+  it('hidden assertion passed with selector object', function () {
+    return assertionTest({
+      args: [{selector: '.test_element'}],
+      commandResult: {
+        status: 0,
+        value: false
       },
-      assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, false);
-        assert.equal(value, false);
+      assertArgs: true,
+      assertion({instance, failure, message, err}) {
+        assert.strictEqual(err, undefined);
+        assert.strictEqual(instance.getActual(), true);
+        assert.strictEqual(instance.hasFailure(), false);
+        assert.ok(message.startsWith('Testing if element \'<.test_element>\' is hidden'), message);
+        assert.strictEqual(failure, false);
       }
-    }, done);
+    });
   });
 
-  it('hidden assertion not found', function (done) {
-    Globals.assertionTest({
-      assertionName: 'hidden',
+  it('hidden assertion failed', function () {
+    return assertionTest({
       args: ['.test_element'],
-      api: {
-        isVisible(cssSelector, callback) {
-          assert.equal(cssSelector, '.test_element');
-          callback({
-            status: -1
-          });
-        }
+      assertArgs: true,
+      assertResult: true,
+      commandResult: {
+        status: 0,
+        value: true
       },
-      assertion(passed, value, calleeFn, message) {
-        assert.equal(passed, false);
-        assert.equal(value, null);
-        assert.ok(message.startsWith('Testing if element <.test_element> is hidden. Element could not be located'));
+      assertion({instance, failure}) {
+        assert.strictEqual(instance.getActual(), false);
+        assert.strictEqual(failure, 'Expected "true" but got: "false"');
       }
-    }, done);
+    });
+  });
+
+  it('hidden assertion - element not found', function () {
+    return assertionTest({
+      args: ['.test_element'],
+      commandResult: {
+        status: -1
+      },
+      assertError: true,
+      assertResult: true,
+      assertion({instance, failure, err}) {
+        assert.strictEqual(instance.getActual(), '');
+        assert.strictEqual(instance.expected, true);
+        assert.strictEqual(instance.getValue(), true);
+        assert.strictEqual(failure, 'Expected "true" but got: ""');
+        assert.strictEqual(err.message, `Error while running "hidden" command: Testing if element .test_element is hidden. Element could not be located in 5ms - expected "true" but got: "" (${instance.elapsedTime}ms)`);
+      }
+    });
   });
 });
 

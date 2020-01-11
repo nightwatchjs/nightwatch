@@ -1,4 +1,5 @@
 const common = require('../../common.js');
+const MockClient = require('../mockclient.js');
 
 class AssertionLoaderMock {
   constructor(assertionModule, commandName, settings, mockReporter = {}) {
@@ -41,7 +42,7 @@ class AssertionLoaderMock {
    * @param {function} doneCallback
    */
   loadAssertion(assertCallback, doneCallback) {
-    const AssertionLoader = common.requireMock('api-loader/assertion-loader.js', this.commandName, this.assertionModule, assertCallback, doneCallback);
+    const AssertionLoader = common.requireMock('api/_loaders/assertion.js', this.commandName, this.assertionModule, assertCallback, doneCallback);
     let loader = new AssertionLoader(this.client);
 
     loader.loadModule()
@@ -67,74 +68,10 @@ class AssertionLoaderMock {
     let loader = new AssertionLoaderMock(module, commandName, settings, mockReporter);
 
     loader.setAddToQueueFn(function({commandName, commandFn, context, args, stackTrace}) {
-      commandFn.apply(context, args);
+      commandFn.call(context, {args, stackTrace});
     });
 
     return loader;
-  }
-}
-
-class MockClient {
-  get options() {
-    return this.settings;
-  }
-
-  get session() {
-    return {
-      commandQueue: {
-        add: (...args) => {
-          return this.addToQueueFn.apply(this, args);
-        }
-      }
-    };
-  }
-
-  constructor(settings, reporter = {}, addToQueueFn = function() {}) {
-    this.settings = settings;
-    this.addToQueueFn = addToQueueFn;
-    this.locateStrategy = '';
-
-    this.setLocateStrategy();
-
-    this.api = {
-      assert: {},
-      globals: {
-        retryAssertionTimeout: 5,
-        waitForConditionPollInterval: 10
-      }
-    };
-
-    if (settings.globals) {
-      Object.assign(this.api.globals, settings.globals);
-    }
-
-    this.client = {
-      options: this.settings,
-      api: this.api,
-      locateStrategy: this.locateStrategy
-    };
-
-    this.reporter = reporter;
-  }
-
-  setLocateStrategy() {
-    this.locateStrategy = this.settings.use_xpath ? 'xpath' : 'css selector';
-
-    return this;
-  }
-
-  isApiMethodDefined(commandName, namespace) {
-    return false;
-  }
-
-  setApiMethod(commandName, namespace, commandFn) {
-    this.api[namespace] = this.api[namespace] || {};
-
-    this.api[namespace][commandName] = function(...args) {
-      return commandFn.apply(this, args);
-    };
-
-    return this;
   }
 }
 

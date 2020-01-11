@@ -1,8 +1,11 @@
 const assert = require('assert');
 const ExpectGlobals = require('../../../lib/globals/expect.js');
 const Nocks = require('../../../lib/nocks.js');
+const {strictEqual} = assert;
 
 describe('expect.text', function() {
+  const {runExpectAssertion} = ExpectGlobals;
+
   beforeEach(function(done) {
     ExpectGlobals.beforeEach.call(this, () => {
       this.client.api.globals.abortOnAssertionFailure = false;
@@ -20,7 +23,7 @@ describe('expect.text', function() {
     let expect = this.client.api.expect.element('#weblogin').text.to.equal('hp vasq');
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.passed, true);
+      strictEqual(expect.assertion.passed, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to equal: "hp vasq"'));
     });
   });
@@ -34,17 +37,20 @@ describe('expect.text', function() {
       .text('hp vasq')
       .text('hp vasq');
 
-    let expect = this.client.api.expect.element('#weblogin').text.to.equal('vasq');
+    return runExpectAssertion.call(this, {
+      fn: expect => expect.text.to.equal('vasq'),
 
-    return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'equal \'vasq\'');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.actual, 'hp vasq');
-      assert.equal(expect.assertion.resultValue, 'hp vasq');
-      assert.equal(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts, [' equal: "vasq"']);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to equal: "vasq"'));
+      assertion({expected, negate, actual, resultValue, passed, messageParts, message, elapsedTime}) {
+        strictEqual(expected, 'equal \'vasq\'');
+        strictEqual(negate, false);
+        strictEqual(actual, 'hp vasq');
+        strictEqual(resultValue, 'hp vasq');
+        strictEqual(passed, false);
+        strictEqual(messageParts.length, 3);
+        strictEqual(message, `Expected element <#weblogin> text to equal: "vasq" - expected "equal 'vasq'" but got: "hp vasq" (${elapsedTime}ms)`);
+      }
     });
+
   });
 
   it('text to NOT equal [PASSED]', function() {
@@ -53,10 +59,10 @@ describe('expect.text', function() {
     let expect = this.client.api.expect.element('#weblogin').text.to.not.equal('xx');
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.resultValue, 'hp vasq');
-      assert.equal(expect.assertion.messageParts[0], ' not equal: "xx"');
+      strictEqual(expect.assertion.negate, true);
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.resultValue, 'hp vasq');
+      strictEqual(expect.assertion.messageParts[0], ' not equal: "xx"');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to not equal: "xx"'));
     });
   });
@@ -73,13 +79,12 @@ describe('expect.text', function() {
     let expect = this.client.api.expect.element('#weblogin').text.to.not.equal('hp vasq');
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'not equal \'hp vasq\'');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.actual, 'hp vasq');
-      assert.equal(expect.assertion.resultValue, 'hp vasq');
-      assert.equal(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts, [' not equal: "hp vasq"']);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to not equal: "hp vasq"'));
+      strictEqual(expect.assertion.expected, 'not equal \'hp vasq\'');
+      strictEqual(expect.assertion.negate, true);
+      strictEqual(expect.assertion.actual, 'hp vasq');
+      strictEqual(expect.assertion.resultValue, 'hp vasq');
+      strictEqual(expect.assertion.passed, false);
+      strictEqual(expect.assertion.message, `Expected element <#weblogin> text to not equal: "hp vasq" - expected "not equal 'hp vasq'" but got: "hp vasq" (${expect.assertion.elapsedTime}ms)`);
     });
   });
 
@@ -91,10 +96,10 @@ describe('expect.text', function() {
     Nocks.text(null).text('hp vasq');
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 100);
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.retries, 1);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to equal: "hp vasq" in 100ms - condition was met in ' + expect.assertion.elapsedTime + 'ms'));
+      strictEqual(expect.assertion.waitForMs, 100);
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.retries, 1);
+      strictEqual(expect.assertion.message, 'Expected element <#weblogin> text to equal: "hp vasq" in 100ms (' + expect.assertion.elapsedTime + 'ms)');
     });
   });
 
@@ -106,12 +111,12 @@ describe('expect.text', function() {
     let expect = this.client.api.expect.element('#weblogin').text.to.equal('hp vasq').before(25);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 25);
-      assert.equal(expect.assertion.passed, false);
+      strictEqual(expect.assertion.waitForMs, 25);
+      strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.retries >= 1);
       assert.ok(expect.assertion.elapsedTime >= 25);
-      assert.equal(expect.assertion.expected, 'equal \'hp vasq\'');
-      //assert.equal(expect.assertion.actual, 'xx');
+      strictEqual(expect.assertion.expected, 'equal \'hp vasq\'');
+      //strictEqual(expect.assertion.actual, 'xx');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to equal: "hp vasq" in 25ms'));
     });
   });
@@ -123,12 +128,12 @@ describe('expect.text', function() {
     assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'not equal \'vasq\'');
-      assert.equal(expect.assertion.actual, 'xx');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.resultValue, 'xx');
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.messageParts[0], ' not equal: "vasq"');
+      strictEqual(expect.assertion.expected, 'not equal \'vasq\'');
+      strictEqual(expect.assertion.actual, 'xx');
+      strictEqual(expect.assertion.negate, true);
+      strictEqual(expect.assertion.resultValue, 'xx');
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.messageParts[0], ' not equal: "vasq"');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to not equal: "vasq"'));
     });
   });
@@ -146,12 +151,12 @@ describe('expect.text', function() {
     assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'not equal \'xx\'');
-      assert.equal(expect.assertion.actual, 'xx');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.resultValue, 'xx');
-      assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.messageParts[0], ' not equal: "xx"');
+      strictEqual(expect.assertion.expected, 'not equal \'xx\'');
+      strictEqual(expect.assertion.actual, 'xx');
+      strictEqual(expect.assertion.negate, true);
+      strictEqual(expect.assertion.resultValue, 'xx');
+      strictEqual(expect.assertion.passed, false);
+      strictEqual(expect.assertion.messageParts[0], ' not equal: "xx"');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to not equal: "xx"'));
     });
   });
@@ -164,12 +169,12 @@ describe('expect.text', function() {
     assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'not contain \'vasq\'');
-      assert.equal(expect.assertion.actual, 'xx');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.resultValue, 'xx');
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.messageParts[0], ' not contain: "vasq"');
+      strictEqual(expect.assertion.expected, 'not contain \'vasq\'');
+      strictEqual(expect.assertion.actual, 'xx');
+      strictEqual(expect.assertion.negate, true);
+      strictEqual(expect.assertion.resultValue, 'xx');
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.messageParts[0], ' not contain: "vasq"');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to not contain: "vasq"'));
     });
   });
@@ -182,12 +187,12 @@ describe('expect.text', function() {
     assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'contain \'vasq\'');
-      assert.equal(expect.assertion.actual, 'vasq');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.resultValue, 'vasq');
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.messageParts[0], ' contain: "vasq"');
+      strictEqual(expect.assertion.expected, 'contain \'vasq\'');
+      strictEqual(expect.assertion.actual, 'vasq');
+      strictEqual(expect.assertion.negate, false);
+      strictEqual(expect.assertion.resultValue, 'vasq');
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.messageParts[0], ' contain: "vasq"');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to contain: "vasq"'));
     });
   });
@@ -200,12 +205,12 @@ describe('expect.text', function() {
     assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'start with \'va\'');
-      assert.equal(expect.assertion.actual, 'vasq');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.resultValue, 'vasq');
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.messageParts[0], ' start with: "va"');
+      strictEqual(expect.assertion.expected, 'start with \'va\'');
+      strictEqual(expect.assertion.actual, 'vasq');
+      strictEqual(expect.assertion.negate, false);
+      strictEqual(expect.assertion.resultValue, 'vasq');
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.messageParts[0], ' start with: "va"');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to start with: "va"'));
     });
   });
@@ -218,12 +223,12 @@ describe('expect.text', function() {
     assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'end with \'sq\'');
-      assert.equal(expect.assertion.actual, 'vasq');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.resultValue, 'vasq');
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.messageParts[0], ' end with: "sq"');
+      strictEqual(expect.assertion.expected, 'end with \'sq\'');
+      strictEqual(expect.assertion.actual, 'vasq');
+      strictEqual(expect.assertion.negate, false);
+      strictEqual(expect.assertion.resultValue, 'vasq');
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.messageParts[0], ' end with: "sq"');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to end with: "sq"'));
     });
   });
@@ -241,13 +246,12 @@ describe('expect.text', function() {
     assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'not contain \'xx\'');
-      assert.equal(expect.assertion.actual, 'xx');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.resultValue, 'xx');
-      assert.equal(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts, [' not contain: "xx"']);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to not contain: "xx"'));
+      strictEqual(expect.assertion.expected, 'not contain \'xx\'');
+      strictEqual(expect.assertion.actual, 'xx');
+      strictEqual(expect.assertion.negate, true);
+      strictEqual(expect.assertion.resultValue, 'xx');
+      strictEqual(expect.assertion.passed, false);
+      strictEqual(expect.assertion.message, `Expected element <#weblogin> text to not contain: "xx" - expected "not contain 'xx'" but got: "xx" (${expect.assertion.elapsedTime}ms)`);
     });
   });
 
@@ -259,12 +263,12 @@ describe('expect.text', function() {
     assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'match \'/vasq/\'');
-      assert.equal(expect.assertion.actual, 'vasq');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.resultValue, 'vasq');
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.messageParts[0], ' match: "/vasq/"');
+      strictEqual(expect.assertion.expected, 'match \'/vasq/\'');
+      strictEqual(expect.assertion.actual, 'vasq');
+      strictEqual(expect.assertion.negate, false);
+      strictEqual(expect.assertion.resultValue, 'vasq');
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.messageParts[0], ' match: "/vasq/"');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to match: "/vasq/"'));
     });
   });
@@ -277,12 +281,12 @@ describe('expect.text', function() {
     assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'not match \'/vasq/\'');
-      assert.equal(expect.assertion.actual, 'xx');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.resultValue, 'xx');
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.messageParts[0], ' not match: "/vasq/"');
+      strictEqual(expect.assertion.expected, 'not match \'/vasq/\'');
+      strictEqual(expect.assertion.actual, 'xx');
+      strictEqual(expect.assertion.negate, true);
+      strictEqual(expect.assertion.resultValue, 'xx');
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.messageParts[0], ' not match: "/vasq/"');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to not match: "/vasq/"'));
     });
   });
@@ -300,13 +304,12 @@ describe('expect.text', function() {
     assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'not match \'/xx/\'');
-      assert.equal(expect.assertion.actual, 'xx');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.resultValue, 'xx');
-      assert.equal(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts, [' not match: "/xx/"']);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to not match: "/xx/"'));
+      strictEqual(expect.assertion.expected, 'not match \'/xx/\'');
+      strictEqual(expect.assertion.actual, 'xx');
+      strictEqual(expect.assertion.negate, true);
+      strictEqual(expect.assertion.resultValue, 'xx');
+      strictEqual(expect.assertion.passed, false);
+      strictEqual(expect.assertion.message, `Expected element <#weblogin> text to not match: "/xx/" - expected "not match '/xx/'" but got: "xx" (${expect.assertion.elapsedTime}ms)`);
     });
   });
 
@@ -319,17 +322,22 @@ describe('expect.text', function() {
       .elementNotFound()
       .elementNotFound();
 
-    let expect = this.client.api.expect.element('#weblogin').text.to.equal('vasq');
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
+    return runExpectAssertion.call(this, {
+      fn: expect => {
+        expect.text.to.equal('vasq');
+        assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
+      },
 
-    return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'present');
-      assert.equal(expect.assertion.actual, 'not present');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.resultValue, null);
-      assert.equal(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts, [' equal: "vasq"', ' - element was not found']);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to equal: "vasq" - element was not found'));
+      assertion({expected, negate, actual, resultValue, passed, messageParts, message, elapsedTime}) {
+        strictEqual(expected, 'equal \'vasq\'');
+        strictEqual(actual, 'not present');
+        strictEqual(negate, false);
+        strictEqual(resultValue, null);
+        strictEqual(passed, false);
+        assert.ok(messageParts.includes(' equal: "vasq"'));
+        assert.ok(messageParts.includes(' - element was not found'));
+        strictEqual(message, `Expected element <#weblogin> text to equal: "vasq" - element was not found - expected "equal 'vasq'" but got: "not present" (${elapsedTime}ms)`);
+      }
     });
   });
 
@@ -345,11 +353,10 @@ describe('expect.text', function() {
     let expect = this.client.api.expect.element('#weblogin').text.to.contain('vasq');
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'present');
-      assert.equal(expect.assertion.actual, 'not present');
-      assert.equal(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts, [' contain: "vasq"', ' - element was not found']);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to contain: "vasq" - element was not found'));
+      strictEqual(expect.assertion.expected, 'contain \'vasq\'');
+      strictEqual(expect.assertion.actual, 'not present');
+      strictEqual(expect.assertion.passed, false);
+      strictEqual(expect.assertion.message, `Expected element <#weblogin> text to contain: "vasq" - element was not found - expected "contain 'vasq'" but got: "not present" (${expect.assertion.elapsedTime}ms)`);
     });
   });
 
@@ -365,11 +372,10 @@ describe('expect.text', function() {
     let expect = this.client.api.expect.element('#weblogin').text.to.match(/vasq$/);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'present');
-      assert.equal(expect.assertion.actual, 'not present');
-      assert.equal(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts, [' match: "/vasq$/"', ' - element was not found']);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to match: "/vasq$/" - element was not found'));
+      strictEqual(expect.assertion.expected, 'match \'/vasq$/\'');
+      strictEqual(expect.assertion.actual, 'not present');
+      strictEqual(expect.assertion.passed, false);
+      strictEqual(expect.assertion.message, `Expected element <#weblogin> text to match: "/vasq$/" - element was not found - expected "match '/vasq$/'" but got: "not present" (${expect.assertion.elapsedTime}ms)`);
     });
   });
 
@@ -381,8 +387,8 @@ describe('expect.text', function() {
     let expect = this.client.api.expect.element('#weblogin').text.to.match(/vasq$/).before(60);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 60);
-      assert.equal(expect.assertion.passed, false);
+      strictEqual(expect.assertion.waitForMs, 60);
+      strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to match: "/vasq$/" in 60ms - element was not found'));
     });
   });
@@ -395,9 +401,9 @@ describe('expect.text', function() {
     let expect = this.client.api.expect.element('#weblogin').text.to.match(/vasq$/).before(60);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 60);
-      assert.equal(expect.assertion.passed, true);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> text to match: "/vasq$/" in 60ms - condition was met in ' + expect.assertion.elapsedTime + 'ms'));
+      strictEqual(expect.assertion.waitForMs, 60);
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.message, 'Expected element <#weblogin> text to match: "/vasq$/" in 60ms (' + expect.assertion.elapsedTime + 'ms)');
     });
   });
 

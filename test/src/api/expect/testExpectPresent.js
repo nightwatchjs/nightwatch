@@ -26,12 +26,12 @@ describe('expect.present', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.present;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '#weblogin');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.waitForMs, 40);
-      assert.equal(expect.assertion.passed, true);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be present'));
-      assert.equal(expect.assertion.messageParts.length, 1);
+      assert.strictEqual(expect.assertion.selector, '#weblogin');
+      assert.strictEqual(expect.assertion.negate, false);
+      assert.strictEqual(expect.assertion.waitForMs, 40);
+      assert.strictEqual(expect.assertion.passed, true);
+      assert.ok(/^Expected element <#weblogin> to be present \(\d+ms\)$/.test(expect.assertion.message), expect.assertion.message);
+      assert.strictEqual(expect.assertion.messageParts.length, 1);
     });
   });
 
@@ -41,9 +41,9 @@ describe('expect.present', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.present.before(100);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 100);
-      assert.equal(expect.assertion.passed, true);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be present in 100ms - element was present in ' + expect.assertion.elapsedTime + 'ms'));
+      assert.strictEqual(expect.assertion.waitForMs, 100);
+      assert.strictEqual(expect.assertion.passed, true);
+      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be present in 100ms (' + expect.assertion.elapsedTime + 'ms)'));
     });
   });
 
@@ -57,8 +57,8 @@ describe('expect.present', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.present.before(60);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 60);
-      assert.equal(expect.assertion.passed, false);
+      assert.strictEqual(expect.assertion.waitForMs, 60);
+      assert.strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be present in 60ms - element was not found'));
     });
   });
@@ -74,14 +74,14 @@ describe('expect.present', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.present;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '#weblogin');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.waitForMs, 40);
-      assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.expected, 'present');
-      assert.equal(expect.assertion.actual, 'not present');
+      assert.strictEqual(expect.assertion.selector, '#weblogin');
+      assert.strictEqual(expect.assertion.negate, false);
+      assert.strictEqual(expect.assertion.waitForMs, 40);
+      assert.strictEqual(expect.assertion.passed, false);
+      assert.strictEqual(expect.assertion.expected, 'present');
+      assert.strictEqual(expect.assertion.actual, 'not present');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be present - element was not found'));
-      assert.equal(expect.assertion.messageParts[0], ' - element was not found');
+      assert.strictEqual(expect.assertion.messageParts[0], ' - element was not found');
     });
   });
 
@@ -92,9 +92,9 @@ describe('expect.present', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.present.before(60);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 60);
-      assert.equal(expect.assertion.passed, true);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be present in 60ms - element was present in ' + expect.assertion.elapsedTime + 'ms'));
+      assert.strictEqual(expect.assertion.waitForMs, 60);
+      assert.strictEqual(expect.assertion.passed, true);
+      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be present in 60ms (' + expect.assertion.elapsedTime + 'ms)'));
     });
   });
 
@@ -109,14 +109,14 @@ describe('expect.present', function() {
     let expect = this.client.api.expect.element('#weblogin').to.not.be.present;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '#weblogin');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.expected, 'not present');
-      assert.equal(expect.assertion.actual, 'present');
-      assert.equal(typeof expect.assertion.resultValue, 'undefined');
+      assert.strictEqual(expect.assertion.selector, '#weblogin');
+      assert.strictEqual(expect.assertion.negate, true);
+      assert.strictEqual(expect.assertion.passed, false);
+      assert.strictEqual(expect.assertion.expected, 'not present');
+      assert.strictEqual(expect.assertion.actual, 'present');
+      assert.strictEqual(typeof expect.assertion.resultValue, 'undefined');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not be present'));
-      assert.equal(expect.assertion.messageParts.length, 1);
+      assert.strictEqual(expect.assertion.messageParts.length, 2);
     });
   });
 
@@ -127,8 +127,8 @@ describe('expect.present', function() {
     let expect = this.client.api.expect.element('//weblogin').to.be.present;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '//weblogin');
-      assert.equal(expect.assertion.passed, true);
+      assert.strictEqual(expect.assertion.selector, '//weblogin');
+      assert.strictEqual(expect.assertion.passed, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <//weblogin> to be present'));
     });
   });
@@ -139,8 +139,8 @@ describe('expect.present', function() {
     let expect = this.client.api.expect.element('//weblogin', 'xpath').to.be.present;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '//weblogin');
-      assert.equal(expect.assertion.passed, true);
+      assert.strictEqual(expect.assertion.selector, '//weblogin');
+      assert.strictEqual(expect.assertion.passed, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <//weblogin> to be present'));
     });
   });

@@ -3,11 +3,11 @@ const Globals = require('../../../lib/globals.js');
 
 describe('client.mouseButtonClick', function() {
   before(function() {
-    Globals.protocolBefore.call(this);
+    Globals.protocolBefore();
   });
 
   it('test mouseButtonClick click left', function() {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/click');
@@ -19,7 +19,7 @@ describe('client.mouseButtonClick', function() {
   });
 
   it('test mouseButtonClick click right', function() {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.deepEqual(opts.data, { button: 2 });
       },
@@ -29,7 +29,7 @@ describe('client.mouseButtonClick', function() {
   });
 
   it('test mouseButtonClick click middle', function() {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.deepEqual(opts.data, { button: 1 });
       },
@@ -39,19 +39,17 @@ describe('client.mouseButtonClick', function() {
   });
 
   it('test mouseButtonClick with callback only', function() {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
-        assert.deepEqual(opts.data, { button: 0 });
+        assert.deepEqual(opts.data, {button: 0});
       },
       commandName: 'mouseButtonClick',
-      args: [function() {
-
-      }]
+      args: [function() {}]
     });
   });
 
   it('test mouseButtonClick with no args', function() {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.deepEqual(opts.data, { button: 0 });
       },
@@ -61,7 +59,7 @@ describe('client.mouseButtonClick', function() {
   });
 
   it('test mouseButtonDown click left', function() {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/buttondown');
@@ -73,7 +71,7 @@ describe('client.mouseButtonClick', function() {
   });
 
   it('test mouseButtonDown click middle', function() {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.deepEqual(opts.data, { button: 1 });
       },
@@ -83,7 +81,7 @@ describe('client.mouseButtonClick', function() {
   });
 
   it('test mouseButtonDown with callback only', function() {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.deepEqual(opts.data, { button: 0 });
       },
@@ -95,7 +93,7 @@ describe('client.mouseButtonClick', function() {
   });
 
   it('test mouseButtonUp click right', function() {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/buttonup');

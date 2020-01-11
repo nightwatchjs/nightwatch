@@ -1,6 +1,7 @@
 const assert = require('assert');
 const Nocks = require('../../../lib/nocks.js');
 const ExpectGlobals = require('../../../lib/globals/expect.js');
+const {strictEqual} = assert;
 
 describe('expect.visible', function() {
   beforeEach(function(done) {
@@ -15,17 +16,19 @@ describe('expect.visible', function() {
     ExpectGlobals.afterEach.call(this, done);
   });
 
+  const {runExpectAssertion} = ExpectGlobals;
+
   it('to be visible [PASSED]', function() {
     Nocks.elementFound().visible();
     let expect = this.client.api.expect.element('#weblogin').to.be.visible;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '#weblogin');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.resultValue, true);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be visible'));
-      assert.equal(expect.assertion.messageParts.length, 1);
+      strictEqual(expect.assertion.selector, '#weblogin');
+      strictEqual(expect.assertion.negate, false);
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.resultValue, true);
+      strictEqual(expect.assertion.message, `Expected element <#weblogin> to be visible (${expect.assertion.elapsedTime}ms)`);
+      strictEqual(expect.assertion.messageParts.length, 1);
     });
   });
 
@@ -35,9 +38,9 @@ describe('expect.visible', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.visible.before(100);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 100);
-      assert.equal(expect.assertion.passed, true);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be visible in 100ms - condition was met in ' + expect.assertion.elapsedTime + 'ms'));
+      strictEqual(expect.assertion.waitForMs, 100);
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.message, 'Expected element <#weblogin> to be visible in 100ms (' + expect.assertion.elapsedTime + 'ms)');
     });
   });
 
@@ -49,8 +52,8 @@ describe('expect.visible', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.visible.before(60);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 60);
-      assert.equal(expect.assertion.passed, false);
+      strictEqual(expect.assertion.waitForMs, 60);
+      strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be visible in 60ms'));
     });
   });
@@ -64,18 +67,19 @@ describe('expect.visible', function() {
       .notVisible()
       .notVisible();
 
-    let expect = this.client.api.expect.element('#weblogin').to.be.visible;
-
-    return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '#weblogin');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.waitForMs, 40);
-      assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.expected, 'visible');
-      assert.equal(expect.assertion.actual, 'not visible');
-      assert.equal(expect.assertion.resultValue, false);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be visible'));
-      assert.equal(expect.assertion.messageParts.length, 0);
+    return runExpectAssertion.call(this, {
+      fn: expect => expect.to.be.visible,
+      assertion({selector, negate, waitForMs, expected, passed, actual, resultValue, message, messageParts, elapsedTime}) {
+        strictEqual(selector, '#weblogin');
+        strictEqual(negate, false);
+        strictEqual(passed, false);
+        strictEqual(waitForMs, 40);
+        strictEqual(resultValue, false);
+        strictEqual(actual, 'not visible');
+        strictEqual(expected, 'visible');
+        strictEqual(message, `Expected element <#weblogin> to be visible - expected "visible" but got: "not visible" (${elapsedTime}ms)`);
+        strictEqual(messageParts.length, 2, messageParts);
+      }
     });
   });
 
@@ -85,14 +89,14 @@ describe('expect.visible', function() {
     let expect = this.client.api.expect.element('#weblogin').to.not.be.visible;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '#weblogin');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.expected, 'not visible');
-      assert.equal(expect.assertion.actual, 'not visible');
-      assert.equal(expect.assertion.resultValue, false);
+      strictEqual(expect.assertion.selector, '#weblogin');
+      strictEqual(expect.assertion.negate, true);
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.expected, 'not visible');
+      strictEqual(expect.assertion.actual, 'not visible');
+      strictEqual(expect.assertion.resultValue, false);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not be visible'));
-      assert.equal(expect.assertion.messageParts.length, 1);
+      strictEqual(expect.assertion.messageParts.length, 1);
     });
   });
 
@@ -108,14 +112,13 @@ describe('expect.visible', function() {
     let expect = this.client.api.expect.element('#weblogin').to.not.be.visible;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '#weblogin');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.expected, 'not visible');
-      assert.equal(expect.assertion.actual, 'visible');
-      assert.equal(expect.assertion.resultValue, true);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not be visible'));
-      assert.equal(expect.assertion.messageParts.length, 0);
+      strictEqual(expect.assertion.selector, '#weblogin');
+      strictEqual(expect.assertion.negate, true);
+      strictEqual(expect.assertion.passed, false);
+      strictEqual(expect.assertion.expected, 'not visible');
+      strictEqual(expect.assertion.actual, 'visible');
+      strictEqual(expect.assertion.resultValue, true);
+      strictEqual(expect.assertion.message, `Expected element <#weblogin> to not be visible - expected "not visible" but got: "visible" (${expect.assertion.elapsedTime}ms)`);
     });
   });
 
@@ -132,15 +135,14 @@ describe('expect.visible', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.visible;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '#weblogin');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.waitForMs, 40);
-      assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.expected, 'visible');
-      assert.equal(expect.assertion.actual, 'not found');
-      assert.equal(expect.assertion.resultValue, null);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be visible - element was not found'));
-      assert.deepEqual(expect.assertion.messageParts, [' - element was not found']);
+      strictEqual(expect.assertion.selector, '#weblogin');
+      strictEqual(expect.assertion.negate, false);
+      strictEqual(expect.assertion.waitForMs, 40);
+      strictEqual(expect.assertion.passed, false);
+      strictEqual(expect.assertion.expected, 'visible');
+      strictEqual(expect.assertion.actual, 'not found');
+      strictEqual(expect.assertion.resultValue, null);
+      strictEqual(expect.assertion.message, `Expected element <#weblogin> to be visible - element was not found - expected "visible" but got: "not found" (${expect.assertion.elapsedTime}ms)`);
     });
   });
 
@@ -152,9 +154,9 @@ describe('expect.visible', function() {
     let expect = this.client.api.expect.element('#weblogin').to.not.be.visible.before(25);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 25);
+      strictEqual(expect.assertion.waitForMs, 25);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not be visible in 25ms'));
-      assert.equal(expect.assertion.passed, false);
+      strictEqual(expect.assertion.passed, false);
     });
   });
 
@@ -166,9 +168,9 @@ describe('expect.visible', function() {
     let expect = this.client.api.expect.element('#weblogin').to.not.be.visible.before(30);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 30);
-      assert.equal(expect.assertion.message.indexOf('Expected element <#weblogin> to not be visible in 30ms'), 0);
-      assert.equal(expect.assertion.passed, true, 'Assertion has passed');
+      strictEqual(expect.assertion.waitForMs, 30);
+      strictEqual(expect.assertion.message.indexOf('Expected element <#weblogin> to not be visible in 30ms'), 0);
+      strictEqual(expect.assertion.passed, true, 'Assertion has passed');
     });
   });
 
@@ -180,8 +182,8 @@ describe('expect.visible', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.visible.before(60);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 60);
-      assert.equal(expect.assertion.passed, false);
+      strictEqual(expect.assertion.waitForMs, 60);
+      strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be visible in 60ms - element was not found'));
     });
   });
@@ -194,9 +196,9 @@ describe('expect.visible', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.visible.before(60);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 60);
-      assert.equal(expect.assertion.passed, true);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be visible in 60ms - condition was met in ' + expect.assertion.elapsedTime + 'ms'));
+      strictEqual(expect.assertion.waitForMs, 60);
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.message, 'Expected element <#weblogin> to be visible in 60ms (' + expect.assertion.elapsedTime + 'ms)');
     });
   });
 });

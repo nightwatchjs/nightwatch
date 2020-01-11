@@ -2,7 +2,7 @@
  * Module dependencies
  */
 const Nightwatch = require('../lib/index.js');
-const Logger = require('../lib/util/logger.js');
+const {Logger} = require('../lib/utils');
 
 try {
   Nightwatch.cli(function(argv) {

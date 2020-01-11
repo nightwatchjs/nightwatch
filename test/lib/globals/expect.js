@@ -20,5 +20,14 @@ module.exports = {
     //Nocks.deleteSession();
     Nocks.disable();
     done();
+  },
+
+  runExpectAssertion({element = '#weblogin', fn, assertion}) {
+    const expect = this.client.api.expect.element(element);
+    fn(expect);
+
+    return this.client.start(function() {
+      assertion(expect.assertion);
+    });
   }
 };

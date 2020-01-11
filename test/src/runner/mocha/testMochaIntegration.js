@@ -36,17 +36,21 @@ describe('test Mocha integration', function() {
         retryAssertionTimeout: 0
       },
       output: false,
-      silent: true,
+      silent: false,
       output_folder: false
     };
+
+    let error;
 
     return NightwatchClient.runTests({
       config: path.join(__dirname, '../../../extra/withmocha.json'),
       env: 'default',
       _source: []
     }, settings).catch(err => {
+      error = err;
+    }).then(() => {
       assert.equal(settings.globals.test_calls, 12);
-      assert.ok(err.message.includes('Mocha reported test failures.'));
-    });
+      assert.ok(error.message.includes('Mocha reported test failures.'), error);
+    })
   });
 });

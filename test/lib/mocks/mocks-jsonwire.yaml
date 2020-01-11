@@ -5,7 +5,6 @@ mocks:
   postdata:
     desiredCapabilities:
       browserName: firefox
-      acceptSslCerts: true
       platform: ANY
       name: ''
   response:
@@ -30,6 +29,14 @@ mocks:
 - url: '/wd/hub/session/1352110219202/url'
   postdata:
     url: http://localhost
+  response:
+    status: 0
+
+- url: '/wd/hub/session/1352110219202/url'
+  postdata:
+    url: http://localhost/test_url
+  response:
+    status: 0
 
 - url: '/wd/hub/session/1352110219202/url'
   method: GET

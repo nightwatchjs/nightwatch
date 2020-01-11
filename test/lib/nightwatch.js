@@ -3,7 +3,7 @@ const lodashMerge = require('lodash.merge');
 const Nightwatch = common.require('index.js');
 const Settings = common.require('settings/settings.js');
 const MockServer  = require('./mockserver.js');
-const Logger = common.require('util/logger.js');
+const Logger = common.require('utils').Logger;
 
 module.exports = new function () {
   let _client = null;
@@ -56,6 +56,7 @@ module.exports = new function () {
       },
       silent : true,
       output : false,
+      disable_colors: true,
       globals : {
         myGlobal : 'test'
       }
@@ -86,8 +87,8 @@ module.exports = new function () {
     _client.startSession();
   };
 
-  this.initAsync = function(options) {
-    _client = this.createClient(options);
+  this.initAsync = function(options, reporter) {
+    _client = this.createClient(options, reporter);
     _client.start = function() {
       return this.queue.run().then(err => {
         if (err instanceof Error) {

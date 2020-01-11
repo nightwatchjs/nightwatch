@@ -42,10 +42,14 @@ describe('testRunWithTags', function() {
       silent: true,
       output: false,
       globals: {
+        waitForConditionPollInterval:10,
+        waitForConditionTimeout:11,
+        retryAssertionTimeout: 10,
         reporter(results) {
-          assert.equal(Object.keys(results.modules).length, 2);
+          assert.strictEqual(Object.keys(results.modules).length, 3);
           assert.ok('demoTagTest' in results.modules['tags/sample'].completed);
           assert.ok('otherDemoTagTest' in results.modules['withsubfolders/tags/sampleTags'].completed);
+          assert.ok('demoTest' in results.modules['withdescribe/failures/sampleSkipTestcases'].completed);
         }
       },
       tag_filter: ['login'],
@@ -107,7 +111,7 @@ describe('testRunWithTags', function() {
   it('testRunWithTagsAndSkipTags', function() {
     let testsPath = path.join(__dirname, '../../sampletests');
 
-    let settings = {
+    const settings = {
       selenium: {
         port: 10195,
         version2: true,
@@ -117,7 +121,7 @@ describe('testRunWithTags', function() {
       output: false,
       globals: {
         reporter(results) {
-          assert.equal(Object.keys(results.modules).length, 1);
+          assert.strictEqual(Object.keys(results.modules).length, 2);
           assert.ok('otherDemoTagTest' in results.modules['withsubfolders/tags/sampleTags'].completed);
         }
       },
@@ -140,7 +144,7 @@ describe('testRunWithTags', function() {
         version2: true,
         start_process: true
       },
-      silent: true,
+      silent: false,
       output: false,
       globals: {},
       tag_filter: ['other'],

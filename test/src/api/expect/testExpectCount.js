@@ -41,8 +41,8 @@ describe('expect.elements count', function() {
       assert.equal(expect.assertion.actual, 4);
       assert.equal(expect.assertion.resultValue, 4);
       assert.strictEqual(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts, [' equal: "5"']);
-      assert.ok(expect.assertion.message.startsWith('Expected elements <.classname> count to equal: "5"'));
+      assert.ok(expect.assertion.messageParts.includes(' equal: "5"'));
+      assert.ok(expect.assertion.message.startsWith('Expected elements <.classname> count to equal: "5"'), expect.assertion.message);
     });
   });
 
@@ -75,7 +75,6 @@ describe('expect.elements count', function() {
       assert.equal(expect.assertion.actual, 4);
       assert.equal(expect.assertion.resultValue, 4);
       assert.strictEqual(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts, [' not equal: "4"']);
       assert.ok(expect.assertion.message.startsWith('Expected elements <.classname> count to not equal: "4"'));
     });
   });
@@ -91,7 +90,7 @@ describe('expect.elements count', function() {
       assert.equal(expect.assertion.waitForMs, 100);
       assert.strictEqual(expect.assertion.passed, true);
       assert.equal(expect.assertion.retries, 1);
-      assert.ok(expect.assertion.message.startsWith('Expected elements <.classname> count to equal: "4" in 100ms - condition was met in ' + expect.assertion.elapsedTime + 'ms'));
+      assert.ok(expect.assertion.message.startsWith('Expected elements <.classname> count to equal: "4" in 100ms (' + expect.assertion.elapsedTime + 'ms)'));
     });
   });
 
@@ -110,7 +109,7 @@ describe('expect.elements count', function() {
       assert.ok(expect.assertion.retries >= 1);
       assert.ok(expect.assertion.elapsedTime >= 25);
       assert.equal(expect.assertion.expected, 'equal \'888\'');
-      assert.ok(expect.assertion.message.startsWith('Expected elements <.classname> count to equal: "888" in 25ms'));
+      assert.ok(expect.assertion.message.startsWith('Expected elements <.classname> count to equal: "888" in 25ms'), expect.assertion.message);
     });
   });
 
@@ -122,14 +121,14 @@ describe('expect.elements count', function() {
     Nocks.elementsNotFound('.classname');
 
     let expect = this.client.api.expect.elements('.classname').count.to.equal(4);
-    assert.ok(expect.assertion.message.startsWith('Expected elements <%s> count to'));
+    assert.ok(expect.assertion.message.startsWith('Expected elements <.classname> count to'), expect.assertion.message);
 
     return this.client.start(function() {
       assert.equal(expect.assertion.expected, 'equal \'4\'');
       assert.strictEqual(expect.assertion.negate, false);
       assert.equal(expect.assertion.resultValue, 0);
       assert.strictEqual(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts, [' equal: "4"']);
+      assert.ok(expect.assertion.messageParts.includes(' equal: "4"'));
       assert.ok(expect.assertion.message.startsWith('Expected elements <.classname> count to equal: "4"'));
     });
   });

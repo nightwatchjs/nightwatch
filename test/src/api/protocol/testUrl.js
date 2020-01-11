@@ -3,11 +3,11 @@ const Globals = require('../../../lib/globals.js');
 
 describe('url', function() {
   before(function() {
-    Globals.protocolBefore.call(this);
+    Globals.protocolBefore();
   });
 
   it('client.url() get', function() {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/url');
@@ -18,7 +18,7 @@ describe('url', function() {
   });
 
   it('client.url() new', function() {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/url');
@@ -30,7 +30,7 @@ describe('url', function() {
   });
 
   it('client.url() get with callback', function() {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/url');
@@ -43,7 +43,7 @@ describe('url', function() {
   });
 
   it('client.url() new with callback', function() {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/url');

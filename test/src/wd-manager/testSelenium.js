@@ -1,9 +1,9 @@
 const assert = require('assert');
+const mockSpawn = require('mock-spawn');
+const nock = require('nock');
 const common = require('../../common.js');
 const WDServer = common.require('runner/webdriver-server.js');
 const SeleniumServer = common.require('runner/wd-instances/selenium-server.js');
-const mockSpawn = require('mock-spawn');
-const nock = require('nock');
 const Settings = common.require('settings/settings.js');
 
 describe('Webdriver Manager', function () {
@@ -14,8 +14,7 @@ describe('Webdriver Manager', function () {
       this.origSpawn = require('child_process').spawn;
 
       require('child_process').spawn = this.mockedSpawn;
-      require('util').print = function () {
-      };
+      require('util').print = function () {};
 
       try {
         nock.activate();
@@ -30,7 +29,6 @@ describe('Webdriver Manager', function () {
 
     afterEach(function () {
       // clean up
-
       require('child_process').spawn = this.origSpawn;
       require('util').print = this.origPrint;
     });
@@ -64,7 +62,7 @@ describe('Webdriver Manager', function () {
     it('testStartServer', function () {
       this.mockedSpawn.setStrategy(function (command, args, opts) {
         assert.deepEqual(opts, {stdio: ['ignore', 'pipe', 'pipe']});
-        wdServer.instance.resolved = true;
+        wdServer.instance.processCreated = true;
 
         if (command !== 'java') {
           return null;
@@ -79,7 +77,10 @@ describe('Webdriver Manager', function () {
 
       let settings = Settings.parse({
         selenium: {
-          check_process_delay: 100,
+          check_process_delay: 10,
+          max_status_poll_tries: 7,
+          status_poll_interval: 250,
+          process_create_timeout: 1000,
           start_process: true,
           server_path: './selenium.jar',
           log_path: false,
@@ -105,13 +106,21 @@ describe('Webdriver Manager', function () {
           4444
         ]);
 
-        assert.equal(wdServer.instance.process.host, undefined);
-        assert.equal(wdServer.instance.pollStarted, true);
-        assert.equal(wdServer.instance.resolved, true);
-        assert.equal(wdServer.instance.process.command, 'java');
-        assert.equal(wdServer.instance.sessionsEndpoint, '/sessions');
-        assert.equal(wdServer.instance.singleSessionEndpoint, '/session');
-        assert.equal(wdServer.instance.output, 'Started org.openqa.jetty.jetty.Server');
+        assert.strictEqual(wdServer.settings.selenium.max_status_poll_tries, 7);
+        assert.strictEqual(wdServer.settings.selenium.status_poll_interval, 250);
+        assert.strictEqual(wdServer.settings.selenium.check_process_delay, 10);
+        assert.strictEqual(wdServer.settings.selenium.process_create_timeout, 1000);
+        assert.strictEqual(wdServer.settings.webdriver.max_status_poll_tries, 7);
+        assert.strictEqual(wdServer.settings.webdriver.status_poll_interval, 250);
+        assert.strictEqual(wdServer.settings.webdriver.check_process_delay, 10);
+        assert.strictEqual(wdServer.settings.webdriver.process_create_timeout, 1000);
+        assert.strictEqual(wdServer.instance.process.host, undefined);
+        assert.strictEqual(wdServer.instance.pollStarted, true);
+        assert.strictEqual(wdServer.instance.processCreated, true);
+        assert.strictEqual(wdServer.instance.process.command, 'java');
+        assert.strictEqual(wdServer.instance.sessionsEndpoint, '/sessions');
+        assert.strictEqual(wdServer.instance.singleSessionEndpoint, '/session');
+        assert.strictEqual(wdServer.instance.output, 'Started org.openqa.jetty.jetty.Server');
         assert.strictEqual(wdServer.instance.error_out, '');
       });
     });
@@ -119,7 +128,6 @@ describe('Webdriver Manager', function () {
     it('testStartServerWithExitCode', function () {
       this.mockedSpawn.setStrategy(function (command, args, opts) {
         assert.deepEqual(opts, {stdio: ['ignore', 'pipe', 'pipe']});
-        wdServer.instance.resolved = true;
 
         if (command !== 'java') {
           return null;
@@ -135,6 +143,7 @@ describe('Webdriver Manager', function () {
       let settings = Settings.parse({
         selenium: {
           check_process_delay: 1000,
+          process_create_timeout: 2000,
           start_process: true,
           server_path: './selenium.jar',
           log_path: false,
@@ -145,9 +154,44 @@ describe('Webdriver Manager', function () {
       let wdServer = new WDServer(settings);
 
       return wdServer.start().then(_ => {
+        // Simulate an error thrown
         assert.ok(false, 'Selenium Server should have failed to start.');
       }).catch(err => {
+        assert.strictEqual(wdServer.settings.webdriver.max_status_poll_tries, 15);
+        assert.strictEqual(wdServer.settings.webdriver.status_poll_interval, 200);
+        assert.strictEqual(wdServer.settings.webdriver.check_process_delay, 1000);
+        assert.strictEqual(wdServer.settings.webdriver.process_create_timeout, 2000);
         assert.ok(err.message.includes('Selenium Server process exited with code: 1'));
+      });
+    });
+
+    it('test start server with timeout', function () {
+      this.mockedSpawn.setStrategy(function (command, args, opts) {
+        if (command !== 'java') {
+          return null;
+        }
+      });
+
+      let settings = Settings.parse({
+        selenium: {
+          check_process_delay: 10,
+          start_process: true,
+          status_poll_interval: 10,
+          max_status_poll_tries: 3,
+          server_path: './selenium.jar',
+          log_path: false,
+          port: 1024
+        }
+      });
+
+      let wdServer = new WDServer(settings);
+
+      return wdServer.start().then(_ => {
+        // Simulate an error thrown
+        assert.ok(false, 'Selenium Server should have failed to start.');
+      }).catch(err => {
+        assert.strictEqual(wdServer.instance.statusPingTries, 3);
+        assert.ok(err.message.includes('Timeout while trying to connect to Selenium Server on port 1024.'));
       });
     });
   });
