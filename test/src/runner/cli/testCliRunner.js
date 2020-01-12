@@ -2,19 +2,19 @@ const common = require('../../../common.js');
 const mockery = require('mockery');
 const assert = require('assert');
 
-describe('Test CLI Runner', function () {
+describe('Test CLI Runner', function() {
 
-  beforeEach(function () {
+  beforeEach(function() {
     process.env['ENV_USERNAME'] = 'testuser';
 
-    mockery.enable({ useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false });
+    mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
     mockery.registerMock('./argv-setup.js', {
-      command: function (command) {
+      command: function(command) {
         return {
-          isDefault: function (file) {
+          isDefault: function(file) {
             return file.includes('nightwatch.');
           },
-          defaults: function () {
+          defaults: function() {
             return './nightwatch.json';
           }
         };
@@ -189,7 +189,7 @@ describe('Test CLI Runner', function () {
       dirname(a) {
         return '';
       },
-      join: function (a, b) {
+      join: function(a, b) {
         if (b == './settings.json') {
           return './settings.json';
         }
@@ -243,7 +243,7 @@ describe('Test CLI Runner', function () {
         }
         return './nightwatch.json';
       },
-      resolve: function (a) {
+      resolve: function(a) {
         if (a === '../path/to/test') {
           return '/path/to/test';
         }
@@ -271,7 +271,7 @@ describe('Test CLI Runner', function () {
     }
   });
 
-  afterEach(function () {
+  afterEach(function() {
     mockery.deregisterAll();
     mockery.resetCache();
     mockery.disable();
@@ -279,12 +279,12 @@ describe('Test CLI Runner', function () {
 
   function registerNoSettingsJsonMock() {
     mockery.registerMock('fs', {
-      statSync: function (module) {
+      statSync: function(module) {
         if (module == './settings.json') {
           throw new Error('Does not exist');
         }
         return {
-          isFile: function () {
+          isFile: function() {
             return true;
           }
         };
@@ -292,7 +292,7 @@ describe('Test CLI Runner', function () {
     });
   }
 
-  it('should have reasonable defaults for CLI arguments', function () {
+  it('should have reasonable defaults for CLI arguments', function() {
     registerNoSettingsJsonMock();
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -315,7 +315,7 @@ describe('Test CLI Runner', function () {
     assert.strictEqual(runner.globals.settings.start_session, true);
   });
 
-  it('should override settings with CLI arguments', function () {
+  it('should override settings with CLI arguments', function() {
     registerNoSettingsJsonMock();
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
@@ -336,14 +336,14 @@ describe('Test CLI Runner', function () {
     assert.strictEqual(runner.globals.settings.output_folder, 'test-output-folder');
   });
 
-  it('testSetOutputFolder', function () {
+  it('testSetOutputFolder', function() {
     mockery.registerMock('fs', {
-      statSync: function (module) {
+      statSync: function(module) {
         if (module == './settings.json' || module == './nightwatch.conf.js') {
           throw new Error('Does not exist');
         }
         return {
-          isFile: function () {
+          isFile: function() {
             return true
           }
         };
@@ -359,12 +359,12 @@ describe('Test CLI Runner', function () {
     assert.equal(runner.settings.output_folder, false);
   });
 
-  it('testReadSettingsDeprecated', function (done) {
+  it('testReadSettingsDeprecated', function(done) {
     mockery.registerMock('fs', {
-      statSync: function (module) {
+      statSync: function(module) {
         if (module == './settings.json') {
           return {
-            isFile: function () {
+            isFile: function() {
               return true
             }
           };
@@ -394,12 +394,12 @@ describe('Test CLI Runner', function () {
     done();
   });
 
-  it('testCustomSettingsFileAndEnvironment', function () {
+  it('testCustomSettingsFileAndEnvironment', function() {
     mockery.registerMock('fs', {
-      statSync: function (module) {
+      statSync: function(module) {
         if (module == './custom.json') {
           return {
-            isFile: function () {
+            isFile: function() {
               return true
             }
           };
@@ -424,22 +424,22 @@ describe('Test CLI Runner', function () {
     assert.strictEqual(runner.test_settings.desiredCapabilities['test.user'], 'testuser');
   });
 
-  it('testGetTestSourceSingle', function () {
+  it('testGetTestSourceSingle', function() {
     let statCalled = false;
     let statSyncCalled = false;
     mockery.registerMock('fs', {
-      statSync: function (file) {
+      statSync: function(file) {
         if (file == 'demoTest') {
           statSyncCalled = true;
           return {
-            isFile: function () {
+            isFile: function() {
               return true;
             }
           };
         }
 
         if (file == 'demoTest.js' || file == './custom.js') {
-          return { isFile: function () {return true} };
+          return {isFile: function() {return true}};
         }
 
         throw new Error('Does not exist');
@@ -473,30 +473,30 @@ describe('Test CLI Runner', function () {
 
     return Runner
       .readTestSource(runner.test_settings, runner.argv)
-      .then(function (modules) {
+      .then(function(modules) {
         assert.equal(modules[0], 'demoTest.js');
         assert.ok(statSyncCalled);
       });
   });
 
-  it('testGetTestSourceSingleWithAbsolutePath', function () {
+  it('testGetTestSourceSingleWithAbsolutePath', function() {
     let ABSOLUTE_PATH = '/path/to/test';
     let ABSOLUTE_SRC_PATH = ABSOLUTE_PATH + '.js';
     let statSyncCalled = false;
 
     mockery.registerMock('fs', {
-      statSync: function (file) {
+      statSync: function(file) {
         if (file == ABSOLUTE_PATH) {
           statSyncCalled = true;
           return {
-            isFile: function () {
+            isFile: function() {
               return true;
             }
           };
         }
         if (file == ABSOLUTE_SRC_PATH || file == './custom.json') {
           return {
-            isFile: function () {
+            isFile: function() {
               return true
             }
           };
@@ -530,13 +530,13 @@ describe('Test CLI Runner', function () {
 
     return Runner
       .readTestSource(runner.test_settings, runner.argv)
-      .then(function (modules) {
+      .then(function(modules) {
         assert.equal(modules[0], ABSOLUTE_SRC_PATH);
         assert.ok(statSyncCalled);
       });
   });
 
-  it('testGetTestSourceSingleWithRelativePath', function () {
+  it('testGetTestSourceSingleWithRelativePath', function() {
     let RELATIVE_PATH = '../path/to/test';
     let TEST_SRC_PATH = process.cwd() + '/path/to/test.js';
     let statSyncCalled = false;
@@ -553,18 +553,18 @@ describe('Test CLI Runner', function () {
 
         throw new Error('Does not exist');
       },
-      statSync: function (file) {
+      statSync: function(file) {
         if (file == RELATIVE_PATH) {
           statSyncCalled = true;
           return {
-            isFile: function () {
+            isFile: function() {
               return true;
             }
           };
         }
         if (file == TEST_SRC_PATH || file == './custom.json') {
           return {
-            isFile: function () {
+            isFile: function() {
               return true
             }
           };
@@ -583,26 +583,26 @@ describe('Test CLI Runner', function () {
     const Runner = common.require('runner/runner.js');
 
     return Runner.readTestSource(runner.test_settings, runner.argv)
-      .then(function (modules) {
+      .then(function(modules) {
         assert.equal(modules[0], TEST_SRC_PATH);
         assert.ok(statSyncCalled);
       });
   });
 
-  it('testGetTestSourceGroup', function () {
+  it('testGetTestSourceGroup', function() {
     mockery.registerMock('fs', {
-      statSync: function (module) {
+      statSync: function(module) {
         switch (module) {
           case './custom.json':
           case './multi_test_paths.json':
             return {
-              isFile: function () {
+              isFile: function() {
                 return true
               }
             };
           case 'tests/demoGroup':
             return {
-              isDirectory: function () {
+              isDirectory: function() {
                 return true
               }
             };
@@ -662,14 +662,14 @@ describe('Test CLI Runner', function () {
     }
   });
 
-  it('testGetTestSourceMultipleGroups', function () {
+  it('testGetTestSourceMultipleGroups', function() {
     mockery.registerMock('fs', {
-      statSync: function (module) {
+      statSync: function(module) {
         switch (module) {
           case './custom.json':
           case './multi_test_paths.json':
             return {
-              isFile: function () {
+              isFile: function() {
                 return true
               }
             };
@@ -679,7 +679,7 @@ describe('Test CLI Runner', function () {
           case 'tests1/demoGroup2':
           case 'tests2/demoGroup2':
             return {
-              isDirectory: function () {
+              isDirectory: function() {
                 return true
               }
             };
@@ -719,12 +719,12 @@ describe('Test CLI Runner', function () {
     assert.deepEqual(walker3.testSource, ['tests1/demoGroup1', 'tests1/demoGroup2', 'tests2/demoGroup2']);
   });
 
-  it('testParseTestSettingsInvalid', function () {
+  it('testParseTestSettingsInvalid', function() {
     mockery.registerMock('fs', {
-      statSync: function (module) {
+      statSync: function(module) {
         if (module == './empty.json') {
           return {
-            isFile: function () {
+            isFile: function() {
               return true
             }
           };
@@ -734,7 +734,7 @@ describe('Test CLI Runner', function () {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    assert.throws(function () {
+    assert.throws(function() {
       new CliRunner({
         config: './empty.json',
         env: 'default'
@@ -743,12 +743,12 @@ describe('Test CLI Runner', function () {
 
   });
 
-  it('testParseTestSettingsNull', function () {
+  it('testParseTestSettingsNull', function() {
     mockery.registerMock('fs', {
-      statSync: function (module) {
+      statSync: function(module) {
         if (module == './null.json') {
           return {
-            isFile: function () {
+            isFile: function() {
               return true;
             }
           };
@@ -769,12 +769,12 @@ describe('Test CLI Runner', function () {
     assert.strictEqual(runner.test_settings.irrelevantProperty, null);
   });
 
-  it('testParseTestSettingsIncorrect', function () {
+  it('testParseTestSettingsIncorrect', function() {
     mockery.registerMock('fs', {
-      statSync: function (module) {
+      statSync: function(module) {
         if (module == './incorrect.json') {
           return {
-            isFile: function () {
+            isFile: function() {
               return true
             }
           };
@@ -784,7 +784,7 @@ describe('Test CLI Runner', function () {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    assert.throws(function () {
+    assert.throws(function() {
       new CliRunner({
         config: './incorrect.json',
         env: 'incorrect'
@@ -792,12 +792,12 @@ describe('Test CLI Runner', function () {
     }, /Invalid testing environment specified: incorrect\. Available environments are: default/);
   });
 
-  it('testReadExternalGlobals', function () {
+  it('testReadExternalGlobals', function() {
     mockery.registerMock('fs', {
-      statSync: function (module) {
+      statSync: function(module) {
         if (module == './custom.json' || module == './globals.json') {
           return {
-            isFile: function () {
+            isFile: function() {
               return true
             }
           };
@@ -822,7 +822,7 @@ describe('Test CLI Runner', function () {
     assert.equal(runner.test_settings.globals.testGlobalTwo.two.three, '5');
     assert.equal(runner.test_settings.globals.testGlobalTwo.one, 1);
 
-    assert.throws(function () {
+    assert.throws(function() {
       new CliRunner({
         config: './custom.json',
         env: 'extra'
@@ -834,12 +834,12 @@ describe('Test CLI Runner', function () {
 
   });
 
-  it('testReadExternalGlobalsError', function () {
+  it('testReadExternalGlobalsError', function() {
     mockery.registerMock('fs', {
-      statSync: function (module) {
+      statSync: function(module) {
         if (module == './custom.json') {
           return {
-            isFile: function () {
+            isFile: function() {
               return true
             }
           };
@@ -849,7 +849,7 @@ describe('Test CLI Runner', function () {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    assert.throws(function () {
+    assert.throws(function() {
       new CliRunner({
         config: './custom.json',
         env: 'extra'
@@ -860,12 +860,12 @@ describe('Test CLI Runner', function () {
     }, /Error reading external global file using "\.\/extra\/globals-err.js"/);
   });
 
-  it('testStartSeleniumDisabledPerEnvironment', function () {
+  it('testStartSeleniumDisabledPerEnvironment', function() {
     mockery.registerMock('fs', {
-      statSync: function (module) {
+      statSync: function(module) {
         if (module == './sauce.json') {
           return {
-            isFile: function () {
+            isFile: function() {
               return true
             }
           };
@@ -882,12 +882,12 @@ describe('Test CLI Runner', function () {
     assert.equal(runner.isWebDriverManaged(), false);
   });
 
-  it('testStartSeleniumEnvironmentOverride', function () {
+  it('testStartSeleniumEnvironmentOverride', function() {
     mockery.registerMock('fs', {
-      statSync: function (module) {
+      statSync: function(module) {
         if (module == './selenium_override.json') {
           return {
-            isFile: function () {
+            isFile: function() {
               return true
             }
           };
@@ -910,10 +910,9 @@ describe('Test CLI Runner', function () {
       config: './invalid_chromeOptionArgument.json',
     }).setup();
 
-    assert.equal(runner.invalidChromeArguments.length,1);
-    assert.equal(runner.invalidChromeArguments[0],SOME_INVALID_CHROME_ARGUMENT);
+    assert.equal(runner.invalidChromeArguments.length, 1);
+    assert.equal(runner.invalidChromeArguments[0], SOME_INVALID_CHROME_ARGUMENT);
   });
-
 
 });
 
