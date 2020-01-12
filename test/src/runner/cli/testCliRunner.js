@@ -277,7 +277,7 @@ describe('Test CLI Runner', function() {
     mockery.disable();
   });
 
-  function registerNoSettingsJsonMock() {
+  function registerNoSettingsJsonMock(){
     mockery.registerMock('fs', {
       statSync: function(module) {
         if (module == './settings.json') {
@@ -338,7 +338,7 @@ describe('Test CLI Runner', function() {
 
   it('testSetOutputFolder', function() {
     mockery.registerMock('fs', {
-      statSync: function(module) {
+      statSync : function(module) {
         if (module == './settings.json' || module == './nightwatch.conf.js') {
           throw new Error('Does not exist');
         }
@@ -432,14 +432,14 @@ describe('Test CLI Runner', function() {
         if (file == 'demoTest') {
           statSyncCalled = true;
           return {
-            isFile: function() {
+            isFile : function() {
               return true;
             }
           };
         }
 
         if (file == 'demoTest.js' || file == './custom.js') {
-          return {isFile: function() {return true}};
+          return {isFile : function() {return true}};
         }
 
         throw new Error('Does not exist');
