@@ -338,7 +338,7 @@ describe('Test CLI Runner', function() {
 
   it('testSetOutputFolder', function() {
     mockery.registerMock('fs', {
-      statSync : function(module) {
+      statSync: function(module) {
         if (module == './settings.json' || module == './nightwatch.conf.js') {
           throw new Error('Does not exist');
         }
@@ -428,7 +428,7 @@ describe('Test CLI Runner', function() {
     let statCalled = false;
     let statSyncCalled = false;
     mockery.registerMock('fs', {
-      statSync: function(file) {
+      statSync : function(file) {
         if (file == 'demoTest') {
           statSyncCalled = true;
           return {
