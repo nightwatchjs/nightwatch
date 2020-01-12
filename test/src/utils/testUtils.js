@@ -4,20 +4,6 @@ const Utils = common.require('utils');
 
 describe('test Utils', function() {
 
-  it('testValidateCliArguments', function () {
-    const unquotedArgumentWithWhitespace = '--someUnescapedArgument=hello there';
-    const mockedCliArguments = [
-      '--someArgument',
-      '--someEscapedArgument="hello"',
-      unquotedArgumentWithWhitespace
-    ];
-
-    const foundArguments = Utils.findUnquotedCliArgumentsWithWhitespaces(mockedCliArguments);
-
-    assert.equal(foundArguments.length,1);
-    assert.equal(foundArguments[0],unquotedArgumentWithWhitespace);
-  });
-
   it('testFormatElapsedTime', function() {
 
     let resultMs = Utils.formatElapsedTime(999);
@@ -131,5 +117,19 @@ describe('test Utils', function() {
     assert.equal(Utils.relativeUrl('nightwatchjs.org'), true);
     assert.equal(Utils.relativeUrl('nightwatchjs.org/guide'), true);
     assert.equal(Utils.relativeUrl('/guide'), true);
+  });
+
+  it('testFindUnquotedCliArgumentsWithWhitespaces', function () {
+    const unquotedArgumentWithWhitespace = '--someUnescapedArgument=hello there';
+    const mockedCliArguments = [
+      '--someArgument',
+      '--someEscapedArgument="hello"',
+      unquotedArgumentWithWhitespace
+    ];
+
+    const foundArguments = Utils.findUnquotedCliArgumentsWithWhitespaces(mockedCliArguments);
+
+    assert.equal(foundArguments.length, 1);
+    assert.equal(foundArguments[0], unquotedArgumentWithWhitespace);
   });
 });
