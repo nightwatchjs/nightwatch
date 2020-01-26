@@ -238,6 +238,37 @@ describe('test page object element selectors', function() {
     });
   });
 
+  it('page object .not assert', function(done) {
+    nocks.elementsNotFound('#weblogin');
+
+    const page = Nightwatch.api().page.simplePageObj();
+    page.assert.not.elementPresent('@loginAsString');
+    page.verify.not.elementPresent('@loginAsString');
+
+    Nightwatch.start(function(err) {
+      assert.strictEqual(err, undefined);
+      done();
+    });
+  });
+
+  it('page object section .not assert', function(done) {
+    nocks
+      .elementsFound('#signupSection')
+      .elementFound('#getStarted')
+      .elementFound('#helpBtn')
+      .elementsId('0', '#helpBtn', []);
+
+    let page = Nightwatch.api().page.simplePageObj();
+    let section = page.section.signUp;
+
+    section.assert.not.elementPresent('@help', function(result) {
+      assert.strictEqual(result, true);
+      done();
+    });
+
+    Nightwatch.start();
+  });
+
   it('page object customCommand with selector', function(done) {
     nocks
       .elementFound('#signupSection')
