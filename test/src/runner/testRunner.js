@@ -189,16 +189,16 @@ describe('testRunner', function() {
 
     return NightwatchClient.runTests(testsPath, settings)
       .then(_ => {
-        return readFilePromise('output/FIREFOX_TEST_TEST_sample.xml');
+        return readFilePromise('output/FIREFOX_TEST_TEST_sampleWithError.xml');
       })
       .then(data => {
         let content = data.toString();
-        const regexErrorText = /(?:<error(?:[^>]*)>)([^>]*)(?:<\/error>)/; 
+        const regexErrorText = /(?:<error(?:[^>]*)>)([^>]*)(?:<\/error>)/;
         const regexResult = regexErrorText.exec(content);
         const errorText = regexResult.length > 1 ? regexResult[1] : '';
-        
+
         assert.ok(content.indexOf('<error message="Error in test script"') > 0, 'Report should contain error message');
-        assert.ok(errorText.indexOf('sample.js') > -1, 'Report should contain stack trace');
+        assert.ok(errorText.indexOf('sampleWithError.js') > -1, 'Report should contain stack trace');
       });
   });
 
