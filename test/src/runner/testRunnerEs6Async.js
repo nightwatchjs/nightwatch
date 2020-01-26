@@ -175,6 +175,7 @@ describe('testRunner ES6 Async', function() {
       webdriver: {
         start_process: true
       },
+      page_objects_path: [path.join(__dirname, '../../extra/pageobjects/pages')],
       output: false,
       skip_testcases_on_fail: false,
       silent: false,
