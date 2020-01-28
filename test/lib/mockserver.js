@@ -236,8 +236,11 @@ module.exports = {
    * @param {Object} item
    * @param {boolean} once
    */
-  addMock(item, once) {
+  addMock(item, once, twice) {
     server.addMock(item, once);
+    if (twice) {
+      server.addMock(item, once);
+    }
     return this;
   },
 

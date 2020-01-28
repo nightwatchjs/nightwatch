@@ -145,7 +145,7 @@ describe('testRunner ES6 Async', function() {
           'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
         }]
       })
-    }, true);
+    }, true, true);
 
     MockServer.addMock({
       url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/text',
