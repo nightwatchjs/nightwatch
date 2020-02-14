@@ -317,6 +317,29 @@ describe('Test CLI Runner', function() {
     assert.strictEqual(runner.globals.settings.output_folder, 'test-output-folder');
   });
 
+  it('should disable color if running on CI', function() {
+    process.env.CI = 'true';
+    registerNoSettingsJsonMock();
+    const CliRunner = common.require('runner/cli/cli.js');
+    let runner = new CliRunner({
+      config: './nightwatch.json',
+    }).setup();
+
+    assert.strictEqual(runner.test_settings.disable_colors, true);
+  });
+
+  it('should not disable color if running on CI and CLI `--color` arg is provided', function() {
+    process.env.CI = 'true';
+    registerNoSettingsJsonMock();
+    const CliRunner = common.require('runner/cli/cli.js');
+    let runner = new CliRunner({
+      config: './nightwatch.json',
+      color: true,
+    }).setup();
+
+    assert.strictEqual(runner.test_settings.disable_colors, false);
+  });
+
   it('testSetOutputFolder', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
