@@ -328,7 +328,18 @@ describe('Transport.create()', function () {
           })
           .reply(200, {});
 
-        result = await transport.testSuiteFinished(false);
+        result = await transport.testSuiteFinished(false, {
+          completed: {
+            'should show a login-button': {
+              errors: 0,
+              failed: 0
+            },
+            'should show a logo': {
+              errors: 0,
+              failed: 0
+            }
+          }
+        });
         assert.strictEqual(result, true);
         assert.strictEqual(transport.sessionId, null);
 
@@ -336,7 +347,7 @@ describe('Transport.create()', function () {
       } catch (e) {
         done(e);
       }
-    }, 100)
+    }, 100);
 
   });
 
@@ -380,11 +391,30 @@ describe('Transport.create()', function () {
         nock('https://api.browserstack.com')
           .put('/automate/sessions/1234567.json', {
             status: 'failed',
-            reason: ''
+            reason: '- should show a title\n- should show a register-button'
           })
           .reply(200, {});
 
-        result = await transport.testSuiteFinished(true);
+        result = await transport.testSuiteFinished(true, {
+          completed: {
+            'should show a title': {
+              errors: 0,
+              failed: 1
+            },
+            'should show a login-button': {
+              errors: 0,
+              failed: 0
+            },
+            'should show a register-button': {
+              errors: 1,
+              failed: 0
+            },
+            'should show a logo': {
+              errors: 0,
+              failed: 0
+            }
+          }
+        });
         assert.strictEqual(result, true);
         assert.strictEqual(transport.sessionId, null);
 
@@ -392,7 +422,7 @@ describe('Transport.create()', function () {
       } catch (e) {
         done(e);
       }
-    }, 100)
+    }, 100);
 
   });
 });
