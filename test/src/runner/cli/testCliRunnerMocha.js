@@ -8,17 +8,15 @@ describe('test CLI Runner Mocha', function() {
 
     mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
     mockery.registerMock('./argv-setup.js', {
-      command: function(command) {
-        return {
-          isDefault: function(file) {
-            return file.includes('nightwatch.');
-          },
-          defaults: function() {
-            return './nightwatch.json';
-          }
-        };
-      }
+      isDefault(option, value) {
+        return value.includes('nightwatch.')
+      },
+
+      getDefault() {
+        return './nightwatch.json';
+      },
     });
+
     mockery.registerMock('path', {
       resolve: function(a) {
         return a;
