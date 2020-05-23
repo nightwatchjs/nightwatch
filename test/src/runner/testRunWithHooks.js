@@ -220,6 +220,34 @@ describe('testRunWithHooks', function() {
     return NightwatchClient.runTests(testsPath, settings);
   });
 
+  it('testRunner with assertion failed in after hook', function() {
+    let testsPath = path.join(__dirname, '../../asynchookstests/sampleWithAssertionFailedInAfter.js');
+    let globals = {
+      calls: 0,
+      reporter(results) {
+        assert.ok(results.lastError instanceof Error);
+        assert.strictEqual(results.lastError.name, 'NightwatchAssertError');
+      }
+    };
+
+    let settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      seleniumPort: 10195,
+      silent: true,
+      output: false,
+      persist_globals: true,
+      globals: globals,
+      output_folder: false
+    };
+
+    return NightwatchClient.runTests({
+      _source: [testsPath]
+    }, settings);
+  });
 
   it('testRunner with --testcase and before and after', function() {
     let testsPath = path.join(__dirname, '../../sampletests/before-after/syncBeforeAndAfter.js');

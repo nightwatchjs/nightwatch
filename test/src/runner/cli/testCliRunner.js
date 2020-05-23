@@ -304,6 +304,7 @@ describe('Test CLI Runner', function() {
       tag: 'danger',
       filter: 'test-filename-filter',
       skipgroup: 'test-skip-group',
+      timeout: 11
     }).setup();
 
     assert.strictEqual(runner.test_settings.silent, false);
@@ -312,6 +313,8 @@ describe('Test CLI Runner', function() {
     assert.strictEqual(runner.test_settings.filename_filter, 'test-filename-filter');
     assert.deepEqual(runner.test_settings.skipgroup, ['test-skip-group']);
     assert.strictEqual(runner.globals.settings.output_folder, 'test-output-folder');
+    assert.strictEqual(runner.test_settings.globals.waitForConditionTimeout, 11);
+    assert.strictEqual(runner.test_settings.globals.retryAssertionTimeout, 11);
   });
 
   it('testSetOutputFolder', function() {

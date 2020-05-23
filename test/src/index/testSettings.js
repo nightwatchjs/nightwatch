@@ -165,18 +165,4 @@ describe('test Settings', function () {
     assert.equal(request.httpOpts.timeout, 10000);
     assert.equal(request.retryAttempts, 3);
   });
-
-  it('test global timeout', function () {
-    let settings = Settings.parse({
-      selenium : {
-        start_process: false
-      },
-      selenium_host: 'localhost.org',
-      selenium_port: 80
-    }, {}, {timeout: 11});
-
-    let client = Nightwatch.createClient(settings);
-    eq(client.settings.globals.waitForConditionTimeout, 11);
-    eq(client.settings.globals.retryAssertionTimeout, 11);
-  });
 });
