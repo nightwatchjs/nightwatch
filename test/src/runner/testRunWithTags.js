@@ -98,9 +98,10 @@ describe('testRunWithTags', function() {
       globals: {
         reporter(results) {
           assert.ok('demoTagTest' in results.modules['tags/sample'].completed);
+          assert.ok(Object.keys(results.modules).every(path => path.includes('tags')));
         }
       },
-      filter: 'tags/*',
+      filter: '**/tags/*',
       tag_filter: ['login'],
       output_folder: false,
     };
