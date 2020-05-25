@@ -122,7 +122,7 @@ describe('testRunWithTags', function() {
       output: false,
       globals: {
         reporter(results) {
-          assert.ok('demoTagTest' in results.modules['tags\\sample'].completed);
+          assert.ok('demoTagTest' in results.modules['tags/sample'].completed);
           assert.strictEqual(Object.keys(results.modules).length, 1);
         }
       },
