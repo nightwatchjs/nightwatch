@@ -98,15 +98,42 @@ describe('testRunWithTags', function() {
       globals: {
         reporter(results) {
           assert.ok('demoTagTest' in results.modules['tags/sample'].completed);
-          assert.ok(Object.keys(results.modules).every(path => path.includes('tags')));
+          assert.strictEqual(Object.keys(results.modules).length, 1);
         }
       },
       filter: '**/tags/*',
-      tag_filter: ['login'],
+      tag_filter: ['other'],
       output_folder: false,
     };
 
     return NightwatchClient.runTests(testsPath, settings);
+  });
+
+  it('testRunWithSkipTagsAndFilterNotEmpty', function() {
+    let testsPath = path.join(__dirname, '../../sampletests');
+
+    let settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      output: false,
+      globals: {
+        reporter(results) {
+          assert.ok('demoTagTest' in results.modules['tags\\sample'].completed);
+          assert.strictEqual(Object.keys(results.modules).length, 1);
+        }
+      },
+      filter: '**/tags/*',
+      output_folder: false,
+    };
+
+    return NightwatchClient.runTests({
+      _source: [testsPath],
+      skiptags: ['logout']
+    }, settings);
   });
 
   it('testRunWithTagsAndSkipTags', function() {
