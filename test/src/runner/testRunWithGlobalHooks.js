@@ -60,7 +60,7 @@ describe('testRunWithGlobalHooks', function() {
       silent: false,
       output: false,
       persist_globals: true,
-      globals: globals,
+      globals,
       output_folder: false
     };
 
@@ -206,7 +206,7 @@ describe('testRunWithGlobalHooks', function() {
           });
         },
         reporter(results, cb) {
-          assert.equal(results.modules.sampleSingleTest.errmessages.length, 1);
+          assert.equal(results.modules.sampleSingleTest.errmessages.length, 2);
           assert.equal(results.modules.sampleWithBeforeAndAfter.errmessages.length, 1);
           assert.equal(results.modules.syncBeforeAndAfter.errmessages.length, 1);
           assert.ok(results.modules.sampleSingleTest.errmessages[0].includes('Error while running "perform" command:'));

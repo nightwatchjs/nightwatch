@@ -38,7 +38,7 @@ describe('testRunnerJUnitOutput', function() {
     process.removeAllListeners('unhandledRejection');
   });
 
-  it('test run with jUnit output and test failures', function () {
+  it('test run screenshots with jUnit output and test failures', function () {
 
     let testsPath = [
       path.join(__dirname, '../../sampletests/withfailures')
@@ -108,7 +108,7 @@ describe('testRunnerJUnitOutput', function() {
         retryAssertionTimeout: 50,
         reporter(results) {
           assert.strictEqual(results.assertions, 0);
-          assert.strictEqual(results.errmessages.length, 0);
+          assert.strictEqual(results.errmessages.length, 1);
           assert.strictEqual(results.failed, 0);
           assert.strictEqual(results.errors, 1);
           assert.ok(results.lastError instanceof Error);
@@ -134,7 +134,7 @@ describe('testRunnerJUnitOutput', function() {
         const content = data.toString();
         assert.ok(content.includes('<error message="Error in test script" type="error">'), 'Report should contain error message');
         assert.ok(content.includes('sampleWithError.js'), 'Report should contain stackTrace');
-        assert.ok(!content.includes('<system-err>'), 'Report should not contain <system-err>');
+        assert.ok(content.includes('<system-err>'), 'Report should also contain <system-err>');
       });
   });
 
@@ -284,6 +284,59 @@ describe('testRunnerJUnitOutput', function() {
         assert.ok(content.includes('<failure message="Failed [equal]: (0 == 1) - expected &#34;1&#34; but got: &#34;0&#34;'), 'Report should contain Failed [equal]: (0 == 1)');
         assert.ok(content.includes('Failed [strictEqual]: (Input A expected to strictly equal input B'), 'Report should contain Failed [strictEqual]');
         assert.ok(content.indexOf('sampleWithFailureInTestcaseAndAfter.js') > -1, 'Report should contain stack trace');
+      });
+  });
+
+  it('testRun with jUnit output and errors in testcase and failure in after hook', function () {
+    let testsPath = [
+      path.join(__dirname, '../../asynchookstests/sampleWithErrorInTestcaseAndAfter.js')
+    ];
+
+    let settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      output_folder: 'output',
+      silent: false,
+      globals: {
+        waitForConditionPollInterval: 20,
+        waitForConditionTimeout: 50,
+        retryAssertionTimeout: 50,
+        reporter: function (results) {
+          assert.strictEqual(results.assertions, 1);
+          assert.strictEqual(results.errmessages.length, 2);
+          assert.strictEqual(results.failed, 1);
+          assert.ok(results.lastError instanceof Error);
+          assert.ok(results.lastError.message.startsWith('Error while running "strictEqual" command: Failed [strictEqual]:'));
+          assert.strictEqual(typeof results.modules.sampleWithErrorInTestcaseAndAfter, 'object');
+          assert.strictEqual(results.modules.sampleWithErrorInTestcaseAndAfter.assertionsCount, 1);
+          assert.strictEqual(results.modules.sampleWithErrorInTestcaseAndAfter.errmessages.length, 2);
+          assert.strictEqual(results.modules.sampleWithErrorInTestcaseAndAfter.failedCount, 1);
+          assert.strictEqual(results.modules.sampleWithErrorInTestcaseAndAfter.skipped.length, 0);
+          assert.strictEqual(results.modules.sampleWithErrorInTestcaseAndAfter.completed['demo test async'].assertions.length, 0);
+          assert.strictEqual(results.modules.sampleWithErrorInTestcaseAndAfter.completed['demo test async'].errors, 1);
+          assert.ok(results.modules.sampleWithErrorInTestcaseAndAfter.completed['demo test async'].lastError instanceof Error);
+          assert.strictEqual(results.modules.sampleWithErrorInTestcaseAndAfter.completed['demo test async'].lastError.message, 'error in testcase');
+        }
+      },
+      output: false,
+      screenshots: {
+        enabled: false
+      }
+    };
+
+    return NightwatchClient.runTests(testsPath, settings)
+      .then(_ => {
+        return readFilePromise('output/FIREFOX_TEST_TEST_sampleWithErrorInTestcaseAndAfter.xml');
+      })
+      .then(data => {
+        let content = data.toString();
+        assert.ok(content.includes('<system-err>'), 'Report should contain <system-err>');
+        assert.ok(content.includes('<error message="error in testcase" type="error">'), 'Report should contain <error>');
+        assert.ok(content.includes('NightwatchAssertError: Failed [strictEqual]: (Input A expected to strictly equal input B:'), 'Report should contain Failed [strictEqual]');
+        assert.ok(content.indexOf('sampleWithErrorInTestcaseAndAfter.js') > -1, 'Report should contain stack trace');
       });
   });
 
