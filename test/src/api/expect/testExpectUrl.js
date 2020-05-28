@@ -204,7 +204,10 @@ describe('expect.url', function() {
     this.client.api.globals.waitForConditionTimeout = 10;
     this.client.api.globals.waitForConditionPollInterval = 9;
 
-    Nocks.url().getUrl().getUrl();
+    Nocks.url()
+      .getUrl()
+      .getUrl()
+      .getUrl();
 
     let expect = this.client.api.expect.url().to.not.match(/localhost/);
     assert.ok(expect.assertion.message.startsWith('Expected current url to'));
