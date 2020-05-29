@@ -282,7 +282,7 @@ describe('testRunnerJUnitOutput', function() {
         let content = data.toString();
         assert.ok(content.includes('<system-err>'), 'Report should contain <system-err>');
         assert.ok(content.includes('<failure message="Failed [equal]: (0 == 1) - expected &#34;1&#34; but got: &#34;0&#34;'), 'Report should contain Failed [equal]: (0 == 1)');
-        assert.ok(content.includes('Failed [strictEqual]: (Input A expected to strictly equal input B'), 'Report should contain Failed [strictEqual]');
+        assert.ok(content.includes('Failed [strictEqual]: '), 'Report should contain Failed [strictEqual]');
         assert.ok(content.indexOf('sampleWithFailureInTestcaseAndAfter.js') > -1, 'Report should contain stack trace');
       });
   });
@@ -335,7 +335,7 @@ describe('testRunnerJUnitOutput', function() {
         let content = data.toString();
         assert.ok(content.includes('<system-err>'), 'Report should contain <system-err>');
         assert.ok(content.includes('<error message="error in testcase" type="error">'), 'Report should contain <error>');
-        assert.ok(content.includes('NightwatchAssertError: Failed [strictEqual]: (Input A expected to strictly equal input B:'), 'Report should contain Failed [strictEqual]');
+        assert.ok(content.includes('NightwatchAssertError: Failed [strictEqual]:'), 'Report should contain Failed [strictEqual]');
         assert.ok(content.indexOf('sampleWithErrorInTestcaseAndAfter.js') > -1, 'Report should contain stack trace');
       });
   });
