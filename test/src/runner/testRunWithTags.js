@@ -101,8 +101,8 @@ describe('testRunWithTags', function() {
           assert.strictEqual(Object.keys(results.modules).length, 1);
         }
       },
-      filter: '**/tags/*',
-      tag_filter: ['other'],
+      filter: 'tags/*',
+      tag_filter: ['login'],
       output_folder: false,
     };
 
@@ -134,6 +134,38 @@ describe('testRunWithTags', function() {
       _source: [testsPath],
       skiptags: ['logout']
     }, settings);
+  });
+
+  it('testRun with filter and skiptags no matches', function() {
+    let testsPath = path.join(__dirname, '../../sampletests');
+
+    let settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      output: false,
+      globals: {
+        reporter(results) {
+        }
+      },
+      filter: '**/tags/*',
+      output_folder: false,
+    };
+
+    return NightwatchClient.runTests({
+      _source: [testsPath],
+      skiptags: ['logout', 'login']
+    }, settings).catch(err => {
+      return err;
+    }).then(err => {
+      assert.ok(err instanceof Error);
+      assert.ok(err.message.includes('No tests defined! using source folder'), err.message + '\n' + err.stack);
+      assert.ok(err.detailedErr.includes('- using path filter: **/tags/*'));
+      assert.ok(err.detailedErr.includes('- using skiptags filter: logout,login'));
+    });
   });
 
   it('testRunWithTagsAndSkipTags', function() {
@@ -183,9 +215,12 @@ describe('testRunWithTags', function() {
       _source: [testsPath],
       skiptags: ['login']
     }, settings).catch(err => {
+      return err;
+    }).then(err => {
+      assert.ok(err instanceof Error);
       assert.ok(err.message.includes('No tests defined! using source folder'), err.message + '\n' + err.stack);
       assert.ok(err.detailedErr.includes('- using tags filter: other'));
       assert.ok(err.detailedErr.includes('- using skiptags filter: login'));
-    });
+    })
   });
 });
