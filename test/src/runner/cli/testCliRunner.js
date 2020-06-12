@@ -908,7 +908,7 @@ describe('Test CLI Runner', function() {
     assert.equal(runner.test_settings.asyncVar, true);
   });
 
-  it('Should resolve promise as config', function() {
+  it('Should reject promise as config', function() {
     let configPromiseFailure = new Promise((resolve, reject) => {
       let settings = {
         src_folders: ['tests'],
