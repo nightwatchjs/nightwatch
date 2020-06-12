@@ -23,7 +23,7 @@ describe('Test CLI Runner Generate', function() {
     mockery.disable();
   });
 
-  it('test start CLI Runner with no config file', function () {
+  it('test start CLI Runner with no config file', async function () {
     let configData;
     const fs = require('fs');
     const path = require('path');
@@ -165,7 +165,7 @@ describe('Test CLI Runner Generate', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    let runner = await new CliRunner({
       config: './nightwatch.json',
       env: 'browserstack.ie'
     }).setup();
