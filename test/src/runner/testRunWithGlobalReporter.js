@@ -26,7 +26,7 @@ describe('testRunWithGlobalReporter', function() {
 
   afterEach(function() {
     Object.keys(require.cache).forEach(function(module) {
-      delete require.cache[module];
+      //delete require.cache[module];
     });
   });
 
@@ -50,7 +50,7 @@ describe('testRunWithGlobalReporter', function() {
     };
 
     return NightwatchClient.runTests(testsPath, settings).then(_ => {
-      assert.equal(settings.globals.reporterCount, 1);
+      assert.strictEqual(settings.globals.reporterCount, 1);
     });
   });
 
@@ -77,7 +77,7 @@ describe('testRunWithGlobalReporter', function() {
     };
 
     return NightwatchClient.runTests(testsPath, settings).then(_ => {
-      assert.equal(reporterCount, 1);
+      assert.strictEqual(reporterCount, 1);
     });
   });
 
@@ -104,9 +104,9 @@ describe('testRunWithGlobalReporter', function() {
     };
 
     return NightwatchClient.runTests(testsPath, settings).then(_ => {
-      assert.equal(reporterCount, 1);
+      assert.strictEqual(reporterCount, 1);
     }).catch(err => {
-      assert.equal(err.message, 'Timeout while waiting (20s) for the custom global reporter callback to be called.');
+      assert.strictEqual(err.message, 'Timeout while waiting (20s) for the custom global reporter callback to be called.');
     });
   });
 });

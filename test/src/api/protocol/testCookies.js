@@ -3,14 +3,14 @@ const Globals = require('../../../lib/globals.js');
 
 describe('cookie commands', function() {
   before(function() {
-    Globals.protocolBefore.call(this);
+    Globals.protocolBefore();
   });
 
   it('testCookieGet', function () {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'GET');
-        assert.equal(opts.path, '/session/1352110219202/cookie');
+        assert.strictEqual(opts.method, 'GET');
+        assert.strictEqual(opts.path, '/session/1352110219202/cookie');
       },
       commandName: 'cookie',
       args: ['GET']
@@ -18,10 +18,10 @@ describe('cookie commands', function() {
   });
 
   it('testCookiePost', function () {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.equal(opts.path, '/session/1352110219202/cookie');
+        assert.strictEqual(opts.method, 'POST');
+        assert.strictEqual(opts.path, '/session/1352110219202/cookie');
         assert.deepEqual(opts.data, {cookie: {name: 'test_cookie'}});
       },
       commandName: 'cookie',
@@ -30,10 +30,10 @@ describe('cookie commands', function() {
   });
 
   it('testCookieDeleteAll', function () {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'DELETE');
-        assert.equal(opts.path, '/session/1352110219202/cookie');
+        assert.strictEqual(opts.method, 'DELETE');
+        assert.strictEqual(opts.path, '/session/1352110219202/cookie');
       },
       commandName: 'cookie',
       args: ['DELETE']
@@ -41,10 +41,10 @@ describe('cookie commands', function() {
   });
 
   it('testCookieDeleteOne', function () {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'DELETE');
-        assert.equal(opts.path, '/session/1352110219202/cookie/test_cookie');
+        assert.strictEqual(opts.method, 'DELETE');
+        assert.strictEqual(opts.path, '/session/1352110219202/cookie/test_cookie');
       },
       commandName: 'cookie',
       args: ['DELETE', 'test_cookie']
@@ -52,17 +52,16 @@ describe('cookie commands', function() {
   });
 
   it('testCookieErrors', function () {
-    var protocol = this.protocol;
-
-    assert.throws(
-      function () {
-        protocol.cookie('POST');
-      }); 'POST method without a cookie param throws an error'
-
-    assert.throws(
-      function () {
-        protocol.window('PUT');
-      }); 'PUT method throws an error'
+    return Globals.protocolTest({
+      assertion: function(opts) {},
+      commandName: 'cookie',
+      args: ['POST']
+    }).catch(err => {
+      return err;
+    }).then(result => {
+      assert.ok(result instanceof Error);
+      assert.strictEqual(result.message, 'Error while running "cookie" command: POST requests to /cookie must include a cookie object parameter also.');
+    });
   });
 
 });

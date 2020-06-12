@@ -159,16 +159,18 @@ describe('test TagsMatcher', function() {
     ];
     testCases.forEach(([description, moduleTags, tag_filter, skiptags, expected]) => {
       it(`${description}`, function () {
-        const testModule = {
-          tags: moduleTags
-        };
-
         const matcher = new TagsMatcher({
           tag_filter: tag_filter,
           skiptags: skiptags,
         });
 
-        const matched = matcher.checkModuleTags(testModule);
+        matcher.context = {
+          getTags() {
+            return moduleTags
+          }
+        };
+
+        const matched = matcher.checkModuleTags();
 
         expect(matched).to.equal(expected);
       });

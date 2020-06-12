@@ -9,7 +9,7 @@ describe('test Parallel Execution', function() {
   const allArgs = [];
   const allOpts = [];
 
-  this.timeout(5000);
+  this.timeout(8000);
 
   beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
@@ -89,10 +89,14 @@ describe('test Parallel Execution', function() {
 
     await runner.setup();
 
+    runner.setup();
+    runner.test_settings.globals.retryAssertionTimeout = 10;
+    runner.test_settings.globals.waitForConditionTimeout = 10;
+    runner.test_settings.globals.waitForConditionPollInterval = 9;
     assert.ok(runner.test_settings.test_workers);
 
     return runner.runTests().then(_ => {
-      assert.strictEqual(allArgs.length, 32);
+      assert.strictEqual(allArgs.length, 43);
       assert.strictEqual(runner.concurrency.globalExitCode, 0);
     });
   });
@@ -134,7 +138,7 @@ describe('test Parallel Execution', function() {
     });
 
     return runner.runTests().then(_ => {
-      assert.strictEqual(allArgs.length, 32);
+      assert.strictEqual(allArgs.length, 43);
     });
   });
 
@@ -163,7 +167,7 @@ describe('test Parallel Execution', function() {
     });
 
     return runner.runTests().then(_ => {
-      assert.strictEqual(allArgs.length, 32);
+      assert.strictEqual(allArgs.length, 43);
     });
   });
 

@@ -101,7 +101,10 @@ describe('testRunWithCustomCommands', function() {
         {level: 'info', timestamp: 534547832, message: 'Test log'},
         {level: 'info', timestamp: 534547442, message: 'Test log2'}
       ]);
-      assert.strictEqual(testResults.errmessages.length, 1);
+      assert.strictEqual(testResults.errors, 1);
+      assert.ok(testResults.lastError instanceof Error);
+      assert.strictEqual(testResults.lastError.name, 'TypeError');
+      assert.strictEqual(testResults.errmessages.length, 1, 'Error is not logged in errmessages array');
     });
   });
 

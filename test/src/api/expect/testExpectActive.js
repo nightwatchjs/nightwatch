@@ -4,7 +4,10 @@ const Nocks = require('../../../lib/nocks.js');
 
 describe('expect.active', function() {
   beforeEach(function(done) {
-    ExpectGlobals.beforeEach.call(this, () => {
+    ExpectGlobals.beforeEach.call(this, {
+      silent: false,
+      output: false
+    }, () => {
       this.client.api.globals.abortOnAssertionFailure = false;
       done();
     });
@@ -24,12 +27,12 @@ describe('expect.active', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.active;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '#weblogin');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.waitForMs, 40);
-      assert.equal(expect.assertion.passed, true);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be active'));
-      assert.equal(expect.assertion.messageParts.length, 1);
+      assert.strictEqual(expect.assertion.selector, '#weblogin');
+      assert.strictEqual(expect.assertion.negate, false);
+      assert.strictEqual(expect.assertion.waitForMs, 40);
+      assert.strictEqual(expect.assertion.passed, true);
+      assert.ok(/^Expected element <#weblogin> to be active \(\d+ms\)$/.test(expect.assertion.message), expect.assertion.message);
+      assert.strictEqual(expect.assertion.messageParts.length, 1, expect.assertion.messageParts);
     });
   });
 
@@ -39,9 +42,9 @@ describe('expect.active', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.active.before(100);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 100);
-      assert.equal(expect.assertion.passed, true);
-      assert.ok(expect.assertion.message.startsWith(`Expected element <#weblogin> to be active in 100ms - condition was met in ${expect.assertion.elapsedTime}ms`));
+      assert.strictEqual(expect.assertion.waitForMs, 100);
+      assert.strictEqual(expect.assertion.passed, true);
+      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be active in 100ms'), expect.assertion.message);
     });
   });
 
@@ -56,9 +59,9 @@ describe('expect.active', function() {
     let expect = this.client.api.expect.element('#weblogin').to.be.active.before(60);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 60);
-      assert.equal(expect.assertion.passed, false);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be active in 60ms'));
+      assert.strictEqual(expect.assertion.waitForMs, 60);
+      assert.strictEqual(expect.assertion.passed, false);
+      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be active in 60ms'), expect.assertion.message);
     });
   });
 
@@ -71,15 +74,15 @@ describe('expect.active', function() {
       .notActive()
       .notActive();
 
-    let expect = this.client.api.expect.element('#weblogin').to.be.active;
+    const expect = this.client.api.expect.element('#weblogin').to.be.active;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '#weblogin');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.waitForMs, 40);
-      assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.expected, 'active');
-      assert.equal(expect.assertion.actual, 'not active');
+      assert.strictEqual(expect.assertion.selector, '#weblogin');
+      assert.strictEqual(expect.assertion.negate, false);
+      assert.strictEqual(expect.assertion.waitForMs, 40);
+      assert.strictEqual(expect.assertion.passed, false);
+      assert.strictEqual(expect.assertion.expected, 'active');
+      assert.strictEqual(expect.assertion.actual, 'not active');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be active'));
     });
   });
@@ -88,28 +91,28 @@ describe('expect.active', function() {
     this.client.api.globals.waitForConditionPollInterval = 50;
     Nocks.elementNotFound().elementFound().active();
 
-    let expect = this.client.api.expect.element('#weblogin').to.be.active.before(60);
+    const expect = this.client.api.expect.element('#weblogin').to.be.active.before(60);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 60);
-      assert.equal(expect.assertion.passed, true);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be active in 60ms - condition was met in ' + expect.assertion.elapsedTime + 'ms'));
+      assert.strictEqual(expect.assertion.waitForMs, 60);
+      assert.strictEqual(expect.assertion.passed, true);
+      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be active in 60ms'));
     });
   });
 
   it('to not be active [PASSED]', function() {
     Nocks.elementFound().notActive();
 
-    let expect = this.client.api.expect.element('#weblogin').to.not.be.active;
+    const expect = this.client.api.expect.element('#weblogin').to.not.be.active;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '#weblogin');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.expected, 'not active');
-      assert.equal(expect.assertion.actual, 'not active');
+      assert.strictEqual(expect.assertion.selector, '#weblogin');
+      assert.strictEqual(expect.assertion.negate, true);
+      assert.strictEqual(expect.assertion.passed, true);
+      assert.strictEqual(expect.assertion.expected, 'not active');
+      assert.strictEqual(expect.assertion.actual, 'not active');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not be active'));
-      assert.equal(expect.assertion.messageParts.length, 1);
+      assert.strictEqual(expect.assertion.messageParts.length, 1);
     });
   });
 
@@ -125,14 +128,14 @@ describe('expect.active', function() {
       .active()
       .active();
 
-    let expect = this.client.api.expect.element('#weblogin').to.not.be.active;
+    const expect = this.client.api.expect.element('#weblogin').to.not.be.active;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '#weblogin');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.expected, 'not active');
-      assert.equal(expect.assertion.actual, 'active');
+      assert.strictEqual(expect.assertion.selector, '#weblogin');
+      assert.strictEqual(expect.assertion.negate, true);
+      assert.strictEqual(expect.assertion.passed, false);
+      assert.strictEqual(expect.assertion.expected, 'not active');
+      assert.strictEqual(expect.assertion.actual, 'active');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not be active'));
     });
   });
@@ -144,8 +147,8 @@ describe('expect.active', function() {
     let expect = this.client.api.expect.element('//weblogin').to.be.active;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '//weblogin');
-      assert.equal(expect.assertion.passed, true);
+      assert.strictEqual(expect.assertion.selector, '//weblogin');
+      assert.strictEqual(expect.assertion.passed, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <//weblogin> to be active'));
     });
   });
@@ -156,8 +159,8 @@ describe('expect.active', function() {
     let expect = this.client.api.expect.element('//weblogin', 'xpath').to.be.active;
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.selector, '//weblogin');
-      assert.equal(expect.assertion.passed, true);
+      assert.strictEqual(expect.assertion.selector, '//weblogin');
+      assert.strictEqual(expect.assertion.passed, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <//weblogin> to be active'));
     });
   });

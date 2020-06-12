@@ -1,7 +1,7 @@
 const assert = require('assert');
+const path = require('path');
 const Nocks = require('../../lib/nocks.js');
 const Nightwatch = require('../../lib/nightwatch.js');
-const path = require('path');
 
 describe('test PageObjectApi', function () {
   beforeEach(function (done) {

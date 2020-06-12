@@ -3,11 +3,11 @@ const Globals = require('../../../lib/globals.js');
 
 describe('client.execute', function() {
   before(function() {
-    Globals.protocolBefore.call(this);
+    Globals.protocolBefore();
   });
 
   it('testExecuteString', function() {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/execute');
@@ -19,7 +19,7 @@ describe('client.execute', function() {
   });
 
   it('testExecuteString W3C WebDriver', function() {
-    return Globals.protocolTestWebdriver.call(this, {
+    return Globals.protocolTestWebdriver({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/execute/sync');
@@ -30,7 +30,7 @@ describe('client.execute', function() {
   });
 
   it('testExecuteFunction', function() {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.deepEqual(opts.data, {
           args: ['arg1'],
@@ -45,7 +45,7 @@ describe('client.execute', function() {
   });
 
   it('testExecuteFunctionNoArgs', function() {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.deepEqual(opts.data, {
           args: [],
@@ -60,7 +60,7 @@ describe('client.execute', function() {
   });
 
   it('testExecuteAsyncFunction', function() {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.deepEqual(opts.data, {
           args: ['arg1'],
@@ -75,7 +75,7 @@ describe('client.execute', function() {
   });
 
   it('testExecuteAsync', function() {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/execute_async');
@@ -90,7 +90,7 @@ describe('client.execute', function() {
   });
 
   it('testExecuteAsync W3C WebDriver', function() {
-    return Globals.protocolTestWebdriver.call(this, {
+    return Globals.protocolTestWebdriver({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/execute/async');

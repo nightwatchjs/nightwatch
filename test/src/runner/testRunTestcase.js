@@ -161,7 +161,7 @@ describe('testRunTestcase', function() {
         version2: true,
         start_process: true
       },
-      silent: true,
+      silent: false,
       output: false,
       globals: {
         beforeEach(client, cb) {
@@ -242,6 +242,162 @@ describe('testRunTestcase', function() {
 
     return NightwatchClient.runTests({
       retries: 1,
+      _source: [testsPath]
+    }, settings);
+  });
+
+  it('testRunner with retries and describe', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/withdescribe/failures/sampleTest.js');
+    let globals = {
+      calls: 0,
+      reporter(results, cb) {
+        assert.strictEqual(settings.globals.calls, 6);
+        assert.strictEqual(results.passed, 1);
+        assert.strictEqual(results.failed, 1);
+        assert.strictEqual(results.errors, 0);
+        assert.strictEqual(results.skipped, 0);
+        cb();
+      },
+      retryAssertionTimeout: 0
+    };
+
+    const settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      globals,
+      output: false,
+      persist_globals: true,
+      output_folder: false
+    };
+
+    return NightwatchClient.runTests({
+      retries: 1,
+      _source: [testsPath]
+    }, settings);
+  });
+
+  it('testRunner with retries and describe with attribute', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/withdescribe/failures/sampleTestWithAttribute.js');
+    let globals = {
+      calls: 0,
+      reporter(results, cb) {
+        assert.strictEqual(settings.globals.calls, 6);
+        assert.strictEqual(results.passed, 1);
+        assert.strictEqual(results.failed, 1);
+        assert.strictEqual(results.errors, 0);
+        assert.strictEqual(results.skipped, 0);
+        cb();
+      },
+      retryAssertionTimeout: 0
+    };
+
+    const settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      globals,
+      output: false,
+      persist_globals: true,
+      output_folder: false
+    };
+
+    return NightwatchClient.runTests({
+      _source: [testsPath]
+    }, settings);
+  });
+
+  it('testRunner with retries and describe with attribute and argument', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/withdescribe/failures/sampleTestWithAttribute.js');
+    let globals = {
+      calls: 0,
+      reporter(results, cb) {
+        assert.strictEqual(settings.globals.calls, 6);
+        cb();
+      },
+      retryAssertionTimeout: 0
+    };
+
+    const settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      globals,
+      output: false,
+      persist_globals: true,
+      output_folder: false
+    };
+
+    return NightwatchClient.runTests({
+      retries: 2,
+      _source: [testsPath]
+    }, settings);
+  });
+
+  it('testRunner with skipped testcases', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/withdescribe/skipped/skipTestcase.js');
+    let globals = {
+      calls: 0,
+      reporter(results, cb) {
+        assert.strictEqual(settings.globals.calls, 2);
+        cb();
+      },
+      retryAssertionTimeout: 0
+    };
+
+    const settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      globals,
+      output: false,
+      persist_globals: true,
+      output_folder: false
+    };
+
+    return NightwatchClient.runTests({
+      _source: [testsPath]
+    }, settings);
+  });
+
+  it('testRunner with disabled testsuite - xdescribe', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/withdescribe/skipped/skipTestsuite.js');
+    let globals = {
+      calls: 0,
+      reporter(results, cb) {
+        assert.strictEqual(settings.globals.calls, 0);
+        assert.strictEqual(Object.keys(results.modules.skipTestsuite.completed).length, 0);
+        cb();
+      },
+      retryAssertionTimeout: 0
+    };
+
+    const settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      globals,
+      output: false,
+      persist_globals: true,
+      output_folder: false
+    };
+
+    return NightwatchClient.runTests({
       _source: [testsPath]
     }, settings);
   });

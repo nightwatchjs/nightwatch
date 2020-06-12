@@ -3,11 +3,11 @@ const Globals = require('../../../lib/globals.js');
 
 describe('client.doubleClick', function() {
   before(function() {
-    Globals.protocolBefore.call(this);
+    Globals.protocolBefore();
   });
 
   it('testDoubleClick', function() {
-    Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/doubleclick');

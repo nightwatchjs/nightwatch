@@ -1,10 +1,14 @@
 const assert = require('assert');
 const Nocks = require('../../../lib/nocks.js');
 const ExpectGlobals = require('../../../lib/globals/expect.js');
+const {strictEqual} = assert;
 
 describe('expect.value', function() {
   beforeEach(function(done) {
-    ExpectGlobals.beforeEach.call(this, () => {
+    ExpectGlobals.beforeEach.call(this, {
+      output: false,
+      silent: false
+    }, () => {
       this.client.api.globals.abortOnAssertionFailure = false;
       done();
     });
@@ -20,7 +24,7 @@ describe('expect.value', function() {
     let expect = this.client.api.expect.element('#weblogin').to.have.value.equal('hp vasq');
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.passed, true);
+      strictEqual(expect.assertion.passed, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value equal to: "hp vasq"'));
     });
   });
@@ -37,8 +41,8 @@ describe('expect.value', function() {
     let expect = this.client.api.expect.element('#weblogin').to.have.value.which.equals('hp vasq');
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 40);
-      assert.equal(expect.assertion.passed, true);
+      strictEqual(expect.assertion.waitForMs, 40);
+      strictEqual(expect.assertion.passed, true);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value which equals: "hp vasq"'));
     });
   });
@@ -55,12 +59,12 @@ describe('expect.value', function() {
     let expect = this.client.api.expect.element('#weblogin').to.have.value.equal('vasq');
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'equal to \'vasq\'');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.actual, 'hp vasq');
-      assert.equal(expect.assertion.resultValue, 'hp vasq');
-      assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.messageParts[0], ' equal to: "vasq"');
+      strictEqual(expect.assertion.expected, 'equal to \'vasq\'');
+      strictEqual(expect.assertion.negate, false);
+      strictEqual(expect.assertion.actual, 'hp vasq');
+      strictEqual(expect.assertion.resultValue, 'hp vasq');
+      strictEqual(expect.assertion.passed, false);
+      strictEqual(expect.assertion.messageParts[0], ' equal to: "vasq"');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value equal to: "vasq"'));
     });
   });
@@ -71,10 +75,10 @@ describe('expect.value', function() {
     let expect = this.client.api.expect.element('#weblogin').to.have.value.not.equal('xx');
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.resultValue, 'hp vasq');
-      assert.equal(expect.assertion.messageParts[0], ' not equal to: "xx"');
+      strictEqual(expect.assertion.negate, true);
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.resultValue, 'hp vasq');
+      strictEqual(expect.assertion.messageParts[0], ' not equal to: "xx"');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value not equal to: "xx"'));
     });
   });
@@ -91,13 +95,12 @@ describe('expect.value', function() {
     let expect = this.client.api.expect.element('#weblogin').to.have.value.not.equal('hp vasq');
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'not equal to \'hp vasq\'');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.actual, 'hp vasq');
-      assert.equal(expect.assertion.resultValue, 'hp vasq');
-      assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.messageParts, ' not equal to: "hp vasq"' );
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value not equal to: "hp vasq"'));
+      strictEqual(expect.assertion.expected, 'not equal to \'hp vasq\'');
+      strictEqual(expect.assertion.negate, true);
+      strictEqual(expect.assertion.actual, 'hp vasq');
+      strictEqual(expect.assertion.resultValue, 'hp vasq');
+      strictEqual(expect.assertion.passed, false);
+      strictEqual(expect.assertion.message, `Expected element <#weblogin> to have value not equal to: "hp vasq" - expected "not equal to 'hp vasq'" but got: "hp vasq" (${expect.assertion.elapsedTime}ms)`);
     });
   });
 
@@ -109,10 +112,10 @@ describe('expect.value', function() {
     Nocks.value(null).value('hp vasq');
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 110);
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.retries, 1);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value equal to: "hp vasq" in 110ms - condition was met in ' + expect.assertion.elapsedTime + 'ms'));
+      strictEqual(expect.assertion.waitForMs, 110);
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.retries, 1);
+      strictEqual(expect.assertion.message, 'Expected element <#weblogin> to have value equal to: "hp vasq" in 110ms (' + expect.assertion.elapsedTime + 'ms)');
     });
   });
 
@@ -124,12 +127,12 @@ describe('expect.value', function() {
     let expect = this.client.api.expect.element('#weblogin').to.have.value.equal('hp vasq').before(110);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 110);
-      assert.equal(expect.assertion.passed, false);
+      strictEqual(expect.assertion.waitForMs, 110);
+      strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.retries >= 1);
       assert.ok(expect.assertion.elapsedTime >= 110);
-      assert.equal(expect.assertion.expected, 'equal to \'hp vasq\'');
-      //assert.equal(expect.assertion.actual, 'xx');
+      strictEqual(expect.assertion.expected, 'equal to \'hp vasq\'');
+      //strictEqual(expect.assertion.actual, 'xx');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value equal to: "hp vasq" in 110ms'));
     });
   });
@@ -141,12 +144,12 @@ describe('expect.value', function() {
     assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have value'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'not equal to \'vasq\'');
-      assert.equal(expect.assertion.actual, 'xx');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.resultValue, 'xx');
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.messageParts[0], ' not equal to: "vasq"');
+      strictEqual(expect.assertion.expected, 'not equal to \'vasq\'');
+      strictEqual(expect.assertion.actual, 'xx');
+      strictEqual(expect.assertion.negate, true);
+      strictEqual(expect.assertion.resultValue, 'xx');
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.messageParts[0], ' not equal to: "vasq"');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value not equal to: "vasq"'));
     });
   });
@@ -164,13 +167,11 @@ describe('expect.value', function() {
     assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have value'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'not equal to \'xx\'');
-      assert.equal(expect.assertion.actual, 'xx');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.resultValue, 'xx');
-      assert.equal(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts, [' not equal to: "xx"']);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value not equal to: "xx"'));
+      strictEqual(expect.assertion.expected, 'not equal to \'xx\'');
+      strictEqual(expect.assertion.actual, 'xx');
+      strictEqual(expect.assertion.negate, true);
+      strictEqual(expect.assertion.resultValue, 'xx');
+      strictEqual(expect.assertion.passed, false);
     });
   });
 
@@ -182,12 +183,12 @@ describe('expect.value', function() {
     assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have value'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'not contain \'vasq\'');
-      assert.equal(expect.assertion.actual, 'xx');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.resultValue, 'xx');
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.messageParts[0], ' not contain: "vasq"');
+      strictEqual(expect.assertion.expected, 'not contain \'vasq\'');
+      strictEqual(expect.assertion.actual, 'xx');
+      strictEqual(expect.assertion.negate, true);
+      strictEqual(expect.assertion.resultValue, 'xx');
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.messageParts[0], ' not contain: "vasq"');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value not contain: "vasq"'));
     });
   });
@@ -200,13 +201,13 @@ describe('expect.value', function() {
     assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have value'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'contains \'vasq\'');
-      assert.equal(expect.assertion.actual, 'vasq');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.resultValue, 'vasq');
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.messageParts[0], ' which ');
-      assert.equal(expect.assertion.messageParts[1], 'contains: "vasq"');
+      strictEqual(expect.assertion.expected, 'contains \'vasq\'');
+      strictEqual(expect.assertion.actual, 'vasq');
+      strictEqual(expect.assertion.negate, false);
+      strictEqual(expect.assertion.resultValue, 'vasq');
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.messageParts[0], ' which ');
+      strictEqual(expect.assertion.messageParts[1], 'contains: "vasq"');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value which contains: "vasq"'));
     });
   });
@@ -224,13 +225,33 @@ describe('expect.value', function() {
     assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have value'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'not contain \'xx\'');
-      assert.equal(expect.assertion.actual, 'xx');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.resultValue, 'xx');
-      assert.equal(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts, [ ' not contain: "xx"' ]);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value not contain: "xx"'));
+      strictEqual(expect.assertion.expected, 'not contain \'xx\'');
+      strictEqual(expect.assertion.actual, 'xx');
+      strictEqual(expect.assertion.negate, true);
+      strictEqual(expect.assertion.resultValue, 'xx');
+      strictEqual(expect.assertion.passed, false);
+      strictEqual(expect.assertion.message, `Expected element <#weblogin> to have value not contain: "xx" - expected "not contain 'xx'" but got: "xx" (${expect.assertion.elapsedTime}ms)`);
+    });
+  });
+
+  it('to have value equals [FAILED] - value attribute not found', function() {
+    this.client.api.globals.waitForConditionTimeout = 40;
+    this.client.api.globals.waitForConditionPollInterval = 20;
+
+    Nocks.elementFound()
+      .value(null)
+      .value(null)
+      .value(null);
+
+    let expect = this.client.api.expect.element('#weblogin').to.have.value.equal('xx');
+    assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have value'));
+
+    return this.client.start(function() {
+      strictEqual(expect.assertion.expected, 'equal to \'xx\'');
+      strictEqual(expect.assertion.actual, null);
+      strictEqual(expect.assertion.resultValue, null);
+      strictEqual(expect.assertion.passed, false);
+      strictEqual(expect.assertion.message, `Expected element <#weblogin> to have value equal to: "xx" - value attribute was not found - expected "equal to 'xx'" but got: "null" (${expect.assertion.elapsedTime}ms)`);
     });
   });
 
@@ -242,12 +263,12 @@ describe('expect.value', function() {
     assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have value'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'not match \'/vasq/\'');
-      assert.equal(expect.assertion.actual, 'xx');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.resultValue, 'xx');
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.messageParts[0], ' not match: "/vasq/"');
+      strictEqual(expect.assertion.expected, 'not match \'/vasq/\'');
+      strictEqual(expect.assertion.actual, 'xx');
+      strictEqual(expect.assertion.negate, true);
+      strictEqual(expect.assertion.resultValue, 'xx');
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.messageParts[0], ' not match: "/vasq/"');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value not match: "/vasq/"'));
     });
   });
@@ -260,13 +281,13 @@ describe('expect.value', function() {
     assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have value'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'matches \'/vasq/\'');
-      assert.equal(expect.assertion.actual, 'vasq');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.resultValue, 'vasq');
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.messageParts[0], ' which ');
-      assert.equal(expect.assertion.messageParts[1], 'matches: "/vasq/"');
+      strictEqual(expect.assertion.expected, 'matches \'/vasq/\'');
+      strictEqual(expect.assertion.actual, 'vasq');
+      strictEqual(expect.assertion.negate, false);
+      strictEqual(expect.assertion.resultValue, 'vasq');
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.messageParts[0], ' which ');
+      strictEqual(expect.assertion.messageParts[1], 'matches: "/vasq/"');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value which matches: "/vasq/"'));
     });
   });
@@ -284,13 +305,11 @@ describe('expect.value', function() {
     assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have value'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'not match \'/xx/\'');
-      assert.equal(expect.assertion.actual, 'xx');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.resultValue, 'xx');
-      assert.equal(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts, [' not match: "/xx/"']);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value not match: "/xx/"'));
+      strictEqual(expect.assertion.expected, 'not match \'/xx/\'');
+      strictEqual(expect.assertion.actual, 'xx');
+      strictEqual(expect.assertion.negate, true);
+      strictEqual(expect.assertion.resultValue, 'xx');
+      strictEqual(expect.assertion.passed, false);
     });
   });
 
@@ -308,13 +327,12 @@ describe('expect.value', function() {
     assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have value'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'present');
-      assert.equal(expect.assertion.actual, 'not present');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.resultValue, null);
-      assert.equal(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts, [' equal to: "vasq"', ' - element was not found']);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value equal to: "vasq" - element was not found'));
+      strictEqual(expect.assertion.expected, 'equal to \'vasq\'');
+      strictEqual(expect.assertion.actual, 'not present');
+      strictEqual(expect.assertion.negate, false);
+      strictEqual(expect.assertion.resultValue, null);
+      strictEqual(expect.assertion.passed, false);
+      strictEqual(expect.assertion.message, `Expected element <#weblogin> to have value equal to: "vasq" - element was not found - expected "equal to 'vasq'" but got: "not present" (${expect.assertion.elapsedTime}ms)`);
     });
   });
 
@@ -331,11 +349,9 @@ describe('expect.value', function() {
     let expect = this.client.api.expect.element('#weblogin').to.have.value.which.contains('vasq');
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'present');
-      assert.equal(expect.assertion.actual, 'not present');
-      assert.equal(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts, [' which ', 'contains: "vasq"', ' - element was not found']);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value which contains: "vasq" - element was not found'));
+      strictEqual(expect.assertion.expected, 'contains \'vasq\'');
+      strictEqual(expect.assertion.actual, 'not present');
+      strictEqual(expect.assertion.passed, false);
     });
   });
 
@@ -352,11 +368,10 @@ describe('expect.value', function() {
     let expect = this.client.api.expect.element('#weblogin').to.have.value.which.matches(/vasq$/);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'present');
-      assert.equal(expect.assertion.actual, 'not present');
-      assert.equal(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts, [' which ', 'matches: "/vasq$/"', ' - element was not found' ]);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value which matches: "/vasq$/" - element was not found'));
+      strictEqual(expect.assertion.expected, 'matches \'/vasq$/\'');
+      strictEqual(expect.assertion.actual, 'not present');
+      strictEqual(expect.assertion.passed, false);
+      strictEqual(expect.assertion.message, `Expected element <#weblogin> to have value which matches: "/vasq$/" - element was not found - expected "matches '/vasq$/'" but got: "not present" (${expect.assertion.elapsedTime}ms)`);
     });
   });
 
@@ -368,8 +383,8 @@ describe('expect.value', function() {
     let expect = this.client.api.expect.element('#weblogin').to.have.value.equal('hp vasq').before(60);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 60);
-      assert.equal(expect.assertion.passed, false);
+      strictEqual(expect.assertion.waitForMs, 60);
+      strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value equal to: "hp vasq" in 60ms - element was not found'));
     });
   });
@@ -381,9 +396,9 @@ describe('expect.value', function() {
     let expect = this.client.api.expect.element('#weblogin').to.have.value.equal('hp vasq').before(110);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 110);
-      assert.equal(expect.assertion.passed, true);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value equal to: "hp vasq" in 110ms - condition was met in ' + expect.assertion.elapsedTime + 'ms'));
+      strictEqual(expect.assertion.waitForMs, 110);
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.message, 'Expected element <#weblogin> to have value equal to: "hp vasq" in 110ms (' + expect.assertion.elapsedTime + 'ms)');
     });
   });
 
@@ -413,8 +428,8 @@ describe('expect.value', function() {
     Nocks.elementFound().value('xx', 4);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 110);
-      assert.equal(expect.assertion.passed, false);
+      strictEqual(expect.assertion.waitForMs, 110);
+      strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.retries > 1);
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value equal to: "hp vasq" in 110ms'));
     });

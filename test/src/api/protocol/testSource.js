@@ -4,8 +4,7 @@ const MockServer = require('../../../lib/mockserver.js');
 
 describe('client.source', function() {
   before(function(done) {
-    Globals.protocolBefore.call(this);
-
+    Globals.protocolBefore();
     this.server = MockServer.init();
     this.server.on('listening', () => {
       done();
@@ -19,14 +18,10 @@ describe('client.source', function() {
   });
 
   it('client.source() get command', function() {
-    let runAction = this.client.transport.runProtocolAction;
-
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: opts => {
         assert.equal(opts.method, 'GET');
         assert.equal(opts.path, '/session/1352110219202/source');
-
-        this.client.transport.runProtocolAction = runAction;
       },
       commandName: 'source',
       args: []
@@ -41,7 +36,7 @@ describe('client.source', function() {
       method: 'GET'
     });
 
-    Globals.runApiCommand(null, 'source', [function(result) {
+    Globals.runApiCommand('source', [function(result) {
       try {
         assert.equal(result.status, 0);
         assert.equal(result.name, 'getPageSource');

@@ -13,7 +13,7 @@ const defaultSettings = {
     start_process: true
   },
   silent: false,
-  output: true,
+  output: false,
   output_folder: false,
 };
 

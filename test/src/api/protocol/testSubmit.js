@@ -3,11 +3,11 @@ const Globals = require('../../../lib/globals.js');
 
 describe('client.submit', function() {
   before(function() {
-    Globals.protocolBefore.call(this);
+    Globals.protocolBefore();
   });
 
   it('testSubmit', function() {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.equal(opts.path, '/session/1352110219202/element/TEST_ELEMENT/submit');

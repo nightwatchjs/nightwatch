@@ -59,7 +59,7 @@ describe('testRunner ES6 Async', function() {
         }
 
         assert.ok(results.lastError instanceof Error);
-        assert.ok(results.lastError.message.includes('is present in 15 ms.'));
+        assert.ok(results.lastError.message.includes('is present in 15ms'), results.lastError.message);
         assert.strictEqual(results.lastError.name, 'NightwatchAssertError');
       }
     };
@@ -101,7 +101,7 @@ describe('testRunner ES6 Async', function() {
       skip_testcases_on_fail: false,
       silent: false,
       persist_globals: true,
-      globals: globals,
+      globals,
       output_folder: false
     });
   });
@@ -145,7 +145,7 @@ describe('testRunner ES6 Async', function() {
           'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
         }]
       })
-    }, true);
+    }, true, true);
 
     MockServer.addMock({
       url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/text',
@@ -175,6 +175,7 @@ describe('testRunner ES6 Async', function() {
       webdriver: {
         start_process: true
       },
+      page_objects_path: [path.join(__dirname, '../../extra/pageobjects/pages')],
       output: false,
       skip_testcases_on_fail: false,
       silent: false,

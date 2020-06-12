@@ -3,11 +3,11 @@ const Globals = require('../../../lib/globals.js');
 
 describe('element W3C Webdriver actions', function() {
   before(function() {
-    Globals.protocolBefore.call(this);
+    Globals.protocolBefore();
   });
 
   it('test click() with W3C WebDriver', function() {
-    return Globals.protocolTestWebdriver.call(this, {
+    return Globals.protocolTestWebdriver({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.deepEqual(opts.data, {
@@ -21,7 +21,7 @@ describe('element W3C Webdriver actions', function() {
   });
 
   it('test clearValue() with W3C WebDriver', function() {
-    return Globals.protocolTestWebdriver.call(this, {
+    return Globals.protocolTestWebdriver({
       assertion: function(opts) {
         assert.equal(opts.method, 'POST');
         assert.deepEqual(opts.data, {

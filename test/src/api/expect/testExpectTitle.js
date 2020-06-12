@@ -1,6 +1,7 @@
 const assert = require('assert');
 const Nocks = require('../../../lib/nocks.js');
 const ExpectGlobals = require('../../../lib/globals/expect.js');
+const {strictEqual} = assert;
 
 describe('expect.title', function() {
   beforeEach(function(done) {
@@ -20,8 +21,34 @@ describe('expect.title', function() {
     let expect = this.client.api.expect.title().to.contain('hp vasq');
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.passed, true);
+      strictEqual(expect.assertion.passed, true);
       assert.ok(expect.assertion.message.startsWith('Expected page title to contain: "hp vasq"'));
+    });
+  });
+
+  it('toEqual [PASSED]', function() {
+    Nocks.title('hp vasq');
+    let api = this.client.api.expect.title().to.toEqual('hp vasq');
+
+    return this.client.start(function(err) {
+      assert.ok('capabilities' in api);
+      assert.strictEqual(err, undefined);
+    });
+  });
+
+  it('toEqual [FAILED]', function() {
+    this.client.api.globals.waitForConditionTimeout = 10;
+    this.client.api.globals.waitForConditionPollInterval = 9;
+    this.client.api.globals.abortOnAssertionFailure = true;
+
+    Nocks.title('hp vasq');
+    Nocks.title('hp vasq');
+    let api = this.client.api.expect.title().to.toEqual('vasq');
+
+    return this.client.start(function(err) {
+      assert.ok('capabilities' in api);
+      assert.ok(err instanceof Error);
+      assert.ok(/^Error while running "title" command: Expected page title to equal: "vasq" - expected "equal 'vasq'" but got: "hp vasq" \(\d+ms\)$/.test(err.message), err.message);
     });
   });
 
@@ -34,8 +61,8 @@ describe('expect.title', function() {
     let expect = this.client.api.expect.title().contains('hp vasq');
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 40);
-      assert.equal(expect.assertion.passed, true);
+      strictEqual(expect.assertion.waitForMs, 40);
+      strictEqual(expect.assertion.passed, true);
       assert.ok(expect.assertion.message.startsWith('Expected page title to contain: "hp vasq"'));
     });
   });
@@ -49,12 +76,12 @@ describe('expect.title', function() {
     let expect = this.client.api.expect.title().to.equal('vasq');
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'equal \'vasq\'');
-      assert.equal(expect.assertion.negate, false);
-      assert.equal(expect.assertion.actual, 'hp vasq');
-      assert.equal(expect.assertion.resultValue, 'hp vasq');
-      assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.messageParts[0], ' equal: "vasq"');
+      strictEqual(expect.assertion.expected, 'equal \'vasq\'');
+      strictEqual(expect.assertion.negate, false);
+      strictEqual(expect.assertion.actual, 'hp vasq');
+      strictEqual(expect.assertion.resultValue, 'hp vasq');
+      strictEqual(expect.assertion.passed, false);
+      strictEqual(expect.assertion.messageParts[0], ' equal: "vasq"');
       assert.ok(expect.assertion.message.startsWith('Expected page title to equal: "vasq"'));
     });
   });
@@ -65,10 +92,10 @@ describe('expect.title', function() {
     let expect = this.client.api.expect.title().to.not.equal('xx');
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.resultValue, 'hp vasq');
-      assert.equal(expect.assertion.messageParts[0], ' not equal: "xx"');
+      strictEqual(expect.assertion.negate, true);
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.resultValue, 'hp vasq');
+      strictEqual(expect.assertion.messageParts[0], ' not equal: "xx"');
       assert.ok(expect.assertion.message.startsWith('Expected page title to not equal: "xx"'));
     });
   });
@@ -84,12 +111,12 @@ describe('expect.title', function() {
     let expect = this.client.api.expect.title().to.not.equal('hp vasq');
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'not equal \'hp vasq\'');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.actual, 'hp vasq');
-      assert.equal(expect.assertion.resultValue, 'hp vasq');
-      assert.equal(expect.assertion.passed, false);
-      assert.equal(expect.assertion.messageParts[0], ' not equal: "hp vasq"' );
+      strictEqual(expect.assertion.expected, 'not equal \'hp vasq\'');
+      strictEqual(expect.assertion.negate, true);
+      strictEqual(expect.assertion.actual, 'hp vasq');
+      strictEqual(expect.assertion.resultValue, 'hp vasq');
+      strictEqual(expect.assertion.passed, false);
+      strictEqual(expect.assertion.messageParts[0], ' not equal: "hp vasq"' );
       assert.ok(expect.assertion.message.startsWith('Expected page title to not equal: "hp vasq"'));
     });
   });
@@ -102,10 +129,10 @@ describe('expect.title', function() {
     Nocks.title('hp vasq');
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 40);
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.retries, 1);
-      assert.ok(expect.assertion.message.startsWith('Expected page title to equal: "hp vasq" in 40ms - condition was met in ' + expect.assertion.elapsedTime + 'ms'));
+      strictEqual(expect.assertion.waitForMs, 40);
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.retries, 1);
+      strictEqual(expect.assertion.message, 'Expected page title to equal: "hp vasq" in 40ms (' + expect.assertion.elapsedTime + 'ms)');
     });
   });
 
@@ -119,12 +146,12 @@ describe('expect.title', function() {
     let expect = this.client.api.expect.title().to.equal('hp vasq').before(40);
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.waitForMs, 40);
-      assert.equal(expect.assertion.passed, false);
+      strictEqual(expect.assertion.waitForMs, 40);
+      strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.retries >= 1);
       assert.ok(expect.assertion.elapsedTime >= 40);
-      assert.equal(expect.assertion.expected, 'equal \'hp vasq\'');
-      //assert.equal(expect.assertion.actual, 'xx');
+      strictEqual(expect.assertion.expected, 'equal \'hp vasq\'');
+      strictEqual(expect.assertion.actual, 'xx');
       assert.ok(expect.assertion.message.startsWith('Expected page title to equal: "hp vasq" in 40ms'));
     });
   });
@@ -136,31 +163,32 @@ describe('expect.title', function() {
     assert.ok(expect.assertion.message.startsWith('Expected page title to'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'not equal \'vasq\'');
-      assert.equal(expect.assertion.actual, 'xx');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.resultValue, 'xx');
-      assert.equal(expect.assertion.passed, true);
-      assert.equal(expect.assertion.messageParts[0], ' not equal: "vasq"');
+      strictEqual(expect.assertion.expected, 'not equal \'vasq\'');
+      strictEqual(expect.assertion.actual, 'xx');
+      strictEqual(expect.assertion.negate, true);
+      strictEqual(expect.assertion.resultValue, 'xx');
+      strictEqual(expect.assertion.passed, true);
+      strictEqual(expect.assertion.messageParts[0], ' not equal: "vasq"');
       assert.ok(expect.assertion.message.startsWith('Expected page title to not equal: "vasq"'));
     });
   });
 
   it('to not equal to [FAILED]', function() {
-    this.client.api.globals.waitForConditionTimeout = 40;
-    this.client.api.globals.waitForConditionPollInterval = 20;
+    this.client.api.globals.waitForConditionTimeout = 10;
+    this.client.api.globals.waitForConditionPollInterval = 9;
 
+    Nocks.title('xx');
     Nocks.title('xx');
 
     let expect = this.client.api.expect.title().to.not.equal('xx');
     assert.ok(expect.assertion.message.startsWith('Expected page title to'));
 
     return this.client.start(function() {
-      assert.equal(expect.assertion.expected, 'present');
-      assert.equal(expect.assertion.actual, 'not present');
-      assert.equal(expect.assertion.negate, true);
-      assert.equal(expect.assertion.resultValue, 'xx');
-      assert.equal(expect.assertion.passed, false);
+      strictEqual(expect.assertion.expected, 'not equal \'xx\'');
+      strictEqual(expect.assertion.actual, 'xx');
+      strictEqual(expect.assertion.negate, true);
+      strictEqual(expect.assertion.resultValue, 'xx');
+      strictEqual(expect.assertion.passed, false);
       assert.deepEqual(expect.assertion.messageParts[0], ' not equal: "xx"');
       assert.ok(expect.assertion.message.startsWith('Expected page title to not equal: "xx"'));
     });

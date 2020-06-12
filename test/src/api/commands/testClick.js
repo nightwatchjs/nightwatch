@@ -97,23 +97,29 @@ describe('click', function() {
         response: {
           value: {
             error: 'element not interactable',
-            message: 'element not interactable',
+            message: 'Element <h1> could not be scrolled into view',
             stacktrace: ''
           }
         }
       }, true);
 
+      let response;
       client.api.click({
         selector: '#webdriver',
       }, function(result) {
-        assert.deepEqual(result.value, {
-          error: 'element not interactable',
-          message: 'element not interactable',
-          stacktrace: ''
-        });
+        response = result;
       });
 
-      client.start(done);
+      client.start(function() {
+        try {
+          assert.strictEqual(response.status, -1);
+          assert.strictEqual(response.value.error, 'An error occurred while running .click() command on <#webdriver>: element not interactable; Element <h1> could not be scrolled into view')
+
+          done();
+        } catch (err) {
+          done(err);
+        }
+      });
     });
   });
 

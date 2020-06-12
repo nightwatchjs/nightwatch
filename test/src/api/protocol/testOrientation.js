@@ -1,16 +1,17 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
+const {strictEqual} = assert;
 
 describe('orientation commands', function() {
   before(function() {
-    Globals.protocolBefore.call(this);
+    Globals.protocolBefore();
   });
 
   it('testGetOrientation', function () {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'GET');
-        assert.equal(opts.path, '/session/1352110219202/orientation');
+        strictEqual(opts.method, 'GET');
+        strictEqual(opts.path, '/session/1352110219202/orientation');
       },
       commandName: 'getOrientation',
       args: []
@@ -18,10 +19,10 @@ describe('orientation commands', function() {
   });
 
   it('testSetOrientation', function () {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.equal(opts.path, '/session/1352110219202/orientation');
+        strictEqual(opts.method, 'POST');
+        strictEqual(opts.path, '/session/1352110219202/orientation');
         assert.deepEqual(opts.data, {orientation: 'LANDSCAPE'});
       },
       commandName: 'setOrientation',
@@ -30,15 +31,15 @@ describe('orientation commands', function() {
   });
 
   it('testSetOrientationInvalid', function () {
-    return Globals.protocolTest.call(this, {
+    return Globals.protocolTest({
       assertion: function(opts) {
 
       },
       commandName: 'setOrientation',
       args: ['TEST']
     }).catch(err => {
-      assert.equal(err.message, 'Invalid screen orientation value specified. Accepted values are: LANDSCAPE, PORTRAIT');
-      
+      strictEqual(err.message, 'Error while running "setOrientation" command: Invalid screen orientation value specified. Accepted values are: LANDSCAPE, PORTRAIT');
+
       return true;
     }).then(result => assert.strictEqual(result, true));
   });

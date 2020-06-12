@@ -60,7 +60,7 @@ describe('testRunWithGlobalHooks', function() {
       silent: false,
       output: false,
       persist_globals: true,
-      globals: globals,
+      globals,
       output_folder: false
     };
 
@@ -206,7 +206,7 @@ describe('testRunWithGlobalHooks', function() {
           });
         },
         reporter(results, cb) {
-          assert.equal(results.modules.sampleSingleTest.errmessages.length, 1);
+          assert.equal(results.modules.sampleSingleTest.errmessages.length, 2);
           assert.equal(results.modules.sampleWithBeforeAndAfter.errmessages.length, 1);
           assert.equal(results.modules.syncBeforeAndAfter.errmessages.length, 1);
           assert.ok(results.modules.sampleSingleTest.errmessages[0].includes('Error while running "perform" command:'));
@@ -255,6 +255,9 @@ describe('testRunWithGlobalHooks', function() {
     let testsPath = path.join(__dirname, '../../sampletests/withfailures');
     let globals = {
       calls: 0,
+      waitForConditionPollInterval: 5,
+      waitForConditionTimeout: 5,
+      retryAssertionTimeout: 10,
       beforeEach: function(client, done) {
         assert.deepEqual(client.currentTest.results, {errors: 0, failed: 0, passed: 0, assertions: [], tests: 0});
         assert.strictEqual(client.currentTest.module, 'sample');
@@ -283,16 +286,16 @@ describe('testRunWithGlobalHooks', function() {
       }
     };
 
-    let settings = {
+    const settings = {
       selenium: {
         port: 10195,
         version2: true,
         start_process: true
       },
-      silent: true,
+      silent: false,
       output: false,
       persist_globals: true,
-      globals: globals,
+      globals,
       output_folder: false
     };
 

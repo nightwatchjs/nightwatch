@@ -12,7 +12,8 @@ module.exports = {
     });
     client.customPerformClass();
 
-    client.basicPerformWithError(function() {});
+    await client.basicPerformWithError(function() {});
+
     client.end();
   }
 };
