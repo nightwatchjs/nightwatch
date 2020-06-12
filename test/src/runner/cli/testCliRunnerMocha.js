@@ -50,7 +50,7 @@ describe('test CLI Runner Mocha', function() {
     mockery.disable();
   });
 
-  it('testRunWithMochaDefaults', function() {
+  it('testRunWithMochaDefaults', async function() {
     let testFiles = [];
 
     mockery.registerMock('./withmocha.json', {
@@ -69,7 +69,7 @@ describe('test CLI Runner Mocha', function() {
     }, testFiles);
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    let runner = await new CliRunner({
       config: './withmocha.json',
       env: 'default'
     }).setup();
@@ -79,7 +79,7 @@ describe('test CLI Runner Mocha', function() {
     });
   });
 
-  it('testRunWithMochaPerEnvironment', function() {
+  it('testRunWithMochaPerEnvironment', async function() {
     let testFiles = [];
 
     mockery.registerMock('./withmocha.json', {
@@ -101,7 +101,7 @@ describe('test CLI Runner Mocha', function() {
     }, testFiles);
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    let runner = await new CliRunner({
       config: './withmocha.json',
       env: 'mochatests'
     }).setup();
@@ -111,7 +111,7 @@ describe('test CLI Runner Mocha', function() {
     });
   });
 
-  it('testRunWithMochaCustomOpts', function() {
+  it('testRunWithMochaCustomOpts', async function() {
     let testFiles = [];
 
     mockery.registerMock('./withmocha.json', {
@@ -138,7 +138,7 @@ describe('test CLI Runner Mocha', function() {
     }, testFiles);
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    let runner = await new CliRunner({
       config: './withmocha.json',
       env: 'default'
     }).setup();
