@@ -103,6 +103,90 @@ describe('testRunnerSessionCreate', function() {
     });
   });
 
+  it('testRunner with session create timeout using webdriver', function() {
+    let testsPath = [
+      path.join(__dirname, '../../sampletests/multiple-tests-with-session-end')
+    ];
+
+    const sessionMock = {
+      url: '/session',
+      statusCode: 201,
+      postdata: JSON.stringify({
+        capabilities: {
+          browserName: 'firefox',
+          name: 'test-Name'
+        },
+        desiredCapabilities: {
+          browserName: 'firefox',
+          platform: 'ANY',
+          name: 'test-Name'
+        }
+      }),
+      response: JSON.stringify({
+        value: {
+          sessionId: '13521-10219-202',
+          capabilities: {
+            acceptInsecureCerts: false,
+            browserName: 'firefox',
+            browserVersion: '65.0.1',
+            platformName: 'linux',
+            platformVersion: '4.9.125-linuxkit',
+            setWindowRect: true,
+            strictFileInteractability: false
+          }
+        }
+      })
+    };
+
+    // Times out.
+    MockServer.addMock({
+      ...sessionMock,
+      socketDelay: 200
+    }, true);
+
+    // Successful.
+    MockServer.addMock({
+      ...sessionMock,
+      socketDelay: 30
+    }, true);
+
+    // Times out 2 times.
+    MockServer.addMock({
+      ...sessionMock,
+      socketDelay: 200
+    }, true, true);
+
+    let globals = {
+      reporter(results) {
+        const sep = path.sep;
+        assert.equal(results.passed, 2);
+        assert.equal(results.errors, 1);
+        assert.ok(results.lastError instanceof Error);
+        assert.equal(results.lastError.code, 'ECONNRESET');
+        assert.ok(results.lastError.message.includes('An error occurred while retrieving a new session: "socket hang up"'));
+      }
+    };
+
+    return NightwatchClient.runTests(testsPath, {
+      selenium: {
+        port: 10195,
+        version2: false,
+        start_process: false
+      },
+      webdriver: {
+        start_process: false,
+        timeout_options: {
+          timeout: 50,
+          retry_attempts: 1
+        }
+      },
+      output: process.env.VERBOSE === '1' || false,
+      silent: false,
+      globals: globals,
+      output_folder: false
+    });
+  });
+
   it('testRunner with session ECONNREFUSED error using webdriver', function() {
     let testsPath = [
       path.join(__dirname, '../../sampletests/simple'),
