@@ -192,4 +192,17 @@ describe('test Parallel Execution', function() {
     assert.strictEqual(runner.isConcurrencyEnabled([runner.argv._source]), false);
 
   });
+
+  it('test parallel execution to ensure preservation of execArgv.', function() {
+    const CliRunner = common.require('runner/cli/cli.js');
+    let runner = new CliRunner({
+      config: path.join(__dirname, '../../../extra/parallelism.json'),
+    });
+
+    runner.setup();
+
+    return runner.runTests().then(_ => {
+      assert.ok(allArgs[0].join(' ').includes('--inspect'));
+    });
+  });
 });
