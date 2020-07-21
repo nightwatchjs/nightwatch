@@ -42,7 +42,8 @@
     "mock-spawn": "^0.2.1",
     "mockery": "~2.1.0",
     "nock": "^10.0.6",
-    "nyc": "^14.1.1"
+    "nyc": "^14.1.1",
+    "lodash": ">=4.17.19"
   },
   "peerDependencies": {
     "chromedriver": "*",
@@ -66,7 +67,7 @@
   "scripts": {
     "eslint": "eslint . --quiet",
     "mocha-coverage": "nyc --reporter=html mocha test/src/",
-    "test": "node --inspect ./node_modules/.bin/mocha test/src/",
+    "test": "mocha test/src/",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "eslintConfig": {
