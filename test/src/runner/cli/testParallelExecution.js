@@ -193,16 +193,36 @@ describe('test Parallel Execution', function() {
 
   });
 
-  it('test parallel execution to ensure preservation of execArgv.', function() {
+  it('test parallel execution to ensure preservation of all process.execArgv', function() {
+    const argv = process.execArgv;
+    process.execArgv = ['--inspect'];
+
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
-      config: path.join(__dirname, '../../../extra/parallelism.json'),
+    const runner = new CliRunner({
+      config: path.join(__dirname, '../../../extra/parallelism-execArgv.json'),
     });
 
     runner.setup();
+    const worker = runner.concurrency.createChildProcess('test-worker');
+    const args = worker.getArgs();
 
-    return runner.runTests().then(_ => {
-      assert.ok(allArgs[0].join(' ').includes('--inspect'));
+    process.execArgv = argv;
+    assert.ok(args.includes('--inspect'));
+    assert.ok(args.includes('--parallel-mode'));
+  });
+
+  it('test parallel execution with specified node options to be passed to child processes', function() {
+    const CliRunner = common.require('runner/cli/cli.js');
+    const runner = new CliRunner({
+      config: path.join(__dirname, '../../../extra/parallelism-execArgv-selected.json'),
     });
+
+    runner.setup();
+    const worker = runner.concurrency.createChildProcess('test-worker');
+    const args = worker.getArgs();
+
+    assert.strictEqual(args.includes('--inspect'), false);
+    assert.ok(args.includes('--parallel-mode'));
+    assert.ok(args.includes('--harmony'));
   });
 });
