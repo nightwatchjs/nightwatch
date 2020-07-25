@@ -11,7 +11,7 @@ class MockServer {
       postdata: '',
       weakURLVerification: false,
       responseHeaders: {},
-      responseType: 'application/json',
+      contentType: 'application/json',
       mocks: [],
       finishedCallback() {}
     };
@@ -56,7 +56,7 @@ class MockServer {
         if (item) {
           headers = item.responseHeaders;
           responsedata = JSON.stringify(item.response);
-          headers['Content-Type']   = this.options.responseType;
+          headers['Content-Type']   = item.contentType || this.options.contentType;
           headers['Content-Length'] = responsedata.length;
           res.writeHead(Number(item.statusCode), headers);
 
@@ -98,9 +98,22 @@ class MockServer {
       item.__once = true;
     }
 
+    // if (item.response && typeof item.response == 'string') {
+    //   item.response = JSON.parse(item.response);
+    // }
+
     if (item.response && typeof item.response == 'string') {
-      item.response = JSON.parse(item.response);
+      item.contentType = item.contentType || 'application/json';
+
+      if (item.contentType === 'application/json') {
+        try {
+          item.response = JSON.parse(item.response);
+        } catch (err) {
+          console.warn('Invalid json supplied as response:', item.response);
+        }
+      }
     }
+
     this.mocks.push(item);
   }
 

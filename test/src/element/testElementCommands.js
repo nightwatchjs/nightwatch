@@ -126,6 +126,48 @@ describe('element base commands', function() {
     return Nightwatch.start();
   });
 
+
+  it('client.element() with 502 gateway error', async function() {
+    Nightwatch.addMock({
+      url : '/session/13521-10219-202/element',
+      postdata: {
+        using: 'css selector',
+        value: '#weblogin-error'
+      },
+      contentType: 'text/plain',
+      statusCode: 502,
+      response: `<html>
+<head>
+<title>502 Bad Gateway</title>
+</head>
+<body></body>
+</html>`
+    }, true);
+
+    await Nightwatch.initAsync({
+      output: false,
+      silent: false,
+      selenium : {
+        start_process: false,
+      },
+      webdriver:{
+        start_process: true
+      },
+    });
+
+    Nightwatch.api().element('css selector', '#weblogin-error', function(result) {
+      assert.strictEqual(result.status, -1);
+      assert.strictEqual(result.httpStatusCode, 502);
+      assert.strictEqual(result.error, '<html>\n<head>\n<title>502 Bad Gateway</title>\n</head>\n<body></body>\n</html>');
+      assert.deepStrictEqual(result.value, {
+        error: 'internal server error',
+        message: '<html>\n<head>\n<title>502 Bad Gateway</title>\n</head>\n<body></body>\n</html>'
+      });
+    });
+
+    return Nightwatch.start();
+  });
+
   //////////////////////////////////////////////////////////////////////////////////////
   // .elements()
   //////////////////////////////////////////////////////////////////////////////////////

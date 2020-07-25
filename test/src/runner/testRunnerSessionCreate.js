@@ -96,7 +96,7 @@ describe('testRunnerSessionCreate', function() {
       webdriver: {
         start_process: true
       },
-      output: process.env.VERBOSE === '1' || false,
+      output: false,
       silent: false,
       globals: globals,
       output_folder: false

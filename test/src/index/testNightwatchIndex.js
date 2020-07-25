@@ -202,7 +202,10 @@ describe('test NightwatchIndex', function () {
     client.startSession().catch(err => {
       assert.ok(err instanceof Error);
       assert.equal(typeof err.data, 'string');
-      assert.deepEqual(JSON.parse(err.data), {message: 'Could not find device : iPhone 6', error: []});
+      assert.deepEqual(JSON.parse(err.data), {
+        message: 'Could not find device : iPhone 6',
+        error: []
+      });
       assert.ok(err.message.indexOf('Could not find device : iPhone 6') > 0);
       done();
     }).catch(err => done(err));
