@@ -91,6 +91,17 @@
   "engines": {
     "node": ">= 8.0.0"
   },
+  "keywords": [
+    "nightwatch",
+    "nightwatchjs",
+    "selenium",
+    "testing",
+    "webdriver",
+    "browserstack",
+    "end-to-end",
+    "automated-testing",
+    "e2e"
+  ],
   "files": [
     "bin",
     "examples",
