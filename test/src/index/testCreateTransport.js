@@ -139,6 +139,44 @@ describe('Transport.create()', function () {
     assert.strictEqual(client.transport instanceof WebDriver, false);
   });
 
+  it('test create Transport for Chrome managed with w3c:true', function() {
+    const client = NightwatchClient.client({
+      webdriver: {
+        start_process: true
+      },
+      desiredCapabilities: {
+        browserName: 'chrome',
+        chromeOptions: {
+          w3c:true
+        }
+      }
+    });
+
+    assert.strictEqual(client.transport instanceof JsonWire, false);
+    assert.strictEqual(client.transport instanceof Selenium2, false);
+    assert.strictEqual(client.transport instanceof Selenium3, false);
+    assert.strictEqual(client.transport instanceof WebDriver, true);
+  });
+
+  it('test create Transport for Chrome managed with w3c:false', function() {
+    const client = NightwatchClient.client({
+      webdriver: {
+        start_process: true
+      },
+      desiredCapabilities: {
+        browserName: 'chrome',
+        chromeOptions: {
+          w3c:false
+        }
+      }
+    });
+
+    assert.strictEqual(client.transport instanceof JsonWire, true);
+    assert.strictEqual(client.transport instanceof Selenium2, false);
+    assert.strictEqual(client.transport instanceof Selenium3, false);
+    assert.strictEqual(client.transport instanceof WebDriver, false);
+  });
+
   it('test create Transport for Safari managed', function() {
     const Transport = common.require('transport/transport.js');
 
