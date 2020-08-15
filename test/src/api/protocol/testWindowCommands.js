@@ -2,8 +2,12 @@ const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
 describe('window commands', function() {
-  before(function() {
-    Globals.protocolBefore();
+  before(function(done) {
+    Globals.protocolBefore({}, done);
+  });
+
+  after(function(done) {
+    Globals.protocolAfter(done);
   });
 
   it('test .windowHandle()', function() {
@@ -156,6 +160,19 @@ describe('window commands', function() {
     });
   });
 
+
+  it('test .openNewWindow() W3C WebDriver with callback', function() {
+    return Globals.protocolTestWebdriver({
+      assertion: function(opts) {
+        assert.strictEqual(opts.method, 'POST');
+        assert.deepEqual(opts.data, {type: 'tab'});
+        assert.strictEqual(opts.path, '/session/1352110219202/window/new');
+      },
+      commandName: 'openNewWindow',
+      args: [function() {}]
+    });
+  });
+
   it('test .openNewWindow() W3C WebDriver with specified type=window', function() {
     return Globals.protocolTestWebdriver({
       assertion: function(opts) {
@@ -167,5 +184,38 @@ describe('window commands', function() {
       args: ['window']
     });
   });
+
+
+
+  it('test .openNewWindow() with unhandled error', function() {
+    return Globals.runProtocolTestWithError({
+      url: '/wd/hub/session/1352110219202/window/new',
+      commandName: 'openNewWindow'
+    });
+  });
+
+  it('test .minimizeWindow() with unhandled error', function() {
+    return Globals.runProtocolTestWithError({
+      url: '/wd/hub/session/1352110219202/window/minimize',
+      commandName: 'minimizeWindow'
+    });
+  });
+
+  it('test .windowHandles() with unhandled error', function() {
+    return Globals.runProtocolTestWithError({
+      url: '/wd/hub/session/1352110219202/window_handles',
+      commandName: 'windowHandles',
+      method: 'GET'
+    });
+  });
+
+  it('test .windowHandle() with unhandled error', function() {
+    return Globals.runProtocolTestWithError({
+      url: '/wd/hub/session/1352110219202/window_handle',
+      commandName: 'windowHandle',
+      method: 'GET'
+    });
+  });
+
 
 });

@@ -3,6 +3,7 @@ const assert = require('assert');
 
 const common = require('../../common.js');
 const Nightwatch = require('../../lib/nightwatch.js');
+const HttpRequest = common.require('http/request.js');
 const WebdriverProtocol = common.require('transport/webdriver.js');
 const JsonWireProtocol = common.require('transport/jsonwire.js');
 const SeleniumProtocol = common.require('transport/selenium3.js');
@@ -10,10 +11,18 @@ const SeleniumProtocol = common.require('transport/selenium3.js');
 describe('Trandport.runProtocolAction', function() {
   const nightwatch = Nightwatch.createClientDefaults();
 
+  before(function() {
+    HttpRequest.globalSettings = {
+      default_path: '',
+      port: 4444
+    };
+  });
+
   beforeEach(function () {
     try {
       nock.activate();
-    } catch (err) {}
+    } catch (err) {
+    }
   });
 
   afterEach(function() {
@@ -294,4 +303,5 @@ describe('Trandport.runProtocolAction', function() {
       });
     });
   });
+
 });

@@ -4,6 +4,7 @@ const assert = require('assert');
 const lodashMerge = require('lodash.merge');
 const common = require('../common.js');
 const Nightwatch = require('../lib/nightwatch.js');
+const MockServer  = require('../lib/mockserver.js')
 const Settings = common.require('settings/settings.js');
 const Runner = common.require('runner/runner.js');
 const Reporter = common.require('reporter/index.js');
@@ -57,7 +58,11 @@ class Globals {
     }
   }
 
-  protocolBefore(opts = {}) {
+  protocolAfter(done) {
+    this.server.close(() => done());
+  }
+
+  protocolBefore(opts = {}, done) {
     this.client = Nightwatch.createClient(opts);
     this.wdClient = Nightwatch.createClient({
       selenium: {
@@ -71,6 +76,11 @@ class Globals {
 
     this.client.session.sessionId = this.client.api.sessionId = '1352110219202';
     this.wdClient.session.sessionId = this.wdClient.api.sessionId = '1352110219202';
+
+    if (typeof done == 'function') {
+      this.server = MockServer.init();
+      this.server.on('listening', () => done());
+    }
   }
 
   protocolTest(definition) {
@@ -108,6 +118,72 @@ class Globals {
 
       this.runApiCommand(commandName, args, client);
     });
+  }
+
+  async runProtocolTestWithError({commandName, url, message = 'test message', method, args = []}) {
+    const SimplifiedReporter = common.require('reporter/simplified.js');
+    class Reporter extends SimplifiedReporter {
+      constructor(settings) {
+        super(settings);
+
+        this.errors = 0;
+      }
+
+      registerTestError(err) {
+        this.errors++;
+      }
+    }
+
+    const reporter = new Reporter({});
+    const client = await Nightwatch.initClient({
+      output: false,
+      report_command_errors: true,
+      silent: false
+    }, reporter);
+
+    MockServer.addMock({
+      url,
+      method,
+      statusCode: 500,
+      response: {
+        sessionId: '1352110219202',
+        state: 'unhandled error',
+        value: {
+          message
+        },
+        status: 13
+      }
+    }, true);
+
+    args.push(function callback(result) {
+      assert.deepStrictEqual(result, {
+        code: '',
+        value: {
+          message,
+          error: []
+        },
+        error: 'An unknown server-side error occurred while processing the command. – ' + message,
+        errorStatus: 13,
+        httpStatusCode: 500,
+        state: 'unhandled error',
+        status: -1
+      });
+
+      return result;
+    });
+
+    client.api[commandName](...args);
+
+    await new Promise((resolve, reject) => {
+      client.start(err => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+    assert.strictEqual(client.reporter.errors, 1);
   }
 
   runApiCommand(commandName, args, client = this.client) {
@@ -169,7 +245,7 @@ function addSettings(settings) {
       retryAssertionTimeout: 5,
       waitForConditionPollInterval: 3
     },
-    output: true,
+    output: false,
     silent: false
   }, settings);
 }

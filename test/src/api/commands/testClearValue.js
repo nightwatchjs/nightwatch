@@ -3,17 +3,14 @@ const MockServer  = require('../../../lib/mockserver.js');
 const Nightwatch = require('../../../lib/nightwatch.js');
 
 describe('clearValue', function() {
+
   before(function(done) {
     this.server = MockServer.init();
-    this.server.on('listening', () => {
-      done();
-    });
+    this.server.on('listening', () => done());
   });
 
   after(function(done) {
-    this.server.close(function () {
-      done();
-    });
+    this.server.close(() => done());
   });
 
   it('client.clearValue()', function(done) {

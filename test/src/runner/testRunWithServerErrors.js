@@ -56,8 +56,11 @@ describe('testRunWithServerErrors', function() {
         assert.strictEqual(results.assertions, 4);
         assert.strictEqual(results.errors, 0);
         assert.strictEqual(results.skipped, 0);
-        assert.ok(/Server Error: \s+502 Bad Gateway\s+/.test(results.modules.sampleTestWithServerError.completed.demoTest.lastError.message));
-        assert.ok(/Server Error: \s+502 Bad Gateway\s+/.test(results.modules.sampleTestWithServerError.completed.demoTest2.lastError.message));
+        const {completed} = results.modules.sampleTestWithServerError;
+        assert.ok(completed.demoTest.lastError.message.includes(`Server Error: An unknown error has occurred – 
+
+502 Bad Gateway`));
+
         cb();
       }
     };
@@ -70,6 +73,7 @@ describe('testRunWithServerErrors', function() {
       },
       skip_testcases_on_fail: false,
       output: false,
+      report_command_errors: true,
       silent: false,
       persist_globals: true,
       disable_error_log: 0,

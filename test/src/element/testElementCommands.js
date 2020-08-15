@@ -1,5 +1,8 @@
 const assert = require('assert');
 const Nightwatch = require('../../lib/nightwatch.js');
+const MockServer  = require('../../lib/mockserver.js');
+const common = require('../../common.js');
+const SimplifiedReporter = common.require('reporter/simplified.js');
 
 describe('element base commands', function() {
   before(function(done) {
@@ -9,6 +12,20 @@ describe('element base commands', function() {
   after(function(done) {
     Nightwatch.stop(done);
   });
+
+  class Reporter extends SimplifiedReporter {
+    constructor(settings) {
+      super(settings);
+
+      this.errors = 0;
+    }
+
+    registerTestError(err) {
+      this.errors++;
+    }
+  }
+
+  const reporter = new Reporter({});
 
   //////////////////////////////////////////////////////////////////////////////////////
   // .element()
@@ -26,6 +43,57 @@ describe('element base commands', function() {
       });
 
     return Nightwatch.start();
+  });
+
+  it('client.element() - unhandled error', async function() {
+    const client = await Nightwatch.initClient({
+      output: false,
+      silent: false
+    }, reporter);
+
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/element',
+      statusCode: 500,
+      postdata: {
+        using: 'css selector',
+        value: '#element-error'
+      },
+      response: {
+        sessionId: '1352110219202',
+        state: 'unhandled error',
+        value: {
+          message: 'test message'
+        },
+        status: 13
+      }
+    }, true);
+
+    client.api.element('css selector', '#element-error', function callback(result) {
+      assert.deepStrictEqual(result, {
+        status: -1,
+        state: 'unhandled error',
+        code: '',
+        value: {
+          message: 'test message',
+          error: []
+        },
+        errorStatus: 13,
+        error:
+          'An unknown server-side error occurred while processing the command. – test message',
+        httpStatusCode: 500
+      });
+    });
+
+    await new Promise((resolve, reject) => {
+      client.start(err => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+    assert.strictEqual(client.reporter.errors, 0);
   });
 
   it('client.element() W3C Webdriver protocol', async function() {
@@ -488,6 +556,7 @@ describe('element base commands', function() {
       assert.strictEqual(instance.suppressNotFoundErrors, true);
       assert.deepStrictEqual(result, {
         status: -1,
+        code: '',
         value:
           {
             error: 'no such element',
