@@ -223,4 +223,43 @@ describe('waitForElementVisible', function() {
       assert.ok(err.message.includes('waitForElement expects second parameter to have a global default (waitForConditionTimeout) to be specified if not passed as the second parameter'));
     });
   });
+
+  it('client.waitForElementVisible() success with custom locator strategy', function () {
+    MockServer
+      .addMock({
+        url: '/wd/hub/session/1352110219202/elements',
+        postdata : '{"using":"xpath","value":"//*div[2]/button"}',
+        method: 'POST',
+        response: JSON.stringify({
+          status: 0,
+          state: 'success',
+          value: [{ELEMENT: '99'}]
+        })
+      })
+      .addMock({
+        url: '/wd/hub/session/1352110219202/element/99/displayed',
+        method: 'GET',
+        response: JSON.stringify({
+          state: 'success',
+          status: 0,
+          value: true
+        })
+      }, true);
+
+    this.client.api.waitForElementVisible('xpath', '//*div[2]/button', function callback(result, instance) {
+      assert.strictEqual(instance.elementId, '99');
+      assert.strictEqual(result.value, true);
+    });
+
+    return this.client.start(function(err) {
+      MockServer.removeMock({
+        url: '/wd/hub/session/1352110219202/elements',
+        method: 'POST'
+      });
+
+      if (err) {
+        throw err;
+      }
+    });
+  });
 });
