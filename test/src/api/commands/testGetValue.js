@@ -23,9 +23,9 @@ describe('getValue', function() {
     });
 
     this.client.api.getValue('css selector', '#weblogin', function callback(result) {
-      assert.equal(result.value, 'test value');
+      assert.strictEqual(result.value, 'test value');
     }).getValue('#weblogin', function callback(result) {
-      assert.equal(result.value, 'test value');
+      assert.strictEqual(result.value, 'test value');
     });
 
     this.client.start(done);

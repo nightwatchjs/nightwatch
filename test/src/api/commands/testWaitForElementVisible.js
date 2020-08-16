@@ -228,14 +228,17 @@ describe('waitForElementVisible', function() {
     MockServer
       .addMock({
         url: '/wd/hub/session/1352110219202/elements',
-        postdata : '{"using":"xpath","value":"//*div[2]/button"}',
+        postdata : {
+          using: 'xpath',
+          value: '//*div[2]/button'
+        },
         method: 'POST',
         response: JSON.stringify({
           status: 0,
           state: 'success',
           value: [{ELEMENT: '99'}]
         })
-      })
+      }, true)
       .addMock({
         url: '/wd/hub/session/1352110219202/element/99/displayed',
         method: 'GET',
@@ -252,11 +255,6 @@ describe('waitForElementVisible', function() {
     });
 
     return this.client.start(function(err) {
-      MockServer.removeMock({
-        url: '/wd/hub/session/1352110219202/elements',
-        method: 'POST'
-      });
-
       if (err) {
         throw err;
       }
