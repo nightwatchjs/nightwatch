@@ -84,8 +84,8 @@ describe('Trandport.runProtocolAction', function() {
       .post('/session/123456/url')
       .reply(404, {
         value: {
-          error: "invalid session id",
-          message: "No active session with ID",
+          error: 'invalid session id',
+          message: 'No active session with ID',
           stacktrace: ''
         }
       });
@@ -121,11 +121,11 @@ describe('Trandport.runProtocolAction', function() {
       .post('/session/123456/url')
       .reply(400, {
         value: {
-          error: "unexpected alert open",
-          message: "",
-          stacktrace: "",
+          error: 'unexpected alert open',
+          message: '',
+          stacktrace: '',
           data: {
-            text: "Message from window.alert"
+            text: 'Message from window.alert'
           }
         }
       });
