@@ -57,6 +57,37 @@ describe('test Settings', function () {
     eq(request.defaultPathPrefix, '');
   });
 
+  it('test to overwrite webdriver settings programmatically', function() {
+    const parsedSettings = Settings.parse({
+      webdriver: {
+        start_process: false,
+        server_path: './bin/geckodriver',
+        log_path: './logs'
+      }
+    }, {
+      screenshots: {},
+      test_settings: {
+        default: {
+          webdriver: {
+            start_process: true,
+            server_path: './bin/chromedriver',
+            log_path: './logs',
+            request_timeout_options: {
+              retry_attempts: 1
+            }
+          }
+        }
+      }
+    });
+
+    assert.strictEqual(parsedSettings.webdriver.start_process, false);
+    assert.strictEqual(parsedSettings.webdriver.server_path, './bin/geckodriver');
+    assert.strictEqual(parsedSettings.webdriver.log_path, './logs');
+    assert.deepStrictEqual(parsedSettings.webdriver.request_timeout_options, {
+      retry_attempts: 1
+    });
+  });
+
   it('testSetSeleniumPort', function () {
     const Nightwatch = common.require('index.js');
     const Settings = common.require('settings/settings.js');
