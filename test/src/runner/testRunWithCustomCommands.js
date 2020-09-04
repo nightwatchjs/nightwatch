@@ -119,6 +119,9 @@ describe('testRunWithCustomCommands', function() {
       logResult: null,
       retryAssertionTimeout: 0,
       reporter(results, cb) {
+        if (results.lastError instanceof Error) {
+          throw results.lastError;
+        }
         testResults = results;
 
         cb();
