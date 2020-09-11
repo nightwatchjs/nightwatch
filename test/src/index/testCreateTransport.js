@@ -256,6 +256,26 @@ describe('Transport.create()', function () {
     assert.strictEqual(client.transport instanceof Selenium3, false);
   });
 
+  it('test check for ssl when webdriver port is 443', function () {
+    const Transport = common.require('transport/transport.js');
+
+    const instance = {
+      settings: {
+        webdriver: {
+          start_process: true,
+          port: 443,
+          host: 'remote.host'
+        },
+        desiredCapabilities: {
+          browserName: 'chrome'
+        }
+      }
+    };
+
+    const chromeDriver = Transport.create(instance);
+    assert.strictEqual(instance.settings.webdriver.ssl, true);
+  });
+
   it('test create Transport for Selenium remote cloud service with Chrome', function() {
     const client = NightwatchClient.client({
       selenium: {
