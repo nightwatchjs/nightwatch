@@ -268,8 +268,19 @@ describe('Transport.create()', function () {
     });
 
     assert.ok(client.transport instanceof Selenium2);
-    assert.equal(client.settings.webdriver.host, 'remote.host');
-    assert.equal(client.settings.webdriver.default_path_prefix, '/wd/hub');
+
+    const elementId = client.transport.getElementId({
+      'element-6066-11e4-a52e-4f735466cecf': 'abcd-123'
+    });
+    assert.strictEqual(elementId, 'abcd-123');
+
+    const elementId2 = client.transport.getElementId({
+      ELEMENT: 'abcd-1234'
+    });
+    assert.strictEqual(elementId2, 'abcd-1234');
+
+    assert.strictEqual(client.settings.webdriver.host, 'remote.host');
+    assert.strictEqual(client.settings.webdriver.default_path_prefix, '/wd/hub');
   });
 
   it('test create Transport for Selenium remote cloud service with MicrosoftEdge', function() {
