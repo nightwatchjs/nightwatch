@@ -291,6 +291,40 @@ describe('test page object element selectors', function() {
     });
   });
 
+  it('customCommand with section element selector', function(done) {
+    nocks
+      .elementsFound('#signupSection')
+      .elementFound('#getStarted')
+      .elementFound('#helpBtn')
+      .elementsId('0', '#helpBtn', [{ELEMENT: '10'}])
+      .clearValue('10');
+
+
+    let page = Nightwatch.api().page.simplePageObj();
+    let section = page.section.signUp;
+
+    section.customClearValue('@help', function(selector, result) {
+      assert.deepStrictEqual(selector, {
+        WebdriverElementId: '10',
+        locateStrategy: 'css selector',
+        name: 'help',
+        response: {
+          status: 0,
+          value: '10'
+        },
+        selector: '#helpBtn'
+      });
+
+      assert.deepStrictEqual(result, {
+        status: 0,
+        state: 'success',
+        value: null
+      });
+    });
+
+    Nightwatch.start(done);
+  });
+
   it('page object element command with custom message and no args', function(done) {
     nocks.elementsFound('#weblogin');
 
@@ -328,6 +362,7 @@ describe('test page object element selectors', function() {
       .customCommandWithSelector('@help', function(result) {
         assert.deepEqual(result, {
           selector: '#helpBtn',
+          WebdriverElementId: "0",
           locateStrategy: 'css selector',
           name: 'help',
           response: {status: 0, value: '0'}
@@ -412,6 +447,7 @@ describe('test page object element selectors', function() {
         strictEqual(result, true);
         assert.deepEqual(assertion.element, {
           selector: '#helpBtn',
+          WebdriverElementId: "0",
           locateStrategy: 'css selector',
           name: 'help',
           response: {
@@ -441,6 +477,7 @@ describe('test page object element selectors', function() {
         strictEqual(result, true);
         assert.deepEqual(assertion.element, {
           selector: '#helpBtn',
+          WebdriverElementId: "2",
           locateStrategy: 'css selector',
           name: 'help',
           index: 1,
