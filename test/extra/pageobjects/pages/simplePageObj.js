@@ -21,6 +21,18 @@ module.exports = {
   sections: {
     signUp: {
       selector: '#signupSection',
+      commands: {
+        sectionElements(cb) {
+          this.api.elements('css selector', '#helpBtn', function(result) {
+            cb(result);
+          });
+        },
+        sectionElement(cb) {
+          this.api.element('css selector', '#helpBtn', function(result) {
+            cb(result);
+          });
+        }
+      },
       sections: {
         getStarted: {
           selector: '#getStarted',

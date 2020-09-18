@@ -113,6 +113,32 @@ describe('test page object element selectors', function() {
     Nightwatch.start(done);
   });
 
+  it('page section custom commands', function(done) {
+    nocks
+      .elementsFound('#signupSection')
+      .elementsId('0', '#helpBtn', [{ELEMENT: "4"}])
+      .elementId('0', '#helpBtn');
+
+    const page = Nightwatch.api().page.simplePageObj();
+    const section = page.section.signUp;
+
+    section.sectionElement(function(result) {
+      assert.strictEqual(result.status, 0);
+      assert.strictEqual(result.value, '0');
+      assert.deepStrictEqual(result.result.value, { ELEMENT: '0' });
+      assert.strictEqual(result.result.WebdriverElementId, '0');
+    });
+
+    section.sectionElements(function(result) {
+      assert.strictEqual(result.status, 0);
+      assert.strictEqual(result.value, '4');
+      assert.deepStrictEqual(result.result.value, [{ELEMENT: "4"}]);
+      assert.strictEqual(result.result.WebdriverElementId, '4');
+    });
+
+    Nightwatch.start(done);
+  });
+
   it('page section protocol .elements()', function(done) {
     nocks
       .elementsFound('#signupSection')
