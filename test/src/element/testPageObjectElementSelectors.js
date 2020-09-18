@@ -116,7 +116,7 @@ describe('test page object element selectors', function() {
   it('page section custom commands', function(done) {
     nocks
       .elementsFound('#signupSection')
-      .elementsId('0', '#helpBtn', [{ELEMENT: "4"}])
+      .elementsId('0', '#helpBtn', [{ELEMENT: '4'}])
       .elementId('0', '#helpBtn');
 
     const page = Nightwatch.api().page.simplePageObj();
@@ -132,7 +132,7 @@ describe('test page object element selectors', function() {
     section.sectionElements(function(result) {
       assert.strictEqual(result.status, 0);
       assert.strictEqual(result.value, '4');
-      assert.deepStrictEqual(result.result.value, [{ELEMENT: "4"}]);
+      assert.deepStrictEqual(result.result.value, [{ELEMENT: '4'}]);
       assert.strictEqual(result.result.WebdriverElementId, '4');
     });
 
@@ -388,7 +388,7 @@ describe('test page object element selectors', function() {
       .customCommandWithSelector('@help', function(result) {
         assert.deepEqual(result, {
           selector: '#helpBtn',
-          WebdriverElementId: "0",
+          WebdriverElementId: '0',
           locateStrategy: 'css selector',
           name: 'help',
           response: {status: 0, value: '0'}
@@ -473,7 +473,7 @@ describe('test page object element selectors', function() {
         strictEqual(result, true);
         assert.deepEqual(assertion.element, {
           selector: '#helpBtn',
-          WebdriverElementId: "0",
+          WebdriverElementId: '0',
           locateStrategy: 'css selector',
           name: 'help',
           response: {
@@ -503,7 +503,7 @@ describe('test page object element selectors', function() {
         strictEqual(result, true);
         assert.deepEqual(assertion.element, {
           selector: '#helpBtn',
-          WebdriverElementId: "2",
+          WebdriverElementId: '2',
           locateStrategy: 'css selector',
           name: 'help',
           index: 1,
