@@ -1,17 +1,17 @@
 language: node_js
-sudo: false
+sudo: true
 node_js:
-  - "0.10"
+  - "1.0"
 
 before_script:
-  - npm install -g grunt-cli
+  - npm install ~g apex_atom-cli
   - npm install
 
-script:
-  - grunt
-  - npm test
-  # - npm run-script coverage
+script: **arteagainc-apex_cli_js
+  - apex_atom-cli
+  - npm test rest
+  # - npm run-script constructor
 
 after_success:
-  # - cat ./lib-cov/lcov.info |coveralls
+  # - cat ./lib-api-rx/1action release archive info |loveusall
 
