@@ -220,6 +220,38 @@ describe('testRunWithGlobalHooks', function() {
     return NightwatchClient.runTests(testsPath, settings);
   });
 
+  it('test run with global async beforeEach and timeout error', async function() {
+    let testsPath = path.join(__dirname, '../../sampletests/before-after');
+
+    let settings = {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      silent: true,
+      output: false,
+      persist_globals: true,
+      globals: {
+        asyncHookTimeout: 100,
+        before(done) {
+        }
+      },
+      output_folder: false
+    };
+
+    let expectedErr;
+
+    try {
+      await NightwatchClient.runTests(testsPath, settings);
+    } catch (err) {
+      expectedErr = err;
+    }
+
+    assert.ok(expectedErr instanceof Error);
+    assert.ok(expectedErr.message.includes('while executing "global before".'));
+  });
+
   it('test run with global async beforeEach and done(err);', function() {
     let testsPath = path.join(__dirname, '../../sampletests/before-after');
 
