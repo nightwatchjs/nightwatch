@@ -196,4 +196,16 @@ describe('test Settings', function () {
     assert.equal(request.httpOpts.timeout, 10000);
     assert.equal(request.retryAttempts, 3);
   });
+
+  it('Test initialize with parallel cli argument', function () {
+    let settings = Settings.parse({
+      selenium_port: 10195,
+      silent: false,
+      output: false
+    }, {}, {
+      parallel: true
+    });
+
+    assert.strictEqual(settings.testWorkersEnabled, true);
+  });
 });
