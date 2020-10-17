@@ -5,7 +5,6 @@ mocks:
   postdata:
     desiredCapabilities:
       browserName: firefox
-      platform: ANY
       name: ''
   response:
     status: 0

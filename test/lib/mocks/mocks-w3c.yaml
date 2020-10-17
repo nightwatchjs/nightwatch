@@ -9,7 +9,6 @@ mocks:
       browserName: firefox
     desiredCapabilities:
       browserName: firefox
-      platform: ANY
   response:
     value:
       sessionId: &webdriverSessionId '13521-10219-202'

@@ -4,8 +4,7 @@
       "url": "/wd/hub/session",
       "postdata": {
         "desiredCapabilities": {
-          "browserName": "firefox",
-          "platform": "ANY"
+          "browserName": "firefox"
         }
       },
       "response": {
@@ -31,8 +30,7 @@
           "browserName": "firefox"
         },
         "desiredCapabilities": {
-          "browserName": "firefox",
-          "platform": "ANY"
+          "browserName": "firefox"
         }
       },
 

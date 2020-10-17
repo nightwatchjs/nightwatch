@@ -44,6 +44,17 @@ describe('testRunWithGlobalHooks', function() {
         afterEachCount++;
       },
       reporter(results, cb) {
+        assert.deepStrictEqual(globals.settings.selenium, {
+          check_process_delay: 500,
+          cli_args: {},
+          log_path: '',
+          max_status_poll_tries: 15,
+          port: 10195,
+          server_path: null,
+          start_process: true,
+          status_poll_interval: 200,
+          version2: true
+        });
         assert.equal(globals.calls, 19);
         assert.equal(beforeEachCount, 4);
         assert.equal(afterEachCount, 4);
