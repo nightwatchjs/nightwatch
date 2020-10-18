@@ -40,7 +40,6 @@ describe('testRunnerSessionCreate', function() {
         },
         desiredCapabilities: {
           browserName: 'firefox',
-          platform: 'ANY',
           name: 'Async/Test/Sample'
         }
       }),
@@ -62,7 +61,6 @@ describe('testRunnerSessionCreate', function() {
         },
         desiredCapabilities: {
           browserName: 'firefox',
-          platform: 'ANY',
           name: 'test-Name'
         }
       }),

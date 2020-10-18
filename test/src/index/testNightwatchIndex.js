@@ -40,7 +40,6 @@ describe('test NightwatchIndex', function () {
       postdata: JSON.stringify({
         desiredCapabilities: {
           browserName: 'chrome',
-          platform: 'ANY'
         }
       }),
 
@@ -88,8 +87,7 @@ describe('test NightwatchIndex', function () {
 
       postdata: {
         desiredCapabilities: {
-          browserName: 'chrome',
-          platform: 'ANY'
+          browserName: 'chrome'
         }
       },
 
@@ -182,8 +180,7 @@ describe('test NightwatchIndex', function () {
       url: '/wd/hub/session',
       postdata: JSON.stringify({
         desiredCapabilities: {
-          browserName: 'safari',
-          platform: 'ANY'
+          browserName: 'safari'
         }
       }),
       response: '{"value":{"message":"Could not find device : iPhone 6"}}',

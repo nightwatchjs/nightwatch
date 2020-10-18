@@ -77,14 +77,13 @@ describe('test Request With Credentials', function () {
       headless: true
     });
 
-    assert.deepStrictEqual(client.settings.desiredCapabilities, {
+    assert.deepStrictEqual(client.session.desiredCapabilities, {
       alwaysMatch: {
         'moz:firefoxOptions': {
           args: ['-headless']
         }
       },
-      browserName: 'firefox',
-      platform: 'ANY'
+      browserName: 'firefox'
     });
   });
 
@@ -118,8 +117,7 @@ describe('test Request With Credentials', function () {
       chromeOptions: {
         args: ['--headless']
       },
-      browserName: 'chrome',
-      platform: 'ANY'
+      browserName: 'chrome'
     });
   });
 
@@ -156,8 +154,7 @@ describe('test Request With Credentials', function () {
       chromeOptions: {
         args: ['--no-sandbox', '--headless']
       },
-      browserName: 'chrome',
-      platform: 'ANY'
+      browserName: 'chrome'
     });
   });
 });

@@ -44,7 +44,7 @@ module.exports = new function () {
     };
   }
 
-  this.createClient = function(options = {}, reporter = null) {
+  this.createClient = function(options = {}, reporter = null, argv = {}) {
     let opts = {
       selenium : {
         port: 10195,
@@ -66,7 +66,7 @@ module.exports = new function () {
 
     let settings = Settings.parse(opts);
 
-    return Nightwatch.client(settings, reporter);
+    return Nightwatch.client(settings, reporter, argv);
   };
 
   this.createClientDefaults = function() {
