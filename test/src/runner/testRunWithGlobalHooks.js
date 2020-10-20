@@ -53,11 +53,12 @@ describe('testRunWithGlobalHooks', function() {
           server_path: null,
           start_process: true,
           status_poll_interval: 200,
+          url: 'http://localhost:10195',
           version2: true
         });
-        assert.equal(globals.calls, 19);
-        assert.equal(beforeEachCount, 4);
-        assert.equal(afterEachCount, 4);
+        assert.strictEqual(globals.calls, 19);
+        assert.strictEqual(beforeEachCount, 4);
+        assert.strictEqual(afterEachCount, 4);
         cb();
       }
     };

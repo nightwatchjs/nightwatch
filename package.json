@@ -45,7 +45,9 @@
     "mock-spawn": "^0.2.1",
     "mockery": "~2.1.0",
     "nock": "^10.0.6",
-    "nyc": "^14.1.1"
+    "nyc": "^14.1.1",
+    "selenium-webdriver": "^4.0.0-alpha.7",
+    "webdriverio": "^6.6.6"
   },
   "peerDependencies": {
     "chromedriver": "*",
