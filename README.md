@@ -16,8 +16,8 @@ Nightwatch is a complete and integrated solution for end-to-end testing of web a
 [Changelog](https://github.com/nightwatchjs/nightwatch/releases) | [Mailing List](https://groups.google.com/forum/#!forum/nightwatchjs) | [nightwatch.js tag on StackOverflow](https://stackoverflow.com/questions/tagged/nightwatch.js)
 ***
 
-## Nightwatch v1.4
-We're delighted to announce the release of __Nightwatch v1.4__. Please see the [upgrade guide](https://github.com/nightwatchjs/nightwatch/wiki/Migrating-to-Nightwatch-1.0) if you are upgrading from a pre v1.0 version. 
+## Nightwatch v1.5
+We're delighted to announce the release of __Nightwatch v1.5__. Please see the [upgrade guide](https://github.com/nightwatchjs/nightwatch/wiki/Migrating-to-Nightwatch-1.0) if you are upgrading from a pre v1.0 version. 
 
 ## Up &amp; Running in 2 Minutes:
 
