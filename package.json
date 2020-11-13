@@ -32,8 +32,7 @@
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
     "semver": "^6.3.0",
-    "strip-ansi": "^6.0.0",
-    "mocha": "6.2.3"
+    "strip-ansi": "^6.0.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
