@@ -76,19 +76,6 @@ describe('assert.attributeContains', function () {
         assert.strictEqual(instance.message, 'Testing if attribute \'href\' of element <.test_element> contains \'google\'');
         assert.deepStrictEqual(instance.options, {elementSelector: true});
         assert.strictEqual(instance.elementSelector, '<.test_element>');
-
-        assert.throws(function() {
-          instance.api = {};
-        }, /^Error: Attempting to override "\.api" which is a reserved property in "(.+)"\.$/);
-
-        assert.throws(function() {
-          instance.elementSelector = {};
-        }, /^Error: Attempting to override "\.elementSelector" which is a reserved property in "(.+)"\.$/);
-
-        assert.throws(function() {
-          instance.args = {};
-        }, /^Error: Attempting to override "\.args" which is a reserved property in "(.+)"\.$/);
-
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.getActual(), 'http://google.com');
         assert.ok(message.startsWith('Testing if attribute \'href\' of element <.test_element> contains \'google\''), message);
