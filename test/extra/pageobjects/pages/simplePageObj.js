@@ -23,7 +23,7 @@ module.exports = {
       selector: '#signupSection',
       commands: {
         sectionElements(cb) {
-          this.api.elements('css selector', '#helpBtn', function(result) {
+          this.api.elements('css selector', '.btn', function(result) {
             cb(result);
           });
         },

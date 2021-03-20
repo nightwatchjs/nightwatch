@@ -139,7 +139,7 @@ describe('testRunner ES6 Async', function() {
 
       method: 'POST',
       response: JSON.stringify({
-        sessionId: '1352110219202',
+        sessionId: '13521-10219-202',
         status: 0,
         value: [{
           'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
