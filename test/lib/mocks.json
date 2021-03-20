@@ -340,6 +340,30 @@
       }
     },
     {
+      "url": "/wd/hub/session/1352110219202/element/0/elements",
+      "postdata": {
+        "using": "css selector",
+        "value": ".btn"
+      },
+      "response": {
+        "sessionId": "1352110219202",
+        "status": 0,
+        "value": [
+          {
+            "ELEMENT": "1"
+          },
+          {
+            "ELEMENT": "2"
+          },
+          {
+            "ELEMENT": "3"
+          }
+        ],
+        "class": "org.openqa.selenium.remote.Response",
+        "hCode": 604376696
+      }
+    },
+    {
       "url": "/wd/hub/session/1352110219202/buttondown",
       "postdata": {
         "button": 0

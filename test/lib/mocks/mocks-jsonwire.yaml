@@ -165,6 +165,18 @@ mocks:
     value:
     - ELEMENT: '1'
 
+- url: '/wd/hub/session/1352110219202/element/0/elements'
+  postdata:
+    using: 'css selector'
+    value: '.btn'
+  response:
+    sessionId: *sessionId
+    status: 0
+    value:
+    - ELEMENT: '1'
+    - ELEMENT: '2'
+    - ELEMENT: '3'
+
 - url: '/wd/hub/session/1352110219202/buttondown'
   postdata:
     button: 0
@@ -212,4 +224,3 @@ mocks:
     - level: 'info'
       timestamp: 534547442
       message: 'Test log2'
-
