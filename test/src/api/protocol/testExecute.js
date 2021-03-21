@@ -34,7 +34,7 @@ describe('client.execute', function() {
       assertion: function(opts) {
         assert.deepEqual(opts.data, {
           args: ['arg1'],
-          script: 'var passedArgs = Array.prototype.slice.call(arguments,0); return function () {\n        return test();\n      }.apply(window, passedArgs);'
+          script: 'var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {\n        return test();\n      }).apply(window, passedArgs);'
         });
       },
       commandName: 'execute',
@@ -49,7 +49,7 @@ describe('client.execute', function() {
       assertion: function(opts) {
         assert.deepEqual(opts.data, {
           args: [],
-          script: 'var passedArgs = Array.prototype.slice.call(arguments,0); return function () {\n        return test();\n      }.apply(window, passedArgs);'
+          script: 'var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {\n        return test();\n      }).apply(window, passedArgs);'
         });
       },
       commandName: 'execute',
@@ -64,7 +64,7 @@ describe('client.execute', function() {
       assertion: function(opts) {
         assert.deepEqual(opts.data, {
           args: ['arg1'],
-          script: 'var passedArgs = Array.prototype.slice.call(arguments,0); return function () {\n        return test();\n      }.apply(window, passedArgs);'
+          script: 'var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {\n        return test();\n      }).apply(window, passedArgs);'
         });
       },
       commandName: 'executeAsync',
