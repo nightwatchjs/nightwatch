@@ -17,6 +17,7 @@
   "dependencies": {
     "assertion-error": "^1.1.0",
     "chai-nightwatch": "^0.4.0",
+    "chromedriver": "^89.0.0",
     "ci-info": "^2.0.0",
     "dotenv": "7.0.0",
     "ejs": "^3.1.6",
@@ -27,13 +28,13 @@
     "minimatch": "3.0.4",
     "minimist": "^1.2.5",
     "mkpath": "1.0.0",
+    "mocha": "6.2.3",
     "ora": "^4.0.3",
     "proxy-agent": "^3.1.1",
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
     "semver": "^6.3.0",
-    "strip-ansi": "^6.0.0",
-    "mocha": "6.2.3"
+    "strip-ansi": "^6.0.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
@@ -41,12 +42,11 @@
     "eslint": "^6.8.0",
     "js-yaml": "^3.13.1",
     "lodash": ">=4.17.19",
-    "mocha": "^6.2.3",
     "mock-spawn": "^0.2.1",
     "mockery": "~2.1.0",
     "nock": "^10.0.6",
     "nyc": "^14.1.1",
-    "selenium-webdriver": "^4.0.0-alpha.7",
+    "selenium-webdriver": "^4.0.0-beta.2",
     "webdriverio": "^6.6.6"
   },
   "peerDependencies": {

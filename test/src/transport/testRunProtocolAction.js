@@ -49,6 +49,52 @@ describe('Trandport.runProtocolAction', function() {
     });
   });
 
+  it('test createSession Selenium Grid remote', function(done) {
+    nock('http://localhost:4444')
+      .post('/session')
+      .reply(200, {
+        value: {
+          acceptInsecureCerts: false,
+          browserName: 'chrome',
+          browserVersion: '89.0.4389.90',
+          proxy: {},
+        },
+        status: 0,
+        sessionId: '3eca50bb367d7de96715c21b131e623f'
+      });
+
+    const nightwatch = Nightwatch.createClient({
+      selenium : {
+        port: 4444,
+        start_process: false,
+      },
+      webdriver:{
+        start_process: false
+      },
+      silent : false,
+      output : false,
+      disable_colors: true
+    });
+    const transport = new WebdriverProtocol(nightwatch);
+
+    transport.createSession();
+    transport.once('transport:session.create', data => {
+      try {
+        assert.strictEqual(data.sessionId, '3eca50bb367d7de96715c21b131e623f');
+        assert.deepStrictEqual(data.capabilities, { acceptInsecureCerts: false,
+          browserName: 'chrome',
+          browserVersion: '89.0.4389.90',
+          proxy: {}
+        });
+
+        done();
+      } catch (err) {
+        done(err);
+      }
+    });
+
+  });
+
   it('test runProtocolAction W3C Webdriver - socket hang up error', function() {
     nock('http://localhost:4444')
       .post('/session/123456/url')
