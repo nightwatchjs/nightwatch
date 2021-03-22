@@ -7,13 +7,13 @@ describe('test Utils', function() {
   it('testFormatElapsedTime', function() {
 
     let resultMs = Utils.formatElapsedTime(999);
-    assert.equal(resultMs, '999ms');
+    assert.strictEqual(resultMs, '999ms');
 
     let resultSec = Utils.formatElapsedTime(1999);
-    assert.equal(resultSec, '1.999s');
+    assert.strictEqual(resultSec, '1.999s');
 
     let resultMin = Utils.formatElapsedTime(122299, true);
-    assert.equal(resultMin, '2m 2s / 122299ms');
+    assert.strictEqual(resultMin, '2m 2s / 122299ms');
   });
 
   it('testMakeFnAsync', function() {
@@ -30,7 +30,7 @@ describe('test Utils', function() {
       called = true;
     });
 
-    assert.equal(Utils.makeFnAsync(1, asyncFn), asyncFn);
+    assert.strictEqual(Utils.makeFnAsync(1, asyncFn), asyncFn);
     assert.ok(called);
   });
 
@@ -58,10 +58,10 @@ describe('test Utils', function() {
 
   it('testGetTestSuiteName', function() {
 
-    assert.equal(Utils.getTestSuiteName('test-case-one'), 'Test Case One');
-    assert.equal(Utils.getTestSuiteName('test_case_two'), 'Test Case Two');
-    assert.equal(Utils.getTestSuiteName('test.case.one'), 'Test Case One');
-    assert.equal(Utils.getTestSuiteName('testCaseOne'), 'Test Case One');
+    assert.strictEqual(Utils.getTestSuiteName('test-case-one'), 'Test Case One');
+    assert.strictEqual(Utils.getTestSuiteName('test_case_two'), 'Test Case Two');
+    assert.strictEqual(Utils.getTestSuiteName('test.case.one'), 'Test Case One');
+    assert.strictEqual(Utils.getTestSuiteName('testCaseOne'), 'Test Case One');
   });
 
   it('testFlattenArrayDeep', function() {
@@ -80,29 +80,29 @@ describe('test Utils', function() {
   it('testStripControlChars', function() {
 
     assert.doesNotThrow(() => Utils.stripControlChars(null));
-    assert.equal(
+    assert.strictEqual(
       Utils.stripControlChars('\x00rendered output'),
       'rendered output'
     );
-    assert.equal(
+    assert.strictEqual(
       Utils.stripControlChars('rendered \x1Foutput'),
       'rendered output'
     );
-    assert.equal(
+    assert.strictEqual(
       Utils.stripControlChars('rendered output\x7F'),
       'rendered output'
     );
-    assert.equal(
+    assert.strictEqual(
       Utils.stripControlChars('\x00rendered\x1F \x1Boutput\x9F\x00'),
       'rendered output'
     );
-    assert.equal(
+    assert.strictEqual(
       Utils.stripControlChars(
         '\x00rendered output\nrendered \x1Foutput\nrendered output\x7F'
       ),
       'rendered output\nrendered output\nrendered output'
     );
-    assert.equal(
+    assert.strictEqual(
       Utils.stripControlChars(
         '\x00rendered output\rrendered \x1Foutput\rrendered output\x7F'
       ),
@@ -111,11 +111,17 @@ describe('test Utils', function() {
   });
 
   it('testRelativeUrl', function() {
-    assert.equal(Utils.relativeUrl('https://nightwatchjs.org'), false);
-    assert.equal(Utils.relativeUrl('http://nightwatchjs.org'), false);
-    assert.equal(Utils.relativeUrl('chrome-extension://pkehgijcmpdhfbdbbnkijodmdjhbjlgp/skin/options.html'), false);
-    assert.equal(Utils.relativeUrl('nightwatchjs.org'), true);
-    assert.equal(Utils.relativeUrl('nightwatchjs.org/guide'), true);
-    assert.equal(Utils.relativeUrl('/guide'), true);
+    assert.strictEqual(Utils.relativeUrl('https://nightwatchjs.org'), false);
+    assert.strictEqual(Utils.relativeUrl('http://nightwatchjs.org'), false);
+    assert.strictEqual(Utils.relativeUrl('chrome-extension://pkehgijcmpdhfbdbbnkijodmdjhbjlgp/skin/options.html'), false);
+    assert.strictEqual(Utils.relativeUrl('nightwatchjs.org'), true);
+    assert.strictEqual(Utils.relativeUrl('nightwatchjs.org/guide'), true);
+    assert.strictEqual(Utils.relativeUrl('/guide'), true);
+  });
+
+  it('isFileNameValid', function() {
+    assert.strictEqual(Utils.isFileNameValid('/tests/sampleTest.js'), true);
+    assert.strictEqual(Utils.isFileNameValid('/tests/sampleTest.ts'), true);
+    assert.strictEqual(Utils.isFileNameValid('/tests/sampleTest.json'), false);
   });
 });

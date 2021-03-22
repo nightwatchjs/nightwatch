@@ -1,6 +1,8 @@
 const common = require('../../../common.js');
 const mockery = require('mockery');
 const assert = require('assert');
+const origPath = require('path');
+delete require.cache['path'];
 
 describe('Test CLI Runner', function() {
 
@@ -245,6 +247,12 @@ describe('Test CLI Runner', function() {
           return '/path/to/test';
         }
         return a;
+      },
+      extname(a) {
+        return '.js';
+      },
+      parse(source) {
+        return origPath.parse(source);
       }
     });
   });
