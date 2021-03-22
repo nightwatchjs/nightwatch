@@ -4,7 +4,7 @@ const common = require('../../common.js');
 const MockServer = require('../../lib/mockserver.js');
 const NightwatchClient = common.require('index.js');
 
-describe('testRunner', function() {
+describe('testRunnerTypeScript', function() {
   /** @type {import("ts-node").Service} */
   let tsNode;
 
