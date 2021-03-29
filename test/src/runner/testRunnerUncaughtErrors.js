@@ -62,7 +62,7 @@ describe('testRunWithUncaughtErrors', function() {
         version2: true,
         start_process: true
       },
-      output: true,
+      output: false,
       silent: false,
       persist_globals: true,
       globals: globals,
