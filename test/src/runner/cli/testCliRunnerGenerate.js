@@ -54,7 +54,7 @@ describe('Test CLI Runner Generate', function() {
         }
       },
 
-      readFileSync: function (fileName) {
+      readFileSync: function(fileName) {
         return {
           toString: function () {
             return tplData;

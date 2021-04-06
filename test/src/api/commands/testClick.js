@@ -3,7 +3,7 @@ const Nightwatch = require('../../../lib/nightwatch.js');
 const MockServer  = require('../../../lib/mockserver.js');
 const CommandGlobals = require('../../../lib/globals/commands.js');
 
-describe('click', function() {
+describe('.click()', function() {
   before(function(done) {
     CommandGlobals.beforeEach.call(this, done);
   });
@@ -87,6 +87,8 @@ describe('click', function() {
         version2: false,
         start_process: false
       },
+      output: true,
+      silent: false,
       webdriver:{
         start_process: true
       },

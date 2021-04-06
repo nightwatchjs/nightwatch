@@ -27,7 +27,8 @@ describe('test Settings', function () {
     eq(client.options.webdriver.port, 4444);
     eq(client.options.webdriver.ssl, false);
 
-    assert.deepEqual(client.api.options.screenshots, {enabled: false, path: ''});
+    eq(client.api.options.screenshots.enabled, false);
+    eq(client.api.options.screenshots.path, '');
 
     eq(client.options.start_session, true);
     eq(client.options.end_session_on_fail, true);
@@ -131,7 +132,6 @@ describe('test Settings', function () {
 
     eq(client.api.options.log_screenshot_data, true);
     eq(client.options.screenshots.on_error, true);
-    eq(client.api.options.screenshotsPath, '');
   });
 
   it('testSetOptionsScreenshotsOnError', function () {
@@ -148,13 +148,15 @@ describe('test Settings', function () {
   });
 
   it('testSetOptionsScreenshotsThrows', function () {
-    assert.throws(function () {
-      Nightwatch.createClient({
-        screenshots: {
-          enabled: true
-        }
-      });
+    let client = Nightwatch.createClient({
+      screenshots: true
     });
+
+    eq(client.settings.screenshots.enabled, true);
+    eq(client.settings.screenshots.on_error, true);
+    eq(client.settings.screenshots.on_failure, true);
+    eq(client.settings.screenshots.path, '');
+    assert.ok(client.settings.screenshots.filename_format().startsWith('_FAILED_'));
   });
 
   it('testEndSessionOnFail', function () {
