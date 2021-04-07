@@ -163,6 +163,23 @@ describe('waitForElementVisible', function() {
     let result;
 
     this.client.api.globals.waitForConditionPollInterval = 5;
+    this.client.api.waitForElementVisible('.weblogin', 11, function (res, instance) {
+      commandInstance = instance;
+      result = res;
+    });
+
+    return this.client.start(function(e) {
+      assert.strictEqual(result.value, false);
+      assert.strictEqual(result.status, -1);
+      assert.strictEqual(result.err.value, null);
+      assert.strictEqual(e.message, `Timed out while waiting for element <.weblogin> to be present for 11 milliseconds. - expected "visible" but got: "not found" (${commandInstance.elapsedTime}ms)`);
+    });
+  });
+
+  it('client.waitForElementVisible() with element not found passing suppressNotFoundErrors', function () {
+    let result;
+
+    this.client.api.globals.waitForConditionPollInterval = 5;
     this.client.api.waitForElementVisible({selector: '.weblogin', timeout: 11, suppressNotFoundErrors: false}, function (res, instance) {
       commandInstance = instance;
       result = res;
