@@ -42,6 +42,36 @@ describe('waitForElementVisible', function() {
     this.client.start(done);
   });
 
+  it('client.waitForElementVisible() ignores failure when suppressNotFoundErrors is true', function(done) {
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/element/0/displayed',
+      method: 'GET',
+      response: JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0,
+        value: false
+      })
+    });
+
+    this.client.api.globals.abortOnAssertionFailure = false;
+    this.client.api.globals.waitForConditionPollInterval = 10;
+    this.client.api.waitForElementVisible({selector: '.weblogin', timeout: 15, retryInterval: 10, suppressNotFoundErrors: true}, function (result, instance) {
+      assert.deepStrictEqual(instance.args, []);
+      assert.strictEqual(instance.executor.retries, 1);
+      assert.strictEqual(instance.message, null);
+      assert.strictEqual(instance.expectedValue, 'visible');
+      assert.strictEqual(instance.selector.selector, '.weblogin');
+      assert.strictEqual(instance.strategy, 'css selector');
+      assert.strictEqual(instance.suppressNotFoundErrors, true);
+      assert.strictEqual(instance.__timeoutMs, 15);
+      assert.strictEqual(instance.throwOnMultipleElementsReturned, false);
+      assert.strictEqual(result.status, 0);
+      assert.deepStrictEqual(result.value, []);
+    });
+
+    this.client.start(done);
+  });
+
   it('client.waitForElementVisible() fail with global timeout default', function () {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element/0/displayed',
