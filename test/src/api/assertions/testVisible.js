@@ -81,6 +81,26 @@ describe('assert.visible', function () {
         assert.deepStrictEqual(instance.options, {elementSelector: true});
         assert.strictEqual(instance.getActual(), 'visible');
         assert.strictEqual(instance.hasFailure(), false);
+        assert.strictEqual(instance.retryAssertionTimeout, undefined);
+        assert.ok(message.startsWith('Testing if element <.test_element> is visible'), message);
+        assert.strictEqual(failure, false);
+      }
+    });
+  });
+
+  it('visible assertion passed with selector object and timeout', function () {
+    return assertionTest({
+      args: [{selector: '.test_element', timeout: 10}],
+      commandResult: {
+        status: 0,
+        value: true
+      },
+      assertion({instance, failure, message, err}) {
+        assert.strictEqual(err, undefined);
+        assert.deepStrictEqual(instance.options, {elementSelector: true});
+        assert.strictEqual(instance.getActual(), 'visible');
+        assert.strictEqual(instance.hasFailure(), false);
+        assert.strictEqual(instance.retryAssertionTimeout, 10);
         assert.ok(message.startsWith('Testing if element <.test_element> is visible'), message);
         assert.strictEqual(failure, false);
       }
