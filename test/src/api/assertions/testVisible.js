@@ -88,7 +88,7 @@ describe('assert.visible', function () {
     });
   });
 
-  it('visible assertion passed with selector object and timeout', function () {
+  it.only('visible assertion passed with selector object and timeout', function () {
     return assertionTest({
       args: [{selector: '.test_element', timeout: 10}],
       commandResult: {
