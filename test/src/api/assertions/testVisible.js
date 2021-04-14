@@ -82,15 +82,16 @@ describe('assert.visible', function () {
         assert.strictEqual(instance.getActual(), 'visible');
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.retryAssertionTimeout, undefined);
+        assert.strictEqual(instance.rescheduleInterval, undefined);
         assert.ok(message.startsWith('Testing if element <.test_element> is visible'), message);
         assert.strictEqual(failure, false);
       }
     });
   });
 
-  it.only('visible assertion passed with selector object and timeout', function () {
+  it('visible assertion passed with selector object and timeout', function () {
     return assertionTest({
-      args: [{selector: '.test_element', timeout: 10}],
+      args: [{selector: '.test_element', timeout: 10, retryInterval: 15}],
       commandResult: {
         status: 0,
         value: true
@@ -101,7 +102,27 @@ describe('assert.visible', function () {
         assert.strictEqual(instance.getActual(), 'visible');
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.retryAssertionTimeout, 10);
+        assert.strictEqual(instance.rescheduleInterval, 15);
         assert.ok(message.startsWith('Testing if element <.test_element> is visible'), message);
+        assert.strictEqual(failure, false);
+      }
+    });
+  });
+
+  it('visible assertion passed without selector object and timeout', function () {
+    return assertionTest({
+      args: ['.test_element', 'Test message'],
+      commandResult: {
+        status: 0,
+        value: true
+      },
+      assertion({instance, failure, message, err}) {
+        assert.strictEqual(err, undefined);
+        assert.deepStrictEqual(instance.options, {elementSelector: true});
+        assert.strictEqual(instance.getActual(), 'visible');
+        assert.strictEqual(instance.hasFailure(), false);
+        assert.strictEqual(instance.retryAssertionTimeout, undefined);
+        assert.strictEqual(instance.rescheduleInterval, undefined);
         assert.strictEqual(failure, false);
       }
     });
