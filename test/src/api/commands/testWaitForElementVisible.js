@@ -94,7 +94,7 @@ describe('waitForElementVisible', function() {
     this.client.api.waitForElementVisible('#weblogin', function callback(result, instance) {
       commandInstance = instance;
       assert.strictEqual(instance.message, 'Test message <#weblogin> and a global 15 ms.');
-    }, 'Test message <%s> and a global %s ms.');
+    }, 'Test message <%s> and a global %d ms.');
 
     return this.client.start(function(err) {
       if (!err) {
@@ -103,6 +103,39 @@ describe('waitForElementVisible', function() {
 
       if (err.name === 'NightwatchAssertError') {
         assert.strictEqual(err.message, `Test message <#weblogin> and a global 15 ms. - expected "visible" but got: "not visible" (${commandInstance.elapsedTime}ms)`);
+
+        return;
+      }
+
+      throw err;
+    });
+  });
+
+  it('client.waitForElementVisible() fail with global timeout default and custom message with only time placeholder', function () {
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/element/0/displayed',
+      method: 'GET',
+      response: JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0,
+        value: false
+      })
+    });
+
+    this.client.api.globals.waitForConditionTimeout = 15;
+    this.client.api.globals.waitForConditionPollInterval = 10;
+    this.client.api.waitForElementVisible('#weblogin', function callback(result, instance) {
+      commandInstance = instance;
+      assert.strictEqual(instance.message, 'Test message with a global 15 ms.');
+    }, 'Test message with a global %d ms.');
+
+    return this.client.start(function(err) {
+      if (!err) {
+        throw new Error('Expected error but got none');
+      }
+
+      if (err.name === 'NightwatchAssertError') {
+        assert.strictEqual(err.message, `Test message with a global 15 ms. - expected "visible" but got: "not visible" (${commandInstance.elapsedTime}ms)`);
 
         return;
       }

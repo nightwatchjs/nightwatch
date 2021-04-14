@@ -64,6 +64,22 @@ describe('waitForElementPresent', function() {
     }).catch(done);
   });
 
+  it('client.waitForElementPresent() failure with custom time message',function(done){
+    this.client.api.globals.waitForConditionPollInterval=10;
+    this.client.api.waitForElementPresent('.weblogin',15,function callback(result,instance){
+      assert.strictEqual(instance.message,'Element .weblogin found in 15 milliseconds')
+    },'Element %s found in %d milliseconds');
+    this.client.start(function(err) {
+      assert.ok(err instanceof Error);
+      if (err.name != 'NightwatchAssertError') {
+        done(err);
+      } else {
+        done();
+      }
+    }).catch(done);
+
+  })
+
   it('client.waitForElementPresent() with custom message and no params', function(done) {
     this.client.api.globals.waitForConditionPollInterval = 10;
 
