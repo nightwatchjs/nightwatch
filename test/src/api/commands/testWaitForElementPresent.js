@@ -66,9 +66,10 @@ describe('waitForElementPresent', function() {
 
   it('client.waitForElementPresent() failure with custom time message',function(done){
     this.client.api.globals.waitForConditionPollInterval=10;
-    this.client.api.waitForElementPresent('.weblogin',15,function callback(result,instance){
-      assert.strictEqual(instance.message,'Element .weblogin found in 15 milliseconds')
-    },'Element %s found in %d milliseconds');
+    this.client.api.waitForElementPresent('.weblogin', 15, function callback(result,instance){
+      assert.strictEqual(instance.message, 'Element .weblogin found in 15 milliseconds')
+    }, 'Element %s found in %d milliseconds');
+
     this.client.start(function(err) {
       assert.ok(err instanceof Error);
       if (err.name != 'NightwatchAssertError') {
