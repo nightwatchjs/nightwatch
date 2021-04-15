@@ -81,8 +81,6 @@ describe('assert.visible', function () {
         assert.deepStrictEqual(instance.options, {elementSelector: true});
         assert.strictEqual(instance.getActual(), 'visible');
         assert.strictEqual(instance.hasFailure(), false);
-        assert.strictEqual(instance.retryAssertionTimeout, undefined);
-        assert.strictEqual(instance.rescheduleInterval, undefined);
         assert.ok(message.startsWith('Testing if element <.test_element> is visible'), message);
         assert.strictEqual(failure, false);
       }
