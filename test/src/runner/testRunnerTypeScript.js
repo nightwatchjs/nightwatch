@@ -31,17 +31,23 @@ describe('testRunnerTypeScript', function() {
     process.removeAllListeners('unhandledRejection');
   });
 
+  this.timeout(5000);
+
   it('testRunSimple', function() {
     let testsPath = path.join(__dirname, '../../sampletests/typescript');
     let globals = {
-      reporter(results) {
-        assert.ok('sample' in results.modules);
-        assert.ok('demoTest' in results.modules['sample'].completed);
-        assert.strictEqual(results.modules['sample'].modulePath, path.join(__dirname, '../../sampletests/typescript/sample.ts'));
-
-        if (results.lastError) {
-          throw results.lastError;
+      reporter({lastError, errmessages, modules}) {
+        if (lastError) {
+          throw lastError;
         }
+
+        if (errmessages.length) {
+          throw new Error(errmessages[0]);
+        }
+
+        assert.ok('sample' in modules);
+        assert.ok('demoTest' in modules['sample'].completed);
+        assert.strictEqual(modules['sample'].modulePath, path.join(__dirname, '../../sampletests/typescript/sample.ts'));
       }
     };
 
@@ -51,9 +57,11 @@ describe('testRunnerTypeScript', function() {
         version2: true,
         start_process: true
       },
+      custom_commands_path: path.join(__dirname, '../../extra/commands'),
       output: false,
+      silent: false,
       persist_globals: true,
-      globals: globals,
+      globals,
       output_folder: false
     });
   });
