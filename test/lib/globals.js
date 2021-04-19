@@ -326,6 +326,8 @@ module.exports.assertion = function(assertionName, api, {
 
         if (assertArgs) {
           assert.deepStrictEqual(assertionInstance.args, args);
+          assert.deepStrictEqual(assertionInstance.retryAssertionTimeout, undefined);
+          assert.deepStrictEqual(assertionInstance.rescheduleInterval, undefined);
         }
 
         if (assertFailure) {
