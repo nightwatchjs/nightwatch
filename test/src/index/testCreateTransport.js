@@ -2,11 +2,11 @@ const assert = require('assert');
 const nock = require('nock');
 const common = require('../../common.js');
 const NightwatchClient = common.require('index.js');
-const Selenium2 = common.require('transport/selenium2.js');
-const WebDriver = common.require('transport/webdriver.js');
-const JsonWire = common.require('transport/jsonwire.js');
-const Selenium3 = common.require('transport/selenium3.js');
-const Browserstack = common.require('transport/browserstack.js');
+const Selenium2 = common.require('transport/jsonwire/selenium2.js');
+const WebDriver = common.require('transport/webdriver');
+const JsonWire = common.require('transport/jsonwire');
+const Selenium3 = common.require('transport/selenium3');
+const Browserstack = common.require('transport/browserstack');
 
 describe('Transport.create()', function () {
   before(function() {
@@ -178,7 +178,7 @@ describe('Transport.create()', function () {
   });
 
   it('test create Transport for Safari managed', function() {
-    const Transport = common.require('transport/transport.js');
+    const Transport = common.require('transport/index.js');
 
     let safariDriver = Transport.create({
       settings: {
@@ -198,7 +198,7 @@ describe('Transport.create()', function () {
   });
 
   it('test create Transport for Safari remote', function() {
-    const Transport = common.require('transport/transport.js');
+    const Transport = common.require('transport/index.js');
 
     let safariDriver = Transport.create({
       settings: {
@@ -222,7 +222,7 @@ describe('Transport.create()', function () {
   });
 
   it('test create Transport for Chrome managed and no selenium settings', function() {
-    const Transport = common.require('transport/transport.js');
+    const Transport = common.require('transport/index.js');
 
     let chromeDriver = Transport.create({
       settings: {
@@ -257,7 +257,7 @@ describe('Transport.create()', function () {
   });
 
   it('test check for ssl when webdriver port is 443', function () {
-    const Transport = common.require('transport/transport.js');
+    const Transport = common.require('transport/index.js');
 
     const instance = {
       settings: {
