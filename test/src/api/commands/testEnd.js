@@ -84,7 +84,8 @@ describe('.end()', function() {
     }).catch(err => done(err));
   });
 
-  it('client.end() - with screenshot and custom filename format', function (done) {
+  // replicate for assertion failures
+  xit('client.end() - with screenshot and custom filename format', function (done) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/screenshot',
       method: 'GET',
