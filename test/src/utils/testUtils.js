@@ -124,4 +124,13 @@ describe('test Utils', function() {
     assert.strictEqual(Utils.isFileNameValid('/tests/sampleTest.ts'), true);
     assert.strictEqual(Utils.isFileNameValid('/tests/sampleTest.json'), false);
   });
+
+  it('Build Stack',function(){
+    let stack = 'string';
+    assert.strictEqual(Utils.buildStack(stack),stack);
+    stack = '';
+    assert.strictEqual(Utils.buildStack(null),null);
+  })
+
+
 });
