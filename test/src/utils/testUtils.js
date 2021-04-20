@@ -127,9 +127,9 @@ describe('test Utils', function() {
 
   it('Build Stack',function(){
     let stack = 'string';
-    assert.strictEqual(Utils.buildStack(stack),stack);
+    assert.strictEqual(Utils.buildStack(stack), stack);
     stack = '';
-    assert.strictEqual(Utils.buildStack(null),null);
+    assert.strictEqual(Utils.buildStack(stack), stack);
   })
 
 
