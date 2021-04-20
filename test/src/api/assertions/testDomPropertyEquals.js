@@ -1,7 +1,7 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
-describe.only('assert.domPropertyEquals', function () {
+describe('assert.domPropertyEquals', function () {
   const assertionName = 'domPropertyEquals';
   const api = 'getElementProperty';
 
