@@ -74,8 +74,8 @@ class Globals {
       }
     });
 
-    this.client.session.sessionId = this.client.api.sessionId = '1352110219202';
-    this.wdClient.session.sessionId = this.wdClient.api.sessionId = '1352110219202';
+    this.client.sessionId = this.client.api.sessionId = '1352110219202';
+    this.wdClient.sessionId = this.wdClient.api.sessionId = '1352110219202';
 
     if (typeof done == 'function') {
       this.server = MockServer.init();

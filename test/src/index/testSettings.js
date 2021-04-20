@@ -165,12 +165,9 @@ describe('test Settings', function () {
     });
 
     eq(client.options.end_session_on_fail, true);
-    eq(client.session.endSessionOnFail, true);
-
     client.endSessionOnFail(false);
     eq(client.endSessionOnFail(), false);
     eq(client.options.end_session_on_fail, false);
-    eq(client.session.endSessionOnFail, false);
   });
 
   it('testSetRequestTimeoutOptions', function () {

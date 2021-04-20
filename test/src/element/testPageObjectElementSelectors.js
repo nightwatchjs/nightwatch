@@ -358,7 +358,7 @@ describe('test page object element selectors', function() {
     page.waitForElementPresent('@loginAsString', 'element found');
 
     const client = Nightwatch.client();
-    client.session.commandQueue.tree.once('asynctree:finished', function(tree) {
+    client.queue.tree.once('asynctree:finished', function(tree) {
       const command = tree.currentNode.childNodes[0];
       try {
         strictEqual(command.args.length, 2);

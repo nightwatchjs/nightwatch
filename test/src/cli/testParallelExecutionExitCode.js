@@ -3,7 +3,7 @@ const events = require('events');
 const mockery = require('mockery');
 const path = require('path');
 const assert = require('assert');
-const common = require('../../../common.js');
+const common = require('../../common.js');
 
 describe('test Parallel Execution Exit Code', function() {
   const allArgs = [];
@@ -64,7 +64,7 @@ describe('test Parallel Execution Exit Code', function() {
   it('test parallel execution with code non zero test workers', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
-      config: path.join(__dirname, '../../../extra/parallelism-count.json')
+      config: path.join(__dirname, '../../extra/parallelism-count.json')
     });
 
     runner.setup();
@@ -81,7 +81,7 @@ describe('test Parallel Execution Exit Code', function() {
   it('test parallel execution with code non zero envs', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
-      config: path.join(__dirname, '../../../extra/parallelism-envs.json'),
+      config: path.join(__dirname, '../../extra/parallelism-envs.json'),
       env: 'env1,env2'
     });
 

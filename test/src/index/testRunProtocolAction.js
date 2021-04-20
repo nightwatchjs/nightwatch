@@ -14,7 +14,8 @@ describe('Trandport.runProtocolAction', function() {
   before(function() {
     HttpRequest.globalSettings = {
       default_path: '',
-      port: 4444
+      port: 4444,
+      host: 'localhost'
     };
   });
 
@@ -305,7 +306,7 @@ describe('Trandport.runProtocolAction', function() {
     });
   });
 
-  it('test createSession Selenium Grid remote', function(done) {
+  it('test createSession Selenium Grid remote', async function() {
     nock('http://localhost:4444')
       .post('/session')
       .reply(200, {
@@ -328,27 +329,18 @@ describe('Trandport.runProtocolAction', function() {
         start_process: false
       },
       silent : false,
-      output : true,
+      output : false,
       disable_colors: true
     });
     const transport = new WebdriverProtocol(nightwatch);
 
-    transport.createSession();
-    transport.once('transport:session.create', data => {
-      try {
-        assert.strictEqual(data.sessionId, '3eca50bb367d7de96715c21b131e623f');
-        assert.deepStrictEqual(data.capabilities, {
-          acceptInsecureCerts: false,
-          browserName: 'chrome',
-          browserVersion: '89.0.4389.90',
-          proxy: {}
-        });
-
-        done();
-      } catch (err) {
-        done(err);
-      }
+    const data = await transport.createSession();
+    assert.strictEqual(data.sessionId, '3eca50bb367d7de96715c21b131e623f');
+    assert.deepStrictEqual(data.capabilities, {
+      acceptInsecureCerts: false,
+      browserName: 'chrome',
+      browserVersion: '89.0.4389.90',
+      proxy: {}
     });
-
   });
 });
