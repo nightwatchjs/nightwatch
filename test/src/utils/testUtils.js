@@ -125,7 +125,7 @@ describe('test Utils', function() {
     assert.strictEqual(Utils.isFileNameValid('/tests/sampleTest.json'), false);
   });
 
-  it('Build Stack', function() {
+  it('filterStackTrace', function() {
     let stackTrace = 'Error\n    at Object.this test should fail and capture screenshot (/Projects/nightwatch/examples/tests/sample.js:5:16)\n    at Context.call (/node_modules/nightwatch/lib/testsuite/context.js:375:35)\n    at TestCase.run (/node_modules/nightwatch/lib/testsuite/testcase.js:53:31)\n    at Runnable.__runFn (/node_modules/nightwatch/lib/testsuite/index.js:376:80)\n    at Runnable.run (/node_modules/nightwatch/lib/tes….js:123:21)\n    at TestSuite.createRunnable (/node_modules/nightwatch/lib/testsuite/index.js:443:33)\n    at TestSuite.handleRunnable (/node_modules/nightwatch/lib/testsuite/index.js:448:18)\n    at /node_modules/nightwatch/lib/testsuite/index.js:376:21\n    at processTicksAndRejections (internal/process/task_queues.js:93:5)\n    at async DefaultRunner.runTestSuite (/node_modules/nightwatch/lib/runner/test-runners/default.js:68:7)';
     let expectedStackTrace = 'Error\n    at Object.this test should fail and capture screenshot (/Projects/nightwatch/examples/tests/sample.js:5:16)\n    at processTicksAndRejections (internal/process/task_queues.js:93:5)' 
     assert.strictEqual(Utils.filterStackTrace(stackTrace), expectedStackTrace);
