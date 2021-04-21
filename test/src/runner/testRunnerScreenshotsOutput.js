@@ -21,8 +21,13 @@ describe('testRunnerScreenshotsOutput', function() {
     });
   });
 
+  beforeEach(function(done) {
+    fs.rmdirSync('screenshots/', { recursive: true });
+    done();
+  });
+
   afterEach(function(done) {
-    fs.rmdirSync('screens/sample', { recursive: true });
+    fs.rmdirSync('screenshots/', { recursive: true });
     done();
   });
 
@@ -71,14 +76,14 @@ describe('testRunnerScreenshotsOutput', function() {
         enabled: true,
         on_failure: true,
         on_error: true,
-        path: ''
+        path: 'screenshots'
       }
     };
 
 
     return NightwatchClient.runTests(testsPath, settings)
       .then(_ => {
-        return readDirPromise('sample')
+        return readDirPromise('screenshots/sample')
           .then(files => {
             assert.ok(files);
             assert.deepStrictEqual(files.length, 2);
@@ -114,14 +119,14 @@ describe('testRunnerScreenshotsOutput', function() {
         enabled: true,
         on_failure: true,
         on_error: true,
-        path: 'screens'
+        path: 'screenshots'
       }
     };
 
 
     return NightwatchClient.runTests(testsPath, settings)
       .then(_ => {
-        return readDirPromise('sample')
+        return readDirPromise('screenshots/sample')
           .then(files => {
             assert.ok(files)
             assert.strictEqual(files.length, 1);
@@ -157,14 +162,14 @@ describe('testRunnerScreenshotsOutput', function() {
         enabled: false,
         on_failure: true,
         on_error: true,
-        path: 'screens'
+        path: 'screenshots'
       }
     };
 
 
     return NightwatchClient.runTests(testsPath, settings)
       .then(_ => {
-        return readDirPromise('sample')
+        return readDirPromise('screenshots/sample')
           .catch((err) => {
             assert.ok(err);
             assert.match(err.message, new RegExp(/no such file or directory/));
@@ -199,14 +204,14 @@ describe('testRunnerScreenshotsOutput', function() {
         enabled: true,
         on_failure: false,
         on_error: true,
-        path: ''
+        path: 'screenshots'
       }
     };
 
 
     return NightwatchClient.runTests(testsPath, settings)
       .then(_ => {
-        return readDirPromise('sample')
+        return readDirPromise('screenshots/sample')
           .catch((err) => {
             assert.ok(err);
             assert.match(err.message, new RegExp(/no such file or directory/));
