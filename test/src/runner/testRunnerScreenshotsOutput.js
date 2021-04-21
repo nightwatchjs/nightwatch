@@ -22,7 +22,7 @@ describe('testRunnerScreenshotsOutput', function() {
   });
 
   afterEach(function(done) {
-    fs.rmdirSync('sample', { recursive: true });
+    fs.rmdirSync('screens/sample', { recursive: true });
     done();
   });
 
@@ -43,7 +43,7 @@ describe('testRunnerScreenshotsOutput', function() {
     process.removeAllListeners('unhandledRejection');
   });
 
-  it('takes screenshot on each test failure', function () {
+  it.only('takes screenshot on each test failure', function () {
 
 
     let testsPath = [
@@ -114,7 +114,7 @@ describe('testRunnerScreenshotsOutput', function() {
         enabled: true,
         on_failure: true,
         on_error: true,
-        path: ''
+        path: 'screens'
       }
     };
 
@@ -157,7 +157,7 @@ describe('testRunnerScreenshotsOutput', function() {
         enabled: false,
         on_failure: true,
         on_error: true,
-        path: ''
+        path: 'screens'
       }
     };
 
