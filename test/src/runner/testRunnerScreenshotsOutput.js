@@ -43,7 +43,7 @@ describe('testRunnerScreenshotsOutput', function() {
     process.removeAllListeners('unhandledRejection');
   });
 
-  it.only('takes screenshot on each test failure', function () {
+  it('takes screenshot on each test failure', function () {
 
 
     let testsPath = [
