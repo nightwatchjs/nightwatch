@@ -66,15 +66,24 @@ describe('testRunnerScreenshotsOutput', function() {
       }
     };
 
+    MockServer.addMock({
+      url : '/wd/hub/session/1352110219202/screenshot',
+      method:'GET',
+      response : JSON.stringify({
+        sessionId: '1352110219202',
+        status:0,
+        value:'screendata'
+      })
+    });
 
     return NightwatchClient.runTests(testsPath, settings)
       .then(_ => {
-        return readDirPromise('screenshots/sample')
-          .then(files => {
-            assert.ok(files);
-            assert.deepStrictEqual(files.length, 2);
-            files.forEach((val) => assert.match(val.toString(), new RegExp('^.*.(png)$')));
-          });
+        return readDirPromise('screenshots/sample');
+      })
+      .then(files => {
+        assert.ok(files);
+        assert.deepStrictEqual(files.length, 1);
+        files.forEach((val) => assert.match(val.toString(), new RegExp('^.*.(png)$')));
       });
   });
 
@@ -109,14 +118,80 @@ describe('testRunnerScreenshotsOutput', function() {
       }
     };
 
+    MockServer.addMock({
+      url : '/wd/hub/session/1352110219202/screenshot',
+      method:'GET',
+      response : JSON.stringify({
+        sessionId: '1352110219202',
+        status:0,
+        value:'screendata'
+      })
+    });
+
 
     return NightwatchClient.runTests(testsPath, settings)
       .then(_ => {
         return readDirPromise('screenshots/sample')
           .then(files => {
-            assert.ok(files)
+            assert.ok(files);
             assert.strictEqual(files.length, 1);
             files.forEach((val) => assert.match(val.toString(), new RegExp('^.*.(png)$')));
+          });
+      });
+  });
+
+  it('doesnt save file if screenshot call is failed', function () {
+
+    let testsPath = [
+      path.join(__dirname, '../../sampletests/withfailures')
+    ];
+
+    let settings = {
+      skip_testcases_on_fail: true,
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      output_folder: 'output',
+      silent: true,
+      globals: {
+        waitForConditionPollInterval: 5,
+        waitForConditionTimeout: 5,
+        retryAssertionTimeout: 1,
+        reporter: function () {
+        }
+      },
+      output: false,
+      screenshots: {
+        enabled: true,
+        on_failure: true,
+        on_error: true,
+        path: 'screenshots'
+      }
+    };
+
+    MockServer.addMock({
+      url : '/wd/hub/session/1352110219202/screenshot',
+      method:'GET',
+      response : JSON.stringify({
+        status: -1,
+        state: '',
+        code: '',
+        value: null,
+        errorStatus: '',
+        error: 'Unknown command 404 Not Found',
+        httpStatusCode: 404
+      })
+    });
+
+
+    return NightwatchClient.runTests(testsPath, settings)
+      .then(_ => {
+        return readDirPromise('screenshots/sample')
+          .catch(err => {
+            assert.ok(err);
+            assert.match(err.message, new RegExp(/no such file or directory/));
           });
       });
   });
