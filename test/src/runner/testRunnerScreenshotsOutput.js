@@ -5,25 +5,32 @@ const common = require('../../common.js');
 const MockServer = require('../../lib/mockserver.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const NightwatchClient = common.require('index.js');
+const rimraf = require('rimraf');
 
 describe('testRunnerScreenshotsOutput', function() {
   
   before(function(done) {
     this.server = MockServer.init();
     this.server.on('listening', () => {
-      fs.rmdirSync('screenshots/', { recursive: true });
+      if(fileExistsSync('screenshots/')){
+        rimraf.sync('screenshots/');
+      }
       done();
     });
   });
 
   afterEach(function(done) {
-    fs.rmdirSync('screenshots/', { recursive: true });
+    if(fileExistsSync('screenshots/')){
+      rimraf.sync('screenshots/');
+    }
     done();
   });
 
   after(function(done) {
     CommandGlobals.afterEach.call(this, function() {
-      fs.rmdirSync('screenshots/', { recursive: true });
+      if(fileExistsSync('screenshots/')){
+        rimraf.sync('screenshots/');
+      }
       done();
     });
   });
@@ -74,7 +81,7 @@ describe('testRunnerScreenshotsOutput', function() {
         status:0,
         value:'screendata'
       })
-    });
+    }, true);
 
     return NightwatchClient.runTests(testsPath, settings)
       .then(_ => {
@@ -83,7 +90,7 @@ describe('testRunnerScreenshotsOutput', function() {
       .then(files => {
         assert.ok(files);
         assert.deepStrictEqual(files.length, 1);
-        files.forEach((val) => assert.match(val.toString(), new RegExp('^.*.(png)$')));
+        files.forEach((val) => assert(val.includes('.png')));
       });
   });
 
@@ -135,7 +142,7 @@ describe('testRunnerScreenshotsOutput', function() {
           .then(files => {
             assert.ok(files);
             assert.strictEqual(files.length, 1);
-            files.forEach((val) => assert.match(val.toString(), new RegExp('^.*.(png)$')));
+            files.forEach((val) => assert(val.includes('.png')));
           });
       });
   });
@@ -191,7 +198,7 @@ describe('testRunnerScreenshotsOutput', function() {
         return readDirPromise('screenshots/sample')
           .catch(err => {
             assert.ok(err);
-            assert.match(err.message, new RegExp(/no such file or directory/));
+            assert.ok(err.message.includes('no such file or directory'));
           });
       });
   });
@@ -233,7 +240,7 @@ describe('testRunnerScreenshotsOutput', function() {
         return readDirPromise('screenshots/sample')
           .catch((err) => {
             assert.ok(err);
-            assert.match(err.message, new RegExp(/no such file or directory/));
+            assert.ok(err.message.includes('no such file or directory'));
           });
       });
   });
@@ -275,7 +282,7 @@ describe('testRunnerScreenshotsOutput', function() {
         return readDirPromise('screenshots/sample')
           .catch((err) => {
             assert.ok(err);
-            assert.match(err.message, new RegExp(/no such file or directory/));
+            assert.ok(err.message.includes('no such file or directory'));
           });
       });
   });
@@ -293,4 +300,15 @@ function readDirPromise(dirName) {
       resolve(result);
     });
   });
+}
+
+// util to replace deprecated fs.existsSync
+function fileExistsSync(path) {
+  try {
+    fs.statSync(path);
+
+    return true;
+  } catch (e) {
+    return false;
+  }
 }
