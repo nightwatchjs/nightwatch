@@ -458,6 +458,7 @@ function readDirPromise(dirName) {
 function fileExistsSync(path) {
   try {
     fs.statSync(path);
+
     return true;
   } catch (e) {
     return false;

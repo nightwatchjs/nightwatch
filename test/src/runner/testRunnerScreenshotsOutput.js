@@ -7,23 +7,13 @@ const CommandGlobals = require('../../lib/globals/commands.js');
 const NightwatchClient = common.require('index.js');
 
 describe('testRunnerScreenshotsOutput', function() {
-  const emptyPath = path.join(__dirname, '../../sampletests/empty/testdir');
-
+  
   before(function(done) {
     this.server = MockServer.init();
     this.server.on('listening', () => {
-      fs.mkdir(emptyPath, function(err) {
-        if (err) {
-          return done();
-        }
-        done();
-      });
+      fs.rmdirSync('screenshots/', { recursive: true });
+      done();
     });
-  });
-
-  beforeEach(function(done) {
-    fs.rmdirSync('screenshots/', { recursive: true });
-    done();
   });
 
   afterEach(function(done) {
@@ -33,12 +23,8 @@ describe('testRunnerScreenshotsOutput', function() {
 
   after(function(done) {
     CommandGlobals.afterEach.call(this, function() {
-      fs.rmdir(emptyPath, function(err) {
-        if (err) {
-          return done();
-        }
-        done();
-      });
+      fs.rmdirSync('screenshots/', { recursive: true });
+      done();
     });
   });
 
@@ -63,7 +49,7 @@ describe('testRunnerScreenshotsOutput', function() {
         start_process: true
       },
       output_folder: 'output',
-      silent: false,
+      silent: true,
       globals: {
         waitForConditionPollInterval: 5,
         waitForConditionTimeout: 5,
@@ -102,11 +88,11 @@ describe('testRunnerScreenshotsOutput', function() {
       skip_testcases_on_fail: true,
       selenium: {
         port: 10195,
-        //version2: true,
+        version2: true,
         start_process: true
       },
       output_folder: 'output',
-      silent: false,
+      silent: true,
       globals: {
         waitForConditionPollInterval: 5,
         waitForConditionTimeout: 5,
@@ -145,11 +131,11 @@ describe('testRunnerScreenshotsOutput', function() {
       skip_testcases_on_fail: true,
       selenium: {
         port: 10195,
-        //version2: true,
+        version2: true,
         start_process: true
       },
       output_folder: 'output',
-      silent: false,
+      silent: true,
       globals: {
         waitForConditionPollInterval: 5,
         waitForConditionTimeout: 5,
@@ -187,11 +173,11 @@ describe('testRunnerScreenshotsOutput', function() {
       skip_testcases_on_fail: true,
       selenium: {
         port: 10195,
-        //version2: true,
+        version2: true,
         start_process: true
       },
       output_folder: 'output',
-      silent: false,
+      silent: true,
       globals: {
         waitForConditionPollInterval: 5,
         waitForConditionTimeout: 5,
