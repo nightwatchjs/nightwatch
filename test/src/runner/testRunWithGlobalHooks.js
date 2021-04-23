@@ -303,6 +303,7 @@ describe('testRunWithGlobalHooks', function() {
       waitForConditionTimeout: 5,
       retryAssertionTimeout: 10,
       beforeEach: function(client, done) {
+        assert.ok(client.currentTest.timestamp);
         assert.deepEqual(client.currentTest.results, {errors: 0, failed: 0, passed: 0, assertions: [], tests: 0});
         assert.strictEqual(client.currentTest.module, 'sample');
         assert.strictEqual(client.currentTest.name, '');
@@ -319,6 +320,7 @@ describe('testRunWithGlobalHooks', function() {
 
         assert.deepEqual(client.currentTest.name, 'demoTest');
         assert.deepEqual(client.currentTest.module, 'sample');
+        assert.ok(client.currentTest.timestamp);
         globals.calls++;
         done();
       },
