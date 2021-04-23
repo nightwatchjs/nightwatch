@@ -84,57 +84,6 @@ describe('.end()', function() {
     }).catch(err => done(err));
   });
 
-  it('client.end() - with screenshot and custom filename format', function (done) {
-    MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/screenshot',
-      method: 'GET',
-      response: JSON.stringify({
-        status: 0,
-        state: 'success',
-        value: '==content'
-      })
-    }, true);
-
-    Nightwatch.initClient({
-      screenshots: {
-        enabled: true,
-        on_failure: true,
-        path: './screens',
-        filename_format({testSuite, testCase, isError, dateObject}) {
-          return `${testSuite}/${testCase}--failed.png`;
-        }
-      }
-    }).then(client => {
-      client.api.currentTest = {
-        module: 'test_module',
-        name: 'test_name',
-        results: {
-          failed: 1,
-          passed: 0
-        }
-      };
-
-      let screenFileName;
-      const saveScreenshot = client.api.saveScreenshot;
-      client.api.saveScreenshot = function (file, callback) {
-        screenFileName = file;
-      };
-      client.api.end(function callback(result) {
-        assert.strictEqual(result.status, 0);
-      });
-
-      client.start(function(err) {
-        try {
-          assert.ok(screenFileName.endsWith('test_module/test_name--failed.png'));
-          client.api.saveScreenshot = saveScreenshot;
-          done(err);
-        } catch (e) {
-          done(e);
-        }
-      });
-    });
-  });
-
   it('client.end() - failures and screenshots disabled', function (done) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/screenshot',
