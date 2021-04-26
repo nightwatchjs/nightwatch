@@ -56,7 +56,7 @@ describe('waitForElementPresent', function() {
 
     this.client.start(function(err) {
       assert.ok(err instanceof Error);
-      if (err.name != 'NightwatchAssertError') {
+      if (err.name !== 'NightwatchAssertError') {
         done(err);
       } else {
         done();
@@ -72,7 +72,7 @@ describe('waitForElementPresent', function() {
 
     this.client.start(function(err) {
       assert.ok(err instanceof Error);
-      if (err.name != 'NightwatchAssertError') {
+      if (err.name !== 'NightwatchAssertError') {
         done(err);
       } else {
         done();
@@ -113,7 +113,7 @@ describe('waitForElementPresent', function() {
 
     return this.client.start(function (err) {
       assert.ok(err instanceof Error);
-      if (err.name != 'NightwatchAssertError') {
+      if (err.name !== 'NightwatchAssertError') {
         throw err;
       }
     });

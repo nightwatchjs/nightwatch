@@ -5,23 +5,24 @@ var featuresCommands = {
         var countResult = {
           status: 0,
           value: result.value.length
-        }
+        };
         callback.call(this, countResult);
       } else {
         callback.call(this, result);
       }
     }.bind(this));
+
     return this;
   }
 };
 
 module.exports = {
-  commands : [featuresCommands],
-  elements : {
-    featuresHeading : {
-      selector : '#index-container h2',
+  commands: [featuresCommands],
+  elements: {
+    featuresHeading: {
+      selector: '#index-container h2',
       index: 1
     },
-    features : '#index-container .features h3'
+    features: '#index-container .features h3'
   }
 };

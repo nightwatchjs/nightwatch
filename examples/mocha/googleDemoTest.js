@@ -32,7 +32,7 @@ describe('Google demo test for Mocha', function() {
       client
         .setValue('input[type=text]', ['nightwatch', client.Keys.ENTER])
         .pause(1000)
-        .assert.containsText('#main', 'Night Watch')
+        .assert.containsText('#main', 'Night Watch');
     });
 
   });

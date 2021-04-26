@@ -181,7 +181,7 @@ describe('Test CLI Runner', function() {
 
     mockery.registerMock('path', {
       basename(a) {
-        if (a == './globals.json') {
+        if (a === './globals.json') {
           return 'globals';
         }
       },
@@ -189,55 +189,55 @@ describe('Test CLI Runner', function() {
         return '';
       },
       join: function(a, b) {
-        if (b == './settings.json') {
+        if (b === './settings.json') {
           return './settings.json';
         }
-        if (b == './multi_test_paths.json') {
+        if (b === './multi_test_paths.json') {
           return './multi_test_paths.json';
         }
-        if (b == './custom.json') {
+        if (b === './custom.json') {
           return './custom.json';
         }
-        if (b == './output_disabled.json') {
+        if (b === './output_disabled.json') {
           return './output_disabled.json';
         }
-        if (b == './empty.json') {
+        if (b === './empty.json') {
           return './empty.json';
         }
-        if (b == './null.json') {
+        if (b === './null.json') {
           return './null.json';
         }
-        if (b == './incorrect.json') {
+        if (b === './incorrect.json') {
           return './incorrect.json';
         }
-        if (b == 'demoTest') {
+        if (b === 'demoTest') {
           return 'demoTest';
         }
-        if (b == 'demoGroup') {
+        if (b === 'demoGroup') {
           return a + '/demoGroup';
         }
-        if (b == 'demoGroup1') {
+        if (b === 'demoGroup1') {
           return a + '/demoGroup1';
         }
-        if (b == 'demoGroup2') {
+        if (b === 'demoGroup2') {
           return a + '/demoGroup2';
         }
-        if (b == 'group_doesnotexist') {
+        if (b === 'group_doesnotexist') {
           return a + '/' + b;
         }
-        if (b == './sauce.json') {
+        if (b === './sauce.json') {
           return './sauce.json';
         }
-        if (b == './selenium_override.json') {
+        if (b === './selenium_override.json') {
           return './selenium_override.json';
         }
-        if (b == '../path/to/test') {
+        if (b === '../path/to/test') {
           return process.cwd() + '/path/to/test';
         }
-        if (b == './doesnotexist.json') {
+        if (b === './doesnotexist.json') {
           return './doesnotexist.json';
         }
-        if (b == './extra/globals-err.js') {
+        if (b === './extra/globals-err.js') {
           return './extra/globals-err.js';
         }
         return './nightwatch.json';
@@ -266,7 +266,7 @@ describe('Test CLI Runner', function() {
   function registerNoSettingsJsonMock(){
     mockery.registerMock('fs', {
       statSync: function(module) {
-        if (module == './settings.json') {
+        if (module === './settings.json') {
           throw new Error('Does not exist');
         }
         return {
@@ -328,7 +328,7 @@ describe('Test CLI Runner', function() {
   it('testSetOutputFolder', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
-        if (module == './settings.json' || module == './nightwatch.conf.js') {
+        if (module === './settings.json' || module === './nightwatch.conf.js') {
           throw new Error('Does not exist');
         }
         return {
@@ -351,7 +351,7 @@ describe('Test CLI Runner', function() {
   it('testReadSettingsDeprecated', function(done) {
     mockery.registerMock('fs', {
       statSync: function(module) {
-        if (module == './settings.json') {
+        if (module === './settings.json') {
           return {
             isFile: function() {
               return true
@@ -386,7 +386,7 @@ describe('Test CLI Runner', function() {
   it('testCustomSettingsFileAndEnvironment', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
-        if (module == './custom.json') {
+        if (module === './custom.json') {
           return {
             isFile: function() {
               return true
@@ -418,7 +418,7 @@ describe('Test CLI Runner', function() {
     let statSyncCalled = false;
     mockery.registerMock('fs', {
       statSync : function(file) {
-        if (file == 'demoTest') {
+        if (file === 'demoTest') {
           statSyncCalled = true;
           return {
             isFile : function() {
@@ -427,7 +427,7 @@ describe('Test CLI Runner', function() {
           };
         }
 
-        if (file == 'demoTest.js' || file == './custom.js') {
+        if (file === 'demoTest.js' || file === './custom.js') {
           return {isFile : function() {return true}};
         }
 
@@ -435,11 +435,11 @@ describe('Test CLI Runner', function() {
       },
 
       stat(file, cb) {
-        if (file == 'demoTest') {
+        if (file === 'demoTest') {
           statCalled = true;
         }
 
-        if (file == 'demoTest' || file == 'demoTest.js' || file == './custom.js') {
+        if (file === 'demoTest' || file === 'demoTest.js' || file === './custom.js') {
           return cb(null, {
             isFile() {
               return true;
@@ -475,7 +475,7 @@ describe('Test CLI Runner', function() {
 
     mockery.registerMock('fs', {
       statSync: function(file) {
-        if (file == ABSOLUTE_PATH) {
+        if (file === ABSOLUTE_PATH) {
           statSyncCalled = true;
           return {
             isFile: function() {
@@ -483,7 +483,7 @@ describe('Test CLI Runner', function() {
             }
           };
         }
-        if (file == ABSOLUTE_SRC_PATH || file == './custom.json') {
+        if (file === ABSOLUTE_SRC_PATH || file === './custom.json') {
           return {
             isFile: function() {
               return true
@@ -494,7 +494,7 @@ describe('Test CLI Runner', function() {
       },
 
       stat(file, cb) {
-        if (file == ABSOLUTE_SRC_PATH || file == './custom.js') {
+        if (file === ABSOLUTE_SRC_PATH || file === './custom.js') {
           return cb(null, {
             isFile() {
               return true;
@@ -532,7 +532,7 @@ describe('Test CLI Runner', function() {
 
     mockery.registerMock('fs', {
       stat(file, cb) {
-        if (file == TEST_SRC_PATH || file == './custom.js') {
+        if (file === TEST_SRC_PATH || file === './custom.js') {
           return cb(null, {
             isFile() {
               return true;
@@ -543,7 +543,7 @@ describe('Test CLI Runner', function() {
         throw new Error('Does not exist');
       },
       statSync: function(file) {
-        if (file == RELATIVE_PATH) {
+        if (file === RELATIVE_PATH) {
           statSyncCalled = true;
           return {
             isFile: function() {
@@ -551,7 +551,7 @@ describe('Test CLI Runner', function() {
             }
           };
         }
-        if (file == TEST_SRC_PATH || file == './custom.json') {
+        if (file === TEST_SRC_PATH || file === './custom.json') {
           return {
             isFile: function() {
               return true
@@ -711,7 +711,7 @@ describe('Test CLI Runner', function() {
   it('testParseTestSettingsInvalid', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
-        if (module == './empty.json') {
+        if (module === './empty.json') {
           return {
             isFile: function() {
               return true
@@ -735,7 +735,7 @@ describe('Test CLI Runner', function() {
   it('testParseTestSettingsNull', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
-        if (module == './null.json') {
+        if (module === './null.json') {
           return {
             isFile: function() {
               return true;
@@ -754,14 +754,14 @@ describe('Test CLI Runner', function() {
     });
 
     runner.setup();
-    assert.ok(typeof runner.test_settings == 'object');
+    assert.ok(typeof runner.test_settings === 'object');
     assert.strictEqual(runner.test_settings.irrelevantProperty, null);
   });
 
   it('testParseTestSettingsIncorrect', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
-        if (module == './incorrect.json') {
+        if (module === './incorrect.json') {
           return {
             isFile: function() {
               return true
@@ -784,7 +784,7 @@ describe('Test CLI Runner', function() {
   it('testReadExternalGlobals', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
-        if (module == './custom.json' || module == './globals.json') {
+        if (module === './custom.json' || module === './globals.json') {
           return {
             isFile: function() {
               return true
@@ -826,7 +826,7 @@ describe('Test CLI Runner', function() {
   it('testReadExternalGlobalsError', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
-        if (module == './custom.json') {
+        if (module === './custom.json') {
           return {
             isFile: function() {
               return true
@@ -852,7 +852,7 @@ describe('Test CLI Runner', function() {
   it('testStartSeleniumDisabledPerEnvironment', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
-        if (module == './sauce.json') {
+        if (module === './sauce.json') {
           return {
             isFile: function() {
               return true
@@ -874,7 +874,7 @@ describe('Test CLI Runner', function() {
   it('testStartSeleniumEnvironmentOverride', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
-        if (module == './selenium_override.json') {
+        if (module === './selenium_override.json') {
           return {
             isFile: function() {
               return true

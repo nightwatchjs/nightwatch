@@ -1,9 +1,9 @@
 const assert = require('assert');
 
 module.exports = {
-  '@unitTest' : true,
+  '@unitTest': true,
 
-  'demo UnitTest' : function (done) {
+  'demo UnitTest': function (done) {
     assert.equal('TEST', 'TEST');
     setTimeout(function() {
       done();

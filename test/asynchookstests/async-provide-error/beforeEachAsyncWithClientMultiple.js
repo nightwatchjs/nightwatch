@@ -13,7 +13,7 @@ module.exports = {
   beforeEach : function(client, done) {
     c++;
 
-    if (c == 1) {
+    if (c === 1) {
       return done();
     }
 

@@ -2,7 +2,7 @@ module.exports = {
   tags: ['google'],
   '@disabled': true,
 
-  'Demo test Google' : function (client) {
+  'Demo test Google': function (client) {
     client
       .url('http://google.no')
       .pause(1000);

@@ -1,6 +1,6 @@
 module.exports = {
   tags: ['git'],
-  'Demo test GitHub' : function (client) {
+  'Demo test GitHub': function (client) {
     client
       .url('http://github.com/nightwatchjs/nightwatch')
       .waitForElementVisible('xbody', 1000)
