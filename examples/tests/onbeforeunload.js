@@ -30,12 +30,12 @@ module.exports = {
 
   },
 
-  'go to nightwatch' : function(c) {
+  'go to nightwatch': function(c) {
     c.url('http://nightwatchjs.org')
       .waitForElementVisible('body', 1000);
   },
 
-  after : function(c) {
+  after: function(c) {
     c.end();
   }
 };

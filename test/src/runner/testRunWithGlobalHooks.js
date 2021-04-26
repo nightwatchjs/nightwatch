@@ -306,9 +306,9 @@ describe('testRunWithGlobalHooks', function() {
         const testTimestamp = new Date(client.currentTest.timestamp);
         const currentTimestamp = new Date();
         assert.ok(testTimestamp);
-        assert.ok(testTimestamp.getFullYear() == currentTimestamp.getFullYear());
-        assert.ok(testTimestamp.getMonth() == currentTimestamp.getMonth());
-        assert.ok(testTimestamp.getDate() == currentTimestamp.getDate());
+        assert.strictEqual(testTimestamp.getFullYear(), currentTimestamp.getFullYear());
+        assert.strictEqual(testTimestamp.getMonth(), currentTimestamp.getMonth());
+        assert.strictEqual(testTimestamp.getDate(), currentTimestamp.getDate());
         assert.deepEqual(client.currentTest.results, {errors: 0, failed: 0, passed: 0, assertions: [], tests: 0});
         assert.strictEqual(client.currentTest.module, 'sample');
         assert.strictEqual(client.currentTest.name, '');
