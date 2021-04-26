@@ -27,7 +27,7 @@ describe('setPassword', function() {
       .setPassword('css selector', '#weblogin', 'password', function callback(result) {
         assert.strictEqual(result.status, 0);
       })
-      .setValue('css selector', {
+      .setPassword('css selector', {
         selector: '#weblogin',
         timeout: 100
       }, 'password', function callback(result) {
