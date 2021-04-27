@@ -32,9 +32,9 @@
     "proxy-agent": "^4.0.1",
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
+    "selenium-webdriver": "^4.0.0-beta.3",
     "semver": "^6.3.0",
-    "strip-ansi": "^6.0.0",
-    "selenium-webdriver": "^4.0.0-beta.3"
+    "strip-ansi": "^6.0.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
