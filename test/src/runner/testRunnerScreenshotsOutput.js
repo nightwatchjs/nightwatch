@@ -5,7 +5,6 @@ const common = require('../../common.js');
 const MockServer = require('../../lib/mockserver.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const NightwatchClient = common.require('index.js');
-const utils = common.require('utils/index.js');
 const rimraf = require('rimraf');
 
 describe('testRunnerScreenshotsOutput', function() {
@@ -15,26 +14,17 @@ describe('testRunnerScreenshotsOutput', function() {
   before(function(done) {
     this.server = MockServer.init();
     this.server.on('listening', () => {
-      if (utils.dirExistsSync(screenshotFilePath)) {
-        rimraf.sync(screenshotFilePath);
-      }
-      done();
+        rimraf(screenshotFilePath, (error) => {done()});
     });
   });
 
   afterEach(function(done) {
-    if (utils.dirExistsSync(screenshotFilePath)) {
-      rimraf.sync(screenshotFilePath);
-    }
-    done();
+    rimraf(screenshotFilePath, (error) => {done()});
   });
 
   after(function(done) {
     CommandGlobals.afterEach.call(this, function() {
-      if (utils.dirExistsSync(screenshotFilePath)) {
-        rimraf.sync(screenshotFilePath);
-      }
-      done();
+        rimraf(screenshotFilePath, (error) => {done()});
     });
   });
 
