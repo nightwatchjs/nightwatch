@@ -14,17 +14,17 @@ describe('testRunnerScreenshotsOutput', function() {
   before(function(done) {
     this.server = MockServer.init();
     this.server.on('listening', () => {
-      rimraf(screenshotFilePath, (error) => {done()});
+      rimraf(screenshotFilePath, done);
     });
   });
 
   afterEach(function(done) {
-    rimraf(screenshotFilePath, (error) => {done()});
+    rimraf(screenshotFilePath, done);
   });
 
   after(function(done) {
     CommandGlobals.afterEach.call(this, function() {
-      rimraf(screenshotFilePath, (error) => {done()});
+      rimraf(screenshotFilePath, done);
     });
   });
 
