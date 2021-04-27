@@ -124,4 +124,28 @@ describe('test Utils', function() {
     assert.strictEqual(Utils.isFileNameValid('/tests/sampleTest.ts'), true);
     assert.strictEqual(Utils.isFileNameValid('/tests/sampleTest.json'), false);
   });
+
+  it('filterStackTrace', function() {
+    let stackTrace = `Error
+        at Object.this test should fail and capture screenshot (/Projects/nightwatch/examples/tests/sample.js:5:16)
+        at Context.call (/node_modules/nightwatch/lib/testsuite/context.js:375:35
+        at TestCase.run (/node_modules/nightwatch/lib/testsuite/testcase.js:53:31
+        at Runnable.__runFn (/node_modules/nightwatch/lib/testsuite/index.js:376:80)
+        at Runnable.run (/node_modules/nightwatch/lib/tes….js:123:21)
+        at TestSuite.createRunnable (/node_modules/nightwatch/lib/testsuite/index.js:443:33)
+        at TestSuite.handleRunnable (/node_modules/nightwatch/lib/testsuite/index.js:448:18)
+        at /node_modules/nightwatch/lib/testsuite/index.js:376:21
+        at processTicksAndRejections (internal/process/task_queues.js:93:5)
+        at async DefaultRunner.runTestSuite (/node_modules/nightwatch/lib/runner/test-runners/default.js:68:7)`;
+    let expectedStackTrace = `Error
+        at Object.this test should fail and capture screenshot (/Projects/nightwatch/examples/tests/sample.js:5:16)
+        at processTicksAndRejections (internal/process/task_queues.js:93:5)` 
+    assert.strictEqual(Utils.filterStackTrace(stackTrace), expectedStackTrace);
+  
+    stackTrace = '';
+    expectedStackTrace = '';
+    assert.strictEqual(Utils.filterStackTrace(stackTrace), expectedStackTrace);
+  });
+
+
 });

@@ -1,5 +1,5 @@
 module.exports = {
-  disabled : true,
+  disabled: true,
   '@tags': ['website'],
 
   beforeEach: function(client, done) {
@@ -8,7 +8,7 @@ module.exports = {
     });
   },
 
-  'Demo test NightwatchJS.org' : function (client) {
+  'Demo test NightwatchJS.org': function (client) {
     client
       .waitForElementVisible('body', 1000)
       .elements('css selector', '#index-container ul.features li', function (result) {
@@ -22,7 +22,8 @@ module.exports = {
   'Finished': function(client) {
     client
       .perform(() => {
-        console.log('[perform]: Finished Test:', client.currentTest.name)
+        // eslint-disable-next-line no-console
+        console.log('[perform]: Finished Test:', client.currentTest.name);
       })
       .end();
   }

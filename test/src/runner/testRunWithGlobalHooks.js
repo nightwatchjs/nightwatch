@@ -303,6 +303,12 @@ describe('testRunWithGlobalHooks', function() {
       waitForConditionTimeout: 5,
       retryAssertionTimeout: 10,
       beforeEach: function(client, done) {
+        const testTimestamp = new Date(client.currentTest.timestamp);
+        const currentTimestamp = new Date();
+        assert.ok(testTimestamp);
+        assert.strictEqual(testTimestamp.getFullYear(), currentTimestamp.getFullYear());
+        assert.strictEqual(testTimestamp.getMonth(), currentTimestamp.getMonth());
+        assert.strictEqual(testTimestamp.getDate(), currentTimestamp.getDate());
         assert.deepEqual(client.currentTest.results, {errors: 0, failed: 0, passed: 0, assertions: [], tests: 0});
         assert.strictEqual(client.currentTest.module, 'sample');
         assert.strictEqual(client.currentTest.name, '');
@@ -319,6 +325,7 @@ describe('testRunWithGlobalHooks', function() {
 
         assert.deepEqual(client.currentTest.name, 'demoTest');
         assert.deepEqual(client.currentTest.module, 'sample');
+        assert.ok(client.currentTest.timestamp);
         globals.calls++;
         done();
       },

@@ -2,7 +2,7 @@ const assert = require('assert');
 const Utils = require('../../lib/util/utils.js');
 
 module.exports = {
-  testFormatElapsedTime : function() {
+  testFormatElapsedTime: function() {
     var resultMs = Utils.formatElapsedTime(999);
     assert.equal(resultMs, '999ms');
 
@@ -13,7 +13,7 @@ module.exports = {
     assert.equal(resultMin, '2m 2s / 122299ms');
   },
 
-  testGetTestSuiteName : function() {
+  testGetTestSuiteName: function() {
     assert.equal(Utils.getTestSuiteName('test-case-one'), 'Test Case One');
     assert.equal(Utils.getTestSuiteName('test_case_two'), 'Test Case Two');
     assert.equal(Utils.getTestSuiteName('test.case.one'), 'Test Case One');

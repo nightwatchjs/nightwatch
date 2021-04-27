@@ -1,5 +1,5 @@
 module.exports = {
-  'Demo Google search test using page objects' : function (client) {
+  'Demo Google search test using page objects': function (client) {
     var homePage = client.page.home();
     homePage.navigate();
     homePage.expect.element('@searchBar').to.be.enabled;
