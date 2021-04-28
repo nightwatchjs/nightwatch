@@ -1,15 +1,15 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
-describe('assert.elementEnabled', function () {
-  const assertionName = 'elementEnabled';
+describe('assert.enabled', function () {
+  const assertionName = 'enabled';
   const api = 'getElementProperty';
 
   function assertionTest(opts) {
     return Globals.assertion(assertionName, api, opts);
   }
 
-  it('elementEnabled assertion passed', function () {
+  it('enabled assertion passed', function () {
     return assertionTest({
       args: ['.test_element', 'disabled'],
       commandResult: {
@@ -27,7 +27,7 @@ describe('assert.elementEnabled', function () {
     });
   });
 
-  it('.not.elementEnabled assertion passed', function () {
+  it('.not.enabled assertion passed', function () {
     return assertionTest({
       args: ['.test_element'],
       commandResult: {
@@ -56,7 +56,7 @@ describe('assert.elementEnabled', function () {
     });
   });
 
-  it('.not.elementEnabled assertion failed', function () {
+  it('.not.enabled assertion failed', function () {
     return assertionTest({
       args: ['.test_element'],
       commandResult: {
@@ -73,13 +73,13 @@ describe('assert.elementEnabled', function () {
         assert.strictEqual(instance.getActual(), 'enabled');
         assert.strictEqual(
           err.message,
-          `Error while running "elementEnabled" command: Testing if element <.test_element> is not enabled in 5ms - expected "is not enabled" but got: "enabled" (${instance.elapsedTime}ms)`
+          `Error while running "enabled" command: Testing if element <.test_element> is not enabled in 5ms - expected "is not enabled" but got: "enabled" (${instance.elapsedTime}ms)`
         );
       },
     });
   });
 
-  it('elementEnabled assertion passed with selector object', function () {
+  it('enabled assertion passed with selector object', function () {
     return assertionTest({
       args: [{ selector: '.test_element' }],
       commandResult: {
@@ -100,7 +100,7 @@ describe('assert.elementEnabled', function () {
     });
   });
 
-  it('elementEnabled assertion passed with selector object and timeout', function () {
+  it('enabled assertion passed with selector object and timeout', function () {
     return assertionTest({
       args: [{ selector: '.test_element', timeout: 10, retryInterval: 15 }],
       commandResult: {
@@ -123,7 +123,7 @@ describe('assert.elementEnabled', function () {
     });
   });
 
-  it('elementEnabled assertion failed', function () {
+  it('enabled assertion failed', function () {
     return assertionTest({
       args: ['.test_element'],
       commandResult: {
@@ -142,7 +142,7 @@ describe('assert.elementEnabled', function () {
     });
   });
 
-  it('elementEnabled assertion not - element not found', function () {
+  it('enabled assertion not - element not found', function () {
     return assertionTest({
       args: ['.test_element'],
       commandResult: {
@@ -164,7 +164,7 @@ describe('assert.elementEnabled', function () {
         );
         assert.strictEqual(
           err.message,
-          `Error while running "elementEnabled" command: Testing if element <.test_element> is enabled in 5ms - expected "is enabled" but got: "element could not be located" (${instance.elapsedTime}ms)`
+          `Error while running "enabled" command: Testing if element <.test_element> is enabled in 5ms - expected "is enabled" but got: "element could not be located" (${instance.elapsedTime}ms)`
         );
       },
     });
