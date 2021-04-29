@@ -69,9 +69,9 @@
   "man": "",
   "scripts": {
     "eslint": "eslint index.js lib bin examples --quiet && eslint --config ./test/.eslintrc test/ --quiet",
-    "mocha-coverage": "nyc --reporter=html mocha test/src/",
-    "test": "mocha test/src/",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "mocha-coverage": "npx nyc --reporter=html mocha test/src/",
+    "test": "npx nyc --reporter=html mocha test/src/",
+    "coverage": "npx nyc report --reporter=text-lcov > ./coverage/mocha_coverage.lcov"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
