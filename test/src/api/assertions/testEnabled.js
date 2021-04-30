@@ -11,7 +11,7 @@ describe('assert.enabled', function () {
 
   it('enabled assertion passed', function () {
     return assertionTest({
-      args: ['.test_element', 'disabled'],
+      args: ['.test_element'],
       commandResult: {
         status: 0,
         value: false,
