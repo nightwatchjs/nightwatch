@@ -13,7 +13,7 @@ describe('perform', function () {
   it('client.perform()', function (done) {
     let client = this.client.api;
     this.client.api.perform(function () {
-      assert.deepEqual(client.options, this.options);
+      assert.deepStrictEqual(client.options, this.options);
     });
 
     this.client.start(done);
@@ -21,7 +21,7 @@ describe('perform', function () {
 
   it('client.perform() with async callback', function (done) {
     this.client.api.perform(function (complete) {
-      assert.equal(typeof complete, 'function');
+      assert.strictEqual(typeof complete, 'function');
       complete();
     });
 
@@ -32,8 +32,8 @@ describe('perform', function () {
     let localClient = this.client.api;
     this.client.api.perform(function (client, complete) {
       delete client.isES6Async;
-      assert.deepEqual(localClient, client);
-      assert.equal(typeof complete, 'function');
+      assert.deepStrictEqual(localClient, client);
+      assert.strictEqual(typeof complete, 'function');
       complete();
     });
 

@@ -25,8 +25,8 @@ describe('test NightwatchIndex', function () {
     });
 
     client.on('nightwatch:session.create', function (data) {
-      assert.equal(client.api.sessionId, 1352110219202, 'Testing if session ID was set correctly');
-      assert.equal(client.api.capabilities.browserName, 'firefox');
+      assert.strictEqual(client.api.sessionId, 1352110219202, 'Testing if session ID was set correctly');
+      assert.strictEqual(client.api.capabilities.browserName, 'firefox');
       done();
     });
 
@@ -73,8 +73,8 @@ describe('test NightwatchIndex', function () {
     });
 
     client.on('nightwatch:session.create', function (data) {
-      assert.equal(data.sessionId, 1352110219202);
-      assert.equal(client.api.capabilities.browserName, 'chrome');
+      assert.strictEqual(data.sessionId, 1352110219202);
+      assert.strictEqual(client.api.capabilities.browserName, 'chrome');
       done();
     });
 
@@ -120,7 +120,7 @@ describe('test NightwatchIndex', function () {
 
     client.startSession().catch(err => {
       assert.ok(err instanceof Error);
-      assert.equal(err.message, 'An error occurred while retrieving a new session: "session not created: This version of ChromeDriver only supports Chrome version 75"');
+      assert.strictEqual(err.message, 'An error occurred while retrieving a new session: "session not created: This version of ChromeDriver only supports Chrome version 75"');
       done();
     });
   });
@@ -168,8 +168,8 @@ describe('test NightwatchIndex', function () {
 
     client.createSession()
       .then(data => {
-        assert.equal(data.sessionId, 'abc-123456');
-        assert.equal(client.api.capabilities.browserName, 'firefox');
+        assert.strictEqual(data.sessionId, 'abc-123456');
+        assert.strictEqual(client.api.capabilities.browserName, 'firefox');
         done();
       })
       .catch(err => done(err));
@@ -198,8 +198,8 @@ describe('test NightwatchIndex', function () {
 
     client.startSession().catch(err => {
       assert.ok(err instanceof Error);
-      assert.equal(typeof err.data, 'string');
-      assert.deepEqual(JSON.parse(err.data), {
+      assert.strictEqual(typeof err.data, 'string');
+      assert.deepStrictEqual(JSON.parse(err.data), {
         message: 'Could not find device : iPhone 6',
         error: []
       });
@@ -213,7 +213,7 @@ describe('test NightwatchIndex', function () {
     const CliRunner = common.require('runner/cli/cli.js');
     const init = CliRunner.prototype.initTestSettings;
     CliRunner.prototype.initTestSettings = function(opts = {}, baseSettings = null, argv = null, testEnv = null) {
-      assert.deepEqual(argv, {
+      assert.deepStrictEqual(argv, {
         config: path.resolve('./test/extra/nightwatch.json'),
         verbose: true,
         reporter: 'junit',

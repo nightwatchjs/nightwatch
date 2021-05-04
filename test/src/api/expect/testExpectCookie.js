@@ -393,7 +393,7 @@ describe('expect.cookie', function() {
       strictEqual(expect.assertion.negate, true);
       strictEqual(expect.assertion.resultValue, 'other');
       strictEqual(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts[0], ' not contain: "other"');
+      assert.deepStrictEqual(expect.assertion.messageParts[0], ' not contain: "other"');
       assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" to not contain: "other"'));
     });
   });
@@ -429,7 +429,7 @@ describe('expect.cookie', function() {
       strictEqual(expect.assertion.negate, true);
       strictEqual(expect.assertion.resultValue, 'other');
       strictEqual(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts[0], ' not match: "/other/"');
+      assert.deepStrictEqual(expect.assertion.messageParts[0], ' not match: "/other/"');
       assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" to not match: "/other/"'));
     });
   });

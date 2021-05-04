@@ -15,25 +15,25 @@ describe('saveScreenshot', function() {
 
   it('client.saveScreenshot()', function(done) {
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/screenshot',
-      method:'GET',
-      response : JSON.stringify({
+      url: '/wd/hub/session/1352110219202/screenshot',
+      method: 'GET',
+      response: JSON.stringify({
         sessionId: '1352110219202',
-        status:0,
-        value:'screendata'
+        status: 0,
+        value: 'screendata'
       })
     });
 
     this.client.api.options.log_screenshot_data = false;
 
     Screenshots.writeScreenshotToFile = function(fileName, data, cb) {
-      assert.equal(fileName, 'screenshot.png');
-      assert.equal(data, 'screendata');
+      assert.strictEqual(fileName, 'screenshot.png');
+      assert.strictEqual(data, 'screendata');
       cb();
     };
 
     this.client.api.saveScreenshot('screenshot.png', function(result) {
-      assert.equal(result.value, 'screendata');
+      assert.strictEqual(result.value, 'screendata');
       assert.strictEqual(result.suppressBase64Data, true);
     });
 

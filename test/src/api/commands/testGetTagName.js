@@ -14,19 +14,19 @@ describe('getTagName', function() {
 
   it('client.getTagName()', function(done) {
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/element/0/name',
-      method:'GET',
-      response : {
+      url: '/wd/hub/session/1352110219202/element/0/name',
+      method: 'GET',
+      response: {
         sessionId: '1352110219202',
-        status:0,
-        value : 'div'
+        status: 0,
+        value: 'div'
       }
     });
 
     this.client.api.getTagName('css selector', '#weblogin', function callback(result) {
-      assert.equal(result.value, 'div');
+      assert.strictEqual(result.value, 'div');
     }).getTagName('#weblogin', function callback(result) {
-      assert.equal(result.value, 'div');
+      assert.strictEqual(result.value, 'div');
     });
 
     this.client.start(done);

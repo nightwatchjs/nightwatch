@@ -413,7 +413,7 @@ describe('testRunnerJUnitOutput', function() {
         let simpleReportFile = 'output/simple/FIREFOX_TEST_TEST_sample.xml';
         let tagsReportFile = 'output/tags/FIREFOX_TEST_TEST_sampleTags.xml';
 
-        assert.deepEqual(list, ['simple', 'tags'], 'The subfolders have not been created.');
+        assert.deepStrictEqual(list, ['simple', 'tags'], 'The subfolders have not been created.');
         assert.ok(fileExistsSync(simpleReportFile), 'The simple report file was not created.');
         assert.ok(fileExistsSync(tagsReportFile), 'The tags report file was not created.');
 

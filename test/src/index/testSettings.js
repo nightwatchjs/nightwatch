@@ -181,12 +181,12 @@ describe('test Settings', function () {
       }
     });
 
-    assert.deepEqual(client.options.request_timeout_options, {
+    assert.deepStrictEqual(client.options.request_timeout_options, {
       timeout: 10000,
       retry_attempts: 3
     });
 
-    assert.deepEqual(client.options.webdriver.timeout_options, {
+    assert.deepStrictEqual(client.options.webdriver.timeout_options, {
       timeout: 10000,
       retry_attempts: 3
     });
@@ -195,8 +195,8 @@ describe('test Settings', function () {
     let HttpRequest = common.require('http/request.js');
     let request = new HttpRequest({});
 
-    assert.equal(request.httpOpts.timeout, 10000);
-    assert.equal(request.retryAttempts, 3);
+    assert.strictEqual(request.httpOpts.timeout, 10000);
+    assert.strictEqual(request.retryAttempts, 3);
   });
 
   it('Test initialize with parallel cli argument', function () {

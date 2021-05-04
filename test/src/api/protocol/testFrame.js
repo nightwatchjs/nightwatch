@@ -9,8 +9,8 @@ describe('client.frame', function() {
   it('testFrameDefault', function () {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.equal(opts.path, '/session/1352110219202/frame');
+        assert.strictEqual(opts.method, 'POST');
+        assert.strictEqual(opts.path, '/session/1352110219202/frame');
       },
       commandName: 'frame',
       args: []
@@ -20,9 +20,9 @@ describe('client.frame', function() {
   it('testFramePost', function () {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.equal(opts.path, '/session/1352110219202/frame');
-        assert.deepEqual(opts.data, { id: 'testFrame' });
+        assert.strictEqual(opts.method, 'POST');
+        assert.strictEqual(opts.path, '/session/1352110219202/frame');
+        assert.deepStrictEqual(opts.data, { id: 'testFrame' });
       },
       commandName: 'frame',
       args: ['testFrame']
@@ -32,9 +32,9 @@ describe('client.frame', function() {
   it('testFramePostWithZeroIndex', function () {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.equal(opts.path, '/session/1352110219202/frame');
-        assert.deepEqual(opts.data, { id: 0 });
+        assert.strictEqual(opts.method, 'POST');
+        assert.strictEqual(opts.path, '/session/1352110219202/frame');
+        assert.deepStrictEqual(opts.data, { id: 0 });
       },
       commandName: 'frame',
       args: [0]
@@ -44,9 +44,9 @@ describe('client.frame', function() {
   it('testFramePostWithNull', function () {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.equal(opts.path, '/session/1352110219202/frame');
-        assert.deepEqual(opts.data, { id: null });
+        assert.strictEqual(opts.method, 'POST');
+        assert.strictEqual(opts.path, '/session/1352110219202/frame');
+        assert.deepStrictEqual(opts.data, { id: null });
       },
       commandName: 'frame',
       args: [null]
@@ -56,9 +56,9 @@ describe('client.frame', function() {
   it('testFramePostWithUndefined', function () {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.equal(opts.path, '/session/1352110219202/frame');
-        assert.deepEqual(opts.data, { id: null });
+        assert.strictEqual(opts.method, 'POST');
+        assert.strictEqual(opts.path, '/session/1352110219202/frame');
+        assert.deepStrictEqual(opts.data, { id: null });
       },
       commandName: 'frame',
       args: []
@@ -68,8 +68,8 @@ describe('client.frame', function() {
   it('testFrameParent', function () {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.equal(opts.path, '/session/1352110219202/frame/parent');
+        assert.strictEqual(opts.method, 'POST');
+        assert.strictEqual(opts.path, '/session/1352110219202/frame/parent');
       },
       commandName: 'frameParent',
       args: []

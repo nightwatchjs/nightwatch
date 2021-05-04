@@ -61,7 +61,7 @@ describe('Webdriver Manager', function () {
 
     it('testStartServer', function () {
       this.mockedSpawn.setStrategy(function (command, args, opts) {
-        assert.deepEqual(opts, {stdio: ['ignore', 'pipe', 'pipe']});
+        assert.deepStrictEqual(opts, {stdio: ['ignore', 'pipe', 'pipe']});
         wdServer.instance.processCreated = true;
 
         if (command !== 'java') {
@@ -97,7 +97,7 @@ describe('Webdriver Manager', function () {
       return wdServer.start().then(_ => {
         assert.ok(wdServer.instance instanceof SeleniumServer);
 
-        assert.deepEqual(wdServer.instance.cliArgs, [
+        assert.deepStrictEqual(wdServer.instance.cliArgs, [
           '-DpropName=1',
           '-Dwebdriver.test.property=test',
           '-jar',
@@ -127,7 +127,7 @@ describe('Webdriver Manager', function () {
 
     it('testStartServerWithExitCode', function () {
       this.mockedSpawn.setStrategy(function (command, args, opts) {
-        assert.deepEqual(opts, {stdio: ['ignore', 'pipe', 'pipe']});
+        assert.deepStrictEqual(opts, {stdio: ['ignore', 'pipe', 'pipe']});
 
         if (command !== 'java') {
           return null;

@@ -329,6 +329,6 @@ describe('test HttpRequest', function() {
     }).send();
 
     const opts = request.reqOptions;
-    assert.equal(typeof opts.agent, 'undefined');
+    assert.strictEqual(typeof opts.agent, 'undefined');
   });
 });

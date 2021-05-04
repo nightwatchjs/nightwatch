@@ -72,7 +72,7 @@ describe('test Parallel Execution Exit Code', function() {
     let setExitCode = runner.processListener.setExitCode;
     runner.processListener.setExitCode = function(code) {
       runner.processListener.setExitCode = setExitCode;
-      assert.equal(code, 1);
+      assert.strictEqual(code, 1);
     };
 
     return runner.runTests();
@@ -90,7 +90,7 @@ describe('test Parallel Execution Exit Code', function() {
     let setExitCode = runner.processListener.setExitCode;
     runner.processListener.setExitCode = function(code) {
       runner.processListener.setExitCode = setExitCode;
-      assert.equal(code, 1);
+      assert.strictEqual(code, 1);
     };
 
     return runner.runTests();

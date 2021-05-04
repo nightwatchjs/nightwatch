@@ -81,7 +81,7 @@ describe('windowSize', function() {
       assertion: function(opts) {
         assert.strictEqual(opts.method, 'POST');
         assert.strictEqual(opts.path, '/session/1352110219202/window/current/size');
-        assert.deepEqual(opts.data, {width: 10, height: 10});
+        assert.deepStrictEqual(opts.data, {width: 10, height: 10});
       },
       commandName: 'windowSize',
       args: ['current', 10, 10]
@@ -92,7 +92,7 @@ describe('windowSize', function() {
     return Globals.protocolTestWebdriver({
       assertion: function(opts) {
         assert.strictEqual(opts.method, 'POST');
-        assert.deepEqual(opts.data, { width: 10, height: 10 });
+        assert.deepStrictEqual(opts.data, { width: 10, height: 10 });
         assert.strictEqual(opts.path, '/session/1352110219202/window/rect');
       },
       commandName: 'windowSize',

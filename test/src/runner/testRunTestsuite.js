@@ -38,7 +38,7 @@ describe('testRunTestSuite', function() {
       retryAssertionTimeout: 0,
       reporter(results, cb) {
         assert.strictEqual(settings.globals.calls, 8);
-        assert.deepEqual(results.errmessages, []);
+        assert.deepStrictEqual(results.errmessages, []);
         assert.strictEqual(results.passed, 1);
         assert.strictEqual(results.failed, 1);
         assert.strictEqual(results.errors, 0);
@@ -74,7 +74,7 @@ describe('testRunTestSuite', function() {
       retryAssertionTimeout: 0,
       reporter(results, cb) {
         assert.strictEqual(settings.globals.calls, 8);
-        assert.deepEqual(results.errmessages, []);
+        assert.deepStrictEqual(results.errmessages, []);
         assert.strictEqual(results.passed, 1);
         assert.strictEqual(results.failed, 1);
         assert.strictEqual(results.errors, 0);
@@ -110,7 +110,7 @@ describe('testRunTestSuite', function() {
       retryAssertionTimeout: 0,
       reporter(results, cb) {
         assert.strictEqual(settings.globals.calls, 8);
-        assert.deepEqual(results.errmessages, []);
+        assert.deepStrictEqual(results.errmessages, []);
         assert.strictEqual(results.passed, 1);
         assert.strictEqual(results.failed, 1);
         assert.strictEqual(results.errors, 0);
