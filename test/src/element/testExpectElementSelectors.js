@@ -46,7 +46,7 @@ describe('test expect element selectors', function() {
 
     api.perform(function() {
       passingAssertions.forEach(function(expect, index) {
-        assert.equal(expect.assertion.passed, true, 'passing [' + index + ']: ' + expect.assertion.message);
+        assert.strictEqual(expect.assertion.passed, true, 'passing [' + index + ']: ' + expect.assertion.message);
       });
     });
 
@@ -65,7 +65,7 @@ describe('test expect element selectors', function() {
     let expect = api.expect.element({selector: '.nock', locateStrategy: 'xpath'}).to.be.present.before(1);
 
     Nightwatch.start(function(err) {
-      assert.equal(expect.assertion.passed, false);
+      assert.strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.message.includes('element was not found'));
       assert.ok(err instanceof Error);
       done();
@@ -101,7 +101,7 @@ describe('test expect element selectors', function() {
       page.expect.section({selector: '@signUp', locateStrategy: 'xpath'}).to.be.present;
     } catch (err) {
       assert.ok(err instanceof Error);
-      assert.equal(err.message, 'Section "signUp[locateStrategy=\'xpath\']" was not found in "simplePageObj". Available sections: signUp[locateStrategy=\'css selector\'], propTest[locateStrategy=\'css selector\']');
+      assert.strictEqual(err.message, 'Section "signUp[locateStrategy=\'xpath\']" was not found in "simplePageObj". Available sections: signUp[locateStrategy=\'css selector\'], propTest[locateStrategy=\'css selector\']');
     }
     Nightwatch.start();
   });

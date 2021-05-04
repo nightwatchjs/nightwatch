@@ -9,8 +9,8 @@ describe('session log commands', function() {
   it('testLog', function () {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.equal(opts.path, '/session/1352110219202/log');
+        assert.strictEqual(opts.method, 'POST');
+        assert.strictEqual(opts.path, '/session/1352110219202/log');
       },
       commandName: 'sessionLog',
       args: []
@@ -20,8 +20,8 @@ describe('session log commands', function() {
   it('testLogTypes', function () {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'GET');
-        assert.equal(opts.path, '/session/1352110219202/log/types');
+        assert.strictEqual(opts.method, 'GET');
+        assert.strictEqual(opts.path, '/session/1352110219202/log/types');
       },
       commandName: 'sessionLogTypes',
       args: []

@@ -48,7 +48,7 @@ describe('window commands', function() {
       assertion: function(opts) {
         assert.strictEqual(opts.method, 'POST');
         assert.strictEqual(opts.path, '/session/1352110219202/window');
-        assert.deepEqual(opts.data, {name: 'other-window'});
+        assert.deepStrictEqual(opts.data, {name: 'other-window'});
       },
       commandName: 'window',
       args: ['POST', 'other-window']
@@ -88,7 +88,7 @@ describe('window commands', function() {
     return Globals.protocolTestWebdriver({
       assertion: function(opts) {
         assert.strictEqual(opts.path, '/session/1352110219202/window');
-        assert.deepEqual(opts.data, {handle: 'other-window'});
+        assert.deepStrictEqual(opts.data, {handle: 'other-window'});
       },
       commandName: 'window',
       args: ['POST', 'other-window']
@@ -152,7 +152,7 @@ describe('window commands', function() {
     return Globals.protocolTestWebdriver({
       assertion: function(opts) {
         assert.strictEqual(opts.method, 'POST');
-        assert.deepEqual(opts.data, {type: 'tab'});
+        assert.deepStrictEqual(opts.data, {type: 'tab'});
         assert.strictEqual(opts.path, '/session/1352110219202/window/new');
       },
       commandName: 'openNewWindow',
@@ -165,7 +165,7 @@ describe('window commands', function() {
     return Globals.protocolTestWebdriver({
       assertion: function(opts) {
         assert.strictEqual(opts.method, 'POST');
-        assert.deepEqual(opts.data, {type: 'tab'});
+        assert.deepStrictEqual(opts.data, {type: 'tab'});
         assert.strictEqual(opts.path, '/session/1352110219202/window/new');
       },
       commandName: 'openNewWindow',
@@ -177,7 +177,7 @@ describe('window commands', function() {
     return Globals.protocolTestWebdriver({
       assertion: function(opts) {
         assert.strictEqual(opts.method, 'POST');
-        assert.deepEqual(opts.data, {type: 'window'});
+        assert.deepStrictEqual(opts.data, {type: 'window'});
         assert.strictEqual(opts.path, '/session/1352110219202/window/new');
       },
       commandName: 'openNewWindow',

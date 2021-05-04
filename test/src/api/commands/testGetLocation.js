@@ -27,9 +27,9 @@ describe('getLocation', function() {
     });
 
     this.client.api.getLocation('css selector', '#weblogin', function callback(result) {
-      assert.deepEqual(result.value, {x: 1, y: 0});
+      assert.deepStrictEqual(result.value, {x: 1, y: 0});
     }).getLocation('#weblogin', function callback(result) {
-      assert.deepEqual(result.value, {x: 1, y: 0});
+      assert.deepStrictEqual(result.value, {x: 1, y: 0});
     });
 
     this.client.start(done);
@@ -37,11 +37,11 @@ describe('getLocation', function() {
 
   it('client.getLocation() with webdriver protocol', function(done) {
     Nightwatch.initClient({
-      selenium : {
+      selenium: {
         version2: false,
         start_process: false
       },
-      webdriver:{
+      webdriver: {
         start_process: true
       },
     }).then(client => {

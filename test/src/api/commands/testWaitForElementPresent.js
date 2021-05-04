@@ -16,7 +16,7 @@ describe('waitForElementPresent', function() {
     this.client.api.waitForElementPresent('#weblogin', 100, function(result, instance) {
       assert.strictEqual(instance.expectedValue, 'found');
       assert.strictEqual(result.status, 0);
-      assert.deepEqual(result.value[0], { ELEMENT: '0' });
+      assert.deepStrictEqual(result.value[0], { ELEMENT: '0' });
     });
 
     this.client.start(done);
@@ -24,7 +24,7 @@ describe('waitForElementPresent', function() {
 
   it('client.waitForElementPresent() with webdriver response success', function(done) {
     Nightwatch.initClient({
-      selenium : {
+      selenium: {
         version2: false
       }
     }).then(client => {
@@ -39,7 +39,7 @@ describe('waitForElementPresent', function() {
       client.api.waitForElementPresent('#webdriver', 100, function(result, instance) {
         assert.strictEqual(instance.expectedValue, 'found');
         assert.strictEqual(result.status, 0);
-        assert.deepEqual(result.value, [{'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'}]);
+        assert.deepStrictEqual(result.value, [{'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'}]);
       });
 
       client.start(done);
@@ -51,7 +51,7 @@ describe('waitForElementPresent', function() {
     this.client.api.globals.waitForConditionPollInterval = 10;
     this.client.api.waitForElementPresent('.weblogin', 15, function callback(result, instance) {
       assert.ok(/^Element .weblogin found in (\d+) milliseconds$/.test(instance.message));
-      assert.deepEqual(result.value, false);
+      assert.deepStrictEqual(result.value, false);
     }, 'Element %s found in %d milliseconds');
 
     this.client.start(function(err) {
@@ -64,10 +64,10 @@ describe('waitForElementPresent', function() {
     }).catch(done);
   });
 
-  it('client.waitForElementPresent() failure with custom time message',function(done){
+  it('client.waitForElementPresent() failure with custom time message', function(done){
     this.client.api.globals.waitForConditionPollInterval=10;
-    this.client.api.waitForElementPresent('.weblogin', 15, function callback(result,instance){
-      assert.strictEqual(instance.message, 'Element .weblogin found in 15 milliseconds')
+    this.client.api.waitForElementPresent('.weblogin', 15, function callback(result, instance){
+      assert.strictEqual(instance.message, 'Element .weblogin found in 15 milliseconds');
     }, 'Element %s found in %d milliseconds');
 
     this.client.start(function(err) {
@@ -79,7 +79,7 @@ describe('waitForElementPresent', function() {
       }
     }).catch(done);
 
-  })
+  });
 
   it('client.waitForElementPresent() with custom message and no params', function(done) {
     this.client.api.globals.waitForConditionPollInterval = 10;

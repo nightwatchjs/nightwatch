@@ -44,7 +44,7 @@ describe('testRunnerUnitTests', function() {
             throw results.lastError;
           }
 
-          assert.equal(settings.globals.calls, 2);
+          assert.strictEqual(settings.globals.calls, 2);
         }
       }
     };
@@ -66,7 +66,7 @@ describe('testRunnerUnitTests', function() {
             throw results.lastError;
           }
 
-          assert.equal(settings.globals.calls, 2);
+          assert.strictEqual(settings.globals.calls, 2);
         }
       }
     };
@@ -174,8 +174,8 @@ describe('testRunnerUnitTests', function() {
         let err = runner.results.lastError;
         assert.ok(err instanceof Error);
         assert.ok(fileExistsSync('output/unittest-async-timeout.xml'));
-        assert.equal(err.name, 'TimeoutError');
-        assert.equal(err.message, 'done() callback timeout of 10ms was reached while executing "demoTest". ' +
+        assert.strictEqual(err.name, 'TimeoutError');
+        assert.strictEqual(err.message, 'done() callback timeout of 10ms was reached while executing "demoTest". ' +
         'Make sure to call the done() callback when the operation finishes.');
       });
   });

@@ -20,8 +20,8 @@ describe('client.source', function() {
   it('client.source() get command', function() {
     return Globals.protocolTest({
       assertion: opts => {
-        assert.equal(opts.method, 'GET');
-        assert.equal(opts.path, '/session/1352110219202/source');
+        assert.strictEqual(opts.method, 'GET');
+        assert.strictEqual(opts.path, '/session/1352110219202/source');
       },
       commandName: 'source',
       args: []
@@ -38,8 +38,8 @@ describe('client.source', function() {
 
     Globals.runApiCommand('source', [function(result) {
       try {
-        assert.equal(result.status, 0);
-        assert.equal(result.name, 'getPageSource');
+        assert.strictEqual(result.status, 0);
+        assert.strictEqual(result.name, 'getPageSource');
         assert.ok(result.value.indexOf('<title>NightwatchJS</title>') > -1, 'Found <title> tag in response');
         assert.ok(true, 'GET source callback called');
         done();

@@ -137,7 +137,7 @@ describe('expect.url', function() {
       strictEqual(expect.assertion.negate, true);
       strictEqual(expect.assertion.resultValue, 'http://localhost');
       strictEqual(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts[0], ' not equal: "http://localhost"');
+      assert.deepStrictEqual(expect.assertion.messageParts[0], ' not equal: "http://localhost"');
       assert.ok(expect.assertion.message.startsWith('Expected current url to not equal: "http://localhost"'));
     });
   });
@@ -177,7 +177,7 @@ describe('expect.url', function() {
       strictEqual(expect.assertion.negate, true);
       strictEqual(expect.assertion.resultValue, 'http://localhost');
       strictEqual(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts[0], ' not contain: "http://localhost"');
+      assert.deepStrictEqual(expect.assertion.messageParts[0], ' not contain: "http://localhost"');
       assert.ok(expect.assertion.message.startsWith('Expected current url to not contain: "http://localhost"'));
     });
   });
@@ -218,7 +218,7 @@ describe('expect.url', function() {
       strictEqual(expect.assertion.negate, true);
       strictEqual(expect.assertion.resultValue, 'http://localhost');
       strictEqual(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts[0], ' not match: "/localhost/"');
+      assert.deepStrictEqual(expect.assertion.messageParts[0], ' not match: "/localhost/"');
       assert.ok(expect.assertion.message.startsWith('Expected current url to not match: "/localhost/"'));
     });
   });

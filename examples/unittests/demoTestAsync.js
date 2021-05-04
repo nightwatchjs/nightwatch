@@ -4,7 +4,7 @@ module.exports = {
   '@unitTest': true,
 
   'demo UnitTest': function (done) {
-    assert.equal('TEST', 'TEST');
+    assert.strictEqual('TEST', 'TEST');
     setTimeout(function() {
       done();
     }, 10);

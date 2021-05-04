@@ -13,7 +13,7 @@ describe('locateStrategies', function() {
   it('client.useXpath()', function(done) {
     let client = this.client;
     this.client.api.useXpath(function() {
-      assert.equal(client.locateStrategy, 'xpath');
+      assert.strictEqual(client.locateStrategy, 'xpath');
     });
 
     this.client.start(done);
@@ -22,7 +22,7 @@ describe('locateStrategies', function() {
   it('client.useCss()', function(done) {
     let client = this.client;
     this.client.api.useCss(function() {
-      assert.equal(client.locateStrategy, 'css selector');
+      assert.strictEqual(client.locateStrategy, 'css selector');
     });
 
     this.client.start(done);

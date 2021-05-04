@@ -9,8 +9,8 @@ describe('isVisible', function() {
 
   afterEach(function() {
     MockServer.removeMock({
-      url : '/wd/hub/session/1352110219202/element/0/displayed',
-      method:'GET'
+      url: '/wd/hub/session/1352110219202/element/0/displayed',
+      method: 'GET'
     });
   });
 
@@ -20,19 +20,19 @@ describe('isVisible', function() {
 
   it('client.isVisible()', function(done) {
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/element/0/displayed',
-      method:'GET',
-      response : JSON.stringify({
+      url: '/wd/hub/session/1352110219202/element/0/displayed',
+      method: 'GET',
+      response: JSON.stringify({
         sessionId: '1352110219202',
-        status:0,
-        value : true
+        status: 0,
+        value: true
       })
     });
 
     this.client.api.isVisible('css selector', '#weblogin', function callback(result) {
-      assert.equal(result.value, true);
+      assert.strictEqual(result.value, true);
     }).isVisible('#weblogin', function callback(result) {
-      assert.equal(result.value, true);
+      assert.strictEqual(result.value, true);
     });
 
     this.client.start(done);

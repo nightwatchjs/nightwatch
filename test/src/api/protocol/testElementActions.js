@@ -9,11 +9,11 @@ describe('element W3C Webdriver actions', function() {
   it('test click() with W3C WebDriver', function() {
     return Globals.protocolTestWebdriver({
       assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.deepEqual(opts.data, {
+        assert.strictEqual(opts.method, 'POST');
+        assert.deepStrictEqual(opts.data, {
           id: 'abc-12345'
         });
-        assert.equal(opts.path, '/session/1352110219202/element/abc-12345/click');
+        assert.strictEqual(opts.path, '/session/1352110219202/element/abc-12345/click');
       },
       commandName: 'elementIdClick',
       args: ['abc-12345']
@@ -23,11 +23,11 @@ describe('element W3C Webdriver actions', function() {
   it('test clearValue() with W3C WebDriver', function() {
     return Globals.protocolTestWebdriver({
       assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.deepEqual(opts.data, {
+        assert.strictEqual(opts.method, 'POST');
+        assert.deepStrictEqual(opts.data, {
           id: 'abc-12345'
         });
-        assert.equal(opts.path, '/session/1352110219202/element/abc-12345/clear');
+        assert.strictEqual(opts.path, '/session/1352110219202/element/abc-12345/clear');
       },
       commandName: 'elementIdClear',
       args: ['abc-12345']
