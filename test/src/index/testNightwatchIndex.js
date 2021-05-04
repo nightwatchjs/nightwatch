@@ -25,7 +25,7 @@ describe('test NightwatchIndex', function () {
     });
 
     client.on('nightwatch:session.create', function (data) {
-      assert.strictEqual(client.api.sessionId, 1352110219202, 'Testing if session ID was set correctly');
+      assert.strictEqual(client.api.sessionId, '1352110219202', 'Testing if session ID was set correctly');
       assert.strictEqual(client.api.capabilities.browserName, 'firefox');
       done();
     });
@@ -73,7 +73,7 @@ describe('test NightwatchIndex', function () {
     });
 
     client.on('nightwatch:session.create', function (data) {
-      assert.strictEqual(data.sessionId, 1352110219202);
+      assert.strictEqual(data.sessionId, '1352110219202');
       assert.strictEqual(client.api.capabilities.browserName, 'chrome');
       done();
     });

@@ -32,7 +32,7 @@ describe('perform', function () {
     let localClient = this.client.api;
     this.client.api.perform(function (client, complete) {
       delete client.isES6Async;
-      assert.deepStrictEqual(localClient, client);
+      assert.deepEqual(localClient, client);
       assert.strictEqual(typeof complete, 'function');
       complete();
     });

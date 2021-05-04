@@ -103,7 +103,7 @@ describe('Webdriver Manager', function () {
           '-jar',
           './selenium.jar',
           '-port',
-          4444
+          '4444'
         ]);
 
         assert.strictEqual(wdServer.settings.selenium.max_status_poll_tries, 7);
