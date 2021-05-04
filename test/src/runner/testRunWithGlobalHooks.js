@@ -127,7 +127,7 @@ describe('testRunWithGlobalHooks', function() {
     let globals = {
       calls: 0,
       beforeEach(client, done) {
-        assert.deepEqual(client.globals, this);
+        assert.deepStrictEqual(client.globals, this);
         setTimeout(function() {
           beforeEachCount++;
           done();
@@ -140,9 +140,9 @@ describe('testRunWithGlobalHooks', function() {
         }, 10);
       },
       reporter(results, cb) {
-        assert.equal(globals.calls, 19);
-        assert.equal(beforeEachCount, 4);
-        assert.equal(afterEachCount, 4);
+        assert.strictEqual(globals.calls, 19);
+        assert.strictEqual(beforeEachCount, 4);
+        assert.strictEqual(afterEachCount, 4);
         cb();
       }
     };
