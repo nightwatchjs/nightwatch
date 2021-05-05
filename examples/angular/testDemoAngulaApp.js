@@ -1,47 +1,54 @@
 describe('Angular Demo Example', () => {
-  const firstInput = 'input[ng-model=\'first\']';
-  const secondInput = 'input[ng-model=\'second\']';
+  const todoInputField = 'input[ng-model="todoList.todoText"]';
 
   beforeEach((browser) => {
-    browser.url('https://vaibhavsingh97.com/angular-demo/').waitForElementVisible('body');
+    browser.url('https://angularjs.org/').waitForElementVisible('body');
   });
-
-  let addvalues = (browser, a, b) => {
-    browser.setValue(firstInput, a);
-    browser.setValue(secondInput, b);
-    browser.click('#gobutton');
-  };
 
   test('should have a title', (browser) => {
-    browser.assert.titleContains('Super Calculator');
+    browser.assert.titleContains('AngularJS — Superheroic JavaScript MVW Framework');
   });
 
-  test('should add one and two', (browser) => {
+  test('should add a todo', (browser) => {
     browser.assert
-      .visible('input[ng-model=\'first\']')
-      .assert.visible('input[ng-model=\'second\']')
-      .setValue('input[ng-model=\'first\']', 1)
-      .setValue('input[ng-model=\'second\']', 2)
-      .click('#gobutton')
-      .assert.containsText('h2.ng-binding', 3);
+      .visible(todoInputField)
+      .setValue(todoInputField, 'My first todo from Nightwatch')
+      .click('input[value="add"]');
+
+    browser.expect.elements('li[ng-repeat="todo in todoList.todos"]').count.to.equal(3);
+    browser.elements('css selector', 'li[ng-repeat="todo in todoList.todos"]', (elements) => {
+      var allElements = elements.value;
+      browser.elementIdText(allElements[2].ELEMENT, function (attribute) {
+        browser.assert.ok(attribute.value === 'My first todo from Nightwatch');
+        browser.elementIdClick(allElements[2].ELEMENT);
+        browser.expect.elements('.done-true').count.to.equal(2);
+      });
+    });
   });
 
-  test('should read the value from both the input', (browser) => {
-    browser
-      .setValue('input[ng-model=\'first\']', 5)
-      .setValue('input[ng-model=\'second\']', 4)
-      .assert.attributeContains('input[ng-model=\'first\']', 'value', 5)
-      .assert.attributeContains('input[ng-model=\'second\']', 'value', 4);
-  });
-
-  test('should have a history', (browser) => {
-    addvalues(browser, 10, 10);
-    browser.assert.containsText('h2.ng-binding', 20);
-    addvalues(browser, 20, 20);
-    browser.assert.containsText('h2.ng-binding', 40);
-    addvalues(browser, 30, 30);
-    browser.assert.containsText('h2.ng-binding', 60);
-    browser.expect.elements('tr[ng-repeat="result in memory"]').count.to.equal(3);
+  test('should archive completed todo', (browser) => {
+    browser.assert
+      .visible(todoInputField)
+      .setValue(todoInputField, 'My first todo from Nightwatch')
+      .click('input[value="add"]');
+    browser.elements('css selector', 'li[ng-repeat="todo in todoList.todos"]', (elements) => {
+      elements.value.forEach((element) => {
+        browser.elementIdElement(
+          element.ELEMENT,
+          'css selector',
+          '.done-true',
+          (selector) => {
+            if (selector.status === -1) {
+              browser.elementIdClick(element.ELEMENT);
+            }
+          },
+          browser
+        );
+      });
+      browser.expect.elements('.done-true').count.to.equal(3);
+      browser.click('a[ng-click="todoList.archive()"]');
+      browser.expect.elements('li[ng-repeat="todo in todoList.todos"]').count.to.equal(0);
+    });
   });
 
   after((browser) => browser.end());
