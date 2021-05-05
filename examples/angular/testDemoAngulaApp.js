@@ -16,7 +16,7 @@ describe('Angular Demo Example', () => {
       .click('input[value="add"]');
 
     browser.expect.elements('li[ng-repeat="todo in todoList.todos"]').count.to.equal(3);
-    browser.click('li[ng-repeat="todo in todoList.todos"]:nth-child(2');
+    browser.click('li[ng-repeat="todo in todoList.todos"]:nth-child(2)');
     browser.expect.elements('.done-true').count.to.equal(2);
   });
 
