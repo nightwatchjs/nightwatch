@@ -119,6 +119,13 @@ describe('test Utils', function() {
     assert.strictEqual(Utils.relativeUrl('/guide'), true);
   });
 
+  it('isTsFile', function() {
+    assert.strictEqual(Utils.isTsFile('/tests/sampleTest.ts'), true);
+    assert.strictEqual(Utils.isTsFile('/tests/sampleTest.js'), false);
+    assert.strictEqual(Utils.isTsFile('/tests/sampleTest.json'), false);
+    assert.strictEqual(Utils.isTsFile('/tests/sampleTest'), false);
+  });
+
   it('isFileNameValid', function() {
     assert.strictEqual(Utils.isFileNameValid('/tests/sampleTest.js'), true);
     assert.strictEqual(Utils.isFileNameValid('/tests/sampleTest.ts'), true);
