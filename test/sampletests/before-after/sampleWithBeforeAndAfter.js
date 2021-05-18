@@ -1,34 +1,34 @@
 module.exports = {
-  beforeEach : function(client, callback) {
+  beforeEach: function(client, callback) {
     setTimeout(function() {
       client.globals.calls++;
       callback();
     }, 10);
   },
 
-  before : function(client, callback) {
+  before: function(client, callback) {
     setTimeout(function() {
       client.globals.calls++;
       callback();
     }, 10);
   },
 
-  demoTestAsyncOne : function (client) {
+  demoTestAsyncOne: function (client) {
     client.url('http://localhost');
   },
 
-  demoTestAsyncTwo : function (client) {
+  demoTestAsyncTwo: function (client) {
     client.end();
   },
 
-  afterEach : function(client, callback) {
+  afterEach: function(client, callback) {
     setTimeout(function() {
       client.globals.calls++;
       callback();
     }, 10);
   },
 
-  after : function(client, callback) {
+  after: function(client, callback) {
     setTimeout(function() {
       client.globals.calls++;
       callback();

@@ -27,7 +27,7 @@ describe('sampleTest with webdriverIO', function() {
 
   after(async () => {
     await browser.deleteSession();
-    browser = null
+    browser = null;
   });
 
   test('navigate', async function(nightwatch) {
