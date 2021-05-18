@@ -70,7 +70,8 @@
   "scripts": {
     "eslint": "eslint index.js lib bin examples --quiet && eslint --config ./test/.eslintrc test/ --quiet",
     "mocha-coverage": "nyc --reporter=html mocha test/src/",
-    "test": "mocha test/src/ --bail",
+    "test": "mocha test/src/",
+    "test-ci": "mocha test/src/ --bail",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "eslintConfig": {
