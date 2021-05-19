@@ -1,6 +1,7 @@
 # Nightwatch.js
 
-#### [Homepage](https://nightwatchjs.org) | [Getting Started](https://nightwatchjs.org/gettingstarted) | [Developer Guide](https://nightwatchjs.org/guide) | [API Reference](https://nightwatchjs.org/api) | [About](https://nightwatchjs.org/about)
+#### [Homepage](https://nightwatchjs.org) &bullet; [Getting Started](https://nightwatchjs.org/gettingstarted) &bullet; [Developer Guide](https://nightwatchjs.org/guide) &bullet; [API Reference](https://nightwatchjs.org/api) &bullet; [About](https://nightwatchjs.org/about)
+
 ***
 Automated end-to-end testing framework powered by [Node.js](http://nodejs.org/) and using [W3C Webdriver](https://www.w3.org/TR/webdriver/) (formerly [Selenium](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol)).
 
@@ -8,15 +9,17 @@ Nightwatch is a complete and integrated solution for end-to-end testing of web a
 
 [![npm](https://img.shields.io/npm/v/nightwatch.svg)](https://www.npmjs.com/package/nightwatch)
 [![Node.js CI](https://github.com/nightwatchjs/nightwatch/actions/workflows/build-node.yaml/badge.svg?branch=main)](https://github.com/nightwatchjs/nightwatch/actions/workflows/build-node.yaml)
-[![Coverage Status](https://coveralls.io/repos/nightwatchjs/nightwatch/badge.svg?branch=master&service=github)](https://coveralls.io/github/nightwatchjs/nightwatch?branch=master)
+[![codecov](https://codecov.io/gh/nightwatchjs/nightwatch/branch/main/graph/badge.svg?token=MSObyfECEh)](https://codecov.io/gh/nightwatchjs/nightwatch)
 [![npm package](https://img.shields.io/npm/dm/nightwatch.svg)](https://www.npmjs.com/package/nightwatch)
 [![Join the chat at https://gitter.im/nightwatchjs/nightwatch](https://badges.gitter.im/nightwatchjs/nightwatch.svg)](https://gitter.im/nightwatchjs/nightwatch)
 [![Twitter Follow](https://img.shields.io/twitter/follow/nightwatchjs.svg?style=social)](https://twitter.com/nightwatchjs) 
 
-[Changelog](https://nightwatchjs.org/releases/) | [Github Discussions](https://github.com/nightwatchjs/nightwatch/discussions)
 ***
 
 ## Nightwatch v1.6
+
+#### [Changelog](https://github.com/nightwatchjs/nightwatch/releases) | [Github Discussions](https://github.com/nightwatchjs/nightwatch/discussions)
+
 We're delighted to announce the release of __Nightwatch v1.6__. Please see the [release notes](https://github.com/nightwatchjs/nightwatch/releases) and [upgrade guide](https://github.com/nightwatchjs/nightwatch/wiki/Migrating-to-Nightwatch-1.0) if you are upgrading from a pre v1.0 version. 
 
 ## Up &amp; Running in 2 Minutes:
@@ -94,7 +97,7 @@ desiredCapabilities : {
 Specific WebDriver setup guides can be found on the [Docs website](http://nightwatchjs.org/gettingstarted/#browser-drivers-setup). Legacy Selenium drivers setup guides along with debugging instructions can be found on the [**Wiki**](https://github.com/nightwatchjs/nightwatch/wiki).
 
 ## Examples
-Example tests are included in the [`examples`](https://github.com/nightwatchjs/nightwatch/tree/master/examples) folder which demonstrate the usage of several Nightwatch features. 
+Example tests are included in the [`examples`](https://github.com/nightwatchjs/nightwatch/tree/main/examples) folder which demonstrate the usage of several Nightwatch features. 
 
 You can also check out the [nightwatch-website-tests](https://github.com/nightwatchjs/nightwatch-website-tests) repo for example tests against the [nightwatchjs.org](https://nightwatchjs.org) website.
 
