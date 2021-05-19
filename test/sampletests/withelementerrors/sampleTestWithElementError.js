@@ -4,7 +4,7 @@ describe('sample test with element error', function () {
     client
       .url('http://localhost')
       .click('#element-error')
-      .waitForElementPresent('#weblogin')
+      .waitForElementPresent('#weblogin');
   });
 
   after(client => client.end());

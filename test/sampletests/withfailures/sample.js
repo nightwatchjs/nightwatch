@@ -1,15 +1,15 @@
 module.exports = {
-  before : function(client, callback) {
+  before: function(client, callback) {
     client.globals.calls++;
     callback();
   },
 
-  beforeEach : function(client, callback) {
+  beforeEach: function(client, callback) {
     client.globals.calls++;
     callback();
   },
 
-  demoTest : function (client) {
+  demoTest: function (client) {
     client.url('http://localhost')
       .assert.elementPresent('#weblogin')
       .assert.elementPresent('#badElement')
@@ -17,19 +17,19 @@ module.exports = {
       .end();
   },
 
-  demoTest2 : function (client) {
+  demoTest2: function (client) {
     client.url('http://localhost')
       .assert.elementPresent('#weblogin')
       .assert.elementPresent('#badElement')
       .end();
   },
 
-  afterEach : function(client, callback) {
+  afterEach: function(client, callback) {
     client.globals.calls++;
     callback();
   },
 
-  after : function(client, callback) {
+  after: function(client, callback) {
     client.globals.calls++;
     callback();
   }

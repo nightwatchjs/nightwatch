@@ -1,5 +1,5 @@
 module.exports = {
-  demoTest : function () {
+  demoTest: function () {
     throw new Error('Error in test script');
   }
 };
