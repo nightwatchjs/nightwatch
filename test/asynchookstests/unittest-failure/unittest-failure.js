@@ -1,7 +1,7 @@
 var assert = require('assert');
 
 module.exports = {
-  demoTest : function (done) {
-    assert.equal(1, 0);
+  demoTest: function (done) {
+    assert.strictEqual(1, 0);
   }
 };

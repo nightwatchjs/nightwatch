@@ -14,7 +14,7 @@ describe('.end()', function() {
 
   it('client.end();', function (done) {
     this.client.api.end(result => {
-      assert.equal(result.state, 'success');
+      assert.strictEqual(result.state, 'success');
       assert.strictEqual(this.client.api.sessionId, null);
     });
 

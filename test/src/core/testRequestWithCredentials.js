@@ -47,7 +47,7 @@ describe('test Request With Credentials', function () {
     });
 
     client.on('nightwatch:session.create', function (data) {
-      assert.equal(data.sessionId, '1352110219202');
+      assert.strictEqual(data.sessionId, '1352110219202');
       done();
     });
 

@@ -66,7 +66,7 @@ describe('assert.domPropertyEquals', function () {
       assertion({reporter, instance, failure, err, message}) {
         assert.strictEqual(failure, 'Expected "[object Object]" but got: "[object Object]"');
         assert.strictEqual(instance.hasFailure(), false);
-        assert.ok(message.startsWith('Testing if dom property \'domProp\' of element <.test_element> equals \'[TypeError Converting circular structure to JSON]\' in 5ms - expected "[object Object]" but got: "[object Object]"'), message);
+        assert.ok(message.includes('TypeError Converting circular structure to JSON'), message);
       }
     });
   });

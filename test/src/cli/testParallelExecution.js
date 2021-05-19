@@ -67,13 +67,13 @@ describe('test Parallel Execution', function() {
     runner.setup();
 
     assert.ok(runner.parallelMode());
-    assert.equal(runner.testEnv, 'default,mixed');
-    assert.deepEqual(runner.availableTestEnvs, ['default', 'mixed']);
+    assert.strictEqual(runner.testEnv, 'default,mixed');
+    assert.deepStrictEqual(runner.availableTestEnvs, ['default', 'mixed']);
 
     return runner.runTests().then(_ => {
       assert.ok(runner.parallelMode());
       assert.strictEqual(runner.concurrency.globalExitCode, 0);
-      assert.equal(allArgs.length, 2);
+      assert.strictEqual(allArgs.length, 2);
       assert.ok(allArgs[0].join(' ').includes('--env default --parallel-mode'));
       assert.ok(allArgs[1].join(' ').includes('--env mixed --parallel-mode'));
 
@@ -112,11 +112,11 @@ describe('test Parallel Execution', function() {
     runner.setup();
 
     assert.ok(runner.parallelMode());
-    assert.equal(runner.testEnv, 'mixed,mixed');
-    assert.deepEqual(runner.availableTestEnvs, ['default', 'mixed']);
+    assert.strictEqual(runner.testEnv, 'mixed,mixed');
+    assert.deepStrictEqual(runner.availableTestEnvs, ['default', 'mixed']);
 
     return runner.runTests().then(_ => {
-      assert.equal(allArgs.length, 2);
+      assert.strictEqual(allArgs.length, 2);
       assert.ok(allArgs[0].join(' ').includes('--env mixed --parallel-mode'));
       assert.ok(allArgs[1].join(' ').includes('--env mixed --parallel-mode'));
       process.chdir(originalCwd);
@@ -130,7 +130,7 @@ describe('test Parallel Execution', function() {
     });
 
     runner.setup();
-    assert.deepEqual(runner.test_settings.test_workers, {
+    assert.deepStrictEqual(runner.test_settings.test_workers, {
       enabled: true,
       workers: 'auto'
     });
@@ -177,7 +177,7 @@ describe('test Parallel Execution', function() {
 
     runner.setup();
 
-    assert.equal(runner.test_settings.test_workers, false);
+    assert.strictEqual(runner.test_settings.test_workers, false);
   });
 
   it('test parallel execution with workers and single source file', function() {

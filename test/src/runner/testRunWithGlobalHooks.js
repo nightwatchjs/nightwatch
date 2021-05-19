@@ -98,9 +98,9 @@ describe('testRunWithGlobalHooks', function() {
         }, 15);
       },
       reporter(results, cb) {
-        assert.equal(beforeEachCount, 4);
-        assert.equal(afterEachCount, 4);
-        assert.equal(globals.calls, 19);
+        assert.strictEqual(beforeEachCount, 4);
+        assert.strictEqual(afterEachCount, 4);
+        assert.strictEqual(globals.calls, 19);
         cb();
       }
     };
@@ -127,7 +127,7 @@ describe('testRunWithGlobalHooks', function() {
     let globals = {
       calls: 0,
       beforeEach(client, done) {
-        assert.deepEqual(client.globals, this);
+        assert.deepStrictEqual(client.globals, this);
         setTimeout(function() {
           beforeEachCount++;
           done();
@@ -140,9 +140,9 @@ describe('testRunWithGlobalHooks', function() {
         }, 10);
       },
       reporter(results, cb) {
-        assert.equal(globals.calls, 19);
-        assert.equal(beforeEachCount, 4);
-        assert.equal(afterEachCount, 4);
+        assert.strictEqual(globals.calls, 19);
+        assert.strictEqual(beforeEachCount, 4);
+        assert.strictEqual(afterEachCount, 4);
         cb();
       }
     };
@@ -181,14 +181,14 @@ describe('testRunWithGlobalHooks', function() {
         beforeEach: function(client, done) {
           client.perform(function() {
             beforeEachCount++;
-            client.assert.equal(0, 1);
+            client.assert.strictEqual(0, 1);
             done();
           });
         },
         reporter(results, cb) {
           assert.ok(results.lastError instanceof Error);
-          assert.equal(results.failed, 4);
-          assert.equal(beforeEachCount, 4);
+          assert.strictEqual(results.failed, 4);
+          assert.strictEqual(beforeEachCount, 4);
           cb();
         }
       },
@@ -218,9 +218,9 @@ describe('testRunWithGlobalHooks', function() {
           });
         },
         reporter(results, cb) {
-          assert.equal(results.modules.sampleSingleTest.errmessages.length, 2);
-          assert.equal(results.modules.sampleWithBeforeAndAfter.errmessages.length, 1);
-          assert.equal(results.modules.syncBeforeAndAfter.errmessages.length, 1);
+          assert.strictEqual(results.modules.sampleSingleTest.errmessages.length, 2);
+          assert.strictEqual(results.modules.sampleWithBeforeAndAfter.errmessages.length, 1);
+          assert.strictEqual(results.modules.syncBeforeAndAfter.errmessages.length, 1);
           assert.ok(results.modules.sampleSingleTest.errmessages[0].includes('Error while running "perform" command:'));
 
           cb();
@@ -284,7 +284,7 @@ describe('testRunWithGlobalHooks', function() {
         },
         reporter(results, cb) {
           assert.ok(results.lastError instanceof Error);
-          assert.equal(results.lastError.message, 'global beforeEach error');
+          assert.strictEqual(results.lastError.message, 'global beforeEach error');
           cb();
         }
       },
@@ -309,7 +309,7 @@ describe('testRunWithGlobalHooks', function() {
         assert.strictEqual(testTimestamp.getFullYear(), currentTimestamp.getFullYear());
         assert.strictEqual(testTimestamp.getMonth(), currentTimestamp.getMonth());
         assert.strictEqual(testTimestamp.getDate(), currentTimestamp.getDate());
-        assert.deepEqual(client.currentTest.results, {errors: 0, failed: 0, passed: 0, assertions: [], tests: 0});
+        assert.deepStrictEqual(client.currentTest.results, {errors: 0, failed: 0, passed: 0, assertions: [], tests: 0});
         assert.strictEqual(client.currentTest.module, 'sample');
         assert.strictEqual(client.currentTest.name, '');
         globals.calls++;
@@ -317,21 +317,21 @@ describe('testRunWithGlobalHooks', function() {
       },
 
       afterEach: function(client, done) {
-        assert.deepEqual(client.currentTest.results.steps, ['demoTest2']);
-        assert.equal(client.currentTest.results.passed, 1);
-        assert.equal(client.currentTest.results.failed, 1);
-        assert.equal(client.currentTest.results.tests, 2);
+        assert.deepStrictEqual(client.currentTest.results.steps, ['demoTest2']);
+        assert.strictEqual(client.currentTest.results.passed, 1);
+        assert.strictEqual(client.currentTest.results.failed, 1);
+        assert.strictEqual(client.currentTest.results.tests, 2);
         assert.ok('demoTest' in client.currentTest.results.testcases);
 
-        assert.deepEqual(client.currentTest.name, 'demoTest');
-        assert.deepEqual(client.currentTest.module, 'sample');
+        assert.deepStrictEqual(client.currentTest.name, 'demoTest');
+        assert.deepStrictEqual(client.currentTest.module, 'sample');
         assert.ok(client.currentTest.timestamp);
         globals.calls++;
         done();
       },
 
       reporter(results, cb) {
-        assert.equal(globals.calls, 6);
+        assert.strictEqual(globals.calls, 6);
 
         cb();
       }

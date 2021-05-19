@@ -9,8 +9,8 @@ describe('client.screenshot', function() {
   it('testScreenshot', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'GET');
-        assert.equal(opts.path, '/session/1352110219202/screenshot');
+        assert.strictEqual(opts.method, 'GET');
+        assert.strictEqual(opts.path, '/session/1352110219202/screenshot');
       },
       commandName: 'screenshot',
       args: []

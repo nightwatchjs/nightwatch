@@ -1,7 +1,7 @@
 {
   "name": "nightwatch",
   "description": "Easy to use Node.js based End-to-End testing solution for browser based apps and websites, using the W3C WebDriver API.",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "author": {
     "name": "Andrei Rusu",
     "email": "andrei@nightwatchjs.org"
@@ -41,7 +41,7 @@
     "coveralls": "^3.0.11",
     "eslint": "^6.8.0",
     "js-yaml": "^3.13.1",
-    "lodash": ">=4.17.19",
+    "lodash": "^4.17.21",
     "mock-spawn": "^0.2.1",
     "mockery": "~2.1.0",
     "nock": "^10.0.6",
@@ -71,6 +71,7 @@
     "eslint": "eslint index.js lib bin examples --quiet && eslint --config ./test/.eslintrc test/ --quiet",
     "mocha-coverage": "nyc --reporter=html mocha test/src/",
     "test": "mocha test/src/",
+    "test-ci": "mocha test/src/ --bail",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "eslintConfig": {

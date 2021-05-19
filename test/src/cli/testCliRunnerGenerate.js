@@ -68,7 +68,7 @@ describe('Test CLI Runner Generate', function() {
         configData = eval(content);
         mockery.registerMock(path.join(process.cwd(), 'nightwatch.conf.js'), configData);
 
-        assert.equal(typeof configData.safari, 'undefined');
+        assert.strictEqual(typeof configData.safari, 'undefined');
 
         assert.deepStrictEqual(configData.test_settings.chrome, {
           desiredCapabilities: {
@@ -170,7 +170,7 @@ describe('Test CLI Runner Generate', function() {
       env: 'browserstack.ie'
     }).setup();
 
-    assert.equal(runner.argv.config, path.join(process.cwd(), 'nightwatch.conf.js'));
+    assert.strictEqual(runner.argv.config, path.join(process.cwd(), 'nightwatch.conf.js'));
     assert.deepStrictEqual(runner.test_settings.desiredCapabilities, {
       browserName: 'IE',
       browserVersion: '11.0',

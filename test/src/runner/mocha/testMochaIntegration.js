@@ -49,7 +49,7 @@ describe('test Mocha integration', function() {
     }, settings).catch(err => {
       error = err;
     }).then(() => {
-      assert.equal(settings.globals.test_calls, 12);
+      assert.strictEqual(settings.globals.test_calls, 12);
       assert.ok(error.message.includes('Mocha reported test failures.'), error);
     })
   });

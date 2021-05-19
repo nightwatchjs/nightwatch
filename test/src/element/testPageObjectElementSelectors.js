@@ -305,7 +305,7 @@ describe('test page object element selectors', function() {
 
     const page = Nightwatch.api().page.simplePageObj();
     page.customCommandWithSelector('@loginAsString', function(result) {
-      assert.deepEqual(result, {
+      assert.deepStrictEqual(result, {
         selector: '#weblogin',
         locateStrategy: 'css selector',
         name: 'loginAsString'
@@ -386,7 +386,7 @@ describe('test page object element selectors', function() {
 
     section
       .customCommandWithSelector('@help', function(result) {
-        assert.deepEqual(result, {
+        assert.deepStrictEqual(result, {
           selector: '#helpBtn',
           WebdriverElementId: '0',
           locateStrategy: 'css selector',
@@ -471,7 +471,7 @@ describe('test page object element selectors', function() {
     section.assert.customAssertionWithSelector('@help', 0, function(result, assertion) {
       try {
         strictEqual(result, true);
-        assert.deepEqual(assertion.element, {
+        assert.deepStrictEqual(assertion.element, {
           selector: '#helpBtn',
           WebdriverElementId: '0',
           locateStrategy: 'css selector',
@@ -501,7 +501,7 @@ describe('test page object element selectors', function() {
     section.assert.customAssertionWithSelector({selector:'@help', index: 1}, 0, function(result, assertion) {
       try {
         strictEqual(result, true);
-        assert.deepEqual(assertion.element, {
+        assert.deepStrictEqual(assertion.element, {
           selector: '#helpBtn',
           WebdriverElementId: '2',
           locateStrategy: 'css selector',

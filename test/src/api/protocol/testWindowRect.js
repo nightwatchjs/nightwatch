@@ -90,7 +90,7 @@ describe('windowRect', function() {
       assertion: function(opts) {
         assert.strictEqual(opts.method, 'POST');
         assert.strictEqual(opts.path, '/session/1352110219202/window/rect');
-        assert.deepEqual(opts.data, { width: 10, height: 10, x: 10, y: 10 } );
+        assert.deepStrictEqual(opts.data, { width: 10, height: 10, x: 10, y: 10 } );
       },
       commandName: 'windowRect',
       args: [{width: 10, height: 10, x: 10, y: 10}]

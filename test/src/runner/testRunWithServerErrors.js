@@ -50,7 +50,7 @@ describe('testRunWithServerErrors', function() {
       waitForConditionTimeout: 150,
       waitForConditionPollInterval: 50,
       reporter(results, cb) {
-        assert.deepEqual(results.errmessages, []);
+        assert.deepStrictEqual(results.errmessages, []);
         assert.strictEqual(results.passed, 2);
         assert.strictEqual(results.failed, 2);
         assert.strictEqual(results.assertions, 4);

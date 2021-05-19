@@ -18,8 +18,8 @@ describe('waitForElementNotVisible', function() {
 
   afterEach(function() {
     MockServer.removeMock({
-      url : '/wd/hub/session/1352110219202/element/0/displayed',
-      method:'GET'
+      url: '/wd/hub/session/1352110219202/element/0/displayed',
+      method: 'GET'
     });
   });
 
@@ -29,12 +29,12 @@ describe('waitForElementNotVisible', function() {
 
   it('client.waitForElementNotVisible() success', function() {
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/element/0/displayed',
-      method:'GET',
-      response : JSON.stringify({
+      url: '/wd/hub/session/1352110219202/element/0/displayed',
+      method: 'GET',
+      response: JSON.stringify({
         sessionId: '1352110219202',
-        status:0,
-        value : false
+        status: 0,
+        value: false
       })
     });
 
@@ -48,12 +48,12 @@ describe('waitForElementNotVisible', function() {
 
   it('client.waitForElementNotVisible() failure', function() {
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/element/0/displayed',
-      method:'GET',
-      response : JSON.stringify({
+      url: '/wd/hub/session/1352110219202/element/0/displayed',
+      method: 'GET',
+      response: JSON.stringify({
         sessionId: '1352110219202',
-        status:0,
-        value : true
+        status: 0,
+        value: true
       })
     });
 
