@@ -118,7 +118,7 @@ describe('testRunnerMixedFiles', function() {
         }
 
         assert.ok('sampleJs' in modules);
-        assert.ok('sampleTs' in modules === false);
+        assert.strictEqual(typeof(modules['sampleTs']), 'undefined');
         assert.strictEqual(modules['sampleJs'].modulePath, path.join(__dirname, '../../sampletests/mixedFiles/sampleJs.js'));
       }
     };
