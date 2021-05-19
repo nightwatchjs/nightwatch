@@ -1,4 +1,4 @@
-const common = require('../../../common.js');
+const common = require('../../common.js');
 const mockery = require('mockery');
 const assert = require('assert');
 

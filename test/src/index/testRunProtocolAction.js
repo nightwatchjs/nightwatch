@@ -4,9 +4,9 @@ const assert = require('assert');
 const common = require('../../common.js');
 const Nightwatch = require('../../lib/nightwatch.js');
 const HttpRequest = common.require('http/request.js');
-const WebdriverProtocol = common.require('transport/webdriver.js');
-const JsonWireProtocol = common.require('transport/jsonwire.js');
-const SeleniumProtocol = common.require('transport/selenium3.js');
+const WebdriverProtocol = common.require('transport/webdriver');
+const JsonWireProtocol = common.require('transport/jsonwire');
+const SeleniumProtocol = common.require('transport/selenium3');
 
 describe('Trandport.runProtocolAction', function() {
   const nightwatch = Nightwatch.createClientDefaults();
@@ -14,7 +14,8 @@ describe('Trandport.runProtocolAction', function() {
   before(function() {
     HttpRequest.globalSettings = {
       default_path: '',
-      port: 4444
+      port: 4444,
+      host: 'localhost'
     };
   });
 
@@ -293,7 +294,8 @@ describe('Trandport.runProtocolAction', function() {
     }).then(result => {
       throw new Error('An error should be thrown');
     }).catch(err => {
-      assert.deepStrictEqual(err, { status: -1,
+      assert.deepStrictEqual(err, {
+        status: -1,
         code: 'ECONNRESET',
         state: '',
         value: null,
@@ -304,7 +306,7 @@ describe('Trandport.runProtocolAction', function() {
     });
   });
 
-  it('test createSession Selenium Grid remote', function(done) {
+  it('test createSession Selenium Grid remote', async function() {
     nock('http://localhost:4444')
       .post('/session')
       .reply(200, {
@@ -332,21 +334,13 @@ describe('Trandport.runProtocolAction', function() {
     });
     const transport = new WebdriverProtocol(nightwatch);
 
-    transport.createSession();
-    transport.once('transport:session.create', data => {
-      try {
-        assert.strictEqual(data.sessionId, '3eca50bb367d7de96715c21b131e623f');
-        assert.deepStrictEqual(data.capabilities, { acceptInsecureCerts: false,
-          browserName: 'chrome',
-          browserVersion: '89.0.4389.90',
-          proxy: {}
-        });
-
-        done();
-      } catch (err) {
-        done(err);
-      }
+    const data = await transport.createSession();
+    assert.strictEqual(data.sessionId, '3eca50bb367d7de96715c21b131e623f');
+    assert.deepStrictEqual(data.capabilities, {
+      acceptInsecureCerts: false,
+      browserName: 'chrome',
+      browserVersion: '89.0.4389.90',
+      proxy: {}
     });
-
   });
 });

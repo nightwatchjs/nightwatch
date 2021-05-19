@@ -87,7 +87,7 @@ describe('.click()', function() {
         version2: false,
         start_process: false
       },
-      output: true,
+      output: false,
       silent: false,
       webdriver:{
         start_process: true

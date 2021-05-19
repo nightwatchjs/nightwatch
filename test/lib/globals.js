@@ -74,8 +74,8 @@ class Globals {
       }
     });
 
-    this.client.session.sessionId = this.client.api.sessionId = '1352110219202';
-    this.wdClient.session.sessionId = this.wdClient.api.sessionId = '1352110219202';
+    this.client.sessionId = this.client.api.sessionId = '1352110219202';
+    this.wdClient.sessionId = this.wdClient.api.sessionId = '1352110219202';
 
     if (typeof done == 'function') {
       this.server = MockServer.init();
@@ -277,7 +277,10 @@ module.exports.assertion = function(assertionName, api, {
       instance.client.api[api] = function(...fnArgs) {
         if (assertArgs) {
           if (typeof args[0] == 'string') {
-            assert.strictEqual(fnArgs[0], args[0]);
+            assert.deepStrictEqual(fnArgs[0], {
+              selector: args[0],
+              suppressNotFoundErrors: true
+            });
           } else {
             assert.deepStrictEqual(fnArgs[0], args[0]);
           }

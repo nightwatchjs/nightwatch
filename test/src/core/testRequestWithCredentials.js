@@ -77,7 +77,7 @@ describe('test Request With Credentials', function () {
       headless: true
     });
 
-    assert.deepStrictEqual(client.session.desiredCapabilities, {
+    assert.deepStrictEqual(client.transport.desiredCapabilities, {
       alwaysMatch: {
         'moz:firefoxOptions': {
           args: ['-headless']

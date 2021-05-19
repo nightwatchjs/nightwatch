@@ -17,7 +17,10 @@ describe('assert.cssClassPresent', function () {
       },
       assertResult: true,
       assertApiCommandArgs(args) {
-        assert.strictEqual(args[0], '.test_element');
+        assert.deepStrictEqual(args[0], {
+          selector: '.test_element',
+          suppressNotFoundErrors: true
+        });
         assert.strictEqual(args[1], 'class');
         assert.strictEqual(typeof args[2], 'function');
       },
@@ -40,7 +43,10 @@ describe('assert.cssClassPresent', function () {
       },
       assertResult: true,
       assertApiCommandArgs(args) {
-        assert.strictEqual(args[0], '.test_element');
+        assert.deepStrictEqual(args[0], {
+          selector: '.test_element',
+          suppressNotFoundErrors: true
+        });
         assert.strictEqual(args[1], 'class');
         assert.strictEqual(typeof args[2], 'function');
       },
@@ -63,7 +69,10 @@ describe('assert.cssClassPresent', function () {
       },
       assertResult: true,
       assertApiCommandArgs(args) {
-        assert.strictEqual(args[0], '.test_element');
+        assert.deepStrictEqual(args[0], {
+          selector: '.test_element',
+          suppressNotFoundErrors: true
+        });
         assert.strictEqual(args[1], 'class');
         assert.strictEqual(typeof args[2], 'function');
       },
@@ -164,7 +173,7 @@ describe('assert.cssClassPresent', function () {
       },
       assertResult: true,
       assertApiCommandArgs(args) {
-        assert.deepStrictEqual(args[0], {selector: '.test_element'});
+        assert.deepStrictEqual(args[0], {selector: '.test_element', suppressNotFoundErrors: true});
         assert.strictEqual(args[1], 'class');
         assert.strictEqual(typeof args[2], 'function');
       },
