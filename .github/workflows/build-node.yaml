@@ -25,5 +25,6 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
+    - run: npm ci
     - run: npm run eslint
     - run: npm test
