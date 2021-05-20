@@ -22,7 +22,7 @@ describe('client.frame', function() {
       assertion: function(opts) {
         assert.strictEqual(opts.method, 'POST');
         assert.strictEqual(opts.path, '/session/1352110219202/frame');
-        assert.deepStrictEqual(opts.data, { id: 'testFrame' });
+        assert.deepStrictEqual(opts.data, {id: 'testFrame'});
       },
       commandName: 'frame',
       args: ['testFrame']
@@ -34,7 +34,7 @@ describe('client.frame', function() {
       assertion: function(opts) {
         assert.strictEqual(opts.method, 'POST');
         assert.strictEqual(opts.path, '/session/1352110219202/frame');
-        assert.deepStrictEqual(opts.data, { id: 0 });
+        assert.deepStrictEqual(opts.data, {id: 0});
       },
       commandName: 'frame',
       args: [0]
@@ -46,7 +46,7 @@ describe('client.frame', function() {
       assertion: function(opts) {
         assert.strictEqual(opts.method, 'POST');
         assert.strictEqual(opts.path, '/session/1352110219202/frame');
-        assert.deepStrictEqual(opts.data, { id: null });
+        assert.deepStrictEqual(opts.data, {id: null});
       },
       commandName: 'frame',
       args: [null]
@@ -58,7 +58,7 @@ describe('client.frame', function() {
       assertion: function(opts) {
         assert.strictEqual(opts.method, 'POST');
         assert.strictEqual(opts.path, '/session/1352110219202/frame');
-        assert.deepStrictEqual(opts.data, { id: null });
+        assert.deepStrictEqual(opts.data, {id: null});
       },
       commandName: 'frame',
       args: []

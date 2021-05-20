@@ -1,6 +1,6 @@
 
 module.exports = {
-  demoTest : function (done) {
+  demoTest: function (done) {
 
   }
 };

@@ -254,6 +254,7 @@ module.exports = {
     if (twice) {
       server.addMock(item, once);
     }
+
     return this;
   },
 

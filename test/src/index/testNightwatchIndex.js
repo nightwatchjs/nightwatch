@@ -39,7 +39,7 @@ describe('test NightwatchIndex', function () {
 
       postdata: JSON.stringify({
         desiredCapabilities: {
-          browserName: 'chrome',
+          browserName: 'chrome'
         }
       }),
 
@@ -97,7 +97,7 @@ describe('test NightwatchIndex', function () {
         value: {
           message: 'session not created: This version of ChromeDriver only supports Chrome version 75',
           error: [
-            '  (Driver info: chromedriver=75.0.3770.8 (681f24ea911fe754973dda2fdc6d2a2e159dd300-refs/branch-heads/3770@{#40}),platform=Mac OS X 10.14.4 x86_64)' ]
+            '  (Driver info: chromedriver=75.0.3770.8 (681f24ea911fe754973dda2fdc6d2a2e159dd300-refs/branch-heads/3770@{#40}),platform=Mac OS X 10.14.4 x86_64)']
         }
       },
       statusCode: 200,

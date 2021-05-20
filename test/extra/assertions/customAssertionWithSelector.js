@@ -22,7 +22,7 @@ exports.assertion = function(element, variable, done) {
 
   this.command = function(callback) {
     callback({
-      value : 0
+      value: 0
     });
   };
 

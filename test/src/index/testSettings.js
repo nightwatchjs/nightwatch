@@ -94,7 +94,7 @@ describe('test Settings', function () {
     const Settings = common.require('settings/settings.js');
 
     let settings = Settings.parse({
-      selenium : {
+      selenium: {
         start_process: false
       },
       selenium_host: 'localhost.org',

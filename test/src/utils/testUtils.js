@@ -146,7 +146,7 @@ describe('test Utils', function() {
         at async DefaultRunner.runTestSuite (/node_modules/nightwatch/lib/runner/test-runners/default.js:68:7)`;
     let expectedStackTrace = `Error
         at Object.this test should fail and capture screenshot (/Projects/nightwatch/examples/tests/sample.js:5:16)
-        at processTicksAndRejections (internal/process/task_queues.js:93:5)` 
+        at processTicksAndRejections (internal/process/task_queues.js:93:5)`; 
     assert.strictEqual(Utils.filterStackTrace(stackTrace), expectedStackTrace);
   
     stackTrace = '';

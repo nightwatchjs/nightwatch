@@ -73,18 +73,18 @@ describe('testRunnerWithSeleniumWebdriver', function() {
     }, true);
 
     let settings = {
-      selenium : {
-        start_process: false,
+      selenium: {
+        start_process: false
       },
-      webdriver:{
+      webdriver: {
         port: 10195,
         start_process: false
       },
       silent: false,
       output: false,
       globals: {
-        waitForConditionPollInterval:10,
-        waitForConditionTimeout:11,
+        waitForConditionPollInterval: 10,
+        waitForConditionTimeout: 11,
         retryAssertionTimeout: 10,
         reporter(results) {
           assert.strictEqual(Object.keys(results.modules).length, 1);
@@ -160,10 +160,10 @@ describe('testRunnerWithSeleniumWebdriver', function() {
     }, true);
 
     let settings = {
-      selenium : {
-        start_process: false,
+      selenium: {
+        start_process: false
       },
-      webdriver:{
+      webdriver: {
         port: 10195,
         start_process: true
       },
@@ -171,8 +171,8 @@ describe('testRunnerWithSeleniumWebdriver', function() {
       silent: true,
       output: false,
       globals: {
-        waitForConditionPollInterval:10,
-        waitForConditionTimeout:11,
+        waitForConditionPollInterval: 10,
+        waitForConditionTimeout: 11,
         retryAssertionTimeout: 10,
         reporter(results) {
           assert.strictEqual(Object.keys(results.modules).length, 1);

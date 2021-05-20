@@ -16,7 +16,7 @@ describe('waitForElementPresent', function() {
     this.client.api.waitForElementPresent('#weblogin', 100, function(result, instance) {
       assert.strictEqual(instance.expectedValue, 'found');
       assert.strictEqual(result.status, 0);
-      assert.deepStrictEqual(result.value[0], { ELEMENT: '0' });
+      assert.deepStrictEqual(result.value[0], {ELEMENT: '0'});
     });
 
     this.client.start(done);

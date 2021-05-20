@@ -76,8 +76,8 @@ describe('testRunWithCommandErrors', function() {
     it('testRunner with open new window socket hang up error', function() {
       MockServer.addMock({
         url: '/wd/hub/session/1352110219202/window/new',
-        socketDelay : 200,
-        response : ''
+        socketDelay: 200,
+        response: ''
       }, true);
 
       let testsPath = path.join(__dirname, '../../sampletests/withcommanderrors');
@@ -107,7 +107,7 @@ describe('testRunWithCommandErrors', function() {
         webdriver: {
           timeout_options: {
             timeout: 50
-          },
+          }
         },
         report_command_errors: false,
         skip_testcases_on_fail: false,
@@ -127,14 +127,14 @@ describe('testRunWithCommandErrors', function() {
     it('testRunner with open new window socket hang up error and retry then success', function() {
       MockServer.addMock({
         url: '/wd/hub/session/1352110219202/window/new',
-        socketDelay : 200,
-        response : ''
+        socketDelay: 200,
+        response: ''
       }, true);
 
       MockServer.addMock({
         url: '/wd/hub/session/1352110219202/window/new',
-        socketDelay : 200,
-        response : ''
+        socketDelay: 200,
+        response: ''
       }, true);
 
       MockServer.addMock({
@@ -172,7 +172,7 @@ describe('testRunWithCommandErrors', function() {
           timeout_options: {
             timeout: 50,
             retry_attempts: 2
-          },
+          }
         },
         report_command_errors: true,
         skip_testcases_on_fail: false,
@@ -192,14 +192,14 @@ describe('testRunWithCommandErrors', function() {
     it('testRunner with open new window socket hang up error and retry then success - default settings', function() {
       MockServer.addMock({
         url: '/wd/hub/session/1352110219202/window/new',
-        socketDelay : 200,
-        response : ''
+        socketDelay: 200,
+        response: ''
       }, true);
 
       MockServer.addMock({
         url: '/wd/hub/session/1352110219202/window/new',
-        socketDelay : 200,
-        response : ''
+        socketDelay: 200,
+        response: ''
       }, true);
 
       MockServer.addMock({
@@ -237,7 +237,7 @@ describe('testRunWithCommandErrors', function() {
           timeout_options: {
             timeout: 50,
             retry_attempts: 2
-          },
+          }
         },
         report_command_errors: false,
         output: false,
@@ -254,20 +254,20 @@ describe('testRunWithCommandErrors', function() {
     it('testRunner with open new window socket hang up error and retry then fail', function() {
       MockServer.addMock({
         url: '/wd/hub/session/1352110219202/window/new',
-        socketDelay : 200,
-        response : ''
+        socketDelay: 200,
+        response: ''
       }, true);
 
       MockServer.addMock({
         url: '/wd/hub/session/1352110219202/window/new',
-        socketDelay : 200,
-        response : ''
+        socketDelay: 200,
+        response: ''
       }, true);
 
       MockServer.addMock({
         url: '/wd/hub/session/1352110219202/window/new',
-        socketDelay : 200,
-        response : ''
+        socketDelay: 200,
+        response: ''
       }, true);
 
       let testsPath = path.join(__dirname, '../../sampletests/withcommanderrors');
@@ -297,7 +297,7 @@ describe('testRunWithCommandErrors', function() {
           timeout_options: {
             timeout: 50,
             retry_attempts: 2
-          },
+          }
         },
         report_command_errors: true,
         skip_testcases_on_fail: false,
@@ -377,7 +377,7 @@ describe('testRunWithCommandErrors', function() {
           value: '#element-error'
         },
         statusCode: 200,
-        response: { value: [] }
+        response: {value: []}
       }, false, true);
 
       let testsPath = path.join(__dirname, '../../sampletests/withelementerrors');
@@ -425,7 +425,7 @@ describe('testRunWithCommandErrors', function() {
           value: '#element-error'
         },
         statusCode: 200,
-        response: { value: [] }
+        response: {value: []}
       }, false, true);
 
       let testsPath = path.join(__dirname, '../../sampletests/withelementerrors');

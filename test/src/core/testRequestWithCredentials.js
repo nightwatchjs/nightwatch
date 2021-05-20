@@ -141,7 +141,7 @@ describe('test Request With Credentials', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         chromeOptions: {
-          args : ['--no-sandbox']
+          args: ['--no-sandbox']
         }
       }
     });

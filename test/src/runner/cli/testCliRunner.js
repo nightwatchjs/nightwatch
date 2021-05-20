@@ -17,7 +17,7 @@ describe('Test CLI Runner', function() {
 
       getDefault() {
         return './nightwatch.json';
-      },
+      }
     });
 
     let config = {
@@ -286,7 +286,7 @@ describe('Test CLI Runner', function() {
 
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
-      config: './nightwatch.json',
+      config: './nightwatch.json'
     }).setup();
 
     assert.deepStrictEqual(runner.settings.src_folders, ['tests']);
@@ -604,7 +604,7 @@ describe('Test CLI Runner', function() {
             };
         }
         throw new Error('Does not exist');
-      },
+      }
     });
 
     const CliRunner = common.require('runner/cli/cli.js');

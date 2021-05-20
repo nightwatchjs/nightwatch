@@ -5,8 +5,8 @@ module.exports = {
     xpathElement2: {selector: '//div[@class="example"]'},
     cssSelectorElement: {
       selector: '#weblogin',
-      locateStrategy: 'css selector',
-    },
+      locateStrategy: 'css selector'
+    }
   },
   sections: {
     signUp: {
@@ -15,9 +15,9 @@ module.exports = {
         start: {
           selector: '#getStartedStart',
           locateStrategy: 'css selector'
-        },
-      },
-    },
+        }
+      }
+    }
   },
-  commands: [],
+  commands: []
 };

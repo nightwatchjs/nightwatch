@@ -20,8 +20,8 @@ describe('sampleTest with webdriverIO', function() {
       },
 
       desiredCapabilities: {
-        browserName: 'firefox',
-      },
+        browserName: 'firefox'
+      }
     });
   });
 

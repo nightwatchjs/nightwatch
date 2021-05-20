@@ -34,13 +34,13 @@ describe('getElementSize', function() {
 
   it('client.getElementSize() with webdriver protocol', function(done) {
     Nightwatch.initClient({
-      selenium : {
+      selenium: {
         version2: false,
         start_process: false
       },
-      webdriver:{
+      webdriver: {
         start_process: true
-      },
+      }
     }).then(client => {
       MockServer.addMock({
         url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/rect',

@@ -30,7 +30,7 @@ describe('getCookiesErrors', function() {
     const reporter = new Reporter({});
     const client = await Nightwatch.initClient({
       report_command_errors: true,
-      webdriver:{
+      webdriver: {
         start_process: false
       },
       output: false,
@@ -56,7 +56,7 @@ describe('getCookiesErrors', function() {
         status: -1,
         state: 'unhandled error',
         code: '',
-        value: { message: 'test message', error: [] },
+        value: {message: 'test message', error: []},
         errorStatus: 13,
         error:
           'An unknown server-side error occurred while processing the command. – test message',
@@ -80,7 +80,7 @@ describe('getCookiesErrors', function() {
     const reporter = new Reporter({});
     const client = await Nightwatch.initClient({
       report_command_errors: false,
-      webdriver:{
+      webdriver: {
         start_process: false,
         timeout_options: {
           timeout: 50
@@ -93,8 +93,8 @@ describe('getCookiesErrors', function() {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/cookie',
       method: 'GET',
-      socketDelay : 200,
-      response : ''
+      socketDelay: 200,
+      response: ''
     }, true);
 
     client.api.getCookies(function callback(result) {

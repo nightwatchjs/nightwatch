@@ -1,5 +1,5 @@
 module.exports = {
-  'Demo test' : function (browser) {
+  'Demo test': function (browser) {
     browser
       .url('http://localhost')
       .waitForElementPresent('#weblogin')

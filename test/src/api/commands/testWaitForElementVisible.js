@@ -148,7 +148,7 @@ describe('waitForElementVisible', function() {
     MockServer
       .addMock({
         url: '/wd/hub/session/1352110219202/elements',
-        postdata : '{"using":"css selector","value":"#stale-element"}',
+        postdata: '{"using":"css selector","value":"#stale-element"}',
         method: 'POST',
         response: JSON.stringify({
           status: 0,
@@ -261,7 +261,7 @@ describe('waitForElementVisible', function() {
     MockServer
       .addMock({
         url: '/wd/hub/session/1352110219202/elements',
-        postdata : {
+        postdata: {
           using: 'xpath',
           value: '//*div[2]/button'
         },

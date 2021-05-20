@@ -129,7 +129,7 @@ describe('testRunWithMultipleSources', function() {
       this.onuncaught = function(err) {};
     });
 
-    let uncaughtErr = null
+    let uncaughtErr = null;
     process.on('uncaughtException', function(err) {
       uncaughtErr = err;
     });

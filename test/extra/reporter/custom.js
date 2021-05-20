@@ -1,5 +1,5 @@
 module.exports = {
-  write : function(results, options, done) {
+  write: function(results, options, done) {
     done();
   }
 };

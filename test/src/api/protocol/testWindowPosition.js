@@ -84,7 +84,7 @@ describe('windowPosition', function() {
     return Globals.protocolTestWebdriver({
       assertion: function(opts) {
         assert.strictEqual(opts.method, 'POST');
-        assert.deepStrictEqual(opts.data, { x: 10, y: 10 });
+        assert.deepStrictEqual(opts.data, {x: 10, y: 10});
         assert.strictEqual(opts.path, '/session/1352110219202/window/rect');
       },
       commandName: 'windowPosition',

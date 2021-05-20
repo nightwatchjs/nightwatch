@@ -1,6 +1,6 @@
 module.exports = {
   url: '/other',
-  elements : {
-    myElement : { selector: '.myElement' }
+  elements: {
+    myElement: {selector: '.myElement'}
   }
 };

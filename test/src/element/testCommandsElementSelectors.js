@@ -169,7 +169,7 @@ describe('test commands element selectors', function() {
         assert.strictEqual(result.status, 0, 'waitForElementNotPresent succeeds');
         assert.strictEqual(result.value.length, 0, 'waitForElementNotPresent returns no elements');
       })
-      .waitForElementNotPresent({ selector: '.nock-object', timeout: 50, retryInterval: 20, abortOnFailure: false }, function callback(result) {
+      .waitForElementNotPresent({selector: '.nock-object', timeout: 50, retryInterval: 20, abortOnFailure: false}, function callback(result) {
         assert.strictEqual(result.status, 0, 'waitForElementNotPresent succeeds');
         assert.strictEqual(result.value.length, 0, 'waitForElementNotPresent returns no elements');
       });
@@ -187,7 +187,7 @@ describe('test commands element selectors', function() {
         assert.strictEqual(result.status, 0, 'waitForElementNotPresent "succeeds"');
         assert.strictEqual(result.value.length, 3, 'waitForElementNotPresent returns the found elements');
       })
-      .waitForElementNotPresent({ selector: '.nock-object', timeout: 50, retryInterval: 20, abortOnFailure: false }, function callback(result) {
+      .waitForElementNotPresent({selector: '.nock-object', timeout: 50, retryInterval: 20, abortOnFailure: false}, function callback(result) {
         assert.strictEqual(result.status, 0, 'waitForElementNotPresent "succeeds"');
         assert.strictEqual(result.value.length, 3, 'waitForElementNotPresent returns the found elements');
       });

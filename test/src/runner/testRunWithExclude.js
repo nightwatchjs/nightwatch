@@ -14,7 +14,7 @@ const defaultSettings = {
   },
   silent: true,
   output: false,
-  output_folder: false,
+  output_folder: false
 };
 
 describe('testRunWithExclude', function() {
@@ -49,9 +49,9 @@ describe('testRunWithExclude', function() {
           assert.ok('simple/sample' in results.modules);
 
           cb();
-        },
+        }
       },
-      exclude: ['./withexclude/excluded'],
+      exclude: ['./withexclude/excluded']
     }, defaultSettings);
 
     return NightwatchClient.runTests({
@@ -71,7 +71,7 @@ describe('testRunWithExclude', function() {
         }
       },
       src_folders: ['./withexclude/excluded', './withexclude/simple'],
-      exclude: './withexclude/simple',
+      exclude: './withexclude/simple'
     }, defaultSettings);
 
     return NightwatchClient.runTests(settings);
@@ -89,7 +89,7 @@ describe('testRunWithExclude', function() {
         }
       },
       src_folders: ['./withexclude/excluded', './withexclude/simple'],
-      exclude: './withexclude/simple/*',
+      exclude: './withexclude/simple/*'
     }, defaultSettings);
 
     return NightwatchClient.runTests(settings);
@@ -107,7 +107,7 @@ describe('testRunWithExclude', function() {
         }
       },
       src_folders: ['./withexclude/excluded', './withexclude/simple'],
-      filter: 'withexclude/simple',
+      filter: 'withexclude/simple'
     }, defaultSettings);
 
     return NightwatchClient.runTests(settings);
@@ -125,7 +125,7 @@ describe('testRunWithExclude', function() {
         }
       },
       src_folders: ['./withexclude/excluded', './withexclude/simple'],
-      filter: 'withexclude/simple/*',
+      filter: 'withexclude/simple/*'
     }, defaultSettings);
 
     return NightwatchClient.runTests(settings);
@@ -143,7 +143,7 @@ describe('testRunWithExclude', function() {
         }
       },
       src_folders: ['./withexclude'],
-      filter: 'simple/*',
+      filter: 'simple/*'
     }, defaultSettings);
 
     return NightwatchClient.runTests(settings);
@@ -162,7 +162,7 @@ describe('testRunWithExclude', function() {
       },
       src_folders: ['./withexclude'],
       filter: 'excluded/*',
-      exclude: 'excluded/excluded-*',
+      exclude: 'excluded/excluded-*'
     }, defaultSettings);
 
     return NightwatchClient.runTests(settings);
@@ -180,7 +180,7 @@ describe('testRunWithExclude', function() {
         }
       },
       exclude: ['withexclude/excluded/excluded-*'],
-      start_session: true,
+      start_session: true
     }, defaultSettings);
 
     return NightwatchClient.runTests({
@@ -199,7 +199,7 @@ describe('testRunWithExclude', function() {
         }
       },
       exclude: [path.join('withexclude', 'excluded', 'excluded-module.js')],
-      start_session: true,
+      start_session: true
     }, defaultSettings);
 
     return NightwatchClient.runTests({
@@ -221,8 +221,8 @@ describe('testRunWithExclude', function() {
       src_folders: './withexclude',
       exclude: [
         path.join('withexclude', 'excluded', 'excluded-module.js'),
-        path.join('withexclude', 'simple'),
-      ],
+        path.join('withexclude', 'simple')
+      ]
     }, defaultSettings);
 
     return NightwatchClient.runTests(settings);
@@ -241,12 +241,12 @@ describe('testRunWithExclude', function() {
       },
       src_folders: [
         path.join('withexclude', 'excluded'),
-        path.join('withexclude', 'simple'),
+        path.join('withexclude', 'simple')
       ],
       exclude: [
         path.join('withexclude', 'excluded', 'excluded-module.js'),
-        path.join('withexclude', 'simple'),
-      ],
+        path.join('withexclude', 'simple')
+      ]
     }, defaultSettings);
 
     return NightwatchClient.runTests(settings);

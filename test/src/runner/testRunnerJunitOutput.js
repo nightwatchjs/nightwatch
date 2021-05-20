@@ -69,12 +69,12 @@ describe('testRunnerJUnitOutput', function() {
     };
 
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/screenshot',
-      method:'GET',
-      response : JSON.stringify({
+      url: '/wd/hub/session/1352110219202/screenshot',
+      method: 'GET',
+      response: JSON.stringify({
         sessionId: '1352110219202',
-        status:0,
-        value:'screendata'
+        status: 0,
+        value: 'screendata'
       })
     });
 
@@ -458,6 +458,7 @@ function readDirPromise(dirName) {
 function fileExistsSync(path) {
   try {
     fs.statSync(path);
+
     return true;
   } catch (e) {
     return false;
