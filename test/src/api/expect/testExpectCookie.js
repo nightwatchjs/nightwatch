@@ -237,7 +237,7 @@ describe('expect.cookie', function() {
       strictEqual(expect.assertion.negate, true);
       strictEqual(expect.assertion.resultValue, 'cookie-value');
       strictEqual(expect.assertion.passed, false);
-      strictEqual(expect.assertion.messageParts[0], ' not equal: "cookie-value"' );
+      strictEqual(expect.assertion.messageParts[0], ' not equal: "cookie-value"');
       assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" to not equal: "cookie-value"'),
         `Message was: ${expect.assertion.message}`);
     });

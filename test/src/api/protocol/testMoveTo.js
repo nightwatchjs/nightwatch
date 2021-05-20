@@ -12,7 +12,7 @@ describe('browser commands', function() {
       assertion: function(opts) {
         assert.strictEqual(opts.method, 'POST');
         assert.strictEqual(opts.path, '/session/1352110219202/moveto');
-        assert.deepStrictEqual(opts.data, { element: 'testElement', xoffset: 0, yoffset: 1 });
+        assert.deepStrictEqual(opts.data, {element: 'testElement', xoffset: 0, yoffset: 1});
       },
       commandName: 'moveTo',
       args: ['testElement', 0, 1]

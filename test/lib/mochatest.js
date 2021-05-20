@@ -1,17 +1,17 @@
 const CommandGlobals = require('./globals/commands.js');
 
 module.exports = {
-  addBefore : function(done) {
+  addBefore: function(done) {
     CommandGlobals.beforeEach.call(this, done);
   },
 
-  addAfter : function(done) {
+  addAfter: function(done) {
     CommandGlobals.afterEach.call(this, function() {
       done();
     });
   },
 
-  add : function(key, body) {
+  add: function(key, body) {
     var result = {};
 
     result[key] = body;

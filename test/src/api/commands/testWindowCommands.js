@@ -35,11 +35,11 @@ describe('window', function () {
 
   it('client.resizeWindow()', function (done) {
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/window/current/size',
-      method:'POST',
-      response : JSON.stringify({
+      url: '/wd/hub/session/1352110219202/window/current/size',
+      method: 'POST',
+      response: JSON.stringify({
         sessionId: '1352110219202',
-        status:0
+        status: 0
       })
     });
 
@@ -52,11 +52,11 @@ describe('window', function () {
 
   it('client.setWindowRect()', function (done) {
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/window/rect',
-      method:'POST',
-      response : JSON.stringify({
+      url: '/wd/hub/session/1352110219202/window/rect',
+      method: 'POST',
+      response: JSON.stringify({
         sessionId: '1352110219202',
-        status:0
+        status: 0
       })
     });
 
@@ -69,9 +69,9 @@ describe('window', function () {
 
   it('client.getWindowRect()', function (done) {
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/window/rect',
-      method:'GET',
-      response : JSON.stringify({
+      url: '/wd/hub/session/1352110219202/window/rect',
+      method: 'GET',
+      response: JSON.stringify({
         value: {
           width: 1000,
           height: 1000,
@@ -90,11 +90,11 @@ describe('window', function () {
 
   it('client.setWindowSize()', function (done) {
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/window/current/size',
-      method:'POST',
-      response : JSON.stringify({
+      url: '/wd/hub/session/1352110219202/window/current/size',
+      method: 'POST',
+      response: JSON.stringify({
         sessionId: '1352110219202',
-        status:0
+        status: 0
       })
     });
 

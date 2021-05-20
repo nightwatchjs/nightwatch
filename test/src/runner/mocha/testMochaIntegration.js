@@ -51,6 +51,6 @@ describe('test Mocha integration', function() {
     }).then(() => {
       assert.strictEqual(settings.globals.test_calls, 12);
       assert.ok(error.message.includes('Mocha reported test failures.'), error);
-    })
+    });
   });
 });

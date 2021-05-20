@@ -9,5 +9,5 @@ module.exports = {
 
   after(client) {
     client.globals.increment++;
-  },
+  }
 };

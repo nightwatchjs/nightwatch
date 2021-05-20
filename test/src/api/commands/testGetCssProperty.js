@@ -13,12 +13,12 @@ describe('getCssProperty', function() {
 
   it('client.getCssProperty()', function(done) {
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/element/0/css/display',
-      method:'GET',
-      response : JSON.stringify({
+      url: '/wd/hub/session/1352110219202/element/0/css/display',
+      method: 'GET',
+      response: JSON.stringify({
         sessionId: '1352110219202',
-        status:0,
-        value : 'block'
+        status: 0,
+        value: 'block'
       })
     });
 

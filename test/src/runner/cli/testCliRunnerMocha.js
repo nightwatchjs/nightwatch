@@ -9,12 +9,12 @@ describe('test CLI Runner Mocha', function() {
     mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
     mockery.registerMock('./argv-setup.js', {
       isDefault(option, value) {
-        return value.includes('nightwatch.')
+        return value.includes('nightwatch.');
       },
 
       getDefault() {
         return './nightwatch.json';
-      },
+      }
     });
 
     mockery.registerMock('path', {

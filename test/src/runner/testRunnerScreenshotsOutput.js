@@ -67,12 +67,12 @@ describe('testRunnerScreenshotsOutput', function() {
     };
 
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/screenshot',
-      method:'GET',
-      response : JSON.stringify({
+      url: '/wd/hub/session/1352110219202/screenshot',
+      method: 'GET',
+      response: JSON.stringify({
         sessionId: '1352110219202',
-        status:0,
-        value:'screendata'
+        status: 0,
+        value: 'screendata'
       })
     }, true);
 
@@ -119,12 +119,12 @@ describe('testRunnerScreenshotsOutput', function() {
     };
 
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/screenshot',
-      method:'GET',
-      response : JSON.stringify({
+      url: '/wd/hub/session/1352110219202/screenshot',
+      method: 'GET',
+      response: JSON.stringify({
         sessionId: '1352110219202',
-        status:0,
-        value:'screendata'
+        status: 0,
+        value: 'screendata'
       })
     });
 
@@ -172,9 +172,9 @@ describe('testRunnerScreenshotsOutput', function() {
     };
 
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/screenshot',
-      method:'GET',
-      response : JSON.stringify({
+      url: '/wd/hub/session/1352110219202/screenshot',
+      method: 'GET',
+      response: JSON.stringify({
         status: -1,
         state: '',
         code: '',

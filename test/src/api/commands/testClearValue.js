@@ -86,22 +86,22 @@ describe('clearValue', function() {
 
   it('client.clearValue() with webdriver protocol', function(done) {
     Nightwatch.initClient({
-      selenium : {
+      selenium: {
         version2: false,
         start_process: false
       },
-      webdriver:{
+      webdriver: {
         start_process: true
-      },
+      }
     }).then(client => {
       MockServer.addMock({
         url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/clear',
-        response: { value: null }
+        response: {value: null}
       }, true);
 
       MockServer.addMock({
         url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/clear',
-        response: { value: null }
+        response: {value: null}
       }, true);
 
       client.api.clearValue('#webdriver', function(result) {
@@ -116,11 +116,11 @@ describe('clearValue', function() {
 
   it('client.clearValue() with webdriver protocol - element not found', function(done) {
     Nightwatch.initClient({
-      selenium : {
+      selenium: {
         version2: false,
         start_process: false
       },
-      webdriver:{
+      webdriver: {
         start_process: true
       },
       silent: true,
@@ -129,7 +129,7 @@ describe('clearValue', function() {
       MockServer.addMock({
         statusCode: 404,
         url: '/session/13521-10219-202/elements',
-        postdata: { using: 'css selector', value: '#webdriver-notfound' },
+        postdata: {using: 'css selector', value: '#webdriver-notfound'},
         response: {
           value: {
             error: 'no such element',

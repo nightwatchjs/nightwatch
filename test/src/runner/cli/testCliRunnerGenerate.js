@@ -13,7 +13,7 @@ describe('Test CLI Runner Generate', function() {
 
       getDefault() {
         return './nightwatch.json';
-      },
+      }
     });
   });
 
@@ -31,7 +31,7 @@ describe('Test CLI Runner Generate', function() {
 
     mockery.registerMock('os', {
       platform: function() {
-        return 'win'
+        return 'win';
       }
     });
 
@@ -40,7 +40,7 @@ describe('Test CLI Runner Generate', function() {
         if (fileName.endsWith('/nightwatch.conf.js')) {
           return {
             isFile: function () {
-              return false
+              return false;
             }
           };
         }
@@ -48,7 +48,7 @@ describe('Test CLI Runner Generate', function() {
         if (fileName.endsWith('/nightwatch.json')) {
           return {
             isFile: function () {
-              return false
+              return false;
             }
           };
         }
@@ -59,7 +59,7 @@ describe('Test CLI Runner Generate', function() {
           toString: function () {
             return tplData;
           }
-        }
+        };
       },
 
       writeFileSync: function (destFileName, content) {
@@ -91,7 +91,7 @@ describe('Test CLI Runner Generate', function() {
             browserName: 'firefox',
             alwaysMatch: {
               'moz:firefoxOptions': {
-                args: [],
+                args: []
               }
             }
           },
@@ -108,7 +108,7 @@ describe('Test CLI Runner Generate', function() {
             'bstack:options': {
               local: 'false',
               userName: '${BROWSERSTACK_USER}',
-              accessKey: '${BROWSERSTACK_KEY}',
+              accessKey: '${BROWSERSTACK_KEY}'
             }
           },
 
@@ -174,14 +174,14 @@ describe('Test CLI Runner Generate', function() {
     assert.deepStrictEqual(runner.test_settings.desiredCapabilities, {
       browserName: 'IE',
       browserVersion: '11.0',
-      'bstack:options' : {
+      'bstack:options': {
         os: 'Windows',
         osVersion: '10',
         local: 'false',
         seleniumVersion: '3.5.2',
         resolution: '1366x768',
         userName: '${BROWSERSTACK_USER}',
-        accessKey: '${BROWSERSTACK_KEY}',
+        accessKey: '${BROWSERSTACK_KEY}'
       }
     });
   });

@@ -37,6 +37,7 @@ describe('test Parallel Execution Exit Code', function() {
         };
 
         util.inherits(Child, events.EventEmitter);
+
         return new Child();
       }
     });

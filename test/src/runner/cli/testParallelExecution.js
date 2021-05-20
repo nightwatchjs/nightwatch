@@ -34,6 +34,7 @@ describe('test Parallel Execution', function() {
         };
 
         util.inherits(Child, events.EventEmitter);
+
         return new Child();
       }
     });
@@ -199,7 +200,7 @@ describe('test Parallel Execution', function() {
 
     const CliRunner = common.require('runner/cli/cli.js');
     const runner = new CliRunner({
-      config: path.join(__dirname, '../../../extra/parallelism-execArgv.json'),
+      config: path.join(__dirname, '../../../extra/parallelism-execArgv.json')
     });
 
     runner.setup();
@@ -214,7 +215,7 @@ describe('test Parallel Execution', function() {
   it('test parallel execution with specified node options to be passed to child processes', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     const runner = new CliRunner({
-      config: path.join(__dirname, '../../../extra/parallelism-execArgv-selected.json'),
+      config: path.join(__dirname, '../../../extra/parallelism-execArgv-selected.json')
     });
 
     runner.setup();

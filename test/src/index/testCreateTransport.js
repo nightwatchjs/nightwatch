@@ -18,7 +18,7 @@ describe('Transport.create()', function () {
   it('test create Transport for Selenium3 external with Firefox', function() {
     const client = NightwatchClient.client({
       selenium: {
-        start_process: false,
+        start_process: false
       },
       webdriver: {},
       desiredCapabilities: {
@@ -34,7 +34,7 @@ describe('Transport.create()', function () {
   it('test create Transport for Selenium3 external with Firefox - seleniumHost property', function() {
     const client = NightwatchClient.client({
       selenium: {
-        start_process: false,
+        start_process: false
       },
       webdriver: {},
       desiredCapabilities: {
@@ -54,7 +54,7 @@ describe('Transport.create()', function () {
       },
       desiredCapabilities: {
         browserName: 'firefox'
-      },
+      }
     });
 
     assert.ok(client.transport instanceof WebDriver);

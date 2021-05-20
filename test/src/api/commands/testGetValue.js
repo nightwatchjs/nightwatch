@@ -13,12 +13,12 @@ describe('getValue', function() {
 
   it('client.getValue()', function(done) {
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/element/0/property/value',
-      method:'GET',
-      response : JSON.stringify({
+      url: '/wd/hub/session/1352110219202/element/0/property/value',
+      method: 'GET',
+      response: JSON.stringify({
         sessionId: '1352110219202',
-        status:0,
-        value : 'test value'
+        status: 0,
+        value: 'test value'
       })
     });
 

@@ -14,10 +14,10 @@ describe('.click()', function() {
 
   it('client.click()', function(done) {
     MockServer.addMock({
-      'url' : '/wd/hub/session/1352110219202/element/0/click',
-      'response' : {
+      'url': '/wd/hub/session/1352110219202/element/0/click',
+      'response': {
         sessionId: '1352110219202',
-        status:0
+        status: 0
       }
     });
     const api = this.client.api;
@@ -33,10 +33,10 @@ describe('.click()', function() {
 
   it('client.click() with xpath', function(done) {
     MockServer.addMock({
-      'url' : '/wd/hub/session/1352110219202/element/0/click',
-      'response' : JSON.stringify({
+      'url': '/wd/hub/session/1352110219202/element/0/click',
+      'response': JSON.stringify({
         sessionId: '1352110219202',
-        status:0
+        status: 0
       })
     });
 
@@ -53,22 +53,22 @@ describe('.click()', function() {
 
   it('client.click() with webdriver protocol', function(done) {
     Nightwatch.initClient({
-      selenium : {
+      selenium: {
         version2: false,
         start_process: false
       },
-      webdriver:{
+      webdriver: {
         start_process: true
-      },
+      }
     }).then(client => {
       MockServer.addMock({
         url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/click',
-        response: { value: null }
+        response: {value: null}
       }, true);
 
       MockServer.addMock({
         url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/click',
-        response: { value: null }
+        response: {value: null}
       }, true);
 
       client.api.click('#webdriver', function(result) {
@@ -83,15 +83,15 @@ describe('.click()', function() {
 
   it('client.click() - element not interactable error', function(done) {
     Nightwatch.initClient({
-      selenium : {
+      selenium: {
         version2: false,
         start_process: false
       },
       output: true,
       silent: false,
-      webdriver:{
+      webdriver: {
         start_process: true
-      },
+      }
     }).then(client => {
       MockServer.addMock({
         url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/click',
@@ -107,7 +107,7 @@ describe('.click()', function() {
 
       let response;
       client.api.click({
-        selector: '#webdriver',
+        selector: '#webdriver'
       }, function(result) {
         response = result;
       });
@@ -115,7 +115,7 @@ describe('.click()', function() {
       client.start(function() {
         try {
           assert.strictEqual(response.status, -1);
-          assert.strictEqual(response.value.error, 'An error occurred while running .click() command on <#webdriver>: element not interactable; Element <h1> could not be scrolled into view')
+          assert.strictEqual(response.value.error, 'An error occurred while running .click() command on <#webdriver>: element not interactable; Element <h1> could not be scrolled into view');
 
           done();
         } catch (err) {
@@ -127,13 +127,13 @@ describe('.click()', function() {
 
   it('client.click() - stale element reference error', function(done) {
     Nightwatch.initClient({
-      selenium : {
+      selenium: {
         version2: false,
         start_process: false
       },
-      webdriver:{
+      webdriver: {
         start_process: true
-      },
+      }
     }).then(client => {
       MockServer.addMock({
         url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/click',

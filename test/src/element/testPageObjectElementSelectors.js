@@ -116,7 +116,7 @@ describe('test page object element selectors', function() {
   it('page section custom commands', function(done) {
     nocks
       .elementsFound('#signupSection')
-      .elementsId('0', '.btn', [{ ELEMENT: '4' }, { ELEMENT: '5' }, { ELEMENT: '6' }])
+      .elementsId('0', '.btn', [{ELEMENT: '4'}, {ELEMENT: '5'}, {ELEMENT: '6'}])
       .elementId('0', '#helpBtn');
 
     const page = Nightwatch.api().page.simplePageObj();
@@ -124,15 +124,15 @@ describe('test page object element selectors', function() {
 
     section.sectionElement(function(result) {
       assert.strictEqual(result.status, 0);
-      assert.deepStrictEqual(result.value, { ELEMENT: '0' });
-      assert.deepStrictEqual(result.result.value, { ELEMENT: '0' });
+      assert.deepStrictEqual(result.value, {ELEMENT: '0'});
+      assert.deepStrictEqual(result.result.value, {ELEMENT: '0'});
       assert.strictEqual(result.result.WebdriverElementId, '0');
     });
 
     section.sectionElements(function(result) {
       assert.strictEqual(result.status, 0);
-      assert.deepStrictEqual(result.value, [{ ELEMENT: '4' }, { ELEMENT: '5' }, { ELEMENT: '6' }]);
-      assert.deepStrictEqual(result.result.value, [{ ELEMENT: '4' }, { ELEMENT: '5' }, { ELEMENT: '6' }]);
+      assert.deepStrictEqual(result.value, [{ELEMENT: '4'}, {ELEMENT: '5'}, {ELEMENT: '6'}]);
+      assert.deepStrictEqual(result.result.value, [{ELEMENT: '4'}, {ELEMENT: '5'}, {ELEMENT: '6'}]);
       assert.strictEqual(result.result.WebdriverElementId, '4');
     });
 
@@ -150,7 +150,7 @@ describe('test page object element selectors', function() {
     section.api.elements('@help', function callback(response) {
       strictEqual(response.status, 0, 'section element selector string found');
       strictEqual(response.result.value.length, 1);
-      assert.deepStrictEqual(response.value, [{ ELEMENT: '12345' }]);
+      assert.deepStrictEqual(response.value, [{ELEMENT: '12345'}]);
     });
 
     Nightwatch.start(done);
@@ -197,7 +197,7 @@ describe('test page object element selectors', function() {
     section.api.element('#helpBtn', function callback(response) {
       strictEqual(response.status, 0, 'section element selector string found');
       strictEqual(response.result.value.ELEMENT, '12345');
-      assert.deepStrictEqual(response.value, { ELEMENT: '12345' });
+      assert.deepStrictEqual(response.value, {ELEMENT: '12345'});
     });
 
     Nightwatch.start(done);
@@ -214,7 +214,7 @@ describe('test page object element selectors', function() {
 
     section.api.elementIdElements('@help', 'css selector', 'a', function callback(response) {
       strictEqual(response.status, 0, 'section element selector string found');
-      assert.deepStrictEqual(response.value, [{ ELEMENT: 'abc-12345' }]);
+      assert.deepStrictEqual(response.value, [{ELEMENT: 'abc-12345'}]);
     });
 
     Nightwatch.start(done);
@@ -224,7 +224,7 @@ describe('test page object element selectors', function() {
     nocks
       .elementsFound('#signupSection')
       .elementsId('0', '#helpBtn', [{ELEMENT: '12345'}])
-      .elementId('12345', 'a', 'css selector', {ELEMENT: 'abc-12345'})
+      .elementId('12345', 'a', 'css selector', {ELEMENT: 'abc-12345'});
 
     let page = Nightwatch.api().page.simplePageObj();
     let section = page.section.signUp;
@@ -336,7 +336,7 @@ describe('test page object element selectors', function() {
         name: 'help',
         response: {
           status: 0,
-          value: { ELEMENT: '10' }
+          value: {ELEMENT: '10'}
         },
         selector: '#helpBtn'
       });
@@ -492,13 +492,13 @@ describe('test page object element selectors', function() {
   it('page object customAssertion with indexed element called on section', function(done) {
     nocks
       .elementsFound('#signupSection') // page.section
-      .elementsId(0, '#helpBtn', [{ELEMENT: '1'},{ELEMENT: '2'}])
+      .elementsId(0, '#helpBtn', [{ELEMENT: '1'}, {ELEMENT: '2'}])
       .elementId(0, '#helpBtn', null, {ELEMENT: '1'});
 
     let page = Nightwatch.api().page.simplePageObj();
     let section = page.section.signUp;
 
-    section.assert.customAssertionWithSelector({selector:'@help', index: 1}, 0, function(result, assertion) {
+    section.assert.customAssertionWithSelector({selector: '@help', index: 1}, 0, function(result, assertion) {
       try {
         strictEqual(result, true);
         assert.deepStrictEqual(assertion.element, {
