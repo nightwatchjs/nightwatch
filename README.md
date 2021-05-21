@@ -48,7 +48,7 @@ $ npm install chromedriver --save-dev
 or install everything with one line:
 
 ```sh
-$ npm i nightwatch geckodriver chromedriver --save-dev
+$ npm install nightwatch geckodriver chromedriver --save-dev
 ```
 
 #### 3. Run a Demo Test:
