@@ -3,7 +3,7 @@ const Globals = require('../../../lib/globals.js');
 
 xdescribe('assert.enabled', function () {
   const assertionName = 'enabled';
-  const api = 'getElementProperty';
+  const api = 'isEnabled';
 
   function assertionTest(opts) {
     return Globals.assertion(assertionName, api, opts);
@@ -11,7 +11,7 @@ xdescribe('assert.enabled', function () {
 
   it('enabled assertion passed', function () {
     return assertionTest({
-      args: ['.test_element'],
+      args: ['.test_element', 'Test message'],
       commandResult: {
         status: 0,
         value: false
