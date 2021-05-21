@@ -1,9 +1,9 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
-xdescribe('assert.enabled', function () {
+describe('assert.enabled', function () {
   const assertionName = 'enabled';
-  const api = 'getElementProperty';
+  const api = 'isEnabled';
 
   function assertionTest(opts) {
     return Globals.assertion(assertionName, api, opts);
@@ -11,10 +11,10 @@ xdescribe('assert.enabled', function () {
 
   it('enabled assertion passed', function () {
     return assertionTest({
-      args: ['.test_element'],
+      args: ['.test_element', 'Test message'],
       commandResult: {
         status: 0,
-        value: false
+        value: true
       },
       assertArgs: true,
       assertMessage: true,
@@ -32,7 +32,7 @@ xdescribe('assert.enabled', function () {
       args: ['.test_element'],
       commandResult: {
         status: 0,
-        value: true
+        value: false
       },
       negate: true,
 
@@ -40,7 +40,7 @@ xdescribe('assert.enabled', function () {
         assert.strictEqual(typeof err, 'undefined');
         assert.strictEqual(queueOpts.negate, true);
         assert.strictEqual(instance.hasFailure(), false);
-        assert.strictEqual(instance.getValue(), true);
+        assert.strictEqual(instance.getValue(), false);
         assert.strictEqual(instance.getActual(), 'not enabled');
         assert.strictEqual(
           instance.message,
@@ -61,7 +61,7 @@ xdescribe('assert.enabled', function () {
       args: ['.test_element'],
       commandResult: {
         status: 0,
-        value: false
+        value: true
       },
       negate: true,
       assertError: true,
@@ -69,7 +69,7 @@ xdescribe('assert.enabled', function () {
       assertion({reporter, instance, queueOpts, err}) {
         assert.strictEqual(queueOpts.negate, true);
         assert.strictEqual(instance.hasFailure(), false);
-        assert.strictEqual(instance.getValue(), false);
+        assert.strictEqual(instance.getValue(), true);
         assert.strictEqual(instance.getActual(), 'enabled');
         assert.strictEqual(
           err.message,
@@ -84,7 +84,7 @@ xdescribe('assert.enabled', function () {
       args: [{selector: '.test_element'}],
       commandResult: {
         status: 0,
-        value: false
+        value: true
       },
       assertion({instance, failure, message, err}) {
         assert.strictEqual(err, undefined);
@@ -105,7 +105,7 @@ xdescribe('assert.enabled', function () {
       args: [{selector: '.test_element', timeout: 10, retryInterval: 15}],
       commandResult: {
         status: 0,
-        value: false
+        value: true
       },
       assertion({instance, failure, message, err}) {
         assert.strictEqual(err, undefined);
@@ -128,7 +128,7 @@ xdescribe('assert.enabled', function () {
       args: ['.test_element'],
       commandResult: {
         status: 0,
-        value: true
+        value: false
       },
       assertError: true,
       assertResult: true,
