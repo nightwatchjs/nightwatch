@@ -61,8 +61,6 @@ Below will run a basic test which opens the search engine [Ecosia.org](https://e
 $ npx nightwatch node_modules/nightwatch/examples/tests/ecosia.js
 ```
 
-__Windows users__ might need to run `node node_modules/.bin/nightwatch`.
-
 ---
 
 ## Manually Download Browser Drivers
