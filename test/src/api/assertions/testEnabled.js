@@ -1,7 +1,7 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
-describe('assert.enabled', function () {
+xdescribe('assert.enabled', function () {
   const assertionName = 'enabled';
   const api = 'getElementProperty';
 
@@ -14,16 +14,16 @@ describe('assert.enabled', function () {
       args: ['.test_element'],
       commandResult: {
         status: 0,
-        value: false,
+        value: false
       },
       assertArgs: true,
       assertMessage: true,
-      assertion({ reporter, instance, failure, err }) {
+      assertion({reporter, instance, failure, err}) {
         assert.strictEqual(err, undefined);
-        assert.deepStrictEqual(instance.options, { elementSelector: true });
+        assert.deepStrictEqual(instance.options, {elementSelector: true});
         assert.strictEqual(failure, false);
         assert.strictEqual(instance.hasFailure(), false);
-      },
+      }
     });
   });
 
@@ -32,11 +32,11 @@ describe('assert.enabled', function () {
       args: ['.test_element'],
       commandResult: {
         status: 0,
-        value: true,
+        value: true
       },
       negate: true,
 
-      assertion({ reporter, instance, queueOpts, err, message }) {
+      assertion({reporter, instance, queueOpts, err, message}) {
         assert.strictEqual(typeof err, 'undefined');
         assert.strictEqual(queueOpts.negate, true);
         assert.strictEqual(instance.hasFailure(), false);
@@ -52,7 +52,7 @@ describe('assert.enabled', function () {
           ),
           message
         );
-      },
+      }
     });
   });
 
@@ -61,12 +61,12 @@ describe('assert.enabled', function () {
       args: ['.test_element'],
       commandResult: {
         status: 0,
-        value: false,
+        value: false
       },
       negate: true,
       assertError: true,
 
-      assertion({ reporter, instance, queueOpts, err }) {
+      assertion({reporter, instance, queueOpts, err}) {
         assert.strictEqual(queueOpts.negate, true);
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.getValue(), false);
@@ -75,20 +75,20 @@ describe('assert.enabled', function () {
           err.message,
           `Error while running "enabled" command: Testing if element <.test_element> is not enabled in 5ms - expected "is not enabled" but got: "enabled" (${instance.elapsedTime}ms)`
         );
-      },
+      }
     });
   });
 
   it('enabled assertion passed with selector object', function () {
     return assertionTest({
-      args: [{ selector: '.test_element' }],
+      args: [{selector: '.test_element'}],
       commandResult: {
         status: 0,
-        value: false,
+        value: false
       },
-      assertion({ instance, failure, message, err }) {
+      assertion({instance, failure, message, err}) {
         assert.strictEqual(err, undefined);
-        assert.deepStrictEqual(instance.options, { elementSelector: true });
+        assert.deepStrictEqual(instance.options, {elementSelector: true});
         assert.strictEqual(instance.getActual(), 'enabled');
         assert.strictEqual(instance.hasFailure(), false);
         assert.ok(
@@ -96,20 +96,20 @@ describe('assert.enabled', function () {
           message
         );
         assert.strictEqual(failure, false);
-      },
+      }
     });
   });
 
   it('enabled assertion passed with selector object and timeout', function () {
     return assertionTest({
-      args: [{ selector: '.test_element', timeout: 10, retryInterval: 15 }],
+      args: [{selector: '.test_element', timeout: 10, retryInterval: 15}],
       commandResult: {
         status: 0,
-        value: false,
+        value: false
       },
-      assertion({ instance, failure, message, err }) {
+      assertion({instance, failure, message, err}) {
         assert.strictEqual(err, undefined);
-        assert.deepStrictEqual(instance.options, { elementSelector: true });
+        assert.deepStrictEqual(instance.options, {elementSelector: true});
         assert.strictEqual(instance.getActual(), 'enabled');
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.retryAssertionTimeout, 10);
@@ -119,7 +119,7 @@ describe('assert.enabled', function () {
           message
         );
         assert.strictEqual(failure, false);
-      },
+      }
     });
   });
 
@@ -128,17 +128,17 @@ describe('assert.enabled', function () {
       args: ['.test_element'],
       commandResult: {
         status: 0,
-        value: true,
+        value: true
       },
       assertError: true,
       assertResult: true,
-      assertion({ instance, failure }) {
+      assertion({instance, failure}) {
         assert.strictEqual(instance.getActual(), 'not enabled');
         assert.strictEqual(
           failure,
           'Expected "is enabled" but got: "not enabled"'
         );
-      },
+      }
     });
   });
 
@@ -146,12 +146,12 @@ describe('assert.enabled', function () {
     return assertionTest({
       args: ['.test_element'],
       commandResult: {
-        status: -1,
+        status: -1
       },
       assertError: true,
       assertFailure: true,
       assertResult: true,
-      assertion({ instance, failure, err }) {
+      assertion({instance, failure, err}) {
         assert.strictEqual(
           instance.getActual(),
           'element could not be located'
@@ -166,7 +166,7 @@ describe('assert.enabled', function () {
           err.message,
           `Error while running "enabled" command: Testing if element <.test_element> is enabled in 5ms - expected "is enabled" but got: "element could not be located" (${instance.elapsedTime}ms)`
         );
-      },
+      }
     });
   });
 });
