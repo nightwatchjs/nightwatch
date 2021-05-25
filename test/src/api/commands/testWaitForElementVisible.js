@@ -293,4 +293,39 @@ describe('waitForElementVisible', function() {
       }
     });
   });
+
+  it('client.waitForElementVisible() success with selector and test message only', function () {
+    MockServer
+      .addMock({
+        url: '/wd/hub/session/1352110219202/elements',
+        postdata: {
+          using: 'css selector',
+          value: '#web-login'
+        },
+        method: 'POST',
+        response: JSON.stringify({
+          status: 0,
+          state: 'success',
+          value: [{ELEMENT: '99'}]
+        })
+      }, true)
+      .addMock({
+        url: '/wd/hub/session/1352110219202/element/99/displayed',
+        method: 'GET',
+        response: JSON.stringify({
+          state: 'success',
+          status: 0,
+          value: true
+        })
+      }, true);
+
+    this.client.api.waitForElementVisible('#web-login', 'Test message');
+
+    return this.client.start(function(err) {
+      if (err) {
+        throw err;
+      }
+    });
+  });
+
 });
