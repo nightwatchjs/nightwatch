@@ -211,3 +211,51 @@ describe('test Settings', function () {
     assert.strictEqual(settings.testWorkersEnabled, true);
   });
 });
+
+it('Multiple extends in test_settings', function () {
+
+  const baseSettings = {
+    test_settings: {
+      browserstack: {
+        selenium: {
+          host: 'hub-cloud.browserstack.com',
+          port: 443
+        },
+        desiredCapabilities: {
+          'bstack:options': {
+            local: 'false',
+            userName: '${BROWSERSTACK_USER}',
+            accessKey: '${BROWSERSTACK_KEY}'
+          }
+        },
+  
+        disable_error_log: true,
+        webdriver: {
+          keep_alive: true,
+          start_process: false
+        }
+      },
+      'browserstack.chrome': {
+        extends: 'browserstack',
+        desiredCapabilities: {
+          browserName: 'chrome',
+          chromeOptions: {
+            w3c: false
+          }
+        }
+      },
+      'browserstack.chrome_mac': {
+        extends: 'browserstack.chrome',
+        desiredCapabilities: {
+          os: 'OS X'
+        }
+      }
+    }
+  };
+  const parsedSetting  = Settings.parse({}, baseSettings, {}, 'browserstack.chrome_mac');
+  assert.strictEqual(parsedSetting.selenium.host, 'hub-cloud.browserstack.com');
+  assert.strictEqual(parsedSetting.selenium.port, 443);
+  assert.strictEqual(parsedSetting.desiredCapabilities.browserName, 'chrome');
+  assert.strictEqual(parsedSetting.desiredCapabilities.os, 'OS X');
+  assert.deepStrictEqual(parsedSetting.desiredCapabilities.chromeOptions, {w3c: false});
+});
