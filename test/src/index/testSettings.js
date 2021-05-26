@@ -212,7 +212,7 @@ describe('test Settings', function () {
   });
 });
 
-it('Multiple extends in test_settings', function () {
+it('recursive extends in test_settings', function () {
 
   const baseSettings = {
     test_settings: {
@@ -223,9 +223,7 @@ it('Multiple extends in test_settings', function () {
         },
         desiredCapabilities: {
           'bstack:options': {
-            local: 'false',
-            userName: '${BROWSERSTACK_USER}',
-            accessKey: '${BROWSERSTACK_KEY}'
+            local: 'false'
           }
         },
   
@@ -252,10 +250,19 @@ it('Multiple extends in test_settings', function () {
       }
     }
   };
+  const expectedDesiredCapabilites = {
+    os: 'OS X',
+    browserName: 'chrome',
+    chromeOptions: {
+      w3c: false
+    },
+    'bstack:options': {
+      local: 'false'
+    }
+  };
   const parsedSetting  = Settings.parse({}, baseSettings, {}, 'browserstack.chrome_mac');
   assert.strictEqual(parsedSetting.selenium.host, 'hub-cloud.browserstack.com');
   assert.strictEqual(parsedSetting.selenium.port, 443);
-  assert.strictEqual(parsedSetting.desiredCapabilities.browserName, 'chrome');
-  assert.strictEqual(parsedSetting.desiredCapabilities.os, 'OS X');
+  assert.deepStrictEqual(parsedSetting.desiredCapabilities, expectedDesiredCapabilites);
   assert.deepStrictEqual(parsedSetting.desiredCapabilities.chromeOptions, {w3c: false});
 });
