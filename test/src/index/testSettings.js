@@ -211,3 +211,58 @@ describe('test Settings', function () {
     assert.strictEqual(settings.testWorkersEnabled, true);
   });
 });
+
+it('recursive extends in test_settings', function () {
+
+  const baseSettings = {
+    test_settings: {
+      browserstack: {
+        selenium: {
+          host: 'hub-cloud.browserstack.com',
+          port: 443
+        },
+        desiredCapabilities: {
+          'bstack:options': {
+            local: 'false'
+          }
+        },
+  
+        disable_error_log: true,
+        webdriver: {
+          keep_alive: true,
+          start_process: false
+        }
+      },
+      'browserstack.chrome': {
+        extends: 'browserstack',
+        desiredCapabilities: {
+          browserName: 'chrome',
+          chromeOptions: {
+            w3c: false
+          }
+        }
+      },
+      'browserstack.chrome_mac': {
+        extends: 'browserstack.chrome',
+        desiredCapabilities: {
+          os: 'OS X'
+        }
+      }
+    }
+  };
+  const expectedDesiredCapabilites = {
+    os: 'OS X',
+    browserName: 'chrome',
+    chromeOptions: {
+      w3c: false
+    },
+    'bstack:options': {
+      local: 'false'
+    }
+  };
+  const parsedSetting  = Settings.parse({}, baseSettings, {}, 'browserstack.chrome_mac');
+  assert.strictEqual(parsedSetting.selenium.host, 'hub-cloud.browserstack.com');
+  assert.strictEqual(parsedSetting.selenium.port, 443);
+  assert.deepStrictEqual(parsedSetting.desiredCapabilities, expectedDesiredCapabilites);
+  assert.deepStrictEqual(parsedSetting.desiredCapabilities.chromeOptions, {w3c: false});
+});
