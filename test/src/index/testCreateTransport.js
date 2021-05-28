@@ -107,6 +107,19 @@ describe('Transport.create()', function () {
     assert.strictEqual(client.transport instanceof Selenium3, false);
   });
 
+  it('test create Transport with unknown browser', function() {
+    assert.throws(function() {
+      NightwatchClient.client({
+        webdriver: {
+          start_process: true
+        },
+        desiredCapabilities: {
+          browserName: 'firfox'
+        }
+      });
+    }, /Unknown browser: "firfox"; did you mean "firefox"\?$/);
+  });
+
   it('test create Transport for Firefox managed', function() {
     const client = NightwatchClient.client({
       webdriver: {
@@ -137,6 +150,10 @@ describe('Transport.create()', function () {
     assert.strictEqual(client.transport instanceof Selenium2, false);
     assert.strictEqual(client.transport instanceof Selenium3, false);
     assert.strictEqual(client.transport instanceof WebDriver, false);
+    assert.deepStrictEqual(client.session.desiredCapabilities, {
+      browserName: 'chrome',
+      'goog:chromeOptions': {}
+    });
   });
 
   it('test create Transport for Chrome managed with w3c:true', function() {
@@ -156,6 +173,12 @@ describe('Transport.create()', function () {
     assert.strictEqual(client.transport instanceof Selenium2, false);
     assert.strictEqual(client.transport instanceof Selenium3, false);
     assert.strictEqual(client.transport instanceof WebDriver, true);
+    assert.deepStrictEqual(client.session.desiredCapabilities, {
+      browserName: 'chrome',
+      'goog:chromeOptions': {
+        w3c: true
+      }
+    });
   });
 
   it('test create Transport for Chrome managed with w3c:false', function() {
@@ -175,6 +198,82 @@ describe('Transport.create()', function () {
     assert.strictEqual(client.transport instanceof Selenium2, false);
     assert.strictEqual(client.transport instanceof Selenium3, false);
     assert.strictEqual(client.transport instanceof WebDriver, false);
+    assert.deepStrictEqual(client.session.desiredCapabilities, {
+      browserName: 'chrome',
+      'goog:chromeOptions': {
+        w3c: false
+      }
+    });
+  });
+
+  it('test create Transport for Edge managed with w3c:true', function() {
+    const client = NightwatchClient.client({
+      webdriver: {
+        start_process: true
+      },
+      desiredCapabilities: {
+        browserName: 'MicrosoftEdge',
+        edgeOptions: {
+          w3c: true
+        }
+      }
+    });
+
+    assert.strictEqual(client.transport instanceof JsonWire, false);
+    assert.strictEqual(client.transport instanceof Selenium2, false);
+    assert.strictEqual(client.transport instanceof Selenium3, false);
+    assert.strictEqual(client.transport instanceof WebDriver, true);
+    assert.deepStrictEqual(client.session.desiredCapabilities, {
+      browserName: 'MicrosoftEdge',
+      'ms:edgeOptions': {
+        w3c: true
+      }
+    });
+  });
+
+  it('test create Transport for Edge managed', function() {
+    const client = NightwatchClient.client({
+      webdriver: {
+        start_process: true
+      },
+      desiredCapabilities: {
+        browserName: 'MicrosoftEdge'
+      }
+    });
+
+    assert.ok(client.transport instanceof JsonWire);
+    assert.strictEqual(client.transport instanceof Selenium2, false);
+    assert.strictEqual(client.transport instanceof Selenium3, false);
+    assert.strictEqual(client.transport instanceof WebDriver, false);
+    assert.deepStrictEqual(client.session.desiredCapabilities, {
+      browserName: 'MicrosoftEdge',
+      'ms:edgeOptions': {}
+    });
+  });
+
+  it('test create Transport for Edge managed with w3c:false', function() {
+    const client = NightwatchClient.client({
+      webdriver: {
+        start_process: true
+      },
+      desiredCapabilities: {
+        browserName: 'MicrosoftEdge',
+        'ms:edgeOptions': {
+          w3c: false
+        }
+      }
+    });
+
+    assert.strictEqual(client.transport instanceof JsonWire, true);
+    assert.strictEqual(client.transport instanceof Selenium2, false);
+    assert.strictEqual(client.transport instanceof Selenium3, false);
+    assert.strictEqual(client.transport instanceof WebDriver, false);
+    assert.deepStrictEqual(client.session.desiredCapabilities, {
+      browserName: 'MicrosoftEdge',
+      'ms:edgeOptions': {
+        w3c: false
+      }
+    });
   });
 
   it('test create Transport for Safari managed', function() {

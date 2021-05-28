@@ -1,8 +1,8 @@
 const path = require('path');
 const assert = require('assert');
 const common = require('../../common.js');
-const MockServer = require('../../lib/mockserver.js');
 const NightwatchClient = common.require('index.js');
+const MockServer = require('../../lib/mockserver.js');
 
 describe('testRunnerWithSeleniumWebdriver', function() {
   this.timeout(10000);

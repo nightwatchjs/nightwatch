@@ -16,7 +16,7 @@ describe('Webdriver Manager', function () {
       }).catch(err => {
         assert.ok(err instanceof Error);
         assert.strictEqual(err.showTrace, false);
-        assert.ok(err.message.includes('Concurrency is not supported at the moment in GeckoDriver. It is only supported for ChromeDriver and Selenium Server.'));
+        assert.ok(err.message.includes('Concurrency is not supported at the moment in GeckoDriver. It is only supported when using Selenium Server.'));
       });
     });
   });
