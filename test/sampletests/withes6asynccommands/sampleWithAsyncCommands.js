@@ -12,7 +12,7 @@ module.exports = {
     });
     client.customPerformClass();
 
-    await client.basicPerformWithError(function() {});
+    await client.basicPerformWithFluentApi(function() {});
 
     client.end();
   }

@@ -13,5 +13,8 @@ module.exports = {
     assert.ok(!!textResult);
     assert.ok('value' in textResult);
     assert.strictEqual(textResult.value, 'sample text value');
+
+    const resultSection = await page.section.signUp.getText('@help');
+    assert.strictEqual(resultSection.value, 'help text value');
   }
 };

@@ -34,7 +34,7 @@ describe('testRunnerMixedFiles', function() {
   this.timeout(5000);
 
   it('testRunWithoutDisablingTypescriptExplicitly', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/mixedFiles');
+    let testsPath = path.join(__dirname, '../../sampletests/mixed-files');
     let globals = {
       reporter({lastError, errmessages, modules}) {
         if (lastError) {
@@ -47,8 +47,8 @@ describe('testRunnerMixedFiles', function() {
   
         assert.ok('sampleJs' in modules);
         assert.ok('sampleTs' in modules);
-        assert.strictEqual(modules['sampleJs'].modulePath, path.join(__dirname, '../../sampletests/mixedFiles/sampleJs.js'));
-        assert.strictEqual(modules['sampleTs'].modulePath, path.join(__dirname, '../../sampletests/mixedFiles/sampleTs.ts'));
+        assert.strictEqual(modules['sampleJs'].modulePath, path.join(__dirname, '../../sampletests/mixed-files/sampleJs.js'));
+        assert.strictEqual(modules['sampleTs'].modulePath, path.join(__dirname, '../../sampletests/mixed-files/sampleTs.ts'));
       }
     };
   
@@ -70,7 +70,7 @@ describe('testRunnerMixedFiles', function() {
   });
 
   it('testRunWithoutDisablingTypescriptImplicitly', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/mixedFiles');
+    let testsPath = path.join(__dirname, '../../sampletests/mixed-files');
     let globals = {
       reporter({lastError, errmessages, modules}) {
         if (lastError) {
@@ -83,8 +83,8 @@ describe('testRunnerMixedFiles', function() {
   
         assert.ok('sampleJs' in modules);
         assert.ok('sampleTs' in modules);
-        assert.strictEqual(modules['sampleJs'].modulePath, path.join(__dirname, '../../sampletests/mixedFiles/sampleJs.js'));
-        assert.strictEqual(modules['sampleTs'].modulePath, path.join(__dirname, '../../sampletests/mixedFiles/sampleTs.ts'));
+        assert.strictEqual(modules['sampleJs'].modulePath, path.join(__dirname, '../../sampletests/mixed-files/sampleJs.js'));
+        assert.strictEqual(modules['sampleTs'].modulePath, path.join(__dirname, '../../sampletests/mixed-files/sampleTs.ts'));
       }
     };
   
@@ -106,7 +106,7 @@ describe('testRunnerMixedFiles', function() {
 
 
   it('testRunSimpleDisablingTypescript', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/mixedFiles');
+    let testsPath = path.join(__dirname, '../../sampletests/mixed-files');
     let globals = {
       reporter({lastError, errmessages, modules}) {
         if (lastError) {
@@ -119,7 +119,7 @@ describe('testRunnerMixedFiles', function() {
 
         assert.ok('sampleJs' in modules);
         assert.strictEqual(typeof(modules['sampleTs']), 'undefined');
-        assert.strictEqual(modules['sampleJs'].modulePath, path.join(__dirname, '../../sampletests/mixedFiles/sampleJs.js'));
+        assert.strictEqual(modules['sampleJs'].modulePath, path.join(__dirname, '../../sampletests/mixed-files/sampleJs.js'));
       }
     };
 

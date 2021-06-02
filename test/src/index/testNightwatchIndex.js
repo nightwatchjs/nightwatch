@@ -218,7 +218,7 @@ describe('test NightwatchIndex', function () {
         verbose: true,
         reporter: 'junit',
         source: 'test.js',
-        _source: 'test.js'
+        _source: ['test.js']
       });
 
       init.call(this, opts, baseSettings, argv, testEnv);
