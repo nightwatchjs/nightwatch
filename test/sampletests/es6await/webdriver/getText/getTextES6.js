@@ -6,8 +6,11 @@ module.exports = {
 
     const page = client.page.simplePageObj();
 
-    const result = await client.elements('css selector', '#element-selector');
-    assert.deepStrictEqual(result.value[0], {'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'});
+    const result = await client.findElements('#element-selector');
+    assert.ok(result[0]);
+    assert.ok('element-6066-11e4-a52e-4f735466cecf' in result[0]);
+    assert.strictEqual(result[0].getId(), '5cc459b8-36a8-3042-8b4a-258883ea642b');
+    assert.strictEqual(result[0]['element-6066-11e4-a52e-4f735466cecf'], '5cc459b8-36a8-3042-8b4a-258883ea642b');
 
     const textResult = await page.getText('#element-selector');
     assert.ok(!!textResult);
