@@ -248,7 +248,7 @@ describe('element base commands', function() {
     await Nightwatch.api()
       .findElement('#weblogin', function callback(result) {
         assert.strictEqual(result.status, 0);
-        assert.deepStrictEqual(result.value[0].ELEMENT, '0');
+        assert.deepStrictEqual(result.value.ELEMENT, '0');
       });
 
     return Nightwatch.start();
@@ -263,7 +263,7 @@ describe('element base commands', function() {
     await Nightwatch.api()
       .findElement({selector: '#weblogin', locateStrategy: 'css selector'}, function callback(result) {
         assert.strictEqual(result.status, 0);
-        assert.deepStrictEqual(result.value[0].ELEMENT, '0');
+        assert.deepStrictEqual(result.value.ELEMENT, '0');
       });
 
     return Nightwatch.start();
