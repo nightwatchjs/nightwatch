@@ -73,8 +73,9 @@ describe('Test CLI Runner Generate', function() {
         assert.deepStrictEqual(configData.test_settings.chrome, {
           desiredCapabilities: {
             browserName: 'chrome',
-            chromeOptions: {
-              args: []
+            'goog:chromeOptions': {
+              args: [],
+              w3c: false
             }
           },
 
@@ -90,6 +91,7 @@ describe('Test CLI Runner Generate', function() {
           desiredCapabilities: {
             browserName: 'firefox',
             alwaysMatch: {
+              acceptInsecureCerts: true,
               'moz:firefoxOptions': {
                 args: []
               }
@@ -106,7 +108,6 @@ describe('Test CLI Runner Generate', function() {
         assert.deepStrictEqual(configData.test_settings.browserstack, {
           desiredCapabilities: {
             'bstack:options': {
-              local: 'false',
               userName: '${BROWSERSTACK_USER}',
               accessKey: '${BROWSERSTACK_KEY}'
             }
@@ -119,8 +120,33 @@ describe('Test CLI Runner Generate', function() {
 
           disable_error_log: true,
           webdriver: {
+            timeout_options: {
+              timeout: 5000,
+              retry_attempts: 3
+            },
             keep_alive: true,
             start_process: false
+          }
+        });
+
+        assert.deepStrictEqual(configData.test_settings['browserstack.local'], {
+          extends: 'browserstack',
+          desiredCapabilities: {
+            'browserstack.local': true
+          }
+        });
+
+        assert.deepStrictEqual(configData.test_settings['browserstack.local_firefox'], {
+          extends: 'browserstack.local',
+          desiredCapabilities: {
+            browserName: 'firefox'
+          }
+        });
+
+        assert.deepStrictEqual(configData.test_settings['browserstack.local_chrome'], {
+          extends: 'browserstack.local',
+          desiredCapabilities: {
+            browserName: 'chrome'
           }
         });
 
@@ -138,18 +164,11 @@ describe('Test CLI Runner Generate', function() {
           extends: 'browserstack',
           desiredCapabilities: {
             browserName: 'IE',
-            browserVersion: '11.0',
-            'bstack:options': {
-              os: 'Windows',
-              osVersion: '10',
-              local: 'false',
-              seleniumVersion: '3.5.2',
-              resolution: '1366x768'
-            }
+            browserVersion: '11.0'
           }
         });
 
-        assert.deepStrictEqual(configData.test_settings.selenium, {
+        assert.deepStrictEqual(configData.test_settings.selenium_server, {
           selenium: {
             start_process: true,
             port: 4444,
@@ -165,21 +184,30 @@ describe('Test CLI Runner Generate', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    const ieRunner = new CliRunner({
       config: './nightwatch.json',
       env: 'browserstack.ie'
     }).setup();
 
-    assert.strictEqual(runner.argv.config, path.join(process.cwd(), 'nightwatch.conf.js'));
-    assert.deepStrictEqual(runner.test_settings.desiredCapabilities, {
+    assert.strictEqual(ieRunner.argv.config, path.join(process.cwd(), 'nightwatch.conf.js'));
+    assert.deepStrictEqual(ieRunner.test_settings.desiredCapabilities, {
       browserName: 'IE',
       browserVersion: '11.0',
       'bstack:options': {
-        os: 'Windows',
-        osVersion: '10',
-        local: 'false',
-        seleniumVersion: '3.5.2',
-        resolution: '1366x768',
+        userName: '${BROWSERSTACK_USER}',
+        accessKey: '${BROWSERSTACK_KEY}'
+      }
+    });
+
+    const chromeLocalRunner = new CliRunner({
+      config: './nightwatch.json',
+      env: 'browserstack.local_chrome'
+    }).setup();
+
+    assert.deepStrictEqual(chromeLocalRunner.test_settings.desiredCapabilities, {
+      browserName: 'chrome',
+      'browserstack.local': true,
+      'bstack:options': {
         userName: '${BROWSERSTACK_USER}',
         accessKey: '${BROWSERSTACK_KEY}'
       }
