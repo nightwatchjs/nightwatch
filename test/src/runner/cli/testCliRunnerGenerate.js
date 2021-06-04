@@ -121,7 +121,7 @@ describe('Test CLI Runner Generate', function() {
           disable_error_log: true,
           webdriver: {
             timeout_options: {
-              timeout: 5000,
+              timeout: 15000,
               retry_attempts: 3
             },
             keep_alive: true,
