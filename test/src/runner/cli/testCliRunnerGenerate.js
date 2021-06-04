@@ -163,7 +163,7 @@ describe('Test CLI Runner Generate', function() {
         assert.deepStrictEqual(configData.test_settings['browserstack.ie'], {
           extends: 'browserstack',
           desiredCapabilities: {
-            browserName: 'IE',
+            browserName: 'internet explorer',
             browserVersion: '11.0'
           }
         });
@@ -191,7 +191,7 @@ describe('Test CLI Runner Generate', function() {
 
     assert.strictEqual(ieRunner.argv.config, path.join(process.cwd(), 'nightwatch.conf.js'));
     assert.deepStrictEqual(ieRunner.test_settings.desiredCapabilities, {
-      browserName: 'IE',
+      browserName: 'internet explorer',
       browserVersion: '11.0',
       'bstack:options': {
         userName: '${BROWSERSTACK_USER}',
