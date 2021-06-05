@@ -18,13 +18,11 @@ Automated end-to-end testing framework powered by [Node.js](http://nodejs.org/) 
 
 Nightwatch is a complete and integrated solution for end-to-end testing of web applications and websites. It can also be used for Node.js unit and integration testing. 
 
-***
+## Nightwatch v1.7-beta
 
-## Nightwatch v1.6
+#### [Changelog](https://github.com/nightwatchjs/nightwatch/releases/tag/v1.7.0) | [Github Discussions](https://github.com/nightwatchjs/nightwatch/discussions)
 
-#### [Changelog](https://github.com/nightwatchjs/nightwatch/releases) | [Github Discussions](https://github.com/nightwatchjs/nightwatch/discussions)
-
-We're delighted to announce the release of __Nightwatch v1.6__. Please see the [release notes](https://github.com/nightwatchjs/nightwatch/releases) and [upgrade guide](https://github.com/nightwatchjs/nightwatch/wiki/Migrating-to-Nightwatch-1.0) if you are upgrading from a pre v1.0 version. 
+We're delighted to announce the release of __Nightwatch v1.7__ in the NPM beta channel. Please see the [release notes](https://github.com/nightwatchjs/nightwatch/releases/tag/v1.7.0) and [upgrade guide](https://github.com/nightwatchjs/nightwatch/wiki/Migrating-to-Nightwatch-1.0) if you are upgrading from a pre v1.0 version. 
 
 ## Up &amp; Running in 2 Minutes:
 
