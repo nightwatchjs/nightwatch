@@ -24,6 +24,52 @@ describe('testRunner ES6 Async', function() {
     process.removeAllListeners('unhandledRejection');
   });
 
+  it('test Runner with ES6 fluent api basic sample', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/es6await/selenium/basicSampleTest.js');
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/cookie',
+      method: 'GET',
+      response: JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0,
+        value: [{
+          name: 'test_cookie',
+          value: '123456',
+          path: '/',
+          domain: 'example.org',
+          secure: false,
+          class: 'org.openqa.selenium.Cookie',
+          hCode: 91423566
+        }]
+      })
+    }, true);
+
+    let globals = {
+      waitForConditionPollInterval: 50,
+
+      reporter(results) {
+        assert.ok('basicSampleTest' in results.modules);
+        if (results.modules.basicSampleTest.lastError) {
+          throw results.modules.basicSampleTest.lastError;
+        }
+      }
+    };
+
+    return NightwatchClient.runTests(testsPath, {
+      selenium: {
+        port: 10195,
+        version2: true,
+        start_process: true
+      },
+      output: false,
+      skip_testcases_on_fail: false,
+      silent: false,
+      persist_globals: true,
+      globals: globals,
+      output_folder: false
+    });
+  });
+
   it('test Runner with ES6 async/await tests basic sample', function() {
     let testsPath = path.join(__dirname, '../../sampletests/es6await/selenium');
     MockServer.addMock({
@@ -152,6 +198,48 @@ describe('testRunner ES6 Async', function() {
       method: 'GET',
       response: JSON.stringify({
         value: 'sample text value'
+      })
+    }, true);
+
+    MockServer.addMock({
+      url: '/session/13521-10219-202/elements',
+      postdata: {
+        using: 'css selector',
+        value: '#signupSection'
+      },
+
+      method: 'POST',
+      response: JSON.stringify({
+        sessionId: '13521-10219-202',
+        status: 0,
+        value: [{
+          'element-6066-11e4-a52e-4f735466cecf': '8b4a-258883ea642b'
+        }]
+      })
+    }, true, true);
+
+    MockServer.addMock({
+      url: '/session/13521-10219-202/element/8b4a-258883ea642b/elements',
+      postdata: {
+        using: 'css selector',
+        value: '#helpBtn'
+      },
+
+      method: 'POST',
+      response: JSON.stringify({
+        sessionId: '13521-10219-202',
+        status: 0,
+        value: [{
+          'element-6066-11e4-a52e-4f735466cecf': '258883ea642b'
+        }]
+      })
+    }, true, true);
+
+    MockServer.addMock({
+      url: '/session/13521-10219-202/element/258883ea642b/text',
+      method: 'GET',
+      response: JSON.stringify({
+        value: 'help text value'
       })
     }, true);
 

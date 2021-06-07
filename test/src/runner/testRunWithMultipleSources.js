@@ -32,8 +32,8 @@ describe('testRunWithMultipleSources', function() {
     let globals = {
       calls: 0,
       reporter(results) {
-        assert.equal(globals.calls, 7);
-        assert.equal(Object.keys(results.modules).length, 2);
+        assert.strictEqual(globals.calls, 7);
+        assert.strictEqual(Object.keys(results.modules).length, 2);
         assert.ok('sample' in results.modules);
         assert.ok('sampleSingleTest' in results.modules);
       }
@@ -64,8 +64,8 @@ describe('testRunWithMultipleSources', function() {
     let globals = {
       calls: 0,
       reporter(results) {
-        assert.equal(globals.calls, 21);
-        assert.equal(Object.keys(results.modules).length, 5);
+        assert.strictEqual(globals.calls, 21);
+        assert.strictEqual(Object.keys(results.modules).length, 5);
         assert.ok('sample' in results.modules);
         assert.ok('sampleSingleTest' in results.modules);
         assert.ok('sampleWithBeforeAndAfter' in results.modules);
@@ -100,7 +100,7 @@ describe('testRunWithMultipleSources', function() {
       reporter(results) {
         assert.ok('async/test/sample' in results.modules);
         assert.ok('simple/test/sample' in results.modules);
-        assert.equal(Object.keys(results.modules).length, 2);
+        assert.strictEqual(Object.keys(results.modules).length, 2);
       }
     };
 
@@ -129,7 +129,7 @@ describe('testRunWithMultipleSources', function() {
       this.onuncaught = function(err) {};
     });
 
-    let uncaughtErr = null
+    let uncaughtErr = null;
     process.on('uncaughtException', function(err) {
       uncaughtErr = err;
     });
@@ -147,7 +147,7 @@ describe('testRunWithMultipleSources', function() {
         assert.ok('test/sample' in results.modules);
         assert.ok('unittests/sample' in results.modules);
         assert.ok('unittests/sampleAnnotation' in results.modules);
-        assert.equal(Object.keys(results.modules).length, 3);
+        assert.strictEqual(Object.keys(results.modules).length, 3);
       }
     };
 

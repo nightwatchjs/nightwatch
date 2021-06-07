@@ -85,7 +85,7 @@ describe('testRunTestcase', function() {
         start_process: true
       },
       persist_globals: true,
-      globals: globals,
+      globals,
       output: false,
       silent: true,
       output_folder: false

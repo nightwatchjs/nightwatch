@@ -73,7 +73,7 @@ describe('testRunWithGlobalReporter', function() {
           cb();
         }
       },
-      output_folder: false,
+      output_folder: false
     };
 
     return NightwatchClient.runTests(testsPath, settings).then(_ => {
@@ -100,7 +100,7 @@ describe('testRunWithGlobalReporter', function() {
           reporterCount++;
         }
       },
-      output_folder: false,
+      output_folder: false
     };
 
     return NightwatchClient.runTests(testsPath, settings).then(_ => {

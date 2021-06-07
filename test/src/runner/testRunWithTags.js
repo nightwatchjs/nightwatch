@@ -42,8 +42,8 @@ describe('testRunWithTags', function() {
       silent: true,
       output: false,
       globals: {
-        waitForConditionPollInterval:10,
-        waitForConditionTimeout:11,
+        waitForConditionPollInterval: 10,
+        waitForConditionTimeout: 11,
         retryAssertionTimeout: 10,
         reporter(results) {
           assert.strictEqual(Object.keys(results.modules).length, 3);
@@ -103,7 +103,7 @@ describe('testRunWithTags', function() {
       },
       filter: 'tags/*',
       tag_filter: ['login'],
-      output_folder: false,
+      output_folder: false
     };
 
     return NightwatchClient.runTests(testsPath, settings);
@@ -127,7 +127,7 @@ describe('testRunWithTags', function() {
         }
       },
       filter: '**/tags/*',
-      output_folder: false,
+      output_folder: false
     };
 
     return NightwatchClient.runTests({
@@ -152,7 +152,7 @@ describe('testRunWithTags', function() {
         }
       },
       filter: '**/tags/*',
-      output_folder: false,
+      output_folder: false
     };
 
     return NightwatchClient.runTests({
@@ -221,6 +221,6 @@ describe('testRunWithTags', function() {
       assert.ok(err.message.includes('No tests defined! using source folder'), err.message + '\n' + err.stack);
       assert.ok(err.detailedErr.includes('- using tags filter: other'));
       assert.ok(err.detailedErr.includes('- using skiptags filter: login'));
-    })
+    });
   });
 });

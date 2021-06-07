@@ -13,7 +13,7 @@ describe('Test CLI Runner Generate', function() {
 
       getDefault() {
         return './nightwatch.json';
-      },
+      }
     });
   });
 
@@ -31,7 +31,7 @@ describe('Test CLI Runner Generate', function() {
 
     mockery.registerMock('os', {
       platform: function() {
-        return 'win'
+        return 'win';
       }
     });
 
@@ -40,7 +40,7 @@ describe('Test CLI Runner Generate', function() {
         if (fileName.endsWith('/nightwatch.conf.js')) {
           return {
             isFile: function () {
-              return false
+              return false;
             }
           };
         }
@@ -48,7 +48,7 @@ describe('Test CLI Runner Generate', function() {
         if (fileName.endsWith('/nightwatch.json')) {
           return {
             isFile: function () {
-              return false
+              return false;
             }
           };
         }
@@ -59,7 +59,7 @@ describe('Test CLI Runner Generate', function() {
           toString: function () {
             return tplData;
           }
-        }
+        };
       },
 
       writeFileSync: function (destFileName, content) {
@@ -68,13 +68,14 @@ describe('Test CLI Runner Generate', function() {
         configData = eval(content);
         mockery.registerMock(path.join(process.cwd(), 'nightwatch.conf.js'), configData);
 
-        assert.equal(typeof configData.safari, 'undefined');
+        assert.strictEqual(typeof configData.safari, 'undefined');
 
         assert.deepStrictEqual(configData.test_settings.chrome, {
           desiredCapabilities: {
             browserName: 'chrome',
-            chromeOptions: {
-              args: []
+            'goog:chromeOptions': {
+              args: [],
+              w3c: false
             }
           },
 
@@ -90,8 +91,9 @@ describe('Test CLI Runner Generate', function() {
           desiredCapabilities: {
             browserName: 'firefox',
             alwaysMatch: {
+              acceptInsecureCerts: true,
               'moz:firefoxOptions': {
-                args: [],
+                args: []
               }
             }
           },
@@ -106,9 +108,8 @@ describe('Test CLI Runner Generate', function() {
         assert.deepStrictEqual(configData.test_settings.browserstack, {
           desiredCapabilities: {
             'bstack:options': {
-              local: 'false',
               userName: '${BROWSERSTACK_USER}',
-              accessKey: '${BROWSERSTACK_KEY}',
+              accessKey: '${BROWSERSTACK_KEY}'
             }
           },
 
@@ -119,8 +120,33 @@ describe('Test CLI Runner Generate', function() {
 
           disable_error_log: true,
           webdriver: {
+            timeout_options: {
+              timeout: 15000,
+              retry_attempts: 3
+            },
             keep_alive: true,
             start_process: false
+          }
+        });
+
+        assert.deepStrictEqual(configData.test_settings['browserstack.local'], {
+          extends: 'browserstack',
+          desiredCapabilities: {
+            'browserstack.local': true
+          }
+        });
+
+        assert.deepStrictEqual(configData.test_settings['browserstack.local_firefox'], {
+          extends: 'browserstack.local',
+          desiredCapabilities: {
+            browserName: 'firefox'
+          }
+        });
+
+        assert.deepStrictEqual(configData.test_settings['browserstack.local_chrome'], {
+          extends: 'browserstack.local',
+          desiredCapabilities: {
+            browserName: 'chrome'
           }
         });
 
@@ -137,19 +163,12 @@ describe('Test CLI Runner Generate', function() {
         assert.deepStrictEqual(configData.test_settings['browserstack.ie'], {
           extends: 'browserstack',
           desiredCapabilities: {
-            browserName: 'IE',
-            browserVersion: '11.0',
-            'bstack:options': {
-              os: 'Windows',
-              osVersion: '10',
-              local: 'false',
-              seleniumVersion: '3.5.2',
-              resolution: '1366x768'
-            }
+            browserName: 'internet explorer',
+            browserVersion: '11.0'
           }
         });
 
-        assert.deepStrictEqual(configData.test_settings.selenium, {
+        assert.deepStrictEqual(configData.test_settings.selenium_server, {
           selenium: {
             start_process: true,
             port: 4444,
@@ -165,23 +184,32 @@ describe('Test CLI Runner Generate', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    const ieRunner = new CliRunner({
       config: './nightwatch.json',
       env: 'browserstack.ie'
     }).setup();
 
-    assert.equal(runner.argv.config, path.join(process.cwd(), 'nightwatch.conf.js'));
-    assert.deepStrictEqual(runner.test_settings.desiredCapabilities, {
-      browserName: 'IE',
+    assert.strictEqual(ieRunner.argv.config, path.join(process.cwd(), 'nightwatch.conf.js'));
+    assert.deepStrictEqual(ieRunner.test_settings.desiredCapabilities, {
+      browserName: 'internet explorer',
       browserVersion: '11.0',
-      'bstack:options' : {
-        os: 'Windows',
-        osVersion: '10',
-        local: 'false',
-        seleniumVersion: '3.5.2',
-        resolution: '1366x768',
+      'bstack:options': {
         userName: '${BROWSERSTACK_USER}',
-        accessKey: '${BROWSERSTACK_KEY}',
+        accessKey: '${BROWSERSTACK_KEY}'
+      }
+    });
+
+    const chromeLocalRunner = new CliRunner({
+      config: './nightwatch.json',
+      env: 'browserstack.local_chrome'
+    }).setup();
+
+    assert.deepStrictEqual(chromeLocalRunner.test_settings.desiredCapabilities, {
+      browserName: 'chrome',
+      'browserstack.local': true,
+      'bstack:options': {
+        userName: '${BROWSERSTACK_USER}',
+        accessKey: '${BROWSERSTACK_KEY}'
       }
     });
   });

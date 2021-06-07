@@ -12,17 +12,17 @@ describe('getTitle', function() {
   });
   it('client.getTitle()', function(done) {
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/title',
-      method:'GET',
-      response : JSON.stringify({
+      url: '/wd/hub/session/1352110219202/title',
+      method: 'GET',
+      response: JSON.stringify({
         sessionId: '1352110219202',
-        status:0,
-        value : 'sample Title'
+        status: 0,
+        value: 'sample Title'
       })
     });
 
     this.client.api.getTitle(function callback(result) {
-      assert.equal(result, 'sample Title');
+      assert.strictEqual(result, 'sample Title');
     });
 
     this.client.start(done);

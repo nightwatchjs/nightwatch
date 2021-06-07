@@ -28,7 +28,7 @@ describe('waitForElementVisible', function() {
     this.client.api.globals.waitForConditionPollInterval = 10;
     this.client.api.waitForElementVisible('#weblogin', 15, 10, function (result, instance) {
       assert.deepStrictEqual(instance.args, [15, 10]);
-      assert.strictEqual(instance.executor.retries, 1);
+      assert.ok(instance.executor.retries >= 1);
       assert.strictEqual(instance.message, 'Timed out while waiting for element <#weblogin> to be visible for 15 milliseconds.');
       assert.strictEqual(instance.expectedValue, 'visible');
       assert.strictEqual(instance.selector, '#weblogin');
@@ -149,7 +149,7 @@ describe('waitForElementVisible', function() {
     MockServer
       .addMock({
         url: '/wd/hub/session/1352110219202/elements',
-        postdata : '{"using":"css selector","value":"#stale-element"}',
+        postdata: '{"using":"css selector","value":"#stale-element"}',
         method: 'POST',
         response: JSON.stringify({
           status: 0,
@@ -262,7 +262,7 @@ describe('waitForElementVisible', function() {
     MockServer
       .addMock({
         url: '/wd/hub/session/1352110219202/elements',
-        postdata : {
+        postdata: {
           using: 'xpath',
           value: '//*div[2]/button'
         },
@@ -294,4 +294,39 @@ describe('waitForElementVisible', function() {
       }
     });
   });
+
+  it('client.waitForElementVisible() success with selector and test message only', function () {
+    MockServer
+      .addMock({
+        url: '/wd/hub/session/1352110219202/elements',
+        postdata: {
+          using: 'css selector',
+          value: '#web-login'
+        },
+        method: 'POST',
+        response: JSON.stringify({
+          status: 0,
+          state: 'success',
+          value: [{ELEMENT: '99'}]
+        })
+      }, true)
+      .addMock({
+        url: '/wd/hub/session/1352110219202/element/99/displayed',
+        method: 'GET',
+        response: JSON.stringify({
+          state: 'success',
+          status: 0,
+          value: true
+        })
+      }, true);
+
+    this.client.api.waitForElementVisible('#web-login', 'Test message');
+
+    return this.client.start(function(err) {
+      if (err) {
+        throw err;
+      }
+    });
+  });
+
 });

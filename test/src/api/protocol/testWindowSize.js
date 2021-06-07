@@ -14,7 +14,7 @@ describe('windowSize', function() {
       });
 
       throw new Error('Unexpected error');
-    } catch(err) {
+    } catch (err) {
       assert.strictEqual(err.message, 'Error while running "windowSize" command: First argument must be a window handle string.');
     }
 
@@ -25,7 +25,7 @@ describe('windowSize', function() {
       });
 
       throw new Error('Unexpected error');
-    } catch(err) {
+    } catch (err) {
       assert.strictEqual(err.message, 'Error while running "windowSize" command: First argument must be a window handle string.');
     }
 
@@ -36,7 +36,7 @@ describe('windowSize', function() {
       });
 
       throw new Error('Unexpected error');
-    } catch(err) {
+    } catch (err) {
       assert.strictEqual(err.message, 'Error while running "windowSize" command: Width argument passed to .windowSize() must be a number.');
     }
 
@@ -47,7 +47,7 @@ describe('windowSize', function() {
       });
 
       throw new Error('Unexpected error');
-    } catch(err) {
+    } catch (err) {
       assert.strictEqual(err.message, 'Error while running "windowSize" command: Height argument passed to .windowSize() must be a number.');
     }
 
@@ -58,7 +58,7 @@ describe('windowSize', function() {
       });
 
       throw new Error('Unexpected error');
-    } catch(err) {
+    } catch (err) {
       assert.strictEqual(err.message, 'Error while running "windowSize" command: Second argument passed to .windowSize() should be a callback when not passing width and height - number given.');
     }
   });
@@ -81,7 +81,7 @@ describe('windowSize', function() {
       assertion: function(opts) {
         assert.strictEqual(opts.method, 'POST');
         assert.strictEqual(opts.path, '/session/1352110219202/window/current/size');
-        assert.deepEqual(opts.data, {width: 10, height: 10});
+        assert.deepStrictEqual(opts.data, {width: 10, height: 10});
       },
       commandName: 'windowSize',
       args: ['current', 10, 10]
@@ -92,7 +92,7 @@ describe('windowSize', function() {
     return Globals.protocolTestWebdriver({
       assertion: function(opts) {
         assert.strictEqual(opts.method, 'POST');
-        assert.deepEqual(opts.data, { width: 10, height: 10 });
+        assert.deepStrictEqual(opts.data, {width: 10, height: 10});
         assert.strictEqual(opts.path, '/session/1352110219202/window/rect');
       },
       commandName: 'windowSize',

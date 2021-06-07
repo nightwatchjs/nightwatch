@@ -126,7 +126,7 @@ describe('test PageObject Commands', function () {
     section.waitForElementPresent('@help', 1000, true, function callback(result) {
       assert.strictEqual(result.status, 0);
       assert.strictEqual(result.value.length, 1);
-      assert.deepEqual(result.value[0], { ELEMENT: '1'});
+      assert.deepStrictEqual(result.value[0], {ELEMENT: '1'});
       assert.strictEqual(result.WebdriverElementId, '1');
     });
 
@@ -210,7 +210,7 @@ describe('test PageObject Commands', function () {
 
     page.api.perform(function () {
       try {
-        assert.deepEqual(urlsArr, ['http://localhost.com', 'http://nightwatchjs.org']);
+        assert.deepStrictEqual(urlsArr, ['http://localhost.com', 'http://nightwatchjs.org']);
         done();
       } catch (err) {
         done(err);

@@ -116,15 +116,15 @@ describe('test index in element selectors', function() {
         assert.strictEqual(result.status, 0, 'status for element indexed found');
         assert.strictEqual(result.value, 'second', 'element indexed value');
       })
-      .getText({selector:'@loginIndexed', index: 0}, function callback(result) {
+      .getText({selector: '@loginIndexed', index: 0}, function callback(result) {
         assert.strictEqual(result.status, 0, 'status for element index 0 override found');
         assert.strictEqual(result.value, 'first', 'element index overridde value');
       })
-      .getText({selector:'@loginCss', index: 1}, function callback(result) {
+      .getText({selector: '@loginCss', index: 1}, function callback(result) {
         assert.strictEqual(result.status, 0, 'status for element selector index 1 found');
         assert.strictEqual(result.value, 'second', 'element selector index 1 value');
       })
-      .getText({selector:'@loginCss', index: 999, timeout: 20, retryInterval: 10}, function callback(result) {
+      .getText({selector: '@loginCss', index: 999, timeout: 20, retryInterval: 10}, function callback(result) {
         assert.strictEqual(result.status, -1, 'element selector index out of bounds not found');
       });
 
@@ -134,7 +134,7 @@ describe('test index in element selectors', function() {
   it('using page section elements with index', function (done) {
     nocks
       .elementsFound('#signupSection') // page.section
-      .elementsId(0, '#helpBtn', [{ELEMENT: '1'},{ELEMENT: '2'}])
+      .elementsId(0, '#helpBtn', [{ELEMENT: '1'}, {ELEMENT: '2'}])
       .elementsId(0, '#helpBtn:nth-child(1)', [{ELEMENT: '1'}])
       .elementId(0, '#helpBtn', null, {ELEMENT: '1'})
       .text(1, 'help-first')
@@ -151,28 +151,28 @@ describe('test index in element selectors', function() {
     let sectionChild = section.section.getStarted;
 
     section
-      .getText({selector:'@help'}, function callback(result) {
+      .getText({selector: '@help'}, function callback(result) {
         assert.strictEqual(result.status, 0, 'section element selector found');
         assert.strictEqual(result.value, 'help-first', 'section element selector value');
       })
-      .getText({selector:'@help:nth-child(1)'}, function callback(result) {
+      .getText({selector: '@help:nth-child(1)'}, function callback(result) {
         assert.strictEqual(result.status, 0, 'section element selector found');
         assert.strictEqual(result.value, 'help-first', 'section element selector value');
       })
-      .getText({selector:'@help', index: 1}, function callback(result) {
+      .getText({selector: '@help', index: 1}, function callback(result) {
         assert.strictEqual(result.status, 0, 'section element selector index 1 found');
         assert.strictEqual(result.value, 'help-second', 'section element selector index 1 value');
       })
-      .getText({selector:'@help', index: 999, timeout: 20, retryInterval: 15}, function callback(result) {
+      .getText({selector: '@help', index: 999, timeout: 20, retryInterval: 15}, function callback(result) {
         assert.strictEqual(result.status, -1, 'section element selector index out of bounds not found');
       });
 
     sectionChild
-      .getText({selector:'@start'}, function callback(result) {
+      .getText({selector: '@start'}, function callback(result) {
         assert.strictEqual(result.status, 0, 'child section element selector found');
         assert.strictEqual(result.value, 'start-first', 'child section element selector value');
       })
-      .getText({selector:'@start', index: 0}, function callback(result) {
+      .getText({selector: '@start', index: 0}, function callback(result) {
         assert.strictEqual(result.status, 0, 'child section element selector index 0 found');
         assert.strictEqual(result.value, 'start-first', 'child section element selector index 0 value');
       })
@@ -180,7 +180,7 @@ describe('test index in element selectors', function() {
         assert.strictEqual(result.status, 0, 'child section element selector index 0 found');
         assert.strictEqual(result.value, 'start-first', 'child section element selector index 0 value');
       })
-      .getText({selector:'@start', index: 999, timeout: 20, retryInterval: 15}, function callback(result) {
+      .getText({selector: '@start', index: 999, timeout: 20, retryInterval: 15}, function callback(result) {
         assert.strictEqual(result.status, -1, 'child section element selector index out of bounds not found');
       });
 

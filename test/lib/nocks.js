@@ -44,6 +44,7 @@ module.exports = {
     nock('http://localhost:10195')
       .delete('/wd/hub/session/1352110219202')
       .reply(204, '');
+
     return this;
   },
 
@@ -359,7 +360,7 @@ module.exports = {
         sessionId: '1352110219202',
         value: {
           height: value
-        },
+        }
       });
 
     return this;
@@ -373,7 +374,7 @@ module.exports = {
         sessionId: '1352110219202',
         value: {
           width: value
-        },
+        }
       });
 
     return this;
@@ -387,7 +388,7 @@ module.exports = {
         sessionId: '1352110219202',
         value: {
           x: value
-        },
+        }
       });
 
     return this;
@@ -401,7 +402,7 @@ module.exports = {
         sessionId: '1352110219202',
         value: {
           y: value
-        },
+        }
       });
 
     return this;

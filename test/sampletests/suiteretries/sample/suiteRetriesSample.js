@@ -2,14 +2,14 @@ var failFirstTime = true;
 
 module.exports = {
   before: function (client) {
-    client.url('http://localhost')
+    client.url('http://localhost');
   },
 
   after: function (client) {
     client.end();
   },
 
-  demoStep1 : function (client) {
+  demoStep1: function (client) {
     client
       .assert.elementPresent('#weblogin')
       .perform(function() {
@@ -17,7 +17,7 @@ module.exports = {
       });
   },
 
-  demoStep2 : function (client) {
+  demoStep2: function (client) {
     client
       .elements('css selector', '#weblogin', function() {
         if (failFirstTime) {

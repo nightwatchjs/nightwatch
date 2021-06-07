@@ -14,7 +14,7 @@ const defaultSettings = {
   },
   silent: false,
   output: false,
-  output_folder: false,
+  output_folder: false
 };
 
 describe('testRunWithVerify', function() {
@@ -50,7 +50,7 @@ describe('testRunWithVerify', function() {
           assert.strictEqual(results.assertions, 3);
 
           cb();
-        },
+        }
       }
     }, defaultSettings);
 

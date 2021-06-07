@@ -1,13 +1,19 @@
 const assert = require('assert');
 const mockSpawn = require('mock-spawn');
-const nock = require('nock');
 const common = require('../../common.js');
+const MockServer = require('../../lib/mockserver.js');
 const WDServer = common.require('runner/webdriver-server.js');
-const SeleniumServer = common.require('runner/wd-instances/selenium-server.js');
 const Settings = common.require('settings/settings.js');
 
 describe('Webdriver Manager', function () {
   describe('test Selenium Server', function () {
+    before(function(done) {
+      this.server = MockServer.init();
+      this.server.on('listening', () => {
+        done();
+      });
+    });
+
     beforeEach(function () {
       this.mockedSpawn = mockSpawn();
       this.origPrint = require('util').print;
@@ -16,25 +22,15 @@ describe('Webdriver Manager', function () {
       require('child_process').spawn = this.mockedSpawn;
       require('util').print = function () {};
 
-      try {
-        nock.activate();
-      } catch (err) {}
-
-      nock('http://localhost:4444')
-        .get('/status')
-        .reply(200, {
-          status: 0
-        });
     });
 
-    afterEach(function () {
-      // clean up
+    after(function(done) {
       require('child_process').spawn = this.origSpawn;
       require('util').print = this.origPrint;
-    });
 
-    after(function() {
-      nock.restore();
+      this.server.close(function() {
+        done();
+      });
     });
 
     it('testStartSeleniumServerDisabled', function () {
@@ -60,8 +56,15 @@ describe('Webdriver Manager', function () {
     });
 
     it('testStartServer', function () {
+      MockServer.addMock({
+        url: '/status',
+        response: {
+          status: 0
+        }
+      }, true);
+
       this.mockedSpawn.setStrategy(function (command, args, opts) {
-        assert.deepEqual(opts, {stdio: ['ignore', 'pipe', 'pipe']});
+        assert.deepStrictEqual(opts, {stdio: ['ignore', 'pipe', 'pipe']});
         wdServer.instance.processCreated = true;
 
         if (command !== 'java') {
@@ -77,6 +80,7 @@ describe('Webdriver Manager', function () {
 
       let settings = Settings.parse({
         selenium: {
+          port: 10195,
           check_process_delay: 10,
           max_status_poll_tries: 7,
           status_poll_interval: 250,
@@ -95,15 +99,13 @@ describe('Webdriver Manager', function () {
       let wdServer = new WDServer(settings);
 
       return wdServer.start().then(_ => {
-        assert.ok(wdServer.instance instanceof SeleniumServer);
-
-        assert.deepEqual(wdServer.instance.cliArgs, [
+        assert.deepStrictEqual(wdServer.instance.cliArgs, [
           '-DpropName=1',
           '-Dwebdriver.test.property=test',
           '-jar',
           './selenium.jar',
           '-port',
-          4444
+          '10195'
         ]);
 
         assert.strictEqual(wdServer.settings.selenium.max_status_poll_tries, 7);
@@ -122,12 +124,15 @@ describe('Webdriver Manager', function () {
         assert.strictEqual(wdServer.instance.singleSessionEndpoint, '/session');
         assert.strictEqual(wdServer.instance.output, 'Started org.openqa.jetty.jetty.Server');
         assert.strictEqual(wdServer.instance.error_out, '');
+
+        const SeleniumServer = common.require('runner/wd-instances/selenium-server.js');
+        assert.ok(wdServer.instance instanceof SeleniumServer);
       });
     });
 
     it('testStartServerWithExitCode', function () {
       this.mockedSpawn.setStrategy(function (command, args, opts) {
-        assert.deepEqual(opts, {stdio: ['ignore', 'pipe', 'pipe']});
+        assert.deepStrictEqual(opts, {stdio: ['ignore', 'pipe', 'pipe']});
 
         if (command !== 'java') {
           return null;

@@ -16,7 +16,7 @@ describe('test TagsMatcher', function() {
       ['string with multiple tags', 'A,b,C,777', ['a', 'b', 'c', '777']],
       ['empty array', [], []],
       ['array with one tag', ['a'], ['a']],
-      ['array with multiple tags', ['a','B','c', 777], ['a', 'b', 'c', '777']],
+      ['array with multiple tags', ['a', 'B', 'c', 777], ['a', 'b', 'c', '777']]
     ];
 
     testCases.forEach(([description, given, expected]) => {
@@ -38,7 +38,7 @@ describe('test TagsMatcher', function() {
       ['string with one tag: --tag a', 'a', [['a']]],
       ['AND tags: --tag A,b,C,777', 'A,b,C,777', [['a', 'b', 'c', '777']]],
       ['OR tags: --tag A --tag b --tag C --tag 777', ['A', 'b', 'C', '777'], [['a'], ['b'], ['c'], ['777']]],
-      ['AND and OR tags: --tag A,b --tag c,D --tag e,777', ['A,b', 'c,D', 'e,777'], [['a', 'b'], ['c', 'd'], ['e', '777']]],
+      ['AND and OR tags: --tag A,b --tag c,D --tag e,777', ['A,b', 'c,D', 'e,777'], [['a', 'b'], ['c', 'd'], ['e', '777']]]
     ];
 
     testCases.forEach(([description, given, expected]) => {
@@ -56,117 +56,117 @@ describe('test TagsMatcher', function() {
         ['home', 'login', 'sign-up'],
         ['home', 'siberia'],
         undefined,
-        true,
+        true
       ],
       [
         'matching single filter tag',
         ['home', 'login', 'sign-up'],
         ['home'],
         undefined,
-        true,
+        true
       ],
       [
         'multiple filter tags as AND match',
         ['home', 'login', 'siberia', 'sign-up'],
         ['home,siberia'],
         undefined,
-        true,
+        true
       ],
       [
         'multiple filter tags as AND do not match',
         ['home', 'login', 'sign-up'],
         ['home,siberia'],
         undefined,
-        false,
+        false
       ],
       [
         'non-matching tags',
         ['boroboro', 'siberia'],
         ['home', 'login', 'sign-up'],
         undefined,
-        false,
+        false
       ],
       [
         'undefined module tags',
         undefined,
         ['home', 'login', 'sign-up'],
         undefined,
-        false,
+        false
       ],
       [
         'numeric tags',
         ['101'],
         ['room', 101],
         undefined,
-        true,
+        true
       ],
       [
         'numeric tags single',
         ['101'],
         101,
         undefined,
-        true,
+        true
       ],
       [
         'skiptag not matching',
         ['room', 101],
         undefined,
         ['101'],
-        false,
+        false
       ],
       [
         'skiptag matching',
         ['room', 101],
         undefined,
         ['other'],
-        true,
+        true
       ],
       [
         'skiptag matching - undefined local tags',
         undefined,
         undefined,
         ['other'],
-        true,
+        true
       ],
       [
         'tag filter does not find module, but skiptag does and excludes it',
         ['room', 101],
         ['other'],
         ['101'],
-        false,
+        false
       ],
       [
         'tag filter does not find module, and skiptag does not and excludes it',
         ['room', 101],
         ['other'],
         ['777'],
-        false,
+        false
       ],
       [
         'tag filter finds module, skiptag also does and excludes it',
         ['room', 101],
         ['room'],
         ['101'],
-        false,
+        false
       ],
       [
         'tag filter finds module, and skiptag does not',
         ['room', 101],
         ['room'],
         ['other'],
-        true,
-      ],
+        true
+      ]
     ];
     testCases.forEach(([description, moduleTags, tag_filter, skiptags, expected]) => {
       it(`${description}`, function () {
         const matcher = new TagsMatcher({
           tag_filter: tag_filter,
-          skiptags: skiptags,
+          skiptags: skiptags
         });
 
         matcher.context = {
           getTags() {
-            return moduleTags
+            return moduleTags;
           }
         };
 
@@ -184,43 +184,43 @@ describe('test TagsMatcher', function() {
         'sampletests/tags/sample.js',
         ['home', 'login', 'sign-up'],
         undefined,
-        true,
+        true
       ],
       [
         'module with tags single filter tag',
         'sampletests/tags/sample.js',
         ['login'],
         undefined,
-        true,
+        true
       ],
       [
         'module with tags multiple AND filter tags',
         'sampletests/tags/sample.js',
         ['login,other'],
         undefined,
-        true,
+        true
       ],
       [
         'loading modules containing an error should not be silent',
         'extra/mock-errors/sample-error.js',
         ['home', 'login', 'sign-up'],
         undefined,
-        false,
+        false
       ],
       [
         'skiptag test loading module with matching tags',
         'sampletests/tags/sample.js',
         undefined,
         ['login'],
-        false,
+        false
       ],
       [
         'skiptag test loading module with no tags',
         'sampletests/simple/test/sample.js',
         undefined,
         ['login'],
-        true,
-      ],
+        true
+      ]
     ];
 
     testCases.forEach(([description, modulePath, tag_filter, skiptags, expected]) => {
@@ -229,7 +229,7 @@ describe('test TagsMatcher', function() {
 
         const matcher = new TagsMatcher({
           tag_filter: tag_filter,
-          skiptags: skiptags,
+          skiptags: skiptags
         });
 
         const matched = matcher.match(fullModulePath);

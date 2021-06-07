@@ -11,7 +11,7 @@ module.exports = {
     client.end();
   },
 
-  demoTest2 : async function (client) {
+  demoTest2: async function (client) {
     await client.url('http://localhost');
 
     client.assert.elementPresent('#weblogin');

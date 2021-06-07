@@ -5,12 +5,12 @@ module.exports = {
     });
   },
 
-  demoTestAsyncOne : function (client) {
+  demoTestAsyncOne: function (client) {
     client.url('http://localhost');
   },
 
   after(client) {
-    client.assert.equal(0,1);
+    client.assert.equal(0, 1);
     client.end();
   }
 };

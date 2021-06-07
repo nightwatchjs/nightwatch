@@ -42,8 +42,8 @@ describe('testRunnerChaiExpect', function() {
 
     return Globals.startTestRunner(testsPath, settings)
       .then(runner => {
-        assert.equal(runner.results.modules.sampleWithChai.tests, 2);
-        assert.equal(runner.results.modules.sampleWithChai.failures, 0);
+        assert.strictEqual(runner.results.modules.sampleWithChai.tests, 2);
+        assert.strictEqual(runner.results.modules.sampleWithChai.failures, 0);
       });
   });
 });

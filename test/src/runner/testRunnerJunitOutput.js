@@ -69,12 +69,12 @@ describe('testRunnerJUnitOutput', function() {
     };
 
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/screenshot',
-      method:'GET',
-      response : JSON.stringify({
+      url: '/wd/hub/session/1352110219202/screenshot',
+      method: 'GET',
+      response: JSON.stringify({
         sessionId: '1352110219202',
-        status:0,
-        value:'screendata'
+        status: 0,
+        value: 'screendata'
       })
     });
 
@@ -413,7 +413,7 @@ describe('testRunnerJUnitOutput', function() {
         let simpleReportFile = 'output/simple/FIREFOX_TEST_TEST_sample.xml';
         let tagsReportFile = 'output/tags/FIREFOX_TEST_TEST_sampleTags.xml';
 
-        assert.deepEqual(list, ['simple', 'tags'], 'The subfolders have not been created.');
+        assert.deepStrictEqual(list, ['simple', 'tags'], 'The subfolders have not been created.');
         assert.ok(fileExistsSync(simpleReportFile), 'The simple report file was not created.');
         assert.ok(fileExistsSync(tagsReportFile), 'The tags report file was not created.');
 
@@ -458,6 +458,7 @@ function readDirPromise(dirName) {
 function fileExistsSync(path) {
   try {
     fs.statSync(path);
+
     return true;
   } catch (e) {
     return false;

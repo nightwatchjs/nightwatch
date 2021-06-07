@@ -13,7 +13,7 @@ describe('sampleTest with selenium-webdriver', function() {
     try {
       driver = await builder.build();
     } catch (err) {
-      console.error('ERROR', err)
+      console.error('ERROR', err);
     }
   });
 

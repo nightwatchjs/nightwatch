@@ -74,6 +74,7 @@ describe('testRunWithUncaughtErrors', function() {
       try {
         if (testErr) {
           done(testErr);
+
           return;
         }
 

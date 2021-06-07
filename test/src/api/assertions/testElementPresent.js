@@ -13,9 +13,9 @@ describe('assert.elementPresent', function() {
     return assertionTest({
       args: ['.test_element', 'Test message'],
       commandResult: {
-        status : 0,
-        value : [{
-          ELEMENT : '0'
+        status: 0,
+        value: [{
+          ELEMENT: '0'
         }]
       },
       assertMessage: true,
@@ -37,7 +37,7 @@ describe('assert.elementPresent', function() {
     return assertionTest({
       args: ['.test_element'],
       commandResult: {
-        value : []
+        value: []
       },
       negate: true,
       assertion({reporter, instance, queueOpts, message}) {
@@ -57,8 +57,8 @@ describe('assert.elementPresent', function() {
     return assertionTest({
       args: ['.test_element'],
       commandResult: {
-        value : [{
-          ELEMENT : '0'
+        value: [{
+          ELEMENT: '0'
         }]
       },
       negate: true,
@@ -77,9 +77,9 @@ describe('assert.elementPresent', function() {
     return assertionTest({
       args: [{selector: '.test_element'}],
       commandResult: {
-        status : 0,
-        value : [{
-          ELEMENT : '0'
+        status: 0,
+        value: [{
+          ELEMENT: '0'
         }]
       },
       assertApiCommandArgs(args) {
@@ -118,8 +118,8 @@ describe('assert.elementPresent', function() {
     return assertionTest({
       args: ['.test_element'],
       commandResult: {
-        status : 0,
-        value : []
+        status: 0,
+        value: []
       },
       assertError: true,
       assertResult: true,

@@ -2,7 +2,7 @@ var failFirstTime = true;
 
 module.exports = {
   before(client) {
-    client.url('http://localhost')
+    client.url('http://localhost');
   },
 
   after(client) {

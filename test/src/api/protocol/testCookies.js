@@ -22,7 +22,7 @@ describe('cookie commands', function() {
       assertion: function(opts) {
         assert.strictEqual(opts.method, 'POST');
         assert.strictEqual(opts.path, '/session/1352110219202/cookie');
-        assert.deepEqual(opts.data, {cookie: {name: 'test_cookie'}});
+        assert.deepStrictEqual(opts.data, {cookie: {name: 'test_cookie'}});
       },
       commandName: 'cookie',
       args: ['POST', {name: 'test_cookie'}]

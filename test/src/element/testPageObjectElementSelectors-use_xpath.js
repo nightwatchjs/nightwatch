@@ -92,5 +92,5 @@ describe('test page object element selectors with locateStrategy from nightwatch
         });
       Nightwatch.start(done);
     });
-  })
+  });
 });

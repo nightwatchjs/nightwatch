@@ -9,12 +9,12 @@ describe('test CLI Runner Mocha', function() {
     mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
     mockery.registerMock('./argv-setup.js', {
       isDefault(option, value) {
-        return value.includes('nightwatch.')
+        return value.includes('nightwatch.');
       },
 
       getDefault() {
         return './nightwatch.json';
-      },
+      }
     });
 
     mockery.registerMock('path', {
@@ -63,7 +63,7 @@ describe('test CLI Runner Mocha', function() {
     });
 
     createMockedMocha(function(options) {
-      assert.deepEqual(options, {timeout: 10000});
+      assert.deepStrictEqual(options, {timeout: 10000});
     }, testFiles);
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -73,7 +73,7 @@ describe('test CLI Runner Mocha', function() {
     }).setup();
 
     return runner.runTests().then(function() {
-      assert.deepEqual(testFiles, ['test1.js', 'test2.js']);
+      assert.deepStrictEqual(testFiles, ['test1.js', 'test2.js']);
     });
   });
 
@@ -95,7 +95,7 @@ describe('test CLI Runner Mocha', function() {
     });
 
     createMockedMocha(function(options) {
-      assert.deepEqual(options, {timeout: 10000});
+      assert.deepStrictEqual(options, {timeout: 10000});
     }, testFiles);
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -105,7 +105,7 @@ describe('test CLI Runner Mocha', function() {
     }).setup();
 
     return runner.runTests().then(function() {
-      assert.deepEqual(testFiles, ['test1.js', 'test2.js']);
+      assert.deepStrictEqual(testFiles, ['test1.js', 'test2.js']);
     });
   });
 
@@ -129,7 +129,7 @@ describe('test CLI Runner Mocha', function() {
     });
 
     createMockedMocha(function(options) {
-      assert.deepEqual(options, {
+      assert.deepStrictEqual(options, {
         ui: 'tdd',
         timeout: 10000
       });
@@ -142,7 +142,7 @@ describe('test CLI Runner Mocha', function() {
     }).setup();
 
     return runner.runTests().then(function() {
-      assert.deepEqual(testFiles, ['test1.js', 'test2.js']);
+      assert.deepStrictEqual(testFiles, ['test1.js', 'test2.js']);
     });
   });
 });

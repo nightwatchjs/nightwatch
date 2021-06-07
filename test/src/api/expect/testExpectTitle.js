@@ -116,7 +116,7 @@ describe('expect.title', function() {
       strictEqual(expect.assertion.actual, 'hp vasq');
       strictEqual(expect.assertion.resultValue, 'hp vasq');
       strictEqual(expect.assertion.passed, false);
-      strictEqual(expect.assertion.messageParts[0], ' not equal: "hp vasq"' );
+      strictEqual(expect.assertion.messageParts[0], ' not equal: "hp vasq"');
       assert.ok(expect.assertion.message.startsWith('Expected page title to not equal: "hp vasq"'));
     });
   });
@@ -189,7 +189,7 @@ describe('expect.title', function() {
       strictEqual(expect.assertion.negate, true);
       strictEqual(expect.assertion.resultValue, 'xx');
       strictEqual(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts[0], ' not equal: "xx"');
+      assert.deepStrictEqual(expect.assertion.messageParts[0], ' not equal: "xx"');
       assert.ok(expect.assertion.message.startsWith('Expected page title to not equal: "xx"'));
     });
   });

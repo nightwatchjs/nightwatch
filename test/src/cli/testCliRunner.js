@@ -12,12 +12,12 @@ describe('Test CLI Runner', function() {
     mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
     mockery.registerMock('./argv-setup.js', {
       isDefault(option, value) {
-        return value.includes('nightwatch.')
+        return value.includes('nightwatch.');
       },
 
       getDefault() {
         return './nightwatch.json';
-      },
+      }
     });
 
     let config = {
@@ -240,12 +240,14 @@ describe('Test CLI Runner', function() {
         if (b === './extra/globals-err.js') {
           return './extra/globals-err.js';
         }
+
         return './nightwatch.json';
       },
       resolve: function(a) {
         if (a === '../path/to/test') {
           return '/path/to/test';
         }
+
         return a;
       },
       extname(a) {
@@ -269,6 +271,7 @@ describe('Test CLI Runner', function() {
         if (module === './settings.json') {
           throw new Error('Does not exist');
         }
+
         return {
           isFile: function() {
             return true;
@@ -283,10 +286,10 @@ describe('Test CLI Runner', function() {
 
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
-      config: './nightwatch.json',
+      config: './nightwatch.json'
     }).setup();
 
-    assert.deepEqual(runner.settings.src_folders, ['tests']);
+    assert.deepStrictEqual(runner.settings.src_folders, ['tests']);
     assert.strictEqual(runner.test_settings.silent, true);
     assert.strictEqual(runner.test_settings.custom_commands_path, null);
     assert.strictEqual(runner.test_settings.custom_assertions_path, null);
@@ -319,7 +322,7 @@ describe('Test CLI Runner', function() {
     assert.strictEqual(runner.test_settings.tag_filter, 'danger');
     assert.strictEqual(runner.test_settings.skiptags, 'home,arctic');
     assert.strictEqual(runner.test_settings.filename_filter, 'test-filename-filter');
-    assert.deepEqual(runner.test_settings.skipgroup, ['test-skip-group']);
+    assert.deepStrictEqual(runner.test_settings.skipgroup, ['test-skip-group']);
     assert.strictEqual(runner.globals.settings.output_folder, 'test-output-folder');
     assert.strictEqual(runner.test_settings.globals.waitForConditionTimeout, 11);
     assert.strictEqual(runner.test_settings.globals.retryAssertionTimeout, 11);
@@ -331,9 +334,10 @@ describe('Test CLI Runner', function() {
         if (module === './settings.json' || module === './nightwatch.conf.js') {
           throw new Error('Does not exist');
         }
+
         return {
           isFile: function() {
-            return true
+            return true;
           }
         };
       }
@@ -345,7 +349,7 @@ describe('Test CLI Runner', function() {
       env: 'default'
     }).setup();
 
-    assert.equal(runner.settings.output_folder, false);
+    assert.strictEqual(runner.settings.output_folder, false);
   });
 
   it('testReadSettingsDeprecated', function(done) {
@@ -354,7 +358,7 @@ describe('Test CLI Runner', function() {
         if (module === './settings.json') {
           return {
             isFile: function() {
-              return true
+              return true;
             }
           };
         }
@@ -372,8 +376,8 @@ describe('Test CLI Runner', function() {
       filter: 'tests*.js'
     }).setup();
 
-    assert.deepEqual(runner.test_settings.src_folders, ['tests']);
-    assert.deepEqual(runner.test_settings.skipgroup, ['tobeskipped']);
+    assert.deepStrictEqual(runner.test_settings.src_folders, ['tests']);
+    assert.deepStrictEqual(runner.test_settings.skipgroup, ['tobeskipped']);
     assert.strictEqual(runner.test_settings.output, false);
     assert.strictEqual(runner.test_settings.silent, false);
     assert.strictEqual(runner.test_settings.disable_error_log, false);
@@ -389,7 +393,7 @@ describe('Test CLI Runner', function() {
         if (module === './custom.json') {
           return {
             isFile: function() {
-              return true
+              return true;
             }
           };
         }
@@ -417,18 +421,19 @@ describe('Test CLI Runner', function() {
     let statCalled = false;
     let statSyncCalled = false;
     mockery.registerMock('fs', {
-      statSync : function(file) {
+      statSync: function(file) {
         if (file === 'demoTest') {
           statSyncCalled = true;
+
           return {
-            isFile : function() {
+            isFile: function() {
               return true;
             }
           };
         }
 
         if (file === 'demoTest.js' || file === './custom.js') {
-          return {isFile : function() {return true}};
+          return {isFile: function() {return true}};
         }
 
         throw new Error('Does not exist');
@@ -463,7 +468,7 @@ describe('Test CLI Runner', function() {
     return Runner
       .readTestSource(runner.test_settings, runner.argv)
       .then(function(modules) {
-        assert.equal(modules[0], 'demoTest.js');
+        assert.strictEqual(modules[0], 'demoTest.js');
         assert.ok(statSyncCalled);
       });
   });
@@ -477,6 +482,7 @@ describe('Test CLI Runner', function() {
       statSync: function(file) {
         if (file === ABSOLUTE_PATH) {
           statSyncCalled = true;
+
           return {
             isFile: function() {
               return true;
@@ -486,7 +492,7 @@ describe('Test CLI Runner', function() {
         if (file === ABSOLUTE_SRC_PATH || file === './custom.json') {
           return {
             isFile: function() {
-              return true
+              return true;
             }
           };
         }
@@ -513,14 +519,14 @@ describe('Test CLI Runner', function() {
       test: ABSOLUTE_PATH
     }).setup();
 
-    assert.equal(runner.test_settings.detailed_output, true);
+    assert.strictEqual(runner.test_settings.detailed_output, true);
 
     const Runner = common.require('runner/runner.js');
 
     return Runner
       .readTestSource(runner.test_settings, runner.argv)
       .then(function(modules) {
-        assert.equal(modules[0], ABSOLUTE_SRC_PATH);
+        assert.strictEqual(modules[0], ABSOLUTE_SRC_PATH);
         assert.ok(statSyncCalled);
       });
   });
@@ -545,6 +551,7 @@ describe('Test CLI Runner', function() {
       statSync: function(file) {
         if (file === RELATIVE_PATH) {
           statSyncCalled = true;
+
           return {
             isFile: function() {
               return true;
@@ -554,7 +561,7 @@ describe('Test CLI Runner', function() {
         if (file === TEST_SRC_PATH || file === './custom.json') {
           return {
             isFile: function() {
-              return true
+              return true;
             }
           };
         }
@@ -573,7 +580,7 @@ describe('Test CLI Runner', function() {
 
     return Runner.readTestSource(runner.test_settings, runner.argv)
       .then(function(modules) {
-        assert.equal(modules[0], TEST_SRC_PATH);
+        assert.strictEqual(modules[0], TEST_SRC_PATH);
         assert.ok(statSyncCalled);
       });
   });
@@ -586,18 +593,18 @@ describe('Test CLI Runner', function() {
           case './multi_test_paths.json':
             return {
               isFile: function() {
-                return true
+                return true;
               }
             };
           case 'tests/demoGroup':
             return {
               isDirectory: function() {
-                return true
+                return true;
               }
             };
         }
         throw new Error('Does not exist');
-      },
+      }
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -610,7 +617,7 @@ describe('Test CLI Runner', function() {
     const Runner = common.require('runner/runner.js');
 
     const walker = Runner.getTestSource(runner.test_settings, runner.argv);
-    assert.deepEqual(walker.testSource, ['tests/demoGroup']);
+    assert.deepStrictEqual(walker.testSource, ['tests/demoGroup']);
 
     let otherRunner = new CliRunner({
       config: './custom.json',
@@ -619,7 +626,7 @@ describe('Test CLI Runner', function() {
     }).setup();
 
     const walker2 = Runner.getTestSource(otherRunner.test_settings, otherRunner.argv);
-    assert.deepEqual(walker2.testSource, ['tests/demoGroup']);
+    assert.deepStrictEqual(walker2.testSource, ['tests/demoGroup']);
 
     let simpleRunner = new CliRunner({
       config: './custom.json',
@@ -627,7 +634,7 @@ describe('Test CLI Runner', function() {
     }).setup();
 
     const walker3 = Runner.getTestSource(simpleRunner.test_settings, simpleRunner.argv);
-    assert.deepEqual(walker3.testSource, ['tests']);
+    assert.deepStrictEqual(walker3.testSource, ['tests']);
 
     let invalidGroupRunner = new CliRunner({
       config: './custom.json',
@@ -636,7 +643,7 @@ describe('Test CLI Runner', function() {
     }).setup();
 
     const walker4 = Runner.getTestSource(invalidGroupRunner.test_settings, invalidGroupRunner.argv);
-    assert.deepEqual(walker4.testSource, ['tests/group_doesnotexist']);
+    assert.deepStrictEqual(walker4.testSource, ['tests/group_doesnotexist']);
 
     let invalidGroupInMultiSrcRunner = new CliRunner({
       config: './multi_test_paths.json',
@@ -659,7 +666,7 @@ describe('Test CLI Runner', function() {
           case './multi_test_paths.json':
             return {
               isFile: function() {
-                return true
+                return true;
               }
             };
           case 'tests/demoGroup1':
@@ -669,7 +676,7 @@ describe('Test CLI Runner', function() {
           case 'tests2/demoGroup2':
             return {
               isDirectory: function() {
-                return true
+                return true;
               }
             };
         }
@@ -687,7 +694,7 @@ describe('Test CLI Runner', function() {
     const Runner = common.require('runner/runner.js');
 
     const walker = Runner.getTestSource(runner.test_settings, runner.argv);
-    assert.deepEqual(walker.testSource, ['tests/demoGroup1', 'tests/demoGroup2']);
+    assert.deepStrictEqual(walker.testSource, ['tests/demoGroup1', 'tests/demoGroup2']);
 
     let invalidGroupRunner = new CliRunner({
       config: './custom.json',
@@ -696,7 +703,7 @@ describe('Test CLI Runner', function() {
     }).setup();
 
     const walker2 = Runner.getTestSource(invalidGroupRunner.test_settings, invalidGroupRunner.argv);
-    assert.deepEqual(walker2.testSource, ['tests/demoGroup1', 'tests/demoGroup2', 'tests/group_doesnotexist']);
+    assert.deepStrictEqual(walker2.testSource, ['tests/demoGroup1', 'tests/demoGroup2', 'tests/group_doesnotexist']);
 
     let stripMissingInMultiRunner = new CliRunner({
       config: './multi_test_paths.json',
@@ -705,7 +712,7 @@ describe('Test CLI Runner', function() {
     }).setup();
 
     const walker3 = Runner.getTestSource(stripMissingInMultiRunner.test_settings, stripMissingInMultiRunner.argv);
-    assert.deepEqual(walker3.testSource, ['tests1/demoGroup1', 'tests1/demoGroup2', 'tests2/demoGroup2']);
+    assert.deepStrictEqual(walker3.testSource, ['tests1/demoGroup1', 'tests1/demoGroup2', 'tests2/demoGroup2']);
   });
 
   it('testParseTestSettingsInvalid', function() {
@@ -714,7 +721,7 @@ describe('Test CLI Runner', function() {
         if (module === './empty.json') {
           return {
             isFile: function() {
-              return true
+              return true;
             }
           };
         }
@@ -764,7 +771,7 @@ describe('Test CLI Runner', function() {
         if (module === './incorrect.json') {
           return {
             isFile: function() {
-              return true
+              return true;
             }
           };
         }
@@ -787,7 +794,7 @@ describe('Test CLI Runner', function() {
         if (module === './custom.json' || module === './globals.json') {
           return {
             isFile: function() {
-              return true
+              return true;
             }
           };
         }
@@ -803,13 +810,13 @@ describe('Test CLI Runner', function() {
       globals_path: './globals.json'
     });
 
-    assert.equal(runner.test_settings.globals.otherGlobal, 'extra-value');
-    assert.equal(runner.test_settings.globals.inheritedGlobal, 'inherited');
-    assert.equal(runner.test_settings.globals.someGlobal, 'test');
-    assert.equal(runner.test_settings.globals.overwritten, '1');
-    assert.equal(runner.test_settings.globals.testGlobalOne, 'one');
-    assert.equal(runner.test_settings.globals.testGlobalTwo.two.three, '5');
-    assert.equal(runner.test_settings.globals.testGlobalTwo.one, 1);
+    assert.strictEqual(runner.test_settings.globals.otherGlobal, 'extra-value');
+    assert.strictEqual(runner.test_settings.globals.inheritedGlobal, 'inherited');
+    assert.strictEqual(runner.test_settings.globals.someGlobal, 'test');
+    assert.strictEqual(runner.test_settings.globals.overwritten, '1');
+    assert.strictEqual(runner.test_settings.globals.testGlobalOne, 'one');
+    assert.strictEqual(runner.test_settings.globals.testGlobalTwo.two.three, '5');
+    assert.strictEqual(runner.test_settings.globals.testGlobalTwo.one, 1);
 
     assert.throws(function() {
       new CliRunner({
@@ -829,7 +836,7 @@ describe('Test CLI Runner', function() {
         if (module === './custom.json') {
           return {
             isFile: function() {
-              return true
+              return true;
             }
           };
         }
@@ -855,7 +862,7 @@ describe('Test CLI Runner', function() {
         if (module === './sauce.json') {
           return {
             isFile: function() {
-              return true
+              return true;
             }
           };
         }
@@ -868,7 +875,7 @@ describe('Test CLI Runner', function() {
       env: 'saucelabs'
     }).setup();
 
-    assert.equal(runner.isWebDriverManaged(), false);
+    assert.strictEqual(runner.isWebDriverManaged(), false);
   });
 
   it('testStartSeleniumEnvironmentOverride', function() {
@@ -877,7 +884,7 @@ describe('Test CLI Runner', function() {
         if (module === './selenium_override.json') {
           return {
             isFile: function() {
-              return true
+              return true;
             }
           };
         }
@@ -890,7 +897,7 @@ describe('Test CLI Runner', function() {
       env: 'default'
     }).setup();
 
-    assert.equal(runner.isWebDriverManaged(), true);
+    assert.strictEqual(runner.isWebDriverManaged(), true);
   });
 
 });

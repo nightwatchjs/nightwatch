@@ -20,14 +20,14 @@ describe('sampleTest with webdriverIO', function() {
       },
 
       desiredCapabilities: {
-        browserName: 'firefox',
-      },
+        browserName: 'firefox'
+      }
     });
   });
 
   after(async () => {
     await browser.deleteSession();
-    browser = null
+    browser = null;
   });
 
   test('navigate', async function(nightwatch) {

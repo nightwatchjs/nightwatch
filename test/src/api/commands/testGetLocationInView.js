@@ -13,22 +13,22 @@ describe('getLocationInView', function() {
 
   it('client.getLocationInView()', function(done) {
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/element/0/location_in_view',
-      method:'GET',
-      response : JSON.stringify({
+      url: '/wd/hub/session/1352110219202/element/0/location_in_view',
+      method: 'GET',
+      response: JSON.stringify({
         sessionId: '1352110219202',
-        status:0,
-        value : {
-          x : 1,
-          y : 0
+        status: 0,
+        value: {
+          x: 1,
+          y: 0
         }
       })
     });
 
     this.client.api.getLocationInView('css selector', '#weblogin', function callback(result) {
-      assert.deepEqual(result.value, {x : 1,y : 0});
+      assert.deepStrictEqual(result.value, {x: 1, y: 0});
     }).getLocationInView('#weblogin', function callback(result) {
-      assert.deepEqual(result.value, {x : 1,y : 0});
+      assert.deepStrictEqual(result.value, {x: 1, y: 0});
     });
 
     this.client.start(done);

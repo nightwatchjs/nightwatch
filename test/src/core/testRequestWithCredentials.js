@@ -21,7 +21,7 @@ describe('test Request With Credentials', function () {
     Nocks.disable();
   });
 
-  it('Test initialization with credentials', function (done) {
+  it('Test initialization with credentials', async function () {
     nock('http://localhost:10195')
       .post('/wd/hub/session')
       .basicAuth({
@@ -47,11 +47,10 @@ describe('test Request With Credentials', function () {
     });
 
     client.on('nightwatch:session.create', function (data) {
-      assert.equal(data.sessionId, '1352110219202');
-      done();
+      assert.strictEqual(data.sessionId, '1352110219202');
     });
 
-    client.startSession();
+    await client.createSession();
   });
 
   it('Test create session with headless mode in Firefox', function () {

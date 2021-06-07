@@ -34,6 +34,7 @@ describe('test Parallel Execution', function() {
         };
 
         util.inherits(Child, events.EventEmitter);
+
         return new Child();
       }
     });
@@ -67,13 +68,13 @@ describe('test Parallel Execution', function() {
     runner.setup();
 
     assert.ok(runner.parallelMode());
-    assert.equal(runner.testEnv, 'default,mixed');
-    assert.deepEqual(runner.availableTestEnvs, ['default', 'mixed']);
+    assert.strictEqual(runner.testEnv, 'default,mixed');
+    assert.deepStrictEqual(runner.availableTestEnvs, ['default', 'mixed']);
 
     return runner.runTests().then(_ => {
       assert.ok(runner.parallelMode());
       assert.strictEqual(runner.concurrency.globalExitCode, 0);
-      assert.equal(allArgs.length, 2);
+      assert.strictEqual(allArgs.length, 2);
       assert.ok(allArgs[0].join(' ').includes('--env default --parallel-mode'));
       assert.ok(allArgs[1].join(' ').includes('--env mixed --parallel-mode'));
 
@@ -94,7 +95,7 @@ describe('test Parallel Execution', function() {
     assert.ok(runner.test_settings.test_workers);
 
     return runner.runTests().then(_ => {
-      assert.strictEqual(allArgs.length, 52);
+      assert.strictEqual(allArgs.length, 54);
       assert.strictEqual(runner.concurrency.globalExitCode, 0);
     });
   });
@@ -112,11 +113,11 @@ describe('test Parallel Execution', function() {
     runner.setup();
 
     assert.ok(runner.parallelMode());
-    assert.equal(runner.testEnv, 'mixed,mixed');
-    assert.deepEqual(runner.availableTestEnvs, ['default', 'mixed']);
+    assert.strictEqual(runner.testEnv, 'mixed,mixed');
+    assert.deepStrictEqual(runner.availableTestEnvs, ['default', 'mixed']);
 
     return runner.runTests().then(_ => {
-      assert.equal(allArgs.length, 2);
+      assert.strictEqual(allArgs.length, 2);
       assert.ok(allArgs[0].join(' ').includes('--env mixed --parallel-mode'));
       assert.ok(allArgs[1].join(' ').includes('--env mixed --parallel-mode'));
       process.chdir(originalCwd);
@@ -130,13 +131,13 @@ describe('test Parallel Execution', function() {
     });
 
     runner.setup();
-    assert.deepEqual(runner.test_settings.test_workers, {
+    assert.deepStrictEqual(runner.test_settings.test_workers, {
       enabled: true,
       workers: 'auto'
     });
 
     return runner.runTests().then(_ => {
-      assert.strictEqual(allArgs.length, 52);
+      assert.strictEqual(allArgs.length, 54);
     });
   });
 
@@ -165,7 +166,7 @@ describe('test Parallel Execution', function() {
     });
 
     return runner.runTests().then(_ => {
-      assert.strictEqual(allArgs.length, 52);
+      assert.strictEqual(allArgs.length, 54);
     });
   });
 
@@ -177,7 +178,7 @@ describe('test Parallel Execution', function() {
 
     runner.setup();
 
-    assert.equal(runner.test_settings.test_workers, false);
+    assert.strictEqual(runner.test_settings.test_workers, false);
   });
 
   it('test parallel execution with workers and single source file', function() {
@@ -199,7 +200,7 @@ describe('test Parallel Execution', function() {
 
     const CliRunner = common.require('runner/cli/cli.js');
     const runner = new CliRunner({
-      config: path.join(__dirname, '../../extra/parallelism-execArgv.json'),
+      config: path.join(__dirname, '../../../extra/parallelism-execArgv.json')
     });
 
     runner.setup();
@@ -214,7 +215,7 @@ describe('test Parallel Execution', function() {
   it('test parallel execution with specified node options to be passed to child processes', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     const runner = new CliRunner({
-      config: path.join(__dirname, '../../extra/parallelism-execArgv-selected.json'),
+      config: path.join(__dirname, '../../../extra/parallelism-execArgv-selected.json')
     });
 
     runner.setup();

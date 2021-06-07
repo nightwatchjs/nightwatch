@@ -13,20 +13,20 @@ describe('moveToElement', function() {
 
   it('client.moveToElement()', function(done) {
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/moveto',
-      method:'POST',
+      url: '/wd/hub/session/1352110219202/moveto',
+      method: 'POST',
       postdata: '{"element":"0"}',
-      response : JSON.stringify({
+      response: JSON.stringify({
         sessionId: '1352110219202',
         status: 0
       })
     });
 
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/moveto',
-      method:'POST',
+      url: '/wd/hub/session/1352110219202/moveto',
+      method: 'POST',
       postdata: '{"element":"0","xoffset":1,"yoffset":1}',
-      response : JSON.stringify({
+      response: JSON.stringify({
         sessionId: '1352110219202',
         status: 0
       })

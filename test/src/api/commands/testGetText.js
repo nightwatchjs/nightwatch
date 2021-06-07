@@ -13,19 +13,19 @@ describe('getText', function() {
 
   it('client.getText()', function(done) {
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/element/0/text',
-      method:'GET',
-      response : JSON.stringify({
+      url: '/wd/hub/session/1352110219202/element/0/text',
+      method: 'GET',
+      response: JSON.stringify({
         sessionId: '1352110219202',
-        status:0,
-        value : 'sample text'
+        status: 0,
+        value: 'sample text'
       })
     });
 
     this.client.api.getText('css selector', '#weblogin', function callback(result) {
-      assert.equal(result.value, 'sample text');
+      assert.strictEqual(result.value, 'sample text');
     }).getText('#weblogin', function callback(result) {
-      assert.equal(result.value, 'sample text');
+      assert.strictEqual(result.value, 'sample text');
     });
 
     this.client.start(done);

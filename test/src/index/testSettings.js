@@ -94,7 +94,7 @@ describe('test Settings', function () {
     const Settings = common.require('settings/settings.js');
 
     let settings = Settings.parse({
-      selenium : {
+      selenium: {
         start_process: false
       },
       selenium_host: 'localhost.org',
@@ -178,12 +178,12 @@ describe('test Settings', function () {
       }
     });
 
-    assert.deepEqual(client.options.request_timeout_options, {
+    assert.deepStrictEqual(client.options.request_timeout_options, {
       timeout: 10000,
       retry_attempts: 3
     });
 
-    assert.deepEqual(client.options.webdriver.timeout_options, {
+    assert.deepStrictEqual(client.options.webdriver.timeout_options, {
       timeout: 10000,
       retry_attempts: 3
     });
@@ -192,8 +192,8 @@ describe('test Settings', function () {
     let HttpRequest = common.require('http/request.js');
     let request = new HttpRequest({});
 
-    assert.equal(request.httpOpts.timeout, 10000);
-    assert.equal(request.retryAttempts, 3);
+    assert.strictEqual(request.httpOpts.timeout, 10000);
+    assert.strictEqual(request.retryAttempts, 3);
   });
 
   it('Test initialize with parallel cli argument', function () {
@@ -207,4 +207,59 @@ describe('test Settings', function () {
 
     assert.strictEqual(settings.testWorkersEnabled, true);
   });
+});
+
+it('recursive extends in test_settings', function () {
+
+  const baseSettings = {
+    test_settings: {
+      browserstack: {
+        selenium: {
+          host: 'hub-cloud.browserstack.com',
+          port: 443
+        },
+        desiredCapabilities: {
+          'bstack:options': {
+            local: 'false'
+          }
+        },
+  
+        disable_error_log: true,
+        webdriver: {
+          keep_alive: true,
+          start_process: false
+        }
+      },
+      'browserstack.chrome': {
+        extends: 'browserstack',
+        desiredCapabilities: {
+          browserName: 'chrome',
+          chromeOptions: {
+            w3c: false
+          }
+        }
+      },
+      'browserstack.chrome_mac': {
+        extends: 'browserstack.chrome',
+        desiredCapabilities: {
+          os: 'OS X'
+        }
+      }
+    }
+  };
+  const expectedDesiredCapabilites = {
+    os: 'OS X',
+    browserName: 'chrome',
+    chromeOptions: {
+      w3c: false
+    },
+    'bstack:options': {
+      local: 'false'
+    }
+  };
+  const parsedSetting  = Settings.parse({}, baseSettings, {}, 'browserstack.chrome_mac');
+  assert.strictEqual(parsedSetting.selenium.host, 'hub-cloud.browserstack.com');
+  assert.strictEqual(parsedSetting.selenium.port, 443);
+  assert.deepStrictEqual(parsedSetting.desiredCapabilities, expectedDesiredCapabilites);
+  assert.deepStrictEqual(parsedSetting.desiredCapabilities.chromeOptions, {w3c: false});
 });

@@ -44,7 +44,7 @@ describe('testRunnerUnitTests', function() {
             throw results.lastError;
           }
 
-          assert.equal(settings.globals.calls, 2);
+          assert.strictEqual(settings.globals.calls, 2);
         }
       }
     };
@@ -66,7 +66,7 @@ describe('testRunnerUnitTests', function() {
             throw results.lastError;
           }
 
-          assert.equal(settings.globals.calls, 2);
+          assert.strictEqual(settings.globals.calls, 2);
         }
       }
     };
@@ -109,9 +109,9 @@ describe('testRunnerUnitTests', function() {
             assert.strictEqual(results.assertions, 1);
             assert.strictEqual(results.errmessages.length, 0);
             assert.ok(results.lastError instanceof Error);
-            assert.strictEqual(results.lastError.name, 'AssertionError [ERR_ASSERTION]');
+            assert.strictEqual(results.lastError.name, 'AssertionError');
             assert.ok(results.modules['unittest-failure'].lastError instanceof Error);
-            assert.strictEqual(results.modules['unittest-failure'].lastError.name, 'AssertionError [ERR_ASSERTION]');
+            assert.strictEqual(results.modules['unittest-failure'].lastError.name, 'AssertionError');
             assert.strictEqual(results.modules['unittest-failure'].assertionsCount, 1);
             assert.strictEqual(results.modules['unittest-failure'].testsCount, 1);
             assert.strictEqual(results.modules['unittest-failure'].failedCount, 1);
@@ -122,10 +122,10 @@ describe('testRunnerUnitTests', function() {
             const {completed} = results.modules['unittest-failure'];
             const {assertions} = completed.demoTest;
             assert.strictEqual(completed.demoTest.failed, 1);
-            assert.ok(completed.demoTest.stackTrace.startsWith('AssertionError [ERR_ASSERTION]: 1 == 0 - expected "0" but got: "1"'));
+            assert.ok(completed.demoTest.stackTrace.startsWith('AssertionError [ERR_ASSERTION]: Expected values to be strictly equal'));
             assert.strictEqual(assertions[0].failure, 'expected "0" but got: "1"');
-            assert.strictEqual(assertions[0].fullMsg, '1 == 0 - expected "0" but got: "1"');
-            assert.strictEqual(assertions[0].message, '1 == 0 - expected "0" but got: "1"');
+            assert.strictEqual(assertions[0].fullMsg, 'Expected values to be strictly equal:\n\n1 !== 0\n - expected "0" but got: "1"');
+            assert.strictEqual(assertions[0].message, 'Expected values to be strictly equal:\n\n1 !== 0\n - expected "0" but got: "1"');
             assert.ok(assertions[0].stackTrace.startsWith, 'AssertionError [ERR_ASSERTION]: 1 == 0 - expected "0" but got: "1"');
           }
         }
@@ -138,8 +138,7 @@ describe('testRunnerUnitTests', function() {
       })
       .then(data => {
         let content = data.toString();
-
-        assert.ok(content.includes('<failure message="1 == 0 - expected &#34;0&#34; but got: &#34;1&#34;">'), 'Report does not contain failure information.');
+        assert.ok(content.includes('<failure message="Expected values to be strictly equal:\n\n1 !== 0\n - expected &#34;0&#34; but got: &#34;1&#34;">AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:'), 'Report does not contain failure information.');
       });
   });
 
@@ -174,8 +173,8 @@ describe('testRunnerUnitTests', function() {
         let err = runner.results.lastError;
         assert.ok(err instanceof Error);
         assert.ok(fileExistsSync('output/unittest-async-timeout.xml'));
-        assert.equal(err.name, 'TimeoutError');
-        assert.equal(err.message, 'done() callback timeout of 10ms was reached while executing "demoTest". ' +
+        assert.strictEqual(err.name, 'TimeoutError');
+        assert.strictEqual(err.message, 'done() callback timeout of 10ms was reached while executing "demoTest". ' +
         'Make sure to call the done() callback when the operation finishes.');
       });
   });
@@ -197,6 +196,7 @@ function readFilePromise(fileName) {
 function fileExistsSync(path) {
   try {
     fs.statSync(path);
+
     return true;
   } catch (e) {
     return false;

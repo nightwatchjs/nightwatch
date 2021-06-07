@@ -37,14 +37,11 @@ describe('test Parallel Execution Exit Code', function() {
         };
 
         util.inherits(Child, events.EventEmitter);
+
         return new Child();
       }
     });
 
-    mockery.registerMock('../lib/runner/run.js', {
-      run: function(source, settings, opts, callback) {
-      }
-    });
     mockery.registerMock('os', {
       cpus: function() {
         return [0, 1, 2];
@@ -72,7 +69,7 @@ describe('test Parallel Execution Exit Code', function() {
     let setExitCode = runner.processListener.setExitCode;
     runner.processListener.setExitCode = function(code) {
       runner.processListener.setExitCode = setExitCode;
-      assert.equal(code, 1);
+      assert.strictEqual(code, 1);
     };
 
     return runner.runTests();
@@ -90,7 +87,7 @@ describe('test Parallel Execution Exit Code', function() {
     let setExitCode = runner.processListener.setExitCode;
     runner.processListener.setExitCode = function(code) {
       runner.processListener.setExitCode = setExitCode;
-      assert.equal(code, 1);
+      assert.strictEqual(code, 1);
     };
 
     return runner.runTests();

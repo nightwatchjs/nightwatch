@@ -1,23 +1,28 @@
 # Nightwatch.js
 
-#### [Homepage](https://nightwatchjs.org) | [Getting Started](https://nightwatchjs.org/gettingstarted) | [Developer Guide](https://nightwatchjs.org/guide) | [API Reference](https://nightwatchjs.org/api) | [About](https://nightwatchjs.org/about)
+[![npm](https://img.shields.io/npm/v/nightwatch.svg)](https://www.npmjs.com/package/nightwatch)
+[![Node.js CI](https://github.com/nightwatchjs/nightwatch/actions/workflows/build-node.yaml/badge.svg?branch=main)](https://github.com/nightwatchjs/nightwatch/actions/workflows/build-node.yaml)
+[![codecov](https://codecov.io/gh/nightwatchjs/nightwatch/branch/main/graph/badge.svg?token=MSObyfECEh)](https://codecov.io/gh/nightwatchjs/nightwatch)
+[![npm package](https://img.shields.io/npm/dm/nightwatch.svg)](https://www.npmjs.com/package/nightwatch)
+[![Join the chat at https://gitter.im/nightwatchjs/nightwatch](https://badges.gitter.im/nightwatchjs/nightwatch.svg)](https://gitter.im/nightwatchjs/nightwatch)
+[![Twitter Follow](https://img.shields.io/twitter/follow/nightwatchjs.svg?style=social)](https://twitter.com/nightwatchjs)
+
+<p align="center">
+  <img alt="Nightwatch.js Schematic Logo" src=".github/assets/nightwatch-logo.svg" width=300 />
+</p>
+
+#### [Homepage](https://nightwatchjs.org) &bullet; [Getting Started](https://nightwatchjs.org/gettingstarted) &bullet; [Developer Guide](https://nightwatchjs.org/guide) &bullet; [API Reference](https://nightwatchjs.org/api) &bullet; [About](https://nightwatchjs.org/about)
+
 ***
 Automated end-to-end testing framework powered by [Node.js](http://nodejs.org/) and using [W3C Webdriver](https://www.w3.org/TR/webdriver/) (formerly [Selenium](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol)).
 
-Nightwatch is a complete and integrated solution for end-to-end testing of web applications and websites, and also for Node.js unit and integration testing. 
+Nightwatch is a complete and integrated solution for end-to-end testing of web applications and websites. It can also be used for Node.js unit and integration testing. 
 
-[![npm](https://img.shields.io/npm/v/nightwatch.svg)](https://www.npmjs.com/package/nightwatch)
-[![Node.js CI](https://github.com/nightwatchjs/nightwatch/actions/workflows/build-node.yaml/badge.svg?branch=main)](https://github.com/nightwatchjs/nightwatch/actions/workflows/build-node.yaml)
-[![Coverage Status](https://coveralls.io/repos/nightwatchjs/nightwatch/badge.svg?branch=master&service=github)](https://coveralls.io/github/nightwatchjs/nightwatch?branch=master)
-[![npm package](https://img.shields.io/npm/dm/nightwatch.svg)](https://www.npmjs.com/package/nightwatch)
-[![Join the chat at https://gitter.im/nightwatchjs/nightwatch](https://badges.gitter.im/nightwatchjs/nightwatch.svg)](https://gitter.im/nightwatchjs/nightwatch)
-[![Twitter Follow](https://img.shields.io/twitter/follow/nightwatchjs.svg?style=social)](https://twitter.com/nightwatchjs) 
+## Nightwatch v1.7-beta
 
-[Changelog](https://nightwatchjs.org/releases/) | [Github Discussions](https://github.com/nightwatchjs/nightwatch/discussions)
-***
+#### [Changelog](https://github.com/nightwatchjs/nightwatch/releases/tag/v1.7.0) | [Github Discussions](https://github.com/nightwatchjs/nightwatch/discussions)
 
-## Nightwatch v1.6
-We're delighted to announce the release of __Nightwatch v1.6__. Please see the [release notes](https://github.com/nightwatchjs/nightwatch/releases) and [upgrade guide](https://github.com/nightwatchjs/nightwatch/wiki/Migrating-to-Nightwatch-1.0) if you are upgrading from a pre v1.0 version. 
+We're delighted to announce the release of __Nightwatch v1.7__ in the NPM beta channel. Please see the [release notes](https://github.com/nightwatchjs/nightwatch/releases/tag/v1.7.0) and [upgrade guide](https://github.com/nightwatchjs/nightwatch/wiki/Migrating-to-Nightwatch-1.0) if you are upgrading from a pre v1.0 version. 
 
 ## Up &amp; Running in 2 Minutes:
 
@@ -45,7 +50,7 @@ $ npm install chromedriver --save-dev
 or install everything with one line:
 
 ```sh
-$ npm i nightwatch geckodriver chromedriver --save-dev
+$ npm install nightwatch geckodriver chromedriver --save-dev
 ```
 
 #### 3. Run a Demo Test:
@@ -58,8 +63,6 @@ Below will run a basic test which opens the search engine [Ecosia.org](https://e
 $ npx nightwatch node_modules/nightwatch/examples/tests/ecosia.js
 ```
 
-__Windows users__ might need to run `node node_modules/.bin/nightwatch`.
-
 ---
 
 ## Manually Download Browser Drivers
@@ -67,7 +70,7 @@ __Windows users__ might need to run `node node_modules/.bin/nightwatch`.
 Nightwatch uses a [WebDriver](https://www.w3.org/TR/webdriver/) compatible server to control the browser. WebDriver is a W3C specification and industry standard which provides a platform and HTTP protocol to interact with a browser.
    
 Nightwatch includes support for automatically managing the following services:
-### ChromeDriver 
+#### ChromeDriver 
 - for running tests against the Chrome browser;
 - download url: [https://sites.google.com/a/chromium.org/chromedriver/downloads](https://sites.google.com/a/chromium.org/chromedriver/downloads).
 
@@ -81,11 +84,11 @@ desiredCapabilities : {
 }
 ```
 
-### GeckoDriver
+#### GeckoDriver
 - for running tests against the Mozilla Firefox browser;
 - download url: [https://github.com/mozilla/geckodriver/releases](https://github.com/mozilla/geckodriver/releases).
  
-### Selenium Standalone Server 
+#### Selenium Standalone Server 
 - allows managing multiple browser configurations in one place and also to make use of the [Selenium Grid](https://github.com/SeleniumHQ/selenium/wiki/Grid2) service;
 - the selenium server jar file `selenium-server-standalone-3.x.x.jar` can be downloaded from the Selenium releases page: https://selenium-release.storage.googleapis.com/index.html
 
@@ -94,7 +97,7 @@ desiredCapabilities : {
 Specific WebDriver setup guides can be found on the [Docs website](http://nightwatchjs.org/gettingstarted/#browser-drivers-setup). Legacy Selenium drivers setup guides along with debugging instructions can be found on the [**Wiki**](https://github.com/nightwatchjs/nightwatch/wiki).
 
 ## Examples
-Example tests are included in the [`examples`](https://github.com/nightwatchjs/nightwatch/tree/master/examples) folder which demonstrate the usage of several Nightwatch features. 
+Example tests are included in the [`examples`](https://github.com/nightwatchjs/nightwatch/tree/main/examples) folder which demonstrate the usage of several Nightwatch features. 
 
 You can also check out the [nightwatch-website-tests](https://github.com/nightwatchjs/nightwatch-website-tests) repo for example tests against the [nightwatchjs.org](https://nightwatchjs.org) website.
 

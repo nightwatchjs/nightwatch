@@ -1,10 +1,10 @@
 module.exports = {
 
-  before : function() {
+  before: function() {
 
   },
 
-  after : function() {
+  after: function() {
 
   }
 };
