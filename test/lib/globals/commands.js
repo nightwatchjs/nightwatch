@@ -8,7 +8,9 @@ module.exports = {
     this.server.on('listening', () => {
 
       Nightwatch.initClient({
-        webdriver: {
+        use_selenium_webdriver: true,
+        selenium: {
+          port: 10195,
           start_process: false
         },
         output: process.env.VERBOSE === '1' || false,
