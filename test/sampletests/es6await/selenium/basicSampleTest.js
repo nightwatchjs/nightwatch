@@ -1,14 +1,20 @@
 const assert = require('assert');
 
 module.exports = {
-  'basic test with ES6 async/await': async (client) => {
-    client.url('http://localhost');
+  'basic test with ES6 async/await': async (browser) => {
+    const currentUrl = await browser
+      .url('http://localhost').url();
 
-    const currentUrl = await client.url();
     assert.strictEqual(currentUrl.value, 'http://localhost');
 
-    client.assert.elementPresent('#weblogin');
+    const assertResult = await browser.assert.elementPresent('#weblogin');
+    assert.deepStrictEqual(assertResult, {
+      sessionId: '1352110219202',
+      status: 0,
+      value: [{ELEMENT: '0'}],
+      returned: 1
+    });
 
-    await client.end();
+    await browser.end();
   }
 };

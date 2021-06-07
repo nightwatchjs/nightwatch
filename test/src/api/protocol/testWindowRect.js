@@ -14,8 +14,8 @@ describe('windowRect', function() {
       });
 
       throw new Error('Unexpected error');
-    } catch(err) {
-      assert.strictEqual(err.message, 'Error while running "windowRect" command: Width argument passed to .windowRect() must be a number; received: string (a).')
+    } catch (err) {
+      assert.strictEqual(err.message, 'Error while running "windowRect" command: Width argument passed to .windowRect() must be a number; received: string (a).');
     }
 
     try {
@@ -25,8 +25,8 @@ describe('windowRect', function() {
       });
 
       throw new Error('Unexpected error');
-    } catch(err) {
-      assert.strictEqual(err.message, 'Error while running "windowRect" command: Height argument passed to .windowRect() must be a number; received: string (a).')
+    } catch (err) {
+      assert.strictEqual(err.message, 'Error while running "windowRect" command: Height argument passed to .windowRect() must be a number; received: string (a).');
     }
 
     try {
@@ -36,8 +36,8 @@ describe('windowRect', function() {
       });
 
       throw new Error('Unexpected error');
-    } catch(err) {
-      assert.strictEqual(err.message, 'Error while running "windowRect" command: Attributes "width" and "height" must be specified together.')
+    } catch (err) {
+      assert.strictEqual(err.message, 'Error while running "windowRect" command: Attributes "width" and "height" must be specified together.');
     }
 
     try {
@@ -47,8 +47,8 @@ describe('windowRect', function() {
       });
 
       throw new Error('Unexpected error');
-    } catch(err) {
-      assert.strictEqual(err.message, 'Error while running "windowRect" command: X position argument passed to .windowRect() must be a number; received: string (a).')
+    } catch (err) {
+      assert.strictEqual(err.message, 'Error while running "windowRect" command: X position argument passed to .windowRect() must be a number; received: string (a).');
     }
 
     try {
@@ -58,8 +58,8 @@ describe('windowRect', function() {
       });
 
       throw new Error('Unexpected error');
-    } catch(err) {
-      assert.strictEqual(err.message, 'Error while running "windowRect" command: Y position argument passed to .windowRect() must be a number; received: string (a).')
+    } catch (err) {
+      assert.strictEqual(err.message, 'Error while running "windowRect" command: Y position argument passed to .windowRect() must be a number; received: string (a).');
     }
 
     try {
@@ -69,8 +69,8 @@ describe('windowRect', function() {
       });
 
       throw new Error('Unexpected error');
-    } catch(err) {
-      assert.strictEqual(err.message, 'Error while running "windowRect" command: Attributes "x" and "y" must be specified together.')
+    } catch (err) {
+      assert.strictEqual(err.message, 'Error while running "windowRect" command: Attributes "x" and "y" must be specified together.');
     }
   });
 
@@ -90,7 +90,7 @@ describe('windowRect', function() {
       assertion: function(opts) {
         assert.strictEqual(opts.method, 'POST');
         assert.strictEqual(opts.path, '/session/1352110219202/window/rect');
-        assert.deepEqual(opts.data, { width: 10, height: 10, x: 10, y: 10 } );
+        assert.deepStrictEqual(opts.data, {width: 10, height: 10, x: 10, y: 10});
       },
       commandName: 'windowRect',
       args: [{width: 10, height: 10, x: 10, y: 10}]

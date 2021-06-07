@@ -1,7 +1,7 @@
 describe('sampleWithAssertionFailedInBefore', function() {
   before(function(c) {
     c.url('http://localhost');
-    c.assert.equal(0,1)
+    c.assert.equal(0, 1);
   });
 
   test('demo test async', c => {
@@ -9,6 +9,6 @@ describe('sampleWithAssertionFailedInBefore', function() {
   });
 
   after(function(c) {
-    c.assert.strictEqual(0,1)
+    c.assert.strictEqual(0, 1);
   });
 });

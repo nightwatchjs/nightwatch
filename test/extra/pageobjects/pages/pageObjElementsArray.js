@@ -1,6 +1,6 @@
 module.exports = {
   elements: [
-    { someElement: '#element' },
-    { otherElement: '#otherElement' }
+    {someElement: '#element'},
+    {otherElement: '#otherElement'}
   ]
 };

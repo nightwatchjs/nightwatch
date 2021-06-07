@@ -50,14 +50,15 @@ describe('testRunWithServerErrors', function() {
       waitForConditionTimeout: 150,
       waitForConditionPollInterval: 50,
       reporter(results, cb) {
-        assert.deepEqual(results.errmessages, []);
+        assert.strictEqual(results.errmessages.length, 1);
+        assert.ok(results.errmessages[0].includes('502 Bad Gateway'));
         assert.strictEqual(results.passed, 2);
         assert.strictEqual(results.failed, 2);
         assert.strictEqual(results.assertions, 4);
-        assert.strictEqual(results.errors, 0);
+        assert.strictEqual(results.errors, 1);
         assert.strictEqual(results.skipped, 0);
         const {completed} = results.modules.sampleTestWithServerError;
-        assert.ok(completed.demoTest.lastError.message.includes(`Server Error: An unknown error has occurred – 
+        assert.ok(completed.demoTest.lastError.message.includes(`An unknown error has occurred – 
 
 502 Bad Gateway`));
 
@@ -74,7 +75,7 @@ describe('testRunWithServerErrors', function() {
       skip_testcases_on_fail: false,
       output: false,
       report_command_errors: true,
-      silent: false,
+      silent: true,
       persist_globals: true,
       disable_error_log: 0,
       globals,

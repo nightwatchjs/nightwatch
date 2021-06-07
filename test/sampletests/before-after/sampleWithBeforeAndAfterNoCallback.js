@@ -5,7 +5,7 @@ module.exports = {
     });
   },
 
-  demoTestAsyncOne : function (client) {
+  demoTestAsyncOne: function (client) {
     client.url('http://localhost');
   },
 

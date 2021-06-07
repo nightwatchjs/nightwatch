@@ -4,7 +4,7 @@ const assert = require('assert');
 const lodashMerge = require('lodash.merge');
 const common = require('../common.js');
 const Nightwatch = require('../lib/nightwatch.js');
-const MockServer  = require('../lib/mockserver.js')
+const MockServer  = require('../lib/mockserver.js');
 const Settings = common.require('settings/settings.js');
 const Runner = common.require('runner/runner.js');
 const Reporter = common.require('reporter/index.js');
@@ -69,7 +69,7 @@ class Globals {
         version2: false,
         start_process: false
       },
-      webdriver:{
+      webdriver: {
         start_process: true
       }
     });

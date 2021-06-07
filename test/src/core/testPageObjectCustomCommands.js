@@ -49,9 +49,9 @@ describe('test PageObject Commands', function () {
     let api = this.client.api;
 
     const page = api.page.simplePageObjWithCommandsObject();
-    assert.equal(typeof page.dropdownSelect, 'function');
-    assert.equal(typeof page.testCommand, 'function');
-    assert.equal(typeof page.getUrl, 'function');
+    assert.strictEqual(typeof page.dropdownSelect, 'function');
+    assert.strictEqual(typeof page.testCommand, 'function');
+    assert.strictEqual(typeof page.getUrl, 'function');
 
   });
 
@@ -74,7 +74,7 @@ describe('test PageObject Commands', function () {
     });
     let api = this.client.api;
 
-    const page = api.page.simplePageObjWithCommandsObject().customExecute({ prop: true });
+    const page = api.page.simplePageObjWithCommandsObject().customExecute({prop: true});
 
     return this.client.start();
   });
@@ -86,8 +86,8 @@ describe('test PageObject Commands', function () {
       api.page.simplePageObjWithError();
     } catch (err) {
       assert.ok(err instanceof Error);
-      assert.equal(err.message, 'Trying to overwrite page object/section "simplePageObjWithError"  method/property "name".');
-      assert.equal(err.detailedErr, 'Using dropdownSelect, dropdownSelectByText, scrollToElement, name, testCommand.' );
+      assert.strictEqual(err.message, 'Trying to overwrite page object/section "simplePageObjWithError"  method/property "name".');
+      assert.strictEqual(err.detailedErr, 'Using dropdownSelect, dropdownSelectByText, scrollToElement, name, testCommand.');
 
       done();
     }

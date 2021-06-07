@@ -25,7 +25,7 @@ describe('sample test with skipTestcasesOnFail', function () {
     client.globals.calls++;
 
     client.end = function () {
-      client.assert.fail('End should not be called.')
+      client.assert.fail('End should not be called.');
     };
 
     client.url('http://localhost')

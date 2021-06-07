@@ -28,12 +28,12 @@ describe('test PageObjectApi', function () {
     assert.ok('client' in page);
     assert.ok('testCommand' in page);
 
-    assert.equal(typeof page.api, 'object');
-    assert.equal(typeof page.client, 'object');
-    assert.equal(typeof page.elements, 'object');
-    assert.equal(page.name, 'simplePageObj');
-    assert.equal(page.url, 'http://localhost.com');
-    assert.equal(page.testCommand(), page);
+    assert.strictEqual(typeof page.api, 'object');
+    assert.strictEqual(typeof page.client, 'object');
+    assert.strictEqual(typeof page.elements, 'object');
+    assert.strictEqual(page.name, 'simplePageObj');
+    assert.strictEqual(page.url, 'http://localhost.com');
+    assert.strictEqual(page.testCommand(), page);
 
     assert.ok('loginCss' in page.elements);
     assert.ok('loginXpath' in page.elements);
@@ -43,12 +43,12 @@ describe('test PageObjectApi', function () {
     assert.ok('getStarted' in page.section.signUp.section);
 
     var elements = page.elements;
-    assert.equal(elements.loginCss.selector, '#weblogin');
-    assert.equal(elements.loginCss.locateStrategy, 'css selector');
-    assert.equal(elements.loginXpath.selector, '//weblogin');
-    assert.equal(elements.loginXpath.locateStrategy, 'xpath');
-    assert.equal(elements.loginAsString.selector, '#weblogin');
-    assert.equal(elements.loginAsString.locateStrategy, 'css selector');
+    assert.strictEqual(elements.loginCss.selector, '#weblogin');
+    assert.strictEqual(elements.loginCss.locateStrategy, 'css selector');
+    assert.strictEqual(elements.loginXpath.selector, '//weblogin');
+    assert.strictEqual(elements.loginXpath.locateStrategy, 'xpath');
+    assert.strictEqual(elements.loginAsString.selector, '#weblogin');
+    assert.strictEqual(elements.loginAsString.locateStrategy, 'css selector');
   });
 
   it('testPageObjectElementsArray', function () {
@@ -57,8 +57,8 @@ describe('test PageObjectApi', function () {
 
     assert.ok('someElement' in page.elements);
     assert.ok('otherElement' in page.elements);
-    assert.equal(page.elements.someElement.selector, '#element');
-    assert.equal(page.elements.otherElement.selector, '#otherElement');
+    assert.strictEqual(page.elements.someElement.selector, '#element');
+    assert.strictEqual(page.elements.otherElement.selector, '#otherElement');
   });
 
   it('testPageObjectSubDirectory', function () {
@@ -80,12 +80,12 @@ describe('test PageObjectApi', function () {
     assert.ok('ok' in page.verify);
     assert.ok('element' in page.expect);
     assert.ok('section' in page.expect);
-    assert.equal(typeof page.assert.containsText, 'function');
-    assert.equal(typeof page.verify.containsText, 'function');
-    assert.equal(typeof page.assert.title, 'function');
-    assert.equal(typeof page.verify.title, 'function');
-    assert.equal(typeof page.expect.element('@loginCss'), 'object');
-    assert.equal(typeof page.expect.section('signUp'), 'object');
+    assert.strictEqual(typeof page.assert.containsText, 'function');
+    assert.strictEqual(typeof page.verify.containsText, 'function');
+    assert.strictEqual(typeof page.assert.title, 'function');
+    assert.strictEqual(typeof page.verify.title, 'function');
+    assert.strictEqual(typeof page.expect.element('@loginCss'), 'object');
+    assert.strictEqual(typeof page.expect.section('signUp'), 'object');
   });
 
   it('testPageObjectCommandsLoaded', function () {

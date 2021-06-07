@@ -75,8 +75,8 @@ describe('testRunnerSessionCreate', function() {
     let globals = {
       reporter(results) {
         const sep = path.sep;
-        assert.equal(results.errors, 2);
-        assert.equal(Object.keys(results.modules).length, 2);
+        assert.strictEqual(results.errors, 2);
+        assert.strictEqual(Object.keys(results.modules).length, 2);
         assert.ok(Object.keys(results.modules).includes(`async${sep}test${sep}sample`));
         assert.ok(Object.keys(results.modules).includes(`simple${sep}test${sep}sample`));
         assert.ok(results.lastError instanceof Error);
@@ -109,14 +109,14 @@ describe('testRunnerSessionCreate', function() {
 
     let globals = {
       reporter(results) {
-        assert.equal(results.errors, 1);
-        assert.equal(results.errmessages.length, 1);
-        assert.equal(Object.keys(results.modules).length, 1);
+        assert.strictEqual(results.errors, 1);
+        assert.strictEqual(results.errmessages.length, 1);
+        assert.strictEqual(Object.keys(results.modules).length, 1);
 
         assert.strictEqual(results.lastError.sessionCreate, true);
         assert.strictEqual(results.lastError.sessionConnectionRefused, true);
         assert.ok(results.lastError instanceof Error);
-        assert.equal(results.lastError.code, 'ECONNREFUSED');
+        assert.strictEqual(results.lastError.code, 'ECONNREFUSED');
         assert.ok(results.lastError.message.includes('An error occurred while retrieving a new session: "Connection refused to 127.0.0.1:1000". If the Webdriver/Selenium service is managed by Nightwatch, check if "start_process" is set to "true".'));
       }
     };
@@ -136,7 +136,7 @@ describe('testRunnerSessionCreate', function() {
       output_folder: false
     }).catch(err => {
       assert.ok(err instanceof Error);
-      assert.equal(err.code, 'ECONNREFUSED');
+      assert.strictEqual(err.code, 'ECONNREFUSED');
       assert.strictEqual(err.sessionCreate, true);
       assert.strictEqual(err.sessionConnectionRefused, true);
     });

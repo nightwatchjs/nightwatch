@@ -9,8 +9,8 @@ describe('session commands', function() {
   it('testSessions', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'GET');
-        assert.equal(opts.path, '/sessions');
+        assert.strictEqual(opts.method, 'GET');
+        assert.strictEqual(opts.path, '/sessions');
       },
       commandName: 'sessions',
       args: []
@@ -20,8 +20,8 @@ describe('session commands', function() {
   it('testSessionDefault', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'GET');
-        assert.equal(opts.path, '/session/1352110219202');
+        assert.strictEqual(opts.method, 'GET');
+        assert.strictEqual(opts.path, '/session/1352110219202');
       },
       commandName: 'session',
       args: []
@@ -31,8 +31,8 @@ describe('session commands', function() {
   it('testSessionGETImplicit', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'GET');
-        assert.equal(opts.path, '/session/1352110219202');
+        assert.strictEqual(opts.method, 'GET');
+        assert.strictEqual(opts.path, '/session/1352110219202');
       },
       commandName: 'session',
       args: []
@@ -42,8 +42,8 @@ describe('session commands', function() {
   it('testSessionGETExplicit', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'GET');
-        assert.equal(opts.path, '/session/1352110219202');
+        assert.strictEqual(opts.method, 'GET');
+        assert.strictEqual(opts.path, '/session/1352110219202');
       },
       commandName: 'session',
       args: ['GET']
@@ -53,8 +53,8 @@ describe('session commands', function() {
   it('testSessionGETImplicitById', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'GET');
-        assert.equal(opts.path, '/session/1352110219202');
+        assert.strictEqual(opts.method, 'GET');
+        assert.strictEqual(opts.path, '/session/1352110219202');
       },
       commandName: 'session',
       args: ['1352110219202']
@@ -64,8 +64,8 @@ describe('session commands', function() {
   it('testSessionGETExplicitById', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'GET');
-        assert.equal(opts.path, '/session/1352110219202');
+        assert.strictEqual(opts.method, 'GET');
+        assert.strictEqual(opts.path, '/session/1352110219202');
       },
       commandName: 'session',
       args: ['GET', '1352110219202']
@@ -75,8 +75,8 @@ describe('session commands', function() {
   it('testSessionDELETE', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'DELETE');
-        assert.equal(opts.path, '/session/1352110219202');
+        assert.strictEqual(opts.method, 'DELETE');
+        assert.strictEqual(opts.path, '/session/1352110219202');
       },
       commandName: 'session',
       args: ['DELETE']
@@ -86,8 +86,8 @@ describe('session commands', function() {
   it('testSessionDELETEWithCallback', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'DELETE');
-        assert.equal(opts.path, '/session/1352110219202');
+        assert.strictEqual(opts.method, 'DELETE');
+        assert.strictEqual(opts.path, '/session/1352110219202');
       },
       commandName: 'session',
       args: ['DELETE', function() {
@@ -99,8 +99,8 @@ describe('session commands', function() {
   it('testSessionDELETEById', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'DELETE');
-        assert.equal(opts.path, '/session/1352110219202');
+        assert.strictEqual(opts.method, 'DELETE');
+        assert.strictEqual(opts.path, '/session/1352110219202');
       },
       commandName: 'session',
       args: ['DELETE', '1352110219202']
@@ -110,8 +110,8 @@ describe('session commands', function() {
   it('testSessionPOST', function() {
     Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.equal(opts.path, '/session');
+        assert.strictEqual(opts.method, 'POST');
+        assert.strictEqual(opts.path, '/session');
       },
       commandName: 'session',
       args: ['POST']

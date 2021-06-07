@@ -329,7 +329,7 @@ describe('expect.attribute', function() {
       assert.strictEqual(expect.assertion.actual, 'hp vasq');
       assert.strictEqual(expect.assertion.resultValue, 'hp vasq');
       assert.strictEqual(expect.assertion.passed, false);
-      assert.ok(expect.assertion.messageParts.includes( ' equal to: "vasq"'));
+      assert.ok(expect.assertion.messageParts.includes(' equal to: "vasq"'));
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have attribute "class" equal to: "vasq"'));
     });
   });
@@ -609,7 +609,7 @@ describe('expect.attribute', function() {
       assert.strictEqual(expect.assertion.negate, true);
       assert.strictEqual(expect.assertion.resultValue, 'xx');
       assert.strictEqual(expect.assertion.passed, false);
-      assert.strictEqual(expect.assertion.messageParts[0], ' not contain: "xx"' );
+      assert.strictEqual(expect.assertion.messageParts[0], ' not contain: "xx"');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have attribute "class" not contain: "xx"'));
     });
   });
@@ -634,7 +634,7 @@ describe('expect.attribute', function() {
       assert.strictEqual(expect.assertion.negate, true);
       assert.strictEqual(expect.assertion.resultValue, 'xx');
       assert.strictEqual(expect.assertion.passed, false);
-      assert.strictEqual(expect.assertion.messageParts[0], ' not start with: "xx"' );
+      assert.strictEqual(expect.assertion.messageParts[0], ' not start with: "xx"');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have attribute "class" not start with: "xx"'));
     });
   });
@@ -659,7 +659,7 @@ describe('expect.attribute', function() {
       assert.strictEqual(expect.assertion.negate, true);
       assert.strictEqual(expect.assertion.resultValue, 'xx');
       assert.strictEqual(expect.assertion.passed, false);
-      assert.strictEqual(expect.assertion.messageParts[0], ' not end with: "xx"' );
+      assert.strictEqual(expect.assertion.messageParts[0], ' not end with: "xx"');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have attribute "class" not end with: "xx"'));
     });
   });

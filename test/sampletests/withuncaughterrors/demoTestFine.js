@@ -6,7 +6,7 @@ describe('passing test', function () {
     client
       .url('http://localhost')
       .assert.elementPresent('#weblogin')
-      .waitForElementPresent('#weblogin')
+      .waitForElementPresent('#weblogin');
   });
 
 });

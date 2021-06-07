@@ -25,7 +25,7 @@ describe('assert.cssClassPresent', function () {
         assert.strictEqual(typeof args[2], 'function');
       },
       assertion({reporter, instance, queueOpts, failure, message}) {
-        assert.deepStrictEqual(instance.args, [ '.test_element', 'test-css-class' ]);
+        assert.deepStrictEqual(instance.args, ['.test_element', 'test-css-class']);
         assert.deepStrictEqual(instance.options, {elementSelector: true});
         assert.strictEqual(failure, false);
         assert.strictEqual(instance.hasFailure(), false);
@@ -51,7 +51,7 @@ describe('assert.cssClassPresent', function () {
         assert.strictEqual(typeof args[2], 'function');
       },
       assertion({reporter, instance, queueOpts, failure, message}) {
-        assert.deepStrictEqual(instance.args, [ '.test_element', ['test-css-class', 'other-css-class'] ]);
+        assert.deepStrictEqual(instance.args, ['.test_element', ['test-css-class', 'other-css-class']]);
         assert.deepStrictEqual(instance.options, {elementSelector: true});
         assert.strictEqual(failure, false);
         assert.strictEqual(instance.hasFailure(), false);

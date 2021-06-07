@@ -23,7 +23,7 @@ describe('orientation commands', function() {
       assertion: function(opts) {
         strictEqual(opts.method, 'POST');
         strictEqual(opts.path, '/session/1352110219202/orientation');
-        assert.deepEqual(opts.data, {orientation: 'LANDSCAPE'});
+        assert.deepStrictEqual(opts.data, {orientation: 'LANDSCAPE'});
       },
       commandName: 'setOrientation',
       args: ['LANDSCAPE']

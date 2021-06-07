@@ -9,13 +9,13 @@ describe('windowPosition', function() {
   it('test .windowPosition() without offsets and callback', function(done) {
     Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'GET');
-        assert.equal(opts.path, '/session/1352110219202/window/current/position');
+        assert.strictEqual(opts.method, 'GET');
+        assert.strictEqual(opts.path, '/session/1352110219202/window/current/position');
       },
       commandName: 'windowPosition',
       args: ['current']
     }).catch(err => {
-      assert.equal(err.message, 'Error while running "windowPosition" command: Second argument passed to .windowPosition() should be a callback when not passing offsetX and offsetY - undefined given.');
+      assert.strictEqual(err.message, 'Error while running "windowPosition" command: Second argument passed to .windowPosition() should be a callback when not passing offsetX and offsetY - undefined given.');
       done();
     }).catch(err => done(err));
   });
@@ -61,8 +61,8 @@ describe('windowPosition', function() {
   it('test .windowPosition() GET', function(done) {
     Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'GET');
-        assert.equal(opts.path, '/session/1352110219202/window/current/position');
+        assert.strictEqual(opts.method, 'GET');
+        assert.strictEqual(opts.path, '/session/1352110219202/window/current/position');
       },
       commandName: 'windowPosition',
       args: ['current', function() {}]
@@ -72,8 +72,8 @@ describe('windowPosition', function() {
   it('test .windowPosition() POST', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.equal(opts.path, '/session/1352110219202/window/current/position');
+        assert.strictEqual(opts.method, 'POST');
+        assert.strictEqual(opts.path, '/session/1352110219202/window/current/position');
       },
       commandName: 'windowPosition',
       args: ['current', 10, 10]
@@ -84,7 +84,7 @@ describe('windowPosition', function() {
     return Globals.protocolTestWebdriver({
       assertion: function(opts) {
         assert.strictEqual(opts.method, 'POST');
-        assert.deepEqual(opts.data, { x: 10, y: 10 });
+        assert.deepStrictEqual(opts.data, {x: 10, y: 10});
         assert.strictEqual(opts.path, '/session/1352110219202/window/rect');
       },
       commandName: 'windowPosition',

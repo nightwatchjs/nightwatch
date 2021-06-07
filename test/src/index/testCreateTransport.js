@@ -18,7 +18,7 @@ describe('Transport.create()', function () {
   it('test create Transport for Selenium3 external with Firefox', function() {
     const client = NightwatchClient.client({
       selenium: {
-        start_process: false,
+        start_process: false
       },
       webdriver: {},
       desiredCapabilities: {
@@ -28,13 +28,13 @@ describe('Transport.create()', function () {
     });
 
     assert.ok(client.transport instanceof Selenium3);
-    assert.equal(client.settings.webdriver.host, 'remote.url');
+    assert.strictEqual(client.settings.webdriver.host, 'remote.url');
   });
 
   it('test create Transport for Selenium3 external with Firefox - seleniumHost property', function() {
     const client = NightwatchClient.client({
       selenium: {
-        start_process: false,
+        start_process: false
       },
       webdriver: {},
       desiredCapabilities: {
@@ -44,7 +44,7 @@ describe('Transport.create()', function () {
     });
 
     assert.ok(client.transport instanceof Selenium3);
-    assert.equal(client.settings.webdriver.host, 'remote.url');
+    assert.strictEqual(client.settings.webdriver.host, 'remote.url');
   });
 
   it('test create Transport for Webdriver external - host property', function() {
@@ -54,11 +54,11 @@ describe('Transport.create()', function () {
       },
       desiredCapabilities: {
         browserName: 'firefox'
-      },
+      }
     });
 
     assert.ok(client.transport instanceof WebDriver);
-    assert.equal(client.settings.webdriver.host, 'remote.url');
+    assert.strictEqual(client.settings.webdriver.host, 'remote.url');
   });
 
   it('test create Transport for Selenium3 external with Chrome', function() {
@@ -70,7 +70,7 @@ describe('Transport.create()', function () {
     });
 
     assert.ok(client.transport instanceof Selenium2);
-    assert.equal(client.settings.webdriver.host, 'remote.url');
+    assert.strictEqual(client.settings.webdriver.host, 'remote.url');
   });
 
   it('test create Transport for Selenium3 managed', function() {
@@ -107,6 +107,19 @@ describe('Transport.create()', function () {
     assert.strictEqual(client.transport instanceof Selenium3, false);
   });
 
+  it('test create Transport with unknown browser', function() {
+    assert.throws(function() {
+      NightwatchClient.client({
+        webdriver: {
+          start_process: true
+        },
+        desiredCapabilities: {
+          browserName: 'firfox'
+        }
+      });
+    }, /Unknown browser: "firfox"; did you mean "firefox"\?$/);
+  });
+
   it('test create Transport for Firefox managed', function() {
     const client = NightwatchClient.client({
       webdriver: {
@@ -137,6 +150,10 @@ describe('Transport.create()', function () {
     assert.strictEqual(client.transport instanceof Selenium2, false);
     assert.strictEqual(client.transport instanceof Selenium3, false);
     assert.strictEqual(client.transport instanceof WebDriver, false);
+    assert.deepStrictEqual(client.session.desiredCapabilities, {
+      browserName: 'chrome',
+      'goog:chromeOptions': {}
+    });
   });
 
   it('test create Transport for Chrome managed with w3c:true', function() {
@@ -147,7 +164,7 @@ describe('Transport.create()', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         chromeOptions: {
-          w3c:true
+          w3c: true
         }
       }
     });
@@ -156,6 +173,12 @@ describe('Transport.create()', function () {
     assert.strictEqual(client.transport instanceof Selenium2, false);
     assert.strictEqual(client.transport instanceof Selenium3, false);
     assert.strictEqual(client.transport instanceof WebDriver, true);
+    assert.deepStrictEqual(client.session.desiredCapabilities, {
+      browserName: 'chrome',
+      'goog:chromeOptions': {
+        w3c: true
+      }
+    });
   });
 
   it('test create Transport for Chrome managed with w3c:false', function() {
@@ -166,7 +189,7 @@ describe('Transport.create()', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         chromeOptions: {
-          w3c:false
+          w3c: false
         }
       }
     });
@@ -175,6 +198,82 @@ describe('Transport.create()', function () {
     assert.strictEqual(client.transport instanceof Selenium2, false);
     assert.strictEqual(client.transport instanceof Selenium3, false);
     assert.strictEqual(client.transport instanceof WebDriver, false);
+    assert.deepStrictEqual(client.session.desiredCapabilities, {
+      browserName: 'chrome',
+      'goog:chromeOptions': {
+        w3c: false
+      }
+    });
+  });
+
+  it('test create Transport for Edge managed with w3c:true', function() {
+    const client = NightwatchClient.client({
+      webdriver: {
+        start_process: true
+      },
+      desiredCapabilities: {
+        browserName: 'MicrosoftEdge',
+        edgeOptions: {
+          w3c: true
+        }
+      }
+    });
+
+    assert.strictEqual(client.transport instanceof JsonWire, false);
+    assert.strictEqual(client.transport instanceof Selenium2, false);
+    assert.strictEqual(client.transport instanceof Selenium3, false);
+    assert.strictEqual(client.transport instanceof WebDriver, true);
+    assert.deepStrictEqual(client.session.desiredCapabilities, {
+      browserName: 'MicrosoftEdge',
+      'ms:edgeOptions': {
+        w3c: true
+      }
+    });
+  });
+
+  it('test create Transport for Edge managed', function() {
+    const client = NightwatchClient.client({
+      webdriver: {
+        start_process: true
+      },
+      desiredCapabilities: {
+        browserName: 'MicrosoftEdge'
+      }
+    });
+
+    assert.ok(client.transport instanceof JsonWire);
+    assert.strictEqual(client.transport instanceof Selenium2, false);
+    assert.strictEqual(client.transport instanceof Selenium3, false);
+    assert.strictEqual(client.transport instanceof WebDriver, false);
+    assert.deepStrictEqual(client.session.desiredCapabilities, {
+      browserName: 'MicrosoftEdge',
+      'ms:edgeOptions': {}
+    });
+  });
+
+  it('test create Transport for Edge managed with w3c:false', function() {
+    const client = NightwatchClient.client({
+      webdriver: {
+        start_process: true
+      },
+      desiredCapabilities: {
+        browserName: 'MicrosoftEdge',
+        'ms:edgeOptions': {
+          w3c: false
+        }
+      }
+    });
+
+    assert.strictEqual(client.transport instanceof JsonWire, true);
+    assert.strictEqual(client.transport instanceof Selenium2, false);
+    assert.strictEqual(client.transport instanceof Selenium3, false);
+    assert.strictEqual(client.transport instanceof WebDriver, false);
+    assert.deepStrictEqual(client.session.desiredCapabilities, {
+      browserName: 'MicrosoftEdge',
+      'ms:edgeOptions': {
+        w3c: false
+      }
+    });
   });
 
   it('test create Transport for Safari managed', function() {
@@ -315,8 +414,8 @@ describe('Transport.create()', function () {
     });
 
     assert.ok(client.transport instanceof Selenium2);
-    assert.equal(client.settings.webdriver.host, 'remote.host');
-    assert.equal(client.settings.webdriver.default_path_prefix, '/wd/hub');
+    assert.strictEqual(client.settings.webdriver.host, 'remote.host');
+    assert.strictEqual(client.settings.webdriver.default_path_prefix, '/wd/hub');
     assert.strictEqual(client.transport instanceof Selenium3, false);
   });
 
@@ -405,7 +504,7 @@ describe('Transport.create()', function () {
       } catch (e) {
         done(e);
       }
-    }, 100)
+    }, 100);
 
   });
 
@@ -461,7 +560,7 @@ describe('Transport.create()', function () {
       } catch (e) {
         done(e);
       }
-    }, 100)
+    }, 100);
 
   });
 });

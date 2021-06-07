@@ -119,6 +119,13 @@ describe('test Utils', function() {
     assert.strictEqual(Utils.relativeUrl('/guide'), true);
   });
 
+  it('isTsFile', function() {
+    assert.strictEqual(Utils.isTsFile('/tests/sampleTest.ts'), true);
+    assert.strictEqual(Utils.isTsFile('/tests/sampleTest.js'), false);
+    assert.strictEqual(Utils.isTsFile('/tests/sampleTest.json'), false);
+    assert.strictEqual(Utils.isTsFile('/tests/sampleTest'), false);
+  });
+
   it('isFileNameValid', function() {
     assert.strictEqual(Utils.isFileNameValid('/tests/sampleTest.js'), true);
     assert.strictEqual(Utils.isFileNameValid('/tests/sampleTest.ts'), true);
@@ -139,7 +146,7 @@ describe('test Utils', function() {
         at async DefaultRunner.runTestSuite (/node_modules/nightwatch/lib/runner/test-runners/default.js:68:7)`;
     let expectedStackTrace = `Error
         at Object.this test should fail and capture screenshot (/Projects/nightwatch/examples/tests/sample.js:5:16)
-        at processTicksAndRejections (internal/process/task_queues.js:93:5)` 
+        at processTicksAndRejections (internal/process/task_queues.js:93:5)`; 
     assert.strictEqual(Utils.filterStackTrace(stackTrace), expectedStackTrace);
   
     stackTrace = '';

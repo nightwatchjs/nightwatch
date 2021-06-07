@@ -1,5 +1,5 @@
 module.exports = {
-  command : function(cb) {
+  command: function(cb) {
     return this.perform(cb);
   }
 };

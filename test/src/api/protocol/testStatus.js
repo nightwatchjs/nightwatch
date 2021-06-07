@@ -9,8 +9,8 @@ describe('client.status', function() {
   it('testStatus', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'GET');
-        assert.equal(opts.path, '/status');
+        assert.strictEqual(opts.method, 'GET');
+        assert.strictEqual(opts.path, '/status');
       },
       commandName: 'status',
       args: []

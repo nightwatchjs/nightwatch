@@ -9,7 +9,7 @@ describe('isLogAvailable', function() {
 
   afterEach(function() {
     MockServer.removeMock({
-      url : '/wd/hub/session/1352110219202/log/types',
+      url: '/wd/hub/session/1352110219202/log/types',
       method: 'GET'
     });
   });
@@ -20,12 +20,12 @@ describe('isLogAvailable', function() {
 
   it('client.isLogAvailable()', function(done) {
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/log/types',
-      method:'GET',
-      response : JSON.stringify({
+      url: '/wd/hub/session/1352110219202/log/types',
+      method: 'GET',
+      response: JSON.stringify({
         sessionId: '1352110219202',
-        status:0,
-        value : [ 'browser', 'har' ]
+        status: 0,
+        value: ['browser', 'har']
       })
     });
 
@@ -46,12 +46,12 @@ describe('isLogAvailable', function() {
 
   it('client.isLogAvailable() failure', function(done) {
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/log/types',
-      method:'GET',
-      response : JSON.stringify({
+      url: '/wd/hub/session/1352110219202/log/types',
+      method: 'GET',
+      response: JSON.stringify({
         sessionId: '1352110219202',
-        status:0,
-        value : { 'message': 'Session not started or terminated' }
+        status: 0,
+        value: {'message': 'Session not started or terminated'}
       })
     });
 

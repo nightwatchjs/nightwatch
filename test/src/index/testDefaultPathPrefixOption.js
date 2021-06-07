@@ -83,7 +83,7 @@ describe('test defaultPathPrefix', function () {
       }
     });
 
-    let eq = assert.equal;
+    let eq = assert.strictEqual;
     let request = new HttpRequest({
       host: '127.0.0.1',
       path: '/session',

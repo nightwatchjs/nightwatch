@@ -46,19 +46,19 @@ module.exports = new function () {
 
   this.createClient = function(options = {}, reporter = null, argv = {}) {
     let opts = {
-      selenium : {
+      selenium: {
         port: 10195,
         start_process: true,
         version2: true
       },
-      webdriver:{
+      webdriver: {
         start_process: false
       },
-      silent : true,
-      output : false,
+      silent: true,
+      output: false,
       disable_colors: true,
-      globals : {
-        myGlobal : 'test'
+      globals: {
+        myGlobal: 'test'
       }
     };
 

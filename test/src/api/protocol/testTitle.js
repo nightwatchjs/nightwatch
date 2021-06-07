@@ -9,8 +9,8 @@ describe('client.title', function() {
   it('testTitle', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'GET');
-        assert.equal(opts.path, '/session/1352110219202/title');
+        assert.strictEqual(opts.method, 'GET');
+        assert.strictEqual(opts.path, '/session/1352110219202/title');
       },
       commandName: 'title',
       args: []

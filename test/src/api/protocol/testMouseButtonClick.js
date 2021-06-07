@@ -9,9 +9,9 @@ describe('client.mouseButtonClick', function() {
   it('test mouseButtonClick click left', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.equal(opts.path, '/session/1352110219202/click');
-        assert.deepEqual(opts.data, { button: 0 });
+        assert.strictEqual(opts.method, 'POST');
+        assert.strictEqual(opts.path, '/session/1352110219202/click');
+        assert.deepStrictEqual(opts.data, {button: 0});
       },
       commandName: 'mouseButtonClick',
       args: ['left']
@@ -21,7 +21,7 @@ describe('client.mouseButtonClick', function() {
   it('test mouseButtonClick click right', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.deepEqual(opts.data, { button: 2 });
+        assert.deepStrictEqual(opts.data, {button: 2});
       },
       commandName: 'mouseButtonClick',
       args: ['right']
@@ -31,7 +31,7 @@ describe('client.mouseButtonClick', function() {
   it('test mouseButtonClick click middle', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.deepEqual(opts.data, { button: 1 });
+        assert.deepStrictEqual(opts.data, {button: 1});
       },
       commandName: 'mouseButtonClick',
       args: ['middle']
@@ -41,7 +41,7 @@ describe('client.mouseButtonClick', function() {
   it('test mouseButtonClick with callback only', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.deepEqual(opts.data, {button: 0});
+        assert.deepStrictEqual(opts.data, {button: 0});
       },
       commandName: 'mouseButtonClick',
       args: [function() {}]
@@ -51,7 +51,7 @@ describe('client.mouseButtonClick', function() {
   it('test mouseButtonClick with no args', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.deepEqual(opts.data, { button: 0 });
+        assert.deepStrictEqual(opts.data, {button: 0});
       },
       commandName: 'mouseButtonClick',
       args: []
@@ -61,9 +61,9 @@ describe('client.mouseButtonClick', function() {
   it('test mouseButtonDown click left', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.equal(opts.path, '/session/1352110219202/buttondown');
-        assert.deepEqual(opts.data, { button: 0 });
+        assert.strictEqual(opts.method, 'POST');
+        assert.strictEqual(opts.path, '/session/1352110219202/buttondown');
+        assert.deepStrictEqual(opts.data, {button: 0});
       },
       commandName: 'mouseButtonDown',
       args: ['left']
@@ -73,7 +73,7 @@ describe('client.mouseButtonClick', function() {
   it('test mouseButtonDown click middle', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.deepEqual(opts.data, { button: 1 });
+        assert.deepStrictEqual(opts.data, {button: 1});
       },
       commandName: 'mouseButtonDown',
       args: ['middle']
@@ -83,7 +83,7 @@ describe('client.mouseButtonClick', function() {
   it('test mouseButtonDown with callback only', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.deepEqual(opts.data, { button: 0 });
+        assert.deepStrictEqual(opts.data, {button: 0});
       },
       commandName: 'mouseButtonDown',
       args: [function() {
@@ -95,9 +95,9 @@ describe('client.mouseButtonClick', function() {
   it('test mouseButtonUp click right', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.equal(opts.path, '/session/1352110219202/buttonup');
-        assert.deepEqual(opts.data, { button: 2 });
+        assert.strictEqual(opts.method, 'POST');
+        assert.strictEqual(opts.path, '/session/1352110219202/buttonup');
+        assert.deepStrictEqual(opts.data, {button: 2});
       },
       commandName: 'mouseButtonUp',
       args: ['right']

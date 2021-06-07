@@ -38,7 +38,7 @@ describe('testRunTestSuite', function() {
       retryAssertionTimeout: 0,
       reporter(results, cb) {
         assert.strictEqual(settings.globals.calls, 8);
-        assert.deepEqual(results.errmessages, []);
+        assert.deepStrictEqual(results.errmessages, []);
         assert.strictEqual(results.passed, 1);
         assert.strictEqual(results.failed, 1);
         assert.strictEqual(results.errors, 0);
@@ -74,7 +74,7 @@ describe('testRunTestSuite', function() {
       retryAssertionTimeout: 0,
       reporter(results, cb) {
         assert.strictEqual(settings.globals.calls, 8);
-        assert.deepEqual(results.errmessages, []);
+        assert.deepStrictEqual(results.errmessages, []);
         assert.strictEqual(results.passed, 1);
         assert.strictEqual(results.failed, 1);
         assert.strictEqual(results.errors, 0);
@@ -110,7 +110,7 @@ describe('testRunTestSuite', function() {
       retryAssertionTimeout: 0,
       reporter(results, cb) {
         assert.strictEqual(settings.globals.calls, 8);
-        assert.deepEqual(results.errmessages, []);
+        assert.deepStrictEqual(results.errmessages, []);
         assert.strictEqual(results.passed, 1);
         assert.strictEqual(results.failed, 1);
         assert.strictEqual(results.errors, 0);
@@ -164,7 +164,7 @@ describe('testRunTestSuite', function() {
     };
 
     return NightwatchClient.runTests({
-      suiteRetries:2,
+      suiteRetries: 2,
       _source: [testsPath]
     }, settings);
   });
@@ -192,7 +192,7 @@ describe('testRunTestSuite', function() {
       persist_globals: true,
       globals: globals,
       skip_testcases_on_fail: false,
-      output_folder: false,
+      output_folder: false
     };
 
     return NightwatchClient.runTests({
@@ -225,7 +225,7 @@ describe('testRunTestSuite', function() {
       persist_globals: true,
       globals,
       skip_testcases_on_fail: false,
-      output_folder: false,
+      output_folder: false
     });
 
     const argv = {
@@ -275,28 +275,28 @@ describe('testRunTestSuite', function() {
   it('testRunModuleSyncName', function() {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/elements',
-      postdata : '{"using":"css selector","value":"#finlandia"}',
-      response: JSON.stringify({sessionId:'1352110219202',status:0,value:[{ELEMENT: '10'}]})
+      postdata: '{"using":"css selector","value":"#finlandia"}',
+      response: JSON.stringify({sessionId: '1352110219202', status: 0, value: [{ELEMENT: '10'}]})
     });
 
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element/10/displayed',
       statusCode: 200,
       method: 'GET',
-      response: JSON.stringify({sessionId:'1352110219202',status:0,value:true})
+      response: JSON.stringify({sessionId: '1352110219202', status: 0, value: true})
     });
 
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element',
       statusCode: 200,
-      response: JSON.stringify({sessionId:'1352110219202',status:0,value: {ELEMENT: '10'}})
+      response: JSON.stringify({sessionId: '1352110219202', status: 0, value: {ELEMENT: '10'}})
     });
 
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element/10/text',
       statusCode: 200,
       method: 'GET',
-      response: JSON.stringify({sessionId:'1352110219202',status:0,value:'jean sibelius'})
+      response: JSON.stringify({sessionId: '1352110219202', status: 0, value: 'jean sibelius'})
     }, true);
 
     let globals = {
@@ -499,7 +499,7 @@ describe('testRunTestSuite', function() {
       persist_globals: true,
       globals,
       skip_testcases_on_fail: true,
-      output_folder: false,
+      output_folder: false
     };
 
     return NightwatchClient.runTests({

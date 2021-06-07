@@ -15,13 +15,13 @@ describe('client.keys()', function() {
 
   it('test .keys() single', function() {
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/keys',
-      method:'POST',
+      url: '/wd/hub/session/1352110219202/keys',
+      method: 'POST',
       postdata: {value: ['\uE007']},
-      response : JSON.stringify({
+      response: JSON.stringify({
         sessionId: '1352110219202',
         value: null,
-        status:0
+        status: 0
       })
     });
 
@@ -38,13 +38,13 @@ describe('client.keys()', function() {
 
   it('test .keys() array', function() {
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/keys',
-      method:'POST',
+      url: '/wd/hub/session/1352110219202/keys',
+      method: 'POST',
       postdata: {value: ['A', 'B']},
-      response : JSON.stringify({
+      response: JSON.stringify({
         sessionId: '1352110219202',
         value: null,
-        status:0
+        status: 0
       })
     });
 
