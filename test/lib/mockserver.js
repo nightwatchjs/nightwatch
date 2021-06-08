@@ -250,6 +250,9 @@ module.exports = {
    * @param {boolean} once
    */
   addMock(item, once, twice) {
+    if (!server) {
+      throw new Error('Server is not yet created');
+    }
     server.addMock(item, once);
     if (twice) {
       server.addMock(item, once);

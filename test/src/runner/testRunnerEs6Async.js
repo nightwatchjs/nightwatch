@@ -1,8 +1,8 @@
 const path = require('path');
 const assert = require('assert');
-const common = require('../../common.js');
 const MockServer = require('../../lib/mockserver.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
+const common = require('../../common.js');
 const NightwatchClient = common.require('index.js');
 
 describe('testRunner ES6 Async', function() {

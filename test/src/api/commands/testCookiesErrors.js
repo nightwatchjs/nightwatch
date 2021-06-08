@@ -33,6 +33,13 @@ describe('getCookiesErrors', function() {
       webdriver: {
         start_process: false
       },
+      desiredCapabilities: {
+        name: 'testSuite'
+      },
+      selenium: {
+        port: 10195,
+        start_process: false
+      },
       output: false,
       silent: false
     }, reporter);
@@ -80,6 +87,13 @@ describe('getCookiesErrors', function() {
     const reporter = new Reporter({});
     const client = await Nightwatch.initClient({
       report_command_errors: false,
+      desiredCapabilities: {
+        name: 'testSuite'
+      },
+      selenium: {
+        port: 10195,
+        start_process: false
+      },
       webdriver: {
         start_process: false,
         timeout_options: {

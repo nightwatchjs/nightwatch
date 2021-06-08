@@ -6,9 +6,10 @@ module.exports = {
     this.server = MockServer.init();
 
     this.server.on('listening', () => {
-
       Nightwatch.initClient({
-        use_selenium_webdriver: true,
+        desiredCapabilities: {
+          name: 'testSuite'
+        },
         selenium: {
           port: 10195,
           start_process: false

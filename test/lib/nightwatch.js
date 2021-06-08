@@ -48,6 +48,7 @@ module.exports = new function () {
     let opts = {
       selenium: {
         port: 10195,
+        host: 'localhost',
         start_process: true,
         version2: true
       },

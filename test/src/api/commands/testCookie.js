@@ -1,5 +1,5 @@
 const assert = require('assert');
-const MockServer  = require('../../../lib/mockserver.js');
+const Mocks  = require('../../../lib/command-mocks.js');
 const CommandGlobals = require('../../../lib/globals/commands.js');
 
 describe('getCookie', function() {
@@ -12,21 +12,7 @@ describe('getCookie', function() {
   });
 
   it('client.getCookie(<name>)', function(done) {
-    MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/cookie',
-      method: 'GET',
-      response: {
-        sessionId: '1352110219202',
-        status: 0,
-        value: [{
-          name: 'test_cookie',
-          value: '123456',
-          path: '/',
-          domain: 'example.org',
-          secure: false
-        }]
-      }
-    }, true);
+    Mocks.cookiesFound();
 
     const api = this.client.api;
     this.client.api.getCookie('test_cookie', function callback(result) {
@@ -43,15 +29,7 @@ describe('getCookie', function() {
   });
 
   it('client.getCookie(<name>) - empty result', function(done) {
-    MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/cookie',
-      method: 'GET',
-      response: JSON.stringify({
-        sessionId: '1352110219202',
-        status: 0,
-        value: []
-      })
-    });
+    Mocks.cookiesNotFound();
 
     this.client.api.getCookie('other_cookie', function callback(result) {
       assert.strictEqual(result, null);
@@ -59,4 +37,5 @@ describe('getCookie', function() {
 
     this.client.start(done);
   });
+
 });
