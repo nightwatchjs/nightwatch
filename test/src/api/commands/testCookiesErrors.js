@@ -60,14 +60,13 @@ describe('getCookiesErrors', function() {
 
     client.api.getCookies(function callback(result) {
       assert.deepStrictEqual(result, {
+        code: undefined,
+        error: 'test message',
+        name: 'WebDriverError',
         status: -1,
-        state: 'unhandled error',
-        code: '',
-        value: {message: 'test message', error: []},
-        errorStatus: 13,
-        error:
-          'An unknown server-side error occurred while processing the command. – test message',
-        httpStatusCode: 500
+        value: {
+          message: 'test message'
+        }
       });
     });
 
@@ -114,12 +113,12 @@ describe('getCookiesErrors', function() {
     client.api.getCookies(function callback(result) {
       assert.deepStrictEqual(result, {
         code: 'ECONNRESET',
-        error: 'Error ECONNRESET: socket hang up',
-        errorStatus: '',
-        httpStatusCode: null,
-        state: '',
+        error: 'ECONNRESET socket hang up',
+        name: 'Error',
         status: -1,
-        value: null
+        value: {
+          message: 'ECONNRESET socket hang up'
+        }
       });
     });
 

@@ -29,6 +29,15 @@ module.exports = {
         value: []
       })
     });
+  },
+
+  cookiesSocketDelay() {
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/cookie',
+      method: 'GET',
+      socketDelay: 200,
+      response: ''
+    }, true);
   }
 };
 

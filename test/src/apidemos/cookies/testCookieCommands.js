@@ -6,21 +6,21 @@ const common = require('../../../common.js');
 const NightwatchClient = common.require('index.js');
 
 describe('cookie demos', function() {
-  before(function(done) {
+  beforeEach(function(done) {
     this.server = MockServer.init();
     this.server.on('listening', () => {
       done();
     });
   });
 
-  after(function(done) {
+  afterEach(function(done) {
     this.server.close(function() {
       done();
     });
   });
 
-  it('run cookie api demo tests', function() {
-    const testsPath = path.join(__dirname, '../../../apidemos/cookies');
+  it('run cookie api demo tests basic', function() {
+    const testsPath = path.join(__dirname, '../../../apidemos/cookies/cookieTests.js');
     Mocks.cookiesFound();
 
     const globals = {
@@ -30,7 +30,6 @@ describe('cookie demos', function() {
         if (results.lastError) {
           throw results.lastError;
         }
-        console.log(results)
       }
     };
 
@@ -40,7 +39,43 @@ describe('cookie demos', function() {
         port: 10195,
         start_process: false
       },
-      output: true,
+      output: false,
+      skip_testcases_on_fail: false,
+      silent: false,
+      persist_globals: true,
+      globals,
+      output_folder: false
+    });
+  });
+
+  it('run cookie api demo tests with socket hang up error', function() {
+    const testsPath = path.join(__dirname, '../../../apidemos/cookies/cookieTestsWithError.js');
+    Mocks.cookiesSocketDelay();
+
+    const globals = {
+      waitForConditionPollInterval: 50,
+
+      reporter(results) {
+        if (results.lastError) {
+          throw results.lastError;
+        }
+      }
+    };
+
+    return NightwatchClient.runTests(testsPath, {
+      selenium: {
+        host: 'localhost',
+        port: 10195,
+        start_process: false
+      },
+      webdriver: {
+        start_process: false,
+        timeout_options: {
+          timeout: 50
+        }
+      },
+      output: false,
+      report_network_errors: false,
       skip_testcases_on_fail: false,
       silent: false,
       persist_globals: true,
