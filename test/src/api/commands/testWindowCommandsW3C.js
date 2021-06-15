@@ -29,7 +29,7 @@ describe('window w3c commands', function () {
 
   it('client.getWindowRect()', function (done) {
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/window/rect',
+      url: '/session/13521-10219-202/window/rect',
       method: 'GET',
       response: JSON.stringify({
         value: {
@@ -47,4 +47,8 @@ describe('window w3c commands', function () {
 
     this.client.start(done);
   });
+
+  
+
 });
+
