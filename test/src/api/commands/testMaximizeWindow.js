@@ -1,5 +1,5 @@
 const assert = require('assert');
-const MockServer  = require('../../../lib/mockserver.js');
+const Mocks = require('../../../lib/command-mocks');
 const CommandGlobals = require('../../../lib/globals/commands.js');
 
 describe('maximizeWindow', function() {
@@ -12,16 +12,9 @@ describe('maximizeWindow', function() {
   });
 
   it('client.maximizeWindow()', function(done) {
-    MockServer.addMock({
-      'url': '/wd/hub/session/1352110219202/window/current/maximize',
-      'response': JSON.stringify({
-        sessionId: '1352110219202',
-        status: 0
-      })
-    }, true);
-
+    Mocks.maximizeWindow();
     this.client.api.maximizeWindow(function callback(result) {
-      assert.strictEqual(result.status, 0);
+      assert.strictEqual(result.value, null);
     });
 
     this.client.start(done);
