@@ -41,7 +41,7 @@ describe('getLog', function() {
 
     return this.client.start(function(err) {
       assert.strictEqual(err instanceof Error, true);
-      assert.strictEqual(err.message, 'Error while running "getLog" command: test error');
+      assert.strictEqual(err.message, 'an error occurred while running "getLog" command: Error: test error\n');
     });
   });
 
