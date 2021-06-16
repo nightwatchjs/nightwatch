@@ -1,7 +1,6 @@
 The MIT License (MIT)
 
 Copyright (c) 2014-2021 Pine View Software AS. https://pineview.io
-
 Copyright (c) 2021 BrowserStack Limited. https://www.browserstack.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
