@@ -58,7 +58,7 @@ describe('assert.attributeContains', function () {
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.getValue(), 'http://google.org');
         assert.strictEqual(instance.getActual(), 'http://google.org');
-        assert.strictEqual(err.message, `Error while running "attributeContains" command: Testing if attribute 'href' of element <.test_element> doesn't contain 'google' in 5ms - expected "not contains 'google'" but got: "http://google.org" (${instance.elapsedTime}ms)`);
+        assert.match(err.message, new RegExp(`Testing if attribute 'href' of element <.test_element> doesn't contain 'google' in 5ms - expected "not contains 'google'" but got: "http://google.org" \\(${instance.elapsedTime}ms\\)`));
       }
     });
   });
@@ -125,7 +125,7 @@ describe('assert.attributeContains', function () {
         assert.strictEqual(instance.getActual(), 'element could not be located');
         assert.strictEqual(instance.expected(), 'contains \'main\'');
         assert.strictEqual(failure, 'Expected "contains \'main\'" but got: "element could not be located"');
-        assert.strictEqual(err.message, `Error while running "attributeContains" command: Testing if attribute 'role' of element <.test_element> contains 'main' in 5ms - expected "contains 'main'" but got: "element could not be located" (${instance.elapsedTime}ms)`);
+        assert.match(err.message, new RegExp(`Testing if attribute 'role' of element <.test_element> contains 'main' in 5ms - expected "contains 'main'" but got: "element could not be located" \\(${instance.elapsedTime}ms\\)`));
       }
     });
   });
@@ -143,7 +143,7 @@ describe('assert.attributeContains', function () {
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.getValue(), null);
         assert.strictEqual(instance.getActual(), 'Element does not have a \'role\' attribute');
-        assert.strictEqual(err.message, `Error while running "attributeContains" command: Testing if attribute 'role' of element <.test_element> contains 'main' in 5ms - expected "contains 'main'" but got: "Element does not have a 'role' attribute" (${instance.elapsedTime}ms)`);
+        assert.match(err.message, new RegExp(`Testing if attribute 'role' of element <.test_element> contains 'main' in 5ms - expected "contains 'main'" but got: "Element does not have a 'role' attribute" \\(${instance.elapsedTime}ms\\)`));
       }
     });
   });
