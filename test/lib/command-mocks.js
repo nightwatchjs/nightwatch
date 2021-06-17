@@ -38,6 +38,16 @@ module.exports = {
       socketDelay: 200,
       response: ''
     }, true);
+  },
+
+  maximizeWindow() {
+    MockServer.addMock({
+      'url': '/wd/hub/session/1352110219202/window/current/maximize',
+      'response': JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0
+      })
+    }, true);
   }
 };
 
