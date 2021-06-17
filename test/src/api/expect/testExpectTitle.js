@@ -5,7 +5,10 @@ const {strictEqual} = assert;
 
 describe('expect.title', function() {
   beforeEach(function(done) {
-    ExpectGlobals.beforeEach.call(this, () => {
+    ExpectGlobals.beforeEach.call(this, {
+      output: true,
+      silent: false
+    }, () => {
       this.client.api.globals.abortOnAssertionFailure = false;
       done();
     });

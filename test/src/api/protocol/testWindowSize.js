@@ -1,16 +1,17 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
-describe('windowSize', function() {
-  before(function() {
+describe('windowSize', function () {
+  before(function () {
     Globals.protocolBefore();
   });
 
-  it('test .windowSize() errors', async function() {
+  it('test .windowSize() errors', async function () {
     try {
       await Globals.protocolTest({
         commandName: 'windowSize',
-        args: [function() {}]
+        args: [function () {
+        }]
       });
 
       throw new Error('Unexpected error');
@@ -21,7 +22,8 @@ describe('windowSize', function() {
     try {
       await Globals.protocolTest({
         commandName: 'windowSize',
-        args: [function() {}]
+        args: [function () {
+        }]
       });
 
       throw new Error('Unexpected error');
@@ -63,51 +65,39 @@ describe('windowSize', function() {
     }
   });
 
-  it('test .windowSize() GET', function(done) {
-    Globals.protocolTest({
-      assertion: function(opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/window/current/size');
-      },
+  it('test .windowSize() GET', function () {
+    return Globals.protocolTest({
       commandName: 'windowSize',
-      args: ['current', function() {
-        done();
+      args: ['current', function (result) {
+        if (result instanceof Error) {
+          throw result;
+        }
+
+        assert.deepStrictEqual(result, {value: {width: 100, height: 100}});
       }]
     });
   });
 
-  it('test .windowSize() POST', function() {
+  it('test .windowSize() POST', function () {
     return Globals.protocolTest({
-      assertion: function(opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/window/current/size');
-        assert.deepStrictEqual(opts.data, {width: 10, height: 10});
+      assertion: function (opts) {
+        assert.deepStrictEqual(opts.args[0], {width: 10, height: 10});
       },
       commandName: 'windowSize',
       args: ['current', 10, 10]
     });
   });
 
-  it('test .windowSize() with W3C Webdriver API - POST', function() {
+  it('test .windowSize() with W3C Webdriver API - GET', function () {
     return Globals.protocolTestWebdriver({
-      assertion: function(opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.deepStrictEqual(opts.data, {width: 10, height: 10});
-        assert.strictEqual(opts.path, '/session/1352110219202/window/rect');
-      },
       commandName: 'windowSize',
-      args: ['current', 10, 10]
-    });
-  });
+      args: ['current', function (result) {
+        if (result instanceof Error) {
+          throw result;
+        }
 
-  it('test .windowSize() with W3C Webdriver API - GET', function() {
-    return Globals.protocolTestWebdriver({
-      assertion: function(opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/window/rect');
-      },
-      commandName: 'windowSize',
-      args: ['current', function() {}]
+        assert.deepStrictEqual(result, {value: {width: 100, height: 100}});
+      }]
     });
   });
 });

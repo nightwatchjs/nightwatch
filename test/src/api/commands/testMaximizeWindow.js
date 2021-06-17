@@ -1,5 +1,5 @@
 const assert = require('assert');
-const Mocks = require('../../../lib/command-mocks');
+const Mocks = require('../../../lib/command-mocks.js');
 const CommandGlobals = require('../../../lib/globals/commands.js');
 
 describe('maximizeWindow', function() {
