@@ -74,7 +74,7 @@
     "test": "mocha test/src/",
     "test-ci": "mocha test/src/ --bail",
     "coverage": "npx nyc report --reporter=text-lcov > ./coverage/mocha_coverage.lcov",
-    "postinstall": "bin/show_survey.js"
+    "postinstall": "node bin/show_survey.js"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
