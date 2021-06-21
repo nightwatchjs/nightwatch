@@ -60,7 +60,7 @@ describe('assert.valueContains', function () {
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.getValue(), 'some-value');
         assert.strictEqual(instance.getActual(), 'some-value');
-        assert.strictEqual(err.message, `Error while running "valueContains" command: Testing if value of element <.test_element> doesn't contain 'some-value' in 5ms - expected "not contains 'some-value'" but got: "some-value" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Error while running "assert.valueContains" command: [NightwatchAssertError] Testing if value of element <.test_element> doesn't contain 'some-value' in 5ms - expected "not contains 'some-value'" but got: "some-value" (${instance.elapsedTime}ms)`);
       }
     });
   });
@@ -113,7 +113,7 @@ describe('assert.valueContains', function () {
         assert.strictEqual(instance.expected(), 'contains \'some-value\'');
         assert.strictEqual(instance.getValue(), null);
         assert.strictEqual(failure, 'Expected "contains \'some-value\'" but got: "element could not be located"');
-        assert.strictEqual(err.message, `Error while running "valueContains" command: Test value of element "<.test_element>" contains 'some-value' in 5ms - expected "contains 'some-value'" but got: "element could not be located" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Error while running "assert.valueContains" command: [NightwatchAssertError] Test value of element "<.test_element>" contains 'some-value' in 5ms - expected "contains 'some-value'" but got: "element could not be located" (${instance.elapsedTime}ms)`);
       }
     });
   });

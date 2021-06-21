@@ -11,7 +11,7 @@ describe('assert.selected', function () {
 
   it('selected assertion passed', function () {
     return assertionTest({
-      args: ['.test_element', 'Test message'],
+      args: [{selector: '.test_element'}, 'Test message'],
       commandResult: {
         status: 0,
         value: true
@@ -73,7 +73,7 @@ describe('assert.selected', function () {
         assert.strictEqual(instance.getActual(), 'selected');
         assert.strictEqual(
           err.message,
-          `Error while running "selected" command: Testing if element <.test_element> is not selected in 5ms - expected "is not selected" but got: "selected" (${instance.elapsedTime}ms)`
+          `Error while running "assert.selected" command: [NightwatchAssertError] Testing if element <.test_element> is not selected in 5ms - expected "is not selected" but got: "selected" (${instance.elapsedTime}ms)`
         );
       }
     });
@@ -164,7 +164,7 @@ describe('assert.selected', function () {
         );
         assert.strictEqual(
           err.message,
-          `Error while running "selected" command: Testing if element <.test_element> is selected in 5ms - expected "is selected" but got: "element could not be located" (${instance.elapsedTime}ms)`
+          `Error while running "assert.selected" command: [NightwatchAssertError] Testing if element <.test_element> is selected in 5ms - expected "is selected" but got: "element could not be located" (${instance.elapsedTime}ms)`
         );
       }
     });

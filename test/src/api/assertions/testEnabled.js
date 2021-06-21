@@ -11,7 +11,7 @@ describe('assert.enabled', function () {
 
   it('enabled assertion passed', function () {
     return assertionTest({
-      args: ['.test_element', 'Test message'],
+      args: [{selector: '.test_element'}, 'Test message'],
       commandResult: {
         status: 0,
         value: true
@@ -73,7 +73,7 @@ describe('assert.enabled', function () {
         assert.strictEqual(instance.getActual(), 'enabled');
         assert.strictEqual(
           err.message,
-          `Error while running "enabled" command: Testing if element <.test_element> is not enabled in 5ms - expected "is not enabled" but got: "enabled" (${instance.elapsedTime}ms)`
+          `Error while running "assert.enabled" command: [NightwatchAssertError] Testing if element <.test_element> is not enabled in 5ms - expected "is not enabled" but got: "enabled" (${instance.elapsedTime}ms)`
         );
       }
     });
@@ -164,7 +164,7 @@ describe('assert.enabled', function () {
         );
         assert.strictEqual(
           err.message,
-          `Error while running "enabled" command: Testing if element <.test_element> is enabled in 5ms - expected "is enabled" but got: "element could not be located" (${instance.elapsedTime}ms)`
+          `Error while running "assert.enabled" command: [NightwatchAssertError] Testing if element <.test_element> is enabled in 5ms - expected "is enabled" but got: "element could not be located" (${instance.elapsedTime}ms)`
         );
       }
     });
