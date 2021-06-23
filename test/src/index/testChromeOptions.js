@@ -1,11 +1,9 @@
 const assert = require('assert');
 const Nightwatch = require('../../lib/nightwatch.js');
-const nock =  require('nock');
 const ChromeOptions =  require('selenium-webdriver/chrome').Options;
 
 describe('Test chrome options', function () {
   it('chromeOptions detach driver option', function () {
-
     const client = Nightwatch.createClient({
       desiredCapabilities: {
         browserName: 'chrome',
@@ -15,11 +13,12 @@ describe('Test chrome options', function () {
       }
     });
     const options = client.transport.createOptions();
+
     assert.strictEqual(options instanceof ChromeOptions, true);
     assert.strictEqual(options.options_.detach, true);
   });
 
-  it('Chrome Binary Path option', function (){
+  it('Chrome Binary Path option', function(){
     const client = Nightwatch.createClient({
       webdriver: {
         chrome_binary: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
@@ -29,6 +28,7 @@ describe('Test chrome options', function () {
       }
     });
     const options = client.transport.createOptions();
+
     assert.strictEqual(options instanceof ChromeOptions, true);
     assert.strictEqual(options.options_.binary, '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome');
   });
@@ -43,6 +43,7 @@ describe('Test chrome options', function () {
       }
     });
     const options = client.transport.createOptions();
+
     assert.strictEqual(options instanceof ChromeOptions, true);
     assert.strictEqual(options.options_.logPath, '/Nightwatch/ChromeLog/');
 
@@ -58,6 +59,7 @@ describe('Test chrome options', function () {
       }
     });
     const options = client.transport.createOptions();
+    
     assert.strictEqual(options instanceof ChromeOptions, true);
     assert.strictEqual(options.options_.androidPackage, 'com.android.chrome');
   });
