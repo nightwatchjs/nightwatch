@@ -4,6 +4,38 @@ const FirefoxOptions =  require('selenium-webdriver/firefox').Options;
 
 describe('Firefox driver options', function(){
 
+  it('Firefox option object with headless', function(){
+    const firefoxOptions =  new FirefoxOptions();
+    firefoxOptions.headless();
+    const client = Nightwatch.createClient({
+      webdriver: {
+        options: firefoxOptions
+      },
+      desiredCapabilities: {
+        browserName: 'firefox'
+      }
+    });
+    const options =  client.transport.createOptions();
+
+    assert.strictEqual(options instanceof FirefoxOptions, true);
+    assert.deepStrictEqual(options.get('moz:firefoxOptions').args, ['-headless']);
+  });
+
+  it('moz:firefoxOptions detach driver option', function(){
+    const client = Nightwatch.createClient({
+      desiredCapabilities: {
+        browserName: 'firefox',
+        'moz:firefoxOptions': {
+          detach: true
+        }
+      }
+    });
+    const options =  client.transport.createOptions();
+
+    assert.strictEqual(options instanceof FirefoxOptions, true);
+    assert.deepStrictEqual(options.get('moz:firefoxOptions').detach, true);
+  });
+
   it('Firefox Binary Path option', function(){
     const client = Nightwatch.createClient({
       webdriver: {
@@ -33,6 +65,35 @@ describe('Firefox driver options', function(){
     assert.strictEqual(options instanceof FirefoxOptions, true);
     assert.strictEqual(options.get('moz:firefoxOptions').profile.template_, 'Nightwatch');
 
+  });
+
+  it('headless option', function(){
+    const client = Nightwatch.createClient({
+      desiredCapabilities: {
+        browserName: 'firefox'
+      }
+    });
+    const options = client.transport.createOptions({headless: true});
+
+    assert.strictEqual(options instanceof FirefoxOptions, true);
+    assert.deepStrictEqual(options.get('moz:firefoxOptions').args, ['-headless']);
+  });
+
+  it('window size option', function(){
+    const client = Nightwatch.createClient({
+      window_size: {
+        height: 100,
+        width: 100
+      },
+      desiredCapabilities: {
+        browserName: 'firefox'
+      }
+    });
+
+    const options = client.transport.createOptions();
+
+    assert.strictEqual(options instanceof FirefoxOptions, true);
+    assert.deepStrictEqual(options.get('moz:firefoxOptions').args, ['--width=100', '--height=100']);
   });
  
 });
