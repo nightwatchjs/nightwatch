@@ -3,7 +3,25 @@ const Nightwatch = require('../../lib/nightwatch.js');
 const ChromeOptions =  require('selenium-webdriver/chrome').Options;
 
 describe('Test chrome options', function () {
-  it('chromeOptions detach driver option', function () {
+
+  it('Chrome option object with headless', function(){
+    const chromeOptions =  new ChromeOptions();
+    chromeOptions.headless();
+    const client = Nightwatch.createClient({
+      webdriver: {
+        options: chromeOptions
+      },
+      desiredCapabilities: {
+        browserName: 'chrome'
+      }
+    });
+    const options =  client.transport.createOptions();
+
+    assert.strictEqual(options instanceof ChromeOptions, true);
+    assert.deepStrictEqual(options.options_.args, ['headless']);
+  });
+
+  it('goog:chromeOptions detach driver option', function () {
     const client = Nightwatch.createClient({
       desiredCapabilities: {
         browserName: 'chrome',
@@ -62,6 +80,34 @@ describe('Test chrome options', function () {
     
     assert.strictEqual(options instanceof ChromeOptions, true);
     assert.strictEqual(options.options_.androidPackage, 'com.android.chrome');
+  });
+
+  it('headless option', function(){
+    const client = Nightwatch.createClient({
+      desiredCapabilities: {
+        browserName: 'chrome'
+      }
+    });
+    const options = client.transport.createOptions({headless: true});
+
+    assert.strictEqual(options instanceof ChromeOptions, true);
+    assert.deepStrictEqual(options.options_.args, ['headless']);
+  });
+
+  it('window size option', function(){
+    const client =  Nightwatch.createClient({
+      window_size: {
+        height: 100,
+        width: 100
+      },
+      desiredCapabilities: {
+        browserName: 'chrome'
+      }
+    });
+    const options =  client.transport.createOptions();
+
+    assert.strictEqual(options instanceof ChromeOptions, true);
+    assert.deepStrictEqual(options.options_.args, ['window-size=100,100']);
   });
  
   
