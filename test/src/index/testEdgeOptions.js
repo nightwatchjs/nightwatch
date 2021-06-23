@@ -95,5 +95,20 @@ describe('Test edge option', function(){
     assert.strictEqual(options instanceof EdgeOptions, true);
     assert.deepStrictEqual(options.options_.args, ['window-size=100,100']);
   });
+
+  it('Andriod package option', function() {
+    const client = Nightwatch.createClient({
+      webdriver: {
+        android_package: 'com.android.edge'
+      },
+      desiredCapabilities: {
+        browserName: 'edge'
+      }
+    });
+    const options = client.transport.createOptions();
+    
+    assert.strictEqual(options instanceof EdgeOptions, true);
+    assert.strictEqual(options.options_.androidPackage, 'com.android.edge');
+  });
   
 });
