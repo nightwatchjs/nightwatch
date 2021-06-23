@@ -4,7 +4,7 @@ const EdgeOptions =  require('selenium-webdriver/edge').Options;
 
 describe('Test edge option', function(){
   
-  it.only('Edge option object with headless', function(){
+  it('Edge option object with headless', function(){
     const edgeoptions =  new EdgeOptions();
     edgeoptions.headless();
     const client = Nightwatch.createClient({
@@ -19,6 +19,22 @@ describe('Test edge option', function(){
 
     assert.strictEqual(options instanceof EdgeOptions, true);
     assert.deepStrictEqual(options.options_.args, ['headless']);
+  });
+
+  it('ms:edgeOption detach driver option', function(){
+    const client =  Nightwatch.createClient({
+     
+      desiredCapabilities: {
+        browserName: 'edge',
+        'ms:edgeOptions': {
+          detach: true
+        }
+      }
+    });
+    const options = client.transport.createOptions();
+
+    assert.strictEqual(options instanceof EdgeOptions, true);
+    assert.strictEqual(options.options_.detach, true);
   });
   
   it('Edge Binary Path option', function(){
