@@ -62,8 +62,6 @@ describe('Test edge option', function(){
 
     assert.strictEqual(options instanceof EdgeOptions, true);
     assert.deepStrictEqual(options.options_.args, ['headless']);
-
-
   });
 
   it('window size option', function(){
@@ -77,9 +75,9 @@ describe('Test edge option', function(){
       }
     });
     const options =  client.transport.createOptions();
+
     assert.strictEqual(options instanceof EdgeOptions, true);
     assert.deepStrictEqual(options.options_.args, ['window-size=100,100']);
-
   });
   
 });
