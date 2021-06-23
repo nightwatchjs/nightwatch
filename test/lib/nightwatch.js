@@ -9,7 +9,8 @@ module.exports = new function () {
   let _client = null;
   let _mockServer = null;
 
-  Logger.setOutputEnabled(process.env.VERBOSE === '1' || false);
+  //Logger.setOutputEnabled(process.env.VERBOSE === '1' || false);
+  Logger.setOutputEnabled(true);
   Logger.enable();
 
   this.startMockServer = function (done = function() {}) {
@@ -49,7 +50,7 @@ module.exports = new function () {
       selenium: {
         port: 10195,
         host: 'localhost',
-        start_process: true,
+        start_process: false,
         version2: true
       },
       webdriver: {
@@ -65,7 +66,11 @@ module.exports = new function () {
 
     lodashMerge(opts, options);
 
-    let settings = Settings.parse(opts);
+    if (opts.output) {
+      Logger.setOutputEnabled(true);
+    }
+
+    const settings = Settings.parse(opts);
 
     return Nightwatch.client(settings, reporter, argv);
   };

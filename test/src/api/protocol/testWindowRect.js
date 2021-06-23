@@ -76,21 +76,21 @@ describe('windowRect', function() {
 
   it('test .windowRect() GET', function() {
     return Globals.protocolTest({
-      assertion: function(opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/window/rect');
-      },
       commandName: 'windowRect',
-      args: [null, function() {}]
+      args: [null, function(result) {
+        if (result instanceof Error) {
+          throw result;
+        }
+
+        assert.deepStrictEqual(result, {value: {width: 100, height: 100, x: 10, y: 10}});
+      }]
     });
   });
 
   it('test .windowRect() POST', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/window/rect');
-        assert.deepStrictEqual(opts.data, {width: 10, height: 10, x: 10, y: 10});
+        assert.deepStrictEqual(opts.args[0], {width: 10, height: 10, x: 10, y: 10});
       },
       commandName: 'windowRect',
       args: [{width: 10, height: 10, x: 10, y: 10}]

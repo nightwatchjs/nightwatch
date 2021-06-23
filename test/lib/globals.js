@@ -92,31 +92,52 @@ class Globals {
   }
 
   runProtocolTest({assertion = function() {}, commandName, args = []}, client) {
-    const originalFn = client.transport.runProtocolAction;
-
     return new Promise((resolve, reject) => {
+      client.transport.driver = {
+        manage() {
+          return {
+            window() {
+              return {
+                setRect(...args) {
+                  assertion({
+                    args
+                  });
+
+                  return Promise.resolve({value: null});
+                },
+                getRect(...args) {
+                  return Promise.resolve({
+                    x: 10,
+                    y: 10,
+                    width: 100,
+                    height: 100
+                  });
+                }
+              };
+            }
+          };
+        }
+      };
+
       client.queue.once('queue:finished', err => {
         if (err) {
           reject(err);
         }
       });
 
-      client.transport.runProtocolAction = function(opts) {
-        try {
-          opts.method = opts.method || 'GET';
-          assertion(opts);
+      client.isES6AsyncTestcase = true;
 
-          resolve();
-        } catch (err) {
-          reject(err);
-        }
-
-        client.transport.runProtocolAction = originalFn;
-
-        return Promise.resolve();
-      };
-
-      this.runApiCommand(commandName, args, client);
+      try {
+        this.runApiCommand(commandName, args, client)
+          .then(result => {
+            resolve(result);
+          })
+          .catch(err => {
+            reject(err);
+          });
+      } catch (err) {
+        reject(err);
+      }
     });
   }
 
