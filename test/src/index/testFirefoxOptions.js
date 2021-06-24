@@ -95,5 +95,26 @@ describe('Firefox driver options', function(){
     assert.strictEqual(options instanceof FirefoxOptions, true);
     assert.deepStrictEqual(options.get('moz:firefoxOptions').args, ['--width=100', '--height=100']);
   });
+
+  it('proxy options', function(){
+    const client = Nightwatch.createClient({
+      proxy: {
+        https: 'localhost:8888'
+      },
+      desiredCapabilities: {
+        browserName: 'firefox'
+      }
+    });
+    const options = client.transport.createOptions();
+
+    assert.strictEqual(options instanceof FirefoxOptions, true);
+    assert.deepStrictEqual(options.map_.get('proxy'), {
+      proxyType: 'manual',
+      sslProxy: 'localhost:8888',
+      ftpProxy: undefined,
+      httpProxy: undefined,
+      noProxy: undefined
+    });
+  });
  
 });

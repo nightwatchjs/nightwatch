@@ -20,5 +20,27 @@ describe('Test safari options', function(){
     assert.strictEqual(options instanceof SafariOptions, true);
     assert.deepStrictEqual(options.options_.technologyPreview, true);
   });
+
+  it('proxy option', function(){
+    const client =  Nightwatch.createClient({
+      proxy: {
+        https: 'localhost:8888'
+      },
+      desiredCapabilities: {
+        browserName: 'safari'
+      }
+    });
+    const options = client.transport.createOptions();
+
+    assert.strictEqual(options instanceof SafariOptions, true);
+    assert.deepStrictEqual(options.map_.get('proxy'), {
+      proxyType: 'manual',
+      sslProxy: 'localhost:8888',
+      ftpProxy: undefined,
+      httpProxy: undefined,
+      noProxy: undefined
+    });
+  });
+  
     
 });
