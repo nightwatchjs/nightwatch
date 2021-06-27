@@ -33,7 +33,7 @@ describe('Test safari options', function(){
     const options = client.transport.createOptions();
 
     assert.strictEqual(options instanceof SafariOptions, true);
-    assert.deepStrictEqual(options.map_.get('proxy'), {
+    assert.deepStrictEqual(options.getProxy(), {
       proxyType: 'manual',
       sslProxy: 'localhost:8888',
       ftpProxy: undefined,

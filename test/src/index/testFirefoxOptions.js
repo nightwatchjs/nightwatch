@@ -108,7 +108,7 @@ describe('Firefox driver options', function(){
     const options = client.transport.createOptions();
 
     assert.strictEqual(options instanceof FirefoxOptions, true);
-    assert.deepStrictEqual(options.map_.get('proxy'), {
+    assert.deepStrictEqual(options.getProxy(), {
       proxyType: 'manual',
       sslProxy: 'localhost:8888',
       ftpProxy: undefined,
