@@ -170,6 +170,23 @@ describe('test Parallel Execution', function() {
     });
   });
 
+  it('test parallel execution with workers count and extended envs', function() {
+    const CliRunner = common.require('runner/cli/cli.js');
+    let runner = new CliRunner({
+      config: path.join(__dirname, '../../../extra/parallelism-workers.conf.js'),
+      env: 'chrome'
+    });
+
+    runner.setup();
+
+    assert.deepStrictEqual(runner.test_settings.test_workers, {
+      enabled: true,
+      workers: 5
+    });
+
+    assert.strictEqual(runner.isTestWorkersEnabled(), true);
+  });
+
   it('test parallel execution with workers disabled per environment', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
@@ -192,6 +209,18 @@ describe('test Parallel Execution', function() {
 
     assert.strictEqual(runner.isConcurrencyEnabled([runner.argv._source]), false);
 
+  });
+
+  it('test parallel execution with workers and single source folder', function() {
+    const CliRunner = common.require('runner/cli/cli.js');
+    let runner = new CliRunner({
+      config: path.join(__dirname, '../../../extra/parallelism.json'),
+      _source: path.join(__dirname, '../../../sampletests/before-after')
+    });
+
+    runner.setup();
+
+    assert.strictEqual(runner.isConcurrencyEnabled(), true);
   });
 
   it('test parallel execution to ensure preservation of all process.execArgv', function() {
