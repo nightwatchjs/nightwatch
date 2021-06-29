@@ -4,6 +4,7 @@ const mockery = require('mockery');
 const path = require('path');
 const assert = require('assert');
 const common = require('../../../common.js');
+const utils = require('../../../lib/utils');
 
 describe('test Parallel Execution', function() {
   const allArgs = [];
@@ -191,7 +192,21 @@ describe('test Parallel Execution', function() {
     runner.setup();
 
     assert.strictEqual(runner.isConcurrencyEnabled([runner.argv._source]), false);
+  });
 
+  it.only('test parallel execution with workers and multiple test files in a directory', function() {
+    const CliRunner = common.require('runner/cli/cli.js');
+    const testsDirectory = path.join(__dirname, '../../../sampletests/before-after');
+    let runner = new CliRunner({
+      config: path.join(__dirname, '../../../extra/parallelism.json'),
+      _source: [testsDirectory]
+    });
+
+    runner.setup();
+
+    assert.strictEqual(runner.isConcurrencyEnabled([runner.argv._source]), false);
+    assert.strictEqual(runner.parallelMode(utils.getFiles(testsDirectory)), true);
+    assert.strictEqual(runner.singleTestRun(utils.getFiles(testsDirectory)), false);
   });
 
   it('test parallel execution to ensure preservation of all process.execArgv', function() {

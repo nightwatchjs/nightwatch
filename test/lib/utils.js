@@ -1,4 +1,5 @@
-var Nightwatch = require('./nightwatch.js');
+var Nightwatch = require('./nightwatch.js');    
+const fs = require('fs');
 
 module.exports = {
 
@@ -21,9 +22,9 @@ module.exports = {
       queue.run = queue.run.origRun;
     }
 
-    function queueRunnerPatched (origCallback) {
-      origCallback = origCallback || function noop () {};
-      origRun.call(queue, function(err) {
+    function queueRunnerPatched(origCallback) {
+      origCallback = origCallback || function noop() {};
+      origRun.call(queue, function (err) {
         origCallback(err);
         if (err) {
           queue.run = origRun; // once, since errors are fatal to queue execution
@@ -32,7 +33,29 @@ module.exports = {
       });
     }
 
-    var origRun = queueRunnerPatched.origRun = queue.run;
+    var origRun = (queueRunnerPatched.origRun = queue.run);
     queue.run = queueRunnerPatched;
+  },
+
+  /**
+   * Return list of files present in a directory
+   *
+   * @param {string} dir directory path
+   * @param {string} [files_] files array
+   * @return list of files in a directory
+   */
+  getFiles: function (dir, files_) {
+    files_ = files_ || [];
+    const files = fs.readdirSync(dir);
+    for (const i in files) {
+      const name = dir + '/' + files[i];
+      if (fs.statSync(name).isDirectory()) {
+        this.getFiles(name, files_);
+      } else {
+        files_.push(name);
+      }
+    }
+
+    return files_;
   }
 };
