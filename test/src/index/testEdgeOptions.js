@@ -110,7 +110,7 @@ describe('Test edge option', function(){
     assert.strictEqual(options instanceof EdgeOptions, true);
     assert.strictEqual(options.options_.androidPackage, 'com.android.edge');
   });
-  
+
   it('proxy option', function(){
     const client =  Nightwatch.createClient({
       desiredCapabilities: {
@@ -131,5 +131,6 @@ describe('Test edge option', function(){
       noProxy: undefined
     });
   });
+
 
 });

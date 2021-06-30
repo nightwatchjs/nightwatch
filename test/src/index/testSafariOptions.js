@@ -42,5 +42,5 @@ describe('Test safari options', function(){
     });
   });
   
-    
+
 });

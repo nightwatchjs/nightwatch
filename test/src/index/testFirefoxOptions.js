@@ -95,7 +95,7 @@ describe('Firefox driver options', function(){
     assert.strictEqual(options instanceof FirefoxOptions, true);
     assert.deepStrictEqual(options.get('moz:firefoxOptions').args, ['--width=100', '--height=100']);
   });
-
+  
   it('proxy options', function(){
     const client = Nightwatch.createClient({
       desiredCapabilities: {
@@ -116,5 +116,5 @@ describe('Firefox driver options', function(){
       noProxy: undefined
     });
   });
- 
+
 });

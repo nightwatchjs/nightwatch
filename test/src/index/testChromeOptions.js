@@ -130,6 +130,5 @@ describe('Test chrome options', function () {
       noProxy: undefined
     });
   });
- 
   
 });
