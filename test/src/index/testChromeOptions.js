@@ -112,11 +112,11 @@ describe('Test chrome options', function () {
 
   it('proxy option', function(){
     const client = Nightwatch.createClient({
-      proxy: {
-        https: 'localhost:8888'
-      },
       desiredCapabilities: {
-        browserName: 'chrome'
+        browserName: 'chrome',
+        proxy: {
+          https: 'localhost:8888'
+        }
       }
     });
     const options = client.transport.createOptions();

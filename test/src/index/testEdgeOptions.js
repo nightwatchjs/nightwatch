@@ -113,11 +113,11 @@ describe('Test edge option', function(){
   
   it('proxy option', function(){
     const client =  Nightwatch.createClient({
-      proxy: {
-        https: 'localhost:8888'
-      },
       desiredCapabilities: {
-        browserName: 'edge'
+        browserName: 'edge',
+        proxy: {
+          https: 'localhost:8888'
+        }
       }
     });
     const options = client.transport.createOptions();

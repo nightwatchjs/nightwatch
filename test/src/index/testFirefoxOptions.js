@@ -98,10 +98,10 @@ describe('Firefox driver options', function(){
 
   it('proxy options', function(){
     const client = Nightwatch.createClient({
-      proxy: {
-        https: 'localhost:8888'
-      },
       desiredCapabilities: {
+        proxy: {
+          https: 'localhost:8888'
+        },
         browserName: 'firefox'
       }
     });
