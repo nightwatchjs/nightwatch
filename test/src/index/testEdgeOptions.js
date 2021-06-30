@@ -110,5 +110,27 @@ describe('Test edge option', function(){
     assert.strictEqual(options instanceof EdgeOptions, true);
     assert.strictEqual(options.options_.androidPackage, 'com.android.edge');
   });
-  
+
+  it('proxy option', function(){
+    const client =  Nightwatch.createClient({
+      desiredCapabilities: {
+        browserName: 'edge',
+        proxy: {
+          https: 'localhost:8888'
+        }
+      }
+    });
+    const options = client.transport.createOptions();
+
+    assert.strictEqual(options instanceof EdgeOptions, true);
+    assert.deepStrictEqual(options.getProxy(), {
+      proxyType: 'manual',
+      sslProxy: 'localhost:8888',
+      ftpProxy: undefined,
+      httpProxy: undefined,
+      noProxy: undefined
+    });
+  });
+
+
 });

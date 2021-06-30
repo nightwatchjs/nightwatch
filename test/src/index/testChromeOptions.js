@@ -109,6 +109,26 @@ describe('Test chrome options', function () {
     assert.strictEqual(options instanceof ChromeOptions, true);
     assert.deepStrictEqual(options.options_.args, ['window-size=100,100']);
   });
- 
+
+  it('proxy option', function(){
+    const client = Nightwatch.createClient({
+      desiredCapabilities: {
+        browserName: 'chrome',
+        proxy: {
+          https: 'localhost:8888'
+        }
+      }
+    });
+    const options = client.transport.createOptions();
+    
+    assert.strictEqual(options instanceof ChromeOptions, true);
+    assert.deepStrictEqual(options.getProxy(), {
+      proxyType: 'manual',
+      sslProxy: 'localhost:8888',
+      ftpProxy: undefined,
+      httpProxy: undefined,
+      noProxy: undefined
+    });
+  });
   
 });
