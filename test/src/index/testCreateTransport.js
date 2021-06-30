@@ -89,24 +89,6 @@ describe('Transport.create()', function () {
     assert.ok(client.transport instanceof Selenium);
   });
 
-  xit('test create Transport for Selenium managed explicit version2 setting', function() {
-    const client = NightwatchClient.client({
-      selenium: {
-        version2: true,
-        start_process: true
-      },
-      webdriver: {
-        start_process: false
-      },
-      desiredCapabilities: {
-        browserName: 'firefox'
-      }
-    });
-
-    assert.ok(client.transport instanceof Selenium2);
-    assert.strictEqual(client.transport instanceof Selenium3, false);
-  });
-
   it('test create Transport with unknown browser', function() {
     assert.throws(function() {
       NightwatchClient.client({
