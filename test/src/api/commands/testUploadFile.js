@@ -26,22 +26,22 @@ describe('uploadFile', function() {
     });
 
     this.client.api
-      .setPassword('css selector', '#choosefile', '/file.js', function callback(result) {
+      .uploadFile('css selector', '#choosefile', '/file.js', function callback(result) {
         assert.strictEqual(result.status, 0);
       })
-      .setPassword('css selector', {
+      .uploadFile('css selector', {
         selector: '#choosefile',
         timeout: 100
       }, '/file.js', function callback(result) {
         assert.strictEqual(result.status, 0);
       })
-      .setPassword({
+      .uploadFile({
         selector: '#choosefile',
         timeout: 100
       }, '/file.js', function callback(result) {
         assert.strictEqual(result.status, 0);
       })
-      .setPassword('#choosefile', '/file.js', function callback(result) {
+      .uploadFile('#choosefile', '/file.js', function callback(result) {
         assert.strictEqual(result.status, 0);
       });
 
