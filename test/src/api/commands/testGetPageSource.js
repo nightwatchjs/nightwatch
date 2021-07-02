@@ -22,7 +22,8 @@ describe('getPageSource', function() {
     });
 
     this.client.api.getPageSource(function callback(result) {
-      assert.strictEqual(result, '<html>Sample HTML</html>');
+      assert.strictEqual(result.value, '<html>Sample HTML</html>');
+      assert.strictEqual(result.status, 0)
     });
 
     this.client.start(done);

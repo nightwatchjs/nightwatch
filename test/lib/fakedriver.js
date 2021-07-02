@@ -62,6 +62,12 @@ const CommandsExecutor = {
     return 'text';
   },
 
+  getPageSource(args, assertion) {
+    assertion({args, command: 'pageSource'});
+
+    return 'PageSource';
+  },
+
   clickElement(args, assertion) {
     assertion({args, command: 'clickElement'});
 
