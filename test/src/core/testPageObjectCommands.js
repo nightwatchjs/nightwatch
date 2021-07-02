@@ -4,7 +4,6 @@ const MockServer = require('../../lib/mockserver.js');
 const Nightwatch = require('../../lib/nightwatch.js');
 
 describe('test PageObject Commands', function () {
-  this.timeout(5000);
   before(function (done) {
     this.server = MockServer.init();
 
@@ -33,6 +32,7 @@ describe('test PageObject Commands', function () {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element/0/value',
       method: 'POST',
+      postdata: '{"value":["1"]}',
       response: JSON.stringify({
         sessionId: '1352110219202',
         status: 0
@@ -126,7 +126,7 @@ describe('test PageObject Commands', function () {
     section.waitForElementPresent('@help', 1000, true, function callback(result) {
       assert.strictEqual(result.status, 0);
       assert.strictEqual(result.value.length, 1);
-      assert.deepStrictEqual(result.value[0], {'ELEMENT': '1'});
+      assert.deepStrictEqual(result.value[0], {ELEMENT: '1'});
       assert.strictEqual(result.WebdriverElementId, '1');
     });
 
