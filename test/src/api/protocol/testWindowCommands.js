@@ -187,21 +187,21 @@ describe('window commands', function() {
 
 
 
-  it('test .openNewWindow() with unhandled error', function() {
+  xit('test .openNewWindow() with unhandled error', function() {
     return Globals.runProtocolTestWithError({
       url: '/wd/hub/session/1352110219202/window/new',
       commandName: 'openNewWindow'
     });
   });
 
-  it('test .minimizeWindow() with unhandled error', function() {
+  xit('test .minimizeWindow() with unhandled error', function() {
     return Globals.runProtocolTestWithError({
       url: '/wd/hub/session/1352110219202/window/minimize',
       commandName: 'minimizeWindow'
     });
   });
 
-  it('test .windowHandles() with unhandled error', function() {
+  xit('test .windowHandles() with unhandled error', function() {
     return Globals.runProtocolTestWithError({
       url: '/wd/hub/session/1352110219202/window_handles',
       commandName: 'windowHandles',
@@ -209,7 +209,7 @@ describe('window commands', function() {
     });
   });
 
-  it('test .windowHandle() with unhandled error', function() {
+  xit('test .windowHandle() with unhandled error', function() {
     return Globals.runProtocolTestWithError({
       url: '/wd/hub/session/1352110219202/window_handle',
       commandName: 'windowHandle',

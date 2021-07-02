@@ -112,6 +112,22 @@ module.exports = new function () {
     });
   };
 
+  this.initW3CClient = function(opts = {}) {
+    const settings = Object.assign({
+      selenium: {
+        version2: false,
+        start_process: false,
+        host: null
+      },
+      webdriver: {
+        start_process: false,
+        host: 'localhost'
+      }
+    }, opts);
+
+    return this.initClient(settings);
+  };
+
   this.initClient = function(options, reporter) {
     let client = this.createClient(options, reporter);
 
