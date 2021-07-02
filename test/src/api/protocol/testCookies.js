@@ -8,9 +8,8 @@ describe('cookie commands', function() {
 
   it('testCookieGet', function () {
     return Globals.protocolTest({
-      assertion: function(opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/cookie');
+      assertion: function(cookie) {
+        assert.strictEqual(cookie, 'cookie-test');
       },
       commandName: 'cookie',
       args: ['GET']
@@ -20,9 +19,7 @@ describe('cookie commands', function() {
   it('testCookiePost', function () {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/cookie');
-        assert.deepStrictEqual(opts.data, {cookie: {name: 'test_cookie'}});
+        assert.deepStrictEqual(opts, {name: 'test_cookie'});
       },
       commandName: 'cookie',
       args: ['POST', {name: 'test_cookie'}]
@@ -32,8 +29,9 @@ describe('cookie commands', function() {
   it('testCookieDeleteAll', function () {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.strictEqual(opts.method, 'DELETE');
-        assert.strictEqual(opts.path, '/session/1352110219202/cookie');
+        assert.deepStrictEqual(opts, {
+          command: 'deleteAllCookies'
+        });
       },
       commandName: 'cookie',
       args: ['DELETE']
@@ -43,8 +41,7 @@ describe('cookie commands', function() {
   it('testCookieDeleteOne', function () {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.strictEqual(opts.method, 'DELETE');
-        assert.strictEqual(opts.path, '/session/1352110219202/cookie/test_cookie');
+        assert.strictEqual(opts, 'test_cookie');
       },
       commandName: 'cookie',
       args: ['DELETE', 'test_cookie']

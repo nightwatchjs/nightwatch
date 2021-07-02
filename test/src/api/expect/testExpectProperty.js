@@ -6,7 +6,7 @@ describe('expect.property', function() {
   beforeEach(function(done) {
     ExpectGlobals.beforeEach.call(this, {
       silent: false,
-      output: false
+      output: true
     }, () => {
       this.client.api.globals.abortOnAssertionFailure = true;
       done();

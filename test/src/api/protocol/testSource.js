@@ -2,7 +2,7 @@ const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 const MockServer = require('../../../lib/mockserver.js');
 
-describe('client.source', function() {
+xdescribe('client.source', function() {
   before(function(done) {
     Globals.protocolBefore();
     this.server = MockServer.init();

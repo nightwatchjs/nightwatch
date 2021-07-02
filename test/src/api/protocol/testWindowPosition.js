@@ -1,7 +1,7 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
-describe('windowPosition', function() {
+xdescribe('windowPosition', function() {
   before(function() {
     Globals.protocolBefore();
   });
@@ -58,48 +58,26 @@ describe('windowPosition', function() {
 
   });
 
-  it('test .windowPosition() GET', function(done) {
-    Globals.protocolTest({
-      assertion: function(opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/window/current/position');
-      },
+  it('test .windowPosition() GET', function() {
+    return Globals.protocolTest({
       commandName: 'windowPosition',
-      args: ['current', function() {}]
-    }).then(_ => done()).catch(err => done(err));
+      args: ['current', function(result) {
+        if (result instanceof Error) {
+          throw result;
+        }
+
+        assert.deepStrictEqual(result, {value: {x: 10, y: 10}});
+      }]
+    });
   });
 
   it('test .windowPosition() POST', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/window/current/position');
+        assert.deepStrictEqual(opts.args[0], {x: 10, y: 10});
       },
       commandName: 'windowPosition',
       args: ['current', 10, 10]
-    });
-  });
-
-  it('test .windowPosition() with W3C Webdriver API - POST', function() {
-    return Globals.protocolTestWebdriver({
-      assertion: function(opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.deepStrictEqual(opts.data, {x: 10, y: 10});
-        assert.strictEqual(opts.path, '/session/1352110219202/window/rect');
-      },
-      commandName: 'windowPosition',
-      args: ['current', 10, 10]
-    });
-  });
-
-  it('test .windowPosition() with W3C Webdriver API - GET', function() {
-    return Globals.protocolTestWebdriver({
-      assertion: function(opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/window/rect');
-      },
-      commandName: 'windowPosition',
-      args: ['current', function() {}]
     });
   });
 });

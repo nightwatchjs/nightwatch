@@ -1,38 +1,35 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
-describe('browser commands', function () {
+describe('browser navigation commands', function () {
   before(function () {
     Globals.protocolBefore();
   });
 
-  it('testRefresh', function () {
-    return Globals.protocolTest({
-      assertion: function (opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/refresh');
+  it('testRefresh', function (done) {
+    Globals.protocolTest({
+      assertion() {
+        done();
       },
       commandName: 'refresh',
       args: []
     });
   });
 
-  it('testBack', function () {
-    return Globals.protocolTest({
+  it('testBack', function (done) {
+    Globals.protocolTest({
       assertion: function (opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/back');
+        done();
       },
       commandName: 'back',
       args: []
     });
   });
 
-  it('testForward', function () {
-    return Globals.protocolTest({
+  it('testForward', function (done) {
+    Globals.protocolTest({
       assertion: function (opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/forward');
+        done();
       },
       commandName: 'forward',
       args: []
