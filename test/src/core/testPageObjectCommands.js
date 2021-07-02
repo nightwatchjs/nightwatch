@@ -29,7 +29,7 @@ describe('test PageObject Commands', function () {
     this.client = Nightwatch.client();
   });
 
-  it('testPageObjectElementCommandWithMutliArgs', function(done) {
+  it.only('testPageObjectElementCommandWithMutliArgs', function(done) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element/0/value',
       method: 'POST',
@@ -41,7 +41,7 @@ describe('test PageObject Commands', function () {
 
     let page = this.client.api.page.simplePageObj();
     page.setValue('@loginCss', '1', function callback(result) {
-      assert.strictEqual(result.value, null);
+      assert.strictEqual(result.status, 0);
       done();
     });
 
@@ -91,7 +91,7 @@ describe('test PageObject Commands', function () {
     });
   });
 
-  it('testPageObjectElementRecursion', function(done) {
+  it.only('testPageObjectElementRecursion', function(done) {
     MockServer.addMock({
       'url': '/wd/hub/session/1352110219202/element/1/click',
       'response': JSON.stringify({
@@ -102,7 +102,7 @@ describe('test PageObject Commands', function () {
     let client = this.client;
     let section = client.api.page.simplePageObj().section.signUp;
     section.click('@help', function callback(result) {
-      assert.strictEqual(result.value, null, result.value && result.value.message || 'An error occurred:\n' + JSON.stringify(result));
+      assert.strictEqual(result.status, 0, result.value && result.value.message || 'An error occurred:\n' + JSON.stringify(result));
     });
 
     client.api.perform(function () {
@@ -111,7 +111,7 @@ describe('test PageObject Commands', function () {
     this.client.start(err => done(err));
   });
 
-  it('testPageObjectPluralElementRecursion', function(done) {
+  it.only('testPageObjectPluralElementRecursion', function(done) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element/1/elements',
       method: 'POST',
@@ -124,8 +124,9 @@ describe('test PageObject Commands', function () {
 
     let section = this.client.api.page.simplePageObj().section.signUp;
     section.waitForElementPresent('@help', 1000, true, function callback(result) {
+      assert.strictEqual(result.status, 0);
       assert.strictEqual(result.value.length, 1);
-      assert.deepStrictEqual(result.value[0], {'element-6066-11e4-a52e-4f735466cecf': '1'});
+      assert.deepStrictEqual(result.value[0], {'ELEMENT': '1'});
       assert.strictEqual(result.WebdriverElementId, '1');
     });
 
@@ -134,7 +135,7 @@ describe('test PageObject Commands', function () {
     });
   });
 
-  it('testPageObjectElementCommandSwitchLocateStrategy', function(done) {
+  it.only('testPageObjectElementCommandSwitchLocateStrategy', function(done) {
     MockServer.addMock({
       'url': '/wd/hub/session/1352110219202/element/0/click',
       'response': JSON.stringify({
@@ -153,9 +154,9 @@ describe('test PageObject Commands', function () {
     let page = this.client.api.page.simplePageObj();
 
     page.click('@loginCss', function callback(result) {
-      assert.strictEqual(result.value, null);
+      assert.strictEqual(result.status, 0);
     }).click('@loginXpath', function callback(result) {
-      assert.strictEqual(result.value, null);
+      assert.strictEqual(result.status, 0);
       done();
     });
 
