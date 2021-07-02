@@ -29,7 +29,7 @@ describe('test PageObject Commands', function () {
     this.client = Nightwatch.client();
   });
 
-  it.only('testPageObjectElementCommandWithMutliArgs', function(done) {
+  it('testPageObjectElementCommandWithMutliArgs', function(done) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element/0/value',
       method: 'POST',
@@ -91,7 +91,7 @@ describe('test PageObject Commands', function () {
     });
   });
 
-  it.only('testPageObjectElementRecursion', function(done) {
+  it('testPageObjectElementRecursion', function(done) {
     MockServer.addMock({
       'url': '/wd/hub/session/1352110219202/element/1/click',
       'response': JSON.stringify({
@@ -111,7 +111,7 @@ describe('test PageObject Commands', function () {
     this.client.start(err => done(err));
   });
 
-  it.only('testPageObjectPluralElementRecursion', function(done) {
+  it('testPageObjectPluralElementRecursion', function(done) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element/1/elements',
       method: 'POST',
@@ -135,7 +135,7 @@ describe('test PageObject Commands', function () {
     });
   });
 
-  it.only('testPageObjectElementCommandSwitchLocateStrategy', function(done) {
+  it('testPageObjectElementCommandSwitchLocateStrategy', function(done) {
     MockServer.addMock({
       'url': '/wd/hub/session/1352110219202/element/0/click',
       'response': JSON.stringify({
