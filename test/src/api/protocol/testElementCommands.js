@@ -1,32 +1,76 @@
 const assert = require('assert');
+const {By, WebElement} = require('selenium-webdriver');
 const Globals = require('../../../lib/globals.js');
 
 describe('element actions', function () {
+  const warn = console.warn;
   before(function () {
     Globals.protocolBefore();
   });
 
+  afterEach(() => {
+    console.warn = warn;
+  });
+
   it('testElement', function () {
     return Globals.protocolTest({
-      assertion: function (opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/element');
-        assert.deepStrictEqual(opts.data, {using: 'id', value: '#weblogin'});
+      assertion({locator, command}) {
+        assert.ok(locator instanceof By);
+        assert.strictEqual(locator.using, 'css selector');
+        assert.strictEqual(command, 'findElement');
       },
       commandName: 'element',
-      args: ['id', '#weblogin']
+      args: ['css selector', '#weblogin', function(result) {
+        assert.strictEqual(result.value, '12345-6789');
+        assert.strictEqual(result.status, 0);
+        assert.strictEqual(typeof result.webElement, 'object');
+        assert.strictEqual(typeof result.webElement.getId, 'function');
+      }]
+    });
+  });
+
+  it('testMultipleElements', function () {
+    return Globals.protocolTest({
+      assertion({locator, command}) {
+        assert.ok(locator instanceof By);
+        assert.strictEqual(command, 'findElements');
+      },
+      commandName: 'elements',
+      args: ['id', '#weblogin', function({value, status}) {
+        assert.strictEqual(status, 0);
+        assert.deepStrictEqual(value, [{'element-6066-11e4-a52e-4f735466cecf': '12345-6789'}]);
+      }]
+    });
+  });
+
+  it('testMultipleElements with no results', function () {
+    return Globals.protocolTest({
+      commandName: 'elements',
+      args: ['id', '#weblogin', function({value, status, error}) {
+        assert.strictEqual(status, -1);
+        assert.strictEqual(value.length, 0);
+        assert.strictEqual(error, 'unable to locate element using css selector');
+      }],
+      mockDriverOverrides: {
+        findElements(locator) {
+          return [];
+        }
+      }
     });
   });
 
   it('testElementIdElement', function () {
     return Globals.protocolTest({
-      assertion: function (opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/element/0/element');
-        assert.deepStrictEqual(opts.data, {using: 'id', value: '#weblogin'});
+      assertion({args, command}) {
+        assert.ok(args.id instanceof WebElement);
+        assert.strictEqual(command, 'findChildElement');
       },
       commandName: 'elementIdElement',
-      args: ['0', 'id', '#weblogin']
+      args: ['0', 'id', '#weblogin', function({value, status, elementId}) {
+        assert.strictEqual(status, 0);
+        assert.strictEqual(typeof value.getId, 'function');
+        assert.strictEqual(elementId, '6789-192111');
+      }]
     });
   });
 
@@ -39,27 +83,17 @@ describe('element actions', function () {
     });
   });
 
-  it('testElementPlural', function () {
-    return Globals.protocolTest({
-      assertion: function (opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/elements');
-        assert.deepStrictEqual(opts.data, {using: 'id', value: '#weblogin'});
-      },
-      commandName: 'elements',
-      args: ['id', '#weblogin']
-    });
-  });
-
   it('testElementIdElementPlural', function () {
     return Globals.protocolTest({
-      assertion: function (opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/element/0/elements');
-        assert.deepStrictEqual(opts.data, {using: 'id', value: '#weblogin'});
+      assertion({args, command}) {
+        assert.strictEqual(command, 'findChildElements');
+        assert.ok(args.id instanceof WebElement);
       },
       commandName: 'elementIdElements',
-      args: ['0', 'id', '#weblogin']
+      args: ['0', 'id', '#weblogin', function({value, status}) {
+        assert.strictEqual(status, 0);
+        assert.deepStrictEqual(value, [{'element-6066-11e4-a52e-4f735466cecf': '6789-192111'}]);
+      }]
     });
   });
 
@@ -74,25 +108,25 @@ describe('element actions', function () {
 
   it('testElementActive', function () {
     return Globals.protocolTest({
-      assertion: function (opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/element/active');
-        assert.deepStrictEqual(opts.data, {});
+      assertion({command}) {
+        assert.strictEqual(command, 'activeElement');
       },
       commandName: 'elementActive',
-      args: []
+      args: [function(result) {
+        assert.deepStrictEqual(result, {value: '12345-6789', status: 0});
+      }]
     });
   });
 
   it('testElementIdClear', function () {
     return Globals.protocolTest({
-      assertion: function (opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/element/TEST_ELEMENT/clear');
-        assert.deepStrictEqual(opts.data, {});
+      assertion({args, command}) {
+        assert.strictEqual(command, 'clearElement');
       },
       commandName: 'elementIdClear',
-      args: ['TEST_ELEMENT']
+      args: ['TEST_ELEMENT', function(result) {
+        assert.deepStrictEqual(result, {value: null, status: 0});
+      }]
     });
   });
 
@@ -109,17 +143,18 @@ describe('element actions', function () {
 
   it('testElementIdSelected', function () {
     return Globals.protocolTest({
-      assertion: function (opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/element/TEST_ELEMENT/selected');
+      assertion({args, command}) {
+        assert.strictEqual(command, 'isElementSelected');
+        assert.ok(args.id instanceof WebElement);
       },
       commandName: 'elementIdSelected',
-      args: ['TEST_ELEMENT']
+      args: ['TEST_ELEMENT', function(result) {
+        assert.deepStrictEqual(result, {value: true, status: 0});
+      }]
     });
   });
 
   it('testElementIdSelected invalid element ID', function () {
-
     return Globals.protocolTest({
       commandName: 'elementIdSelected',
       args: [false]
@@ -132,12 +167,14 @@ describe('element actions', function () {
 
   it('testElementIdEnabled', function () {
     return Globals.protocolTest({
-      assertion: function (opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/element/TEST_ELEMENT/enabled');
+      assertion: function ({args, command}) {
+        assert.strictEqual(command, 'isElementEnabled');
+        assert.ok(args.id instanceof WebElement);
       },
       commandName: 'elementIdEnabled',
-      args: ['TEST_ELEMENT']
+      args: ['TEST_ELEMENT', function(result) {
+        assert.deepStrictEqual(result, {value: true, status: 0});
+      }]
     });
   });
 
@@ -153,13 +190,18 @@ describe('element actions', function () {
   });
 
   it('testElementIdEquals', function () {
+    console.warn = function(value) {
+      assert.ok(value.includes('Please use WebElement.equals(a, b) instead from Selenium Webdriver.'));
+    };
+
     return Globals.protocolTest({
       assertion: function (opts) {
-        assert.strictEqual(opts.method, 'GET');
         assert.strictEqual(opts.path, '/session/1352110219202/element/ELEMENT1/equals/ELEMENT2');
       },
       commandName: 'elementIdEquals',
-      args: ['ELEMENT1', 'ELEMENT2']
+      args: ['ELEMENT1', 'ELEMENT2', function(res) {
+        assert.strictEqual(res.status, 0);
+      }]
     });
   });
 
@@ -176,12 +218,15 @@ describe('element actions', function () {
 
   it('testElementIdAttribute', function () {
     return Globals.protocolTest({
-      assertion: function (opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/element/TEST_ELEMENT/attribute/test_attr');
+      assertion({args, command}) {
+        assert.strictEqual(args.name, 'test_attr');
+        assert.ok(args.id instanceof WebElement);
+        assert.strictEqual(command, 'getElementAttribute');
       },
       commandName: 'elementIdAttribute',
-      args: ['TEST_ELEMENT', 'test_attr']
+      args: ['TEST_ELEMENT', 'test_attr', function(result) {
+        assert.deepStrictEqual(result, {value: 'test_value', status: 0});
+      }]
     });
   });
 
@@ -198,13 +243,13 @@ describe('element actions', function () {
 
   it('testElementIdClick', function () {
     return Globals.protocolTest({
-      assertion: function (opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/element/TEST_ELEMENT/click');
-        assert.deepStrictEqual(opts.data, {});
+      assertion({args, command}) {
+        assert.strictEqual(command, 'clickElement');
       },
       commandName: 'elementIdClick',
-      args: ['TEST_ELEMENT']
+      args: ['TEST_ELEMENT', function(result) {
+        assert.deepStrictEqual(result, {value: null, status: 0});
+      }]
     });
   });
 
@@ -223,12 +268,14 @@ describe('element actions', function () {
 
   it('testElementIdCssProperty', function () {
     return Globals.protocolTest({
-      assertion: function (opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/element/TEST_ELEMENT/css/test_property');
+      assertion({args, command}) {
+        assert.strictEqual(args.propertyName, 'test_property');
+        assert.strictEqual(command, 'getElementValueOfCssProperty');
       },
       commandName: 'elementIdCssProperty',
-      args: ['TEST_ELEMENT', 'test_property']
+      args: ['TEST_ELEMENT', 'test_property', function(result) {
+        assert.deepStrictEqual(result, {value: '', status: 0});
+      }]
     });
   });
 
@@ -245,12 +292,14 @@ describe('element actions', function () {
 
   it('testElementIdProperty', function () {
     return Globals.protocolTest({
-      assertion: function (opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/element/TEST_ELEMENT/property/test_property');
+      assertion({args, command}) {
+        assert.strictEqual(args.name, 'test_property');
+        assert.strictEqual(command, 'getElementProperty');
       },
       commandName: 'elementIdProperty',
-      args: ['TEST_ELEMENT', 'test_property']
+      args: ['TEST_ELEMENT', 'test_property', function(result) {
+        assert.deepStrictEqual(result, {value: 'test_prop_value', status: 0});
+      }]
     });
   });
 
@@ -267,12 +316,14 @@ describe('element actions', function () {
 
   it('testElementIdDisplayed', function () {
     return Globals.protocolTest({
-      assertion: function (opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/element/TEST_ELEMENT/displayed');
+      assertion({args, command}) {
+        assert.ok(args.id instanceof WebElement);
+        assert.strictEqual(command, 'isElementDisplayed');
       },
       commandName: 'elementIdDisplayed',
-      args: ['TEST_ELEMENT']
+      args: ['TEST_ELEMENT', function(result) {
+        assert.deepStrictEqual(result, {value: true, status: 0});
+      }]
     });
   });
 
@@ -289,12 +340,14 @@ describe('element actions', function () {
 
   it('testElementIdLocation', function () {
     return Globals.protocolTest({
-      assertion: function (opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/element/TEST_ELEMENT/location');
+      assertion({args, command}) {
+        assert.ok(args.id instanceof WebElement);
+        assert.strictEqual(command, 'getElementRect');
       },
       commandName: 'elementIdLocation',
-      args: ['TEST_ELEMENT']
+      args: ['TEST_ELEMENT', function(result) {
+        assert.deepStrictEqual(result, {value: {width: 100, height: 105, x: 10, y: 15}, status: 0});
+      }]
     });
   });
 
@@ -311,13 +364,18 @@ describe('element actions', function () {
   });
 
   it('testElementIdLocationInView', function () {
+    console.warn = function(text) {
+      assert.ok(text.includes('This command has been deprecated and is removed from the W3C Webdriver standard.'));
+    };
+
     return Globals.protocolTest({
       assertion: function (opts) {
-        assert.strictEqual(opts.method, 'GET');
         assert.strictEqual(opts.path, '/session/1352110219202/element/TEST_ELEMENT/location_in_view');
       },
       commandName: 'elementIdLocationInView',
-      args: ['TEST_ELEMENT']
+      args: ['TEST_ELEMENT', function(result) {
+        assert.strictEqual(result.status, 0);
+      }]
     });
   });
 
@@ -334,12 +392,14 @@ describe('element actions', function () {
 
   it('testElementIdName', function () {
     return Globals.protocolTest({
-      assertion: function (opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/element/TEST_ELEMENT/name');
+      assertion({args, command}) {
+        assert.ok(args.id instanceof WebElement);
+        assert.strictEqual(command, 'getElementTagName');
       },
       commandName: 'elementIdName',
-      args: ['TEST_ELEMENT']
+      args: ['TEST_ELEMENT', function(result) {
+        assert.deepStrictEqual(result, {value: 'div', status: 0});
+      }]
     });
   });
 
@@ -355,13 +415,24 @@ describe('element actions', function () {
   });
 
   it('testElementIdSize', function () {
+    console.warn = function(value) {
+      assert.ok(value.includes('Please use .getElementRect().'));
+    };
     return Globals.protocolTest({
-      assertion: function (opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/element/TEST_ELEMENT/size');
+      assertion({command}) {
+        assert.strictEqual(command, 'getElementRect');
       },
       commandName: 'elementIdSize',
-      args: ['TEST_ELEMENT']
+      args: ['TEST_ELEMENT', function(result) {
+        assert.deepStrictEqual(result, {
+          value: {
+            height: 105,
+            width: 100,
+            x: 10,
+            y: 15
+          }, status: 0
+        });
+      }]
     });
   });
 
@@ -378,12 +449,13 @@ describe('element actions', function () {
 
   it('testElementIdText', function () {
     return Globals.protocolTest({
-      assertion: function (opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/element/TEST_ELEMENT/text');
+      assertion({args, command}) {
+        assert.strictEqual(command, 'getElementText');
       },
       commandName: 'elementIdText',
-      args: ['TEST_ELEMENT']
+      args: ['TEST_ELEMENT', function(result) {
+        assert.deepStrictEqual(result, {value: 'text', status: 0});
+      }]
     });
   });
 
@@ -400,48 +472,32 @@ describe('element actions', function () {
   });
 
   it('testElementIdValueGet', function () {
+    console.warn = function(value) {
+      assert.ok(value.includes('This command has been deprecated and is removed from the W3C Webdriver standard. It is only working with legacy Selenium JSONWire protocol.'));
+    };
+
     return Globals.protocolTest({
-      assertion: function (opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/element/TEST_ELEMENT/attribute/value');
+      assertion({command}) {
+        assert.strictEqual(command, 'getElementAttribute');
       },
       commandName: 'elementIdValue',
-      args: ['TEST_ELEMENT']
+      args: ['TEST_ELEMENT', function(result) {
+        assert.deepStrictEqual(result, {value: 'test_value', status: 0});
+      }]
     });
-  });
-
-  it('testElementIdValueGet with callback', function () {
-    return Globals.protocolTest({
-      assertion: function (opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/element/TEST_ELEMENT/attribute/value');
-      },
-      commandName: 'elementIdValue',
-      args: ['TEST_ELEMENT', function (){}]
-    });
-  });
-
-  it('testElementIdValueGet invalid element ID', function () {
-    return Globals.protocolTest({
-      assertion: function (opts) {
-      },
-      commandName: 'elementIdValue',
-      args: [false]
-    }).catch(err => {
-      assert.strictEqual(err.message, 'Error while running "elementIdValue" command: First argument passed to .elementIdValue() should be a web element ID string. Received boolean.');
-
-      return true;
-    }).then(result => assert.strictEqual(result, true));
   });
 
   it('testElementIdValuePost', function () {
     return Globals.protocolTest({
-      assertion: function (opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/element/TEST_ELEMENT/value');
+      assertion({args, command}) {
+        assert.strictEqual(command, 'sendKeysToElement');
+        assert.strictEqual(args.text, 'test');
+        assert.deepStrictEqual(args.value, ['t', 'e', 's', 't']);
       },
       commandName: 'elementIdValue',
-      args: ['TEST_ELEMENT', 'test']
+      args: ['TEST_ELEMENT', 'test', function(result) {
+        assert.deepStrictEqual(result, {value: null, status: 0});
+      }]
     });
   });
 
@@ -456,22 +512,5 @@ describe('element actions', function () {
 
       return true;
     }).then(result => assert.strictEqual(result, true));
-  });
-
-  it('testElementWithCallbackAndContext', function (done) {
-    Globals.protocolTest({
-      assertion: function (opts) {
-      },
-      commandName: 'element',
-      args: ['css selector', 'body', function () {
-        try {
-          assert.strictEqual(typeof this.pause, 'function');
-          done();
-        } catch (err) {
-          done(err);
-        }
-      }]
-    });
-
   });
 });

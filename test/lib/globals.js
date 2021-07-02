@@ -2,12 +2,16 @@ const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
 const lodashMerge = require('lodash.merge');
+const {Session, WebDriver} = require('selenium-webdriver');
+const FakeDriver = require('./fakedriver.js');
 const common = require('../common.js');
 const Nightwatch = require('../lib/nightwatch.js');
 const MockServer  = require('../lib/mockserver.js');
 const Settings = common.require('settings/settings.js');
 const Runner = common.require('runner/runner.js');
 const Reporter = common.require('reporter/index.js');
+
+const SESSION_ID = 'test_session_id';
 
 class ExtendedReporter extends Reporter {
   registerPassed(message) {
@@ -20,6 +24,45 @@ class ExtendedReporter extends Reporter {
     this.assertionResult = result;
 
     super.logAssertResult(result);
+  }
+}
+
+class FakeExecutor {
+  constructor() {
+    this.commands_ = new Map()
+  }
+
+  execute(command) {
+    let expectations = this.commands_.get(command.getName())
+    if (!expectations || !expectations.length) {
+      assert.fail('unexpected command: ' + command.getName())
+      return
+    }
+
+    let next = expectations[0]
+    let result = next.execute(command)
+    if (next.times_ !== Infinity) {
+      next.times_ -= 1
+      if (!next.times_) {
+        expectations.shift()
+      }
+    }
+    return result
+  }
+
+  expect(commandName, opt_parameters) {
+    if (!this.commands_.has(commandName)) {
+      this.commands_.set(commandName, [])
+    }
+    let e = new Expectation(this, commandName, opt_parameters)
+    this.commands_.get(commandName).push(e)
+    return e
+  }
+
+  createDriver() {
+    let session = new Session(SESSION_ID, {});
+
+    return new WebDriver(session, this);
   }
 }
 
@@ -91,33 +134,13 @@ class Globals {
     return this.runProtocolTest(definition, this.wdClient);
   }
 
-  runProtocolTest({assertion = function() {}, commandName, args = []}, client) {
+  runProtocolTest({assertion = function() {}, commandName, args = [], mockDriverOverrides = {}}, client) {
     return new Promise((resolve, reject) => {
-      client.transport.driver = {
-        manage() {
-          return {
-            window() {
-              return {
-                setRect(...args) {
-                  assertion({
-                    args
-                  });
-
-                  return Promise.resolve({value: null});
-                },
-                getRect(...args) {
-                  return Promise.resolve({
-                    x: 10,
-                    y: 10,
-                    width: 100,
-                    height: 100
-                  });
-                }
-              };
-            }
-          };
-        }
+      client.transport.runProtocolAction = function(opts) {
+        assertion(opts);
       };
+
+      client.transport.driver = FakeDriver.create(assertion, mockDriverOverrides);
 
       client.queue.once('queue:finished', err => {
         if (err) {

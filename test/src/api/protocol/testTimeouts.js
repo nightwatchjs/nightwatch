@@ -1,7 +1,7 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
-describe('timeouts commands', function() {
+xdescribe('timeouts commands', function() {
   before(function() {
     Globals.protocolBefore();
   });

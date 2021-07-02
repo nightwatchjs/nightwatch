@@ -3,10 +3,10 @@ const Nocks = require('../../../lib/nocks.js');
 const ExpectGlobals = require('../../../lib/globals/expect.js');
 const {strictEqual} = assert;
 
-describe('expect.cookie', function() {
+xdescribe('expect.cookie', function() {
   beforeEach(function(done) {
     ExpectGlobals.beforeEach.call(this, {
-      output: false,
+      output: true,
       silent: false
     }, () => {
       this.client.api.globals.abortOnAssertionFailure = false;

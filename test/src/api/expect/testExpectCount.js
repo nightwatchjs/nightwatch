@@ -3,9 +3,11 @@ const ExpectGlobals = require('../../../lib/globals/expect.js');
 const Nocks = require('../../../lib/nocks.js');
 
 describe('expect.elements count', function() {
-
   beforeEach(function(done) {
-    ExpectGlobals.beforeEach.call(this, () => {
+    ExpectGlobals.beforeEach.call(this, {
+      silent: false,
+      output: true
+    }, () => {
       this.client.api.globals.abortOnAssertionFailure = false;
       done();
     });

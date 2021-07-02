@@ -1,7 +1,7 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
-describe('windowRect', function() {
+xdescribe('windowRect', function() {
   before(function() {
     Globals.protocolBefore();
   });

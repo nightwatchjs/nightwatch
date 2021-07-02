@@ -14,7 +14,7 @@ module.exports = {
           port: 10195,
           start_process: false
         },
-        // output: process.env.VERBOSE === '1' || false,
+        //output: process.env.VERBOSE === '1' || false,
         output: true,
         silent: false
       })
