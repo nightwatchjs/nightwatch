@@ -62,12 +62,6 @@ const CommandsExecutor = {
     return 'text';
   },
 
-  getPageSource(args, assertion) {
-    assertion({args, command: 'pageSource'});
-
-    return 'PageSource';
-  },
-
   clickElement(args, assertion) {
     assertion({args, command: 'clickElement'});
 
@@ -125,6 +119,16 @@ const createElementCommandMocks = function(assertion) {
         element
       ];
     }
+  };
+};
+
+const createGenericCommandMocks = function(assertion) {
+  return {
+    getPageSource() {
+      assertion();
+  
+      return 'PageSource';
+    },
   };
 };
 
@@ -246,6 +250,7 @@ module.exports = {
     Object.assign(driver, createElementCommandMocks(assertion));
     Object.assign(driver, createNavigateCommandMocks(assertion));
     Object.assign(driver, createManageCommandMocks(assertion));
+    Object.assign(driver, createGenericCommandMocks(assertion));
     Object.assign(driver, mockDriverOverrides);
 
     return driver;

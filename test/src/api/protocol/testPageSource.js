@@ -8,12 +8,12 @@ describe('client.getPageSource', function() {
 
   it('testPageSource', function() {
     return Globals.protocolTest({
-      assertion: function(opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/source');
-      },
-      commandName: 'pageSource',
+      assertion: function() {},
+      commandName: 'getPageSource',
       args: []
+    }).then((result) => {
+      assert.strictEqual(result.value, "PageSource");
+      assert.strictEqual(result.status, 0);
     });
   });
 
