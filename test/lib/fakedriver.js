@@ -122,6 +122,16 @@ const createElementCommandMocks = function(assertion) {
   };
 };
 
+const createGenericCommandMocks = function(assertion) {
+  return {
+    getPageSource() {
+      assertion();
+  
+      return 'PageSource';
+    },
+  };
+};
+
 const createManageCommandMocks = function(assertion) {
   return {
     manage() {
@@ -240,6 +250,7 @@ module.exports = {
     Object.assign(driver, createElementCommandMocks(assertion));
     Object.assign(driver, createNavigateCommandMocks(assertion));
     Object.assign(driver, createManageCommandMocks(assertion));
+    Object.assign(driver, createGenericCommandMocks(assertion));
     Object.assign(driver, mockDriverOverrides);
 
     return driver;
