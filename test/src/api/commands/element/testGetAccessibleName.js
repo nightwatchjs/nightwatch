@@ -1,6 +1,6 @@
 const assert = require('assert');
-const MockServer = require('../../../lib/mockserver.js');
-const CommandGlobals = require('../../../lib/globals/commands.js');
+const MockServer = require('../../../../lib/mockserver.js');
+const CommandGlobals = require('../../../../lib/globals/commands.js');
 
 describe('getAccessibleName', function () {
   before(function (done) {
@@ -29,25 +29,12 @@ describe('getAccessibleName', function () {
       .getAccessibleName('css selector', '#weblogin', function callback(result) {
         assert.strictEqual(result.value, 'search input');
       })
-      .getAccessibleName(
-        'css selector',
-        {
-          selector: '#weblogin',
-          timeout: 100
-        },
-        function callback(result) {
-          assert.strictEqual(result.value, 'search input');
-        }
-      )
-      .getAccessibleName(
-        {
-          selector: '#weblogin',
-          timeout: 100
-        },
-        function callback(result) {
-          assert.strictEqual(result.value, 'search input');
-        }
-      );
+      .getAccessibleName('css selector', {selector: '#weblogin', timeout: 100}, function callback(result) {
+        assert.strictEqual(result.value, 'search input');
+      })
+      .getAccessibleName({selector: '#weblogin', timeout: 100}, function callback(result) {
+        assert.strictEqual(result.value, 'search input');
+      });
 
     this.client.start(done);
   });
