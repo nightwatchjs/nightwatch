@@ -51,7 +51,7 @@ describe('expect.title', function() {
     return this.client.start(function(err) {
       assert.ok('capabilities' in api);
       assert.ok(err instanceof Error);
-      assert.ok(/^Error while running "title" command: Expected page title to equal: "vasq" - expected "equal 'vasq'" but got: "hp vasq" \(\d+ms\)$/.test(err.message), err.message);
+      assert.ok(/^Error while running "title" command: \[NightwatchAssertError\] Expected page title to equal: "vasq" - expected "equal 'vasq'" but got: "hp vasq" \(\d+ms\)$/.test(err.message), err.message);
     });
   });
 

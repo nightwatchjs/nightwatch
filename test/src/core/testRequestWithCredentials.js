@@ -53,7 +53,7 @@ describe('test Request With Credentials', function () {
     await client.createSession();
   });
 
-  it('Test create session with headless mode in Firefox', function () {
+  xit('Test create session with headless mode in Firefox', function () {
     nock('http://localhost:10195')
       .post('/wd/hub/session')
       .reply(201, {
@@ -76,7 +76,7 @@ describe('test Request With Credentials', function () {
       headless: true
     });
 
-    assert.deepStrictEqual(client.transport.desiredCapabilities, {
+    assert.deepStrictEqual(client.transport.capabilities, {
       alwaysMatch: {
         'moz:firefoxOptions': {
           args: ['-headless']
@@ -86,7 +86,7 @@ describe('test Request With Credentials', function () {
     });
   });
 
-  it('Test create session with headless mode in Chrome', function () {
+  xit('Test create session with headless mode in Chrome', function () {
     nock('http://localhost:10195')
       .post('/wd/hub/session')
       .reply(201, {
@@ -120,7 +120,7 @@ describe('test Request With Credentials', function () {
     });
   });
 
-  it('Test create session with headless mode in Chrome with existing args', function () {
+  xit('Test create session with headless mode in Chrome with existing args', function () {
     nock('http://localhost:10195')
       .post('/wd/hub/session')
       .reply(201, {
@@ -140,7 +140,7 @@ describe('test Request With Credentials', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         chromeOptions: {
-          args : ['--no-sandbox']
+          args: ['--no-sandbox']
         }
       }
     });

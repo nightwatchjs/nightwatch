@@ -64,12 +64,13 @@ describe('Test CLI Runner in Parallel', function () {
   });
 
   it('start single test run with geckodriver and test workers enabled', function () {
+    const testPath = path.join(__dirname, '../../../sampletests/async/test/sample.js');
     const runner = NightwatchClient.CliRunner({
-      source: 'test_file_1.js'
+      source: testPath
     });
 
     assert.strictEqual(runner.argv.source, undefined);
-    assert.deepStrictEqual(runner.argv._source, ['test_file_1.js']);
+    assert.deepStrictEqual(runner.argv._source, [testPath]);
 
     runner.setup({
       silent: false,
@@ -77,7 +78,8 @@ describe('Test CLI Runner in Parallel', function () {
       output_folder: false
     });
 
-    assert.strictEqual(runner.singleTestRun(), true);
+    const Utils = common.require('utils');
+    assert.strictEqual(Utils.singleSourceFile(runner.argv), true);
     assert.strictEqual(runner.isTestWorkersEnabled(), false);
   });
 });
