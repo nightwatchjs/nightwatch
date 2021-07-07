@@ -8,7 +8,7 @@ const WebdriverProtocol = common.require('transport/webdriver');
 const JsonWireProtocol = common.require('transport/jsonwire');
 const SeleniumProtocol = common.require('transport/selenium3');
 
-describe('Trandport.runProtocolAction', function() {
+xdescribe('Trandport.runProtocolAction', function() {
   const nightwatch = Nightwatch.createClientDefaults();
 
   before(function() {
