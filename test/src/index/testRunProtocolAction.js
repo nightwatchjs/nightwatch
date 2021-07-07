@@ -308,7 +308,7 @@ describe('Trandport.runProtocolAction', function() {
 
   it('test createSession Selenium Grid remote', async function() {
     nock('http://localhost:4444')
-      .post('/session')
+      .post('/wd/hub/session')
       .reply(200, {
         value: {
           acceptInsecureCerts: false,
