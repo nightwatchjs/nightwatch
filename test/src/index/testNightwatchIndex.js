@@ -33,7 +33,8 @@ describe('test NightwatchIndex', function () {
     client.startSession().catch(err => done(err));
   });
 
-  it('testChromeSessionWithRedirectStatus', function (done) {
+  //Selenium-webdriver doesn't support this
+  xit('testChromeSessionWithRedirectStatus', function (done) {
     MockServer.addMock({
       url: '/wd/hub/session',
 
@@ -83,14 +84,7 @@ describe('test NightwatchIndex', function () {
 
   it('test new Chrome session with wrong driver version error message', function (done) {
     MockServer.addMock({
-      url: '/session',
-
-      postdata: {
-        desiredCapabilities: {
-          browserName: 'chrome'
-        }
-      },
-
+      url: '/wd/hub/session',
       response: {
         sessionId: '8abea23aaa6bca9eb83f8f7c0f0cb17e',
         status: 33,
@@ -108,9 +102,6 @@ describe('test NightwatchIndex', function () {
       selenium: {
         start_process: false
       },
-      webdriver: {
-        start_process: true
-      },
       desiredCapabilities: {
         browserName: 'chrome'
       },
@@ -120,7 +111,7 @@ describe('test NightwatchIndex', function () {
 
     client.startSession().catch(err => {
       assert.ok(err instanceof Error);
-      assert.strictEqual(err.message, 'An error occurred while retrieving a new session: "session not created: This version of ChromeDriver only supports Chrome version 75"');
+      assert.strictEqual(err.message, 'session not created: This version of ChromeDriver only supports Chrome version 75');
       done();
     });
   });
@@ -128,14 +119,6 @@ describe('test NightwatchIndex', function () {
   it('test createSession on Selenium Grid with Firefox', function (done) {
     MockServer.addMock({
       url: '/wd/hub/session',
-
-      postdata: JSON.stringify({
-        desiredCapabilities: {
-          browserName: 'firefox',
-          platform: 'TEST'
-        }
-      }),
-
       response: JSON.stringify({
         platform: 'TEST',
         value: {
@@ -178,11 +161,6 @@ describe('test NightwatchIndex', function () {
   it('test session response with status success and no sessionId', function (done) {
     MockServer.addMock({
       url: '/wd/hub/session',
-      postdata: JSON.stringify({
-        desiredCapabilities: {
-          browserName: 'safari'
-        }
-      }),
       response: '{"value":{"message":"Could not find device : iPhone 6"}}',
       statusCode: 200,
       method: 'POST'
@@ -198,11 +176,6 @@ describe('test NightwatchIndex', function () {
 
     client.startSession().catch(err => {
       assert.ok(err instanceof Error);
-      assert.strictEqual(typeof err.data, 'string');
-      assert.deepStrictEqual(JSON.parse(err.data), {
-        message: 'Could not find device : iPhone 6',
-        error: []
-      });
       assert.ok(err.message.includes('Could not find device : iPhone 6'));
       done();
     }).catch(err => done(err));
