@@ -1,6 +1,5 @@
 const assert = require('assert');
 const mockery = require('mockery');
-const {instances} = require('../../../lib/runner/webdriver-server.js');
 const common = require('../../common.js');
 const WDServer = common.require('runner/webdriver-server.js');
 const Settings = common.require('settings/settings.js');
@@ -214,7 +213,7 @@ describe('Webdriver Manager', function () {
       assert.strictEqual(instance.cliArgs.length, 1);
     });
 
-    it.only('test run edgedriver with concurrency', async function () {
+    it('test run edgedriver with concurrency', async function () {
       class BaseWDServerMock extends BaseWDServer {
         createProcess() {
           this.process = {
