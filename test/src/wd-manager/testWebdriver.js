@@ -1,5 +1,6 @@
 const assert = require('assert');
 const mockery = require('mockery');
+const {instances} = require('../../../lib/runner/webdriver-server.js');
 const common = require('../../common.js');
 const WDServer = common.require('runner/webdriver-server.js');
 const Settings = common.require('settings/settings.js');
@@ -209,11 +210,11 @@ describe('Webdriver Manager', function () {
       assert.strictEqual(instance.outputFile, 'chromedriver.log');
       assert.strictEqual(instance.serviceName, 'ChromeDriver');
       assert.strictEqual(instance.processCreated, true);
-      assert.ok(instance.cliArgs[0].startsWith('--port=') );
+      assert.ok(instance.cliArgs[0].startsWith('--port='));
       assert.strictEqual(instance.cliArgs.length, 1);
     });
 
-    it('test run edgedriver with concurrency', async function () {
+    it.only('test run edgedriver with concurrency', async function () {
       class BaseWDServerMock extends BaseWDServer {
         createProcess() {
           this.process = {
@@ -258,7 +259,8 @@ describe('Webdriver Manager', function () {
       assert.strictEqual(instance.outputFile, 'edgedriver.log');
       assert.strictEqual(instance.serviceName, 'EdgeDriver');
       assert.strictEqual(instance.processCreated, true);
-      assert.ok(instance.cliArgs[0].startsWith('--port=') );
+      assert.strictEqual(instance.defaultPort, 9514);
+      assert.ok(instance.cliArgs[0].startsWith('--port='));
       assert.strictEqual(instance.cliArgs.length, 1);
     });
   });
