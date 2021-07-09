@@ -548,11 +548,11 @@ describe('Transport.create()', function () {
         nock('https://api.browserstack.com')
           .put('/automate/sessions/1234567.json', {
             status: 'failed',
-            reason: ''
+            reason: 'NightwatchAssertError Timed out while waiting for element <#james> to be present for 5000 milliseconds. - expected "visible" but got: "not found"'
           })
           .reply(200, {});
 
-        result = await transport.testSuiteFinished(true);
+        result = await transport.testSuiteFinished(true, {name: 'NightwatchAssertError', message: 'Timed out while waiting for element <#james> to be present for 5000 milliseconds. - expected "visible" but got: "not found"'});
         assert.strictEqual(result, true);
         assert.strictEqual(transport.sessionId, null);
 
