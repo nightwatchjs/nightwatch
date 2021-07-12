@@ -115,6 +115,7 @@ const createElementCommandMocks = function(assertion) {
       assertion({locator, command: 'findElements'});
 
       const element = fakeWebElement(TEST_ELEMENT_ID);
+
       return [
         element
       ];
@@ -128,7 +129,7 @@ const createGenericCommandMocks = function(assertion) {
       assertion();
   
       return 'PageSource';
-    },
+    }
   };
 };
 
@@ -149,6 +150,7 @@ const createManageCommandMocks = function(assertion) {
         },
         getCookies() {
           assertion('cookie-test');
+
           return Promise.resolve();
         },
 
@@ -196,6 +198,7 @@ const createNavigateCommandMocks = function(assertion) {
     },
     getCurrentUrl() {
       assertion('http://localhost');
+
       return 'http://localhost';
     }
   };
@@ -227,21 +230,33 @@ module.exports = {
             return {
               accept() {
                 assertion();
+
                 return null;
               },
               dismiss() {
                 assertion();
+
                 return null;
               },
               getText() {
                 assertion('alert text');
+
                 return Promise.resolve('alert text');
               },
               sendKeys(value) {
                 assertion(value);
+
                 return null;
               }
             };
+          },
+          frame(frameId) {
+            assertion(frameId);
+
+            return null;
+          },
+          frameParent() {
+            return null;
           }
         };
       }
