@@ -209,7 +209,7 @@ describe('Webdriver Manager', function () {
       assert.strictEqual(instance.outputFile, 'chromedriver.log');
       assert.strictEqual(instance.serviceName, 'ChromeDriver');
       assert.strictEqual(instance.processCreated, true);
-      assert.ok(instance.cliArgs[0].startsWith('--port=') );
+      assert.ok(instance.cliArgs[0].startsWith('--port='));
       assert.strictEqual(instance.cliArgs.length, 1);
     });
 
@@ -258,7 +258,8 @@ describe('Webdriver Manager', function () {
       assert.strictEqual(instance.outputFile, 'edgedriver.log');
       assert.strictEqual(instance.serviceName, 'EdgeDriver');
       assert.strictEqual(instance.processCreated, true);
-      assert.ok(instance.cliArgs[0].startsWith('--port=') );
+      assert.strictEqual(instance.defaultPort, 9514);
+      assert.ok(instance.cliArgs[0].startsWith('--port='));
       assert.strictEqual(instance.cliArgs.length, 1);
     });
   });
