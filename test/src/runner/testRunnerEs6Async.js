@@ -70,7 +70,7 @@ describe('testRunner ES6 Async', function() {
     });
   });
 
-  it.only('test Runner with ES6 async/await tests basic sample', function() {
+  it('test Runner with ES6 async/await tests basic sample', function() {
     let testsPath = path.join(__dirname, '../../sampletests/es6await/selenium');
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/cookie',
