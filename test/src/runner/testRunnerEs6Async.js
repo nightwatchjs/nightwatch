@@ -70,7 +70,7 @@ describe('testRunner ES6 Async', function() {
     });
   });
 
-  it('test Runner with ES6 async/await tests basic sample', function() {
+  it.only('test Runner with ES6 async/await tests basic sample', function() {
     let testsPath = path.join(__dirname, '../../sampletests/es6await/selenium');
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/cookie',
@@ -103,6 +103,11 @@ describe('testRunner ES6 Async', function() {
         if (results.modules['failures/sampleWithFailures'].completed.asyncGetCookiesTest.lastError) {
           throw results.modules['failures/sampleWithFailures'].completed.asyncGetCookiesTest.lastError;
         }
+
+        assert.ok('failures/verifyWithFailures' in results.modules);
+        assert.strictEqual(results.modules['failures/verifyWithFailures'].completed.demoTest.assertions.length, 2);
+        assert.ok(results.modules['failures/verifyWithFailures'].completed.demoTest.assertions[0].failure.includes('Expected "is present" but got: "not present"'));
+        assert.strictEqual(results.modules['failures/verifyWithFailures'].completed.demoTest.assertions[1].failure, false);
 
         assert.ok(results.lastError instanceof Error);
         assert.ok(results.lastError.message.includes('is present in 15ms'), results.lastError.message);
