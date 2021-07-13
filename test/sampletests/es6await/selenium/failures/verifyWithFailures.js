@@ -7,8 +7,8 @@ module.exports = {
       selector: '#badElement',
       timeout: 15,
       retryInterval: 15
-    });
-    await client.verify.elementPresent('#weblogin');
+    })
+      .verify.elementPresent('#weblogin');
 
     client.end();
   }
