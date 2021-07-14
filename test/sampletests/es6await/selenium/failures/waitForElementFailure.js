@@ -1,8 +1,6 @@
-const {after} = require('lodash');
 
 module.exports= {
- 
-
+    
   'demoTest': async function(client) {
     await client.waitForElementVisible({
       selector: '#badElement',
