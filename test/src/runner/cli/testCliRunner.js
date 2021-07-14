@@ -23,7 +23,7 @@ describe('Test CLI Runner', function() {
     let config = {
       src_folders: ['tests'],
       test_settings: {
-        'default': {
+        default: {
           silent: true
         }
       }
@@ -36,9 +36,27 @@ describe('Test CLI Runner', function() {
       src_folders: ['tests'],
       output_folder: false,
       test_settings: {
-        'default': {
+        default: {
           silent: true
         }
+      }
+    });
+
+    mockery.registerMock('./test_worker_enabled.json', {
+      src_folders: ['tests'],
+      output_folder: false,
+      test_settings: {
+        default: {
+          silent: true
+        }
+      },
+      webdriver: {
+        start_process: true,
+        start_session: false
+      },
+      test_workers: {
+        enabled: true,
+        workers: 'auto'
       }
     });
 
@@ -326,6 +344,19 @@ describe('Test CLI Runner', function() {
     assert.strictEqual(runner.globals.settings.output_folder, 'test-output-folder');
     assert.strictEqual(runner.test_settings.globals.waitForConditionTimeout, 11);
     assert.strictEqual(runner.test_settings.globals.retryAssertionTimeout, 11);
+  });
+
+  it('should spawn instance of webdriver when folder with single file is passed', function() {
+    registerNoSettingsJsonMock();
+    const CliRunner = common.require('runner/cli/cli.js');
+    let runner = new CliRunner({
+      config: './test_worker_enabled.json',
+      skiptags: 'home,arctic',
+      tag: 'danger'
+    }).setup();
+
+    assert.strictEqual(runner.isWebDriverManaged(), true);
+    assert.strictEqual(runner.test_settings.tag_filter, 'danger');
   });
 
   it('testSetOutputFolder', function() {
@@ -901,4 +932,3 @@ describe('Test CLI Runner', function() {
   });
 
 });
-
