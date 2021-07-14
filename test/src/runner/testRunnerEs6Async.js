@@ -109,8 +109,10 @@ describe('testRunner ES6 Async', function() {
         assert.ok(results.modules['failures/verifyWithFailures'].completed.demoTest.assertions[0].failure.includes('Expected "is present" but got: "not present"'));
         assert.strictEqual(results.modules['failures/verifyWithFailures'].completed.demoTest.assertions[1].failure, false);
 
+        assert.ok('failures/waitForElementFailure' in results.modules);
+        assert.strictEqual(results.modules['failures/verifyWithFailures'].completed.demoTest.failed, 1);
+
         assert.ok(results.lastError instanceof Error);
-        assert.ok(results.lastError.message.includes('is present in 15ms'), results.lastError.message);
         assert.strictEqual(results.lastError.name, 'NightwatchAssertError');
       }
     };
