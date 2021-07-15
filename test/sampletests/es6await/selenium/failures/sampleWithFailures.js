@@ -22,5 +22,29 @@ module.exports = {
     });
 
     client.end();
+  },
+
+  verify: async function (client) {
+    await client.url('http://localhost');
+    await client.verify.elementPresent({
+      selector: '#badElement',
+      timeout: 15,
+      retryInterval: 15
+    })
+      .verify.elementPresent('#weblogin');
+
+    client.end();
+  },
+
+  waitFor: async function(client) {
+    await client.url('http://localhost');
+    await client.waitForElementVisible({
+      selector: '#badElement',
+      timeout: 15,
+      retryInterval: 15,
+      abortOnFailure: false
+    });
+    client.end();
   }
+  
 };
