@@ -84,7 +84,7 @@ describe('test NightwatchIndex', function () {
 
   it('test new Chrome session with wrong driver version error message', function (done) {
     MockServer.addMock({
-      url: '/wd/hub/session',
+      url: '/session',
       response: {
         sessionId: '8abea23aaa6bca9eb83f8f7c0f0cb17e',
         status: 33,
@@ -100,13 +100,19 @@ describe('test NightwatchIndex', function () {
 
     let client = Nightwatch.createClient({
       selenium: {
-        start_process: false
+        start_process: false,
+        host: null
+      },
+      webdriver: {
+        start_process: false,
+        host: 'localhost',
+        port: '10195'
       },
       desiredCapabilities: {
         browserName: 'chrome'
       },
       silent: false,
-      output: false
+      output: true
     });
 
     client.startSession().catch(err => {
