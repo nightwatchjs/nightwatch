@@ -26,7 +26,7 @@ describe('test HttpRequestTimeout', function() {
       socketDelay: 400
     }, true);
 
-    var options = {
+    const options = {
       path: '/:sessionId/element',
       method: 'GET',
       sessionId: '123456'
@@ -38,7 +38,7 @@ describe('test HttpRequestTimeout', function() {
       port: 10195
     };
 
-    var request = new HttpRequest(options);
+    const request = new HttpRequest(options);
 
     request.on('error', function (err) {
       assert.strictEqual(err.code, 'ECONNRESET');
@@ -62,7 +62,7 @@ describe('test HttpRequestTimeout', function() {
       method: 'GET'
     }, true);
 
-    var options = {
+    const options = {
       path: '/:sessionId/element',
       selenium_port: 10195,
       method: 'GET',
@@ -81,7 +81,7 @@ describe('test HttpRequestTimeout', function() {
       }
     };
 
-    var request = new HttpRequest(options);
+    const request = new HttpRequest(options);
     assert.strictEqual(request.retryAttempts, 1);
     assert.deepStrictEqual(request.httpOpts, {
       host: 'localhost',
