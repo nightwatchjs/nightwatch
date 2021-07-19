@@ -63,7 +63,6 @@
       "optional": true
     }
   },
-  "optionalDependencies": {},
   "bin": {
     "nightwatch": "./bin/nightwatch"
   },
