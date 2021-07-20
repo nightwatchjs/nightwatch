@@ -40,6 +40,18 @@ module.exports = {
     }, true);
   },
 
+
+  deleteCookie() {
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/cookie/other_cookie',
+      method: 'DELETE',
+      response: JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0
+      })
+    });
+  },
+
   maximizeWindow() {
     MockServer.addMock({
       'url': '/wd/hub/session/1352110219202/window/current/maximize',

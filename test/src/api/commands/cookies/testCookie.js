@@ -38,4 +38,13 @@ describe('getCookie', function() {
     this.client.start(done);
   });
 
+  it('client.deleteCookie(<name>)', function(done){
+    Mocks.deleteCookie();
+
+    this.client.api.deleteCookie('other_cookie', function callback(result) {
+      assert.strictEqual(result.status, 0);
+    });
+    this.client.start(done);
+  });
+
 });
