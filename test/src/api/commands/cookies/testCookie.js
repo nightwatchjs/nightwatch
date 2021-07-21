@@ -47,4 +47,14 @@ describe('getCookie', function() {
     this.client.start(done);
   });
 
+  it('client.setCookie(<name>)', function(done) {
+    Mocks.addCookie();
+
+    this.client.api.setCookie({name: 'other_cookie', value: '123456'}, function callback(result){
+      assert.strictEqual(result.status, 0);
+    });
+    this.client.start(done);
+    
+  });
+
 });
