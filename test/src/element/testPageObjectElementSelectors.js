@@ -12,7 +12,6 @@ const {strictEqual} = assert;
 //   at CommandQueue.traverse (lib/core/queue.js:82:8)
 //   at Timeout.scheduleTimeoutId.setTimeout [as _onTimeout] (lib/core/queue.js:59:52)
 describe('test page object element selectors', function() {
-
   before(function() {
     nocks.enable();
   });
@@ -39,7 +38,7 @@ describe('test page object element selectors', function() {
   it('page elements', function(done) {
     nocks
       .elementsFound('#weblogin')
-      .elementsFound('weblogin', [{ELEMENT: '0'}], 'id')
+      .elementsFound('*[id="weblogin"]', [{ELEMENT: '0'}])
       .elementsByXpath('//weblogin')
       .elementsByXpath('#weblogin', [])
       .text(0, 'first')
@@ -206,7 +205,7 @@ describe('test page object element selectors', function() {
   it('page section protocol .elementIdElements()', function(done) {
     nocks
       .elementsFound('#signupSection')
-      .elementsId('0', '#helpBtn', {ELEMENT: '12345'})
+      .elementsId('0', '#helpBtn', [{ELEMENT: '12345'}])
       .elementsId('12345', 'a', [{ELEMENT: 'abc-12345'}]);
 
     let page = Nightwatch.api().page.simplePageObj();
