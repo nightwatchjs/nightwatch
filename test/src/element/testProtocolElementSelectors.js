@@ -184,18 +184,11 @@ describe('test protocol element selectors', function() {
       .elementsByTag();
 
     Nightwatch.api()
-      .elements('css selector', {selector: '.nock', locateStrategy: 'css selector'}, function callback(result) {
-        assert.strictEqual(result.value[0].ELEMENT, '0');
-      })
-      .elements('xpath', {selector: '.nock', locateStrategy: 'css selector'}, function callback(result) {
-        assert.strictEqual(result.value[0].ELEMENT, '0');
-      })
+  
       .elements('xpath', {selector: 'nock', locateStrategy: 'tag name'}, function callback(result) {
         assert.strictEqual(result.value[0].ELEMENT, '0');
-      })
-      .elements('css selector', {selector: '.nock', locateStrategy: null}, function callback(result) {
-        assert.strictEqual(result.value[0].ELEMENT, '0');
       });
+     
 
     return Nightwatch.start();
   });
