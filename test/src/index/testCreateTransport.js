@@ -3,7 +3,6 @@ const nock = require('nock');
 const common = require('../../common.js');
 const NightwatchClient = common.require('index.js');
 const WebDriver = common.require('transport/webdriver');
-const JsonWire = common.require('transport/jsonwire');
 const Selenium = common.require('transport/selenium-webdriver/selenium.js');
 const Browserstack = common.require('transport/browserstack');
 
@@ -374,7 +373,6 @@ describe('Transport.create()', function () {
     assert.strictEqual(client.settings.webdriver.default_path_prefix, '/wd/hub');
   });
 
-  //TODO: Make the test pass after browserstack works with selenium-webdriver
   it('test create Transport for Browserstack', function(done) {
     assert.throws(function() {
       NightwatchClient.client({
@@ -433,7 +431,7 @@ describe('Transport.create()', function () {
     assert.strictEqual(client.settings.webdriver.ssl, true);
 
     const {transport} = client;
-    assert.strictEqual(transport instanceof WebDriver, false);
+    assert.ok(transport instanceof WebDriver);
     assert.strictEqual(transport.username, 'test-access-user');
     assert.strictEqual(transport.accessKey, 'test-access-key');
 
@@ -464,7 +462,6 @@ describe('Transport.create()', function () {
 
   });
 
-  //TODO: Make the test pass after browserstack works with selenium-webdriver
   it('test create Transport for Browserstack with failures', function(done) {
     const client = NightwatchClient.client({
       webdriver: {
