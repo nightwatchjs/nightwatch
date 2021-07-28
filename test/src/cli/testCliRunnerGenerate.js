@@ -23,7 +23,7 @@ describe('Test CLI Runner Generate', function() {
     mockery.disable();
   });
 
-  it('test start CLI Runner with no config file', function () {
+  xit('test start CLI Runner with no config file', function () {
     let configData;
     const fs = require('fs');
     const path = require('path');
