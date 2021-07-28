@@ -104,13 +104,13 @@ describe('testRunner ES6 Async', function() {
           throw results.modules['failures/sampleWithFailures'].completed.asyncGetCookiesTest.lastError;
         }
 
-        assert.ok('failures/verifyWithFailures' in results.modules);
-        assert.strictEqual(results.modules['failures/verifyWithFailures'].completed.demoTest.assertions.length, 2);
-        assert.ok(results.modules['failures/verifyWithFailures'].completed.demoTest.assertions[0].failure.includes('Expected "is present" but got: "not present"'));
-        assert.strictEqual(results.modules['failures/verifyWithFailures'].completed.demoTest.assertions[1].failure, false);
+        assert.ok('failures/sampleWithFailures' in results.modules);
+        assert.strictEqual(results.modules['failures/sampleWithFailures'].completed.verify.assertions.length, 2);
+        assert.ok(results.modules['failures/sampleWithFailures'].completed.verify.assertions[0].failure.includes('Expected "is present" but got: "not present"'));
+        assert.strictEqual(results.modules['failures/sampleWithFailures'].completed.verify.assertions[1].failure, false);
+        assert.strictEqual(results.modules['failures/sampleWithFailures'].completed.waitFor.failed, 1);
 
         assert.ok(results.lastError instanceof Error);
-        assert.ok(results.lastError.message.includes('is present in 15ms'), results.lastError.message);
         assert.strictEqual(results.lastError.name, 'NightwatchAssertError');
       }
     };
