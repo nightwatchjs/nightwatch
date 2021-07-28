@@ -91,7 +91,7 @@ describe('element base commands', function() {
   });
 
   it('client.element() W3C Webdriver protocol', async function () {
-    const client = await Nightwatch.initClient({
+    await Nightwatch.initAsync({
       output: false,
       silent: false,
       webdriver: {
@@ -99,39 +99,25 @@ describe('element base commands', function() {
       }
     });
 
-    await client.api.element('css selector', '#webdriver', function callback(result) {
+    await Nightwatch.api().element('css selector', '#webdriver', function callback(result) {
       assert.strictEqual(typeof result.status, 'number');
       assert.strictEqual(result.value, '5cc459b8-36a8-3042-8b4a-258883ea642b');
     });
 
-    return client.start();
+    return Nightwatch.start();
   });
 
-  // TODO: Fix this test case
   it('client.element() with xpath', async function () {
-    Nightwatch.addMock({
-      url: 'session/1352110219202/element',
-      method: 'POST',
-      response: {
-        value: {
-          'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
-        }
-      }
-    }, true);
-
     await Nightwatch.initAsync({
       output: false,
       silent: false,
-      selenium: {
-        start_process: false
-      },
       webdriver: {
         start_process: false
       }
     });
 
-    await Nightwatch.api().element('xpath', '//weblogin', function callback(result) {
-      assert.deepStrictEqual(result.value, '0');
+    await Nightwatch.api().element('xpath', '//webdriver', function callback(result) {
+      assert.strictEqual(result.value, '5cc459b8-36a8-3042-8b4a-258883ea642b');
     });
 
     return Nightwatch.start();
@@ -225,8 +211,8 @@ describe('element base commands', function() {
   //////////////////////////////////////////////////////////////////////////////////////
   // .findElement()
   //////////////////////////////////////////////////////////////////////////////////////
-  it('client.findElement()', async function() {
-    const client = await Nightwatch.initW3CClient({
+  it('client.findElement()', async function () {
+    await Nightwatch.initAsync({
       output: false,
       silent: false,
       webdriver: {
@@ -234,16 +220,16 @@ describe('element base commands', function() {
       }
     });
 
-    await client.api.findElement('#webdriver', function callback(result) {
+    await Nightwatch.api().findElement('#webdriver', function callback(result) {
       assert.strictEqual(result.status, 0);
-      assert.deepStrictEqual(result.value.ELEMENT, '0');
+      assert.deepStrictEqual(result.value.ELEMENT, '5cc459b8-36a8-3042-8b4a-258883ea642b');
     });
 
-    return client.start();
+    return Nightwatch.start();
   });
 
   it('client.findElement() with strategy', async function() {
-    const client = await Nightwatch.initW3CClient({
+    await Nightwatch.initAsync({
       output: false,
       silent: false,
       webdriver: {
@@ -251,12 +237,12 @@ describe('element base commands', function() {
       }
     });
 
-    await client.api.findElement({selector: '#webdriver', locateStrategy: 'css selector'}, function callback(result) {
+    await Nightwatch.api().findElement({selector: '#webdriver', locateStrategy: 'css selector'}, function callback(result) {
       assert.strictEqual(result.status, 0);
-      assert.deepStrictEqual(result.value, {'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'});
+      assert.strictEqual(result.value.ELEMENT,  '5cc459b8-36a8-3042-8b4a-258883ea642b');
     });
 
-    return client.start();
+    return Nightwatch.start();
   });
 
   //////////////////////////////////////////////////////////////////////////////////////
@@ -390,9 +376,8 @@ describe('element base commands', function() {
   //////////////////////////////////////////////////////////////////////////////////////
   // .elementIdElement()
   //////////////////////////////////////////////////////////////////////////////////////
-  // TODO: fix asserions
   it('client.elementIdElement()', async function() {
-    const client = await Nightwatch.initW3CClient({
+    await Nightwatch.initAsync({
       output: false,
       silent: false,
       webdriver: {
@@ -400,16 +385,16 @@ describe('element base commands', function() {
       }
     });
 
-    await client.api.elementIdElement('0', 'css selector', '#helpBtn', function callback(result) {
+    await Nightwatch.api().elementIdElement('0', 'css selector', '#helpBtn', function callback(result) {
       assert.strictEqual(result.status, 0);
       assert.deepStrictEqual(result.value, {ELEMENT: '1'});
     });
 
-    return client.start();
+    return Nightwatch.start();
   });
 
   it('client.elementIdElement() with selector object', async function() {
-    const client = await Nightwatch.initW3CClient({
+    await Nightwatch.initAsync({
       output: false,
       silent: false,
       webdriver: {
@@ -417,12 +402,12 @@ describe('element base commands', function() {
       }
     });
 
-    await client.api.elementIdElement('0', 'css selector', {selector: '#helpBtn'}, function callback(result) {
+    await Nightwatch.api().elementIdElement('0', 'css selector', {selector: '#helpBtn'}, function callback(result) {
       assert.strictEqual(result.status, 0);
       assert.deepStrictEqual(result.value, {ELEMENT: '1'});
     });
 
-    return client.start();
+    return Nightwatch.start();
   });
 
   it('client.elementIdElement() with wrong selector object', async function() {
