@@ -11,7 +11,7 @@ describe('getElementRect', function () {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it.only('client.getElementRect()', function (done) {
+  it('client.getElementRect()', function (done) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element/0/rect',
       method: 'GET',
