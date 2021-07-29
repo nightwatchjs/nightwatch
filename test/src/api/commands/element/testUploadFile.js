@@ -1,6 +1,6 @@
 const assert = require('assert');
-const MockServer  = require('../../../lib/mockserver.js');
-const CommandGlobals = require('../../../lib/globals/commands.js');
+const MockServer  = require('../../../../lib/mockserver.js');
+const CommandGlobals = require('../../../../lib/globals/commands.js');
 
 describe('uploadFile', function() {
 

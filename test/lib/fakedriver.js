@@ -129,6 +129,18 @@ const createGenericCommandMocks = function(assertion) {
       assertion();
   
       return 'PageSource';
+    },
+
+    getTitle() {
+      assertion();
+  
+      return 'Title';
+    },
+
+    getTitle() {
+      assertion();
+  
+      return 'Title';
     }
   };
 };
