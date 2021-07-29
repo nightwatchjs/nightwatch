@@ -72,9 +72,8 @@ describe('assert.hidden', function () {
         assert.strictEqual(instance.expected, true);
         assert.strictEqual(instance.getValue(), true);
         assert.strictEqual(failure, 'Expected "true" but got: ""');
-        assert.strictEqual(err.message, `Error while running "assert.hidden" command: [NightwatchAssertError] Testing if element [ '.test_element' ] is hidden. Element could not be located in 5ms - expected "true" but got: "" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Error while running "assert.hidden" command: [NightwatchAssertError] Testing if element .test_element is hidden. Element could not be located in 5ms - expected "true" but got: "" (${instance.elapsedTime}ms)`);
       }
     });
   });
 });
-
