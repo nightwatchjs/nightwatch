@@ -39,7 +39,7 @@ describe('element base commands', function() {
     await Nightwatch.api()
       .element('css selector', '#weblogin', function callback(result) {
         assert.strictEqual(result.status, 0);
-        assert.deepStrictEqual(result.value, '0');
+        assert.deepStrictEqual(result.value, {ELEMENT: '0'});
       });
 
     return Nightwatch.start();
@@ -101,7 +101,7 @@ describe('element base commands', function() {
 
     await Nightwatch.api().element('css selector', '#webdriver', function callback(result) {
       assert.strictEqual(typeof result.status, 'number');
-      assert.strictEqual(result.value, '5cc459b8-36a8-3042-8b4a-258883ea642b');
+      assert.deepStrictEqual(result.value, {ELEMENT: '5cc459b8-36a8-3042-8b4a-258883ea642b'});
     });
 
     return Nightwatch.start();
@@ -117,7 +117,7 @@ describe('element base commands', function() {
     });
 
     await Nightwatch.api().element('xpath', '//webdriver', function callback(result) {
-      assert.strictEqual(result.value, '5cc459b8-36a8-3042-8b4a-258883ea642b');
+      assert.deepStrictEqual(result.value, {ELEMENT: '5cc459b8-36a8-3042-8b4a-258883ea642b'});
     });
 
     return Nightwatch.start();
