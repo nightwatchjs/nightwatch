@@ -73,8 +73,7 @@
     "mocha-coverage": "nyc --reporter=html mocha test/src/",
     "test": "mocha test/src/",
     "test-ci": "mocha test/src/ --bail",
-    "coverage": "npx nyc report --reporter=text-lcov > ./coverage/mocha_coverage.lcov",
-    "postinstall": "node bin/show_survey.js"
+    "coverage": "npx nyc report --reporter=text-lcov > ./coverage/mocha_coverage.lcov"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
