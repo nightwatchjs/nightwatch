@@ -29,10 +29,12 @@ describe('Test CLI Runner Generate', function() {
     const path = require('path');
     const tplData = fs.readFileSync(path.resolve('lib/runner/cli/nightwatch.conf.ejs')).toString();
 
+    const os = require('os');
     mockery.registerMock('os', {
       platform: function() {
         return 'win';
-      }
+      },
+      constants: os.constants
     });
 
     mockery.registerMock('fs', {
@@ -40,7 +42,7 @@ describe('Test CLI Runner Generate', function() {
         if (fileName.endsWith('/nightwatch.conf.js')) {
           return {
             isFile: function () {
-              return false;
+              return true;
             }
           };
         }
@@ -180,7 +182,9 @@ describe('Test CLI Runner Generate', function() {
           }
         });
 
-      }
+      },
+      constants: fs.constants,
+      rmdirSync: fs.rmdirSync
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
