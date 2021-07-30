@@ -419,13 +419,20 @@ describe('Test CLI Runner', function() {
     }).setup();
 
     assert.strictEqual(runner.isWebDriverManaged(), true);
+    assert.strictEqual(runner.test_settings.selenium.host, 'other.host');
+    assert.strictEqual(runner.test_settings.detailed_output, false);
+    assert.strictEqual(runner.test_settings.output, false);
+    assert.strictEqual(runner.test_settings.disable_colors, true);
+    assert.strictEqual(runner.test_settings.username, 'testuser');
+    assert.strictEqual(runner.test_settings.credentials.service.user, 'testuser');
+    assert.strictEqual(runner.test_settings.desiredCapabilities['test.user'], 'testuser');
+
   });
 
   it('testGetTestSourceSingle', function() {
     let statCalled = false;
     let statSyncCalled = false;
     
-    //mockery.registerMock('fs.constants', fs.constants);
     mockery.registerMock('fs', {
       statSync: function(file) {
         if (file === 'demoTest') {
@@ -463,7 +470,6 @@ describe('Test CLI Runner', function() {
       },
 
       constants: fs.constants,
-
       rmdirSync: fs.rmdirSync
     });
 
@@ -912,7 +918,6 @@ describe('Test CLI Runner', function() {
   it('testStartSeleniumEnvironmentOverride', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
-        console.log("goludu");
         if (module === './selenium_override.json') {
           return {
             isFile: function() {
