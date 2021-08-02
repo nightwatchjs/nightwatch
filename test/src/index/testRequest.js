@@ -186,7 +186,7 @@ describe('test HttpRequest', function() {
     assert.strictEqual(request.reqOptions.path, '/wd/hub/123456/element');
   });
 
-  it('testErrorResponse', function (done) {
+  xit('testErrorResponse', function (done) {
     nock('http://localhost:4444')
       .post('/wd/hub/error')
       .reply(500, {
@@ -211,7 +211,7 @@ describe('test HttpRequest', function() {
 
   });
 
-  it('testErrorResponseLocalised', function (done) {
+  xit('testErrorResponseLocalised', function (done) {
     nock('http://localhost:4444')
       .post('/wd/hub/error')
       .reply(500, {
