@@ -288,7 +288,7 @@ describe('Trandport.runProtocolAction', function() {
   });
 
   it('test createSession Selenium Grid remote', async function() {
-    nock('http://localhost:4444')
+    nock('http://localhost:4445')
       .post('/wd/hub/session')
       .reply(200, {
         value: {
@@ -303,7 +303,7 @@ describe('Trandport.runProtocolAction', function() {
 
     const nightwatch = Nightwatch.createClient({
       selenium: {
-        port: 4444,
+        port: 4445,
         start_process: false
       },
       webdriver: {
