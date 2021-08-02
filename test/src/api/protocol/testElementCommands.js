@@ -47,7 +47,7 @@ describe('element actions', function () {
     return Globals.protocolTest({
       commandName: 'elements',
       args: ['id', '#weblogin', function({value, status, error}) {
-        assert.strictEqual(status, -1);
+        assert.strictEqual(status, 0);
         assert.strictEqual(value.length, 0);
         assert.strictEqual(error, 'unable to locate element using css selector');
       }],
