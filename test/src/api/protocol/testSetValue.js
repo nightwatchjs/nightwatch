@@ -6,7 +6,7 @@ describe('setValue command', function () {
     Globals.protocolBefore();
   });
 
-  it.only('should clear value and setValue', function () {
+  it('should clear value and setValue', function () {
     return Globals.protocolTest({
       commandName: 'setValue',
       args: [
