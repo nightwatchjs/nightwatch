@@ -47,9 +47,6 @@ describe('element base commands', function() {
 
   it('client.element() - unhandled error', async function() {
     const client = await Nightwatch.initClient({
-      webdriver: {
-        start_process: false
-      },
       output: false,
       silent: false
     }, reporter);
@@ -94,31 +91,54 @@ describe('element base commands', function() {
     await Nightwatch.initAsync({
       output: false,
       silent: false,
-      webdriver: {
+      selenium: {
         start_process: false
+      },
+      webdriver: {
+        start_process: true
       }
     });
 
-    await Nightwatch.api().element('css selector', '#webdriver', function callback(result) {
-      assert.strictEqual(typeof result.status, 'number');
-      assert.deepStrictEqual(result.value, {ELEMENT: '5cc459b8-36a8-3042-8b4a-258883ea642b'});
-    });
+    await Nightwatch.api()
+      .element('css selector', '#webdriver', function callback(result) {
+        assert.strictEqual(typeof result.status, 'undefined');
+        assert.deepStrictEqual(result.value, {'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'});
+      });
 
     return Nightwatch.start();
   });
 
-  it('client.element() with xpath', async function () {
+  it('client.element() with xpath', async function() {
+    Nightwatch.addMock({
+      url: '/session/13521-10219-202/element',
+      postdata: JSON.stringify({
+        using: 'xpath',
+        value: '//weblogin'
+      }),
+      response: {
+        value: {
+          'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
+        }
+      }
+    }, true);
+
     await Nightwatch.initAsync({
       output: false,
       silent: false,
-      webdriver: {
+      selenium: {
         start_process: false
+      },
+      webdriver: {
+        start_process: true
       }
     });
 
-    await Nightwatch.api().element('xpath', '//webdriver', function callback(result) {
-      assert.deepStrictEqual(result.value, {ELEMENT: '5cc459b8-36a8-3042-8b4a-258883ea642b'});
-    });
+    await Nightwatch.api()
+      .element('xpath', '//weblogin', function callback(result) {
+        assert.deepStrictEqual(result.value, {
+          'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
+        });
+      });
 
     return Nightwatch.start();
   });
@@ -140,15 +160,18 @@ describe('element base commands', function() {
       }
     }, true);
 
-    const client = await Nightwatch.initW3CClient({
+    await Nightwatch.initAsync({
       output: false,
       silent: false,
-      webdriver: {
+      selenium: {
         start_process: false
+      },
+      webdriver: {
+        start_process: true
       }
     });
 
-    await client.api.element('css selector', '.not_found', function(result) {
+    Nightwatch.api().element('css selector', '.not_found', function(result) {
       assert.strictEqual(result.error, 'Unable to locate element: .not_found');
       assert.strictEqual(result.status, -1);
       assert.strictEqual(result.httpStatusCode, 404);
@@ -159,71 +182,65 @@ describe('element base commands', function() {
       });
     });
 
-    return client.start();
+    return Nightwatch.start();
   });
 
 
-  it('client.element() with 502 gateway error', async function () {
-    Nightwatch.addMock(
-      {
-        url: '/session/13521-10219-202/element',
-        postdata: {
-          using: 'css selector',
-          value: '#weblogin-error'
-        },
-        contentType: 'text/plain',
-        statusCode: 502,
-        response: `
-        <html>
-          <head>
-            <title>502 Bad Gateway</title>
-          </head>
-          <body></body>
-        </html>`
+  it('client.element() with 502 gateway error', async function() {
+    Nightwatch.addMock({
+      url: '/session/13521-10219-202/element',
+      postdata: {
+        using: 'css selector',
+        value: '#weblogin-error'
       },
-      true
-    );
+      contentType: 'text/plain',
+      statusCode: 502,
+      response: `<html>
+<head>
+<title>502 Bad Gateway</title>
+</head>
+<body></body>
+</html>`
+    }, true);
 
-    const client = await Nightwatch.initW3CClient({
+    await Nightwatch.initAsync({
       output: false,
       silent: false,
-      webdriver: {
+      selenium: {
         start_process: false
+      },
+      webdriver: {
+        start_process: true
       }
     });
 
-    client.api.element('css selector', '#weblogin-error', function (result) {
+    Nightwatch.api().element('css selector', '#weblogin-error', function(result) {
       assert.strictEqual(result.status, -1);
       assert.strictEqual(result.httpStatusCode, 502);
-      assert.strictEqual(
-        result.error,
-        '<html>\n<head>\n<title>502 Bad Gateway</title>\n</head>\n<body></body>\n</html>'
-      );
+      assert.strictEqual(result.error, '<html>\n<head>\n<title>502 Bad Gateway</title>\n</head>\n<body></body>\n</html>');
       assert.deepStrictEqual(result.value, {
         error: 'internal server error',
         message: '<html>\n<head>\n<title>502 Bad Gateway</title>\n</head>\n<body></body>\n</html>'
       });
     });
 
-    return client.start();
+    return Nightwatch.start();
   });
 
   //////////////////////////////////////////////////////////////////////////////////////
   // .findElement()
   //////////////////////////////////////////////////////////////////////////////////////
-  it('client.findElement()', async function () {
+  it('client.findElement()', async function() {
     await Nightwatch.initAsync({
       output: false,
-      silent: false,
-      webdriver: {
-        start_process: false
-      }
+      silent: false
     });
 
-    await Nightwatch.api().findElement('#webdriver', function callback(result) {
-      assert.strictEqual(result.status, 0);
-      assert.deepStrictEqual(result.value.ELEMENT, '5cc459b8-36a8-3042-8b4a-258883ea642b');
-    });
+    await Nightwatch.api()
+      .findElement('#weblogin', function callback(result) {
+        assert.strictEqual(result.status, 0);
+        assert.deepStrictEqual(result.value.ELEMENT, '0');
+      });
 
     return Nightwatch.start();
   });
@@ -231,16 +248,14 @@ describe('element base commands', function() {
   it('client.findElement() with strategy', async function() {
     await Nightwatch.initAsync({
       output: false,
-      silent: false,
-      webdriver: {
-        start_process: false
-      }
+      silent: false
     });
 
-    await Nightwatch.api().findElement({selector: '#webdriver', locateStrategy: 'css selector'}, function callback(result) {
-      assert.strictEqual(result.status, 0);
-      assert.strictEqual(result.value.ELEMENT,  '5cc459b8-36a8-3042-8b4a-258883ea642b');
-    });
+    await Nightwatch.api()
+      .findElement({selector: '#weblogin', locateStrategy: 'css selector'}, function callback(result) {
+        assert.strictEqual(result.status, 0);
+        assert.deepStrictEqual(result.value.ELEMENT, '0');
+      });
 
     return Nightwatch.start();
   });
@@ -251,26 +266,19 @@ describe('element base commands', function() {
   it('client.elements()', async function() {
     await Nightwatch.initAsync({
       output: false,
-      silent: false,
-      webdriver: {
-        start_process: false
-      }
+      silent: false
     });
 
     await Nightwatch.api()
-      .elements('css selector', '#webdriver', function callback(result) {
-        assert.strictEqual(typeof result.status, 'number');
-        assert.deepStrictEqual(result.value, [{
-          ELEMENT: '5cc459b8-36a8-3042-8b4a-258883ea642b'
-        }, {
-          ELEMENT: '3783b042-7001-0740-a2c0-afdaac732e9f'
-        }]);
+      .elements('css selector', '#weblogin', function callback(result) {
+        assert.strictEqual(result.status, 0);
+        assert.deepStrictEqual(result.value, [{ELEMENT: '0'}]);
       });
 
     return Nightwatch.start();
   });
 
-  it('client.elements() with xpath', async function() {
+  it('client.elements() W3C Webdriver protocol', async function() {
     await Nightwatch.initAsync({
       output: false,
       silent: false,
@@ -278,16 +286,56 @@ describe('element base commands', function() {
         start_process: false
       },
       webdriver: {
-        start_process: false
+        start_process: true
       }
     });
 
     await Nightwatch.api()
-      .elements('xpath', '//webdriver', function callback(result) {
+      .elements('css selector', '#webdriver', function callback(result) {
+        assert.strictEqual(typeof result.status, 'undefined');
         assert.deepStrictEqual(result.value, [{
-          ELEMENT: '5cc459b8-36a8-3042-8b4a-258883ea642b'
+          'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
         }, {
-          ELEMENT: '3783b042-7001-0740-a2c0-afdaac732e9f'
+          'element-6066-11e4-a52e-4f735466cecf': '3783b042-7001-0740-a2c0-afdaac732e9f'
+        }]);
+      });
+
+    return Nightwatch.start();
+  });
+
+  it('client.elements() with xpath', async function() {
+    Nightwatch.addMock({
+      url: '/session/13521-10219-202/elements',
+      postdata: JSON.stringify({
+        using: 'xpath',
+        value: '//weblogin'
+      }),
+      response: {
+        value: [{
+          'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
+        }, {
+          'element-6066-11e4-a52e-4f735466cecf': '3783b042-7001-0740-a2c0-afdaac732e9f'
+        }]
+      }
+    }, true);
+
+    await Nightwatch.initAsync({
+      output: false,
+      silent: false,
+      selenium: {
+        start_process: false
+      },
+      webdriver: {
+        start_process: true
+      }
+    });
+
+    await Nightwatch.api()
+      .elements('xpath', '//weblogin', function callback(result) {
+        assert.deepStrictEqual(result.value, [{
+          'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
+        }, {
+          'element-6066-11e4-a52e-4f735466cecf': '3783b042-7001-0740-a2c0-afdaac732e9f'
         }]);
       });
 
@@ -300,18 +348,14 @@ describe('element base commands', function() {
   it('client.findElements()', async function() {
     await Nightwatch.initAsync({
       output: false,
-      silent: false,
-      webdriver: {
-        start_process: false
-      }
+      silent: false
     });
 
     await Nightwatch.api()
-      .findElements({locateStrategy: 'css selector', selector: '#webdriver'}, function callback(result) {
+      .findElements({locateStrategy: 'css selector', selector: '#weblogin'}, function callback(result) {
         assert.strictEqual(result.status, 0);
-        assert.strictEqual(result.value.length, 2);
-        assert.strictEqual(result.value[0].ELEMENT, '5cc459b8-36a8-3042-8b4a-258883ea642b');
-        assert.strictEqual(result.value[1].ELEMENT, '3783b042-7001-0740-a2c0-afdaac732e9f');
+        assert.strictEqual(result.value.length, 1);
+        assert.strictEqual(result.value[0].ELEMENT, '0');
       });
 
     return Nightwatch.start();
@@ -320,34 +364,54 @@ describe('element base commands', function() {
   it('client.findElements() with default locate strategy', async function() {
     await Nightwatch.initAsync({
       output: false,
+      silent: false
+    });
+
+    await Nightwatch.api()
+      .findElements('#weblogin', function callback(result) {
+        assert.strictEqual(result.status, 0);
+        assert.strictEqual(result.value.length, 1);
+        assert.strictEqual(result.value[0].ELEMENT, '0');
+      });
+
+    return Nightwatch.start();
+  });
+
+  it('client.findElements() W3C Webdriver protocol', async function() {
+    await Nightwatch.initAsync({
+      output: false,
       silent: false,
-      webdriver: {
+      selenium: {
         start_process: false
+      },
+      webdriver: {
+        start_process: true
       }
     });
 
-    await Nightwatch.api().findElements('#webdriver', function callback(result) {
-      assert.strictEqual(result.status, 0);
-      assert.strictEqual(result.value.length, 2);
-      assert.strictEqual(result.value[0].ELEMENT, '5cc459b8-36a8-3042-8b4a-258883ea642b');
-      assert.strictEqual(result.value[1].ELEMENT, '3783b042-7001-0740-a2c0-afdaac732e9f');
-    });
+    await Nightwatch.api()
+      .findElements('#webdriver', function callback(result) {
+        assert.strictEqual(typeof result.status, 'undefined');
+        assert.strictEqual(result.value.length, 2);
+        assert.strictEqual(result.value[0]['element-6066-11e4-a52e-4f735466cecf'], '5cc459b8-36a8-3042-8b4a-258883ea642b');
+        assert.strictEqual(result.value[1]['element-6066-11e4-a52e-4f735466cecf'], '3783b042-7001-0740-a2c0-afdaac732e9f');
+      });
 
     return Nightwatch.start();
   });
 
   it('client.findElements() with xpath', async function() {
     Nightwatch.addMock({
-      url: '/session/1352110219202/elements',
+      url: '/session/13521-10219-202/elements',
       postdata: JSON.stringify({
         using: 'xpath',
-        value: '//webdriver'
+        value: '//weblogin'
       }),
       response: {
         value: [{
-          ELEMENT: '5cc459b8-36a8-3042-8b4a-258883ea642b'
+          'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
         }, {
-          ELEMENT: '3783b042-7001-0740-a2c0-afdaac732e9f'
+          'element-6066-11e4-a52e-4f735466cecf': '3783b042-7001-0740-a2c0-afdaac732e9f'
         }]
       }
     }, true);
@@ -359,15 +423,15 @@ describe('element base commands', function() {
         start_process: false
       },
       webdriver: {
-        start_process: false
+        start_process: true
       }
     });
 
     await Nightwatch.api()
-      .findElements({locateStrategy: 'xpath', selector: '//webdriver'}, function callback(result) {
+      .findElements({locateStrategy: 'xpath', selector: '//weblogin'}, function callback(result) {
         assert.strictEqual(result.value.length, 2);
-        assert.strictEqual(result.value[0].ELEMENT, '5cc459b8-36a8-3042-8b4a-258883ea642b');
-        assert.strictEqual(result.value[1].ELEMENT, '3783b042-7001-0740-a2c0-afdaac732e9f');
+        assert.strictEqual(result.value[0]['element-6066-11e4-a52e-4f735466cecf'], '5cc459b8-36a8-3042-8b4a-258883ea642b');
+        assert.strictEqual(result.value[1]['element-6066-11e4-a52e-4f735466cecf'], '3783b042-7001-0740-a2c0-afdaac732e9f');
       });
 
     return Nightwatch.start();
@@ -379,16 +443,14 @@ describe('element base commands', function() {
   it('client.elementIdElement()', async function() {
     await Nightwatch.initAsync({
       output: false,
-      silent: false,
-      webdriver: {
-        start_process: false
-      }
+      silent: false
     });
 
-    await Nightwatch.api().elementIdElement('0', 'css selector', '#helpBtn', function callback(result) {
-      assert.strictEqual(result.status, 0);
-      assert.deepStrictEqual(result.value, {ELEMENT: '1'});
-    });
+    await Nightwatch.api()
+      .elementIdElement('0', 'css selector', '#helpBtn', function callback(result) {
+        assert.strictEqual(result.status, 0);
+        assert.deepStrictEqual(result.value, {ELEMENT: '1'});
+      });
 
     return Nightwatch.start();
   });
@@ -396,16 +458,14 @@ describe('element base commands', function() {
   it('client.elementIdElement() with selector object', async function() {
     await Nightwatch.initAsync({
       output: false,
-      silent: false,
-      webdriver: {
-        start_process: false
-      }
+      silent: false
     });
 
-    await Nightwatch.api().elementIdElement('0', 'css selector', {selector: '#helpBtn'}, function callback(result) {
-      assert.strictEqual(result.status, 0);
-      assert.deepStrictEqual(result.value, {ELEMENT: '1'});
-    });
+    await Nightwatch.api()
+      .elementIdElement('0', 'css selector', {selector: '#helpBtn'}, function callback(result) {
+        assert.strictEqual(result.status, 0);
+        assert.deepStrictEqual(result.value, {ELEMENT: '1'});
+      });
 
     return Nightwatch.start();
   });
@@ -499,7 +559,39 @@ describe('element base commands', function() {
   //////////////////////////////////////////////////////////////////////////////////////
   // .isVisible({selector, suppressNotFoundErrors})
   //////////////////////////////////////////////////////////////////////////////////////
-  it('client.isVisible() NOT FOUND', async function() {
+  it('client.isVisible() NOT FOUND with W3C Webdriver protocol', async function() {
+    Nightwatch.addMock({
+      url: '/session/13521-10219-202/elements',
+      postdata: {
+        using: 'css selector',
+        value: '.not_found'
+      },
+      statusCode: 404,
+      response: {
+        value: {
+          error: 'no such element',
+          message: 'Unable to locate element: .not_found',
+          stacktrace: ''
+        }
+      }
+    }, true);
+
+    Nightwatch.addMock({
+      url: '/session/13521-10219-202/elements',
+      postdata: {
+        using: 'css selector',
+        value: '.not_found'
+      },
+      statusCode: 404,
+      response: {
+        value: {
+          error: 'no such element',
+          message: 'Unable to locate element: .not_found',
+          stacktrace: ''
+        }
+      }
+    }, true);
+
     let expectedError;
 
     await Nightwatch.initAsync({
@@ -509,7 +601,7 @@ describe('element base commands', function() {
         start_process: false
       },
       webdriver: {
-        start_process: false
+        start_process: true
       }
     }, {
       registerTestError(err) {
@@ -522,7 +614,7 @@ describe('element base commands', function() {
       assert.strictEqual(expectedError.name, 'NoSuchElementError');
       assert.strictEqual(instance.suppressNotFoundErrors, false);
       assert.strictEqual(result.status, -1);
-      assert.strictEqual(result.value.error, 'An error occurred while running .isVisible() command on <.not_found>: unable to locate element using css selector');
+      assert.strictEqual(result.value.error, 'An error occurred while running .isVisible() command on <.not_found>: no such element; Unable to locate element: .not_found');
     });
 
     return Nightwatch.start();
@@ -537,9 +629,27 @@ describe('element base commands', function() {
       },
       statusCode: 404,
       response: {
-        'error': 'unable to locate element using css selector',
-        'status': 0,
-        'value': []
+        value: {
+          error: 'no such element',
+          message: 'Unable to locate element: .not_found',
+          stacktrace: ''
+        }
+      }
+    }, true);
+
+    Nightwatch.addMock({
+      url: '/session/13521-10219-202/elements',
+      postdata: {
+        using: 'css selector',
+        value: '.not_found'
+      },
+      statusCode: 404,
+      response: {
+        value: {
+          error: 'no such element',
+          message: 'Unable to locate element: .not_found',
+          stacktrace: ''
+        }
       }
     }, true);
 
@@ -552,7 +662,7 @@ describe('element base commands', function() {
         start_process: false
       },
       webdriver: {
-        start_process: false
+        start_process: true
       }
     }, {
       registerTestError(err) {
