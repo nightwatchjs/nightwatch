@@ -18,7 +18,7 @@ describe('setValue command', function () {
         }
       ],
       assertion: function (opts) {
-        assert.notStrictEqual(-1, ['findElements', 'clearElement', 'sendKeysToElement'].indexOf(opts.command));
+        assert.ok(['findElements', 'clearElement', 'sendKeysToElement'].includes(opts.command));
       }
     });
   });
