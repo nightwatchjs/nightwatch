@@ -39,10 +39,13 @@ describe('test Parallel Execution', function() {
       }
     });
 
+    const os = require('os');
     mockery.registerMock('os', {
       cpus: function() {
         return [0, 1];
-      }
+      },
+      platform: os.platform,
+      constants: os.constants
     });
   });
 
@@ -173,7 +176,7 @@ describe('test Parallel Execution', function() {
   it('test parallel execution with workers count and extended envs', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
-      config: path.join(__dirname, '../../../extra/parallelism-workers.conf.js'),
+      config: path.join(__dirname, '../../extra/parallelism-workers.conf.js'),
       env: 'chrome'
     });
 
@@ -214,7 +217,7 @@ describe('test Parallel Execution', function() {
   it('test parallel execution with workers and single source folder', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
-      config: path.join(__dirname, '../../../extra/parallelism.json'),
+      config: path.join(__dirname, '../../extra/parallelism.json'),
       _source: path.join(__dirname, '../../../sampletests/before-after')
     });
 
@@ -229,7 +232,7 @@ describe('test Parallel Execution', function() {
 
     const CliRunner = common.require('runner/cli/cli.js');
     const runner = new CliRunner({
-      config: path.join(__dirname, '../../../extra/parallelism-execArgv.json')
+      config: path.join(__dirname, '../../extra/parallelism-execArgv.json')
     });
 
     runner.setup();
@@ -244,7 +247,7 @@ describe('test Parallel Execution', function() {
   it('test parallel execution with specified node options to be passed to child processes', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     const runner = new CliRunner({
-      config: path.join(__dirname, '../../../extra/parallelism-execArgv-selected.json')
+      config: path.join(__dirname, '../../extra/parallelism-execArgv-selected.json')
     });
 
     runner.setup();
