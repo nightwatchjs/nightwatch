@@ -69,19 +69,10 @@ describe('element base commands', function() {
     }, true);
 
     client.api.element('css selector', '#element-error', function callback(result) {
-      assert.deepStrictEqual(result, {
-        status: -1,
-        state: 'unhandled error',
-        code: '',
-        value: {
-          message: 'test message',
-          error: []
-        },
-        errorStatus: 13,
-        error:
-          'An unknown server-side error occurred while processing the command. – test message',
-        httpStatusCode: 500
-      });
+      assert.ok(result.error instanceof Error);
+      assert.strictEqual(result.status, -1);
+      assert.strictEqual(result.error.message, 'test message');
+      assert.strictEqual(result.error.name, 'WebDriverError');
     });
 
     await new Promise((resolve, reject) => {
@@ -96,7 +87,7 @@ describe('element base commands', function() {
     assert.strictEqual(client.reporter.errors, 0);
   });
 
-  it('client.element() W3C Webdriver protocol', async function() {
+  it('client.element() W3C Webdriver protocol', async function () {
     await Nightwatch.initAsync({
       output: false,
       silent: false,
@@ -683,17 +674,9 @@ describe('element base commands', function() {
       assert.strictEqual(typeof expectedError, 'undefined');
       assert.strictEqual(instance.suppressNotFoundErrors, true);
       assert.deepStrictEqual(result, {
-        status: -1,
-        code: '',
-        value:
-          {
-            error: 'no such element',
-            message: 'Unable to locate element: .not_found',
-            stacktrace: ''
-          },
-        errorStatus: '',
-        error: 'Unable to locate element: .not_found',
-        httpStatusCode: 404
+        error: 'unable to locate element using css selector',
+        status: 0,
+        value: []
       });
 
     });
