@@ -21,10 +21,10 @@ describe('element actions', function () {
       },
       commandName: 'element',
       args: ['css selector', '#weblogin', function(result) {
-        assert.strictEqual(result.value, '12345-6789');
+        assert.deepStrictEqual(result.value, {
+          'element-6066-11e4-a52e-4f735466cecf': '12345-6789'
+        });
         assert.strictEqual(result.status, 0);
-        assert.strictEqual(typeof result.webElement, 'object');
-        assert.strictEqual(typeof result.webElement.getId, 'function');
       }]
     });
   });
@@ -68,7 +68,7 @@ describe('element actions', function () {
       commandName: 'elementIdElement',
       args: ['0', 'id', '#weblogin', function({value, status, elementId}) {
         assert.strictEqual(status, 0);
-        assert.strictEqual(typeof value.getId, 'function');
+        assert.deepStrictEqual(value, {'element-6066-11e4-a52e-4f735466cecf': '6789-192111'});
         assert.strictEqual(elementId, '6789-192111');
       }]
     });
@@ -138,7 +138,9 @@ describe('element actions', function () {
       assert.strictEqual(err.message, 'Error while running "elementIdClear" command: First argument passed to .elementIdClear() should be a web element ID string. Received boolean.');
 
       return true;
-    }).then(result => assert.strictEqual(result, true));
+    }).then((result) => {
+      assert.strictEqual(result, true)
+    });
   });
 
   it('testElementIdSelected', function () {
@@ -488,14 +490,22 @@ describe('element actions', function () {
   });
 
   it('testElementIdValuePost', function () {
+    const assertions = [];
+
     return Globals.protocolTest({
       assertion({args, command}) {
-        assert.strictEqual(command, 'sendKeysToElement');
-        assert.strictEqual(args.text, 'test');
-        assert.deepStrictEqual(args.value, ['t', 'e', 's', 't']);
+        assertions.push({args, command});
       },
       commandName: 'elementIdValue',
       args: ['TEST_ELEMENT', 'test', function(result) {
+        assert.strictEqual(assertions[0].command, 'clearElement');
+        assert.ok(assertions[0].args.id instanceof WebElement);
+
+        assert.strictEqual(assertions[1].command, 'sendKeysToElement');
+        assert.strictEqual(assertions[1].args.text, 'test');
+        assert.deepStrictEqual(assertions[1].args.value, ['t', 'e', 's', 't']);
+        assert.ok(assertions[1].args.id instanceof WebElement);
+
         assert.deepStrictEqual(result, {value: null, status: 0});
       }]
     });

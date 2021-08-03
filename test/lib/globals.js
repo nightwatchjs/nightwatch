@@ -153,7 +153,11 @@ class Globals {
       try {
         this.runApiCommand(commandName, args, client)
           .then(result => {
-            resolve(result);
+            if (result instanceof Error) {
+              reject(result);
+            } else {
+              resolve(result);
+            }
           })
           .catch(err => {
             reject(err);
