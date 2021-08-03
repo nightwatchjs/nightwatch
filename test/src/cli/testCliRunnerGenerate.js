@@ -25,14 +25,16 @@ describe('Test CLI Runner Generate', function() {
 
   it('test start CLI Runner with no config file', function () {
     let configData;
-    const fs = require('fs');
+    const {constants, rmdirSync} = require('fs');
     const path = require('path');
     const tplData = fs.readFileSync(path.resolve('lib/runner/cli/nightwatch.conf.ejs')).toString();
 
+    const os = require('os');
     mockery.registerMock('os', {
       platform: function() {
         return 'win';
-      }
+      },
+      constants: os.constants
     });
 
     mockery.registerMock('fs', {
@@ -64,7 +66,6 @@ describe('Test CLI Runner Generate', function() {
 
       writeFileSync: function (destFileName, content) {
         assert.strictEqual(destFileName, path.join(process.cwd(), 'nightwatch.conf.js'));
-
         configData = eval(content);
         mockery.registerMock(path.join(process.cwd(), 'nightwatch.conf.js'), configData);
 
@@ -81,7 +82,6 @@ describe('Test CLI Runner Generate', function() {
 
           webdriver: {
             start_process: true,
-            port: 9515,
             server_path: '',
             cli_args: []
           }
@@ -99,7 +99,6 @@ describe('Test CLI Runner Generate', function() {
           },
           webdriver: {
             start_process: true,
-            port: 4444,
             server_path: '',
             cli_args: []
           }
@@ -180,7 +179,9 @@ describe('Test CLI Runner Generate', function() {
           }
         });
 
-      }
+      },
+      constants,
+      rmdirSync
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
