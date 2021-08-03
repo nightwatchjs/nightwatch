@@ -21,7 +21,9 @@ describe('test protocol element selectors', function() {
       page_objects_path: [path.join(__dirname, '../../extra/pageobjects/pages')],
       globals: {
         abortOnAssertionFailure: true
-      }
+      },
+      output: false,
+      silent: false
     });
   });
 

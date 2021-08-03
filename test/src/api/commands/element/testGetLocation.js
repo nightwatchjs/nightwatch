@@ -40,11 +40,9 @@ describe('getLocation', function() {
     });
 
     this.client.api.getLocation('css selector', '#weblogin', function callback(result) {
-      assert.strictEqual(result.value.x, 1);
-      assert.strictEqual(result.value.y, 0);
+      assert.deepStrictEqual(result.value, {x: 1, y: 0, width: 10, height: 20});
     }).getLocation('#weblogin', function callback(result) {
-      assert.strictEqual(result.value.x, 1);
-      assert.strictEqual(result.value.y, 0);
+      assert.deepStrictEqual(result.value, {x: 1, y: 0, width: 10, height: 20});
     });
 
     this.client.start(done);

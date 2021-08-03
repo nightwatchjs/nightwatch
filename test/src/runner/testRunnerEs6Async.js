@@ -104,13 +104,13 @@ describe('testRunner ES6 Async', function() {
           throw results.modules['failures/sampleWithFailures'].completed.asyncGetCookiesTest.lastError;
         }
 
-        assert.ok('failures/verifyWithFailures' in results.modules);
-        assert.strictEqual(results.modules['failures/verifyWithFailures'].completed.demoTest.assertions.length, 2);
-        assert.ok(results.modules['failures/verifyWithFailures'].completed.demoTest.assertions[0].failure.includes('Expected "is present" but got: "not present"'));
-        assert.strictEqual(results.modules['failures/verifyWithFailures'].completed.demoTest.assertions[1].failure, false);
+        assert.ok('failures/sampleWithFailures' in results.modules);
+        assert.strictEqual(results.modules['failures/sampleWithFailures'].completed.verify.assertions.length, 2);
+        assert.ok(results.modules['failures/sampleWithFailures'].completed.verify.assertions[0].failure.includes('Expected "is present" but got: "not present"'));
+        assert.strictEqual(results.modules['failures/sampleWithFailures'].completed.verify.assertions[1].failure, false);
+        assert.strictEqual(results.modules['failures/sampleWithFailures'].completed.waitFor.failed, 1);
 
         assert.ok(results.lastError instanceof Error);
-        assert.ok(results.lastError.message.includes('is present in 15ms'), results.lastError.message);
         assert.strictEqual(results.lastError.name, 'NightwatchAssertError');
       }
     };
@@ -196,7 +196,7 @@ describe('testRunner ES6 Async', function() {
           'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
         }]
       })
-    }, true, true);
+    }, false, true);
 
     MockServer.addMock({
       url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/text',

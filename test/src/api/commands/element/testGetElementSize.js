@@ -40,11 +40,9 @@ describe('getElementSize', function() {
     });
 
     this.client.api.getElementSize('#weblogin', function callback(result) {
-      assert.strictEqual(result.value.width, 10);
-      assert.strictEqual(result.value.height, 20);
+      assert.deepStrictEqual(result.value, {x: 1, y: 0, width: 10, height: 20});
     }).getElementSize('css selector', '#weblogin', function callback(result) {
-      assert.strictEqual(result.value.width, 10);
-      assert.strictEqual(result.value.height, 20);
+      assert.deepStrictEqual(result.value, {x: 1, y: 0, width: 10, height: 20});
     });
 
     this.client.start(done);
