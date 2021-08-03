@@ -39,10 +39,10 @@ describe('Test CLI Runner Generate', function() {
 
     mockery.registerMock('fs', {
       statSync: function (fileName) {
-        if (fileName.endsWith('./nightwatch.conf.js')) {
+        if (fileName.endsWith('/nightwatch.conf.js')) {
           return {
             isFile: function () {
-              return true;
+              return false;
             }
           };
         }
