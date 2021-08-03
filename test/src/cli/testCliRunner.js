@@ -106,6 +106,7 @@ describe('Test CLI Runner', function() {
         start_process: false,
         start_session: false
       },
+      use_selenium_webdriver: false,
       test_settings: {
         'default': {
           selenium: {
@@ -418,7 +419,7 @@ describe('Test CLI Runner', function() {
       env: 'extra'
     }).setup();
 
-    assert.strictEqual(runner.isWebDriverManaged(), true);
+    assert.strictEqual(runner.isWebDriverManaged(), false);
     assert.strictEqual(runner.test_settings.selenium.host, 'other.host');
     assert.strictEqual(runner.test_settings.detailed_output, false);
     assert.strictEqual(runner.test_settings.output, false);
@@ -778,8 +779,8 @@ describe('Test CLI Runner', function() {
         }
         throw new Error('Does not exist');
       },
-      constants: fs.constants,
-      rmdirSync: fs.rmdirSync
+      constants,
+      rmdirSync
     });
 
     const CliRunner = common.require('runner/cli/cli.js');

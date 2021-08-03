@@ -43,7 +43,9 @@ describe('test Parallel Execution', function() {
     mockery.registerMock('os', {
       cpus: function() {
         return [0, 1];
-      }
+      },
+      platform,
+      constants
     });
   });
 
