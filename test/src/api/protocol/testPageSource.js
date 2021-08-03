@@ -8,11 +8,11 @@ describe('client.getPageSource', function() {
 
   it('testPageSource', function() {
     return Globals.protocolTest({
-      assertion: function () {},
-      commandName: 'pageSource',
+      assertion: function() {},
+      commandName: 'getPageSource',
       args: []
     }).then((result) => {
-      assert.strictEqual(result.value, 'PageSource');
+      assert.strictEqual(result.value, "PageSource");
       assert.strictEqual(result.status, 0);
     });
   });

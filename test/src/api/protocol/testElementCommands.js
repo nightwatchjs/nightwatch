@@ -21,7 +21,7 @@ describe('element actions', function () {
       },
       commandName: 'element',
       args: ['css selector', '#weblogin', function(result) {
-        assert.deepStrictEqual(result.value, {'element-6066-11e4-a52e-4f735466cecf': '12345-6789'});
+        assert.strictEqual(result.value, '12345-6789');
         assert.strictEqual(result.status, 0);
         assert.strictEqual(typeof result.webElement, 'object');
         assert.strictEqual(typeof result.webElement.getId, 'function');
@@ -47,7 +47,7 @@ describe('element actions', function () {
     return Globals.protocolTest({
       commandName: 'elements',
       args: ['id', '#weblogin', function({value, status, error}) {
-        assert.strictEqual(status, 0);
+        assert.strictEqual(status, -1);
         assert.strictEqual(value.length, 0);
         assert.strictEqual(error, 'unable to locate element using css selector');
       }],
@@ -68,7 +68,8 @@ describe('element actions', function () {
       commandName: 'elementIdElement',
       args: ['0', 'id', '#weblogin', function({value, status, elementId}) {
         assert.strictEqual(status, 0);
-        assert.deepStrictEqual(value, {'element-6066-11e4-a52e-4f735466cecf': '6789-192111'});
+        assert.strictEqual(typeof value.getId, 'function');
+        assert.strictEqual(elementId, '6789-192111');
       }]
     });
   });
@@ -124,7 +125,7 @@ describe('element actions', function () {
       },
       commandName: 'elementIdClear',
       args: ['TEST_ELEMENT', function(result) {
-        assert.deepStrictEqual(result, {state: 'success', value: null, status: 0});
+        assert.deepStrictEqual(result, {value: null, status: 0});
       }]
     });
   });
@@ -417,7 +418,6 @@ describe('element actions', function () {
     console.warn = function(value) {
       assert.ok(value.includes('Please use .getElementRect().'));
     };
-
     return Globals.protocolTest({
       assertion({command}) {
         assert.strictEqual(command, 'getElementRect');
