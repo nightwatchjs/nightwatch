@@ -25,7 +25,7 @@ describe('Test CLI Runner Generate', function() {
 
   it('test start CLI Runner with no config file', function () {
     let configData;
-    const fs = require('fs');
+    const {constants, rmdirSync} = require('fs');
     const path = require('path');
     const tplData = fs.readFileSync(path.resolve('lib/runner/cli/nightwatch.conf.ejs')).toString();
 
@@ -180,8 +180,8 @@ describe('Test CLI Runner Generate', function() {
         });
 
       },
-      constants: fs.constants,
-      rmdirSync: fs.rmdirSync
+      constants,
+      rmdirSync
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
