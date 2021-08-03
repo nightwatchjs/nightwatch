@@ -12,7 +12,7 @@ describe('Test CLI Runner', function() {
   beforeEach(function() {
     process.env['ENV_USERNAME'] = 'testuser';
 
-    mockery.enable({useCleanCache: true, warnOnReplace: true, warnOnUnregistered: false});
+    mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
     mockery.registerMock('./argv-setup.js', {
       isDefault(option, value) {
         return value.includes('nightwatch.');
@@ -106,7 +106,6 @@ describe('Test CLI Runner', function() {
         start_process: false,
         start_session: false
       },
-      use_selenium_webdriver: false,
       test_settings: {
         'default': {
           selenium: {
@@ -136,7 +135,6 @@ describe('Test CLI Runner', function() {
       },
       detailed_output: true,
       end_session_on_fail: true,
-      use_selenium_webdriver: false,
       test_settings: {
         'default': {
           output: false,
