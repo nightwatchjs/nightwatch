@@ -39,13 +39,11 @@ describe('test Parallel Execution', function() {
       }
     });
 
-    const os = require('os');
+    const {platform, constants} = require('os');
     mockery.registerMock('os', {
       cpus: function() {
         return [0, 1];
-      },
-      platform: os.platform,
-      constants: os.constants
+      }
     });
   });
 
