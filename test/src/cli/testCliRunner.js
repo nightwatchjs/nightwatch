@@ -2,8 +2,10 @@ const common = require('../../common.js');
 const mockery = require('mockery');
 const assert = require('assert');
 const origPath = require('path');
+const {constants, rmdirSync} = require('fs');
+
+delete require.cache['fs'];
 delete require.cache['path'];
-const fs = require('fs');
 
 describe('Test CLI Runner', function() {
 
@@ -281,8 +283,8 @@ describe('Test CLI Runner', function() {
           }
         };
       },
-      constants: fs.constants,
-      rmdirSync: fs.rmdirSync
+      constants,
+      rmdirSync
     });
   }
 
@@ -346,8 +348,8 @@ describe('Test CLI Runner', function() {
           }
         };
       },
-      constants: fs.constants,
-      rmdirSync: fs.rmdirSync
+      constants,
+      rmdirSync
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -371,8 +373,8 @@ describe('Test CLI Runner', function() {
         }
         throw new Error('Does not exist');
       },
-      constants: fs.constants,
-      rmdirSync: fs.rmdirSync
+      constants,
+      rmdirSync
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -408,8 +410,8 @@ describe('Test CLI Runner', function() {
         }
         throw new Error('Does not exist');
       },
-      constants: fs.constants,
-      rmdirSync: fs.rmdirSync
+      constants,
+      rmdirSync
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -469,8 +471,8 @@ describe('Test CLI Runner', function() {
         throw new Error('Does not exist');
       },
 
-      constants: fs.constants,
-      rmdirSync: fs.rmdirSync
+      constants,
+      rmdirSync
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -527,8 +529,8 @@ describe('Test CLI Runner', function() {
 
         throw new Error('Does not exist');
       },
-      constants: fs.constants,
-      rmdirSync: fs.rmdirSync
+      constants,
+      rmdirSync
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -586,8 +588,8 @@ describe('Test CLI Runner', function() {
         }
         throw new Error('Does not exist');
       },
-      constants: fs.constants,
-      rmdirSync: fs.rmdirSync
+      constants,
+      rmdirSync
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -626,8 +628,8 @@ describe('Test CLI Runner', function() {
         }
         throw new Error('Does not exist');
       },
-      constants: fs.constants,
-      rmdirSync: fs.rmdirSync
+      constants,
+      rmdirSync
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -705,8 +707,8 @@ describe('Test CLI Runner', function() {
         }
         throw new Error('Does not exist');
       },
-      constants: fs.constants,
-      rmdirSync: fs.rmdirSync
+      constants,
+      rmdirSync
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -752,8 +754,8 @@ describe('Test CLI Runner', function() {
         }
         throw new Error('Does not exist');
       },
-      constants: fs.constants,
-      rmdirSync: fs.rmdirSync
+      constants,
+      rmdirSync
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -806,8 +808,8 @@ describe('Test CLI Runner', function() {
         }
         throw new Error('Does not exist');
       },
-      constants: fs.constants,
-      rmdirSync: fs.rmdirSync
+      constants,
+      rmdirSync
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -831,8 +833,8 @@ describe('Test CLI Runner', function() {
         }
         throw new Error('Does not exist');
       },
-      constants: fs.constants,
-      rmdirSync: fs.rmdirSync
+      constants,
+      rmdirSync
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -875,8 +877,8 @@ describe('Test CLI Runner', function() {
         }
         throw new Error('Does not exist');
       },
-      constants: fs.constants,
-      rmdirSync: fs.rmdirSync
+      constants,
+      rmdirSync
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -903,8 +905,8 @@ describe('Test CLI Runner', function() {
         }
         throw new Error('Does not exist');
       },
-      constants: fs.constants,
-      rmdirSync: fs.rmdirSync
+      constants,
+      rmdirSync
     });
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
@@ -927,8 +929,8 @@ describe('Test CLI Runner', function() {
         }
         throw new Error('Does not exist');
       },
-      constants: fs.constants,
-      rmdirSync: fs.rmdirSync
+      constants,
+      rmdirSync
     });
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
