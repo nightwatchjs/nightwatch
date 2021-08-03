@@ -55,7 +55,8 @@ describe('getElementRect', function () {
 
     this.client.api
       .getElementRect('#weblogin', function callback(result) {
-        assert.deepStrictEqual(result.value, {
+        assert.deepStrictEqual(result, {
+          status: 0,
           x: 1,
           y: 1,
           width: 100,
@@ -63,7 +64,8 @@ describe('getElementRect', function () {
         });
       })
       .getElementRect('css selector', '#weblogin', function callback(result) {
-        assert.deepStrictEqual(result.value, {
+        assert.deepStrictEqual(result, {
+          status: 0,
           x: 1,
           y: 1,
           width: 100,
