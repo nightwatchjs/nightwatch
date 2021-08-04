@@ -34,7 +34,7 @@ describe('test NightwatchIndex', function () {
   });
 
   //Selenium-webdriver doesn't support this
-  xit('testChromeSessionWithRedirectStatus', function (done) {
+  it('testChromeSessionWithRedirectStatus', function (done) {
     MockServer.addMock({
       url: '/wd/hub/session',
 
@@ -112,7 +112,7 @@ describe('test NightwatchIndex', function () {
         browserName: 'chrome'
       },
       silent: false,
-      output: true
+      output: false
     });
 
     client.startSession().catch(err => {
