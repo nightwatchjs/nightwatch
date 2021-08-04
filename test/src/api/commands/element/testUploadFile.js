@@ -16,7 +16,9 @@ describe('uploadFile', function() {
     MockServer.addMock({
       url : '/wd/hub/session/1352110219202/element/0/value',
       method:'POST',
-      postdata : {value:[ 
+      postdata : {
+        text: '/file.js',
+        value:[ 
         '/', 'f', 'i', 'l', 'e', '.', 'j', 's'
       ]},
       response : {

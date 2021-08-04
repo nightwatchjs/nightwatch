@@ -129,6 +129,13 @@ const createGenericCommandMocks = function(assertion) {
       assertion();
   
       return 'PageSource';
+    },
+
+    setFileDetector() {
+      assertion({
+        command: 'setFileDetector'
+      });
+      return;
     }
   };
 };
