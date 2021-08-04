@@ -1,18 +1,20 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
-describe('client.getPageSource', function() {
+describe('client.pageSource', function() {
   before(function() {
     Globals.protocolBefore();
   });
 
   it('testPageSource', function() {
     return Globals.protocolTest({
-      assertion: function() {},
-      commandName: 'getPageSource',
+      assertion({command}) {
+        assert.strictEqual(command, 'getPageSource');
+      },
+      commandName: 'pageSource',
       args: []
     }).then((result) => {
-      assert.strictEqual(result.value, "PageSource");
+      assert.strictEqual(result.value, '<html><body></body></html>');
       assert.strictEqual(result.status, 0);
     });
   });

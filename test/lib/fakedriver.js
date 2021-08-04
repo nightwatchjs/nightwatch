@@ -126,9 +126,11 @@ const createElementCommandMocks = function(assertion) {
 const createGenericCommandMocks = function(assertion) {
   return {
     getPageSource() {
-      assertion();
+      assertion({
+        command: 'getPageSource'
+      });
   
-      return 'PageSource';
+      return '<html><body></body></html>';
     },
 
     setFileDetector() {
@@ -136,6 +138,7 @@ const createGenericCommandMocks = function(assertion) {
         command: 'setFileDetector'
       });
       return;
+      
     }
   };
 };

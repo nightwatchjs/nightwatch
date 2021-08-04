@@ -6,7 +6,7 @@ const Nightwatch = require('../../lib/nightwatch.js');
 const HttpRequest = common.require('http/request.js');
 const WebdriverProtocol = common.require('transport/webdriver');
 const JsonWireProtocol = common.require('transport/jsonwire');
-const SeleniumProtocol = common.require('transport/selenium3');
+const SeleniumProtocol = common.require('transport/selenium-webdriver/selenium');
 
 describe('Trandport.runProtocolAction', function() {
   const nightwatch = Nightwatch.createClientDefaults();
@@ -100,18 +100,12 @@ describe('Trandport.runProtocolAction', function() {
       },
       method: 'POST'
     }).then(result => {
-      throw new Error('An error should be thrown');
-    }).catch(err => {
-      assert.deepStrictEqual(err, {
-        code: '',
-        status: -1,
-        value:
-          {error: 'invalid session id',
-            message: 'No active session with ID',
-            stacktrace: ''},
-        errorStatus: '',
-        error: 'No active session with ID',
-        httpStatusCode: 404
+      assert.deepStrictEqual(result, {
+        value: {
+          error: 'invalid session id',
+          message: 'No active session with ID',
+          stacktrace: ''
+        }
       });
     });
   });
@@ -140,19 +134,13 @@ describe('Trandport.runProtocolAction', function() {
       },
       method: 'POST'
     }).then(result => {
-      throw new Error('An error should be thrown');
-    }).catch(err => {
-      assert.deepStrictEqual(err, {
-        code: '',
-        status: -1,
-        value:
-          {error: 'unexpected alert open',
-            message: '',
-            stacktrace: '',
-            data: {text: 'Message from window.alert'}},
-        errorStatus: '',
-        error: 'A modal dialog was open, blocking this operation.',
-        httpStatusCode: 400
+      assert.deepStrictEqual(result, {
+        value: {
+          error: 'unexpected alert open',
+          message: '',
+          stacktrace: '',
+          data: {text: 'Message from window.alert'}
+        }
       });
     });
   });
@@ -256,21 +244,15 @@ describe('Trandport.runProtocolAction', function() {
       },
       method: 'POST'
     }).then(result => {
-      throw new Error('An error should be thrown');
-    }).catch(err => {
-      assert.deepStrictEqual(err, {status: -1,
-        state: '',
-        code: '',
-        value:
-          {
-            stacktrace: '',
-            message:
+      assert.deepStrictEqual(result, {
+        status: 9,
+        value: {
+          stacktrace: '',
+          stackTrace: [],
+          message:
               'POST /session/84e7ae34-f100-fe4c-bfd1-75178b9bb522/window/new\nBuild info: version: \'3.141.59\', revision: \'e82be7d358\', time: \'2018-11-14T08:25:53\'\nSystem info: host: \'MacBook-Pro-3.local\', ip: \'fe80:0:0:0:1cb3:9eb6:e69a:7912%en0\', os.name: \'Mac OS X\', os.arch: \'x86_64\', os.version: \'10.15.4\', java.version: \'1.8.0_161\'\nDriver info: driver.version: unknown',
-            error: 'unknown command'
-          },
-        errorStatus: 9,
-        error: 'unknown command – POST /session/84e7ae34-f100-fe4c-bfd1-75178b9bb522/window/new',
-        httpStatusCode: 500
+          error: 'unknown command'
+        }
       });
     });
   });
@@ -297,7 +279,6 @@ describe('Trandport.runProtocolAction', function() {
       assert.deepStrictEqual(err, {
         status: -1,
         code: 'ECONNRESET',
-        state: '',
         value: null,
         errorStatus: '',
         error: 'Error ECONNRESET: socket hang up',
@@ -307,8 +288,8 @@ describe('Trandport.runProtocolAction', function() {
   });
 
   it('test createSession Selenium Grid remote', async function() {
-    nock('http://localhost:4444')
-      .post('/session')
+    nock('http://localhost:4445')
+      .post('/wd/hub/session')
       .reply(200, {
         value: {
           acceptInsecureCerts: false,
@@ -322,7 +303,7 @@ describe('Trandport.runProtocolAction', function() {
 
     const nightwatch = Nightwatch.createClient({
       selenium: {
-        port: 4444,
+        port: 4445,
         start_process: false
       },
       webdriver: {

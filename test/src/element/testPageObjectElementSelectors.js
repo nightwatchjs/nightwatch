@@ -40,6 +40,7 @@ describe('test page object element selectors', function() {
     nocks
       .elementsFound('#weblogin')
       .elementsFound('weblogin', [{ELEMENT: '0'}], 'id')
+      .elementsFound('*[id="weblogin"]', [{ELEMENT: '0'}])
       .elementsByXpath('//weblogin')
       .elementsByXpath('#weblogin', [])
       .text(0, 'first')
@@ -206,14 +207,14 @@ describe('test page object element selectors', function() {
   it('page section protocol .elementIdElements()', function(done) {
     nocks
       .elementsFound('#signupSection')
-      .elementsId('0', '#helpBtn', {ELEMENT: '12345'})
+      .elementsId('0', '#helpBtn', [{ELEMENT: '12345'}])
       .elementsId('12345', 'a', [{ELEMENT: 'abc-12345'}]);
 
     let page = Nightwatch.api().page.simplePageObj();
     let section = page.section.signUp;
 
     section.api.elementIdElements('@help', 'css selector', 'a', function callback(response) {
-      strictEqual(response.status, 0, 'section element selector string found');
+      strictEqual(response.status, 0, 'section element selector string not found');
       assert.deepStrictEqual(response.value, [{ELEMENT: 'abc-12345'}]);
     });
 
@@ -343,7 +344,6 @@ describe('test page object element selectors', function() {
 
       assert.deepStrictEqual(result, {
         status: 0,
-        state: 'success',
         value: null
       });
     });

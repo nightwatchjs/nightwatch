@@ -69,19 +69,10 @@ describe('element base commands', function() {
     }, true);
 
     client.api.element('css selector', '#element-error', function callback(result) {
-      assert.deepStrictEqual(result, {
-        status: -1,
-        state: 'unhandled error',
-        code: '',
-        value: {
-          message: 'test message',
-          error: []
-        },
-        errorStatus: 13,
-        error:
-          'An unknown server-side error occurred while processing the command. – test message',
-        httpStatusCode: 500
-      });
+      assert.ok(result.error instanceof Error);
+      assert.strictEqual(result.status, -1);
+      assert.strictEqual(result.error.message, 'test message');
+      assert.strictEqual(result.error.name, 'WebDriverError');
     });
 
     await new Promise((resolve, reject) => {
@@ -96,21 +87,18 @@ describe('element base commands', function() {
     assert.strictEqual(client.reporter.errors, 0);
   });
 
-  it('client.element() W3C Webdriver protocol', async function() {
+  it('client.element() W3C Webdriver protocol', async function () {
     await Nightwatch.initAsync({
       output: false,
       silent: false,
       selenium: {
-        start_process: false
-      },
-      webdriver: {
-        start_process: true
+        host: null
       }
     });
 
     await Nightwatch.api()
       .element('css selector', '#webdriver', function callback(result) {
-        assert.strictEqual(typeof result.status, 'undefined');
+        assert.strictEqual(result.status, 0);
         assert.deepStrictEqual(result.value, {'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'});
       });
 
@@ -135,10 +123,8 @@ describe('element base commands', function() {
       output: false,
       silent: false,
       selenium: {
-        start_process: false
-      },
-      webdriver: {
-        start_process: true
+        start_process: false,
+        host: null
       }
     });
 
@@ -173,22 +159,16 @@ describe('element base commands', function() {
       output: false,
       silent: false,
       selenium: {
-        start_process: false
-      },
-      webdriver: {
-        start_process: true
+        host: null
       }
     });
 
     Nightwatch.api().element('css selector', '.not_found', function(result) {
-      assert.strictEqual(result.error, 'Unable to locate element: .not_found');
+      assert.ok(result.error instanceof Error);
+      assert.strictEqual(result.error.message, 'Unable to locate element: .not_found');
       assert.strictEqual(result.status, -1);
-      assert.strictEqual(result.httpStatusCode, 404);
-      assert.deepStrictEqual(result.value, {
-        error: 'no such element',
-        message: 'Unable to locate element: .not_found',
-        stacktrace: ''
-      });
+      assert.strictEqual(result.value, null);
+      assert.strictEqual(result.httpStatusCode, undefined);
     });
 
     return Nightwatch.start();
@@ -216,21 +196,14 @@ describe('element base commands', function() {
       output: false,
       silent: false,
       selenium: {
-        start_process: false
-      },
-      webdriver: {
-        start_process: true
+        host: null
       }
     });
 
     Nightwatch.api().element('css selector', '#weblogin-error', function(result) {
       assert.strictEqual(result.status, -1);
-      assert.strictEqual(result.httpStatusCode, 502);
-      assert.strictEqual(result.error, '<html>\n<head>\n<title>502 Bad Gateway</title>\n</head>\n<body></body>\n</html>');
-      assert.deepStrictEqual(result.value, {
-        error: 'internal server error',
-        message: '<html>\n<head>\n<title>502 Bad Gateway</title>\n</head>\n<body></body>\n</html>'
-      });
+      assert.strictEqual(result.error.message, '<html>\n<head>\n<title>502 Bad Gateway</title>\n</head>\n<body></body>\n</html>');
+      assert.strictEqual(result.value, null);
     });
 
     return Nightwatch.start();
@@ -292,16 +265,13 @@ describe('element base commands', function() {
       output: false,
       silent: false,
       selenium: {
-        start_process: false
-      },
-      webdriver: {
-        start_process: true
+        host: null
       }
     });
 
     await Nightwatch.api()
       .elements('css selector', '#webdriver', function callback(result) {
-        assert.strictEqual(typeof result.status, 'undefined');
+        assert.strictEqual(result.status, 0);
         assert.deepStrictEqual(result.value, [{
           'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
         }, {
@@ -332,10 +302,7 @@ describe('element base commands', function() {
       output: false,
       silent: false,
       selenium: {
-        start_process: false
-      },
-      webdriver: {
-        start_process: true
+        host: null
       }
     });
 
@@ -391,16 +358,13 @@ describe('element base commands', function() {
       output: false,
       silent: false,
       selenium: {
-        start_process: false
-      },
-      webdriver: {
-        start_process: true
+        host: null
       }
     });
 
     await Nightwatch.api()
       .findElements('#webdriver', function callback(result) {
-        assert.strictEqual(typeof result.status, 'undefined');
+        assert.strictEqual(result.status, 0);
         assert.strictEqual(result.value.length, 2);
         assert.strictEqual(result.value[0]['element-6066-11e4-a52e-4f735466cecf'], '5cc459b8-36a8-3042-8b4a-258883ea642b');
         assert.strictEqual(result.value[1]['element-6066-11e4-a52e-4f735466cecf'], '3783b042-7001-0740-a2c0-afdaac732e9f');
@@ -429,10 +393,7 @@ describe('element base commands', function() {
       output: false,
       silent: false,
       selenium: {
-        start_process: false
-      },
-      webdriver: {
-        start_process: true
+        host: null
       }
     });
 
@@ -607,10 +568,7 @@ describe('element base commands', function() {
       output: false,
       silent: false,
       selenium: {
-        start_process: false
-      },
-      webdriver: {
-        start_process: true
+        host: null
       }
     }, {
       registerTestError(err) {
@@ -623,7 +581,7 @@ describe('element base commands', function() {
       assert.strictEqual(expectedError.name, 'NoSuchElementError');
       assert.strictEqual(instance.suppressNotFoundErrors, false);
       assert.strictEqual(result.status, -1);
-      assert.strictEqual(result.value.error, 'An error occurred while running .isVisible() command on <.not_found>: no such element; Unable to locate element: .not_found');
+      assert.strictEqual(result.value.error, 'An error occurred while running .isVisible() command on <.not_found>: unable to locate element using css selector');
     });
 
     return Nightwatch.start();
@@ -668,10 +626,7 @@ describe('element base commands', function() {
       output: false,
       silent: false,
       selenium: {
-        start_process: false
-      },
-      webdriver: {
-        start_process: true
+        host: null
       }
     }, {
       registerTestError(err) {
@@ -683,17 +638,9 @@ describe('element base commands', function() {
       assert.strictEqual(typeof expectedError, 'undefined');
       assert.strictEqual(instance.suppressNotFoundErrors, true);
       assert.deepStrictEqual(result, {
-        status: -1,
-        code: '',
-        value:
-          {
-            error: 'no such element',
-            message: 'Unable to locate element: .not_found',
-            stacktrace: ''
-          },
-        errorStatus: '',
-        error: 'Unable to locate element: .not_found',
-        httpStatusCode: 404
+        error: 'unable to locate element using css selector',
+        status: 0,
+        value: []
       });
 
     });
