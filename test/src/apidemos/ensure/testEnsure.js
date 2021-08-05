@@ -1,4 +1,5 @@
 const path = require('path');
+const assert =  require('assert');
 const MockServer = require('../../../lib/mockserver.js');
 const Mocks = require('../../../lib/command-mocks.js');
 const common = require('../../../common.js');
@@ -19,7 +20,7 @@ describe('ensure api demos', function() {
   });
 
   it('run ensure api demo tests basic', function() {
-    const testsPath = path.join(__dirname, '../../../apidemos/ensure/ensure.js');
+    const testsPath = path.join(__dirname, '../../../apidemos/ensure/ensureTest.js');
     Mocks.elementSelected();
 
     const globals = {
@@ -38,9 +39,40 @@ describe('ensure api demos', function() {
         port: 10195,
         start_process: false
       },
-      output: true,
+      output: false,
       skip_testcases_on_fail: false,
-      silent: false,
+      silent: true,
+      persist_globals: true,
+      globals,
+      output_folder: false
+    });
+  });
+
+
+  it('run ensure api demo tests failure', function() {
+    const testsPath = path.join(__dirname, '../../../apidemos/ensure/ensureTestError.js');
+
+    const globals = {
+      waitForConditionPollInterval: 50,
+
+      reporter(results) {
+        if (results.lastError) {
+          assert.strictEqual(results.lastError.name, 'NightwatchAssertError');
+        } else {
+          assert.fail('Should throw an error');
+        }
+      }
+    };
+
+    return NightwatchClient.runTests(testsPath, {
+      selenium: {
+        host: 'localhost',
+        port: 10195,
+        start_process: false
+      },
+      output: false,
+      skip_testcases_on_fail: false,
+      silent: true,
       persist_globals: true,
       globals,
       output_folder: false
