@@ -89,9 +89,7 @@ module.exports = {
       response: JSON.stringify({
         sessiondId: '1352110219202',
         status: 0,
-        value: {
-          data: text
-        }
+        value: text
       })
 
 

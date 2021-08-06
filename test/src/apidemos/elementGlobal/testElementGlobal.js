@@ -20,7 +20,7 @@ describe('element globals demos', function() {
   });
 
   it('getText on element global instance', function() {
-    const testsPath = path.join(__dirname, '../../../apidemos/elementGlobal/elementGetTextTest.js');
+    const testsPath = path.join(__dirname, '../../../apidemos/elementGlobal/elementGlobalTest.js');
     Mocks.elementText();
 
     const globals = {
