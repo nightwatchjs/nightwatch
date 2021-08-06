@@ -88,7 +88,7 @@ describe('element base commands', function() {
   });
 
   it('client.element() W3C Webdriver protocol', async function () {
-    await Nightwatch.initAsync({
+    const client = await Nightwatch.initAsync({
       output: false,
       silent: false,
       selenium: {

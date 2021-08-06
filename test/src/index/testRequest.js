@@ -144,27 +144,6 @@ describe('test HttpRequest', function() {
     assert.ok('proxy' in opts.agent);
   });
 
-  it('testResponseWithRedirect', function (done) {
-    nock('http://localhost:4444')
-      .post('/wd/hub/redirect')
-      .reply(302, {}, {
-        Location: 'http://localhost/wd/hub/session'
-      });
-
-    const options = {
-      path: '/redirect',
-      method: 'POST',
-      port: 4444,
-      data: {}
-    };
-    const request = new HttpRequest(options);
-    request.on('success', function (result, response, redirected) {
-      assert.strictEqual(redirected, true);
-      done();
-    }).send();
-
-  });
-
   it('testGetRequest', function (done) {
     nock('http://localhost:4444')
       .get('/wd/hub/123456/element')
@@ -186,32 +165,7 @@ describe('test HttpRequest', function() {
     assert.strictEqual(request.reqOptions.path, '/wd/hub/123456/element');
   });
 
-  xit('testErrorResponse', function (done) {
-    nock('http://localhost:4444')
-      .post('/wd/hub/error')
-      .reply(500, {
-        value: {
-          status: -1,
-          stackTrace: '{}',
-          message: 'Unable to locate element'
-        }
-      });
-
-    const options = {
-      path: '/wd/hub/error',
-      method: 'POST'
-    };
-
-    const request = new HttpRequest(options);
-    request.on('error', function (result, response, screenshotContent) {
-      assert.strictEqual(typeof result.stackTrace, 'undefined');
-      assert.strictEqual(typeof result.message, 'undefined');
-      done();
-    }).send();
-
-  });
-
-  xit('testErrorResponseLocalised', function (done) {
+  it('testErrorResponseLocalised', function (done) {
     nock('http://localhost:4444')
       .post('/wd/hub/error')
       .reply(500, {
@@ -224,6 +178,7 @@ describe('test HttpRequest', function() {
       });
 
     const options = {
+      host: 'localhost',
       path: '/wd/hub/error',
       method: 'POST',
       port: 4444,
@@ -231,10 +186,8 @@ describe('test HttpRequest', function() {
     };
 
     const request = new HttpRequest(options);
-    request.on('error', function (result, response, screenshotContent) {
-      assert.ok(typeof result.stackTrace == 'undefined');
-      assert.ok(typeof result.localizedMessage == 'undefined');
-      assert.ok(typeof result.message == 'undefined');
+    request.on('complete', function (result, response) {
+      assert.strictEqual(result.value.status, -1);
       done();
     }).send();
   });

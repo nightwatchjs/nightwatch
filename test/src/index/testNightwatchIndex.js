@@ -33,16 +33,14 @@ describe('test NightwatchIndex', function () {
     client.startSession().catch(err => done(err));
   });
 
-  //Selenium-webdriver doesn't support this
   it('testChromeSessionWithRedirectStatus', function (done) {
     MockServer.addMock({
       url: '/wd/hub/session',
 
-      postdata: JSON.stringify({
-        desiredCapabilities: {
-          browserName: 'chrome'
-        }
-      }),
+      postdata: {
+        desiredCapabilities: {browserName: 'chrome', 'goog:chromeOptions': {}},
+        capabilities: {alwaysMatch: {browserName: 'chrome', 'goog:chromeOptions': {}}}
+      },
 
       responseHeaders: {
         location: 'http://localhost:10195/wd/hub/session/1352110219202'
@@ -79,7 +77,9 @@ describe('test NightwatchIndex', function () {
       done();
     });
 
-    client.startSession().catch(err => done(err));
+    client.startSession().catch(err => {
+      done(err);
+    });
   });
 
   it('test new Chrome session with wrong driver version error message', function (done) {
