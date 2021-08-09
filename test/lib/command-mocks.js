@@ -72,6 +72,18 @@ module.exports = {
     });
   },
 
+  elementSelected(element='0') {
+    MockServer.addMock({
+      'url': `/wd/hub/session/1352110219202/element/${element}/selected`,
+      method: 'GET',
+      'response': JSON.stringify({
+        sessionId: '1352110219202',
+        value: true,
+        status: 0
+      })
+    });
+  },
+
   maximizeWindow() {
     MockServer.addMock({
       'url': '/wd/hub/session/1352110219202/window/current/maximize',
