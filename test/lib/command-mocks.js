@@ -80,6 +80,20 @@ module.exports = {
         status: 0
       })
     }, true);
+  },
+
+  elementText(elementId='0', text='sample text') {
+    MockServer.addMock({
+      url: `/wd/hub/session/1352110219202/element/${elementId}/text`,
+      method: 'GET',
+      response: JSON.stringify({
+        sessiondId: '1352110219202',
+        status: 0,
+        value: text
+      })
+
+
+    });
   }
 };
 
