@@ -5,7 +5,7 @@ const Mocks = require('../../../lib/command-mocks.js');
 const common = require('../../../common.js');
 const NightwatchClient = common.require('index.js');
 
-describe('element globals demos', function() {
+describe('element global tests', function() {
   beforeEach(function(done) {
     this.server = MockServer.init();
     this.server.on('listening', () => {
