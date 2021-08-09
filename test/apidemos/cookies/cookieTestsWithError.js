@@ -7,15 +7,12 @@ describe('Cookie api demo tests', function() {
 
   test('browser.getCookies() with network errors', async (browser) => {
     const cookies = await browser.getCookies();
-    assert.deepStrictEqual(cookies, {
-      code: 'ECONNRESET',
-      error: 'ECONNRESET socket hang up',
-      status: -1,
-      name: 'Error',
-      value: {
-        message: 'ECONNRESET socket hang up'
-      }
-    });
+    assert.ok(cookies.error instanceof Error);
+    assert.strictEqual(cookies.error.code, 'ECONNRESET');
+    assert.strictEqual(cookies.error.message, 'ECONNRESET socket hang up');
+    assert.strictEqual(cookies.status, -1);
+    assert.strictEqual(cookies.value, null);
+    
   });
 
 });
