@@ -40,9 +40,9 @@ describe('getElementSize', function() {
     });
 
     this.client.api.getElementSize('#weblogin', function callback(result) {
-      assert.deepStrictEqual(result.value, {x: 1, y: 0, width: 10, height: 20});
+      assert.deepStrictEqual(result, {status: 0, x: 1, y: 0, width: 10, height: 20});
     }).getElementSize('css selector', '#weblogin', function callback(result) {
-      assert.deepStrictEqual(result.value, {x: 1, y: 0, width: 10, height: 20});
+      assert.deepStrictEqual(result, {status: 0, x: 1, y: 0, width: 10, height: 20});
     });
 
     this.client.start(done);
@@ -66,7 +66,8 @@ describe('getElementSize', function() {
       }, true);
 
       client.api.getElementSize('#webdriver', function(result) {
-        assert.deepStrictEqual(result.value, {
+        assert.deepStrictEqual(result, {
+          status: 0,
           x: 341.5,
           y: 340.95001220703125,
           width: 683,
