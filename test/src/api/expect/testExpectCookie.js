@@ -316,7 +316,7 @@ describe('expect.cookie', function() {
 
     return this.client.start(function() {
       strictEqual(expect.assertion.passed, false);
-      assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" for domain "cookie-domain" to equal: "other-cookie-value" - expected "equal \'other-cookie-value\'" but got: "[object Object]"'), expect.assertion.message);
+      assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" for domain "cookie-domain" to equal: "other-cookie-value" - no cookie "cookie-name" for domain "cookie-domain" was found - expected "equal \'other-cookie-value\'" but got: "not present"'), expect.assertion.message);
     });
   });
 
@@ -422,12 +422,13 @@ describe('expect.cookie', function() {
     let expect = this.client.api.expect.cookie('cookie-name').to.equal('vasq');
 
     return this.client.start(function() {
-      assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" to equal: "vasq" - expected "equal \'vasq\'" but got: "[object Object]'), expect.assertion.message);
+      assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" to equal: "vasq" - no cookie "cookie-name" was found'), expect.assertion.message);
       strictEqual(expect.assertion.negate, false);
-      deepStrictEqual(expect.assertion.resultValue, {status: 0, value: null});
+      strictEqual(expect.assertion.resultValue, null);
       strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.messageParts.includes(' equal: "vasq"'));
-      assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" to equal: "vasq" - expected "equal \'vasq\'" but got: "[object Object]'));
+      assert.ok(expect.assertion.messageParts.includes(' - no cookie "cookie-name" was found'));
+      assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" to equal: "vasq" - no cookie "cookie-name" was found'));
     });
   });
 
