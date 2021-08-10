@@ -20,7 +20,7 @@ describe('chrome api demos', function () {
     Nocks.disable();
   });
 
-  it.only('run chrome api demo tests basic', function () {
+  it('run chrome api demo tests basic', function () {
     const testsPath = path.join(__dirname, '../../../apidemos/chrome/chromeTest.js');
 
     const globals = {
