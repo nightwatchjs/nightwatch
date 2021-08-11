@@ -129,8 +129,26 @@ const createGenericCommandMocks = function(assertion) {
       assertion({
         command: 'getPageSource'
       });
-  
+
       return '<html><body></body></html>';
+    },
+    executeScript(script, args) {
+      assertion({
+        command: 'executeScript',
+        script: script,
+        args: args
+      });
+
+      return args;
+    },
+    executeAsyncScript(script, args) {
+      assertion({
+        command: 'executeAsyncScript',
+        script: script,
+        args: args
+      });
+
+      return args;
     }
   };
 };

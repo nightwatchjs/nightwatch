@@ -35,4 +35,15 @@ describe('browser navigation commands', function () {
       args: []
     });
   });
+
+  it('testNavigateTo', (done) => {
+    Globals.protocolTest({
+      assertion: function (opts) {
+        assert.strictEqual(opts, 'https://test.com');
+        done();
+      },
+      commandName: 'url',
+      args: ['https://test.com']
+    });
+  });
 });

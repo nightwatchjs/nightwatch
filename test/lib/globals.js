@@ -29,34 +29,35 @@ class ExtendedReporter extends Reporter {
 
 class FakeExecutor {
   constructor() {
-    this.commands_ = new Map()
+    this.commands_ = new Map();
   }
 
   execute(command) {
-    let expectations = this.commands_.get(command.getName())
+    let expectations = this.commands_.get(command.getName());
     if (!expectations || !expectations.length) {
-      assert.fail('unexpected command: ' + command.getName())
-      return
+      assert.fail('unexpected command: ' + command.getName());
     }
 
-    let next = expectations[0]
-    let result = next.execute(command)
+    let next = expectations[0];
+    let result = next.execute(command);
     if (next.times_ !== Infinity) {
-      next.times_ -= 1
+      next.times_ -= 1;
       if (!next.times_) {
-        expectations.shift()
+        expectations.shift();
       }
     }
-    return result
+
+    return result;
   }
 
   expect(commandName, opt_parameters) {
     if (!this.commands_.has(commandName)) {
-      this.commands_.set(commandName, [])
+      this.commands_.set(commandName, []);
     }
-    let e = new Expectation(this, commandName, opt_parameters)
-    this.commands_.get(commandName).push(e)
-    return e
+    let e = new Expectation(this, commandName, opt_parameters);
+    this.commands_.get(commandName).push(e);
+
+    return e;
   }
 
   createDriver() {
