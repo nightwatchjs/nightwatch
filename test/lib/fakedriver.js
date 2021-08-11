@@ -135,6 +135,64 @@ const createGenericCommandMocks = function(assertion) {
   };
 };
 
+const createWaitCommandMocks =  function(assertion, args) {
+  return {
+    async wait(condn) {
+      assertion({description: condn.description(), result: await condn.fn({
+        
+        getCurrentUrl() {
+          return Promise.resolve(...args);
+        },
+        getTitle() {
+          return Promise.resolve(...args);
+        },
+        findElements(locator) {    
+          const element = fakeWebElement(TEST_ELEMENT_ID);
+    
+          return Promise.resolve([
+            element
+          ]);
+        },
+        switchTo(){
+          return {
+            frame(){
+              return Promise.resolve(null);
+            },
+            alert() {
+              return Promise.resolve({
+                accept() {
+    
+                  return null;
+                },
+                dismiss() {
+    
+                  return null;
+                },
+                getText() {
+    
+                  return Promise.resolve('alert text');
+                },
+                sendKeys(value) {
+    
+                  return null;
+                }
+              });
+            }
+
+          };
+        }
+       
+      })});
+
+    
+
+     
+
+      return Promise.resolve();
+    }
+  };
+};
+
 const createManageCommandMocks = function(assertion) {
   return {
     manage() {
@@ -208,7 +266,7 @@ const createNavigateCommandMocks = function(assertion) {
 
 module.exports = {
   fakeWebElement,
-  create(assertion, mockDriverOverrides) {
+  create(assertion, mockDriverOverrides, args) {
     const driver = {
       execute(command) {
         const commandName = command.getName();
@@ -268,6 +326,7 @@ module.exports = {
     Object.assign(driver, createNavigateCommandMocks(assertion));
     Object.assign(driver, createManageCommandMocks(assertion));
     Object.assign(driver, createGenericCommandMocks(assertion));
+    Object.assign(driver, createWaitCommandMocks(assertion, args));
     Object.assign(driver, mockDriverOverrides);
 
     return driver;
