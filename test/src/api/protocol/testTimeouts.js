@@ -1,7 +1,7 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
-xdescribe('timeouts commands', function() {
+describe('timeouts commands', function() {
   before(function() {
     Globals.protocolBefore();
   });
@@ -25,7 +25,7 @@ xdescribe('timeouts commands', function() {
       commandName: 'timeouts',
       args: ['nonscript', 1000]
     }).catch(err => {
-      assert.strictEqual(err.message, 'Error while running "timeouts" command: Invalid timeouts type value: nonscript. Accepted values are: script, implicit, page load, pageLoad');
+      assert.strictEqual(err.message, 'Error while running "timeouts" command: Invalid timeouts type value: nonscript. Accepted values are: script, implicit, pageLoad');
 
       return true;
     }).then(result => assert.strictEqual(result, true));
