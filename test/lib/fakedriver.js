@@ -192,6 +192,31 @@ const createManageCommandMocks = function(assertion) {
               });
             }
           };
+        },
+
+        logs() {
+          return {
+            get(type) {
+              assertion({
+                command: 'sessionLog'
+              });
+
+              return [{ 
+                level: 'WARNING',
+                message: 'https://cdn-static.ecosia.org/manifest.json - Manifest: property \'start_url\' ignored, should be same origin as document.',
+                source: 'other',
+                timestamp: 1628690813925 
+              }]; 
+            },
+            getAvailableLogTypes() {
+
+              assertion({
+                command: 'sessionLogTypes'
+              });
+
+              return ['browser', 'driver'];
+            }
+          };
         }
       };
     }
