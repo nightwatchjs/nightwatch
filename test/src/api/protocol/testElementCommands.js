@@ -348,7 +348,7 @@ describe('element actions', function () {
       },
       commandName: 'elementIdLocation',
       args: ['TEST_ELEMENT', function(result) {
-        assert.deepStrictEqual(result, {status: 0, width: 100, height: 105, x: 10, y: 15});
+        assert.deepStrictEqual(result, {status: 0, value: {width: 100, height: 105, x: 10, y: 15}});
       }]
     });
   });
@@ -429,10 +429,12 @@ describe('element actions', function () {
       args: ['TEST_ELEMENT', function(result) {
         assert.deepStrictEqual(result, {
           status: 0,
-          height: 105,
-          width: 100,
-          x: 10,
-          y: 15
+          value: {
+            height: 105,
+            width: 100,
+            x: 10,
+            y: 15
+          }
         });
       }]
     });
