@@ -9,12 +9,14 @@ describe('timeouts commands', function() {
   it('testTimeoutsValid', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/timeouts');
-        assert.deepStrictEqual(opts.data, {type: 'script', ms: 1000});
+        assert.strictEqual(opts.command, 'timeouts');
+        assert.deepStrictEqual(opts.data, {'script': 1000});
       },
       commandName: 'timeouts',
       args: ['script', 1000]
+    }).then((result) => {
+      assert.strictEqual(typeof result.error, 'undefined');
+      assert.deepStrictEqual(result.value, null);
     });
   });
 
@@ -47,24 +49,28 @@ describe('timeouts commands', function() {
   it('testTimeoutsAsyncScript', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/timeouts/async_script');
-        assert.deepStrictEqual(opts.data, {ms: 1000});
+        assert.strictEqual(opts.command, 'timeouts');
+        assert.deepStrictEqual(opts.data, {script: 1000});
       },
       commandName: 'timeoutsAsyncScript',
       args: [1000]
+    }).then((result) => {
+      assert.strictEqual(typeof result.error, 'undefined');
+      assert.deepStrictEqual(result.value, null);
     });
   });
 
   it('testTimeoutsImplicitWait', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/timeouts/implicit_wait');
-        assert.deepStrictEqual(opts.data, {ms: 1000});
+        assert.strictEqual(opts.command, 'timeouts');
+        assert.deepStrictEqual(opts.data, {implicit: 1000});
       },
       commandName: 'timeoutsImplicitWait',
       args: [1000]
+    }).then((result) => {
+      assert.strictEqual(typeof result.error, 'undefined');
+      assert.deepStrictEqual(result.value, null);
     });
   });
 

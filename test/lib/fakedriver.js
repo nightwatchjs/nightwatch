@@ -219,7 +219,6 @@ const createManageCommandMocks = function(assertion) {
               }]; 
             },
             getAvailableLogTypes() {
-
               assertion({
                 command: 'sessionLogTypes'
               });
@@ -227,6 +226,12 @@ const createManageCommandMocks = function(assertion) {
               return ['browser', 'driver'];
             }
           };
+        },
+
+        setTimeouts(data) {
+          assertion({data, command: 'timeouts'});
+
+          return null;
         }
       };
     }
