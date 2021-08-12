@@ -250,7 +250,9 @@ const createNavigateCommandMocks = function(assertion) {
     navigate() {
       return {
         to(url) {
-          assertion(url);
+          assertion({url, command: 'url'});
+
+          return null;
         },
         back() {
           assertion();
@@ -264,7 +266,7 @@ const createNavigateCommandMocks = function(assertion) {
       };
     },
     getCurrentUrl() {
-      assertion('http://localhost');
+      assertion({command: 'url'});
 
       return 'http://localhost';
     }
