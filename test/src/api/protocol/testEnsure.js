@@ -95,6 +95,115 @@ describe('client.ensure', function() {
 
   });
 
+  it('test ensure.elementLocated',  function() {
+    return Globals.protocolTest({
+      assertion: function(opts){
+        assert.strictEqual(opts.description, 'Waiting for element to be located By(css selector, element)');
+        assert.notStrictEqual(opts.result, null);
+      },
+      commandName: 'ensure.elementLocated',
+      args: ['element']
+    });
+  });
 
+  it('test ensure.elementsLocated', function(){
+    return Globals.protocolTest({
+      assertion: function(opts){
+        assert.strictEqual(opts.description, 'Waiting for at least one element to be located By(css selector, element)');
+        assert.notStrictEqual(opts.result, null);
+
+      },
+      commandName: 'ensure.elementsLocated',
+      args: ['element']
+    });
+  });
+
+  it('test ensure.elementIsVisible', function(){
+    return Globals.protocolTest({
+      assertion: function(opts){
+        assert.strictEqual(opts.description, 'Waiting until element is visible');
+        assert.notStrictEqual(opts.result, null);
+
+      },
+      commandName: 'ensure.elementIsVisible',
+      args: ['@seleniumElement']
+    });
+  });
+
+  it('test ensure.elementIsEnabled', function() {
+    return Globals.protocolTest({
+      assertion: function(opts){
+        assert.strictEqual(opts.description, 'Waiting until element is enabled');
+        assert.notStrictEqual(opts.result, null);
+
+      },
+      commandName: 'ensure.elementIsEnabled',
+      args: ['@seleniumElement']
+    });
+  });
+
+
+  it('test ensure.elementIsSelected', function() {
+    return Globals.protocolTest({
+      assertion: function(opts){
+        assert.strictEqual(opts.description, 'Waiting until element is selected');
+        assert.notStrictEqual(opts.result, null);
+
+      },
+      commandName: 'ensure.elementIsSelected',
+      args: ['@seleniumElement']
+    });
+  });
+
+  it.only('test ensure.elementIsDisabled', function() {
+    return Globals.protocolTest({
+      assertion: function(opts){
+        assert.strictEqual(opts.description, 'Waiting until element is disabled');
+        assert.strictEqual(opts.result, null);
+
+      },
+      commandName: 'ensure.elementIsDisabled',
+      args: ['@seleniumElement']
+    });
+  });
+
+  it('test ensure.elementTextContains', function() {
+    return Globals.protocolTest({
+      assertion: function(opts){
+        assert.strictEqual(opts.description, 'Waiting until element text contains');
+        assert.notStrictEqual(opts.result, null);
+
+      },
+      commandName: 'ensure.elementTextContains',
+      args: ['@seleniumElement', 'text']
+    });
+  });
+
+
+  it('test ensure.elementTextIs', function() {
+    return Globals.protocolTest({
+      assertion: function(opts){
+        assert.strictEqual(opts.description, 'Waiting until element text is');
+        assert.notStrictEqual(opts.result, null);
+
+      },
+      commandName: 'ensure.elementTextIs',
+      args: ['@seleniumElement', 'text']
+    });
+  });
+
+  it('test ensure.elementTextMatches', function() {
+    return Globals.protocolTest({
+      assertion: function(opts){
+        assert.strictEqual(opts.description, 'Waiting until element text matches');
+        assert.notStrictEqual(opts.result, null);
+
+      },
+      commandName: 'ensure.elementTextMatches',
+      args: ['@seleniumElement', /text/]
+    });
+  });
+
+  
 
 });

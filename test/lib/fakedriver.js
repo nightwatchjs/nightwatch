@@ -1,3 +1,5 @@
+const {WebElement} = require('selenium-webdriver');
+
 const CommandsExecutor = {
   findChildElement(args, assertion) {
     assertion({args, command: 'findChildElement'});
@@ -98,6 +100,22 @@ const fakeWebElement = function(elementId) {
       return Promise.resolve(elementId);
     }
   };
+};
+
+const fakeSeleniumElement =  function(driver, elementId) {
+  driver.execute =  function(command) {
+    const commandName = command.getName();
+    const params = command.getParameters();
+
+    let result = CommandsExecutor[commandName](params, function(){});
+    if (!(result instanceof Promise)) {
+      result = Promise.resolve(result);
+    }
+
+    return result;
+  };
+
+  return new WebElement(driver, elementId);
 };
 
 const TEST_ELEMENT_ID = '12345-6789';
@@ -266,6 +284,7 @@ const createNavigateCommandMocks = function(assertion) {
 
 module.exports = {
   fakeWebElement,
+  fakeSeleniumElement,
   create(assertion, mockDriverOverrides, args) {
     const driver = {
       execute(command) {
