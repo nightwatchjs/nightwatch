@@ -155,7 +155,7 @@ describe('client.ensure', function() {
     });
   });
 
-  it.only('test ensure.elementIsDisabled', function() {
+  it('test ensure.elementIsDisabled', function() {
     return Globals.protocolTest({
       assertion: function(opts){
         assert.strictEqual(opts.description, 'Waiting until element is disabled');
