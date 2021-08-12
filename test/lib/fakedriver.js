@@ -8,9 +8,7 @@ const CommandsExecutor = {
   findChildElements(args, assertion) {
     assertion({args, command: 'findChildElements'});
 
-    return [
-      fakeWebElement(TEST_CHILD_ELEMENT_ID)
-    ];
+    return [fakeWebElement(TEST_CHILD_ELEMENT_ID)];
   },
 
   clearElement(args, assertion) {
@@ -42,7 +40,6 @@ const CommandsExecutor = {
 
     return 'test_value';
   },
-
 
   getElementProperty(args, assertion) {
     assertion({args, command: 'getElementProperty'});
@@ -87,6 +84,12 @@ const CommandsExecutor = {
 
   sendKeysToElement(args, assertion) {
     assertion({args, command: 'sendKeysToElement'});
+
+    return null;
+  },
+
+  submitElement(webElement, assertion) {
+    assertion({webElement, command: 'submit'});
 
     return null;
   }
