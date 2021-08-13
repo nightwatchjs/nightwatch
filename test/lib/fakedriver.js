@@ -166,6 +166,28 @@ const createGenericCommandMocks = function(assertion) {
       });
 
       return 'nightwatch';
+    },
+
+    getWindowHandle() {
+      assertion({
+        command: 'windowHandle'
+      });
+
+      return 'CDwindow-BE13CA812F066254342F4FEB180D14ED';
+    },
+    getAllWindowHandles() {
+      assertion({
+        command: 'windowHandles'
+      });
+
+      return ['CDwindow-BE13CA812F066254342F4FEB180D14ED'];
+    },
+    close() {
+      assertion({
+        command: 'window'
+      });
+
+      return null;
     }
   };
 };
@@ -207,6 +229,20 @@ const createManageCommandMocks = function(assertion) {
                 width: 100,
                 height: 100
               });
+            },
+            minimize() {
+              assertion({
+                command: 'minimizeWindow'
+              });
+
+              return null;
+            },
+            maximize() {
+              assertion({
+                command: 'windowMaximize'
+              });
+
+              return null;
             }
           };
         },
@@ -325,6 +361,22 @@ module.exports = {
             return null;
           },
           frameParent() {
+            return null;
+          },
+          window(handleOrName) {
+            assertion({
+              command: 'window',
+              name: handleOrName
+            });
+
+            return null;
+          },
+          newWindow(type){
+            assertion({
+              command: 'openNewWindow',
+              type
+            });
+
             return null;
           }
         };
