@@ -137,7 +137,7 @@ const createGenericCommandMocks = function(assertion) {
     },
     executeScript(script, args) {
       assertion({
-        command: 'executeScript',
+        command: 'execute',
         script: script,
         args: args
       });
@@ -146,7 +146,7 @@ const createGenericCommandMocks = function(assertion) {
     },
     executeAsyncScript(script, args) {
       assertion({
-        command: 'executeAsyncScript',
+        command: 'executeAsync',
         script: script,
         args: args
       });

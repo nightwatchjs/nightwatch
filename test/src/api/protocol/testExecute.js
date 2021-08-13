@@ -9,7 +9,7 @@ describe('client.execute', function() {
   it('testExecuteString', function () {
     return Globals.protocolTest({
       assertion: function (opts) {
-        assert.deepStrictEqual(opts.command, 'executeScript');
+        assert.deepStrictEqual(opts.command, 'execute');
         assert.deepStrictEqual(opts.script, '<script>function(){return test();};</script>');
         assert.deepStrictEqual(opts.args, ['arg1']);
       },
@@ -24,7 +24,7 @@ describe('client.execute', function() {
   it('testExecuteFunction', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.deepStrictEqual(opts.command, 'executeScript');
+        assert.deepStrictEqual(opts.command, 'execute');
         assert.deepStrictEqual(opts.args, ['arg1']);
         assert.deepStrictEqual(opts.script, 'var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {\n        return test();\n      }).apply(window, passedArgs);');
       },
@@ -41,7 +41,7 @@ describe('client.execute', function() {
   it('testExecuteFunctionNoArgs', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.deepStrictEqual(opts.command, 'executeScript');
+        assert.deepStrictEqual(opts.command, 'execute');
         assert.deepStrictEqual(opts.args.length, 0);
         assert.deepStrictEqual(opts.script, 'var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {\n        return test();\n      }).apply(window, passedArgs);');
       },
@@ -58,7 +58,7 @@ describe('client.execute', function() {
   it('testExecuteAsyncFunction', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.deepStrictEqual(opts.command, 'executeAsyncScript');
+        assert.deepStrictEqual(opts.command, 'executeAsync');
         assert.deepStrictEqual(opts.args, ['arg1']);
         assert.deepStrictEqual(opts.script, 'var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {\n        return test();\n      }).apply(window, passedArgs);');
       },
@@ -75,7 +75,7 @@ describe('client.execute', function() {
   it('testExecuteAsyncString', function() {
     return Globals.protocolTest({
       assertion: function (opts) {
-        assert.deepStrictEqual(opts.command, 'executeAsyncScript');
+        assert.deepStrictEqual(opts.command, 'executeAsync');
         assert.deepStrictEqual(opts.script, '<script>function(){return test();};</script>');
         assert.deepStrictEqual(opts.args, ['arg1']);
       },
