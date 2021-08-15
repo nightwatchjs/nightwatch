@@ -1,3 +1,5 @@
+const {WebElement} = require('selenium-webdriver');
+
 const CommandsExecutor = {
   findChildElement(args, assertion) {
     assertion({args, command: 'findChildElement'});
@@ -100,6 +102,22 @@ const fakeWebElement = function(elementId) {
   };
 };
 
+const fakeSeleniumElement =  function(driver, elementId) {
+  driver.execute =  function(command) {
+    const commandName = command.getName();
+    const params = command.getParameters();
+
+    let result = CommandsExecutor[commandName](params, function(){});
+    if (!(result instanceof Promise)) {
+      result = Promise.resolve(result);
+    }
+
+    return result;
+  };
+
+  return new WebElement(driver, elementId);
+};
+
 const TEST_ELEMENT_ID = '12345-6789';
 const TEST_CHILD_ELEMENT_ID = '6789-192111';
 
@@ -131,6 +149,64 @@ const createGenericCommandMocks = function(assertion) {
       });
   
       return '<html><body></body></html>';
+    }
+  };
+};
+
+const createWaitCommandMocks =  function(assertion, args) {
+  return {
+    async wait(condn) {
+      assertion({description: condn.description(), result: await condn.fn({
+        
+        getCurrentUrl() {
+          return Promise.resolve(...args);
+        },
+        getTitle() {
+          return Promise.resolve(...args);
+        },
+        findElements(locator) {    
+          const element = fakeWebElement(TEST_ELEMENT_ID);
+    
+          return Promise.resolve([
+            element
+          ]);
+        },
+        switchTo(){
+          return {
+            frame(){
+              return Promise.resolve(null);
+            },
+            alert() {
+              return Promise.resolve({
+                accept() {
+    
+                  return null;
+                },
+                dismiss() {
+    
+                  return null;
+                },
+                getText() {
+    
+                  return Promise.resolve('alert text');
+                },
+                sendKeys(value) {
+    
+                  return null;
+                }
+              });
+            }
+
+          };
+        }
+       
+      })});
+
+    
+
+     
+
+      return Promise.resolve();
     }
   };
 };
@@ -208,7 +284,8 @@ const createNavigateCommandMocks = function(assertion) {
 
 module.exports = {
   fakeWebElement,
-  create(assertion, mockDriverOverrides) {
+  fakeSeleniumElement,
+  create(assertion, mockDriverOverrides, args) {
     const driver = {
       execute(command) {
         const commandName = command.getName();
@@ -268,6 +345,7 @@ module.exports = {
     Object.assign(driver, createNavigateCommandMocks(assertion));
     Object.assign(driver, createManageCommandMocks(assertion));
     Object.assign(driver, createGenericCommandMocks(assertion));
+    Object.assign(driver, createWaitCommandMocks(assertion, args));
     Object.assign(driver, mockDriverOverrides);
 
     return driver;
