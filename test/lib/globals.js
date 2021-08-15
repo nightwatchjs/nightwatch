@@ -144,7 +144,7 @@ class Globals {
       };
 
       client.transport.driver = FakeDriver.create(assertion, mockDriverOverrides, args);
-      if (args[0]==='@seleniumElement') {
+      if (args[0] === '@seleniumElement') {
         args[0] = FakeDriver.fakeSeleniumElement(client.transport.driver, '12345-6789');
       }
 

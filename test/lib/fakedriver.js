@@ -153,58 +153,50 @@ const createGenericCommandMocks = function(assertion) {
   };
 };
 
-const createWaitCommandMocks =  function(assertion, args) {
+const createWaitCommandMocks = function (assertion, args) {
   return {
     async wait(condn) {
-      assertion({description: condn.description(), result: await condn.fn({
-        
-        getCurrentUrl() {
-          return Promise.resolve(...args);
-        },
-        getTitle() {
-          return Promise.resolve(...args);
-        },
-        findElements(locator) {    
-          const element = fakeWebElement(TEST_ELEMENT_ID);
-    
-          return Promise.resolve([
-            element
-          ]);
-        },
-        switchTo(){
-          return {
-            frame(){
-              return Promise.resolve(null);
-            },
-            alert() {
-              return Promise.resolve({
-                accept() {
-    
-                  return null;
-                },
-                dismiss() {
-    
-                  return null;
-                },
-                getText() {
-    
-                  return Promise.resolve('alert text');
-                },
-                sendKeys(value) {
-    
-                  return null;
-                }
-              });
-            }
+      assertion({
+        description: condn.description(), result: await condn.fn({
+          getCurrentUrl() {
+            return Promise.resolve(...args);
+          },
+          getTitle() {
+            return Promise.resolve(...args);
+          },
+          findElements(locator) {
+            const element = fakeWebElement(TEST_ELEMENT_ID);
 
-          };
-        }
-       
-      })});
+            return Promise.resolve([
+              element
+            ]);
+          },
 
-    
-
-     
+          switchTo() {
+            return {
+              frame() {
+                return Promise.resolve(null);
+              },
+              alert() {
+                return Promise.resolve({
+                  accept() {
+                    return null;
+                  },
+                  dismiss() {
+                    return null;
+                  },
+                  getText() {
+                    return Promise.resolve('alert text');
+                  },
+                  sendKeys(value) {
+                    return null;
+                  }
+                });
+              }
+            };
+          }
+        })
+      });
 
       return Promise.resolve();
     }
