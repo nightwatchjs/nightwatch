@@ -9,7 +9,6 @@ module.exports = {
 
     const assertResult = await browser.assert.elementPresent('#weblogin');
     assert.deepStrictEqual(assertResult, {
-      sessionId: '1352110219202',
       status: 0,
       value: [{ELEMENT: '0'}],
       returned: 1

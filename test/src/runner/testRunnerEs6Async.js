@@ -3,7 +3,8 @@ const assert = require('assert');
 const MockServer = require('../../lib/mockserver.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const common = require('../../common.js');
-const NightwatchClient = common.require('index.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('testRunner ES6 Async', function() {
   before(function(done) {
@@ -55,19 +56,10 @@ describe('testRunner ES6 Async', function() {
       }
     };
 
-    return NightwatchClient.runTests(testsPath, {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      output: false,
+    return runTests(testsPath, settings({
       skip_testcases_on_fail: false,
-      silent: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    });
+      globals
+    }));
   });
 
   it('test Runner with ES6 async/await tests basic sample', function() {
@@ -115,19 +107,10 @@ describe('testRunner ES6 Async', function() {
       }
     };
 
-    return NightwatchClient.runTests(testsPath, {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      output: false,
+    return runTests(testsPath, settings({
       skip_testcases_on_fail: false,
-      silent: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    });
+      globals
+    }));
   });
 
   it('test Runner with ES6 async/await tests getLog example', function() {
@@ -142,25 +125,19 @@ describe('testRunner ES6 Async', function() {
       }
     };
 
-    return NightwatchClient.runTests(testsPath, {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      output: false,
-      skip_testcases_on_fail: false,
-      silent: false,
-      persist_globals: true,
-      globals,
-      output_folder: false
-    });
+    return runTests(testsPath, settings({
+      globals
+    }));
   });
 
   it('test Runner with ES6 async/await tests getText example', function() {
     MockServer.addMock({
       url: '/session',
       statusCode: 201,
+      postdata: JSON.stringify({
+        desiredCapabilities: {browserName: 'firefox', name: 'Get Text ES6'},
+        capabilities: {alwaysMatch: {browserName: 'firefox'}}
+      }),
       response: JSON.stringify({
         value: {
           sessionId: '13521-10219-202',
@@ -259,23 +236,16 @@ describe('testRunner ES6 Async', function() {
       }
     };
 
-    return NightwatchClient.runTests(testsPath, {
-      selenium: {
-        port: 10195,
-        version2: false,
-        start_process: false
-      },
+    return runTests(testsPath, settings({
       webdriver: {
-        start_process: true
+        host: 'localhost'
       },
-      page_objects_path: [path.join(__dirname, '../../extra/pageobjects/pages')],
+      selenium_host: null,
       output: false,
+      page_objects_path: [path.join(__dirname, '../../extra/pageobjects/pages')],
       skip_testcases_on_fail: false,
-      silent: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    });
+      globals
+    }));
   });
 
   it('test Runner with ES6 async commands', function() {
@@ -290,18 +260,8 @@ describe('testRunner ES6 Async', function() {
       }
     };
 
-    return NightwatchClient.runTests(testsPath, {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      output: false,
-      skip_testcases_on_fail: false,
-      silent: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    });
+    return runTests(testsPath, settings({
+      globals
+    }));
   });
 });

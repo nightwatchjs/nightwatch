@@ -224,7 +224,7 @@ describe('test TagsMatcher', function() {
     ];
 
     testCases.forEach(([description, modulePath, tag_filter, skiptags, expected]) => {
-      it(`${description}`, function () {
+      it(description, function () {
         const fullModulePath = path.join(__dirname, '../../' + modulePath);
 
         const matcher = new TagsMatcher({

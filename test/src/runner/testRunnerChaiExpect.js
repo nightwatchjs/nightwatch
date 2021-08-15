@@ -23,8 +23,8 @@ describe('testRunnerChaiExpect', function() {
     let settings = Settings.parse({
       selenium: {
         port: 10195,
-        version2: true,
-        start_process: true
+        host: 'localhost',
+        start_process: false
       },
       globals: {
         test: assert,

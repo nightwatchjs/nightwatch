@@ -3,7 +3,8 @@ const assert = require('assert');
 const common = require('../../common.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
-const NightwatchClient = common.require('index.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('testRunWithMultipleSources', function() {
   before(function(done) {
@@ -39,20 +40,9 @@ describe('testRunWithMultipleSources', function() {
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
-      globals: globals,
-      persist_globals: true,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests(testsPath, settings);
+    return runTests(testsPath, settings({
+      globals
+    }));
   });
 
   it('testRunWithSourceFilesAndFolders', function() {
@@ -73,20 +63,9 @@ describe('testRunWithMultipleSources', function() {
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
-      globals,
-      persist_globals: true,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests(testsPath, settings);
+    return runTests(testsPath, settings({
+      globals
+    }));
   });
 
   it('testRunner with multiple src_folders value', function() {
@@ -104,21 +83,10 @@ describe('testRunWithMultipleSources', function() {
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
+    return runTests(settings({
       src_folders: testsPath,
-      silent: false,
-      output: false,
-      globals: globals,
-      persist_globals: true,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests(settings);
+      globals
+    }));
   });
 
   it('testRunner with multiple src_folders value - with unit tests error', function() {
@@ -151,21 +119,10 @@ describe('testRunWithMultipleSources', function() {
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
+    return Client.runTests(settings({
       src_folders: testsPath,
-      silent: true,
-      output: false,
-      globals: globals,
-      persist_globals: true,
-      output_folder: false
-    };
-
-    return Client.runTests(settings).then(_ => {
+      globals
+    })).then(_ => {
       mockery.deregisterAll();
       mockery.disable();
       assert.ok(uncaughtErr instanceof TypeError);
