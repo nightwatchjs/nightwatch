@@ -57,19 +57,23 @@ describe('getElementRect', function () {
       .getElementRect('#weblogin', function callback(result) {
         assert.deepStrictEqual(result, {
           status: 0,
-          x: 1,
-          y: 1,
-          width: 100,
-          height: 100
+          value: {
+            x: 1,
+            y: 1,
+            width: 100,
+            height: 100
+          }
         });
       })
       .getElementRect('css selector', '#weblogin', function callback(result) {
         assert.deepStrictEqual(result, {
           status: 0,
-          x: 1,
-          y: 1,
-          width: 100,
-          height: 100
+          value: {
+            x: 1,
+            y: 1,
+            width: 100,
+            height: 100
+          }
         });
       });
 

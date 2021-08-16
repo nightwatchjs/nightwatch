@@ -9,11 +9,13 @@ describe('client.title', function() {
   it('testTitle', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/title');
+        assert.strictEqual(opts.command, 'title');
       },
       commandName: 'title',
       args: []
+    }).then((result) => {
+      assert.strictEqual(typeof result.error, 'undefined');
+      assert.deepStrictEqual(result.value, 'nightwatch');
     });
   });
 

@@ -6,7 +6,7 @@ describe('client.pageSource', function() {
     Globals.protocolBefore();
   });
 
-  it('testPageSource', function() {
+  it('testPageSource', function () {
     return Globals.protocolTest({
       assertion({command}) {
         assert.strictEqual(command, 'getPageSource');

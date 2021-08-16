@@ -10,9 +10,7 @@ const CommandsExecutor = {
   findChildElements(args, assertion) {
     assertion({args, command: 'findChildElements'});
 
-    return [
-      fakeWebElement(TEST_CHILD_ELEMENT_ID)
-    ];
+    return [fakeWebElement(TEST_CHILD_ELEMENT_ID)];
   },
 
   clearElement(args, assertion) {
@@ -44,7 +42,6 @@ const CommandsExecutor = {
 
     return 'test_value';
   },
-
 
   getElementProperty(args, assertion) {
     assertion({args, command: 'getElementProperty'});
@@ -89,6 +86,12 @@ const CommandsExecutor = {
 
   sendKeysToElement(args, assertion) {
     assertion({args, command: 'sendKeysToElement'});
+
+    return null;
+  },
+
+  submitElement(webElement, assertion) {
+    assertion({webElement, command: 'submit'});
 
     return null;
   }
@@ -147,8 +150,62 @@ const createGenericCommandMocks = function(assertion) {
       assertion({
         command: 'getPageSource'
       });
-  
+
       return '<html><body></body></html>';
+    },
+    executeScript(script, args) {
+      assertion({
+        command: 'execute',
+        script,
+        args
+      });
+
+      return args;
+    },
+    executeAsyncScript(script, args) {
+      assertion({
+        command: 'executeAsync',
+        script,
+        args
+      });
+
+      return args;
+    },
+    takeScreenshot() {
+      assertion({
+        command: 'screenshot'
+      });
+
+      return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==';
+    },
+    getTitle() {
+      assertion({
+        command: 'title'
+      });
+
+      return 'nightwatch';
+    },
+
+    getWindowHandle() {
+      assertion({
+        command: 'windowHandle'
+      });
+
+      return 'CDwindow-BE13CA812F066254342F4FEB180D14ED';
+    },
+    getAllWindowHandles() {
+      assertion({
+        command: 'windowHandles'
+      });
+
+      return ['CDwindow-BE13CA812F066254342F4FEB180D14ED'];
+    },
+    close() {
+      assertion({
+        command: 'window'
+      });
+
+      return null;
     }
   };
 };
@@ -240,8 +297,52 @@ const createManageCommandMocks = function(assertion) {
                 width: 100,
                 height: 100
               });
+            },
+            minimize() {
+              assertion({
+                command: 'minimizeWindow'
+              });
+
+              return null;
+            },
+            maximize() {
+              assertion({
+                command: 'windowMaximize'
+              });
+
+              return null;
             }
           };
+        },
+
+        logs() {
+          return {
+            get(type) {
+              assertion({
+                command: 'sessionLog'
+              });
+
+              return [{ 
+                level: 'WARNING',
+                message: 'https://cdn-static.ecosia.org/manifest.json - Manifest: property \'start_url\' ignored, should be same origin as document.',
+                source: 'other',
+                timestamp: 1628690813925 
+              }]; 
+            },
+            getAvailableLogTypes() {
+              assertion({
+                command: 'sessionLogTypes'
+              });
+
+              return ['browser', 'driver'];
+            }
+          };
+        },
+
+        setTimeouts(data) {
+          assertion({data, command: 'timeouts'});
+
+          return null;
         }
       };
     }
@@ -253,7 +354,9 @@ const createNavigateCommandMocks = function(assertion) {
     navigate() {
       return {
         to(url) {
-          assertion(url);
+          assertion({url, command: 'url'});
+
+          return null;
         },
         back() {
           assertion();
@@ -267,7 +370,7 @@ const createNavigateCommandMocks = function(assertion) {
       };
     },
     getCurrentUrl() {
-      assertion('http://localhost');
+      assertion({command: 'url'});
 
       return 'http://localhost';
     }
@@ -327,6 +430,22 @@ module.exports = {
             return null;
           },
           frameParent() {
+            return null;
+          },
+          window(handleOrName) {
+            assertion({
+              command: 'window',
+              name: handleOrName
+            });
+
+            return null;
+          },
+          newWindow(type){
+            assertion({
+              command: 'openNewWindow',
+              type
+            });
+
             return null;
           }
         };

@@ -14,6 +14,9 @@ describe('alert commands', function () {
       assertion() {
         done();
       }
+    }).then((result) => {
+      assert.strictEqual(result.value, null);
+      assert.strictEqual(result.status, 0);
     });
   });
 
@@ -23,7 +26,10 @@ describe('alert commands', function () {
         done();
       },
       commandName: 'dismissAlert'
-    });
+    }).then((result) => {
+      assert.strictEqual(result.value, null);
+      assert.strictEqual(result.status, 0);
+    });;
   });
 
   it('testGetAlertText', function (done) {
@@ -35,7 +41,6 @@ describe('alert commands', function () {
         } catch (err) {
           done(err);
         }
-
       },
       commandName: 'getAlertText'
     });
@@ -55,7 +60,10 @@ describe('alert commands', function () {
       },
       commandName: 'setAlertText',
       args: [text]
-    });
+    }).then((result) => {
+      assert.strictEqual(result.value, null);
+      assert.strictEqual(result.status, 0);
+    });;
   });
 
 });
