@@ -2,7 +2,8 @@ const path = require('path');
 const assert = require('assert');
 const common = require('../../common.js');
 const MockServer = require('../../lib/mockserver.js');
-const NightwatchClient = common.require('index.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('testRunWithUncaughtErrors', function() {
 
@@ -56,18 +57,9 @@ describe('testRunWithUncaughtErrors', function() {
     const orig = process.exit;
     process.exit = function(code) {};
 
-    NightwatchClient.runTests(testsPath, {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      output: false,
-      silent: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    });
+    runTests(testsPath, settings({
+      globals
+    }));
 
     setTimeout(function () {
       process.exit = orig;

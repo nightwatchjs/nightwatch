@@ -37,6 +37,7 @@ describe('sampleTest with webdriverIO', function() {
   test('sampleTest', async function(nightwatch) {
     const element = await browser.$('#weblogin');
 
+    await nightwatch.assert.visible(element);
     await nightwatch.expect.element(element).visible;
     await nightwatch.assert.visible(element);
 

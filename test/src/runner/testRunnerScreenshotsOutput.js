@@ -4,8 +4,9 @@ const assert = require('assert');
 const common = require('../../common.js');
 const MockServer = require('../../lib/mockserver.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
-const NightwatchClient = common.require('index.js');
 const rimraf = require('rimraf');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('testRunnerScreenshotsOutput', function() {
   let screenshotFilePath = 'screenshots';
@@ -35,36 +36,9 @@ describe('testRunnerScreenshotsOutput', function() {
   });
 
   it('takes screenshot on each test failure', function () {
-
-
     let testsPath = [
       path.join(__dirname, '../../sampletests/withfailures')
     ];
-
-    let settings = {
-      skip_testcases_on_fail: false,
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      output_folder: 'output',
-      silent: true,
-      globals: {
-        waitForConditionPollInterval: 5,
-        waitForConditionTimeout: 5,
-        retryAssertionTimeout: 1,
-        reporter: function () {
-        }
-      },
-      output: false,
-      screenshots: {
-        enabled: true,
-        on_failure: true,
-        on_error: true,
-        path: screenshotFilePath
-      }
-    };
 
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/screenshot',
@@ -76,7 +50,22 @@ describe('testRunnerScreenshotsOutput', function() {
       })
     }, true);
 
-    return NightwatchClient.runTests(testsPath, settings)
+    return runTests(testsPath, settings({
+      skip_testcases_on_fail: false,
+      globals: {
+        waitForConditionPollInterval: 5,
+        waitForConditionTimeout: 5,
+        retryAssertionTimeout: 1,
+        reporter: function () {
+        }
+      },
+      screenshots: {
+        enabled: true,
+        on_failure: true,
+        on_error: true,
+        path: screenshotFilePath
+      }
+    }))
       .then(_ => {
         return readDirPromise(`${screenshotFilePath}/${moduleName}`);
       })
@@ -93,31 +82,6 @@ describe('testRunnerScreenshotsOutput', function() {
       path.join(__dirname, '../../sampletests/withfailures')
     ];
 
-    let settings = {
-      skip_testcases_on_fail: true,
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      output_folder: 'output',
-      silent: true,
-      globals: {
-        waitForConditionPollInterval: 5,
-        waitForConditionTimeout: 5,
-        retryAssertionTimeout: 1,
-        reporter: function () {
-        }
-      },
-      output: false,
-      screenshots: {
-        enabled: true,
-        on_failure: true,
-        on_error: true,
-        path: screenshotFilePath
-      }
-    };
-
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/screenshot',
       method: 'GET',
@@ -129,7 +93,23 @@ describe('testRunnerScreenshotsOutput', function() {
     });
 
 
-    return NightwatchClient.runTests(testsPath, settings)
+    return runTests(testsPath, settings({
+      skip_testcases_on_fail: true,
+      output_folder: 'output',
+      globals: {
+        waitForConditionPollInterval: 5,
+        waitForConditionTimeout: 5,
+        retryAssertionTimeout: 1,
+        reporter: function () {
+        }
+      },
+      screenshots: {
+        enabled: true,
+        on_failure: true,
+        on_error: true,
+        path: screenshotFilePath
+      }
+    }))
       .then(_ => {
         return readDirPromise(`${screenshotFilePath}/${moduleName}`)
           .then(files => {
@@ -146,31 +126,6 @@ describe('testRunnerScreenshotsOutput', function() {
       path.join(__dirname, '../../sampletests/withfailures')
     ];
 
-    let settings = {
-      skip_testcases_on_fail: true,
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      output_folder: 'output',
-      silent: true,
-      globals: {
-        waitForConditionPollInterval: 5,
-        waitForConditionTimeout: 5,
-        retryAssertionTimeout: 1,
-        reporter: function () {
-        }
-      },
-      output: false,
-      screenshots: {
-        enabled: true,
-        on_failure: true,
-        on_error: true,
-        path: screenshotFilePath
-      }
-    };
-
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/screenshot',
       method: 'GET',
@@ -186,7 +141,23 @@ describe('testRunnerScreenshotsOutput', function() {
     });
 
 
-    return NightwatchClient.runTests(testsPath, settings)
+    return runTests(testsPath, settings({
+      skip_testcases_on_fail: true,
+      output_folder: 'output',
+      globals: {
+        waitForConditionPollInterval: 5,
+        waitForConditionTimeout: 5,
+        retryAssertionTimeout: 1,
+        reporter: function () {
+        }
+      },
+      screenshots: {
+        enabled: true,
+        on_failure: true,
+        on_error: true,
+        path: screenshotFilePath
+      }
+    }))
       .then(_ => {
         return readDirPromise(`${screenshotFilePath}/${moduleName}`)
           .catch(err => {
@@ -202,15 +173,9 @@ describe('testRunnerScreenshotsOutput', function() {
       path.join(__dirname, '../../sampletests/withfailures')
     ];
 
-    let settings = {
+    return runTests(testsPath, settings({
       skip_testcases_on_fail: true,
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
       output_folder: 'output',
-      silent: true,
       globals: {
         waitForConditionPollInterval: 5,
         waitForConditionTimeout: 5,
@@ -218,17 +183,13 @@ describe('testRunnerScreenshotsOutput', function() {
         reporter: function () {
         }
       },
-      output: false,
       screenshots: {
         enabled: false,
         on_failure: true,
         on_error: true,
         path: screenshotFilePath
       }
-    };
-
-
-    return NightwatchClient.runTests(testsPath, settings)
+    }))
       .then(_ => {
         return readDirPromise(`${screenshotFilePath}/${moduleName}`)
           .catch((err) => {
@@ -244,15 +205,9 @@ describe('testRunnerScreenshotsOutput', function() {
       path.join(__dirname, '../../sampletests/withfailures')
     ];
 
-    let settings = {
+    return runTests(testsPath, settings({
       skip_testcases_on_fail: true,
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
       output_folder: 'output',
-      silent: true,
       globals: {
         waitForConditionPollInterval: 5,
         waitForConditionTimeout: 5,
@@ -260,17 +215,13 @@ describe('testRunnerScreenshotsOutput', function() {
         reporter: function () {
         }
       },
-      output: false,
       screenshots: {
         enabled: true,
         on_failure: false,
         on_error: true,
         path: screenshotFilePath
       }
-    };
-
-
-    return NightwatchClient.runTests(testsPath, settings)
+    }))
       .then(_ => {
         return readDirPromise(`${screenshotFilePath}/${moduleName}`)
           .catch((err) => {

@@ -36,6 +36,8 @@ class FakeExecutor {
     let expectations = this.commands_.get(command.getName());
     if (!expectations || !expectations.length) {
       assert.fail('unexpected command: ' + command.getName());
+
+      return;
     }
 
     let next = expectations[0];
@@ -141,7 +143,10 @@ class Globals {
         assertion(opts);
       };
 
-      client.transport.driver = FakeDriver.create(assertion, mockDriverOverrides);
+      client.transport.driver = FakeDriver.create(assertion, mockDriverOverrides, args);
+      if (args[0] === '@seleniumElement') {
+        args[0] = FakeDriver.fakeSeleniumElement(client.transport.driver, '12345-6789');
+      }
 
       client.queue.once('queue:finished', err => {
         if (err) {

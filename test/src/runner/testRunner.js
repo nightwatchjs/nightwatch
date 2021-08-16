@@ -7,7 +7,8 @@ const Globals = require('../../lib/globals.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const Runner = common.require('runner/runner.js');
 const Settings = common.require('settings/settings.js');
-const NightwatchClient = common.require('index.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('testRunner', function() {
   const emptyPath = path.join(__dirname, '../../sampletests/empty/testdir');
@@ -96,16 +97,8 @@ describe('testRunner', function() {
       }
     };
 
-    return NightwatchClient.runTests(testsPath, {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      output: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    });
+    return runTests(testsPath, settings({
+      globals
+    }));
   });
 });

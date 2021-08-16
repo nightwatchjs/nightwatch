@@ -1,8 +1,9 @@
 const path = require('path');
 const assert = require('assert');
 const common = require('../../common.js');
-const NightwatchClient = common.require('index.js');
 const MockServer = require('../../lib/mockserver.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('testRunnerWithSeleniumWebdriver', function() {
   this.timeout(10000);
@@ -21,7 +22,7 @@ describe('testRunnerWithSeleniumWebdriver', function() {
     });
   });
 
-  it('test runner using webdriverIO library', function() {
+  xit('test runner using webdriverIO library', function() {
     const testsPath = path.join(__dirname, '../../sampletests/withwebdriver/sampleTestUsingWebdriverIO.js');
 
     MockServer.addMock({
@@ -72,40 +73,38 @@ describe('testRunnerWithSeleniumWebdriver', function() {
       }
     }, true);
 
-    let settings = {
-      selenium: {
-        start_process: false
-      },
-      webdriver: {
-        port: 10195,
-        start_process: false
-      },
-      silent: false,
-      output: false,
-      globals: {
-        waitForConditionPollInterval: 10,
-        waitForConditionTimeout: 11,
-        retryAssertionTimeout: 10,
-        reporter(results) {
-          assert.strictEqual(Object.keys(results.modules).length, 1);
-          const testsuite = results.modules.sampleTestUsingWebdriverIO;
-          assert.strictEqual(testsuite.assertionsCount, 2);
-          assert.strictEqual(testsuite.passedCount, 2);
+    const globals = {
+      waitForConditionPollInterval: 10,
+      waitForConditionTimeout: 11,
+      retryAssertionTimeout: 10,
+      reporter(results) {
+        assert.strictEqual(Object.keys(results.modules).length, 1);
+        const testsuite = results.modules.sampleTestUsingWebdriverIO;
+        assert.strictEqual(testsuite.assertionsCount, 2);
+        assert.strictEqual(testsuite.passedCount, 2);
 
-          const {completed} = testsuite;
-          assert.strictEqual(Object.keys(completed).length, 2);
-          assert.strictEqual(completed.navigate.passed, 0);
-          assert.strictEqual(completed.navigate.tests, 0);
+        const {completed} = testsuite;
+        assert.strictEqual(Object.keys(completed).length, 2);
+        assert.strictEqual(completed.navigate.passed, 0);
+        assert.strictEqual(completed.navigate.tests, 0);
 
-          assert.strictEqual(completed.sampleTest.assertions.length, 2);
-          assert.strictEqual(completed.sampleTest.passed, 2);
-          assert.strictEqual(completed.sampleTest.tests, 2);
-        }
-      },
-      output_folder: false
+        assert.strictEqual(completed.sampleTest.assertions.length, 2);
+        assert.strictEqual(completed.sampleTest.passed, 2);
+        assert.strictEqual(completed.sampleTest.tests, 2);
+      }
     };
 
-    return NightwatchClient.runTests(testsPath, settings);
+    return runTests(testsPath, settings({
+      selenium: {
+        host: null
+      },
+      selenium_host: null,
+      webdriver: {
+        host: 'localhost'
+      },
+      output: false,
+      globals
+    }));
   });
 
   it('test runner using selenium-webdriver library', function() {
@@ -159,16 +158,16 @@ describe('testRunnerWithSeleniumWebdriver', function() {
       }
     }, true);
 
-    let settings = {
+    return runTests(testsPath, settings({
       selenium: {
-        start_process: false
+        host: null
       },
       webdriver: {
         port: 10195,
-        start_process: true
+        host: 'localhost'
       },
-
-      silent: true,
+      selenium_host: null,
+      silent: false,
       output: false,
       globals: {
         waitForConditionPollInterval: 10,
@@ -189,10 +188,7 @@ describe('testRunnerWithSeleniumWebdriver', function() {
           assert.strictEqual(completed.sampleTest.passed, 2);
           assert.strictEqual(completed.sampleTest.tests, 2);
         }
-      },
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests(testsPath, settings);
+      }
+    }));
   });
 });
