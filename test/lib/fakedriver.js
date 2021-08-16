@@ -139,7 +139,7 @@ const createGenericCommandMocks = function(assertion) {
       assertion({
         command: 'execute',
         script,
-        args: args
+        args
       });
 
       return args;
