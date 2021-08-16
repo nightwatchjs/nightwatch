@@ -316,7 +316,7 @@ describe('element actions', function () {
     }).then(result => assert.strictEqual(result, true));
   });
 
-  it('testElementIdDisplayed', function () {
+  xit('testElementIdDisplayed', function () {
     return Globals.protocolTest({
       assertion({args, command}) {
         assert.ok(args.id instanceof WebElement);

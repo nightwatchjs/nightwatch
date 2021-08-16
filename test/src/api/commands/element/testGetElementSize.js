@@ -5,7 +5,9 @@ const CommandGlobals = require('../../../../lib/globals/commands.js');
 
 describe('getElementSize', function() {
   before(function(done) {
-    CommandGlobals.beforeEach.call(this, done);
+    CommandGlobals.beforeEach.call(this, done, {
+      output: false
+    });
   });
 
   after(function(done) {
@@ -24,7 +26,7 @@ describe('getElementSize', function() {
           height: 20
         }
       })
-    });
+    }, null, true);
 
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element/0/location',
@@ -37,12 +39,28 @@ describe('getElementSize', function() {
           y: 0
         }
       }
-    });
+    }, null, true);
 
     this.client.api.getElementSize('#weblogin', function callback(result) {
-      assert.deepStrictEqual(result, {status: 0, value: {x: 1, y: 0, width: 10, height: 20}});
+      assert.deepStrictEqual(result, {
+        status: 0,
+        value: {
+          x: 1,
+          y: 0,
+          width: 10,
+          height: 20
+        }
+      });
     }).getElementSize('css selector', '#weblogin', function callback(result) {
-      assert.deepStrictEqual(result, {status: 0, value: {x: 1, y: 0, width: 10, height: 20}});
+      assert.deepStrictEqual(result, {
+        status: 0,
+        value: {
+          x: 1,
+          y: 0,
+          width: 10,
+          height: 20
+        }
+      });
     });
 
     this.client.start(done);
@@ -81,4 +99,40 @@ describe('getElementSize', function() {
     });
   });
 
+  it('client.getElementSize() with webdriver protocol - element not found', function(done) {
+    Nightwatch.initClient({
+      selenium: {
+        version2: false,
+        start_process: false,
+        host: null
+      },
+      webdriver: {
+        host: 'localhost',
+        start_process: false
+      },
+      silent: false,
+      output: false
+    }).then(client => {
+      MockServer.addMock({
+        statusCode: 404,
+        url: '/session/13521-10219-202/elements',
+        postdata: {using: 'css selector', value: '#webdriver-notfound'},
+        response: {
+          value: {
+            error: 'no such element',
+            message: 'Unable to locate element: #webdriver-notfound',
+            stacktrace: 'WebDriverError@chrome://marionette/content/error.js:172:5\nNoSuchElementError@chrome://marionette/content/error.js:400:5'
+          }
+        }
+      }, true);
+
+      client.api.getElementSize({selector: '#webdriver-notfound', timeout: 0}, function(result) {
+        assert.strictEqual(result.status, -1);
+        assert.strictEqual(result.value.error, 'An error occurred while running .getElementSize() command on <#webdriver-notfound>: unable to locate element using css selector');
+        assert.strictEqual(result.value.message, 'An error occurred while running .getElementSize() command on <#webdriver-notfound>: unable to locate element using css selector');
+      });
+
+      client.start(done);
+    });
+  });
 });

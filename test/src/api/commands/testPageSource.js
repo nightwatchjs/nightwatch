@@ -10,6 +10,7 @@ describe('pageSource', function() {
   after(function(done) {
     CommandGlobals.afterEach.call(this, done);
   });
+
   it('client.pageSource()', function(done) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/source',
@@ -21,9 +22,9 @@ describe('pageSource', function() {
       })
     });
 
-    this.client.api.source(function callback(result) {
+    this.client.api.pageSource(function callback(result) {
       assert.strictEqual(result.value, '<html>Sample HTML</html>');
-      assert.strictEqual(result.status, 0)
+      assert.strictEqual(result.status, 0);
     });
 
     this.client.start(done);

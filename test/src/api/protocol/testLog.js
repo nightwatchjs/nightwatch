@@ -15,9 +15,7 @@ describe('session log commands', function() {
       args: []
     }).then((result) => {
       assert.strictEqual(typeof result.error, 'undefined');
-      assert.deepStrictEqual(result.value[0].level, 'WARNING');
-      assert.deepStrictEqual(result.value[0].source, 'other');
-      assert.deepStrictEqual(result.value[0].message, 'https://cdn-static.ecosia.org/manifest.json - Manifest: property \'start_url\' ignored, should be same origin as document.');
+      assert.deepStrictEqual(Object.keys(result.value[0]), ['level', 'type', 'timestamp', 'message']);
     });
   });
 
