@@ -52,17 +52,6 @@ class FakeExecutor {
     return result;
   }
 
-  expect(commandName, opt_parameters) {
-    if (!this.commands_.has(commandName)) {
-      this.commands_.set(commandName, []);
-    }
-    // TODO: fix no-undef
-    let e = new Expectation(this, commandName, opt_parameters);
-    this.commands_.get(commandName).push(e);
-
-    return e;
-  }
-
   createDriver() {
     let session = new Session(SESSION_ID, {});
 
