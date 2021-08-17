@@ -14,7 +14,7 @@ describe('uploadFile command', function () {
     mockery.disable();
   })
 
-  it('should clear value and setValue', function () {
+  it('should call FileDetector Api from selenium', function () {
     let fakeRemoteCalled = false;
     class FakeRemote {}
     FakeRemote.FileDetector = class {
