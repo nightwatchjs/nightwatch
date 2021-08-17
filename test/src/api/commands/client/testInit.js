@@ -1,7 +1,7 @@
 const assert = require('assert');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 
-describe('init', function() {
+describe('.init()', function() {
   before(function(done) {
     CommandGlobals.beforeEach.call(this, done);
   });
@@ -10,7 +10,7 @@ describe('init', function() {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('client.init();', function (done) {
+  it('browser.init();', function (done) {
     this.client.api.launchUrl = 'http://localhost';
     this.client.api.init(result => {
       assert.strictEqual(result.status, 0);
@@ -20,7 +20,7 @@ describe('init', function() {
   });
 
 
-  it('client.init() - with url', function (done) {
+  it('browser.init() - with url', function (done) {
     this.client.api.init('http://localhost/test_url', result => {
       assert.strictEqual(result.status, 0);
     });

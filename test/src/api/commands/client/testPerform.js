@@ -1,7 +1,7 @@
 const assert = require('assert');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 
-describe('perform', function () {
+describe('.perform()', function () {
   before(function (done) {
     CommandGlobals.beforeEach.call(this, done);
   });
@@ -10,7 +10,7 @@ describe('perform', function () {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('client.perform()', function (done) {
+  it('browser.perform()', function (done) {
     let client = this.client.api;
     this.client.api.perform(function () {
       assert.deepStrictEqual(client.options, this.options);
@@ -19,7 +19,19 @@ describe('perform', function () {
     this.client.start(done);
   });
 
-  it('client.perform() with async callback', function (done) {
+  it('browser.perform() with async callback', async function () {
+    const result = await this.client.api.perform(function() {
+      return new Promise(resolve => {
+        setTimeout(function() {
+          resolve(100);
+        }, 50);
+      });
+    });
+
+    assert.strictEqual(result, 100);
+  });
+
+  it('browser.perform() with callback with "done" argument', function (done) {
     this.client.api.perform(function (complete) {
       assert.strictEqual(typeof complete, 'function');
       complete();
@@ -28,7 +40,7 @@ describe('perform', function () {
     this.client.start(done);
   });
 
-  it('client.perform() with async callback and api param', function (done) {
+  it('browser.perform() with async callback with "browser" and "done" arguments', function (done) {
     let localClient = this.client.api;
     this.client.api.perform(function (client, complete) {
       delete client.isES6Async;
