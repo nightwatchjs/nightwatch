@@ -94,7 +94,6 @@ describe('test PageObjectApi', function () {
     assert.ok('click' in page);
     assert.ok('waitForElementPresent' in page);
     assert.ok('end' in page);
-    assert.ok('switchWindow' in page);
   });
 });
 
