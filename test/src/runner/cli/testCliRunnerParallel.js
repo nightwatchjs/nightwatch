@@ -58,7 +58,7 @@ describe('Test CLI Runner in Parallel', function () {
       config: path.join(__dirname, '../../../extra/withgeckodriver-concurrent.json')
     }, {
       silent: false,
-      output: true,
+      output: false,
       output_folder: false
     });
   });
@@ -74,7 +74,7 @@ describe('Test CLI Runner in Parallel', function () {
 
     runner.setup({
       silent: false,
-      output: true,
+      output: false,
       output_folder: false
     });
 

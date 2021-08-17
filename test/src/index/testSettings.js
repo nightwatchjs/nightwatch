@@ -39,6 +39,7 @@ describe('test Settings', function () {
       webdriver: {
         host: '127.0.0.1',
         ssl: false,
+        port: 10195,
         timeout_options: {
           timeout: 10000,
           retry_attempts: 3
@@ -66,7 +67,9 @@ describe('test Settings', function () {
         log_path: './logs'
       }
     }, {
-      screenshots: {},
+      screenshots: {
+        bla: false
+      },
       test_settings: {
         default: {
           webdriver: {
@@ -121,7 +124,7 @@ describe('test Settings', function () {
     eq(client.options.accessKey, 'test-access-key');
   });
 
-  it('testSetOptionsScreenshots', function () {
+  it('testSetOptionsScreenshots – path empty', function () {
     let client = Nightwatch.createClient({
       screenshots: {
         enabled: true,
@@ -132,7 +135,24 @@ describe('test Settings', function () {
 
     eq(client.api.options.log_screenshot_data, true);
     eq(client.options.screenshots.on_error, true);
+    eq(client.settings.screenshots.on_error, true);
+    eq(client.settings.screenshots.path, '');
   });
+
+  it('testSetOptionsScreenshots – path not empty', function () {
+    let client = Nightwatch.createClient({
+      screenshots: {
+        enabled: true,
+        path: '/tmp/'
+      },
+      log_screenshot_data: true
+    });
+
+    eq(client.api.options.log_screenshot_data, true);
+    eq(client.options.screenshots.on_error, true);
+    eq(client.settings.screenshots.path, '/tmp');
+  });
+
 
   it('testSetOptionsScreenshotsOnError', function () {
     let client = Nightwatch.createClient({

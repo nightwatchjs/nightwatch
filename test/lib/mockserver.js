@@ -60,6 +60,10 @@ class MockServer {
           headers['Content-Length'] = responsedata.length;
           res.writeHead(Number(item.statusCode), headers);
 
+          if (item.onRequest) {
+            item.onRequest(item);
+          }
+
           if (item.__once) {
             this.removeMock(item);
           }
@@ -94,7 +98,9 @@ class MockServer {
    * @param {boolean} once
    */
   addMock(item, once = false) {
-    if (once) {
+    item.times = item.times || 1;
+
+    if (once || item.times > 1) {
       item.__once = true;
     }
 
@@ -114,7 +120,10 @@ class MockServer {
       }
     }
 
-    this.mocks.push(item);
+    for (let i = 0; i < item.times; i++) {
+      this.mocks.push(item);
+    }
+
   }
 
   removeMock(mock) {

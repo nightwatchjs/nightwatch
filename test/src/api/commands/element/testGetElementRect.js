@@ -55,19 +55,25 @@ describe('getElementRect', function () {
 
     this.client.api
       .getElementRect('#weblogin', function callback(result) {
-        assert.deepStrictEqual(result.value, {
-          x: 1,
-          y: 1,
-          width: 100,
-          height: 100
+        assert.deepStrictEqual(result, {
+          status: 0,
+          value: {
+            x: 1,
+            y: 1,
+            width: 100,
+            height: 100
+          }
         });
       })
       .getElementRect('css selector', '#weblogin', function callback(result) {
-        assert.deepStrictEqual(result.value, {
-          x: 1,
-          y: 1,
-          width: 100,
-          height: 100
+        assert.deepStrictEqual(result, {
+          status: 0,
+          value: {
+            x: 1,
+            y: 1,
+            width: 100,
+            height: 100
+          }
         });
       });
 

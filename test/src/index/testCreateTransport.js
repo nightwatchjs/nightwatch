@@ -317,19 +317,21 @@ describe('Transport.create()', function () {
 
   it('test check for ssl when webdriver port is 443', function () {
     const Transport = common.require('transport/index.js');
+    const Settings = common.require('settings/settings.js');
+
+    const settings = Settings.fromClient({
+      webdriver: {
+        start_process: true,
+        port: 443,
+        host: 'remote.host'
+      },
+      desiredCapabilities: {
+        browserName: 'chrome'
+      }
+    });
 
     const instance = {
-      settings: {
-        use_selenium_webdriver: true,
-        webdriver: {
-          start_process: true,
-          port: 443,
-          host: 'remote.host'
-        },
-        desiredCapabilities: {
-          browserName: 'chrome'
-        }
-      }
+      settings
     };
 
     const chromeDriver = Transport.create(instance);
@@ -373,7 +375,7 @@ describe('Transport.create()', function () {
     assert.strictEqual(client.settings.webdriver.default_path_prefix, '/wd/hub');
   });
 
-  it('test create Transport for Browserstack', function(done) {
+  it('test create Transport for Browserstack - empty credentials', function() {
     assert.throws(function() {
       NightwatchClient.client({
         webdriver: {
@@ -395,6 +397,9 @@ describe('Transport.create()', function () {
       });
     }, /BrowserStack username is not set\. Verify that "browserstack\.user" capability is set correctly or set BROWSERSTACK_USER environment variable \(\.env files are supported\)\./);
 
+  });
+
+  it('test create Transport for Browserstack', function(done) {
     const client = NightwatchClient.client({
       webdriver: {
         host: 'hub-cloud.browserstack.com',

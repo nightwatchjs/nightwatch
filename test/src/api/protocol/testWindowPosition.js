@@ -1,7 +1,7 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
-xdescribe('windowPosition', function() {
+describe('windowPosition', function() {
   before(function() {
     Globals.protocolBefore();
   });
@@ -66,7 +66,7 @@ xdescribe('windowPosition', function() {
           throw result;
         }
 
-        assert.deepStrictEqual(result, {value: {x: 10, y: 10}});
+        assert.deepStrictEqual(result, {status: 0, value: {x: 10, y: 10}});
       }]
     });
   });

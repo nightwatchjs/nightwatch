@@ -3,7 +3,8 @@ const assert = require('assert');
 const common = require('../../common.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
-const NightwatchClient = common.require('index.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('testRunWithHooks', function() {
   before(function(done) {
@@ -64,21 +65,9 @@ describe('testRunWithHooks', function() {
         }
       };
 
-      let settings = {
-        selenium: {
-          port: 10195,
-          version2: true,
-          start_process: true
-        },
-        silent: true,
-        output: false,
-        persist_globals: true,
-        globals: globals,
-        output_folder: false,
-        start_session: true
-      };
-
-      return NightwatchClient.runTests(provideErrorTestPath, settings);
+      return runTests(provideErrorTestPath, settings({
+        globals
+      }));
     });
   });
 
@@ -93,21 +82,10 @@ describe('testRunWithHooks', function() {
     };
 
     let testsPath = path.join(__dirname, '../../sampletests/async');
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      seleniumPort: 10195,
-      silent: false,
-      output: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    };
 
-    return NightwatchClient.runTests(testsPath, settings);
+    return runTests(testsPath, settings({
+      globals
+    }));
   });
 
   it('test run with async afterEach', function() {
@@ -127,22 +105,11 @@ describe('testRunWithHooks', function() {
     };
 
     let testsPath = path.join(__dirname, '../../sampletests/mixed');
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      seleniumPort: 10195,
-      silent: false,
-      output: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false,
-      start_session: true
-    };
 
-    return NightwatchClient.runTests(testsPath, settings);
+    return runTests(testsPath, settings({
+      seleniumPort: 10195,
+      globals
+    }));
   });
 
   it('testRunner async with before and after', function() {
@@ -153,7 +120,7 @@ describe('testRunWithHooks', function() {
         if (results.lastError) {
           throw results.lastError;
         }
-        assert.strictEqual(settings.globals.calls, 19);
+        assert.strictEqual(globals.calls, 19);
         assert.ok('sampleWithBeforeAndAfter' in results.modules);
 
         let result = results.modules.sampleWithBeforeAndAfter.completed;
@@ -173,21 +140,10 @@ describe('testRunWithHooks', function() {
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
+    return runTests(testsPath, settings({
       seleniumPort: 10195,
-      silent: false,
-      output: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests(testsPath, settings);
+      globals
+    }));
   });
 
   it('testRunner before and after without callback', function() {
@@ -198,26 +154,15 @@ describe('testRunWithHooks', function() {
         if (results.lastError) {
           throw results.lastError;
         }
-        assert.strictEqual(settings.globals.calls, 2);
+        assert.strictEqual(globals.calls, 2);
         assert.ok('sampleWithBeforeAndAfterNoCallback' in results.modules);
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
+    return runTests(testsPath, settings({
       seleniumPort: 10195,
-      silent: false,
-      output: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests(testsPath, settings);
+      globals
+    }));
   });
 
   it('testRunner with assertion failed in after hook', function() {
@@ -230,23 +175,12 @@ describe('testRunWithHooks', function() {
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      seleniumPort: 10195,
-      silent: true,
-      output: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests({
+    return runTests({
       _source: [testsPath]
-    }, settings);
+    }, settings({
+      seleniumPort: 10195,
+      globals
+    }));
   });
 
   it('testRunner with --testcase and before and after', function() {
@@ -268,24 +202,15 @@ describe('testRunWithHooks', function() {
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      seleniumPort: 10195,
-      silent: true,
-      output: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    };
 
-    return NightwatchClient.runTests({
+    return runTests({
       _source: [testsPath],
       testcase: 'demoTestSyncOne'
-    }, settings);
+    }, settings({
+      seleniumPort: 10195,
+      globals,
+      output_folder: false
+    }));
   });
 
   it('testRunWithAsyncHooks', function() {
@@ -301,22 +226,10 @@ describe('testRunWithHooks', function() {
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      seleniumPort: 10195,
+    return runTests(testsPath, settings({
       custom_commands_path: path.join(__dirname, '../../extra/commands'),
-      silent: true,
-      output: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests(testsPath, settings);
+      globals
+    }));
   });
 
   it('test async afterEach hook timeout error', function() {
@@ -331,21 +244,9 @@ describe('testRunWithHooks', function() {
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      seleniumPort: 10195,
-      silent: false,
-      output: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests(testsPath, settings);
+    return runTests(testsPath, settings({
+      globals
+    }));
   });
 });
 

@@ -2,7 +2,8 @@ const path = require('path');
 const assert = require('assert');
 const common = require('../../common.js');
 const MockServer = require('../../lib/mockserver.js');
-const NightwatchClient = common.require('index.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('testRunnerMixedFiles', function() {
   /** @type {import("ts-node").Service} */
@@ -51,22 +52,13 @@ describe('testRunnerMixedFiles', function() {
         assert.strictEqual(modules['sampleTs'].modulePath, path.join(__dirname, '../../sampletests/mixed-files/sampleTs.ts'));
       }
     };
-  
 
-    return NightwatchClient.runTests(testsPath, {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
+    return runTests(testsPath, settings({
       custom_commands_path: path.join(__dirname, '../../extra/commands'),
-      output: false,
-      silent: false,
-      persist_globals: true,
       globals,
-      output_folder: false,
+      output: false,
       disable_typescript: false
-    });
+    }));
   });
 
   it('testRunWithoutDisablingTypescriptImplicitly', function() {
@@ -87,23 +79,12 @@ describe('testRunnerMixedFiles', function() {
         assert.strictEqual(modules['sampleTs'].modulePath, path.join(__dirname, '../../sampletests/mixed-files/sampleTs.ts'));
       }
     };
-  
 
-    return NightwatchClient.runTests(testsPath, {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
+    return runTests(testsPath, settings({
       custom_commands_path: path.join(__dirname, '../../extra/commands'),
-      output: false,
-      silent: false,
-      persist_globals: true,
       globals,
-      output_folder: false
-    });
+    }));
   });
-
 
   it('testRunSimpleDisablingTypescript', function() {
     let testsPath = path.join(__dirname, '../../sampletests/mixed-files');
@@ -123,19 +104,10 @@ describe('testRunnerMixedFiles', function() {
       }
     };
 
-    return NightwatchClient.runTests(testsPath, {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
+    return runTests(testsPath, settings({
       custom_commands_path: path.join(__dirname, '../../extra/commands'),
-      output: false,
-      silent: false,
-      persist_globals: true,
       globals,
-      output_folder: false,
       disable_typescript: true
-    });
+    }));
   }); 
 });

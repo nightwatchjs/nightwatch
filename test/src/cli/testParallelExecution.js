@@ -152,8 +152,8 @@ describe('test Parallel Execution', function() {
     });
 
     runner.setup();
-    assert.strictEqual(runner.settings.test_workers.enabled, false);
-    assert.ok(!runner.settings.testWorkersEnabled);
+    assert.strictEqual(runner.test_settings.test_workers.enabled, true);
+    assert.ok(runner.test_settings.testWorkersEnabled);
   });
 
   it('test parallel execution with workers count', function() {

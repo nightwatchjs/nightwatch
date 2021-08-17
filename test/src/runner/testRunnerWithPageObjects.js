@@ -3,7 +3,8 @@ const assert = require('assert');
 const common = require('../../common.js');
 const MockServer = require('../../lib/mockserver.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
-const NightwatchClient = common.require('index.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('testRunner with page objects', function() {
   before(function(done) {
@@ -40,19 +41,11 @@ describe('testRunner with page objects', function() {
       }
     };
 
-    return NightwatchClient.runTests(testsPath, {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
+    return runTests(testsPath, settings({
       page_objects_path: [path.join(__dirname, '../../extra/pageobjects/pages')],
       output: false,
-      silent: false,
-      persist_globals: true,
-      globals,
-      output_folder: false
-    });
+      globals
+    }));
   });
 
 

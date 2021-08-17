@@ -78,7 +78,7 @@ describe('.click()', function() {
 
   it('client.click() - element not interactable error - failed', function(done) {
     Nightwatch.initW3CClient({
-      output: true,
+      output: false,
       silent: false
     }).then(client => {
       MockServer.addMock({
@@ -116,7 +116,7 @@ describe('.click()', function() {
 
   it('client.click() - element not interactable error - success', function(done) {
     Nightwatch.initW3CClient({
-      output: true,
+      output: false,
       silent: false
     }).then(client => {
       MockServer.addMock({

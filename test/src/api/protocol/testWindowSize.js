@@ -1,7 +1,7 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
-xdescribe('windowSize', function () {
+describe('windowSize', function () {
   before(function () {
     Globals.protocolBefore();
   });
@@ -73,7 +73,7 @@ xdescribe('windowSize', function () {
           throw result;
         }
 
-        assert.deepStrictEqual(result, {value: {width: 100, height: 100}});
+        assert.deepStrictEqual(result, {status: 0, value: {width: 100, height: 100, x: 10, y: 10}});
       }]
     });
   });
@@ -96,7 +96,7 @@ xdescribe('windowSize', function () {
           throw result;
         }
 
-        assert.deepStrictEqual(result, {value: {width: 100, height: 100}});
+        assert.deepStrictEqual(result, {status: 0, value: {width: 100, height: 100, x: 10, y: 10}});
       }]
     });
   });

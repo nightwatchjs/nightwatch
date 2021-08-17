@@ -40,9 +40,9 @@ describe('getLocation', function() {
     });
 
     this.client.api.getLocation('css selector', '#weblogin', function callback(result) {
-      assert.deepStrictEqual(result.value, {x: 1, y: 0, width: 10, height: 20});
+      assert.deepStrictEqual(result, {status: 0, value: {x: 1, y: 0, width: 10, height: 20}});
     }).getLocation('#weblogin', function callback(result) {
-      assert.deepStrictEqual(result.value, {x: 1, y: 0, width: 10, height: 20});
+      assert.deepStrictEqual(result, {status: 0, value: {x: 1, y: 0, width: 10, height: 20}});
     });
 
     this.client.start(done);
@@ -65,11 +65,14 @@ describe('getLocation', function() {
       }, true);
 
       client.api.getLocation('#webdriver', function(result) {
-        assert.deepStrictEqual(result.value, {
-          x: 341.5,
-          y: 340.95001220703125,
-          width: 683,
-          height: 60
+        assert.deepStrictEqual(result, {
+          status: 0,
+          value: {
+            x: 341.5,
+            y: 340.95001220703125,
+            width: 683,
+            height: 60
+          }
         });
       });
 

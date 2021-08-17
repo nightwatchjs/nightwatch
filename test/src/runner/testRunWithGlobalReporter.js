@@ -3,7 +3,8 @@ const assert = require('assert');
 const common = require('../../common.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
-const NightwatchClient = common.require('index.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('testRunWithGlobalReporter', function() {
   before(function(done) {
@@ -49,7 +50,7 @@ describe('testRunWithGlobalReporter', function() {
       output_folder: false
     };
 
-    return NightwatchClient.runTests(testsPath, settings).then(_ => {
+    return runTests(testsPath, settings).then(_ => {
       assert.strictEqual(settings.globals.reporterCount, 1);
     });
   });
@@ -76,7 +77,7 @@ describe('testRunWithGlobalReporter', function() {
       output_folder: false
     };
 
-    return NightwatchClient.runTests(testsPath, settings).then(_ => {
+    return runTests(testsPath, settings).then(_ => {
       assert.strictEqual(reporterCount, 1);
     });
   });
@@ -103,7 +104,7 @@ describe('testRunWithGlobalReporter', function() {
       output_folder: false
     };
 
-    return NightwatchClient.runTests(testsPath, settings).then(_ => {
+    return runTests(testsPath, settings).then(_ => {
       assert.strictEqual(reporterCount, 1);
     }).catch(err => {
       assert.strictEqual(err.message, 'Timeout while waiting (20s) for the custom global reporter callback to be called.');

@@ -1,7 +1,7 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
-xdescribe('timeouts commands', function() {
+describe('timeouts commands', function() {
   before(function() {
     Globals.protocolBefore();
   });
@@ -9,12 +9,14 @@ xdescribe('timeouts commands', function() {
   it('testTimeoutsValid', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/timeouts');
-        assert.deepStrictEqual(opts.data, {type: 'script', ms: 1000});
+        assert.strictEqual(opts.command, 'timeouts');
+        assert.deepStrictEqual(opts.data, {'script': 1000});
       },
       commandName: 'timeouts',
       args: ['script', 1000]
+    }).then((result) => {
+      assert.strictEqual(typeof result.error, 'undefined');
+      assert.deepStrictEqual(result.value, null);
     });
   });
 
@@ -25,7 +27,7 @@ xdescribe('timeouts commands', function() {
       commandName: 'timeouts',
       args: ['nonscript', 1000]
     }).catch(err => {
-      assert.strictEqual(err.message, 'Error while running "timeouts" command: Invalid timeouts type value: nonscript. Accepted values are: script, implicit, page load, pageLoad');
+      assert.strictEqual(err.message, 'Error while running "timeouts" command: Invalid timeouts type value: nonscript. Accepted values are: script, implicit, pageLoad');
 
       return true;
     }).then(result => assert.strictEqual(result, true));
@@ -47,24 +49,28 @@ xdescribe('timeouts commands', function() {
   it('testTimeoutsAsyncScript', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/timeouts/async_script');
-        assert.deepStrictEqual(opts.data, {ms: 1000});
+        assert.strictEqual(opts.command, 'timeouts');
+        assert.deepStrictEqual(opts.data, {script: 1000});
       },
       commandName: 'timeoutsAsyncScript',
       args: [1000]
+    }).then((result) => {
+      assert.strictEqual(typeof result.error, 'undefined');
+      assert.deepStrictEqual(result.value, null);
     });
   });
 
   it('testTimeoutsImplicitWait', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/timeouts/implicit_wait');
-        assert.deepStrictEqual(opts.data, {ms: 1000});
+        assert.strictEqual(opts.command, 'timeouts');
+        assert.deepStrictEqual(opts.data, {implicit: 1000});
       },
       commandName: 'timeoutsImplicitWait',
       args: [1000]
+    }).then((result) => {
+      assert.strictEqual(typeof result.error, 'undefined');
+      assert.deepStrictEqual(result.value, null);
     });
   });
 
