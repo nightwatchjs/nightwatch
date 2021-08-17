@@ -6,7 +6,7 @@ describe('expect.elements count', function() {
   beforeEach(function(done) {
     ExpectGlobals.beforeEach.call(this, {
       silent: false,
-      output: true
+      output: false
     }, () => {
       this.client.api.globals.abortOnAssertionFailure = false;
       done();

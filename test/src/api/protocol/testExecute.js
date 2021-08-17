@@ -6,97 +6,84 @@ describe('client.execute', function() {
     Globals.protocolBefore();
   });
 
-  it('testExecuteString', function() {
+  it('testExecuteString', function () {
     return Globals.protocolTest({
-      assertion: function(opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/execute');
-        assert.deepStrictEqual(opts.data, {script: '<script>test();</script>', args: ['arg1']});
+      assertion: function (opts) {
+        assert.deepStrictEqual(opts.command, 'execute');
+        assert.deepStrictEqual(opts.script, '<script>function(){return test();}</script>');
+        assert.deepStrictEqual(opts.args, ['arg1']);
       },
       commandName: 'execute',
-      args: ['<script>test();</script>', ['arg1']]
-    });
-  });
-
-  it('testExecuteString W3C WebDriver', function() {
-    return Globals.protocolTestWebdriver({
-      assertion: function(opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/execute/sync');
-      },
-      commandName: 'execute',
-      args: ['<script>test();</script>', ['arg1']]
+      args: ['<script>function(){return test();}</script>', ['arg1']]
+    }).then((result) => {
+      assert.strictEqual(typeof result.error, 'undefined');
+      assert.deepStrictEqual(result.value, ['arg1']);
     });
   });
 
   it('testExecuteFunction', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.deepStrictEqual(opts.data, {
-          args: ['arg1'],
-          script: 'var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {\n        return test();\n      }).apply(window, passedArgs);'
-        });
+        assert.deepStrictEqual(opts.command, 'execute');
+        assert.deepStrictEqual(opts.args, ['arg1']);
+        assert.deepStrictEqual(opts.script, 'var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {\n        return test();\n      }).apply(window, passedArgs);');
       },
       commandName: 'execute',
       args: [function () {
         return test();
       }, ['arg1']]
+    }).then((result) => {
+      assert.strictEqual(typeof result.error, 'undefined');
+      assert.deepStrictEqual(result.value, ['arg1']);
     });
   });
 
   it('testExecuteFunctionNoArgs', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.deepStrictEqual(opts.data, {
-          args: [],
-          script: 'var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {\n        return test();\n      }).apply(window, passedArgs);'
-        });
+        assert.deepStrictEqual(opts.command, 'execute');
+        assert.deepStrictEqual(opts.args.length, 0);
+        assert.deepStrictEqual(opts.script, 'var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {\n        return test();\n      }).apply(window, passedArgs);');
       },
       commandName: 'execute',
       args: [function () {
         return test();
       }]
+    }).then((result) => {
+      assert.strictEqual(typeof result.error, 'undefined');
+      assert.deepStrictEqual(result.value, []);
     });
   });
 
   it('testExecuteAsyncFunction', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.deepStrictEqual(opts.data, {
-          args: ['arg1'],
-          script: 'var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {\n        return test();\n      }).apply(window, passedArgs);'
-        });
+        assert.deepStrictEqual(opts.command, 'executeAsync');
+        assert.deepStrictEqual(opts.args, ['arg1']);
+        assert.deepStrictEqual(opts.script, 'var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {\n        return test();\n      }).apply(window, passedArgs);');
       },
       commandName: 'executeAsync',
       args: [function () {
         return test();
       }, ['arg1']]
+    }).then((result) => {
+      assert.strictEqual(typeof result.error, 'undefined');
+      assert.deepStrictEqual(result.value, ['arg1']);
     });
   });
 
-  it('testExecuteAsync', function() {
+  it('testExecuteAsyncString', function() {
     return Globals.protocolTest({
-      assertion: function(opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/execute_async');
-        assert.deepStrictEqual(opts.data, {
-          args: ['arg1'],
-          script: '<script>test();</script>'
-        });
+      assertion: function (opts) {
+        assert.deepStrictEqual(opts.command, 'executeAsync');
+        assert.deepStrictEqual(opts.script, '<script>function(){return test();}</script>');
+        assert.deepStrictEqual(opts.args, ['arg1']);
       },
       commandName: 'executeAsync',
-      args: ['<script>test();</script>', ['arg1']]
-    });
-  });
-
-  it('testExecuteAsync W3C WebDriver', function() {
-    return Globals.protocolTestWebdriver({
-      assertion: function(opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/execute/async');
-      },
-      commandName: 'executeAsync',
-      args: ['<script>test();</script>', ['arg1']]
+      args: ['<script>function(){return test();}</script>', ['arg1']]
+    }).then((result) => {
+      assert.strictEqual(typeof result.error, 'undefined');
+      assert.deepStrictEqual(result.value, ['arg1']);
     });
   });
 });

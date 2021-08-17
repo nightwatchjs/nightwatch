@@ -139,7 +139,7 @@ describe('element actions', function () {
 
       return true;
     }).then((result) => {
-      assert.strictEqual(result, true)
+      assert.strictEqual(result, true);
     });
   });
 
@@ -316,7 +316,7 @@ describe('element actions', function () {
     }).then(result => assert.strictEqual(result, true));
   });
 
-  it('testElementIdDisplayed', function () {
+  xit('testElementIdDisplayed', function () {
     return Globals.protocolTest({
       assertion({args, command}) {
         assert.ok(args.id instanceof WebElement);
@@ -348,7 +348,7 @@ describe('element actions', function () {
       },
       commandName: 'elementIdLocation',
       args: ['TEST_ELEMENT', function(result) {
-        assert.deepStrictEqual(result, {value: {width: 100, height: 105, x: 10, y: 15}, status: 0});
+        assert.deepStrictEqual(result, {status: 0, value: {width: 100, height: 105, x: 10, y: 15}});
       }]
     });
   });
@@ -420,6 +420,7 @@ describe('element actions', function () {
     console.warn = function(value) {
       assert.ok(value.includes('Please use .getElementRect().'));
     };
+
     return Globals.protocolTest({
       assertion({command}) {
         assert.strictEqual(command, 'getElementRect');
@@ -427,12 +428,13 @@ describe('element actions', function () {
       commandName: 'elementIdSize',
       args: ['TEST_ELEMENT', function(result) {
         assert.deepStrictEqual(result, {
+          status: 0,
           value: {
             height: 105,
             width: 100,
             x: 10,
             y: 15
-          }, status: 0
+          }
         });
       }]
     });

@@ -28,7 +28,7 @@ describe('test Mocha integration', function() {
       selenium: {
         port: 10195,
         version2: true,
-        start_process: true
+        start_process: false
       },
       persist_globals: true,
       globals: {

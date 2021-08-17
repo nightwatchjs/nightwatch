@@ -1,3 +1,5 @@
+const {WebElement} = require('selenium-webdriver');
+
 const CommandsExecutor = {
   findChildElement(args, assertion) {
     assertion({args, command: 'findChildElement'});
@@ -8,9 +10,7 @@ const CommandsExecutor = {
   findChildElements(args, assertion) {
     assertion({args, command: 'findChildElements'});
 
-    return [
-      fakeWebElement(TEST_CHILD_ELEMENT_ID)
-    ];
+    return [fakeWebElement(TEST_CHILD_ELEMENT_ID)];
   },
 
   clearElement(args, assertion) {
@@ -42,7 +42,6 @@ const CommandsExecutor = {
 
     return 'test_value';
   },
-
 
   getElementProperty(args, assertion) {
     assertion({args, command: 'getElementProperty'});
@@ -89,6 +88,12 @@ const CommandsExecutor = {
     assertion({args, command: 'sendKeysToElement'});
 
     return null;
+  },
+
+  submitElement(webElement, assertion) {
+    assertion({webElement, command: 'submit'});
+
+    return null;
   }
 };
 
@@ -98,6 +103,22 @@ const fakeWebElement = function(elementId) {
       return Promise.resolve(elementId);
     }
   };
+};
+
+const fakeSeleniumElement =  function(driver, elementId) {
+  driver.execute =  function(command) {
+    const commandName = command.getName();
+    const params = command.getParameters();
+
+    let result = CommandsExecutor[commandName](params, function(){});
+    if (!(result instanceof Promise)) {
+      result = Promise.resolve(result);
+    }
+
+    return result;
+  };
+
+  return new WebElement(driver, elementId);
 };
 
 const TEST_ELEMENT_ID = '12345-6789';
@@ -129,8 +150,112 @@ const createGenericCommandMocks = function(assertion) {
       assertion({
         command: 'getPageSource'
       });
-  
+
       return '<html><body></body></html>';
+    },
+    executeScript(script, args) {
+      assertion({
+        command: 'execute',
+        script,
+        args
+      });
+
+      return args;
+    },
+    executeAsyncScript(script, args) {
+      assertion({
+        command: 'executeAsync',
+        script,
+        args
+      });
+
+      return args;
+    },
+    takeScreenshot() {
+      assertion({
+        command: 'screenshot'
+      });
+
+      return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==';
+    },
+    getTitle() {
+      assertion({
+        command: 'title'
+      });
+
+      return 'nightwatch';
+    },
+
+    getWindowHandle() {
+      assertion({
+        command: 'windowHandle'
+      });
+
+      return 'CDwindow-BE13CA812F066254342F4FEB180D14ED';
+    },
+    getAllWindowHandles() {
+      assertion({
+        command: 'windowHandles'
+      });
+
+      return ['CDwindow-BE13CA812F066254342F4FEB180D14ED'];
+    },
+    close() {
+      assertion({
+        command: 'window'
+      });
+
+      return null;
+    }
+  };
+};
+
+const createWaitCommandMocks = function (assertion, args) {
+  return {
+    async wait(condn) {
+      assertion({
+        description: condn.description(), result: await condn.fn({
+          getCurrentUrl() {
+            return Promise.resolve(...args);
+          },
+          getTitle() {
+            return Promise.resolve(...args);
+          },
+          findElements(locator) {
+            const element = fakeWebElement(TEST_ELEMENT_ID);
+
+            return Promise.resolve([
+              element
+            ]);
+          },
+
+          switchTo() {
+            return {
+              frame() {
+                return Promise.resolve(null);
+              },
+              alert() {
+                return Promise.resolve({
+                  accept() {
+                    return null;
+                  },
+                  dismiss() {
+                    return null;
+                  },
+                  getText() {
+                    return Promise.resolve('alert text');
+                  },
+                  sendKeys(value) {
+                    return null;
+                  }
+                });
+              }
+            };
+          }
+        })
+      });
+
+      return Promise.resolve();
     }
   };
 };
@@ -172,8 +297,52 @@ const createManageCommandMocks = function(assertion) {
                 width: 100,
                 height: 100
               });
+            },
+            minimize() {
+              assertion({
+                command: 'minimizeWindow'
+              });
+
+              return null;
+            },
+            maximize() {
+              assertion({
+                command: 'windowMaximize'
+              });
+
+              return null;
             }
           };
+        },
+
+        logs() {
+          return {
+            get(type) {
+              assertion({
+                command: 'sessionLog'
+              });
+
+              return [{ 
+                level: 'WARNING',
+                message: 'https://cdn-static.ecosia.org/manifest.json - Manifest: property \'start_url\' ignored, should be same origin as document.',
+                source: 'other',
+                timestamp: 1628690813925 
+              }]; 
+            },
+            getAvailableLogTypes() {
+              assertion({
+                command: 'sessionLogTypes'
+              });
+
+              return ['browser', 'driver'];
+            }
+          };
+        },
+
+        setTimeouts(data) {
+          assertion({data, command: 'timeouts'});
+
+          return null;
         }
       };
     }
@@ -185,7 +354,9 @@ const createNavigateCommandMocks = function(assertion) {
     navigate() {
       return {
         to(url) {
-          assertion(url);
+          assertion({url, command: 'url'});
+
+          return null;
         },
         back() {
           assertion();
@@ -199,7 +370,7 @@ const createNavigateCommandMocks = function(assertion) {
       };
     },
     getCurrentUrl() {
-      assertion('http://localhost');
+      assertion({command: 'url'});
 
       return 'http://localhost';
     }
@@ -208,7 +379,8 @@ const createNavigateCommandMocks = function(assertion) {
 
 module.exports = {
   fakeWebElement,
-  create(assertion, mockDriverOverrides) {
+  fakeSeleniumElement,
+  create(assertion, mockDriverOverrides, args) {
     const driver = {
       execute(command) {
         const commandName = command.getName();
@@ -259,6 +431,22 @@ module.exports = {
           },
           frameParent() {
             return null;
+          },
+          window(handleOrName) {
+            assertion({
+              command: 'window',
+              name: handleOrName
+            });
+
+            return null;
+          },
+          newWindow(type){
+            assertion({
+              command: 'openNewWindow',
+              type
+            });
+
+            return null;
           }
         };
       }
@@ -268,6 +456,7 @@ module.exports = {
     Object.assign(driver, createNavigateCommandMocks(assertion));
     Object.assign(driver, createManageCommandMocks(assertion));
     Object.assign(driver, createGenericCommandMocks(assertion));
+    Object.assign(driver, createWaitCommandMocks(assertion, args));
     Object.assign(driver, mockDriverOverrides);
 
     return driver;

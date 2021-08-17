@@ -3,7 +3,8 @@ const assert = require('assert');
 const common = require('../../common.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
-const NightwatchClient = common.require('index.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('testRunTestSuite', function() {
 
@@ -37,7 +38,7 @@ describe('testRunTestSuite', function() {
       calls: 0,
       retryAssertionTimeout: 0,
       reporter(results, cb) {
-        assert.strictEqual(settings.globals.calls, 8);
+        assert.strictEqual(globals.calls, 8);
         assert.deepStrictEqual(results.errmessages, []);
         assert.strictEqual(results.passed, 1);
         assert.strictEqual(results.failed, 1);
@@ -47,23 +48,12 @@ describe('testRunTestSuite', function() {
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      output: false,
-      silent: true,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests({
+    return runTests({
       suiteRetries: 1,
       _source: [testsPath]
-    }, settings);
+    }, settings({
+      globals
+    }));
   });
 
   it('testRunner with suiteRetries and describe interface', function() {
@@ -73,7 +63,7 @@ describe('testRunTestSuite', function() {
       calls: 0,
       retryAssertionTimeout: 0,
       reporter(results, cb) {
-        assert.strictEqual(settings.globals.calls, 8);
+        assert.strictEqual(globals.calls, 8);
         assert.deepStrictEqual(results.errmessages, []);
         assert.strictEqual(results.passed, 1);
         assert.strictEqual(results.failed, 1);
@@ -83,23 +73,12 @@ describe('testRunTestSuite', function() {
       }
     };
 
-    const settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      output: false,
-      silent: true,
-      persist_globals: true,
-      globals,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests({
+    return runTests({
       suiteRetries: 1,
       _source: [testsPath]
-    }, settings);
+    }, settings({
+      globals
+    }));
   });
 
   it('testRunner with suiteRetries and describe interface with attribute', function() {
@@ -109,7 +88,7 @@ describe('testRunTestSuite', function() {
       calls: 0,
       retryAssertionTimeout: 0,
       reporter(results, cb) {
-        assert.strictEqual(settings.globals.calls, 8);
+        assert.strictEqual(globals.calls, 8);
         assert.deepStrictEqual(results.errmessages, []);
         assert.strictEqual(results.passed, 1);
         assert.strictEqual(results.failed, 1);
@@ -119,22 +98,11 @@ describe('testRunTestSuite', function() {
       }
     };
 
-    const settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      output: false,
-      silent: true,
-      persist_globals: true,
-      globals,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests({
+    return runTests({
       _source: [testsPath]
-    }, settings);
+    }, settings({
+      globals
+    }));
   });
 
   it('testRunner with suiteRetries and describe interface with both attribute and argument', function() {
@@ -145,28 +113,17 @@ describe('testRunTestSuite', function() {
       calls: 0,
       retryAssertionTimeout: 0,
       reporter(results, cb) {
-        assert.strictEqual(settings.globals.calls, 8);
+        assert.strictEqual(globals.calls, 8);
         cb();
       }
     };
 
-    const settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      output: false,
-      silent: true,
-      persist_globals: true,
-      globals,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests({
+    return runTests({
       suiteRetries: 2,
       _source: [testsPath]
-    }, settings);
+    }, settings({
+      globals
+    }));
   });
 
   it('testRunner with suiteRetries and skip_testcases_on_fail=false', function() {
@@ -175,30 +132,19 @@ describe('testRunTestSuite', function() {
       calls: 0,
       retryAssertionTimeout: 0,
       reporter(results, cb) {
-        assert.strictEqual(settings.globals.calls, 12);
+        assert.strictEqual(globals.calls, 12);
         assert.strictEqual(results.errors, 0);
         cb();
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
-      persist_globals: true,
-      globals: globals,
-      skip_testcases_on_fail: false,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests({
+    return runTests({
       suiteRetries: 1,
       _source: [testsPath]
-    }, settings);
+    }, settings({
+      globals,
+      skip_testcases_on_fail: false
+    }));
   });
 
   it('testRunner with suiteRetries and locate strategy change', function() {
@@ -253,23 +199,12 @@ describe('testRunTestSuite', function() {
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      output: false,
-      silent: true,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests({
+    return runTests({
       suiteRetries: 1,
       _source: [testsPath]
-    }, settings);
+    }, settings({
+      globals
+    }));
   });
 
   it('testRunModuleSyncName', function() {
@@ -316,23 +251,13 @@ describe('testRunTestSuite', function() {
     };
 
     let testsPath = path.join(__dirname, '../../sampletests/syncnames');
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
-      sync_test_names: true,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    };
 
-    return NightwatchClient.runTests({
+    return runTests({
       _source: [testsPath]
-    }, settings);
+    }, settings({
+      sync_test_names: true,
+      globals
+    }));
 
   });
 
@@ -353,21 +278,11 @@ describe('testRunTestSuite', function() {
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
-      globals: globals,
-      output_folder: false,
+    return runTests(settings({
+      globals,
       start_session: true,
       src_folders: srcFolders
-    };
-
-    return NightwatchClient.runTests(settings);
+    }));
   });
 
   it('testRunMultipleSrcFolders', function() {
@@ -376,12 +291,7 @@ describe('testRunTestSuite', function() {
       path.join(__dirname, '../../sampletests/srcfolders')
     ];
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
+    return runTests(settings({
       globals: {
         reporter(results, cb) {
           if (results.lastError) {
@@ -396,13 +306,8 @@ describe('testRunTestSuite', function() {
           cb();
         }
       },
-      silent: true,
-      output: false,
-      output_folder: false,
       src_folders: srcFolders
-    };
-
-    return NightwatchClient.runTests(settings);
+    }));
   });
 
   it('test runner with multiple test interfaces - exports/describe', function() {
@@ -411,12 +316,7 @@ describe('testRunTestSuite', function() {
       path.join(__dirname, '../../sampletests/withdescribe/basic')
     ];
 
-    const settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
+    return runTests(settings({
       globals: {
         reporter(results, cb) {
           if (results.lastError) {
@@ -435,13 +335,8 @@ describe('testRunTestSuite', function() {
           cb();
         }
       },
-      silent: true,
-      output: false,
-      output_folder: false,
       src_folders: srcFolders
-    };
-
-    return NightwatchClient.runTests(settings);
+    }));
   });
 
   it('test runner with describe and .only()', function() {
@@ -449,12 +344,7 @@ describe('testRunTestSuite', function() {
       path.join(__dirname, '../../sampletests/withdescribe/basic/sampleWithOnly.js')
     ];
 
-    const settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
+    return runTests(settings({
       globals: {
         reporter(results, cb) {
           if (results.lastError) {
@@ -466,13 +356,8 @@ describe('testRunTestSuite', function() {
           cb();
         }
       },
-      silent: true,
-      output: false,
-      output_folder: false,
       src_folders: srcFolders
-    };
-
-    return NightwatchClient.runTests(settings);
+    }));
   });
 
   it('testRunner with describe and skipTestcasesOnFail=true', function() {
@@ -481,29 +366,18 @@ describe('testRunTestSuite', function() {
       calls: 0,
       retryAssertionTimeout: 0,
       reporter(results, cb) {
-        assert.strictEqual(settings.globals.calls, 2);
+        assert.strictEqual(globals.calls, 2);
         assert.strictEqual(results.errors, 0);
         assert.strictEqual(results.failed, 2);
         cb();
       }
     };
 
-    const settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: false,
-      output: false,
-      persist_globals: true,
-      globals,
-      skip_testcases_on_fail: true,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests({
+    return runTests({
       _source: [testsPath]
-    }, settings);
+    }, settings({
+      globals,
+      skip_testcases_on_fail: true
+    }));
   });
 });

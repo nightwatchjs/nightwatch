@@ -15,7 +15,7 @@ describe('clearValue', function() {
 
   it('client.clearValue()', function(done) {
     Nightwatch.initClient({
-      output: true,
+      output: false,
       silent: false
     })
       .then(client => {

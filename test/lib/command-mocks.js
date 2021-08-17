@@ -72,22 +72,34 @@ module.exports = {
     });
   },
 
-  elementSelected(element='0') {
+  elementSelected(elementId = '0') {
     MockServer.addMock({
-      'url': `/wd/hub/session/1352110219202/element/${element}/selected`,
+      url: `/wd/hub/session/1352110219202/element/${elementId}/selected`,
       method: 'GET',
-      'response': JSON.stringify({
+      response: JSON.stringify({
         sessionId: '1352110219202',
         value: true,
         status: 0
       })
-    });
+    }, true);
+  },
+
+  elementNotSelected(elementId = '0') {
+    MockServer.addMock({
+      url: `/wd/hub/session/1352110219202/element/${elementId}/selected`,
+      method: 'GET',
+      response: JSON.stringify({
+        sessionId: '1352110219202',
+        value: false,
+        status: 0
+      })
+    }, true);
   },
 
   maximizeWindow() {
     MockServer.addMock({
-      'url': '/wd/hub/session/1352110219202/window/current/maximize',
-      'response': JSON.stringify({
+      url: '/wd/hub/session/1352110219202/window/current/maximize',
+      response: JSON.stringify({
         sessionId: '1352110219202',
         status: 0
       })

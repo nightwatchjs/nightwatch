@@ -18,6 +18,20 @@ module.exports = {
     let mockedModule = require(path.join(__dirname, './lib/mocks', relativeFilePath));
 
     return mockedModule(...args);
+  },
+
+  settings(settings) {
+    return Object.assign({
+      selenium: {
+        port: 10195,
+        start_process: false
+      },
+      selenium_host: 'localhost',
+      persist_globals: true,
+      output_folder: false,
+      output: false,
+      silent: false
+    }, settings);
   }
 };
 

@@ -9,22 +9,26 @@ describe('session log commands', function() {
   it('testLog', function () {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/log');
+        assert.strictEqual(opts.command, 'sessionLog');
       },
       commandName: 'sessionLog',
       args: []
+    }).then((result) => {
+      assert.strictEqual(typeof result.error, 'undefined');
+      assert.deepStrictEqual(Object.keys(result.value[0]), ['level', 'type', 'timestamp', 'message']);
     });
   });
 
   it('testLogTypes', function () {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/log/types');
+        assert.strictEqual(opts.command, 'sessionLogTypes');
       },
       commandName: 'sessionLogTypes',
       args: []
+    }).then((result) => {
+      assert.strictEqual(typeof result.error, 'undefined');
+      assert.deepStrictEqual(result.value, ['browser', 'driver']);
     });
   });
 

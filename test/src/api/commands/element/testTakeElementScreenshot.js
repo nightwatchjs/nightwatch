@@ -7,7 +7,6 @@ const randomImage =
 
 describe('takeElementScreenshot', function () {
   before(function (done) {
-
     CommandGlobals.beforeEach.call(this, done);
   });
 
@@ -28,33 +27,18 @@ describe('takeElementScreenshot', function () {
     });
 
     this.client.api
-      .takeElementScreenshot('#weblogin', true, function callback(result) {
+      .takeElementScreenshot('#weblogin', function(result) {
         assert.strictEqual(result.value, randomImage);
       })
-      .takeElementScreenshot('css selector', '#weblogin', true, function callback(result) {
+      .takeElementScreenshot('css selector', '#weblogin', function(result) {
         assert.strictEqual(result.value, randomImage);
       })
-      .takeElementScreenshot(
-        'css selector',
-        {
-          selector: '#weblogin',
-          timeout: 100
-        },
-        true,
-        function callback(result) {
-          assert.strictEqual(result.value, randomImage);
-        }
-      )
-      .takeElementScreenshot(
-        {
-          selector: '#weblogin',
-          timeout: 100
-        },
-        true,
-        function callback(result) {
-          assert.strictEqual(result.value, randomImage);
-        }
-      );
+      .takeElementScreenshot('css selector', {
+        selector: '#weblogin',
+        timeout: 100
+      }, function(result) {
+        assert.strictEqual(result.value, randomImage);
+      });
 
     this.client.start(done);
   });

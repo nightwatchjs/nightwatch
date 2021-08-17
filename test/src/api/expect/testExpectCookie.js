@@ -1,12 +1,12 @@
 const assert = require('assert');
 const Nocks = require('../../../lib/nocks.js');
 const ExpectGlobals = require('../../../lib/globals/expect.js');
-const {strictEqual} = assert;
+const {strictEqual, deepStrictEqual} = assert;
 
-xdescribe('expect.cookie', function() {
+describe('expect.cookie', function() {
   beforeEach(function(done) {
     ExpectGlobals.beforeEach.call(this, {
-      output: true,
+      output: false,
       silent: false
     }, () => {
       this.client.api.globals.abortOnAssertionFailure = false;
@@ -317,27 +317,6 @@ xdescribe('expect.cookie', function() {
     return this.client.start(function() {
       strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" for domain "cookie-domain" to equal: "other-cookie-value" - no cookie "cookie-name" for domain "cookie-domain" was found - expected "equal \'other-cookie-value\'" but got: "not present"'), expect.assertion.message);
-    });
-  });
-
-  it('with domain to equal - multiple cookies found [FAILED]', function() {
-    this.client.api.globals.waitForConditionTimeout = 40;
-    this.client.api.globals.waitForConditionPollInterval = 50;
-
-    Nocks.multipleCookiesFound([
-      {name: 'test-cookie', value: 'test-val', path: '/', domain: '.ecosia.org'},
-      {name: 'test-cookie', value: 'test-val', path: '/', domain: '.ecosia.org'}
-    ]);
-    Nocks.multipleCookiesFound([
-      {name: 'test-cookie', value: 'test-val', path: '/', domain: '.ecosia.org'},
-      {name: 'test-cookie', value: 'test-val', path: '/', domain: '.ecosia.org'}
-    ]);
-
-    let expect = this.client.api.expect.cookie('test-cookie', '.ecosia.org').to.equal('other-cookie-value');
-
-    return this.client.start(function() {
-      strictEqual(expect.assertion.passed, false);
-      assert.ok(expect.assertion.message.startsWith('Expected cookie "test-cookie" for domain ".ecosia.org" to equal: "other-cookie-value" - multiple cookies with the name "test-cookie" for domain ".ecosia.org" were found'), expect.assertion.message);
     });
   });
 

@@ -3,7 +3,8 @@ const assert = require('assert');
 const common = require('../../common.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
-const NightwatchClient = common.require('index.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('testRunWithGlobalHooks', function() {
   before(function(done) {
@@ -37,13 +38,14 @@ describe('testRunWithGlobalHooks', function() {
 
     let globals = {
       calls: 0,
-      beforeEach() {
+      beforeEach: function globalBeforeEach() {
         beforeEachCount++;
       },
       afterEach() {
         afterEachCount++;
       },
       reporter(results, cb) {
+        assert.strictEqual(globals.singleTestCalled, true);
         assert.deepStrictEqual(globals.settings.selenium, {
           check_process_delay: 500,
           cli_args: {},
@@ -51,32 +53,20 @@ describe('testRunWithGlobalHooks', function() {
           max_status_poll_tries: 15,
           port: 10195,
           server_path: null,
-          start_process: true,
+          start_process: false,
           status_poll_interval: 200,
-          url: 'http://localhost:10195',
-          version2: true
+          url: 'http://localhost:10195'
         });
-        assert.strictEqual(globals.calls, 19);
         assert.strictEqual(beforeEachCount, 4);
         assert.strictEqual(afterEachCount, 4);
+        assert.strictEqual(globals.calls, 19);
         cb();
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: false,
-      output: false,
-      persist_globals: true,
-      globals,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests(testsPath, settings);
+    return runTests(testsPath, settings({
+      globals
+    }));
   });
 
   this.timeout(10000);
@@ -106,20 +96,10 @@ describe('testRunWithGlobalHooks', function() {
     };
     let beforeEachCount = 0;
     let afterEachCount = 0;
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    };
 
-    return NightwatchClient.runTests(testsPath, settings);
+    return runTests(testsPath, settings({
+      globals
+    }));
   });
 
   it('testRunner with global async beforeEach and afterEach with api argument', function() {
@@ -149,34 +129,17 @@ describe('testRunWithGlobalHooks', function() {
 
     let beforeEachCount = 0;
     let afterEachCount = 0;
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    };
 
-    return NightwatchClient.runTests(testsPath, settings);
+    return runTests(testsPath, settings({
+      globals
+    }));
   });
 
   it('test run with global async beforeEach and assert failure', function() {
     let beforeEachCount = 0;
     let testsPath = path.join(__dirname, '../../sampletests/before-after');
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
+    return runTests(testsPath, settings({
       globals: {
         beforeEach: function(client, done) {
           client.perform(function() {
@@ -191,25 +154,14 @@ describe('testRunWithGlobalHooks', function() {
           assert.strictEqual(beforeEachCount, 4);
           cb();
         }
-      },
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests(testsPath, settings);
+      }
+    }));
   });
 
   it('test run with global async beforeEach and exception', function() {
     let testsPath = path.join(__dirname, '../../sampletests/before-after');
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
-      persist_globals: true,
+    return runTests(testsPath, settings({
       globals: {
         asyncHookTimeout: 100,
         beforeEach(client, done) {
@@ -225,37 +177,23 @@ describe('testRunWithGlobalHooks', function() {
 
           cb();
         }
-      },
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests(testsPath, settings);
+      }
+    }));
   });
 
   it('test run with global async beforeEach and timeout error', async function() {
     let testsPath = path.join(__dirname, '../../sampletests/before-after');
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
-      persist_globals: true,
-      globals: {
-        asyncHookTimeout: 100,
-        before(done) {
-        }
-      },
-      output_folder: false
-    };
-
     let expectedErr;
 
     try {
-      await NightwatchClient.runTests(testsPath, settings);
+      await runTests(testsPath, settings({
+        globals: {
+          asyncHookTimeout: 100,
+          before(done) {
+          }
+        }
+      }));
     } catch (err) {
       expectedErr = err;
     }
@@ -267,15 +205,7 @@ describe('testRunWithGlobalHooks', function() {
   it('test run with global async beforeEach and done(err);', function() {
     let testsPath = path.join(__dirname, '../../sampletests/before-after');
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
-      persist_globals: true,
+    return runTests(testsPath, settings({
       globals: {
         beforeEach: function(client, cb) {
           setTimeout(function() {
@@ -287,12 +217,8 @@ describe('testRunWithGlobalHooks', function() {
           assert.strictEqual(results.lastError.message, 'global beforeEach error');
           cb();
         }
-      },
-      output_folder: false,
-      start_session: true
-    };
-
-    return NightwatchClient.runTests(testsPath, settings);
+      }
+    }));
   });
 
   it('test currentTest in global beforeEach/afterEach', function() {
@@ -337,19 +263,8 @@ describe('testRunWithGlobalHooks', function() {
       }
     };
 
-    const settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: false,
-      output: false,
-      persist_globals: true,
-      globals,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests(testsPath, settings);
+    return runTests(testsPath, settings({
+      globals
+    }));
   });
 });
