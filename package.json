@@ -46,7 +46,6 @@
     "mockery": "~2.1.0",
     "nock": "^10.0.6",
     "nyc": "^14.1.1",
-    "sinon": "^11.1.2",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.3",
     "webdriverio": "^6.6.6"

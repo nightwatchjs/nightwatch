@@ -159,6 +159,7 @@ const createGenericCommandMocks = function(assertion) {
         command: 'setFileDetector'
       });
       return;
+    },
 
     executeScript(script, args) {
       assertion({

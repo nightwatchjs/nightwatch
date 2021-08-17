@@ -1,22 +1,28 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
-const sinon = require('sinon');
-const remote = require('selenium-webdriver/remote');
-var myStub;
+const mockery = require('mockery');
+mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
 
 describe('uploadFile command', function () {
   before(function () {
     Globals.protocolBefore();
-    myStub = sinon.stub().callsFake();
-    Object.setPrototypeOf(remote.FileDetector.prototype.constructor, myStub);
   });
 
   after(function() {
-    sinon.restore();
+    mockery.deregisterAll();
+    mockery.resetCache();
+    mockery.disable();
   })
 
   it('should clear value and setValue', function () {
-
+    let fakeRemoteCalled = false;
+    class FakeRemote {}
+    FakeRemote.FileDetector = class {
+      constructor() {
+        fakeRemoteCalled = true;
+      }  
+    }
+    mockery.registerMock('selenium-webdriver/remote', FakeRemote);
     return Globals.protocolTest({
       commandName: 'uploadFile',
       args: [
@@ -29,7 +35,7 @@ describe('uploadFile command', function () {
       assertion: function (opts) {
         assert.ok(['findElements', 'setFileDetector', 'sendKeysToElement'].includes(opts.command));
         if(opts == 'setFileDetector' || opts.command == 'sendKeysToElement'){
-            assert(myStub.calledOnce);
+            assert.strictEqual(fakeRemoteCalled, true);
         }
       }
     });
