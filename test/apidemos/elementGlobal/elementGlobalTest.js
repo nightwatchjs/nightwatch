@@ -1,14 +1,45 @@
 const assert = require('assert');
+const {WebElement} = require('selenium-webdriver');
 
 describe('get text using element-global', function () {
   const signupSection = element(by.css('#signupSection'));
 
   after(browser => browser.end());
 
+  const availableElementCommands = [
+    'getId',
+    'findElement',
+    'findElements',
+    'click',
+    'sendKeys',
+    'getTagName',
+    'getCssValue',
+    'getAttribute',
+    'getProperty',
+    'getText',
+    'getAriaRole',
+    'getAccessibleName',
+    'getRect',
+    'isEnabled',
+    'isSelected',
+    'submit',
+    'clear',
+    'isDisplayed',
+    'takeScreenshot',
+    'getWebElement'
+  ];
+
   test('element globals command',  async function() {
     browser.waitForElementPresent('#weblogin', 100);
 
     const weblogin = element('#weblogin');
+    const webElement = await weblogin.getWebElement();
+    assert.ok(webElement instanceof WebElement);
+
+    availableElementCommands.forEach(command => {
+      assert.strictEqual(typeof weblogin[command], 'function');
+    });
+
     const result = await weblogin.getText();
     assert.strictEqual(result, 'sample text');
 

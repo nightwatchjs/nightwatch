@@ -1,8 +1,8 @@
-const assert = require('assert');
 const path = require('path');
 const MockServer = require('../../../lib/mockserver.js');
 const Mocks = require('../../../lib/command-mocks.js');
 const common = require('../../../common.js');
+const {settings} = common;
 const NightwatchClient = common.require('index.js');
 
 describe('element global demos', function() {
@@ -33,19 +33,11 @@ describe('element global demos', function() {
       }
     };
 
-    return NightwatchClient.runTests(testsPath, {
-      selenium: {
-        host: 'localhost',
-        port: 10195,
-        start_process: false
-      },
+    return NightwatchClient.runTests(testsPath, settings({
       output: false,
       skip_testcases_on_fail: false,
-      silent: false,
-      persist_globals: true,
-      globals,
-      output_folder: false
-    });
+      globals
+    }));
   });
 
   
