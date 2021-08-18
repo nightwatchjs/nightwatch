@@ -110,5 +110,6 @@
     "by": "readonly",
     "expect": "readonly",
     "browser": "readonly",
+    "Key": "readonly"
   }
 }
