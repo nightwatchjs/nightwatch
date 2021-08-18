@@ -10,15 +10,23 @@
     }
   },
   "env": {
-    "browser": false,
     "mocha": true,
     "node": true
   },
   "rules": {
-    "eqeqeq": ["error", "smart"],
+    "eqeqeq": [
+      "error",
+      "smart"
+    ],
     "no-extra-boolean-cast": 0,
-    "quotes": ["error", "single"],
-    "curly": ["error", "all"],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "curly": [
+      "error",
+      "all"
+    ],
     "no-console": [
       "error",
       {
@@ -49,17 +57,42 @@
     "no-lone-blocks": 0,
     "array-bracket-spacing": 2,
     "object-curly-spacing": 2,
-    "brace-style": [2, "1tbs", {"allowSingleLine": true}],
+    "brace-style": [
+      2,
+      "1tbs",
+      {
+        "allowSingleLine": true
+      }
+    ],
     "comma-spacing": 2,
     "comma-style": 2,
     "key-spacing": 2,
-    "one-var": ["error", "never"],
-    "semi-style": ["error", "last"],
-    "space-in-parens": ["error", "never"],
-    "keyword-spacing": [2, {"before": true, "after": true}],
+    "one-var": [
+      "error",
+      "never"
+    ],
+    "semi-style": [
+      "error",
+      "last"
+    ],
+    "space-in-parens": [
+      "error",
+      "never"
+    ],
+    "keyword-spacing": [
+      2,
+      {
+        "before": true,
+        "after": true
+      }
+    ],
     "padding-line-between-statements": [
       "error",
-      { "blankLine": "always", "prev": "*", "next": "return" }
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": "return"
+      }
     ],
     "indent": [
       "error",
@@ -72,6 +105,11 @@
   "globals": {
     "Promise": true,
     "Proxy": true,
-    "Reflect": true
+    "Reflect": true,
+    "element": "readonly",
+    "by": "readonly",
+    "expect": "readonly",
+    "browser": "readonly",
+    "Key": "readonly"
   }
 }
