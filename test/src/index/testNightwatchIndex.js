@@ -117,7 +117,7 @@ describe('test NightwatchIndex', function () {
 
     client.startSession().catch(err => {
       assert.ok(err instanceof Error);
-      assert.strictEqual(err.message, 'session not created: This version of ChromeDriver only supports Chrome version 75');
+      assert.strictEqual(err.message, 'An error occurred while retrieving a new session: [SessionNotCreatedError] session not created: This version of ChromeDriver only supports Chrome version 75');
       done();
     });
   });
