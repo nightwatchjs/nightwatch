@@ -2,11 +2,11 @@ const assert = require('assert');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 
 describe('.perform()', function () {
-  before(function (done) {
+  beforeEach(function (done) {
     CommandGlobals.beforeEach.call(this, done);
   });
 
-  after(function (done) {
+  afterEach(function (done) {
     CommandGlobals.afterEach.call(this, done);
   });
 
@@ -47,6 +47,26 @@ describe('.perform()', function () {
       assert.deepEqual(localClient, client);
       assert.strictEqual(typeof complete, 'function');
       complete();
+    });
+
+    this.client.start(done);
+  });
+
+  it('test actions() options in browser.perform()', function (done) {
+    this.client.transport.driver.actions = function(opts) {
+      assert.deepStrictEqual(opts, {async: true});
+
+      return {
+        keyDown() {
+          return Promise.resolve();
+        }
+      };
+    };
+
+    this.client.api.perform(function() {
+      const actions = this.actions({async: true});
+
+      return actions.keyDown();
     });
 
     this.client.start(done);
