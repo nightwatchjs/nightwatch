@@ -14,16 +14,36 @@ describe('uploadFile', function() {
 
   it('client.uploadFile()', function(done) {
     MockServer.addMock({
-      url : '/wd/hub/session/1352110219202/element/0/value',
-      method:'POST',
-      postdata : {
-        text: '/file.js',
-        value:[ 
-        '/', 'f', 'i', 'l', 'e', '.', 'j', 's'
-      ]},
-      response : {
+      url: '/wd/hub/session/1352110219202/elements',
+      postdata: {
+        using: 'css selector',
+        value: '#choosefile'
+      },
+      response: {
         sessionId: '1352110219202',
-        status:0
+        status: 0,
+        value: [
+          {
+            ELEMENT: '0'
+          }
+        ],
+        class: 'org.openqa.selenium.remote.Response',
+        hCode: 604376696
+      }
+    });
+
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/element/0/value',
+      method: 'POST',
+      postdata: {
+        text: '/file.js',
+        value: [
+          '/', 'f', 'i', 'l', 'e', '.', 'j', 's'
+        ]
+      },
+      response: {
+        sessionId: '1352110219202',
+        status: 0
       }
     });
 
