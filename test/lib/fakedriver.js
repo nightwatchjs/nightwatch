@@ -460,5 +460,18 @@ module.exports = {
     Object.assign(driver, mockDriverOverrides);
 
     return driver;
+  },
+  createChromeDriver(assertion, mockDriverOverrides) {
+    const chromeDriver = {
+      launchApp(id) {
+        assertion({id, command: 'launchApp'});
+
+        return Promise.resolve(null);
+      }
+    };
+
+    Object.assign(chromeDriver, mockDriverOverrides);
+
+    return chromeDriver;
   }
 };
