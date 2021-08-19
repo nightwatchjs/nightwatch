@@ -106,7 +106,7 @@ module.exports = {
     }, true);
   },
 
-  elementText(elementId='0', text='sample text') {
+  elementText(elementId = '0', text = 'sample text') {
     MockServer.addMock({
       url: `/wd/hub/session/1352110219202/element/${elementId}/text`,
       method: 'GET',
@@ -115,9 +115,58 @@ module.exports = {
         status: 0,
         value: text
       })
-
-
     });
+  },
+
+  tagName(elementId = '0', tagName = 'div') {
+    MockServer.addMock({
+      url: `/wd/hub/session/1352110219202/element/${elementId}/name`,
+      method: 'GET',
+      response: JSON.stringify({
+        value: tagName
+      })
+    });
+  },
+
+  createNewW3CSession({
+    testName = '',
+    browserName = 'firefox',
+    sessionId = '13521-10219-202',
+    persist = false,
+    deleteSession = true
+  }) {
+    MockServer.addMock({
+      url: '/session',
+      statusCode: 201,
+      method: 'POST',
+      postdata: JSON.stringify({
+        desiredCapabilities: {browserName, name: testName},
+        capabilities: {alwaysMatch: {browserName}}
+      }),
+
+      response: JSON.stringify({
+        value: {
+          sessionId,
+          capabilities: {
+            acceptInsecureCerts: false,
+            browserName: 'firefox',
+            browserVersion: '65.0.1'
+          }
+        }
+      })
+    }, !persist);
+
+    if (!deleteSession) {
+      return;
+    }
+
+    MockServer.addMock({
+      url: `/session/${sessionId}`,
+      method: 'DELETE',
+      response: {
+        value: null
+      }
+    }, !persist);
   }
 };
 

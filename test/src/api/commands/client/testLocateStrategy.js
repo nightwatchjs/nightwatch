@@ -1,7 +1,7 @@
 const assert = require('assert');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 
-describe('locateStrategies', function() {
+describe('Locate strategies', function() {
   before(function(done) {
     CommandGlobals.beforeEach.call(this, done);
   });
@@ -10,7 +10,7 @@ describe('locateStrategies', function() {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('client.useXpath()', function(done) {
+  it('browser.useXpath()', function(done) {
     let client = this.client;
     this.client.api.useXpath(function() {
       assert.strictEqual(client.locateStrategy, 'xpath');
@@ -19,7 +19,7 @@ describe('locateStrategies', function() {
     this.client.start(done);
   });
 
-  it('client.useCss()', function(done) {
+  it('browser.useCss()', function(done) {
     let client = this.client;
     this.client.api.useCss(function() {
       assert.strictEqual(client.locateStrategy, 'css selector');

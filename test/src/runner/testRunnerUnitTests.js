@@ -96,7 +96,7 @@ describe('testRunnerUnitTests', function() {
       path.join(__dirname, '../../asynchookstests/unittest-failure')
     ];
 
-  return runTests(testsPath, {
+    return runTests(testsPath, {
       output_folder: 'output',
       unit_tests_mode: true,
       output: false,

@@ -19,7 +19,7 @@ describe('test PageObjectApi', function () {
   });
 
   it('testPageObjectProperties', function () {
-    var page = this.client.api.page.simplePageObj();
+    const page = this.client.api.page.simplePageObj();
     assert.ok('elements' in page);
     assert.ok('name' in page);
     assert.ok('section' in page);
@@ -42,7 +42,7 @@ describe('test PageObjectApi', function () {
     assert.ok('help' in page.section.signUp.elements);
     assert.ok('getStarted' in page.section.signUp.section);
 
-    var elements = page.elements;
+    const elements = page.elements;
     assert.strictEqual(elements.loginCss.selector, '#weblogin');
     assert.strictEqual(elements.loginCss.locateStrategy, 'css selector');
     assert.strictEqual(elements.loginXpath.selector, '//weblogin');
@@ -52,7 +52,7 @@ describe('test PageObjectApi', function () {
   });
 
   it('testPageObjectElementsArray', function () {
-    var page = this.client.api.page.pageObjElementsArray();
+    const page = this.client.api.page.pageObjElementsArray();
     assert.ok('elements' in page);
 
     assert.ok('someElement' in page.elements);
@@ -67,7 +67,7 @@ describe('test PageObjectApi', function () {
   });
 
   it('testPageObjectAssertionsLoaded', function () {
-    var page = this.client.api.page.simplePageObj();
+    const page = this.client.api.page.simplePageObj();
 
     assert.ok('assert' in page);
     assert.ok('verify' in page);
@@ -89,12 +89,12 @@ describe('test PageObjectApi', function () {
   });
 
   it('testPageObjectCommandsLoaded', function () {
-    var page = this.client.api.page.simplePageObj();
+    const page = this.client.api.page.simplePageObj();
 
     assert.ok('click' in page);
     assert.ok('waitForElementPresent' in page);
     assert.ok('end' in page);
-    assert.ok('switchWindow' in page);
+    assert.ok(!('switchToWindow' in page));
   });
 });
 

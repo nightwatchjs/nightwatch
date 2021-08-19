@@ -12,7 +12,7 @@ describe('.end()', function() {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('client.end();', function (done) {
+  it('browser.end();', function (done) {
     this.client.api.end(result => {
       assert.strictEqual(result.state, 'success');
       assert.strictEqual(this.client.api.sessionId, null);
@@ -21,7 +21,7 @@ describe('.end()', function() {
     this.client.start(done);
   });
 
-  it('client.end() - no session id', function (done) {
+  it('browser.end() - no session id', function (done) {
     this.client.api.end();
     this.client.api.end(function callback(result) {
       assert.strictEqual(result, null);
@@ -30,7 +30,7 @@ describe('.end()', function() {
     this.client.start(done);
   });
 
-  it('client.end() - with screenshot', function (done) {
+  it('browser.end() - with screenshot', function (done) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/screenshot',
       method: 'GET',
@@ -84,7 +84,7 @@ describe('.end()', function() {
     }).catch(err => done(err));
   });
 
-  it('client.end() - failures and screenshots disabled', function (done) {
+  it('browser.end() - failures and screenshots disabled', function (done) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/screenshot',
       response: JSON.stringify({
