@@ -1,9 +1,9 @@
-const common = require('../common.js');
 const lodashMerge = require('lodash.merge');
-const Nightwatch = common.require('index.js');
-const Settings = common.require('settings/settings.js');
 const MockServer  = require('./mockserver.js');
-const Logger = common.require('utils').Logger;
+const common = require('../common.js');
+const Settings = common.require('settings/settings.js');
+const {Logger} = common.require('utils');
+const Nightwatch = common.require('index.js');
 
 module.exports = new function () {
   let _client = null;

@@ -6,7 +6,7 @@ const Nightwatch = require('../../lib/nightwatch.js');
 const HttpRequest = common.require('http/request.js');
 const WebdriverProtocol = common.require('transport/webdriver');
 const JsonWireProtocol = common.require('transport/jsonwire');
-const SeleniumProtocol = common.require('transport/selenium-webdriver/selenium');
+const SeleniumProtocol = common.require('transport/selenium-webdriver/selenium.js');
 
 describe('Trandport.runProtocolAction', function() {
   const nightwatch = Nightwatch.createClientDefaults();

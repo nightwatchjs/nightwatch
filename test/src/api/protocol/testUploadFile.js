@@ -1,10 +1,10 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 const mockery = require('mockery');
-mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
 
 describe('uploadFile command', function () {
   before(function () {
+    mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
     Globals.protocolBefore();
   });
 
