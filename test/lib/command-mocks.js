@@ -106,7 +106,7 @@ module.exports = {
     }, true);
   },
 
-  elementText(elementId='0', text='sample text') {
+  elementText(elementId = '0', text = 'sample text') {
     MockServer.addMock({
       url: `/wd/hub/session/1352110219202/element/${elementId}/text`,
       method: 'GET',
@@ -114,6 +114,16 @@ module.exports = {
         sessiondId: '1352110219202',
         status: 0,
         value: text
+      })
+    });
+  },
+
+  tagName(elementId = '0', tagName = 'div') {
+    MockServer.addMock({
+      url: `/wd/hub/session/1352110219202/element/${elementId}/name`,
+      method: 'GET',
+      response: JSON.stringify({
+        value: tagName
       })
     });
   },

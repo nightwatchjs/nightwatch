@@ -22,6 +22,7 @@ describe('element global demos', function() {
   it('getText on element global instance', function() {
     const testsPath = path.join(__dirname, '../../../apidemos/elementGlobal/elementGlobalTest.js');
     Mocks.elementText();
+    Mocks.tagName('0', 'div');
 
     const globals = {
       waitForConditionPollInterval: 50,

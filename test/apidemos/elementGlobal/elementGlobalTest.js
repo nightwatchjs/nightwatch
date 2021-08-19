@@ -30,9 +30,10 @@ describe('get text using element-global', function () {
   ];
 
   test('element globals command',  async function() {
-    browser.waitForElementPresent('#weblogin', 100);
-
     const weblogin = element('#weblogin');
+    const tagName = await browser.waitForElementPresent(weblogin, 100).getTagName(weblogin);
+    assert.strictEqual(tagName.value, 'div');
+
     const webElement = await weblogin.getWebElement();
     assert.ok(webElement instanceof WebElement);
 
