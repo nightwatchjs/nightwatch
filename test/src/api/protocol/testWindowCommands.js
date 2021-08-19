@@ -18,7 +18,9 @@ describe('window commands', function() {
       commandName: 'windowHandle',
       args: []
     }).then((result) => {
-      assert.strictEqual(typeof result.error, 'undefined');
+      if (result.error) {
+        throw result.error;
+      }
       assert.deepStrictEqual(result.value, 'CDwindow-BE13CA812F066254342F4FEB180D14ED');
     });
   });
@@ -31,7 +33,9 @@ describe('window commands', function() {
       commandName: 'windowHandles',
       args: []
     }).then((result) => {
-      assert.strictEqual(typeof result.error, 'undefined');
+      if (result.error) {
+        throw result.error;
+      }
       assert.deepStrictEqual(result.value, ['CDwindow-BE13CA812F066254342F4FEB180D14ED']);
     });
   });
@@ -44,7 +48,9 @@ describe('window commands', function() {
       commandName: 'window',
       args: ['DELETE']
     }).then((result) => {
-      assert.strictEqual(typeof result.error, 'undefined');
+      if (result.error) {
+        throw result.error;
+      }
       assert.deepStrictEqual(result.value, null);
     });
   });
@@ -58,7 +64,9 @@ describe('window commands', function() {
       commandName: 'window',
       args: ['POST', 'other-window']
     }).then((result) => {
-      assert.strictEqual(typeof result.error, 'undefined');
+      if (result.error) {
+        throw result.error;
+      }
       assert.deepStrictEqual(result.value, null);
     });
   });
@@ -86,7 +94,9 @@ describe('window commands', function() {
       },
       commandName: 'minimizeWindow'
     }).then((result) => {
-      assert.strictEqual(typeof result.error, 'undefined');
+      if (result.error) {
+        throw result.error;
+      }
       assert.deepStrictEqual(result.value, null);
     });
   });
@@ -99,7 +109,9 @@ describe('window commands', function() {
       commandName: 'windowMaximize',
       args: []
     }).then((result) => {
-      assert.strictEqual(typeof result.error, 'undefined');
+      if (result.error) {
+        throw result.error;
+      }
       assert.deepStrictEqual(result.value, null);
     });
   });
@@ -112,7 +124,9 @@ describe('window commands', function() {
       commandName: 'openNewWindow',
       args: []
     }).then((result) => {
-      assert.strictEqual(typeof result.error, 'undefined');
+      if (result.error) {
+        throw result.error;
+      }
       assert.deepStrictEqual(result.value, null);
     });
   });
@@ -126,6 +140,9 @@ describe('window commands', function() {
       },
       commandName: 'openNewWindow',
       args: [function(result) {
+        if (result.error) {
+          throw result.error;
+        }
         assert.deepStrictEqual(result.value, null);
       }]
     });
@@ -140,40 +157,10 @@ describe('window commands', function() {
       commandName: 'openNewWindow',
       args: ['window']
     }).then((result) => {
-      assert.strictEqual(typeof result.error, 'undefined');
+      if (result.error) {
+        throw result.error;
+      }
       assert.deepStrictEqual(result.value, null);
-    });
-  });
-
-
-
-  xit('test .openNewWindow() with unhandled error', function() {
-    return Globals.runProtocolTestWithError({
-      url: '/wd/hub/session/1352110219202/window/new',
-      commandName: 'openNewWindow'
-    });
-  });
-
-  xit('test .minimizeWindow() with unhandled error', function() {
-    return Globals.runProtocolTestWithError({
-      url: '/wd/hub/session/1352110219202/window/minimize',
-      commandName: 'minimizeWindow'
-    });
-  });
-
-  xit('test .windowHandles() with unhandled error', function() {
-    return Globals.runProtocolTestWithError({
-      url: '/wd/hub/session/1352110219202/window_handles',
-      commandName: 'windowHandles',
-      method: 'GET'
-    });
-  });
-
-  xit('test .windowHandle() with unhandled error', function() {
-    return Globals.runProtocolTestWithError({
-      url: '/wd/hub/session/1352110219202/window_handle',
-      commandName: 'windowHandle',
-      method: 'GET'
     });
   });
 

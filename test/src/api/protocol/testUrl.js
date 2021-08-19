@@ -33,28 +33,4 @@ describe('url', function() {
     });
   });
 
-  it('client.url() get with callback', function() {
-    return Globals.protocolTest({
-      assertion: function(opts) {
-        assert.strictEqual(opts.command, 'url');
-      },
-      commandName: 'url',
-      args: [function(result) {
-        assert.strictEqual(result.value, 'http://localhost');
-        assert.strictEqual(this.toString(), 'Nightwatch API');
-      }]
-    });
-  });
-
-  it('client.url() new with callback', function() {
-    return Globals.protocolTest({
-      assertion: function(opts) {
-        assert.strictEqual(opts.command, 'url');
-      },
-      commandName: 'url',
-      args: ['http://localhost', function(result) {
-        assert.strictEqual(result.value, null);
-      }]
-    });
-  });
 });

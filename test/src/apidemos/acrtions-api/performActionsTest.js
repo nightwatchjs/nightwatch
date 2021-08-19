@@ -5,7 +5,7 @@ const common = require('../../../common.js');
 const {settings} = common;
 const NightwatchClient = common.require('index.js');
 
-describe('element global demos', function() {
+describe('actions api tests', function() {
   beforeEach(function(done) {
     this.server = MockServer.init();
     this.server.on('listening', () => {
@@ -19,10 +19,28 @@ describe('element global demos', function() {
     });
   });
 
-  it('getText on element global instance', function() {
-    const testsPath = path.join(__dirname, '../../../apidemos/elementGlobal/elementGlobalTest.js');
-    Mocks.elementText();
-    Mocks.tagName('0', 'div');
+  it('run basic test with actions', function() {
+    const testsPath = path.join(__dirname, '../../../apidemos/actions-api/actionsApi.js');
+
+    Mocks.createNewW3CSession({
+      testName: 'Actions API demo tests'
+    });
+
+    MockServer.addMock({
+      url: '/session/13521-10219-202/url',
+      statusCode: 200,
+      response: JSON.stringify({
+        value: null
+      })
+    }, true);
+
+    MockServer.addMock({
+      url: '/session/13521-10219-202/actions',
+      method: 'POST',
+      response: JSON.stringify({
+        value: null
+      })
+    });
 
     const globals = {
       waitForConditionPollInterval: 50,
@@ -35,11 +53,10 @@ describe('element global demos', function() {
     };
 
     return NightwatchClient.runTests(testsPath, settings({
-      output: false,
-      skip_testcases_on_fail: false,
+      selenium_host: null,
+      output: true,
       globals
     }));
   });
 
-  
 });

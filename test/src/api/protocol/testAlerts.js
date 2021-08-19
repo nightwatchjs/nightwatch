@@ -12,24 +12,30 @@ describe('alert commands', function () {
     Globals.protocolTest({
       commandName: 'acceptAlert',
       assertion() {
-        done();
       }
     }).then((result) => {
       assert.strictEqual(result.value, null);
       assert.strictEqual(result.status, 0);
+    }).catch(err => {
+      return err;
+    }).then(err => {
+      done(err);
     });
   });
 
   it('testDismissAlert', function (done) {
     Globals.protocolTest({
       assertion: function (opts) {
-        done();
       },
       commandName: 'dismissAlert'
     }).then((result) => {
       assert.strictEqual(result.value, null);
       assert.strictEqual(result.status, 0);
-    });;
+    }).catch(err => {
+      return err;
+    }).then(err => {
+      done(err);
+    });
   });
 
   it('testGetAlertText', function (done) {
@@ -51,19 +57,18 @@ describe('alert commands', function () {
 
     Globals.protocolTest({
       assertion: function (value) {
-        try {
-          assert.strictEqual(value, text);
-          done();
-        } catch (err) {
-          done(err);
-        }
+        assert.strictEqual(value, text);
       },
       commandName: 'setAlertText',
       args: [text]
     }).then((result) => {
       assert.strictEqual(result.value, null);
       assert.strictEqual(result.status, 0);
-    });;
+    }).catch(err => {
+      return err;
+    }).then(err => {
+      done(err);
+    });
   });
 
 });

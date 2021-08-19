@@ -5,8 +5,7 @@ const Nocks = require('../../../lib/nocks.js');
 describe('expect.active', function() {
   beforeEach(function(done) {
     ExpectGlobals.beforeEach.call(this, {
-      silent: false,
-      output: true
+      silent: false
     }, () => {
       this.client.api.globals.abortOnAssertionFailure = false;
       done();

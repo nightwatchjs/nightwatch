@@ -10,11 +10,11 @@ describe('client.execute', function() {
     return Globals.protocolTest({
       assertion: function (opts) {
         assert.deepStrictEqual(opts.command, 'execute');
-        assert.deepStrictEqual(opts.script, '<script>function(){return test();};</script>');
+        assert.deepStrictEqual(opts.script, '<script>function(){return test();}</script>');
         assert.deepStrictEqual(opts.args, ['arg1']);
       },
       commandName: 'execute',
-      args: ['<script>function(){return test();};</script>', ['arg1']]
+      args: ['<script>function(){return test();}</script>', ['arg1']]
     }).then((result) => {
       assert.strictEqual(typeof result.error, 'undefined');
       assert.deepStrictEqual(result.value, ['arg1']);
@@ -76,11 +76,11 @@ describe('client.execute', function() {
     return Globals.protocolTest({
       assertion: function (opts) {
         assert.deepStrictEqual(opts.command, 'executeAsync');
-        assert.deepStrictEqual(opts.script, '<script>function(){return test();};</script>');
+        assert.deepStrictEqual(opts.script, '<script>function(){return test();}</script>');
         assert.deepStrictEqual(opts.args, ['arg1']);
       },
       commandName: 'executeAsync',
-      args: ['<script>function(){return test();};</script>', ['arg1']]
+      args: ['<script>function(){return test();}</script>', ['arg1']]
     }).then((result) => {
       assert.strictEqual(typeof result.error, 'undefined');
       assert.deepStrictEqual(result.value, ['arg1']);

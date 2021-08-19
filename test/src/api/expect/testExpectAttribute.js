@@ -5,7 +5,7 @@ const ExpectGlobals = require('../../../lib/globals/expect.js');
 describe('expect.attribute', function() {
   beforeEach(function(done) {
     ExpectGlobals.beforeEach.call(this, {
-      output: true,
+      output: false,
       silent: false,
       globals: {
         waitForConditionTimeout: 10,
