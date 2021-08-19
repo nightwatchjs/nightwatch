@@ -115,9 +115,48 @@ module.exports = {
         status: 0,
         value: text
       })
-
-
     });
+  },
+
+  createNewW3CSession({
+    testName = '',
+    browserName = 'firefox',
+    sessionId = '13521-10219-202',
+    persist = false,
+    deleteSession = true
+  }) {
+    MockServer.addMock({
+      url: '/session',
+      statusCode: 201,
+      method: 'POST',
+      postdata: JSON.stringify({
+        desiredCapabilities: {browserName, name: testName},
+        capabilities: {alwaysMatch: {browserName}}
+      }),
+
+      response: JSON.stringify({
+        value: {
+          sessionId,
+          capabilities: {
+            acceptInsecureCerts: false,
+            browserName: 'firefox',
+            browserVersion: '65.0.1'
+          }
+        }
+      })
+    }, !persist);
+
+    if (!deleteSession) {
+      return;
+    }
+
+    MockServer.addMock({
+      url: `/session/${sessionId}`,
+      method: 'DELETE',
+      response: {
+        value: null
+      }
+    }, !persist);
   }
 };
 

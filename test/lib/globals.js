@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
 const lodashMerge = require('lodash.merge');
-const {Session, WebDriver} = require('selenium-webdriver');
 const FakeDriver = require('./fakedriver.js');
 const common = require('../common.js');
 const Nightwatch = require('../lib/nightwatch.js');
@@ -10,8 +9,6 @@ const MockServer  = require('../lib/mockserver.js');
 const Settings = common.require('settings/settings.js');
 const Runner = common.require('runner/runner.js');
 const Reporter = common.require('reporter/index.js');
-
-const SESSION_ID = 'test_session_id';
 
 class ExtendedReporter extends Reporter {
   registerPassed(message) {
@@ -24,48 +21,6 @@ class ExtendedReporter extends Reporter {
     this.assertionResult = result;
 
     super.logAssertResult(result);
-  }
-}
-
-class FakeExecutor {
-  constructor() {
-    this.commands_ = new Map();
-  }
-
-  execute(command) {
-    let expectations = this.commands_.get(command.getName());
-    if (!expectations || !expectations.length) {
-      assert.fail('unexpected command: ' + command.getName());
-
-      return;
-    }
-
-    let next = expectations[0];
-    let result = next.execute(command);
-    if (next.times_ !== Infinity) {
-      next.times_ -= 1;
-      if (!next.times_) {
-        expectations.shift();
-      }
-    }
-
-    return result;
-  }
-
-  expect(commandName, opt_parameters) {
-    if (!this.commands_.has(commandName)) {
-      this.commands_.set(commandName, []);
-    }
-    let e = new Expectation(this, commandName, opt_parameters);
-    this.commands_.get(commandName).push(e);
-
-    return e;
-  }
-
-  createDriver() {
-    let session = new Session(SESSION_ID, {});
-
-    return new WebDriver(session, this);
   }
 }
 
@@ -172,72 +127,6 @@ class Globals {
         reject(err);
       }
     });
-  }
-
-  async runProtocolTestWithError({commandName, url, message = 'test message', method, args = []}) {
-    const SimplifiedReporter = common.require('reporter/simplified.js');
-    class Reporter extends SimplifiedReporter {
-      constructor(settings) {
-        super(settings);
-
-        this.errors = 0;
-      }
-
-      registerTestError(err) {
-        this.errors++;
-      }
-    }
-
-    const reporter = new Reporter({});
-    const client = await Nightwatch.initClient({
-      output: false,
-      report_command_errors: true,
-      silent: false
-    }, reporter);
-
-    MockServer.addMock({
-      url,
-      method,
-      statusCode: 500,
-      response: {
-        sessionId: '1352110219202',
-        state: 'unhandled error',
-        value: {
-          message
-        },
-        status: 13
-      }
-    }, true);
-
-    args.push(function callback(result) {
-      assert.deepStrictEqual(result, {
-        code: '',
-        value: {
-          message,
-          error: []
-        },
-        error: 'An unknown server-side error occurred while processing the command. – ' + message,
-        errorStatus: 13,
-        httpStatusCode: 500,
-        state: 'unhandled error',
-        status: -1
-      });
-
-      return result;
-    });
-
-    client.api[commandName](...args);
-
-    await new Promise((resolve, reject) => {
-      client.start(err => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    });
-    assert.strictEqual(client.reporter.errors, 1);
   }
 
   runApiCommand(commandName, args, client = this.client) {

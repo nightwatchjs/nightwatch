@@ -1,6 +1,6 @@
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 
-describe('pause', function() {
+describe('.pause()', function() {
   before(function(done) {
     CommandGlobals.beforeEach.call(this, done);
   });
@@ -9,7 +9,7 @@ describe('pause', function() {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('client.pause()', function(done) {
+  it('browser.pause()', function(done) {
     this.client.api.pause(10, function() {
     });
 
