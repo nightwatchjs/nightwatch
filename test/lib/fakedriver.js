@@ -158,6 +158,7 @@ const createGenericCommandMocks = function(assertion) {
       assertion({
         command: 'setFileDetector'
       });
+
       return;
     },
 
@@ -474,7 +475,54 @@ module.exports = {
       launchApp(id) {
         assertion({id, command: 'launchApp'});
 
-        return Promise.resolve(null);
+        return Promise.resolve({value: null});
+      },
+      getNetworkConditions() {
+        assertion({command: 'getNetworkConditions'});
+
+        return Promise.resolve({
+          value: {
+            download_throughput: 460800,
+            latency: 50000,
+            offline: false,
+            upload_throughput: 153600
+          }
+        });
+      },
+      setNetworkConditions(spec) {
+        assertion({spec, command: 'setNetworkConditions'});
+
+        return Promise.resolve({
+          value: null
+        });
+      },
+      sendDevToolsCommand(cmd, params) {
+        assertion({cmd, params, command: 'sendDevToolsCommand'});
+
+        return Promise.resolve({
+          value: null
+        });
+      },
+      sendAndGetDevToolsCommand(cmd, params) {
+        assertion({cmd, params, command: 'sendAndGetDevToolsCommand'});
+
+        return Promise.resolve({
+          value: {
+            jsVersion: '9.2.230.29',
+            product: 'Chrome/92.0.4515.159',
+            protocolVersion: '1.3',
+            revision: '@0185b8a19c88c5dfd3e6c0da6686d799e9bc3b52',
+            userAgent:
+              'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36'
+          }
+        });
+      },
+      setDownloadPath(path) {
+        assertion({path, command: 'setDownloadPath'});
+
+        return Promise.resolve({
+          value: null
+        });
       }
     };
 
