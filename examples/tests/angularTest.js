@@ -1,5 +1,3 @@
-const {assert} = require('chai');
-
 describe('angularjs homepage todo list', async function(){
   it('should add a todo', function(){
     browser.url('https://angularjs.org');
