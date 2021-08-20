@@ -529,5 +529,33 @@ module.exports = {
     Object.assign(chromeDriver, mockDriverOverrides);
 
     return chromeDriver;
+  },
+  createFirefoxDriver(assertion, mockDriverOverrides) {
+    const firefoxDriver = {
+      getContext() {
+        assertion({command: 'getContext'});
+
+        return Promise.resolve({value: 'content'});
+      },
+      setContext(context) {
+        assertion({context, command: 'setContext'});
+
+        return Promise.resolve({value: null});
+      },
+      installAddon(path) {
+        assertion({path, command: 'installAddon'});
+
+        return Promise.resolve({value: '0c20aa29-db90-4eae-a3bb-012c6ae180b1'});
+      },
+      uninstallAddon(id) {
+        assertion({id, command: 'uninstallAddon'});
+
+        return Promise.resolve({value: null});
+      }
+    };
+
+    Object.assign(firefoxDriver, mockDriverOverrides);
+
+    return firefoxDriver;
   }
 };
