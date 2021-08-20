@@ -12,8 +12,5 @@ describe('duck duck go basic tests', function(){
       .click(searchButton)
       .assert.visible('.results--main')
       .assert.containsText('.results--main', 'Nightwatch.js');
-    
-    
-
   }); 
 });
