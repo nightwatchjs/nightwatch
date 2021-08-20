@@ -1,23 +1,20 @@
 const path = require('path');
 const common = require('../../../common.js');
-const nock = require('nock');
-const Nocks = require('../../../lib/nocks.js');
+const MockServer = require('../../../lib/mockserver.js');
 const NightwatchClient = common.require('index.js');
 
 describe('chrome api demos', function () {
-  beforeEach(function () {
-    Nocks.cleanAll();
-    try {
-      Nocks.enable();
-    } catch (e) {}
+  beforeEach(function (done) {
+    this.server = MockServer.init();
+    this.server.on('listening', () => {
+      done();
+    });
   });
 
-  afterEach(function () {
-    Nocks.deleteSession();
-  });
-
-  after(function () {
-    Nocks.disable();
+  afterEach(function (done) {
+    this.server.close(function () {
+      done();
+    });
   });
 
   it('run chrome api demo tests basic', function () {
@@ -33,17 +30,18 @@ describe('chrome api demos', function () {
       }
     };
 
-    nock('http://localhost:10195')
-      .post('/wd/hub/session')
-      .reply(201, {
-        status: 0,
-        sessionId: '1352110219202',
+    MockServer.addMock({
+      url: '/wd/hub/session',
+      method: 'POST',
+      response: JSON.stringify({
         value: {
+          sessionId: '1352110219202',
           browserName: 'chrome',
           version: 'TEST',
           platform: 'TEST'
         }
-      });
+      })
+    });
 
     return NightwatchClient.runTests(testsPath, {
       selenium: {
@@ -54,7 +52,6 @@ describe('chrome api demos', function () {
       desiredCapabilities: {
         browserName: 'chrome'
       },
-
       output: false,
       skip_testcases_on_fail: false,
       silent: true,

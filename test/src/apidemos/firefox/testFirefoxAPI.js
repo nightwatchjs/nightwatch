@@ -1,6 +1,5 @@
 const path = require('path');
 const MockServer = require('../../../lib/mockserver.js');
-const Mocks = require('../../../lib/command-mocks.js');
 const common = require('../../../common.js');
 const NightwatchClient = common.require('index.js');
 
