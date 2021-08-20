@@ -17,8 +17,6 @@ describe('Chrome API commands', function () {
       browserDriver: 'chrome'
     }).then((result) => {
       assert.deepStrictEqual(result.value, null);
-    }).catch((err) => {
-      throw err;
     });
   });
 
@@ -37,9 +35,7 @@ describe('Chrome API commands', function () {
         offline: false,
         upload_throughput: 153600
       });
-    }).catch((err) => {
-      throw err;
-    });;
+    });
   });
 
   it('setNetworkConditions', function() {
@@ -59,8 +55,6 @@ describe('Chrome API commands', function () {
       browserDriver: 'chrome'
     }).then((result) => {
       assert.deepStrictEqual(result.value, null);
-    }).catch((err) => {
-      throw err;
     });
   });
 
@@ -76,10 +70,9 @@ describe('Chrome API commands', function () {
       browserDriver: 'chrome'
     }).then((result) => {
       assert.deepStrictEqual(result.value, null);
-    }).catch((err) => {
-      throw err;
     });
   });
+
   it('sendAndGetDevToolsCommand', function() {
     return Globals.protocolTest({
       assertion: function (opts) {
@@ -102,6 +95,7 @@ describe('Chrome API commands', function () {
         throw err;
       });
   });
+
   it('setDownloadPath', function() {
     return Globals.protocolTest({
       assertion: function (opts) {
