@@ -2,8 +2,11 @@ const assert = require('assert');
 const nock = require('nock');
 const common = require('../../common.js');
 const NightwatchClient = common.require('index.js');
-const WebDriver = common.require('transport/webdriver');
-const Selenium = common.require('transport/selenium-webdriver/selenium.js');
+const SeleniumRemote = common.require('transport/selenium-webdriver/selenium.js');
+const GeckoDriver = common.require('transport/selenium-webdriver/firefox.js');
+const ChromeDriver = common.require('transport/selenium-webdriver/chrome.js');
+const EdgeDriver = common.require('transport/selenium-webdriver/edge.js');
+const SafariDriver = common.require('transport/selenium-webdriver/safari.js');
 const Browserstack = common.require('transport/browserstack');
 
 describe('Transport.create()', function () {
@@ -26,7 +29,7 @@ describe('Transport.create()', function () {
       selenium_host: 'remote.url'
     });
 
-    assert.ok(client.transport instanceof Selenium);
+    assert.ok(client.transport instanceof SeleniumRemote);
     assert.strictEqual(client.settings.webdriver.host, 'remote.url');
   });
 
@@ -42,7 +45,7 @@ describe('Transport.create()', function () {
       seleniumHost: 'remote.url'
     });
 
-    assert.ok(client.transport instanceof Selenium);
+    assert.ok(client.transport instanceof SeleniumRemote);
     assert.strictEqual(client.settings.webdriver.host, 'remote.url');
   });
 
@@ -56,7 +59,7 @@ describe('Transport.create()', function () {
       }
     });
 
-    assert.ok(client.transport instanceof WebDriver);
+    assert.ok(client.transport instanceof GeckoDriver);
     assert.strictEqual(client.settings.webdriver.host, 'remote.url');
   });
 
@@ -68,7 +71,7 @@ describe('Transport.create()', function () {
       selenium_host: 'remote.url'
     });
 
-    assert.ok(client.transport instanceof Selenium);
+    assert.ok(client.transport instanceof SeleniumRemote);
     assert.strictEqual(client.settings.webdriver.host, 'remote.url');
   });
 
@@ -85,7 +88,7 @@ describe('Transport.create()', function () {
       }
     });
 
-    assert.ok(client.transport instanceof Selenium);
+    assert.ok(client.transport instanceof SeleniumRemote);
   });
 
   it('test create Transport with unknown browser', function() {
@@ -111,8 +114,8 @@ describe('Transport.create()', function () {
       }
     });
 
-    assert.ok(client.transport instanceof WebDriver);
-    assert.strictEqual(client.transport instanceof Selenium, false);
+    assert.ok(client.transport instanceof GeckoDriver);
+    assert.strictEqual(client.transport instanceof SeleniumRemote, false);
   });
 
   it('test create Transport for Chrome managed', function() {
@@ -125,8 +128,8 @@ describe('Transport.create()', function () {
       }
     });
 
-    assert.ok(client.transport instanceof WebDriver);
-    assert.strictEqual(client.transport instanceof Selenium, false);
+    assert.ok(client.transport instanceof ChromeDriver);
+    assert.strictEqual(client.transport instanceof SeleniumRemote, false);
     assert.deepStrictEqual(client.transport.desiredCapabilities, {
       browserName: 'chrome'
     });
@@ -145,8 +148,8 @@ describe('Transport.create()', function () {
       }
     });
 
-    assert.ok(client.transport instanceof WebDriver);
-    assert.strictEqual(client.transport instanceof Selenium, false);
+    assert.ok(client.transport instanceof ChromeDriver);
+    assert.strictEqual(client.transport instanceof SeleniumRemote, false);
     assert.deepStrictEqual(client.transport.desiredCapabilities, {
       browserName: 'chrome',
       'goog:chromeOptions': {
@@ -168,8 +171,8 @@ describe('Transport.create()', function () {
       }
     });
 
-    assert.ok(client.transport instanceof WebDriver);
-    assert.strictEqual(client.transport instanceof Selenium, false);
+    assert.ok(client.transport instanceof ChromeDriver);
+    assert.strictEqual(client.transport instanceof SeleniumRemote, false);
     assert.deepStrictEqual(client.transport.desiredCapabilities, {
       browserName: 'chrome',
       'goog:chromeOptions': {
@@ -191,8 +194,8 @@ describe('Transport.create()', function () {
       }
     });
 
-    assert.ok(client.transport instanceof WebDriver);
-    assert.strictEqual(client.transport instanceof Selenium, false);
+    assert.ok(client.transport instanceof EdgeDriver);
+    assert.strictEqual(client.transport instanceof SeleniumRemote, false);
     assert.deepStrictEqual(client.transport.desiredCapabilities, {
       browserName: 'MicrosoftEdge',
       'ms:edgeOptions': {
@@ -211,8 +214,8 @@ describe('Transport.create()', function () {
       }
     });
 
-    assert.ok(client.transport instanceof WebDriver);
-    assert.strictEqual(client.transport instanceof Selenium, false);
+    assert.ok(client.transport instanceof EdgeDriver);
+    assert.strictEqual(client.transport instanceof SeleniumRemote, false);
     assert.deepStrictEqual(client.transport.desiredCapabilities, {
       browserName: 'MicrosoftEdge'
     });
@@ -231,8 +234,8 @@ describe('Transport.create()', function () {
       }
     });
 
-    assert.strictEqual(client.transport instanceof Selenium, false);
-    assert.strictEqual(client.transport instanceof WebDriver, true);
+    assert.strictEqual(client.transport instanceof SeleniumRemote, false);
+    assert.strictEqual(client.transport instanceof EdgeDriver, true);
     assert.deepStrictEqual(client.transport.desiredCapabilities, {
       browserName: 'MicrosoftEdge',
       'ms:edgeOptions': {
@@ -243,20 +246,19 @@ describe('Transport.create()', function () {
 
   it('test create Transport for Safari managed', function() {
     let client = NightwatchClient.client({
-      settings: {
-        selenium: {
-          start_process: false
-        },
-        webdriver: {
-          start_process: true
-        },
-        desiredCapabilities: {
-          browserName: 'safari'
-        }
+      selenium: {
+        start_process: false
+      },
+      webdriver: {
+        start_process: true
+      },
+      desiredCapabilities: {
+        browserName: 'safari'
       }
     });
 
-    assert.ok(client.transport instanceof WebDriver);
+    assert.ok(client.transport instanceof SafariDriver);
+    assert.strictEqual(client.transport instanceof SeleniumRemote, false);
   });
 
   it('test create Transport for Safari remote', function() {
@@ -264,7 +266,6 @@ describe('Transport.create()', function () {
 
     let safariDriver = Transport.create({
       settings: {
-        use_selenium_webdriver: true,
         selenium: {
           start_process: false
         },
@@ -278,8 +279,8 @@ describe('Transport.create()', function () {
       }
     });
 
-    assert.ok(safariDriver instanceof WebDriver);
-    assert.strictEqual(safariDriver instanceof Selenium, false);
+    assert.ok(safariDriver instanceof SafariDriver);
+    assert.strictEqual(safariDriver instanceof SeleniumRemote, false);
   });
 
   it('test create Transport for Chrome managed and no selenium settings', function() {
@@ -287,7 +288,6 @@ describe('Transport.create()', function () {
 
     let chromeDriver = Transport.create({
       settings: {
-        use_selenium_webdriver: true,
         webdriver: {
           start_process: true
         },
@@ -297,8 +297,8 @@ describe('Transport.create()', function () {
       }
     });
 
-    assert.ok(chromeDriver instanceof WebDriver);
-    assert.strictEqual(chromeDriver instanceof Selenium, false);
+    assert.ok(chromeDriver instanceof ChromeDriver);
+    assert.strictEqual(chromeDriver instanceof SeleniumRemote, false);
   });
 
   it('test create Transport for WebDriver managed and no selenium settings', function() {
@@ -311,8 +311,8 @@ describe('Transport.create()', function () {
       }
     });
 
-    assert.ok(client.transport instanceof WebDriver);
-    assert.strictEqual(client.transport instanceof Selenium, false);
+    assert.ok(client.transport instanceof SafariDriver);
+    assert.strictEqual(client.transport instanceof SeleniumRemote, false);
   });
 
   it('test check for ssl when webdriver port is 443', function () {
@@ -349,7 +349,7 @@ describe('Transport.create()', function () {
       selenium_host: 'remote.host'
     });
 
-    assert.ok(client.transport instanceof Selenium);
+    assert.ok(client.transport instanceof SeleniumRemote);
 
     const elementId = client.transport.getElementId({
       'element-6066-11e4-a52e-4f735466cecf': 'abcd-123'
@@ -370,7 +370,7 @@ describe('Transport.create()', function () {
       selenium_host: 'remote.host'
     });
 
-    assert.ok(client.transport instanceof Selenium);
+    assert.ok(client.transport instanceof SeleniumRemote);
     assert.strictEqual(client.settings.webdriver.host, 'remote.host');
     assert.strictEqual(client.settings.webdriver.default_path_prefix, '/wd/hub');
   });
@@ -436,7 +436,7 @@ describe('Transport.create()', function () {
     assert.strictEqual(client.settings.webdriver.ssl, true);
 
     const {transport} = client;
-    assert.ok(transport instanceof WebDriver);
+    assert.ok(transport instanceof SeleniumRemote);
     assert.strictEqual(transport.username, 'test-access-user');
     assert.strictEqual(transport.accessKey, 'test-access-key');
 

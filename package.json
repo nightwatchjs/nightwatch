@@ -32,7 +32,7 @@
     "ora": "^4.0.3",
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
-    "selenium-webdriver": "^4.0.0-beta.3",
+    "selenium-webdriver": "^4.0.0-beta.4",
     "semver": "^6.3.0",
     "strip-ansi": "^6.0.0"
   },
@@ -47,8 +47,7 @@
     "nock": "^10.0.6",
     "nyc": "^14.1.1",
     "ts-node": "^9.1.1",
-    "typescript": "^4.2.3",
-    "webdriverio": "^6.6.6"
+    "typescript": "^4.2.3"
   },
   "peerDependencies": {
     "chromedriver": "*",

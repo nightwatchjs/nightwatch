@@ -34,6 +34,10 @@ describe('get text using element-global', function () {
     const tagName = await browser.waitForElementPresent(weblogin, 100).getTagName(weblogin);
     assert.strictEqual(tagName.value, 'div');
 
+    browser.assert.visible(weblogin);
+
+    expect(weblogin).to.be.visible;
+
     const webElement = await weblogin.getWebElement();
     assert.ok(webElement instanceof WebElement);
 
