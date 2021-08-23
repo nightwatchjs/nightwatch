@@ -9,7 +9,7 @@ describe('Chrome API commands', function () {
 
   it('testLaunchApp', function () {
     return Globals.protocolTest({
-      assertion: function (opts) {
+      assertion(opts) {
         assert.strictEqual(opts.command, 'launchApp');
       },
       commandName: 'chrome.launchApp',
@@ -22,7 +22,7 @@ describe('Chrome API commands', function () {
 
   it('getNetworkConditions', function() {
     return Globals.protocolTest({
-      assertion: function (opts) {
+      assertion(opts) {
         assert.strictEqual(opts.command, 'getNetworkConditions');
       },
       commandName: 'chrome.getNetworkConditions',
@@ -40,7 +40,7 @@ describe('Chrome API commands', function () {
 
   it('setNetworkConditions', function() {
     return Globals.protocolTest({
-      assertion: function (opts) {
+      assertion(opts) {
         assert.strictEqual(opts.command, 'setNetworkConditions');
       },
       commandName: 'chrome.setNetworkConditions',
@@ -54,13 +54,13 @@ describe('Chrome API commands', function () {
       ],
       browserDriver: 'chrome'
     }).then((result) => {
-      assert.deepStrictEqual(result.value, null);
+      assert.strictEqual(result.value, null);
     });
   });
 
   it('sendDevToolsCommand', function() {
     return Globals.protocolTest({
-      assertion: function (opts) {
+      assertion(opts) {
         assert.strictEqual(opts.command, 'sendDevToolsCommand');
         assert.strictEqual(opts.cmd, 'Browser.getVersion');
         assert.deepStrictEqual(opts.params, {});
@@ -69,13 +69,13 @@ describe('Chrome API commands', function () {
       args: ['Browser.getVersion', {}],
       browserDriver: 'chrome'
     }).then((result) => {
-      assert.deepStrictEqual(result.value, null);
+      assert.strictEqual(result.value, null);
     });
   });
 
   it('sendAndGetDevToolsCommand', function() {
     return Globals.protocolTest({
-      assertion: function (opts) {
+      assertion(opts) {
         assert.strictEqual(opts.command, 'sendAndGetDevToolsCommand');
         assert.strictEqual(opts.cmd, 'Browser.getVersion');
         assert.deepStrictEqual(opts.params, {});
@@ -89,29 +89,22 @@ describe('Chrome API commands', function () {
           result.value.userAgent,
           'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36'
         );
-        assert.deepStrictEqual(result.value.product, 'Chrome/92.0.4515.159');
-      })
-      .catch((err) => {
-        throw err;
+        assert.strictEqual(result.value.product, 'Chrome/92.0.4515.159');
       });
   });
 
   it('setDownloadPath', function() {
     return Globals.protocolTest({
-      assertion: function (opts) {
+      assertion(opts) {
         assert.strictEqual(opts.command, 'setDownloadPath');
-        assert.strictEqual(opts.cmd, 'Browser.getVersion');
-        assert.deepStrictEqual(opts.params, {});
+        assert.strictEqual(opts.path, '/path/to/downloadFolder');
       },
       commandName: 'chrome.setDownloadPath',
       args: ['/path/to/downloadFolder'],
       browserDriver: 'chrome'
     })
       .then((result) => {
-        assert.deepStrictEqual(result.value, null);
-      })
-      .catch((err) => {
-        throw err;
+        assert.strictEqual(result.value, null);
       });
   });
 });

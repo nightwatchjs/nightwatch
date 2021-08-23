@@ -17,11 +17,11 @@
   "dependencies": {
     "assertion-error": "^1.1.0",
     "chai-nightwatch": "^0.4.0",
-    "ci-info": "^2.0.0",
-    "didyoumean": "^1.2.1",
-    "dotenv": "7.0.0",
+    "ci-info": "^3.2.0",
+    "didyoumean": "^1.2.2",
+    "dotenv": "10.0.0",
     "ejs": "^3.1.6",
-    "envinfo": "^7.5.1",
+    "envinfo": "^7.8.1",
     "lodash.clone": "3.0.3",
     "lodash.defaultsdeep": "^4.6.1",
     "lodash.merge": "^4.6.2",
@@ -29,7 +29,7 @@
     "minimist": "^1.2.5",
     "mkpath": "1.0.0",
     "mocha": "6.2.3",
-    "ora": "^4.0.3",
+    "ora": "^5.4.1",
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
     "selenium-webdriver": "^4.0.0-beta.4",
@@ -37,17 +37,17 @@
     "strip-ansi": "^6.0.0"
   },
   "devDependencies": {
+    "@types/node": "^16.7.1",
     "chai": "^4.2.0",
     "coveralls": "^3.0.11",
     "eslint": "^6.8.0",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.21",
-    "mock-spawn": "^0.2.1",
     "mockery": "~2.1.0",
     "nock": "^10.0.6",
-    "nyc": "^14.1.1",
-    "ts-node": "^9.1.1",
-    "typescript": "^4.2.3"
+    "nyc": "^15.1.0",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.3.5"
   },
   "peerDependencies": {
     "chromedriver": "*",

@@ -16,7 +16,7 @@ describe('Firefox API commands', function () {
       args: [],
       browserDriver: 'firefox'
     }).then((result) => {
-      assert.deepStrictEqual(result.value, 'content');
+      assert.strictEqual(result.value, 'content');
     });
   });
 
@@ -29,7 +29,7 @@ describe('Firefox API commands', function () {
       args: ['content'],
       browserDriver: 'firefox'
     }).then((result) => {
-      assert.deepStrictEqual(result.value, null);
+      assert.strictEqual(result.value, null);
     });
   });
 
@@ -42,7 +42,7 @@ describe('Firefox API commands', function () {
       args: ['path/to/Addon'],
       browserDriver: 'firefox'
     }).then((result) => {
-      assert.deepStrictEqual(result.value, '0c20aa29-db90-4eae-a3bb-012c6ae180b1');
+      assert.strictEqual(result.value, '0c20aa29-db90-4eae-a3bb-012c6ae180b1');
     });
   });
 
@@ -56,7 +56,7 @@ describe('Firefox API commands', function () {
       args: ['0c20aa29-db90-4eae-a3bb-012c6ae180b1'],
       browserDriver: 'firefox'
     }).then((result) => {
-      assert.deepStrictEqual(result.value, null);
+      assert.strictEqual(result.value, null);
     });
   });
 });
