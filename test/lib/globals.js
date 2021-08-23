@@ -103,13 +103,24 @@ class Globals {
     return this.runProtocolTest(definition, this.wdClient);
   }
 
-  runProtocolTest({assertion = function() {}, commandName, args = [], mockDriverOverrides = {}}, client) {
+  runProtocolTest({assertion = function() {}, commandName, args = [], mockDriverOverrides = {}, browserDriver = ''}, client) {
     return new Promise((resolve, reject) => {
       client.transport.runProtocolAction = function(opts) {
         assertion(opts);
       };
 
-      client.transport.driver = FakeDriver.create(assertion, mockDriverOverrides, args);
+      let driver;
+
+      if (browserDriver === 'chrome') {
+        driver = FakeDriver.createChromeDriver(assertion, mockDriverOverrides);
+      } else if (browserDriver === 'firefox') {
+        driver = FakeDriver.createFirefoxDriver(assertion, mockDriverOverrides);
+      } else {
+        driver = FakeDriver.create(assertion, mockDriverOverrides, args);
+      }
+
+      client.transport.driver = driver;
+
       if (args[0] === '@seleniumElement') {
         args[0] = FakeDriver.fakeSeleniumElement(client.transport.driver, '12345-6789');
       }
