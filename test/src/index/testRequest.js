@@ -30,6 +30,27 @@ describe('test HttpRequest', function() {
         state: null
       });
 
+    nock('http://localhost:4444')
+      .delete('/wd/hub/session')
+      .reply(200, {
+        status: 0,
+        sessionId: '123456-789'
+      });
+
+    nock('http://localhost:4444')
+      .get('/wd/hub/session')
+      .reply(200, {
+        status: 0,
+        sessionId: '123456-789'
+      });
+
+    nock('http://localhost:4444')
+      .put('/wd/hub/session')
+      .reply(200, {
+        status: 0,
+        sessionId: '123456-789'
+      });
+
     callback();
   });
 
@@ -157,6 +178,7 @@ describe('test HttpRequest', function() {
     };
 
     const request = new HttpRequest(options);
+    assert.strictEqual(request.data, '');
     request.on('success', function (result) {
       done();
     }).send();
@@ -283,4 +305,105 @@ describe('test HttpRequest', function() {
     const opts = request.reqOptions;
     assert.strictEqual(typeof opts.agent, 'undefined');
   });
+
+  it('send POST request with empty data object', function(done){
+    const options = {
+      path: '/session',
+      method: 'POST',
+      port: 4444,
+      data: {}
+    };
+
+    HttpRequest.globalSettings = {
+      default_path: '/wd/hub',
+      port: 4444
+    };
+
+    const request = new HttpRequest(options);
+    request.on('success', function () {
+      done();
+    }).send();
+
+    assert.strictEqual(request.data, '{}');
+    assert.deepStrictEqual(request.params, {});
+  });
+
+  it('send DELETE request with data', function(done){
+    const options = {
+      path: '/session',
+      method: 'DELETE',
+      port: 4444,
+      data: {
+        desiredCapabilities: {
+          browserName: 'firefox'
+        }
+      }
+    };
+
+    HttpRequest.globalSettings = {
+      default_path: '/wd/hub',
+      port: 4444
+    };
+
+    const request = new HttpRequest(options);
+    request.on('success', function () {
+      done();
+    }).send();
+
+    assert.strictEqual(request.data, '');
+    assert.strictEqual(request.params, '');
+    
+  });
+
+
+  it('send GET request with data', function(done){
+    const options = {
+      path: '/session',
+      method: 'GET',
+      port: 4444,
+      data: {
+        desiredCapabilities: {
+          browserName: 'firefox'
+        }
+      }
+    };
+
+    HttpRequest.globalSettings = {
+      default_path: '/wd/hub',
+      port: 4444
+    };
+    const request = new HttpRequest(options);
+    request.on('success', function () {
+      done();
+    }).send();
+
+    assert.strictEqual(request.data, '');
+    assert.strictEqual(request.params, '');
+    
+  });
+
+
+  it('send PUT request with data', function(done){
+    const options = {
+      path: '/session',
+      method: 'PUT',
+      port: 4444,
+      data: {}
+    };
+
+    HttpRequest.globalSettings = {
+      default_path: '/wd/hub',
+      port: 4444
+    };
+    const request = new HttpRequest(options);
+    request.on('success', function () {
+      done();
+    }).send();
+
+    assert.strictEqual(request.data, '{}');
+    assert.deepStrictEqual(request.params, {});
+    
+  });
+
+
 });
