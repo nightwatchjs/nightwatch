@@ -6,8 +6,8 @@ describe('duck duck go basic tests', function(){
   test('Search Nightwatch.js and check results', function(){
 
     browser.url('https://duckduckgo.com')
-      .waitForElementVisible(searchBar)
-      .waitForElementVisible(searchButton)
+      .waitForElementVisible('#search_form_input_homepage')
+      .waitForElementVisible('#search_button_homepage')
       .setValue(searchBar, ['Nightwatch.js', browser.keys.ENTER])
       .click(searchButton)
       .assert.visible('.results--main')
