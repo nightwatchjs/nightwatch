@@ -1,4 +1,4 @@
-describe('angularjs homepage todo list', async function(){
+describe('angularjs homepage todo list', function(){
   it('should add a todo', function(){
     browser.url('https://angularjs.org');
     element('[ng-model="todoList.todoText"]').sendKeys('write first protractor test');
