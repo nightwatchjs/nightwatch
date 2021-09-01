@@ -13,7 +13,7 @@ describe('browser navigation commands', function () {
       commandName: 'refresh',
       args: []
     }).then(result => {
-      assert.deepStrictEqual(result, {value: null, status: 0});
+      assert.strictEqual(result, null);
       done();
     }).catch(err => done(err));
   });
@@ -25,7 +25,7 @@ describe('browser navigation commands', function () {
       commandName: 'back',
       args: []
     }).then(result => {
-      assert.deepStrictEqual(result, {value: null, status: 0});
+      assert.strictEqual(result, null);
       done();
     }).catch(err => done(err));
   });
@@ -37,7 +37,7 @@ describe('browser navigation commands', function () {
       commandName: 'forward',
       args: []
     }).then(result => {
-      assert.deepStrictEqual(result, {value: null, status: 0});
+      assert.strictEqual(result, null);
       done();
     }).catch(err => done(err));
   });
@@ -51,11 +51,7 @@ describe('browser navigation commands', function () {
       commandName: 'url',
       args: ['https://test.com']
     }).then(result => {
-      if (result.error) {
-        throw result.error;
-      }
-
-      assert.deepStrictEqual(result, {value: null, status: 0});
+      assert.strictEqual(result, null);
       done();
     }).catch(err => done(err));
   });

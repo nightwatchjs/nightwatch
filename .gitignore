@@ -1,6 +1,7 @@
 .project
 *.DS_Store
 *.idea
+*.vscode
 /*.log
 /nightwatch.json
 /nightwatch.conf.js

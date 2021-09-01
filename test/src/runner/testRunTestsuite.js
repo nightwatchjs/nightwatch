@@ -8,7 +8,11 @@ const {runTests} = common.require('index.js');
 
 describe('testRunTestSuite', function() {
 
-  before(function(done) {
+  beforeEach(function(done) {
+    process.removeAllListeners('exit');
+    process.removeAllListeners('uncaughtException');
+    process.removeAllListeners('unhandledRejection');
+
     this.server = MockServer.init();
 
     this.server.on('listening', () => {
@@ -16,19 +20,13 @@ describe('testRunTestSuite', function() {
     });
   });
 
-  after(function(done) {
-    CommandGlobals.afterEach.call(this, done);
-  });
+  afterEach(function(done) {
+    CommandGlobals.afterEach.call(this, function() {
+      Object.keys(require.cache).forEach(function(module) {
+        delete require.cache[module];
+      });
 
-  beforeEach(function() {
-    process.removeAllListeners('exit');
-    process.removeAllListeners('uncaughtException');
-    process.removeAllListeners('unhandledRejection');
-  });
-
-  afterEach(function() {
-    Object.keys(require.cache).forEach(function(module) {
-      delete require.cache[module];
+      done();
     });
   });
 
@@ -377,6 +375,7 @@ describe('testRunTestSuite', function() {
       _source: [testsPath]
     }, settings({
       globals,
+      output: false,
       skip_testcases_on_fail: true
     }));
   });

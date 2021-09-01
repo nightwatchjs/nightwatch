@@ -14,8 +14,7 @@ describe('session log commands', function() {
       commandName: 'sessionLog',
       args: []
     }).then((result) => {
-      assert.strictEqual(typeof result.error, 'undefined');
-      assert.deepStrictEqual(Object.keys(result.value[0]), ['level', 'type', 'timestamp', 'message']);
+      assert.deepStrictEqual(Object.keys(result[0]), ['level', 'type', 'timestamp', 'message']);
     });
   });
 
@@ -27,8 +26,7 @@ describe('session log commands', function() {
       commandName: 'sessionLogTypes',
       args: []
     }).then((result) => {
-      assert.strictEqual(typeof result.error, 'undefined');
-      assert.deepStrictEqual(result.value, ['browser', 'driver']);
+      assert.deepStrictEqual(result, ['browser', 'driver']);
     });
   });
 

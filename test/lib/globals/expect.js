@@ -19,6 +19,7 @@ module.exports = {
   afterEach(done) {
     //Nocks.deleteSession();
     Nocks.disable();
+    this.client = null;
     done();
   },
 

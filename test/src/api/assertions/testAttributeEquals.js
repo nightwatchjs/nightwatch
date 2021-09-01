@@ -58,7 +58,7 @@ describe('assert.attributeEquals', function () {
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.getValue(), 'main');
         assert.strictEqual(instance.getActual(), 'main');
-        assert.strictEqual(err.message, `Error while running "assert.attributeEquals" command: [NightwatchAssertError] Testing if attribute 'role' of element <.test_element> doesn't equal 'main' in 5ms - expected "not equals 'main'" but got: "main" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Testing if attribute 'role' of element <.test_element> doesn't equal 'main' in 5ms - expected "not equals 'main'" but got: "main" (${instance.elapsedTime}ms)`);
       }
     });
   });
@@ -101,7 +101,8 @@ describe('assert.attributeEquals', function () {
     return assertionTest({
       args: ['.test_element', 'role', 'main', 'Test attribute %s from element "%s" == %s'],
       commandResult: {
-        status: -1
+        status: -1,
+        value: []
       },
       assertError: true,
       assertFailure: true,
@@ -111,7 +112,7 @@ describe('assert.attributeEquals', function () {
         assert.strictEqual(instance.expected(), 'equals \'main\'');
         assert.strictEqual(instance.getValue(), null);
         assert.strictEqual(failure, 'Expected "equals \'main\'" but got: "element could not be located"');
-        assert.strictEqual(err.message, `Error while running "assert.attributeEquals" command: [NightwatchAssertError] Test attribute 'role' from element "<.test_element>" == 'main' in 5ms - expected "equals 'main'" but got: "element could not be located" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Test attribute 'role' from element "<.test_element>" == 'main' in 5ms - expected "equals 'main'" but got: "element could not be located" (${instance.elapsedTime}ms)`);
       }
     });
   });

@@ -40,7 +40,13 @@ describe('waitForElementVisible', function() {
       assert.strictEqual(result.value, false);
     });
 
-    this.client.start(done);
+    this.client.start(function(err) {
+      if (err && err.name !== 'NightwatchAssertError') {
+        done(err);
+      } else {
+        done();
+      }
+    });
   });
 
   it('client.waitForElementVisible() fail with global timeout default', function () {
@@ -203,9 +209,8 @@ describe('waitForElementVisible', function() {
     });
 
     return this.client.start(function(e) {
-      assert.strictEqual(result.value, false);
+      assert.strictEqual(result.value, null);
       assert.strictEqual(result.status, -1);
-      assert.strictEqual(result.err.value, null);
       assert.strictEqual(e.message, `Timed out while waiting for element <.weblogin> to be present for 11 milliseconds. - expected "visible" but got: "not found" (${commandInstance.elapsedTime}ms)`);
     });
   });

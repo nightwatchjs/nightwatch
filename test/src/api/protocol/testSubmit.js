@@ -14,8 +14,7 @@ describe('client.submit', function() {
       commandName: 'submit',
       args: ['TEST_ELEMENT']
     }).then((result) => {
-      assert.strictEqual(typeof result.error, 'undefined');
-      assert.deepStrictEqual(result.value, null);
+      assert.deepStrictEqual(result, null);
     });
   });
 

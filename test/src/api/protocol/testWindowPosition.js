@@ -25,14 +25,14 @@ describe('windowPosition', function() {
     let msgtwo;
     let msgthree;
 
-    try {
-      await Globals.protocolTest({
-        commandName: 'windowPosition',
-        args: [function () {}]
-      });
-    } catch (err) {
-      msgone = err.message;
-    }
+    // try {
+    //   await Globals.protocolTest({
+    //     commandName: 'windowPosition',
+    //     args: [function () {}]
+    //   });
+    // } catch (err) {
+    //   msgone = err.message;
+    // }
 
     try {
       await Globals.protocolTest({
@@ -52,7 +52,7 @@ describe('windowPosition', function() {
       msgthree = err.message;
     }
 
-    assert.strictEqual(msgone, 'Error while running "windowPosition" command: First argument must be a window handle string.');
+    //assert.strictEqual(msgone, 'Error while running "windowPosition" command: First argument must be a window handle string.');
     assert.strictEqual(msgtwo, 'Error while running "windowPosition" command: offsetX argument passed to .windowPosition() must be a number.');
     assert.strictEqual(msgthree, 'Error while running "windowPosition" command: offsetY argument passed to .windowPosition() must be a number.');
 

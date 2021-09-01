@@ -56,7 +56,7 @@ describe('testRunWithCommandErrors', function() {
       return runTests({
         _source: [testsPath]
       }, settings({
-        output: true,
+        output: false,
         report_command_errors: true,
         skip_testcases_on_fail: false,
         disable_error_log: 0,
@@ -292,7 +292,7 @@ describe('testRunWithCommandErrors', function() {
       return runTests({
         _source: [testsPath]
       }, settings({
-        output: true,
+        output: false,
         skip_testcases_on_fail: false,
         disable_error_log: 0,
         globals

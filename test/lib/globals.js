@@ -125,6 +125,7 @@ class Globals {
         args[0] = FakeDriver.fakeSeleniumElement(client.transport.driver, '12345-6789');
       }
 
+      client.queue.tree.empty().createRootNode();
       client.queue.once('queue:finished', err => {
         if (err) {
           reject(err);
@@ -281,6 +282,10 @@ module.exports.assertion = function(assertionName, api, {
       context = opts.context;
       queueOpts = opts.options;
       addToQueue.call(this, opts);
+    };
+
+    client.queue.done = function(err) {
+      this.emit('queue:finished', err);
     };
 
     // create an extended reporter so we can intercept the results

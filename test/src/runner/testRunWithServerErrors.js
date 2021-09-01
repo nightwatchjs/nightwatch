@@ -42,7 +42,7 @@ describe('testRunWithServerErrors', function() {
       statusCode: 502,
       contentType: 'text/html',
       response: '<html>\n<head>\n<title>502 Bad Gateway</title>\n</head>\n<body>\n</body></html>'
-    }, false, true);
+    });
 
     let testsPath = path.join(__dirname, '../../sampletests/withservererrors');
     let globals = {
@@ -51,15 +51,15 @@ describe('testRunWithServerErrors', function() {
       waitForConditionTimeout: 150,
       waitForConditionPollInterval: 50,
       reporter(results, cb) {
-        assert.strictEqual(results.errmessages.length, 1);
+        assert.strictEqual(results.errmessages.length, 4);
         assert.ok(results.errmessages[0].includes('502 Bad Gateway'));
-        assert.strictEqual(results.passed, 2);
-        assert.strictEqual(results.failed, 2);
-        assert.strictEqual(results.assertions, 4);
-        assert.strictEqual(results.errors, 1);
+        assert.strictEqual(results.passed, 0);
+        assert.strictEqual(results.failed, 3);
+        assert.strictEqual(results.assertions, 3);
+        assert.strictEqual(results.errors, 4);
         assert.strictEqual(results.skipped, 0);
         const {completed} = results.modules.sampleTestWithServerError;
-        assert.ok(completed.demoTest.lastError.message.includes('502 Bad Gateway'));
+        assert.ok(completed.demoTest.lastError.message.includes('502 Bad Gateway'), `Result: ${completed.demoTest.lastError.message}`);
 
         cb();
       }
@@ -69,7 +69,6 @@ describe('testRunWithServerErrors', function() {
       _source: [testsPath]
     }, settings({
       output: false,
-      silent: true,
       skip_testcases_on_fail: false,
       report_command_errors: true,
       disable_error_log: 0,

@@ -202,7 +202,8 @@ describe('element base commands', function() {
 
     Nightwatch.api().element('css selector', '#weblogin-error', function(result) {
       assert.strictEqual(result.status, -1);
-      assert.strictEqual(result.error.message, '<html>\n<head>\n<title>502 Bad Gateway</title>\n</head>\n<body></body>\n</html>');
+      assert.strictEqual(result.error instanceof Error, true);
+      assert.strictEqual(result.error.name, 'WebDriverError');
       assert.strictEqual(result.value, null);
     });
 
@@ -581,7 +582,7 @@ describe('element base commands', function() {
       assert.strictEqual(expectedError.name, 'NoSuchElementError');
       assert.strictEqual(instance.suppressNotFoundErrors, false);
       assert.strictEqual(result.status, -1);
-      assert.strictEqual(result.value.error, 'An error occurred while running .isVisible() command on <.not_found>: unable to locate element using css selector');
+      assert.strictEqual(result.value.error, 'An error occurred while running .isVisible() command on <.not_found>: NoSuchElementError: Unable to locate element: .not_found using css selector');
     });
 
     return Nightwatch.start();
@@ -637,12 +638,9 @@ describe('element base commands', function() {
     Nightwatch.api().isVisible({selector: '.not_found', timeout: 10, retryInterval: 100, suppressNotFoundErrors: true}, function(result, instance) {
       assert.strictEqual(typeof expectedError, 'undefined');
       assert.strictEqual(instance.suppressNotFoundErrors, true);
-      assert.deepStrictEqual(result, {
-        error: 'unable to locate element using css selector',
-        status: 0,
-        value: []
-      });
-
+      assert.strictEqual(result.status, -1);
+      assert.strictEqual(result.value, null);
+      assert.ok(result.error instanceof Error);
     });
 
     return Nightwatch.start();

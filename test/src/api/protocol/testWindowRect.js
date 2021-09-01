@@ -95,9 +95,7 @@ describe('windowRect', function() {
       commandName: 'windowRect',
       args: [{width: 10, height: 10, x: 10, y: 10}]
     }).then(result => {
-      if (result.error) {
-        throw result.error;
-      }
+      assert.strictEqual(result, null);
     });
   });
 

@@ -21,18 +21,15 @@ describe('Cookie api demo tests', function() {
 
   test('browser.getCookies()', async (browser) => {
     const cookies = await browser.getCookies();
-    assert.deepStrictEqual(cookies, {
-      status: 0,
-      value: [
-        {
-          name: 'test_cookie',
-          value: '123456',
-          path: '/',
-          domain: 'example.org',
-          secure: false
-        }
-      ]
-    });
+    assert.deepStrictEqual(cookies, [
+      {
+        name: 'test_cookie',
+        value: '123456',
+        path: '/',
+        domain: 'example.org',
+        secure: false
+      }
+    ]);
   });
 
 });

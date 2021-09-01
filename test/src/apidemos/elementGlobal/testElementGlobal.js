@@ -39,7 +39,7 @@ describe('element global demos', function() {
     };
 
     return NightwatchClient.runTests(testsPath, settings({
-      output: true,
+      output: false,
       skip_testcases_on_fail: false,
       globals
     }));

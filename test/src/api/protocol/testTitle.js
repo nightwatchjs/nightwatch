@@ -14,8 +14,7 @@ describe('client.title', function() {
       commandName: 'title',
       args: []
     }).then((result) => {
-      assert.strictEqual(typeof result.error, 'undefined');
-      assert.deepStrictEqual(result.value, 'nightwatch');
+      assert.strictEqual(result, 'nightwatch');
     });
   });
 

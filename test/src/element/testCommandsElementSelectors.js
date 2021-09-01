@@ -114,12 +114,15 @@ describe('test commands element selectors', function() {
 
     Nightwatch.api()
       .waitForElementPresent('.nock-none', 1, false, function callback(result) {
-        assert.strictEqual(result.value, false, 'waitforPresent result expected false');
+        assert.strictEqual(result.value, null, 'waitforPresent result expected null');
       });
 
     Nightwatch.start(function(err) {
-
-      done(err);
+      if (err && err.name !== 'NightwatchAssertError') {
+        done(err);
+      } else {
+        done();
+      }
     });
   });
 
@@ -128,10 +131,16 @@ describe('test commands element selectors', function() {
 
     Nightwatch.api()
       .waitForElementPresent({selector: '.nock-none'}, 1, false, function callback(result) {
-        assert.strictEqual(result.value, false, 'waitforPresent selector property result expected false');
+        assert.strictEqual(result.value, null, 'waitforPresent selector property result expected false');
       });
 
-    Nightwatch.start(done);
+    Nightwatch.start(function(err) {
+      if (err && err.name !== 'NightwatchAssertError') {
+        done(err);
+      } else {
+        done();
+      }
+    });
   });
 
   it('waitForElementPresent(<various>) locateStrategy', function(done) {
@@ -166,15 +175,21 @@ describe('test commands element selectors', function() {
 
     Nightwatch.api()
       .waitForElementNotPresent('.nock-string', 50, false, function callback(result) {
-        assert.strictEqual(result.status, 0, 'waitForElementNotPresent succeeds');
-        assert.strictEqual(result.value.length, 0, 'waitForElementNotPresent returns no elements');
+        assert.strictEqual(result.status, -1, 'waitForElementNotPresent succeeds');
+        assert.strictEqual(result.value, null, 'waitForElementNotPresent returns no elements');
       })
       .waitForElementNotPresent({selector: '.nock-object', timeout: 50, retryInterval: 20, abortOnFailure: false}, function callback(result) {
-        assert.strictEqual(result.status, 0, 'waitForElementNotPresent succeeds');
-        assert.strictEqual(result.value.length, 0, 'waitForElementNotPresent returns no elements');
+        assert.strictEqual(result.status, -1, 'waitForElementNotPresent succeeds');
+        assert.strictEqual(result.value, null, 'waitForElementNotPresent returns no elements');
       });
 
-    Nightwatch.start(done);
+    Nightwatch.start(function(err) {
+      if (err && err.name !== 'NightwatchAssertError') {
+        done(err);
+      } else {
+        done();
+      }
+    });
   });
 
   it('waitForElementNotPresent(<{selector}>) failure', function(done) {
@@ -192,6 +207,12 @@ describe('test commands element selectors', function() {
         assert.strictEqual(result.value.length, 3, 'waitForElementNotPresent returns the found elements');
       });
 
-    Nightwatch.start(done);
+    Nightwatch.start(function(err) {
+      if (err && err.name !== 'NightwatchAssertError') {
+        done(err);
+      } else {
+        done();
+      }
+    });
   });
 });

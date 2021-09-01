@@ -15,8 +15,7 @@ describe('timeouts commands', function() {
       commandName: 'timeouts',
       args: ['script', 1000]
     }).then((result) => {
-      assert.strictEqual(typeof result.error, 'undefined');
-      assert.deepStrictEqual(result.value, null);
+      assert.strictEqual(result, null);
     });
   });
 
@@ -55,8 +54,7 @@ describe('timeouts commands', function() {
       commandName: 'timeoutsAsyncScript',
       args: [1000]
     }).then((result) => {
-      assert.strictEqual(typeof result.error, 'undefined');
-      assert.deepStrictEqual(result.value, null);
+      assert.strictEqual(result, null);
     });
   });
 
@@ -69,8 +67,7 @@ describe('timeouts commands', function() {
       commandName: 'timeoutsImplicitWait',
       args: [1000]
     }).then((result) => {
-      assert.strictEqual(typeof result.error, 'undefined');
-      assert.deepStrictEqual(result.value, null);
+      assert.strictEqual(result, null);
     });
   });
 

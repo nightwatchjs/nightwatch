@@ -110,7 +110,7 @@ describe('assert.domPropertyEquals', function () {
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.getValue(), 'visible-element');
         assert.strictEqual(instance.getActual(), 'visible-element');
-        assert.strictEqual(err.message, `Error while running "assert.domPropertyContains" command: [NightwatchAssertError] Testing if dom property 'className' of element <.test_element> doesn't contain 'visible-element' in 5ms - expected "not contains 'visible-element'" but got: "visible-element" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Testing if dom property 'className' of element <.test_element> doesn't contain 'visible-element' in 5ms - expected "not contains 'visible-element'" but got: "visible-element" (${instance.elapsedTime}ms)`);
       }
     });
   });
@@ -161,7 +161,7 @@ describe('assert.domPropertyEquals', function () {
         assert.strictEqual(instance.expected(), 'contains \'visible-element\'');
         assert.strictEqual(instance.getValue(), null);
         assert.strictEqual(failure, 'Expected "contains \'visible-element\'" but got: "element could not be located"');
-        assert.strictEqual(err.message, `Error while running "assert.domPropertyContains" command: [NightwatchAssertError] Test attribute 'className' from element "<.test_element>" == 'visible-element' in 5ms - expected "contains 'visible-element'" but got: "element could not be located" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Test attribute 'className' from element "<.test_element>" == 'visible-element' in 5ms - expected "contains 'visible-element'" but got: "element could not be located" (${instance.elapsedTime}ms)`);
       }
     });
   });

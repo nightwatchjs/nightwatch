@@ -59,13 +59,13 @@ module.exports = {
     return this;
   },
 
-  getUrl() {
+  getUrl(value = 'http://localhost') {
     nock('http://localhost:10195')
       .get('/wd/hub/session/1352110219202/url')
       .reply(200, {
         status: 0,
         state: 'success',
-        value: 'http://localhost'
+        value
       });
 
     return this;
@@ -79,6 +79,24 @@ module.exports = {
         state: 'success',
         value: [{ELEMENT: '0'}]
       });
+
+    return this;
+  },
+
+  elementStateError({error, times, code = 400, url = '/wd/hub/session/1352110219202/element/0/displayed', method = 'get', reply}) {
+    const mock = nock('http://localhost:10195')[method](url);
+
+    if (times) {
+      mock.times(times);
+    }
+
+    reply = reply || {
+      error,
+      message: error,
+      stacktrace: ''
+    };
+
+    mock.reply(code, reply);
 
     return this;
   },

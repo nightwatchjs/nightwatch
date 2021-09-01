@@ -31,7 +31,10 @@ describe('test page object element selectors', function() {
       output: false,
       silent: false,
       globals: {
-        abortOnAssertionFailure: true
+        abortOnAssertionFailure: true,
+        waitForConditionTimeout: 100,
+        waitForConditionPollInterval: 60,
+        retryAssertionTimeout: 100
       }
     }, done);
   });
@@ -289,7 +292,7 @@ describe('test page object element selectors', function() {
     let section = page.section.signUp;
 
     section.assert.not.elementPresent('@help', function(result) {
-      assert.strictEqual(result, true);
+      assert.strictEqual(result.passed, true);
       done();
     });
 
@@ -306,11 +309,9 @@ describe('test page object element selectors', function() {
 
     const page = Nightwatch.api().page.simplePageObj();
     page.customCommandWithSelector('@loginAsString', function(result) {
-      assert.deepStrictEqual(result, {
-        selector: '#weblogin',
-        locateStrategy: 'css selector',
-        name: 'loginAsString'
-      });
+      assert.strictEqual(result.name, 'loginAsString');
+      assert.strictEqual(result.selector, '#weblogin');
+      assert.strictEqual(result.locateStrategy, 'css selector');
     });
 
     Nightwatch.start(function() {
@@ -431,7 +432,7 @@ describe('test page object element selectors', function() {
         try {
           strictEqual(this.opts.rescheduleInterval, 50);
           strictEqual(this.opts.timeout, 100);
-          strictEqual(result, true);
+          strictEqual(result.passed, true);
           strictEqual(assertion.element.selector, '#weblogin');
           strictEqual(assertion.element.locateStrategy, 'css selector');
           strictEqual(assertion.element.name, 'loginAsString');
@@ -442,8 +443,9 @@ describe('test page object element selectors', function() {
       })
       .assert.customAssertionWithSelector('@loginAsString', 1, function(result, assertion) {
         try {
-          assert.ok(result instanceof Error);
-          assert.ok(result.message.includes('in 100ms'));
+          assert.strictEqual(result.passed, false);
+          assert.ok(result.err instanceof Error);
+          assert.ok(result.err.message.includes('in 100ms'));
           strictEqual(assertion.rescheduleInterval, 50);
           strictEqual(assertion.retryAssertionTimeout, 100);
           strictEqual(assertion.element.selector, '#weblogin');
@@ -470,7 +472,7 @@ describe('test page object element selectors', function() {
 
     section.assert.customAssertionWithSelector('@help', 0, function(result, assertion) {
       try {
-        strictEqual(result, true);
+        strictEqual(result.passed, true);
         assert.deepStrictEqual(assertion.element, {
           selector: '#helpBtn',
           WebdriverElementId: '0',
@@ -500,7 +502,7 @@ describe('test page object element selectors', function() {
 
     section.assert.customAssertionWithSelector({selector: '@help', index: 1}, 0, function(result, assertion) {
       try {
-        strictEqual(result, true);
+        strictEqual(result.passed, true);
         assert.deepStrictEqual(assertion.element, {
           selector: '#helpBtn',
           WebdriverElementId: '2',

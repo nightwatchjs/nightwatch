@@ -42,7 +42,7 @@ describe('waitForElementPresent', function() {
     this.client.api.globals.waitForConditionPollInterval = 10;
     this.client.api.waitForElementPresent('.weblogin', 15, function callback(result, instance) {
       assert.ok(/^Element .weblogin found in (\d+) milliseconds$/.test(instance.message));
-      assert.deepStrictEqual(result.value, false);
+      assert.strictEqual(result.value, null);
     }, 'Element %s found in %d milliseconds');
 
     this.client.start(function(err) {
@@ -99,7 +99,7 @@ describe('waitForElementPresent', function() {
     this.client.api.globals.waitForConditionPollInterval = 10;
 
     this.client.api.waitForElementPresent('.weblogin', 15, function callback(result) {
-      assert.strictEqual(result.value, false);
+      assert.strictEqual(result.value, null);
     });
 
     return this.client.start(function (err) {
@@ -112,9 +112,15 @@ describe('waitForElementPresent', function() {
 
   it('client.waitForElementPresent() failure no abort', function(done) {
     this.client.api.waitForElementPresent('.weblogin', 15, 10, false, function callback(result) {
-      assert.strictEqual(result.value, false);
+      assert.strictEqual(result.value, null);
     });
 
-    this.client.start(done);
+    this.client.start(function(err) {
+      if (err && err.name !== 'NightwatchAssertError') {
+        done(err);
+      } else {
+        done();
+      }
+    });
   });
 });

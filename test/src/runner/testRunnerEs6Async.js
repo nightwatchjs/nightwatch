@@ -26,7 +26,7 @@ describe('testRunner ES6 Async', function() {
   });
 
   it('test Runner with ES6 fluent api basic sample', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/es6await/selenium/basicSampleTest.js');
+    let testsPath = path.join(__dirname, '../../sampletests/es6await/basicSampleTest.js');
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/cookie',
       method: 'GET',
@@ -47,10 +47,14 @@ describe('testRunner ES6 Async', function() {
 
     let globals = {
       waitForConditionPollInterval: 50,
+      waitForConditionTimeout: 100,
+      retryAssertionTimeout: 150,
 
       reporter(results) {
         assert.ok('basicSampleTest' in results.modules);
-        if (results.modules.basicSampleTest.lastError) {
+
+        const {lastError} = results.modules.basicSampleTest;
+        if (lastError && lastError.name !== 'NightwatchAssertError') {
           throw results.modules.basicSampleTest.lastError;
         }
       }
@@ -58,6 +62,7 @@ describe('testRunner ES6 Async', function() {
 
     return runTests(testsPath, settings({
       skip_testcases_on_fail: false,
+      output: false,
       globals
     }));
   });
@@ -87,9 +92,9 @@ describe('testRunner ES6 Async', function() {
 
       reporter(results) {
         assert.ok('failures/sampleWithFailures' in results.modules, 'sampleWithFailures module not found in results');
-        assert.ok('basicSampleTest' in results.modules);
-        if (results.modules.basicSampleTest.lastError) {
-          throw results.modules.basicSampleTest.lastError;
+        assert.ok('basicSampleTestSelenium' in results.modules);
+        if (results.modules.basicSampleTestSelenium.lastError) {
+          throw results.modules.basicSampleTestSelenium.lastError;
         }
 
         if (results.modules['failures/sampleWithFailures'].completed.asyncGetCookiesTest.lastError) {
@@ -98,6 +103,7 @@ describe('testRunner ES6 Async', function() {
 
         assert.ok('failures/sampleWithFailures' in results.modules);
         assert.strictEqual(results.modules['failures/sampleWithFailures'].completed.verify.assertions.length, 2);
+
         assert.ok(results.modules['failures/sampleWithFailures'].completed.verify.assertions[0].failure.includes('Expected "is present" but got: "not present"'));
         assert.strictEqual(results.modules['failures/sampleWithFailures'].completed.verify.assertions[1].failure, false);
         assert.strictEqual(results.modules['failures/sampleWithFailures'].completed.waitFor.failed, 1);
@@ -109,6 +115,7 @@ describe('testRunner ES6 Async', function() {
 
     return runTests(testsPath, settings({
       skip_testcases_on_fail: false,
+      output: false,
       globals
     }));
   });

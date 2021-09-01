@@ -25,7 +25,7 @@ describe('waitForElementNotPresent', function () {
 
     return this.client.start(function(err) {
       strictEqual(err, undefined);
-      assert.deepStrictEqual(commandResult.value, []);
+      assert.deepStrictEqual(commandResult.value, null);
       strictEqual(commandInstance.executor.retries, 0);
       strictEqual(commandInstance.expectedValue, 'not found');
       strictEqual(commandInstance.rescheduleInterval, 5);
@@ -50,7 +50,6 @@ describe('waitForElementNotPresent', function () {
     this.client.api.waitForElementNotPresent('#weblogin', 15, false, commandCallback);
 
     return this.client.start(function (err) {
-      strictEqual(err, undefined);
       strictEqual(commandResult.status, 0);
       strictEqual(commandInstance.abortOnFailure, false);
       strictEqual(commandInstance.elementId, null);
@@ -69,7 +68,6 @@ describe('waitForElementNotPresent', function () {
     });
 
     return this.client.start(function (err) {
-      strictEqual(err, undefined);
       strictEqual(commandResult.status, 0);
       strictEqual(commandInstance.ms, 15);
       strictEqual(commandInstance.rescheduleInterval, 10);

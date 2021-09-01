@@ -14,8 +14,7 @@ describe('client.source', function() {
       commandName: 'source',
       args: []
     }).then((result) => {
-      assert.strictEqual(result.value, '<html><body></body></html>');
-      assert.strictEqual(result.status, 0);
+      assert.strictEqual(result, '<html><body></body></html>');
     });
   });
 

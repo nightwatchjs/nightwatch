@@ -6,13 +6,15 @@ describe('Cookie api demo tests', function() {
   after((browser) => browser.end());
 
   test('browser.getCookies() with network errors', async (browser) => {
-    const cookies = await browser.getCookies();
-    assert.ok(cookies.error instanceof Error);
-    assert.strictEqual(cookies.error.code, 'ECONNRESET');
-    assert.strictEqual(cookies.error.message, 'ECONNRESET socket hang up');
-    assert.strictEqual(cookies.status, -1);
-    assert.strictEqual(cookies.value, null);
-    
+    const cookies = await browser.getCookies(res => {
+      assert.ok(res.error instanceof Error);
+      assert.strictEqual(res.error.code, 'ECONNRESET');
+      assert.strictEqual(res.error.message, 'ECONNRESET socket hang up');
+      assert.strictEqual(res.status, -1);
+      assert.strictEqual(res.value, null);
+    });
+
+    assert.strictEqual(cookies, null);
   });
 
 });

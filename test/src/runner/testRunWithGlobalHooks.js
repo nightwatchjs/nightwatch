@@ -162,12 +162,14 @@ describe('testRunWithGlobalHooks', function() {
     let testsPath = path.join(__dirname, '../../sampletests/before-after');
 
     return runTests(testsPath, settings({
+      output: false,
       globals: {
-        asyncHookTimeout: 100,
+        asyncHookTimeout: 200,
         beforeEach(client, done) {
-          client.perform(function() {
-            throw new Error('From global beforeEach');
-          });
+          client
+            .perform(function() {
+              throw new Error('From global beforeEach');
+            });
         },
         reporter(results, cb) {
           assert.strictEqual(results.modules.sampleSingleTest.errmessages.length, 2);
@@ -231,6 +233,7 @@ describe('testRunWithGlobalHooks', function() {
       beforeEach: function(client, done) {
         const testTimestamp = new Date(client.currentTest.timestamp);
         const currentTimestamp = new Date();
+
         assert.ok(testTimestamp);
         assert.strictEqual(testTimestamp.getFullYear(), currentTimestamp.getFullYear());
         assert.strictEqual(testTimestamp.getMonth(), currentTimestamp.getMonth());
@@ -264,6 +267,7 @@ describe('testRunWithGlobalHooks', function() {
     };
 
     return runTests(testsPath, settings({
+      output: false,
       globals
     }));
   });

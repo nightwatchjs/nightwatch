@@ -68,7 +68,7 @@ describe('assert.elementPresent', function() {
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.getValue(), 'present');
         assert.strictEqual(instance.getActual(), 'present');
-        assert.strictEqual(err.message, `Error while running "assert.elementPresent" command: [NightwatchAssertError] Testing if element <.test_element> is not present in 5ms - expected "is not present" but got: "present" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Testing if element <.test_element> is not present in 5ms - expected "is not present" but got: "present" (${instance.elapsedTime}ms)`);
       }
     });
   });

@@ -64,7 +64,7 @@ describe('assert.visible', function () {
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.getValue(), true);
         assert.strictEqual(instance.getActual(), 'visible');
-        assert.strictEqual(err.message, `Error while running "assert.visible" command: [NightwatchAssertError] Testing if element <.test_element> is not visible in 5ms - expected "is not visible" but got: "visible" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Testing if element <.test_element> is not visible in 5ms - expected "is not visible" but got: "visible" (${instance.elapsedTime}ms)`);
       }
     });
   });
@@ -137,7 +137,7 @@ describe('assert.visible', function () {
         assert.strictEqual(instance.expected(), 'is visible');
         assert.strictEqual(instance.getValue(), null);
         assert.strictEqual(failure, 'Expected "is visible" but got: "element could not be located"');
-        assert.strictEqual(err.message, `Error while running "assert.visible" command: [NightwatchAssertError] Testing if element <.test_element> is visible in 5ms - expected "is visible" but got: "element could not be located" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Testing if element <.test_element> is visible in 5ms - expected "is visible" but got: "element could not be located" (${instance.elapsedTime}ms)`);
       }
     });
   });
