@@ -29,7 +29,7 @@
     "minimist": "^1.2.5",
     "mkpath": "1.0.0",
     "mocha": "6.2.3",
-    "ora": "^4.1.1",
+    "ora": "^5.4.1",
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
     "selenium-webdriver": "^4.0.0-rc-1",
