@@ -8,17 +8,11 @@ describe('Firefox driver options', function(){
     const firefoxOptions =  new FirefoxOptions();
     firefoxOptions.headless();
     const client = Nightwatch.createClient({
-      webdriver: {
-        options: firefoxOptions
-      },
-      desiredCapabilities: {
-        browserName: 'firefox'
-      }
+      capabilities: firefoxOptions
     });
-    const options =  client.transport.createOptions();
 
-    assert.strictEqual(options instanceof FirefoxOptions, true);
-    assert.deepStrictEqual(options.get('moz:firefoxOptions').args, ['-headless']);
+    const options =  client.transport.createOptions();
+    assert.strictEqual(options, firefoxOptions);
   });
 
   it('moz:firefoxOptions detach driver option', function(){

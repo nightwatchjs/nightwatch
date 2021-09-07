@@ -6,6 +6,8 @@ describe('Cookie api demo tests', function() {
   after((browser) => browser.end());
 
   test('browser.getCookie(<name>)', async (browser) => {
+    await browser.assert.urlContains('//localhost');
+
     const test_cookie = await browser.getCookie('test_cookie');
     assert.deepStrictEqual(test_cookie, {
       name: 'test_cookie',

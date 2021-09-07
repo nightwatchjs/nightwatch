@@ -29,6 +29,7 @@ describe('element global demos', function() {
 
     const globals = {
       waitForConditionPollInterval: 50,
+      waitForConditionTimeout: 120,
       retryAssertionTimeout: 1000,
 
       reporter(results) {

@@ -32,7 +32,7 @@
     "ora": "^4.1.1",
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
-    "selenium-webdriver": "^4.0.0-beta.4",
+    "selenium-webdriver": "^4.0.0-rc-1",
     "semver": "^6.3.0",
     "strip-ansi": "^6.0.0"
   },

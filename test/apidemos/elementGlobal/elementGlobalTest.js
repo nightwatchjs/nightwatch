@@ -38,6 +38,8 @@ describe('get text using element-global', function () {
 
     expect(weblogin).to.be.visible;
 
+    expect('#weblogin').text.contains('sample');
+
     const webElement = await weblogin.getWebElement();
     assert.ok(webElement instanceof WebElement);
 
