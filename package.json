@@ -33,7 +33,7 @@
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
     "selenium-webdriver": "^4.0.0-rc-1",
-    "semver": "^6.3.0",
+    "semver": "^7.3.5",
     "strip-ansi": "^6.0.0"
   },
   "devDependencies": {
