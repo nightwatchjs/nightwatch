@@ -109,6 +109,27 @@ describe('test Settings', function () {
     eq(request.reqOptions.port, 80);
   });
 
+  it('test create Transport for remote with Firefox', function() {
+    const Settings = common.require('settings/settings.js');
+
+    let settings = Settings.parse({
+      selenium: {
+        start_process: false
+      }
+    }, {
+      test_settings: {
+        default: {},
+        remote: {
+          selenium_host: 'localhost.org',
+          selenium_port: 8000
+        }
+      }
+    }, {}, 'remote');
+
+    assert.strictEqual(settings.webdriver.host, 'localhost.org');
+    assert.strictEqual(settings.webdriver.port, 8000);
+  });
+
   it('testSetOptionsCredentials', function () {
     let client = Nightwatch.createClient({
       username: 'test-user',

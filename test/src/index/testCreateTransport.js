@@ -31,6 +31,21 @@ describe('Transport.create()', function () {
     assert.strictEqual(client.settings.webdriver.host, 'remote.url');
   });
 
+  it('test create Transport for with browserName disabled', function() {
+    const client = NightwatchClient.client({
+      selenium: {
+        start_process: false
+      },
+      webdriver: {},
+      desiredCapabilities: {
+        browserName: null
+      },
+      selenium_host: 'remote.url'
+    });
+
+    assert.strictEqual(client.options.desiredCapabilities.browserName, null);
+  });
+
   it('test create Transport for Selenium3 external with Firefox - seleniumHost property', function() {
     const client = NightwatchClient.client({
       selenium: {
