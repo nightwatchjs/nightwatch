@@ -5,11 +5,11 @@ const Nightwatch = require('../lib/index.js');
 const {Logger} = require('../lib/utils');
 
 try {
-  Nightwatch.cli(function(argv) {
+  Nightwatch.cli(async function(argv) {
     argv._source = argv['_'].slice(0);
 
     const runner = Nightwatch.CliRunner(argv);
-    runner.setup();
+    await runner.setup();
 
     return runner.runTests()
       .catch(err => {

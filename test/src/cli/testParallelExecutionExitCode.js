@@ -61,13 +61,13 @@ describe('test Parallel Execution Exit Code', function() {
     process.env.__NIGHTWATCH_PARALLEL_MODE = null;
   });
 
-  it('test parallel execution with code non zero test workers', function() {
+  it('test parallel execution with code non zero test workers', async function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: path.join(__dirname, '../../extra/parallelism-count.json')
     });
 
-    runner.setup();
+    await runner.setup();
 
     let setExitCode = runner.processListener.setExitCode;
     runner.processListener.setExitCode = function(code) {
@@ -78,14 +78,14 @@ describe('test Parallel Execution Exit Code', function() {
     return runner.runTests();
   });
 
-  it('test parallel execution with code non zero envs', function() {
+  it('test parallel execution with code non zero envs', async function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: path.join(__dirname, '../../extra/parallelism-envs.json'),
       env: 'env1,env2'
     });
 
-    runner.setup();
+    await runner.setup();
 
     let setExitCode = runner.processListener.setExitCode;
     runner.processListener.setExitCode = function(code) {
