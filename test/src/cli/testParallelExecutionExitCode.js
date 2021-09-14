@@ -8,7 +8,7 @@ const common = require('../../common.js');
 describe('test Parallel Execution Exit Code', function() {
   const allArgs = [];
   const allOpts = [];
-  this.timeout(3000);
+  this.timeout(5000);
 
   beforeEach(function() {
     let index = 0;

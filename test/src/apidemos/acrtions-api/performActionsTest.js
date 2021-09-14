@@ -54,7 +54,7 @@ describe('actions api tests', function() {
 
     return NightwatchClient.runTests(testsPath, settings({
       selenium_host: null,
-      output: true,
+      output: false,
       globals
     }));
   });

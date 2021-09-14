@@ -5,7 +5,7 @@ const MockServer = require('../../lib/mockserver.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
 
-describe('testRunnerWithSeleniumWebdriver', function() {
+xdescribe('testRunnerWithSeleniumWebdriver', function() {
   this.timeout(10000);
 
   before(function(done) {
@@ -22,6 +22,7 @@ describe('testRunnerWithSeleniumWebdriver', function() {
     });
   });
 
+  // TODO: consider fixing this if it turns out that people actually need it
   it('test runner using selenium-webdriver library', function() {
     const testsPath = path.join(__dirname, '../../sampletests/withwebdriver/sampleTestUsingSeleniumWebdriver.js');
 

@@ -5,7 +5,9 @@ const Globals = require('../../../lib/globals.js');
 describe('alert commands', function () {
 
   before(function () {
-    Globals.protocolBefore();
+    Globals.protocolBefore({
+      backwards_compatibility_mode: true
+    });
   });
 
   it('testAcceptAlert', function (done) {

@@ -14,8 +14,7 @@ describe('url', function() {
       commandName: 'url',
       args: []
     }).then((result) => {
-      assert.strictEqual(typeof result.error, 'undefined');
-      assert.deepStrictEqual(result.value, 'http://localhost');
+      assert.strictEqual(result, 'http://localhost');
     });
   });
 
@@ -28,8 +27,7 @@ describe('url', function() {
       commandName: 'url',
       args: ['http://localhost']
     }).then((result) => {
-      assert.strictEqual(typeof result.error, 'undefined');
-      assert.deepStrictEqual(result.value, null);
+      assert.strictEqual(result, null);
     });
   });
 

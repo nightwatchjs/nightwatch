@@ -70,7 +70,7 @@ describe('assert.hidden', function () {
       assertion({instance, failure, err}) {
         assert.strictEqual(instance.getActual(), '');
         assert.strictEqual(instance.expected, true);
-        assert.strictEqual(instance.getValue(), true);
+        assert.strictEqual(instance.getValue(), null);
         assert.strictEqual(failure, 'Expected "true" but got: ""');
       }
     });

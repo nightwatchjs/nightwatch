@@ -18,10 +18,7 @@ describe('window commands', function() {
       commandName: 'windowHandle',
       args: []
     }).then((result) => {
-      if (result.error) {
-        throw result.error;
-      }
-      assert.deepStrictEqual(result.value, 'CDwindow-BE13CA812F066254342F4FEB180D14ED');
+      assert.strictEqual(result, 'CDwindow-BE13CA812F066254342F4FEB180D14ED');
     });
   });
 
@@ -33,10 +30,7 @@ describe('window commands', function() {
       commandName: 'windowHandles',
       args: []
     }).then((result) => {
-      if (result.error) {
-        throw result.error;
-      }
-      assert.deepStrictEqual(result.value, ['CDwindow-BE13CA812F066254342F4FEB180D14ED']);
+      assert.deepStrictEqual(result, ['CDwindow-BE13CA812F066254342F4FEB180D14ED']);
     });
   });
 
@@ -48,10 +42,7 @@ describe('window commands', function() {
       commandName: 'window',
       args: ['DELETE']
     }).then((result) => {
-      if (result.error) {
-        throw result.error;
-      }
-      assert.deepStrictEqual(result.value, null);
+      assert.strictEqual(result, null);
     });
   });
   
@@ -64,10 +55,7 @@ describe('window commands', function() {
       commandName: 'window',
       args: ['POST', 'other-window']
     }).then((result) => {
-      if (result.error) {
-        throw result.error;
-      }
-      assert.deepStrictEqual(result.value, null);
+      assert.strictEqual(result, null);
     });
   });
 
@@ -94,10 +82,7 @@ describe('window commands', function() {
       },
       commandName: 'minimizeWindow'
     }).then((result) => {
-      if (result.error) {
-        throw result.error;
-      }
-      assert.deepStrictEqual(result.value, null);
+      assert.strictEqual(result, null);
     });
   });
 
@@ -109,10 +94,7 @@ describe('window commands', function() {
       commandName: 'windowMaximize',
       args: []
     }).then((result) => {
-      if (result.error) {
-        throw result.error;
-      }
-      assert.deepStrictEqual(result.value, null);
+      assert.strictEqual(result, null);
     });
   });
 
@@ -124,10 +106,7 @@ describe('window commands', function() {
       commandName: 'openNewWindow',
       args: []
     }).then((result) => {
-      if (result.error) {
-        throw result.error;
-      }
-      assert.deepStrictEqual(result.value, null);
+      assert.strictEqual(result, null);
     });
   });
 
@@ -140,10 +119,10 @@ describe('window commands', function() {
       },
       commandName: 'openNewWindow',
       args: [function(result) {
-        if (result.error) {
-          throw result.error;
-        }
-        assert.deepStrictEqual(result.value, null);
+        assert.deepStrictEqual(result, {
+          value: null,
+          status: 0
+        });
       }]
     });
   });
@@ -157,10 +136,7 @@ describe('window commands', function() {
       commandName: 'openNewWindow',
       args: ['window']
     }).then((result) => {
-      if (result.error) {
-        throw result.error;
-      }
-      assert.deepStrictEqual(result.value, null);
+      assert.strictEqual(result, null);
     });
   });
 

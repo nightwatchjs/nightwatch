@@ -137,7 +137,7 @@ describe('testRunnerJUnitOutput', function() {
           assert.strictEqual(results.errmessages.length, 1);
           assert.strictEqual(results.failed, 1);
           assert.ok(results.lastError instanceof Error);
-          assert.ok(results.lastError.message.startsWith('Error while running "assert.equal" command: [NightwatchAssertError] Failed [equal]: (0 == 1)'));
+          assert.ok(results.lastError.message.startsWith('Failed [equal]: (0 == 1)'), results.lastError.message);
           assert.strictEqual(typeof results.modules.sampleWithAssertionFailedInBefore, 'object');
           assert.strictEqual(results.modules.sampleWithAssertionFailedInBefore.assertionsCount, 1);
           assert.strictEqual(results.modules.sampleWithAssertionFailedInBefore.errmessages.length, 1);
@@ -177,7 +177,7 @@ describe('testRunnerJUnitOutput', function() {
           assert.strictEqual(results.errmessages.length, 1);
           assert.strictEqual(results.failed, 1);
           assert.ok(results.lastError instanceof Error);
-          assert.ok(results.lastError.message.startsWith('Error while running "assert.equal" command: [NightwatchAssertError] Failed [equal]: (0 == 1)'));
+          assert.ok(results.lastError.message.startsWith('Failed [equal]: (0 == 1)'), results.lastError.message);
           assert.strictEqual(typeof results.modules.sampleWithAssertionFailedInAfter, 'object');
           assert.strictEqual(results.modules.sampleWithAssertionFailedInAfter.assertionsCount, 1);
           assert.strictEqual(results.modules.sampleWithAssertionFailedInAfter.errmessages.length, 1);
@@ -217,7 +217,7 @@ describe('testRunnerJUnitOutput', function() {
           assert.strictEqual(results.errmessages.length, 1);
           assert.strictEqual(results.failed, 2);
           assert.ok(results.lastError instanceof Error);
-          assert.ok(results.lastError.message.startsWith('Error while running "assert.strictEqual" command: [NightwatchAssertError] Failed [strictEqual]:'));
+          assert.ok(results.lastError.message.startsWith('Failed [strictEqual]:'), results.lastError.message);
           assert.strictEqual(typeof results.modules.sampleWithFailureInTestcaseAndAfter, 'object');
           assert.strictEqual(results.modules.sampleWithFailureInTestcaseAndAfter.assertionsCount, 2);
           assert.strictEqual(results.modules.sampleWithFailureInTestcaseAndAfter.errmessages.length, 1);
@@ -258,7 +258,7 @@ describe('testRunnerJUnitOutput', function() {
           assert.strictEqual(results.errmessages.length, 2);
           assert.strictEqual(results.failed, 1);
           assert.ok(results.lastError instanceof Error);
-          assert.ok(results.lastError.message.startsWith('Error while running "assert.strictEqual" command: [NightwatchAssertError] Failed [strictEqual]:'));
+          assert.ok(results.lastError.message.startsWith('Failed [strictEqual]:'), results.lastError.message);
           assert.strictEqual(typeof results.modules.sampleWithErrorInTestcaseAndAfter, 'object');
           assert.strictEqual(results.modules.sampleWithErrorInTestcaseAndAfter.assertionsCount, 1);
           assert.strictEqual(results.modules.sampleWithErrorInTestcaseAndAfter.errmessages.length, 2);

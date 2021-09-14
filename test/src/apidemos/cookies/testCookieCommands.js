@@ -56,9 +56,8 @@ describe('cookie demos', function() {
       waitForConditionPollInterval: 50,
 
       reporter(results) {
-        if (results.lastError) {
-          throw results.lastError;
-        }
+        assert.ok(results.lastError instanceof Error);
+        assert.strictEqual(results.errors, 1);
       }
     };
 
@@ -75,7 +74,7 @@ describe('cookie demos', function() {
         }
       },
       output: false,
-      report_network_errors: false,
+      report_command_errors: true,
       skip_testcases_on_fail: false,
       silent: false,
       persist_globals: true,

@@ -106,7 +106,6 @@ describe('Test CLI Runner', function() {
         start_process: false,
         start_session: false
       },
-      use_selenium_webdriver: false,
       test_settings: {
         'default': {
           selenium: {
@@ -306,7 +305,6 @@ describe('Test CLI Runner', function() {
     assert.strictEqual(runner.test_settings.skipgroup, '');
     assert.strictEqual(runner.globals.settings.output_folder, 'tests_output');
     assert.strictEqual(runner.globals.settings.parallel_mode, false);
-    assert.strictEqual(runner.isWebDriverManaged(), false);
     assert.strictEqual(runner.globals.settings.start_session, true);
   });
 
@@ -419,7 +417,6 @@ describe('Test CLI Runner', function() {
       env: 'extra'
     }).setup();
 
-    assert.strictEqual(runner.isWebDriverManaged(), false);
     assert.strictEqual(runner.test_settings.selenium.host, 'other.host');
     assert.strictEqual(runner.test_settings.detailed_output, false);
     assert.strictEqual(runner.test_settings.output, false);
@@ -890,54 +887,6 @@ describe('Test CLI Runner', function() {
       });
 
     }, /Error reading external global file using "\.\/extra\/globals-err.js"/);
-  });
-
-  it('testStartSeleniumDisabledPerEnvironment', function() {
-    mockery.registerMock('fs', {
-      statSync: function(module) {
-        if (module === './sauce.json') {
-          return {
-            isFile: function() {
-              return true;
-            }
-          };
-        }
-        throw new Error('Does not exist');
-      },
-      constants,
-      rmdirSync
-    });
-    const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
-      config: './sauce.json',
-      env: 'saucelabs'
-    }).setup();
-
-    assert.strictEqual(runner.isWebDriverManaged(), false);
-  });
-
-  it('testStartSeleniumEnvironmentOverride', function() {
-    mockery.registerMock('fs', {
-      statSync: function(module) {
-        if (module === './selenium_override.json') {
-          return {
-            isFile: function() {
-              return true;
-            }
-          };
-        }
-        throw new Error('Does not exist');
-      },
-      constants,
-      rmdirSync
-    });
-    const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
-      config: './selenium_override.json',
-      env: 'default'
-    }).setup();
-
-    assert.strictEqual(runner.isWebDriverManaged(), true);
   });
 
 });

@@ -215,9 +215,9 @@ describe('assert.cssClassPresent', function () {
       assertion({instance, failure, err}) {
         assert.strictEqual(instance.getActual(), 'element could not be located');
         assert.strictEqual(instance.expected(), 'has test-css-class');
-        assert.strictEqual(instance.getValue(), '');
+        assert.strictEqual(instance.getValue(), null);
         assert.strictEqual(failure, 'Expected "has test-css-class" but got: "element could not be located"');
-        assert.strictEqual(err.message, `Error while running "assert.cssClassPresent" command: [NightwatchAssertError] Element <.test_element> doesnt have css class "'test-css-class'" in 5ms - expected "has test-css-class" but got: "element could not be located" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Element <.test_element> doesnt have css class "'test-css-class'" in 5ms - expected "has test-css-class" but got: "element could not be located" (${instance.elapsedTime}ms)`);
       }
     });
   });

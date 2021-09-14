@@ -4,9 +4,8 @@ const assert = require('assert');
 const common = require('../../common.js');
 const Nightwatch = require('../../lib/nightwatch.js');
 const HttpRequest = common.require('http/request.js');
-const WebdriverProtocol = common.require('transport/webdriver');
-const JsonWireProtocol = common.require('transport/jsonwire');
-const SeleniumProtocol = common.require('transport/selenium-webdriver/selenium');
+const WebdriverProtocol = common.require('transport');
+const SeleniumProtocol = common.require('transport/selenium-webdriver/selenium.js');
 
 describe('Trandport.runProtocolAction', function() {
   const nightwatch = Nightwatch.createClientDefaults();
@@ -28,26 +27,6 @@ describe('Trandport.runProtocolAction', function() {
 
   afterEach(function() {
     nock.restore();
-  });
-
-  it('test runProtocolAction W3C Webdriver', function() {
-    nock('http://localhost:4444')
-      .post('/session/123456/url')
-      .reply(200, {
-        value: null
-      });
-
-    const transport = new WebdriverProtocol(nightwatch);
-
-    return transport.runProtocolAction({
-      path: '/session/123456/url',
-      data: {
-        url: 'http://localhost'
-      },
-      method: 'POST'
-    }).then(result => {
-      assert.deepStrictEqual(result, {value: null});
-    });
   });
 
   it('test runProtocolAction W3C Webdriver - socket hang up error', function() {
@@ -145,81 +124,6 @@ describe('Trandport.runProtocolAction', function() {
     });
   });
 
-  it('test runProtocolAction JSONWire - command error', function() {
-    nock('http://localhost:4444')
-      .post('/session/123456/window/new')
-      .reply(500, {
-        sessionId: null,
-        state: 'unhandled error',
-        value: {
-          message: 'POST /session/123456/window/new\nBuild info: version: \'2.53.0\', revision: \'35ae25b\', time: \'2016-03-15 17:00:58\'\nSystem info: host: \'185-200-100-181\', ip: \'185.200.100.181\', os.name: \'windows\', os.arch: \'x86\', os.version: \'10.0\', java.version: \'1.8.0_181\'\nDriver info: driver.version: unknown',
-          stacktrace: []
-        },
-        status: 13
-      });
-
-    const transport = new JsonWireProtocol(nightwatch);
-
-    return transport.runProtocolAction({
-      path: '/session/123456/window/new',
-      data: {
-        url: 'http://localhost'
-      },
-      method: 'POST'
-    }).then(result => {
-      throw new Error('An error should be thrown');
-    }).catch(err => {
-      assert.deepStrictEqual(err, {
-        code: '',
-        status: -1,
-        state: 'unhandled error',
-        value:
-          {message: 'POST /session/123456/window/new',
-            error:
-              ['Build info: version: \'2.53.0\', revision: \'35ae25b\', time: \'2016-03-15 17:00:58\'',
-                'System info: host: \'185-200-100-181\', ip: \'185.200.100.181\', os.name: \'windows\', os.arch: \'x86\', os.version: \'10.0\', java.version: \'1.8.0_181\'',
-                'Driver info: driver.version: unknown'
-              ]
-          },
-        errorStatus: 13,
-        error:
-          'An unknown server-side error occurred while processing the command. – POST /session/123456/window/new',
-        httpStatusCode: 500
-      });
-    });
-  });
-
-  it('test runProtocolAction JSONWire - socket hang up error', function() {
-    nock('http://localhost:4444')
-      .post('/session/123456/url')
-      .replyWithError({
-        message: 'socket hang up',
-        code: 'ECONNRESET'
-      });
-
-    const transport = new JsonWireProtocol(nightwatch);
-
-    return transport.runProtocolAction({
-      path: '/session/123456/url',
-      data: {
-        url: 'http://localhost'
-      },
-      method: 'POST'
-    }).then(result => {
-      throw new Error('An error should be thrown');
-    }).catch(err => {
-      assert.deepStrictEqual(err, {
-        status: -1,
-        state: '',
-        code: 'ECONNRESET',
-        value: null,
-        errorStatus: '',
-        error: 'Error ECONNRESET: socket hang up',
-        httpStatusCode: null
-      });
-    });
-  });
-
   it('test runProtocolAction SeleniumServer - command error', function() {
     nock('http://localhost:4444')
       .post('/session/123456/window/new')
@@ -284,45 +188,6 @@ describe('Trandport.runProtocolAction', function() {
         error: 'Error ECONNRESET: socket hang up',
         httpStatusCode: null
       });
-    });
-  });
-
-  it('test createSession Selenium Grid remote', async function() {
-    nock('http://localhost:4445')
-      .post('/wd/hub/session')
-      .reply(200, {
-        value: {
-          acceptInsecureCerts: false,
-          browserName: 'chrome',
-          browserVersion: '89.0.4389.90',
-          proxy: {}
-        },
-        status: 0,
-        sessionId: '3eca50bb367d7de96715c21b131e623f'
-      });
-
-    const nightwatch = Nightwatch.createClient({
-      selenium: {
-        port: 4445,
-        start_process: false
-      },
-      webdriver: {
-        start_process: false
-      },
-      silent: false,
-      output: false,
-      disable_colors: true
-    });
-    const transport = new WebdriverProtocol(nightwatch);
-
-    const data = await transport.createSession();
-    assert.strictEqual(data.sessionId, '3eca50bb367d7de96715c21b131e623f');
-    assert.deepStrictEqual(data.capabilities, {
-      acceptInsecureCerts: false,
-      browserName: 'chrome',
-      browserVersion: '89.0.4389.90',
-      proxy: {}
-
     });
   });
 });

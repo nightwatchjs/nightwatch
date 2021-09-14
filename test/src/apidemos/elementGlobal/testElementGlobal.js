@@ -23,9 +23,14 @@ describe('element global demos', function() {
     const testsPath = path.join(__dirname, '../../../apidemos/elementGlobal/elementGlobalTest.js');
     Mocks.elementText();
     Mocks.tagName('0', 'div');
+    Mocks.visible('0', true, {
+      times: 1
+    });
 
     const globals = {
       waitForConditionPollInterval: 50,
+      waitForConditionTimeout: 120,
+      retryAssertionTimeout: 1000,
 
       reporter(results) {
         if (results.lastError) {

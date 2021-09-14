@@ -17,7 +17,7 @@ module.exports = {
           host: 'localhost'
         },
         // output: process.env.VERBOSE === '1' || false,
-        output: true,
+        output: false,
         silent: false
       })
         .then(client => {

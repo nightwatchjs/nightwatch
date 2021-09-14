@@ -1,24 +1,18 @@
 const assert = require('assert');
 const Nightwatch = require('../../lib/nightwatch.js');
-const ChromeOptions =  require('selenium-webdriver/chrome').Options;
+const ChromeOptions = require('selenium-webdriver/chrome').Options;
 
 describe('Test chrome options', function () {
 
   it('Chrome option object with headless', function(){
-    const chromeOptions =  new ChromeOptions();
-    chromeOptions.headless();
+    const capabilities = new ChromeOptions();
+    capabilities.headless();
     const client = Nightwatch.createClient({
-      webdriver: {
-        options: chromeOptions
-      },
-      desiredCapabilities: {
-        browserName: 'chrome'
-      }
+      capabilities
     });
-    const options =  client.transport.createOptions();
-
-    assert.strictEqual(options instanceof ChromeOptions, true);
-    assert.deepStrictEqual(options.options_.args, ['headless']);
+    
+    const options = client.transport.createOptions();
+    assert.strictEqual(options, capabilities);
   });
 
   it('goog:chromeOptions detach driver option', function () {

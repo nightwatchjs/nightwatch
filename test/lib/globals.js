@@ -2,13 +2,13 @@ const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
 const lodashMerge = require('lodash.merge');
-const FakeDriver = require('./fakedriver.js');
 const common = require('../common.js');
-const Nightwatch = require('../lib/nightwatch.js');
-const MockServer  = require('../lib/mockserver.js');
 const Settings = common.require('settings/settings.js');
 const Runner = common.require('runner/runner.js');
 const Reporter = common.require('reporter/index.js');
+const FakeDriver = require('./fakedriver.js');
+const Nightwatch = require('../lib/nightwatch.js');
+const MockServer  = require('../lib/mockserver.js');
 
 class ExtendedReporter extends Reporter {
   registerPassed(message) {
@@ -60,7 +60,18 @@ class Globals {
   }
 
   protocolAfter(done) {
-    this.server.close(() => done());
+    if (this.client) {
+      this.client = null;
+    }
+    if (this.wdClient) {
+      this.wdClient = null;
+    }
+
+    if (this.server) {
+      this.server.close(() => done());
+    } else {
+      done();
+    }
   }
 
   protocolBefore(opts = {}, done) {
@@ -92,17 +103,29 @@ class Globals {
     return this.runProtocolTest(definition, this.wdClient);
   }
 
-  runProtocolTest({assertion = function() {}, commandName, args = [], mockDriverOverrides = {}}, client) {
+  runProtocolTest({assertion = function() {}, commandName, args = [], mockDriverOverrides = {}, browserDriver = ''}, client) {
     return new Promise((resolve, reject) => {
       client.transport.runProtocolAction = function(opts) {
         assertion(opts);
       };
 
-      client.transport.driver = FakeDriver.create(assertion, mockDriverOverrides, args);
+      let driver;
+
+      if (browserDriver === 'chrome') {
+        driver = FakeDriver.createChromeDriver(assertion, mockDriverOverrides);
+      } else if (browserDriver === 'firefox') {
+        driver = FakeDriver.createFirefoxDriver(assertion, mockDriverOverrides);
+      } else {
+        driver = FakeDriver.create(assertion, mockDriverOverrides, args);
+      }
+
+      client.transport.driver = driver;
+
       if (args[0] === '@seleniumElement') {
         args[0] = FakeDriver.fakeSeleniumElement(client.transport.driver, '12345-6789');
       }
 
+      client.queue.tree.empty().createRootNode();
       client.queue.once('queue:finished', err => {
         if (err) {
           reject(err);
@@ -212,6 +235,18 @@ module.exports.assertion = function(assertionName, api, {
     const options = addSettings(settings);
     instance.protocolBefore(options);
 
+    const onFinish = function(err) {
+      instance.protocolAfter(() => {
+        if (err) {
+          reject(err);
+
+          return;
+        }
+
+        resolve();
+      });
+    };
+
     let context;
     let queueOpts;
 
@@ -249,13 +284,17 @@ module.exports.assertion = function(assertionName, api, {
       addToQueue.call(this, opts);
     };
 
+    client.queue.done = function(err) {
+      this.emit('queue:finished', err);
+    };
+
     // create an extended reporter so we can intercept the results
     instance.createReporter();
 
     // when the queue has finished running, signal the end of the test
     client.queue.once('queue:finished', err => {
       if (err && err.name !== 'NightwatchAssertError') {
-        reject(err);
+        onFinish(err);
 
         return;
       }
@@ -295,9 +334,9 @@ module.exports.assertion = function(assertionName, api, {
         const {failure, message} = client.reporter.assertionResult;
         assertion({reporter, instance: assertionInstance, err, queueOpts, failure, message});
 
-        resolve();
+        onFinish();
       } catch (ex) {
-        reject(ex);
+        onFinish(ex);
       }
     });
 

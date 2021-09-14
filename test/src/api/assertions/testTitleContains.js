@@ -34,13 +34,14 @@ describe('assert.titleContains', function () {
       args: ['Test Title'],
       assertError: true,
       commandResult: {
+        status: -1
       },
       assertion({instance, failure, err}) {
         assert.strictEqual(instance.getActual(), '');
         assert.strictEqual(instance.expected(), 'contains \'Test Title\'');
-        assert.strictEqual(instance.getValue(), '');
+        assert.strictEqual(instance.getValue(), null);
         assert.strictEqual(failure, 'Expected "contains \'Test Title\'" but got: ""');
-        assert.strictEqual(err.message, `Error while running "assert.titleContains" command: [NightwatchAssertError] Testing if the page title contains 'Test Title' in 5ms - expected "contains 'Test Title'" but got: "" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Testing if the page title contains 'Test Title' in 5ms - expected "contains 'Test Title'" but got: "" (${instance.elapsedTime}ms)`);
       }
     });
   });
@@ -55,7 +56,7 @@ describe('assert.titleContains', function () {
         assert.strictEqual(instance.expected(), 'contains \'Test Title\'');
         assert.strictEqual(instance.getValue(), '');
         assert.strictEqual(failure, 'Expected "contains \'Test Title\'" but got: ""');
-        assert.strictEqual(err.message, `Error while running "assert.titleContains" command: [NightwatchAssertError] Testing if the page title contains 'Test Title' in 5ms - expected "contains 'Test Title'" but got: "" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Testing if the page title contains 'Test Title' in 5ms - expected "contains 'Test Title'" but got: "" (${instance.elapsedTime}ms)`);
       }
     });
   });
@@ -72,7 +73,7 @@ describe('assert.titleContains', function () {
         assert.strictEqual(instance.expected(), 'contains \'Test Title\'');
         assert.strictEqual(instance.getValue(), 'Wrong Title');
         assert.strictEqual(failure, 'Expected "contains \'Test Title\'" but got: "Wrong Title"');
-        assert.strictEqual(err.message, `Error while running "assert.titleContains" command: [NightwatchAssertError] Testing if the page title contains 'Test Title' in 5ms - expected "contains 'Test Title'" but got: "Wrong Title" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Testing if the page title contains 'Test Title' in 5ms - expected "contains 'Test Title'" but got: "Wrong Title" (${instance.elapsedTime}ms)`);
       }
     });
   });

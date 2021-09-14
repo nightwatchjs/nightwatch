@@ -7,18 +7,13 @@ describe('Test safari options', function(){
   it('Safari option object with technology preview', function(){
     const safariOptions =  new SafariOptions();
     safariOptions.setTechnologyPreview(true);
+
     const client = Nightwatch.createClient({
-      webdriver: {
-        options: safariOptions
-      },
-      desiredCapabilities: {
-        browserName: 'safari'
-      }
+      capabilities: safariOptions
     });
     const options =  client.transport.createOptions();
     
-    assert.strictEqual(options instanceof SafariOptions, true);
-    assert.deepStrictEqual(options.options_.technologyPreview, true);
+    assert.strictEqual(options, safariOptions);
   });
 
   it('proxy option', function(){

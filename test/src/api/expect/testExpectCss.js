@@ -161,7 +161,10 @@ describe('expect.css', function() {
     this.client.api.globals.waitForConditionTimeout = 65;
     this.client.api.globals.waitForConditionPollInterval = 50;
 
-    Nocks.elementNotFound()
+    Nocks
+      .elementNotFound()
+      .elementNotFound()
+      .elementNotFound()
       .cssProperty(null);
 
     let expect = this.client.api.expect.element('#weblogin').to.have.css('display');

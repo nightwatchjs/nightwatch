@@ -97,10 +97,16 @@ describe('test index in element selectors', function() {
 
     Nightwatch.api()
       .waitForElementPresent({selector: '.nock', index: 999}, 1, false, function callback(result) {
-        assert.strictEqual(result.value, false, 'waitforPresent out of bounds index expected false');
+        assert.strictEqual(result.value, null, 'waitforPresent out of bounds index expected false');
       });
 
-    Nightwatch.start(done);
+    Nightwatch.start(function(err) {
+      if (err && err.name !== 'NightwatchAssertError') {
+        done(err);
+      } else {
+        done();
+      }
+    });
   });
 
   it('using page elements with index', function (done) {

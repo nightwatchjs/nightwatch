@@ -6,6 +6,8 @@ describe('Cookie api demo tests', function() {
   after((browser) => browser.end());
 
   test('browser.getCookie(<name>)', async (browser) => {
+    await browser.assert.urlContains('//localhost');
+
     const test_cookie = await browser.getCookie('test_cookie');
     assert.deepStrictEqual(test_cookie, {
       name: 'test_cookie',
@@ -21,18 +23,15 @@ describe('Cookie api demo tests', function() {
 
   test('browser.getCookies()', async (browser) => {
     const cookies = await browser.getCookies();
-    assert.deepStrictEqual(cookies, {
-      status: 0,
-      value: [
-        {
-          name: 'test_cookie',
-          value: '123456',
-          path: '/',
-          domain: 'example.org',
-          secure: false
-        }
-      ]
-    });
+    assert.deepStrictEqual(cookies, [
+      {
+        name: 'test_cookie',
+        value: '123456',
+        path: '/',
+        domain: 'example.org',
+        secure: false
+      }
+    ]);
   });
 
 });

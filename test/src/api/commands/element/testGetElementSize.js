@@ -128,8 +128,8 @@ describe('getElementSize', function() {
 
       client.api.getElementSize({selector: '#webdriver-notfound', timeout: 0}, function(result) {
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.value.error, 'An error occurred while running .getElementSize() command on <#webdriver-notfound>: unable to locate element using css selector');
-        assert.strictEqual(result.value.message, 'An error occurred while running .getElementSize() command on <#webdriver-notfound>: unable to locate element using css selector');
+        assert.strictEqual(result.value.error, 'An error occurred while running .getElementSize() command on <#webdriver-notfound>: NoSuchElementError: Unable to locate element: #webdriver-notfound using css selector');
+        assert.strictEqual(result.value.message, 'An error occurred while running .getElementSize() command on <#webdriver-notfound>: NoSuchElementError: Unable to locate element: #webdriver-notfound using css selector');
       });
 
       client.start(done);

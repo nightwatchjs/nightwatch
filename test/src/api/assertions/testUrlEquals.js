@@ -41,7 +41,7 @@ describe('assert.urlEquals', function () {
         assert.strictEqual(instance.expected(), 'is \'https://ecosia.org\'');
         assert.strictEqual(instance.getValue(), 'https://nightwatchjs.org');
         assert.strictEqual(failure, 'Expected "is \'https://ecosia.org\'" but got: "https://nightwatchjs.org"');
-        assert.strictEqual(err.message, `Error while running "assert.urlEquals" command: [NightwatchAssertError] Testing if the URL is 'https://ecosia.org' in 5ms - expected "is 'https://ecosia.org'" but got: "https://nightwatchjs.org" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Testing if the URL is 'https://ecosia.org' in 5ms - expected "is 'https://ecosia.org'" but got: "https://nightwatchjs.org" (${instance.elapsedTime}ms)`);
       }
     });
   });

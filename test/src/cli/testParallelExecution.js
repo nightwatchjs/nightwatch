@@ -9,7 +9,7 @@ describe('test Parallel Execution', function() {
   const allArgs = [];
   const allOpts = [];
 
-  this.timeout(8000);
+  this.timeout(10000);
 
   beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
@@ -98,7 +98,7 @@ describe('test Parallel Execution', function() {
     assert.ok(runner.test_settings.test_workers);
 
     return runner.runTests().then(_ => {
-      assert.strictEqual(allArgs.length, 54);
+      assert.strictEqual(allArgs.length, 55);
       assert.strictEqual(runner.concurrency.globalExitCode, 0);
     });
   });
@@ -140,7 +140,7 @@ describe('test Parallel Execution', function() {
     });
 
     return runner.runTests().then(_ => {
-      assert.strictEqual(allArgs.length, 54);
+      assert.strictEqual(allArgs.length, 55);
     });
   });
 
@@ -169,7 +169,7 @@ describe('test Parallel Execution', function() {
     });
 
     return runner.runTests().then(_ => {
-      assert.strictEqual(allArgs.length, 54);
+      assert.strictEqual(allArgs.length, 55);
     });
   });
 

@@ -1,10 +1,10 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 const mockery = require('mockery');
-mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
 
 describe('uploadFile command', function () {
   before(function () {
+    mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
     Globals.protocolBefore();
   });
 
@@ -12,7 +12,7 @@ describe('uploadFile command', function () {
     mockery.deregisterAll();
     mockery.resetCache();
     mockery.disable();
-  })
+  });
 
   it('should call FileDetector Api from selenium', function () {
     let fakeRemoteCalled = false;
@@ -20,9 +20,12 @@ describe('uploadFile command', function () {
     FakeRemote.FileDetector = class {
       constructor() {
         fakeRemoteCalled = true;
-      }  
-    }
+      }
+    };
+
     mockery.registerMock('selenium-webdriver/remote', FakeRemote);
+    const commands = [];
+
     return Globals.protocolTest({
       commandName: 'uploadFile',
       args: [
@@ -32,12 +35,13 @@ describe('uploadFile command', function () {
           assert.deepStrictEqual(result.status, 0);
         }
       ],
-      assertion: function (opts) {
-        assert.ok(['findElements', 'setFileDetector', 'sendKeysToElement'].includes(opts.command));
-        if(opts == 'setFileDetector' || opts.command == 'sendKeysToElement'){
-            assert.strictEqual(fakeRemoteCalled, true);
-        }
+
+      assertion(opts) {
+        commands.push(opts.command);
       }
+    }).then(() => {
+      assert.deepStrictEqual(commands, ['findElements', 'setFileDetector', 'sendKeysToElement']);
+      assert.strictEqual(fakeRemoteCalled, true);
     });
   });
 });

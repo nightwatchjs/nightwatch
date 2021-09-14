@@ -415,6 +415,7 @@ describe('expect.attribute', function() {
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').equal('hp vasq').before(110);
     Nocks.attributeValue(null)
       .attributeValue(null)
+      .attributeValue(null)
       .attributeValue(null);
 
     return this.client.start(function(err) {

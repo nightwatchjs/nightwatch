@@ -14,9 +14,7 @@ describe('client.screenshot', function() {
       commandName: 'screenshot',
       args: []
     }).then((result) => {
-      assert.strictEqual(typeof result.error, 'undefined');
-      assert.deepStrictEqual(result.value, 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==');
-      assert.deepStrictEqual(result.suppressBase64Data, true);
+      assert.strictEqual(result, 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==');
     });
   });
 
