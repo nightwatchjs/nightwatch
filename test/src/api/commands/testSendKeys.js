@@ -15,20 +15,6 @@ describe('sendKeys', function() {
   });
 
   it('client.sendKeys()', function(done) {
-    let clearValueCalled = false;
-    MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/element/0/clear',
-      method: 'POST',
-      postdata: {},
-      response: {
-        value: null,
-        status: 0
-      },
-      onResponse() {
-        clearValueCalled = true;
-      }
-    });
-
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element/0/value',
       method: 'POST',
@@ -57,7 +43,6 @@ describe('sendKeys', function() {
       })
       .sendKeys('#weblogin', 'password', function callback(result) {
         assert.strictEqual(result.status, 0);
-        assert.strictEqual(clearValueCalled, false);
       });
 
     this.client.start(done);
