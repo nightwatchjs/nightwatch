@@ -60,6 +60,9 @@ class MockServer {
           headers['Content-Length'] = responsedata.length;
           res.writeHead(Number(item.statusCode), headers);
 
+          if (item.onResponse) {
+            item.onResponse();
+          }
           if (item.__once) {
             this.removeMock(item);
           }
