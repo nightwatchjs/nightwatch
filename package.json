@@ -15,7 +15,6 @@
     "url": "git@github.com:nightwatchjs/nightwatch.git"
   },
   "dependencies": {
-    "@cucumber/cucumber": "^7.3.1",
     "assertion-error": "^1.1.0",
     "chai-nightwatch": "^0.4.1",
     "ci-info": "^3.2.0",
@@ -51,6 +50,7 @@
     "typescript": "^4.3.5"
   },
   "peerDependencies": {
+    "@cucumber/cucumber": "^7.3.1",
     "chromedriver": "*",
     "geckodriver": "*"
   },
@@ -59,6 +59,9 @@
       "optional": true
     },
     "geckodriver": {
+      "optional": true
+    },
+    "@cucumber/cucumber": {
       "optional": true
     }
   },
