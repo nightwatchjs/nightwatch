@@ -9,7 +9,7 @@ try {
     argv._source = argv['_'].slice(0);
 
     const runner = Nightwatch.CliRunner(argv);
-    await runner.setup();
+    await runner.setupAsync();
 
     return runner.runTests()
       .catch(err => {
