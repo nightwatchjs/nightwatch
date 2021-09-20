@@ -17,5 +17,5 @@ Then(/^the title is "([^"]*)"$/, function(title){
 });
 
 Then(/^Body contains nightwatchjs$/, function() {
-  return  browser.assert.containsText('#main', 'James.js');
+  return  browser.assert.containsText('#main', 'Nightwatch.js');
 });
