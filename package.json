@@ -37,6 +37,7 @@
     "strip-ansi": "^6.0.0"
   },
   "devDependencies": {
+    "@cucumber/cucumber": "*",
     "@types/node": "^16.7.1",
     "chai": "^4.2.0",
     "coveralls": "^3.0.11",
