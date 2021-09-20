@@ -58,7 +58,7 @@ describe('test Parallel Execution', function() {
     process.env.__NIGHTWATCH_PARALLEL_MODE = null;
   });
 
-  it('testParallelExecution', async function() {
+  it('testParallelExecution', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../extra/'));
@@ -68,7 +68,7 @@ describe('test Parallel Execution', function() {
       env: 'default,mixed'
     });
 
-    await runner.setup();
+    runner.setup();
 
     assert.ok(runner.parallelMode());
     assert.strictEqual(runner.testEnv, 'default,mixed');
@@ -85,13 +85,13 @@ describe('test Parallel Execution', function() {
     });
   });
 
-  it('test parallel execution with workers defaults', async function() {
+  it('test parallel execution with workers defaults', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: path.join(__dirname, '../../extra/parallelism.json')
     });
 
-    await runner.setup();
+    runner.setup();
     runner.test_settings.globals.retryAssertionTimeout = 10;
     runner.test_settings.globals.waitForConditionTimeout = 10;
     runner.test_settings.globals.waitForConditionPollInterval = 9;
@@ -103,7 +103,7 @@ describe('test Parallel Execution', function() {
     });
   });
 
-  it('testParallelExecutionSameEnv', async function() {
+  it('testParallelExecutionSameEnv', function() {
     let originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../extra/'));
 
@@ -113,7 +113,7 @@ describe('test Parallel Execution', function() {
       env: 'mixed,mixed'
     });
 
-    await runner.setup();
+    runner.setup();
 
     assert.ok(runner.parallelMode());
     assert.strictEqual(runner.testEnv, 'mixed,mixed');
@@ -127,13 +127,13 @@ describe('test Parallel Execution', function() {
     });
   });
 
-  it('testParallelExecutionWithWorkersAuto', async function() {
+  it('testParallelExecutionWithWorkersAuto', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: path.join(__dirname, '../../extra/parallelism-auto.json')
     });
 
-    await runner.setup();
+    runner.setup();
     assert.deepStrictEqual(runner.test_settings.test_workers, {
       enabled: true,
       workers: 'auto'
@@ -144,25 +144,25 @@ describe('test Parallel Execution', function() {
     });
   });
 
-  it('testParallelExecutionWithWorkers and multiple environments', async function() {
+  it('testParallelExecutionWithWorkers and multiple environments', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: path.join(__dirname, '../../extra/parallelism-auto.json'),
       env: 'default,default'
     });
 
-    await runner.setup();
+    runner.setup();
     assert.strictEqual(runner.test_settings.test_workers.enabled, true);
     assert.ok(runner.test_settings.testWorkersEnabled);
   });
 
-  it('test parallel execution with workers count', async function() {
+  it('test parallel execution with workers count', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: path.join(__dirname, '../../extra/parallelism-count.json')
     });
 
-    await runner.setup();
+    runner.setup();
     assert.deepStrictEqual(runner.test_settings.test_workers, {
       enabled: true,
       workers: 6
@@ -173,14 +173,14 @@ describe('test Parallel Execution', function() {
     });
   });
 
-  it('test parallel execution with workers count and extended envs', async function() {
+  it('test parallel execution with workers count and extended envs', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: path.join(__dirname, '../../extra/parallelism-workers.conf.js'),
       env: 'chrome'
     });
 
-    await runner.setup();
+    runner.setup();
 
     assert.deepStrictEqual(runner.test_settings.test_workers, {
       enabled: true,
@@ -190,43 +190,43 @@ describe('test Parallel Execution', function() {
     assert.strictEqual(runner.isTestWorkersEnabled(), true);
   });
 
-  it('test parallel execution with workers disabled per environment', async function() {
+  it('test parallel execution with workers disabled per environment', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: path.join(__dirname, '../../extra/parallelism-disabled.json')
     });
 
-    await runner.setup();
+    runner.setup();
 
     assert.strictEqual(runner.test_settings.test_workers, false);
   });
 
-  it('test parallel execution with workers and single source file', async function() {
+  it('test parallel execution with workers and single source file', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: path.join(__dirname, '../../extra/parallelism.json'),
       _source: [path.join(__dirname, '../../../sampletests/async/test/sample.js')]
     });
 
-    await runner.setup();
+    runner.setup();
 
     assert.strictEqual(runner.isConcurrencyEnabled([runner.argv._source]), false);
 
   });
 
-  it('test parallel execution with workers and single source folder', async function() {
+  it('test parallel execution with workers and single source folder', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: path.join(__dirname, '../../extra/parallelism.json'),
       _source: path.join(__dirname, '../../../sampletests/before-after')
     });
 
-    await runner.setup();
+    runner.setup();
 
     assert.strictEqual(runner.isConcurrencyEnabled(), true);
   });
 
-  it('test parallel execution to ensure preservation of all process.execArgv', async function() {
+  it('test parallel execution to ensure preservation of all process.execArgv', function() {
     const argv = process.execArgv;
     process.execArgv = ['--inspect'];
 
@@ -235,7 +235,7 @@ describe('test Parallel Execution', function() {
       config: path.join(__dirname, '../../extra/parallelism-execArgv.json')
     });
 
-    await runner.setup();
+    runner.setup();
     const worker = runner.concurrency.createChildProcess('test-worker');
     const args = worker.getArgs();
 
@@ -244,13 +244,13 @@ describe('test Parallel Execution', function() {
     assert.ok(args.includes('--parallel-mode'));
   });
 
-  it('test parallel execution with specified node options to be passed to child processes', async function() {
+  it('test parallel execution with specified node options to be passed to child processes', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     const runner = new CliRunner({
       config: path.join(__dirname, '../../extra/parallelism-execArgv-selected.json')
     });
 
-    await runner.setup();
+    runner.setup();
     const worker = runner.concurrency.createChildProcess('test-worker');
     const args = worker.getArgs();
 

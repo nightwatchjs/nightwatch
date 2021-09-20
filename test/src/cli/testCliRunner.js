@@ -286,11 +286,11 @@ describe('Test CLI Runner', function() {
     });
   }
 
-  it('should have reasonable defaults for CLI arguments', async function() {
+  it('should have reasonable defaults for CLI arguments', function() {
     registerNoSettingsJsonMock();
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = await new CliRunner({
+    let runner = new CliRunner({
       config: './nightwatch.json'
     }).setup();
 
@@ -308,10 +308,10 @@ describe('Test CLI Runner', function() {
     assert.strictEqual(runner.globals.settings.start_session, true);
   });
 
-  it('should override settings with CLI arguments', async function() {
+  it('should override settings with CLI arguments', function() {
     registerNoSettingsJsonMock();
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = await new CliRunner({
+    let runner = new CliRunner({
       config: './nightwatch.json',
       verbose: 'yes',
       output: 'test-output-folder',
@@ -332,7 +332,7 @@ describe('Test CLI Runner', function() {
     assert.strictEqual(runner.test_settings.globals.retryAssertionTimeout, 11);
   });
 
-  it('testSetOutputFolder', async function() {
+  it('testSetOutputFolder', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
         if (module === './settings.json' || module === './nightwatch.conf.js') {
@@ -350,7 +350,7 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = await new CliRunner({
+    let runner = new CliRunner({
       config: './output_disabled.json',
       env: 'default'
     }).setup();
@@ -358,7 +358,7 @@ describe('Test CLI Runner', function() {
     assert.strictEqual(runner.settings.output_folder, false);
   });
 
-  it('testReadSettingsDeprecated', async function() {
+  it('testReadSettingsDeprecated', function(done) {
     mockery.registerMock('fs', {
       statSync: function(module) {
         if (module === './settings.json') {
@@ -375,7 +375,7 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = await new CliRunner({
+    let runner = new CliRunner({
       config: './settings.json',
       env: 'default',
       output: 'output',
@@ -391,9 +391,11 @@ describe('Test CLI Runner', function() {
     assert.strictEqual(runner.test_settings.disable_error_log, false);
     assert.strictEqual(runner.test_settings.disable_colors, true);
     assert.strictEqual(runner.test_settings.filename_filter, 'tests*.js');
+
+    done();
   });
 
-  it('testCustomSettingsFileAndEnvironment', async function() {
+  it('testCustomSettingsFileAndEnvironment', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
         if (module === './custom.json') {
@@ -410,7 +412,7 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = await new CliRunner({
+    let runner = new CliRunner({
       config: './custom.json',
       env: 'extra'
     }).setup();
@@ -425,7 +427,7 @@ describe('Test CLI Runner', function() {
 
   });
 
-  it('testGetTestSourceSingle', async function() {
+  it('testGetTestSourceSingle', function() {
     let statCalled = false;
     let statSyncCalled = false;
     
@@ -470,7 +472,7 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = await new CliRunner({
+    let runner = new CliRunner({
       config: './custom.json',
       env: 'default',
       test: 'demoTest'
@@ -486,7 +488,7 @@ describe('Test CLI Runner', function() {
       });
   });
 
-  it('testGetTestSourceSingleWithAbsolutePath', async function() {
+  it('testGetTestSourceSingleWithAbsolutePath', function() {
     let ABSOLUTE_PATH = '/path/to/test';
     let ABSOLUTE_SRC_PATH = ABSOLUTE_PATH + '.js';
     let statSyncCalled = false;
@@ -528,7 +530,7 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = await new CliRunner({
+    let runner = new CliRunner({
       config: './custom.json',
       env: 'default',
       test: ABSOLUTE_PATH
@@ -546,7 +548,7 @@ describe('Test CLI Runner', function() {
       });
   });
 
-  it('testGetTestSourceSingleWithRelativePath', async function() {
+  it('testGetTestSourceSingleWithRelativePath', function() {
     let RELATIVE_PATH = '../path/to/test';
     let TEST_SRC_PATH = process.cwd() + '/path/to/test.js';
     let statSyncCalled = false;
@@ -587,7 +589,7 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = await new CliRunner({
+    let runner = new CliRunner({
       config: './custom.json',
       env: 'default',
       test: RELATIVE_PATH
@@ -602,7 +604,7 @@ describe('Test CLI Runner', function() {
       });
   });
 
-  it('testGetTestSourceGroup', async function() {
+  it('testGetTestSourceGroup', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
         switch (module) {
@@ -627,7 +629,7 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = await new CliRunner({
+    let runner = new CliRunner({
       config: './custom.json',
       env: 'default',
       group: 'demoGroup'
@@ -638,7 +640,7 @@ describe('Test CLI Runner', function() {
     const walker = Runner.getTestSource(runner.test_settings, runner.argv);
     assert.deepStrictEqual(walker.testSource, ['tests/demoGroup']);
 
-    let otherRunner = await new CliRunner({
+    let otherRunner = new CliRunner({
       config: './custom.json',
       env: 'default',
       group: 'tests/demoGroup'
@@ -647,7 +649,7 @@ describe('Test CLI Runner', function() {
     const walker2 = Runner.getTestSource(otherRunner.test_settings, otherRunner.argv);
     assert.deepStrictEqual(walker2.testSource, ['tests/demoGroup']);
 
-    let simpleRunner = await new CliRunner({
+    let simpleRunner = new CliRunner({
       config: './custom.json',
       env: 'default'
     }).setup();
@@ -655,7 +657,7 @@ describe('Test CLI Runner', function() {
     const walker3 = Runner.getTestSource(simpleRunner.test_settings, simpleRunner.argv);
     assert.deepStrictEqual(walker3.testSource, ['tests']);
 
-    let invalidGroupRunner = await new CliRunner({
+    let invalidGroupRunner = new CliRunner({
       config: './custom.json',
       env: 'default',
       group: 'group_doesnotexist'
@@ -664,7 +666,7 @@ describe('Test CLI Runner', function() {
     const walker4 = Runner.getTestSource(invalidGroupRunner.test_settings, invalidGroupRunner.argv);
     assert.deepStrictEqual(walker4.testSource, ['tests/group_doesnotexist']);
 
-    let invalidGroupInMultiSrcRunner = await new CliRunner({
+    let invalidGroupInMultiSrcRunner = new CliRunner({
       config: './multi_test_paths.json',
       env: 'default',
       group: 'group_doesnotexist'
@@ -677,7 +679,7 @@ describe('Test CLI Runner', function() {
     }
   });
 
-  it('testGetTestSourceMultipleGroups', async function() {
+  it('testGetTestSourceMultipleGroups', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
         switch (module) {
@@ -706,7 +708,7 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = await new CliRunner({
+    let runner = new CliRunner({
       config: './custom.json',
       env: 'default',
       group: 'demoGroup1,demoGroup2'
@@ -717,7 +719,7 @@ describe('Test CLI Runner', function() {
     const walker = Runner.getTestSource(runner.test_settings, runner.argv);
     assert.deepStrictEqual(walker.testSource, ['tests/demoGroup1', 'tests/demoGroup2']);
 
-    let invalidGroupRunner = await new CliRunner({
+    let invalidGroupRunner = new CliRunner({
       config: './custom.json',
       env: 'default',
       group: 'demoGroup1,demoGroup2,group_doesnotexist'
@@ -726,7 +728,7 @@ describe('Test CLI Runner', function() {
     const walker2 = Runner.getTestSource(invalidGroupRunner.test_settings, invalidGroupRunner.argv);
     assert.deepStrictEqual(walker2.testSource, ['tests/demoGroup1', 'tests/demoGroup2', 'tests/group_doesnotexist']);
 
-    let stripMissingInMultiRunner = await new CliRunner({
+    let stripMissingInMultiRunner = new CliRunner({
       config: './multi_test_paths.json',
       env: 'default',
       group: 'demoGroup1,demoGroup2,group_doesnotexist'
@@ -753,8 +755,8 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    assert.rejects(async function() {
-      await new CliRunner({
+    assert.throws(function() {
+      new CliRunner({
         config: './empty.json',
         env: 'default'
       }).setup();
@@ -762,7 +764,7 @@ describe('Test CLI Runner', function() {
 
   });
 
-  it('testParseTestSettingsNull', async function() {
+  it('testParseTestSettingsNull', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
         if (module === './null.json') {
@@ -785,7 +787,7 @@ describe('Test CLI Runner', function() {
       env: 'default'
     });
 
-    await runner.setup();
+    runner.setup();
     assert.ok(typeof runner.test_settings === 'object');
     assert.strictEqual(runner.test_settings.irrelevantProperty, null);
   });
@@ -807,15 +809,15 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    assert.rejects(async function() {
-      await new CliRunner({
+    assert.throws(function() {
+      new CliRunner({
         config: './incorrect.json',
         env: 'incorrect'
       }).setup();
     }, /Invalid testing environment specified: incorrect\. Available environments are: default/);
   });
 
-  it('testReadExternalGlobals', async function() {
+  it('testReadExternalGlobals', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
         if (module === './custom.json' || module === './globals.json') {
@@ -832,7 +834,7 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = await new CliRunner({
+    let runner = new CliRunner({
       config: './custom.json',
       env: 'extra'
     }).setup({
@@ -847,8 +849,8 @@ describe('Test CLI Runner', function() {
     assert.strictEqual(runner.test_settings.globals.testGlobalTwo.two.three, '5');
     assert.strictEqual(runner.test_settings.globals.testGlobalTwo.one, 1);
 
-    assert.rejects(async function() {
-      await new CliRunner({
+    assert.throws(function() {
+      new CliRunner({
         config: './custom.json',
         env: 'extra'
       }).setup({
@@ -876,8 +878,8 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    assert.rejects(async function() {
-      await new CliRunner({
+    assert.throws(function() {
+      new CliRunner({
         config: './custom.json',
         env: 'extra'
       }).setup({
