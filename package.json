@@ -15,6 +15,7 @@
     "url": "git@github.com:nightwatchjs/nightwatch.git"
   },
   "dependencies": {
+    "ansi-regex": "^6.0.1",
     "assertion-error": "^1.1.0",
     "chai-nightwatch": "^0.4.0",
     "ci-info": "^2.0.0",
