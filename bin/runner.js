@@ -11,11 +11,11 @@ try {
     const runner = Nightwatch.CliRunner(argv);
 
     return runner
-      .setupAsync().then(() => {
-        runner.runTests().catch((err) => {
-          Logger.error(err);
-          runner.processListener.setExitCode(10);
-        });
+      .setupAsync()
+      .then(() => runner.runTests())
+      .catch((err) => {
+        Logger.error(err);
+        runner.processListener.setExitCode(10);
       });
   });
 } catch (err) {

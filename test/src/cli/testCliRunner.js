@@ -32,19 +32,13 @@ describe('Test CLI Runner', function() {
       }
     };
 
-    let promiseConfig = new Promise(resolve => {
-      let config = {
-        src_folders: ['promiseTests'],
-        test_settings: {
-          default: {
-            silent: true
-          }
+    let promiseConfig = Promise.resolve({
+      src_folders: ['promiseTests'],
+      test_settings: {
+        default: {
+          silent: true
         }
-      };
-
-      setTimeout(() => {
-        resolve(config);
-      }, 1000);
+      }
     });
 
     mockery.registerMock('./nightwatch.json', config);
