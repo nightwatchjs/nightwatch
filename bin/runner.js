@@ -5,16 +5,17 @@ const Nightwatch = require('../lib/index.js');
 const {Logger} = require('../lib/utils');
 
 try {
-  Nightwatch.cli(async function(argv) {
+  Nightwatch.cli(function(argv) {
     argv._source = argv['_'].slice(0);
 
     const runner = Nightwatch.CliRunner(argv);
-    await runner.setupAsync();
 
-    return runner.runTests()
-      .catch(err => {
-        Logger.error(err);
-        runner.processListener.setExitCode(10);
+    return runner
+      .setupAsync().then(() => {
+        runner.runTests().catch((err) => {
+          Logger.error(err);
+          runner.processListener.setExitCode(10);
+        });
       });
   });
 } catch (err) {
