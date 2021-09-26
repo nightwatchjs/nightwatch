@@ -35,7 +35,7 @@ describe('test Mocha integration', function() {
         test_calls: 0,
         retryAssertionTimeout: 0
       },
-      output: false,
+      output: true,
       silent: false,
       output_folder: false
     };

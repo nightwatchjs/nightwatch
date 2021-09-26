@@ -1,36 +1,36 @@
 describe('Mocha tests with failures', function() {
 
-  before(function(client, callback) {
-    client.globals.test_calls++;
+  before(function(browser, callback) {
+    browser.globals.test_calls++;
     callback();
   });
 
-  beforeEach(function(client, callback) {
-    client.globals.test_calls++;
+  beforeEach(function(browser, callback) {
+    browser.globals.test_calls++;
     callback();
   });
 
-  it('demoTest', function (client) {
-    client.url('http://localhost')
+  it('demoTest', function (browser) {
+    browser.url('http://localhost')
       .assert.elementPresent('#weblogin')
       .assert.elementPresent('#badElement')
       .end();
   });
 
-  it('demoTest2', function (client) {
-    client.url('http://localhost')
+  it('demoTest2', function (browser) {
+    browser.url('http://localhost')
       .assert.elementPresent('#weblogin')
       .assert.elementPresent('#badElement')
       .end();
   });
 
-  afterEach(function(client, callback) {
-    client.globals.test_calls++;
+  afterEach(function(browser, callback) {
+    browser.globals.test_calls++;
     callback();
   });
 
-  after(function(client, callback) {
-    client.globals.test_calls++;
+  after(function(browser, callback) {
+    browser.globals.test_calls++;
     callback();
   });
 });
