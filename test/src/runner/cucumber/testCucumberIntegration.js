@@ -44,8 +44,7 @@ describe('test Cucumber integration', function() {
       silent: false,
       output_folder: false
     };
-
-
+    
     const cucumberRunner = new CucumberRunner(settings, {tags: ['@pass']}, {});
     const modules = [path.join(__dirname, '../../../cucumbertests/testSample.js')];
 
@@ -76,7 +75,6 @@ describe('test Cucumber integration', function() {
       output_folder: false
     };
 
-
     const cucumberRunner = new CucumberRunner(settings, {tags: ['@fail']}, {});
     const modules = [path.join(__dirname, '../../../cucumbertests/testWithFailures.js')];
 
@@ -86,10 +84,6 @@ describe('test Cucumber integration', function() {
     }
     );
   });
-
-
-
-
 
 
 });
