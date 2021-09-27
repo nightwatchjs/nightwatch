@@ -84,6 +84,4 @@ describe('test Cucumber integration', function() {
     }
     );
   });
-
-
 });
