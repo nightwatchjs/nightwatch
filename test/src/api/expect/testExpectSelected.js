@@ -195,7 +195,10 @@ describe('expect.selected', function() {
   it('to be selected with waitFor - element found on retry', function() {
     this.client.api.globals.waitForConditionPollInterval = 10;
 
-    Nocks.elementNotFound().elementFound().selected();
+    Nocks
+      .elementNotFound()
+      .elementFound()
+      .selected();
 
     let expect = this.client.api.expect.element('#weblogin').to.be.selected.before(11);
 

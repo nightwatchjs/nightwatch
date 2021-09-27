@@ -3,7 +3,8 @@ const path = require('path');
 const assert = require('assert');
 const Globals = require('../../../lib/globals/commands.js');
 const MockServer = require('../../../lib/mockserver.js');
-const NightwatchClient = common.require('index.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('test Mocha integration', function() {
   const originalExit = process.exit;
@@ -24,33 +25,23 @@ describe('test Mocha integration', function() {
   });
 
   it('testRunMochaSampleTests', function() {
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: false
-      },
-      persist_globals: true,
-      globals: {
-        test_calls: 0,
-        retryAssertionTimeout: 0
-      },
-      output: false,
-      silent: false,
-      output_folder: false
+    const globals = {
+      test_calls: 0,
+      retryAssertionTimeout: 0
     };
 
+    let testsPath = path.join(__dirname, '../../../mochatests/');
     let error;
 
-    return NightwatchClient.runTests({
-      config: path.join(__dirname, '../../../extra/withmocha.json'),
-      env: 'default',
-      _source: []
-    }, settings).catch(err => {
+    return runTests(testsPath, settings({
+      globals,
+      test_runner: 'mocha',
+      output: false
+    })).catch(err => {
       error = err;
-    }).then(() => {
-      assert.strictEqual(settings.globals.test_calls, 12);
-      assert.ok(error.message.includes('Mocha reported test failures.'), error);
+    }).then((err) => {
+      assert.strictEqual(typeof err, 'undefined');
+      assert.strictEqual(globals.test_calls, 15);
     });
   });
 });

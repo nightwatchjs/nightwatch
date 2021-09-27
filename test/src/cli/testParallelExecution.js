@@ -1,5 +1,5 @@
 const util = require('util');
-const events = require('events');
+const EventEmitter = require('events');
 const mockery = require('mockery');
 const path = require('path');
 const assert = require('assert');
@@ -18,24 +18,24 @@ describe('test Parallel Execution', function() {
         allArgs.push(args);
         allOpts.push(opts);
 
-        function Stdout() {}
-        function Stderr() {}
+        class Stdout extends EventEmitter {}
+        class Stderr extends EventEmitter {}
 
-        util.inherits(Stdout, events.EventEmitter);
-        util.inherits(Stderr, events.EventEmitter);
+        class ChildProcess extends EventEmitter {
+          constructor() {
+            super();
 
-        let Child = function() {
-          this.stdout = new Stdout();
-          this.stderr = new Stderr();
-          setTimeout(function() {
-            this.emit('close');
-            this.emit('exit', 0);
-          }.bind(this), 11);
-        };
+            this.stdout = new Stdout();
+            this.stderr = new Stderr();
 
-        util.inherits(Child, events.EventEmitter);
+            setTimeout(function() {
+              this.emit('close');
+              this.emit('exit', 0);
+            }.bind(this), 11);
+          }
+        }
 
-        return new Child();
+        return new ChildProcess();
       }
     });
 

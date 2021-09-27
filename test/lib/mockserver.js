@@ -226,7 +226,7 @@ const normalizeJSONString = (data) => {
 let server;
 
 module.exports = {
-  init(callback = function() {}) {
+  init(callback = function() {}, {port = 10195} = {}) {
     Object.keys(require.cache).forEach(function(module) {
       if (module.indexOf('/mocks.json') > -1) {
         delete require.cache[module];
@@ -240,9 +240,11 @@ module.exports = {
       fs.readFileSync(path.join(__dirname, './mocks/mocks-w3c.yaml'), 'utf8')
     );
 
+    const mocks = mockObjectsJsonWire.mocks.concat(mockObjectsW3C.mocks);
+
     server = new MockServer({
-      port: 10195,
-      mocks: mockObjectsJsonWire.mocks.concat(mockObjectsW3C.mocks)
+      port,
+      mocks
     }, callback);
 
     try {
@@ -251,6 +253,19 @@ module.exports = {
       console.error(err);
       process.exit(1);
     }
+  },
+
+  initAsync({port, mocks = []} = {}) {
+    return new Promise(function(resolve, reject) {
+      server = new MockServer({
+        port,
+        mocks
+      }, function() {});
+      const httpServer = server.listen();
+      httpServer.on('listening', function () {
+        resolve(server);
+      });
+    });
   },
 
   /**

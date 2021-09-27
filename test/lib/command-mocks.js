@@ -1,6 +1,29 @@
 const MockServer = require('./mockserver.js');
 
+let server;
 module.exports = {
+  start(done) {
+    server = MockServer.init();
+    server.on('listening', function () {
+      done();
+    });
+  },
+
+  stop(done) {
+    if (!server) {
+      done();
+      return;
+    }
+
+    server.close(function () {
+      done();
+    });
+  },
+
+  createServer(opts = {}) {
+    return MockServer.initAsync(opts);
+  },
+
   cookiesFound() {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/cookie',
@@ -39,7 +62,6 @@ module.exports = {
       response: ''
     }, true);
   },
-
 
   deleteCookie() {
     MockServer.addMock({
@@ -80,6 +102,20 @@ module.exports = {
         sessionId: '1352110219202',
         value: true,
         status: 0
+      })
+    }, true);
+  },
+
+  element({using = 'css selector', value = '#container'}) {
+    MockServer.addMock({
+      url: '/wd/hub/session/13521-10219-202/elements',
+      method: 'POST',
+      postdata: JSON.stringify({using, value}),
+
+      response: JSON.stringify({
+        value: [{
+          'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
+        }]
       })
     }, true);
   },
@@ -139,13 +175,113 @@ module.exports = {
     });
   },
 
+  createFirefoxSession({
+    persist = false,
+    sessionId = '13521-10219-202',
+    headless = true,
+    deleteSession = true,
+    url = '/wd/hub/session'
+  }) {
+    const browserName = 'firefox';
+    const headlessOpt = headless ? '-headless' : '';
+    const options = {
+      ['moz:firefoxOptions']: {
+        args: [headlessOpt]
+      }
+    };
+
+    MockServer.addMock({
+      url,
+      statusCode: 201,
+      method: 'POST',
+      postdata: JSON.stringify({
+        desiredCapabilities: {browserName, ...options},
+        capabilities: {alwaysMatch: {browserName, ...options}}
+      }),
+
+      response: JSON.stringify({
+        value: {
+          sessionId,
+          capabilities: {
+            acceptInsecureCerts: false,
+            browserName: 'firefox',
+            browserVersion: '65.0.1'
+          }
+        }
+      })
+    }, !persist);
+
+    if (!deleteSession) {
+      return;
+    }
+
+    MockServer.addMock({
+      url: `/session/${sessionId}`,
+      method: 'DELETE',
+      response: {
+        value: null
+      }
+    }, !persist);
+  },
+
+  createChromeSession({
+    persist = false,
+    sessionId = '13521-10219-202',
+    headless = true,
+    deleteSession = true,
+    url = '/wd/hub/session'
+  }) {
+    const browserName = 'chrome';
+    const headlessOpt = headless ? 'headless' : '';
+    const options = {
+      ['goog:chromeOptions']: {}
+    };
+
+    if (headlessOpt) {
+      options['goog:chromeOptions'].args = [headlessOpt];
+    }
+
+    MockServer.addMock({
+      url,
+      statusCode: 201,
+      method: 'POST',
+      postdata: JSON.stringify({
+        desiredCapabilities: {browserName, ...options},
+        capabilities: {alwaysMatch: {browserName, ...options}}
+      }),
+
+      response: JSON.stringify({
+        value: {
+          sessionId,
+          capabilities: {
+            acceptInsecureCerts: false,
+            browserName: 'chrome',
+            browserVersion: '90'
+          }
+        }
+      })
+    }, !persist);
+
+    if (!deleteSession) {
+      return;
+    }
+
+    MockServer.addMock({
+      url: `/session/${sessionId}`,
+      method: 'DELETE',
+      response: {
+        value: null
+      }
+    }, !persist);
+  },
+
   createNewW3CSession({
     testName = '',
     browserName = 'firefox',
     sessionId = '13521-10219-202',
     persist = false,
     deleteSession = true
-  }) {
+  } = {}) {
     MockServer.addMock({
       url: '/session',
       statusCode: 201,
