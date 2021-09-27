@@ -1,7 +1,7 @@
 const {Given, Then, When, Before} = require('@cucumber/cucumber');
 
 
-Given(/^I open Google page$/, {timeout: -1}, function(){
+Given(/^I open Google page$/, function() {
   return browser.url('https://google.com');
 });
 
@@ -12,7 +12,7 @@ Given(/^I search nightwatchjs$/, function() {
 
 });
 
-Then(/^the title is "([^"]*)"$/, function(title){
+Then(/^the title is "([^"]*)"$/, function(title) {
   return  browser.assert.title(title);
 });
 
