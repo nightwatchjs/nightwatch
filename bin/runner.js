@@ -13,7 +13,10 @@ try {
 
     return runner.runTests()
       .catch(err => {
-        Logger.error(err);
+        if (!err.displayed) {
+          Logger.error(err);
+        }
+
         runner.processListener.setExitCode(10);
       });
   });

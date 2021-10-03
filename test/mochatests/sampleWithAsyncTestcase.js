@@ -2,6 +2,16 @@ const assert = require('assert');
 
 describe('Mocha tests with async testcase', function() {
 
+  this.waitForTimeout(1100);
+  this.waitForRetryInterval(100);
+  this.suiteRetries(2);
+
+  assert.deepStrictEqual(this.settings.desiredCapabilities, {browserName: 'firefox'});
+  assert.strictEqual(this.argv.reporter, 'junit');
+  assert.strictEqual(this.mochaOptions.timeout, 5000);
+  assert.strictEqual(this.waitForTimeout(), 1100);
+  assert.strictEqual(this.waitForRetryInterval(), 100);
+
   before(async function(browser) {
     browser.globals.test_calls++;
 

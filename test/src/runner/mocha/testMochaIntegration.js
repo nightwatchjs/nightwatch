@@ -8,6 +8,7 @@ const {runTests} = common.require('index.js');
 
 describe('test Mocha integration', function() {
   const originalExit = process.exit;
+  this.timeout(10000);
 
   before(function(done) {
     this.server = MockServer.init();
@@ -35,13 +36,22 @@ describe('test Mocha integration', function() {
 
     return runTests(testsPath, settings({
       globals,
-      test_runner: 'mocha',
-      output: false
+      test_runner: {
+        type: 'mocha',
+        options: {
+          timeout: 5000
+        }
+      },
+      output: true,
+      silent: true
     })).catch(err => {
       error = err;
     }).then((err) => {
-      assert.strictEqual(typeof err, 'undefined');
-      assert.strictEqual(globals.test_calls, 15);
+      assert.strictEqual(globals.waitForConditionTimeout, 1100);
+      assert.strictEqual(globals.retryAssertionTimeout, 1100);
+      assert.strictEqual(globals.waitForConditionPollInterval, 100);
+
+      assert.strictEqual(globals.test_calls, 17);
     });
   });
 });

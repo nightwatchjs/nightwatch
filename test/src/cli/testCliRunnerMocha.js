@@ -63,7 +63,7 @@ describe('test CLI Runner Mocha', function() {
     });
 
     createMockedMocha(function(options) {
-      assert.deepStrictEqual(options, {timeout: 10000});
+      assert.deepStrictEqual(options, {timeout: 20000, reporterOptions: {}});
     }, testFiles);
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -95,7 +95,7 @@ describe('test CLI Runner Mocha', function() {
     });
 
     createMockedMocha(function(options) {
-      assert.deepStrictEqual(options, {timeout: 10000});
+      assert.deepStrictEqual(options, {timeout: 20000, reporterOptions: {}});
     }, testFiles);
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -131,7 +131,8 @@ describe('test CLI Runner Mocha', function() {
     createMockedMocha(function(options) {
       assert.deepStrictEqual(options, {
         ui: 'tdd',
-        timeout: 10000
+        timeout: 20000,
+        reporterOptions: {}
       });
     }, testFiles);
 
@@ -150,7 +151,9 @@ describe('test CLI Runner Mocha', function() {
 
 function createMockedMocha(assertionFn = function() {}, testFiles = []) {
   function Mocha(options) {
-    this.suite = {};
+    this.suite = {
+      on() {}
+    };
     assertionFn(options);
   }
 
