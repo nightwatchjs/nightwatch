@@ -37,6 +37,7 @@
     "strip-ansi": "^6.0.0"
   },
   "devDependencies": {
+    "@cucumber/cucumber": "*",
     "@types/node": "^16.7.1",
     "chai": "^4.2.0",
     "coveralls": "^3.0.11",
@@ -54,6 +55,7 @@
     "mochawesome-report-generator": "^5.2.0"
   },
   "peerDependencies": {
+    "@cucumber/cucumber": "^7.3.1",
     "chromedriver": "*",
     "geckodriver": "*"
   },
@@ -63,9 +65,11 @@
     },
     "geckodriver": {
       "optional": true
+    },
+    "@cucumber/cucumber": {
+      "optional": true
     }
   },
-  "optionalDependencies": {},
   "bin": {
     "nightwatch": "./bin/nightwatch"
   },
