@@ -1,13 +1,12 @@
-const common = require('../../../common');
 const path = require('path');
 const assert = require('assert');
 const Globals = require('../../../lib/globals/commands.js');
-const MockServer = require('../../../lib/mockserver');
-const CucumberRunner = common.require('runner/test-runners/cucumber');
+const common = require('../../../common.js');
+const MockServer = require('../../../lib/mockserver.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('test Cucumber integration', function() {
-    
-
   before(function(done) {
     this.server = MockServer.init();
     this.server.on('listening', () => done());
@@ -24,64 +23,56 @@ describe('test Cucumber integration', function() {
   });
 
   it('testCucumberSampleTests', function() {
-    let settings = {
+    const source = [path.join(__dirname, '../../../cucumbertests/testSample.js')];
+
+    const globals = {
+      test_calls: 0
+    };
+
+    return runTests({
+      source,
+      tags: ['@pass']
+    }, settings({
+      globals,
       test_runner: {
+        type: 'cucumber',
         options: {
           feature_path: path.join(__dirname, '../../../cucumbertests/sample.feature')
         }
       },
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: false
-      },
-      persist_globals: true,
-      globals: {
-        test_calls: 0,
-        retryAssertionTimeout: 0
-      },
       output: false,
-      silent: false,
-      output_folder: false
-    };
-    
-    const cucumberRunner = new CucumberRunner(settings, {tags: ['@pass']}, {});
-    const modules = [path.join(__dirname, '../../../cucumbertests/testSample.js')];
-
-    return cucumberRunner.runTests(modules).then(({reporter}) =>
-      assert.ok(reporter.allTestsPassed));
-
+      silent: false
+    })).then(_ => {
+      assert.strictEqual(globals.test_calls, 2);
+    });
   });
 
   it('testCucumberSampleTests with failures', function() {
-    let settings = {
+    const source = [path.join(__dirname, '../../../cucumbertests/testWithFailures.js')];
+
+    const globals = {
+      test_calls: 0,
+      retryAssertionTimeout: 100,
+      waitForConditionTimeout: 100,
+      waitForConditionPollInterval: 10
+    };
+
+    return runTests({
+      source,
+      tags: ['@fail']
+    }, settings({
+      globals,
       test_runner: {
+        type: 'cucumber',
         options: {
           feature_path: path.join(__dirname, '../../../cucumbertests/sample.feature')
         }
       },
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: false
-      },
-      persist_globals: true,
-      globals: {
-        test_calls: 0,
-        retryAssertionTimeout: 0
-      },
       output: false,
-      silent: false,
-      output_folder: false
-    };
-
-    const cucumberRunner = new CucumberRunner(settings, {tags: ['@fail']}, {});
-    const modules = [path.join(__dirname, '../../../cucumbertests/testWithFailures.js')];
-
-    return cucumberRunner.runTests(modules).then(({reporter}) => {
-      assert.ok(!reporter.allTestsPassed);
-      assert.strictEqual(reporter.testResults.lastError.name, 'NightwatchAssertError');
-    }
-    );
+      silent: false
+    }))
+      .then(_ => {
+        assert.strictEqual(globals.test_calls, 2);
+      });
   });
 });
