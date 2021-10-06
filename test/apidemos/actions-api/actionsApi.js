@@ -10,7 +10,9 @@ describe('Actions API demo tests', function() {
       const actions = this.actions({async: true});
 
       return actions
+        //eslint-disable-next-line
         .keyDown(Keys.SHIFT)
+        //eslint-disable-next-line
         .keyUp(Keys.SHIFT);
     });
 
