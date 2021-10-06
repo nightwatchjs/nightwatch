@@ -35,7 +35,7 @@ describe('find elements in ES6 custom command', function() {
     };
 
     return NightwatchClient.runTests(testsPath, settings({
-      output: true,
+      output: false,
       skip_testcases_on_fail: false,
       custom_commands_path: [path.join(__dirname, '../../../extra/commands')],
       globals

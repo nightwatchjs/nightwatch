@@ -14,11 +14,12 @@ describe('Test edge option', function(){
 
     const options =  client.transport.createOptions();
     assert.strictEqual(options, edgeoptions);
+    assert.strictEqual(client.api.isEdge(), true);
+    assert.strictEqual(client.api.browserName, 'MicrosoftEdge');
   });
 
   it('ms:edgeOption detach driver option', function(){
-    const client =  Nightwatch.createClient({
-     
+    const client = Nightwatch.createClient({
       desiredCapabilities: {
         browserName: 'edge',
         'ms:edgeOptions': {
@@ -30,6 +31,8 @@ describe('Test edge option', function(){
 
     assert.strictEqual(options instanceof EdgeOptions, true);
     assert.strictEqual(options.options_.detach, true);
+    assert.strictEqual(client.api.isEdge(), true);
+    assert.strictEqual(client.api.browserName, 'edge');
   });
   
   it('Edge Binary Path option', function(){

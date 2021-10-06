@@ -14,6 +14,8 @@ describe('Test safari options', function(){
     const options =  client.transport.createOptions();
     
     assert.strictEqual(options, safariOptions);
+    assert.strictEqual(client.api.isSafari(), true);
+    assert.strictEqual(client.api.browserName, 'safari');
   });
 
   it('proxy option', function(){

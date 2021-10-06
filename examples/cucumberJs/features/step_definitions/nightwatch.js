@@ -15,10 +15,11 @@ Given(/^I dismiss the cookie dialog$/, async function() {
   }
 });
 
-Given(/^I search "([^"]*)"$/, function(searchTerm) {
-  return browser
-    .click('a[aria-label="Search"]')
-    .waitForElementVisible('#rijksmuseum-app')
+Given(/^I search "([^"]*)"$/, async function(searchTerm) {
+  // FIXME: chaining the click command to the rest of the commands causes an uncaughtRejection in case of an element locate error
+  await browser.pause(1000).click('a[aria-label="Search"]');
+
+  return browser.waitForElementVisible('#rijksmuseum-app')
     .setValue('input.search-bar-input[type=text]', [searchTerm, browser.Keys.ENTER])
     .pause(1000);
 });

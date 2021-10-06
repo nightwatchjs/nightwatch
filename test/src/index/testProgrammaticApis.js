@@ -55,7 +55,9 @@ describe('test programmatic apis', function () {
       return defaultConfig;
     };
 
-    const client = Nightwatch.createClient();
+    const client = Nightwatch.createClient({
+      headless: true
+    });
     assert.deepStrictEqual(Object.keys(client), ['session']);
     assert.strictEqual(typeof client.session, 'function');
 
@@ -102,7 +104,8 @@ describe('test programmatic apis', function () {
     };
 
     const client = Nightwatch.createClient({
-      parallel: true
+      parallel: true,
+      headless: true
     });
 
     const session = await client.session();
@@ -257,6 +260,7 @@ describe('test programmatic apis', function () {
     };
 
     const client = Nightwatch.createClient({
+      headless: true,
       config: './custom-config.conf.js'
     });
 
@@ -301,6 +305,7 @@ describe('test programmatic apis', function () {
       timeout: 500,
       useAsync: false,
       silent: false,
+      headless: true,
       output_folder: 'output',
       globals: {
         testGlobal: 'one'

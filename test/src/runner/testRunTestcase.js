@@ -69,7 +69,7 @@ describe('testRunTestcase', function() {
     };
 
     return runTests(testsPath, settings({
-      output: false,
+      output: true,
       globals
     }));
   });

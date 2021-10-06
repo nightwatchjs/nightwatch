@@ -10,8 +10,8 @@ describe('Actions API demo tests', function() {
       const actions = this.actions({async: true});
 
       return actions
-        .keyDown(Key.SHIFT)
-        .keyUp(Key.SHIFT);
+        .keyDown(Keys.SHIFT)
+        .keyUp(Keys.SHIFT);
     });
 
     assert.strictEqual(result, undefined);

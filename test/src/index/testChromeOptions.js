@@ -13,6 +13,8 @@ describe('Test chrome options', function () {
     
     const options = client.transport.createOptions();
     assert.strictEqual(options, capabilities);
+    assert.strictEqual(client.api.isChrome(), true);
+    assert.strictEqual(client.api.browserName, 'chrome');
   });
 
   it('goog:chromeOptions detach driver option', function () {
@@ -28,6 +30,8 @@ describe('Test chrome options', function () {
 
     assert.strictEqual(options instanceof ChromeOptions, true);
     assert.strictEqual(options.options_.detach, true);
+    assert.strictEqual(client.api.isChrome(), true);
+    assert.strictEqual(client.api.browserName, 'chrome');
   });
 
   it('Chrome Binary Path option', function(){
@@ -43,6 +47,8 @@ describe('Test chrome options', function () {
 
     assert.strictEqual(options instanceof ChromeOptions, true);
     assert.strictEqual(options.options_.binary, '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome');
+    assert.strictEqual(client.api.isChrome(), true);
+    assert.strictEqual(client.api.browserName, 'chrome');
   });
 
   it('Chrome log path option', function(){

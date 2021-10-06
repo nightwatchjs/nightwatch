@@ -161,10 +161,10 @@ describe('testRunTestSuite', function() {
     const settings = Settings.parse({
       selenium: {
         port: 10195,
-        version2: true,
-        start_process: true
+        start_process: false
       },
-      silent: true,
+      selenium_host: 'localhost',
+      silent: false,
       output: false,
       persist_globals: true,
       globals,
