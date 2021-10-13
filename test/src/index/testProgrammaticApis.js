@@ -17,7 +17,11 @@ describe('test programmatic apis', function () {
     return null;
   }
 
-  beforeEach((done) => MockServer.start(done));
+  beforeEach((done) => {
+    delete global.browser;
+
+    MockServer.start(done);
+  });
   afterEach((done) => {
     mockery.deregisterAll();
     mockery.resetCache();
@@ -58,8 +62,13 @@ describe('test programmatic apis', function () {
     const client = Nightwatch.createClient({
       headless: true
     });
+
+    assert.ok(!!global.browser);
+    assert.ok(!!global.browser.page);
+
     assert.deepStrictEqual(Object.keys(client), ['session']);
     assert.strictEqual(typeof client.session, 'function');
+
 
     const session = await client.session();
     assert.strictEqual(session.sessionId, '13521-10219-202');
@@ -165,8 +174,11 @@ describe('test programmatic apis', function () {
 
     const client = Nightwatch.createClient({
       env: 'chrome_env',
-      headless: true
+      headless: true,
+      disable_global_apis: true
     });
+
+    assert.strictEqual(typeof global.browser, 'undefined');
 
     const session = await client.session();
 

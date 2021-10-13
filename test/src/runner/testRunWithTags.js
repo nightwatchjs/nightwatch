@@ -128,6 +128,8 @@ describe('testRunWithTags', function() {
       _source: [testsPath],
       skiptags: ['other']
     }, settings({
+      output: false,
+      disable_typescript: true,
       globals: {
         reporter(results) {
           assert.strictEqual(Object.keys(results.modules).length, 2);

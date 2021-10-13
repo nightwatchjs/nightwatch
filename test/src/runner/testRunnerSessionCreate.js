@@ -70,7 +70,7 @@ describe('testRunnerSessionCreate', function() {
         assert.ok(Object.keys(results.modules).includes(`simple${sep}test${sep}sample`));
         assert.ok(results.lastError instanceof Error);
 
-        assert.strictEqual(results.lastError.message, 'An error occurred while retrieving a new session: [SessionNotCreatedError] Session is already started');
+        assert.strictEqual(results.lastError.message, 'An error occurred while creating a new GeckoDriver session: [SessionNotCreatedError] Session is already started');
       }
     };
 
@@ -101,7 +101,8 @@ describe('testRunnerSessionCreate', function() {
         assert.strictEqual(results.lastError.sessionConnectionRefused, true);
         assert.ok(results.lastError instanceof Error);
         assert.strictEqual(results.lastError.code, 'ECONNREFUSED');
-        assert.strictEqual(results.lastError.message, 'An error occurred while retrieving a new session: Connection refused to 127.0.0.1:5050. If the Webdriver/Selenium service is managed by Nightwatch, check if "start_process" is set to "true".');
+        assert.strictEqual(results.lastError.showTrace, false);
+        assert.strictEqual(results.lastError.message, 'An error occurred while creating a new GeckoDriver session: Connection refused to 127.0.0.1:9999. If the Webdriver/Selenium service is managed by Nightwatch, check if "start_process" is set to "true".');
       }
     };
 
@@ -109,11 +110,92 @@ describe('testRunnerSessionCreate', function() {
       selenium_host: null,
       webdriver: {
         host: 'localhost',
-        port: 5050
+        port: 9999
       },
       globals
     })).catch(err => {
       assert.ok(err instanceof Error);
+      if (err.code === 'ERR_ASSERTION') {
+        throw err;
+      }
+      assert.strictEqual(err.code, 'ECONNREFUSED');
+      assert.strictEqual(err.sessionCreate, true);
+      assert.strictEqual(err.sessionConnectionRefused, true);
+    });
+  });
+
+  it('testRunner with not found server_path error', function() {
+    let testsPath = [
+      path.join(__dirname, '../../sampletests/simple')
+    ];
+
+    let globals = {
+      reporter(results) {
+        assert.strictEqual(results.errors, 1);
+        assert.strictEqual(results.errmessages.length, 1);
+        assert.strictEqual(Object.keys(results.modules).length, 1);
+
+        assert.strictEqual(results.lastError.sessionCreate, true);
+        assert.strictEqual(results.lastError.showTrace, false);
+        assert.ok(results.lastError instanceof Error);
+        assert.ok(results.lastError.detailedErr.includes('The specified executable path does not exist: /bin/xxxxx; verify if webdriver is configured correctly; using:'));
+        assert.strictEqual(results.lastError.message, 'Unable to create the GeckoDriver process:');
+      }
+    };
+
+    return runTests(testsPath, settings({
+      selenium_host: null,
+      webdriver: {
+        start_process: true,
+        server_path: '/bin/xxxxx',
+        host: 'localhost',
+        port: 4444
+      },
+      globals
+    })).catch(err => {
+      assert.ok(err instanceof Error);
+      if (err.code === 'ERR_ASSERTION') {
+        throw err;
+      }
+      assert.strictEqual(err.code, 'ECONNREFUSED');
+      assert.strictEqual(err.sessionCreate, true);
+      assert.strictEqual(err.sessionConnectionRefused, true);
+    });
+  });
+
+  it('testRunner with incorrect server_path error', function() {
+    let testsPath = [
+      path.join(__dirname, '../../sampletests/simple')
+    ];
+
+    let globals = {
+      reporter(results) {
+        assert.strictEqual(results.errors, 1);
+        assert.strictEqual(results.errmessages.length, 1);
+        assert.strictEqual(Object.keys(results.modules).length, 1);
+
+        assert.strictEqual(results.lastError.sessionCreate, true);
+        assert.strictEqual(results.lastError.showTrace, false);
+        assert.ok(results.lastError instanceof Error);
+        assert.ok(results.lastError.detailedErr.startsWith('Verify if GeckoDriver is configured correctly; using:'));
+        assert.strictEqual(results.lastError.message, 'An error occurred while creating a new GeckoDriver session: [Error] Server terminated early with status 2');
+      }
+    };
+
+    return runTests(testsPath, settings({
+      selenium_host: null,
+      webdriver: {
+        start_process: true,
+        server_path: '/bin/bash',
+        host: 'localhost',
+        port: 4444
+      },
+      globals
+    })).catch(err => {
+      assert.ok(err instanceof Error);
+      if (err.code === 'ERR_ASSERTION') {
+        throw err;
+      }
       assert.strictEqual(err.code, 'ECONNREFUSED');
       assert.strictEqual(err.sessionCreate, true);
       assert.strictEqual(err.sessionConnectionRefused, true);
