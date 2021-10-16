@@ -85,6 +85,136 @@ describe('testRunnerSessionCreate', function() {
     }));
   });
 
+  it('testRunner with session create error using webdriver with --fail-fast argv', function() {
+    let testsPath = [
+      path.join(__dirname, '../../sampletests/simple'),
+      path.join(__dirname, '../../sampletests/async')
+    ];
+
+    MockServer.addMock({
+      url: '/session',
+      statusCode: 500,
+      postdata: JSON.stringify({
+        desiredCapabilities: {browserName: 'firefox', name: 'Async/Test/Sample'},
+        capabilities: {alwaysMatch: {browserName: 'firefox'}}
+      }),
+      response: JSON.stringify({
+        value: {
+          error: 'session not created',
+          message: 'Session is already started'
+        }
+      })
+    }, true);
+
+    MockServer.addMock({
+      url: '/session',
+      statusCode: 500,
+      postdata: JSON.stringify({
+        desiredCapabilities: {browserName: 'firefox', name: 'test-Name'},
+        capabilities: {alwaysMatch: {browserName: 'firefox'}}
+      }),
+      response: JSON.stringify({
+        value: {
+          error: 'session not created',
+          message: 'Session is already started'
+        }
+      })
+    }, true);
+
+    let globals = {
+      reporter(results) {
+        assert.strictEqual(results.errors, 1);
+        assert.strictEqual(Object.keys(results.modules).length, 1);
+        assert.ok(results.lastError instanceof Error);
+        assert.strictEqual(results.lastError.message, 'An error occurred while creating a new GeckoDriver session: [SessionNotCreatedError] Session is already started');
+      }
+    };
+
+    return runTests({
+      source: testsPath,
+      'fail-fast': true
+    }, settings({
+      selenium_host: null,
+      webdriver: {
+        host: 'localhost'
+      },
+      globals,
+      output: false,
+      output_folder: false
+    })).catch(err => {
+      return err;
+    }).then(err => {
+      assert.ok(err instanceof Error);
+      assert.strictEqual(err.name, 'SessionNotCreatedError');
+    });
+
+  });
+
+  it('testRunner with session create error using webdriver with enable_fail_fast setting', function() {
+    let testsPath = [
+      path.join(__dirname, '../../sampletests/simple'),
+      path.join(__dirname, '../../sampletests/async')
+    ];
+
+    MockServer.addMock({
+      url: '/session',
+      statusCode: 500,
+      postdata: JSON.stringify({
+        desiredCapabilities: {browserName: 'firefox', name: 'Async/Test/Sample'},
+        capabilities: {alwaysMatch: {browserName: 'firefox'}}
+      }),
+      response: JSON.stringify({
+        value: {
+          error: 'session not created',
+          message: 'Session is already started'
+        }
+      })
+    }, true);
+
+    MockServer.addMock({
+      url: '/session',
+      statusCode: 500,
+      postdata: JSON.stringify({
+        desiredCapabilities: {browserName: 'firefox', name: 'test-Name'},
+        capabilities: {alwaysMatch: {browserName: 'firefox'}}
+      }),
+      response: JSON.stringify({
+        value: {
+          error: 'session not created',
+          message: 'Session is already started'
+        }
+      })
+    }, true);
+
+    let globals = {
+      reporter(results) {
+        assert.strictEqual(results.errors, 1);
+        assert.strictEqual(Object.keys(results.modules).length, 1);
+        assert.ok(results.lastError instanceof Error);
+        assert.strictEqual(results.lastError.message, 'An error occurred while creating a new GeckoDriver session: [SessionNotCreatedError] Session is already started');
+      }
+    };
+
+    return runTests({
+      source: testsPath
+    }, settings({
+      selenium_host: null,
+      webdriver: {
+        host: 'localhost'
+      },
+      globals,
+      output: false,
+      output_folder: false,
+      enable_fail_fast: true
+    })).catch(err => {
+      return err;
+    }).then(err => {
+      assert.ok(err instanceof Error);
+      assert.strictEqual(err.name, 'SessionNotCreatedError');
+    });
+
+  });
+
   it('testRunner with session ECONNREFUSED error using webdriver', function() {
     let testsPath = [
       path.join(__dirname, '../../sampletests/simple'),
@@ -93,12 +223,11 @@ describe('testRunnerSessionCreate', function() {
 
     let globals = {
       reporter(results) {
-        assert.strictEqual(results.errors, 1);
-        assert.strictEqual(results.errmessages.length, 1);
-        assert.strictEqual(Object.keys(results.modules).length, 1);
+        assert.strictEqual(results.errors, 2);
+        assert.strictEqual(results.errmessages.length, 2);
+        assert.strictEqual(Object.keys(results.modules).length, 2);
 
         assert.strictEqual(results.lastError.sessionCreate, true);
-        assert.strictEqual(results.lastError.sessionConnectionRefused, true);
         assert.ok(results.lastError instanceof Error);
         assert.strictEqual(results.lastError.code, 'ECONNREFUSED');
         assert.strictEqual(results.lastError.showTrace, false);
@@ -112,6 +241,7 @@ describe('testRunnerSessionCreate', function() {
         host: 'localhost',
         port: 9999
       },
+      output: false,
       globals
     })).catch(err => {
       assert.ok(err instanceof Error);

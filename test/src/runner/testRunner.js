@@ -81,7 +81,7 @@ describe('testRunner', function() {
 
     assert.throws(function() {
       Runner.readTestSource(settings);
-    }, /No test source specified, please check configuration/);
+    }, /No test source specified, please check "src_folders" config/);
   });
 
   it('testRunSimple', function() {

@@ -60,17 +60,19 @@ describe('test programmatic apis', function () {
     };
 
     const client = Nightwatch.createClient({
-      headless: true
+      headless: true,
+      enable_global_apis: true
     });
 
     assert.ok(!!global.browser);
     assert.ok(!!global.browser.page);
 
-    assert.deepStrictEqual(Object.keys(client), ['session']);
-    assert.strictEqual(typeof client.session, 'function');
+    assert.deepStrictEqual(Object.keys(client), ['updateCapabilities', 'launchBrowser']);
+    assert.strictEqual(typeof client.launchBrowser, 'function');
+    assert.strictEqual(typeof client.settings, 'object');
 
 
-    const session = await client.session();
+    const session = await client.launchBrowser();
     assert.strictEqual(session.sessionId, '13521-10219-202');
     assert.deepStrictEqual(session.capabilities, {
       acceptInsecureCerts: false,
@@ -117,7 +119,7 @@ describe('test programmatic apis', function () {
       headless: true
     });
 
-    const session = await client.session();
+    const session = await client.launchBrowser();
 
     const {element} = Nightwatch;
     const containerEl = element('#container');
@@ -180,7 +182,7 @@ describe('test programmatic apis', function () {
 
     assert.strictEqual(typeof global.browser, 'undefined');
 
-    const session = await client.session();
+    const session = await client.launchBrowser();
 
     assert.strictEqual(session.sessionId, '13521-10219-202');
     assert.strictEqual(session.options.webdriver.port, 10195);
@@ -228,7 +230,7 @@ describe('test programmatic apis', function () {
       headless: false
     });
 
-    const session = await client.session();
+    const session = await client.launchBrowser();
 
     assert.strictEqual(session.sessionId, '1352110219202');
     assert.deepStrictEqual(session.capabilities, {
@@ -276,7 +278,7 @@ describe('test programmatic apis', function () {
       config: './custom-config.conf.js'
     });
 
-    const session = await client.session();
+    const session = await client.launchBrowser();
 
     assert.strictEqual(customConfig, './custom-config.conf.js');
     assert.strictEqual(session.sessionId, '13521-10219-202');
@@ -324,7 +326,7 @@ describe('test programmatic apis', function () {
       }
     });
 
-    const session = await client.session();
+    const session = await client.launchBrowser();
 
     CliRunner.createDefaultConfig = createDefaultConfig;
     CliRunner.prototype.loadConfig = loadConfig;
@@ -398,7 +400,7 @@ describe('test programmatic apis', function () {
       headless: true
     });
 
-    const session = await clientChrome.session();
+    const session = await clientChrome.launchBrowser();
     assert.strictEqual(session.sessionId, '13521-10219-202');
     assert.strictEqual(session.options.webdriver.port, 10195);
 
@@ -413,7 +415,7 @@ describe('test programmatic apis', function () {
       headless: true
     });
 
-    const sessionFirefox = await clientFirefox.session();
+    const sessionFirefox = await clientFirefox.launchBrowser();
     assert.strictEqual(sessionFirefox.sessionId, '13521-10219-202');
     assert.deepStrictEqual(sessionFirefox.capabilities, {
       acceptInsecureCerts: false,
@@ -495,7 +497,7 @@ describe('test programmatic apis', function () {
     });
 
     try {
-      await client.session();
+      await client.launchBrowser();
     } catch (err) {
     }
 

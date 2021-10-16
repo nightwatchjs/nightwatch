@@ -384,7 +384,7 @@ describe('expect.css', function() {
 
     let expect = this.client.api.expect.element('#weblogin').to.have.css('display').not.contains('vasq');
 
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have css property "display"'));
+    assert.ok(expect.assertion.message.startsWith('Expected element %s to have css property "display"'));
 
     return this.client.start(function() {
       assert.strictEqual(expect.assertion.expected, 'not contain \'vasq\'');

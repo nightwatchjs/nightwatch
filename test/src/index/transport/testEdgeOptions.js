@@ -1,5 +1,5 @@
 const assert = require('assert');
-const Nightwatch = require('../../lib/nightwatch.js');
+const Nightwatch = require('../../../lib/nightwatch.js');
 const EdgeOptions =  require('selenium-webdriver/edge').Options;
 
 describe('Test edge option', function(){

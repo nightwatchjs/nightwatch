@@ -22,7 +22,7 @@ describe('testRunWithHooks', function() {
   });
 
   afterEach(function() {
-    Object.keys(require.cache).forEach(function(module) {
+    Object.keys(require.cache).filter(i => i.includes('/sampletests')).forEach(function(module) {
       delete require.cache[module];
     });
   });
@@ -53,7 +53,8 @@ describe('testRunWithHooks', function() {
 
       let globals = {
         calls: 0,
-        asyncHookTimeout: 100,
+        asyncHookTimeout: 50,
+
         reporter(results) {
           assert.ok(results.lastError instanceof Error);
           assert.ok(results.lastError.message.includes(expectedErrorMessage));
@@ -66,6 +67,92 @@ describe('testRunWithHooks', function() {
       };
 
       return runTests(provideErrorTestPath, settings({
+        globals
+      }));
+    });
+  });
+
+  [
+    'before',
+    'beforeAsync',
+    'beforeWithClient',
+    'beforeEach',
+    'beforeEachAsync',
+    'beforeEachWithClient',
+    'beforeEachAsyncWithClient',
+    'beforeEachAsyncWithClientMultiple',
+    'afterEach',
+    'afterEachAsync',
+    'afterEachWithClient',
+    'after',
+    'afterAsync',
+    'afterWithClient'
+  ].forEach(function(hook) {
+    it(`testRunner with ${hook} hook and explicit callback error with --fail-fast argument`, function() {
+      let source = [
+        path.join(__dirname, '../../asynchookstests/async-provide-error/' + hook + '.js'),
+        path.join(__dirname, '../../sampletests/async/test/sample.js'),
+      ];
+
+      let globals = {
+        calls: 0,
+        asyncHookTimeout: 50,
+
+        reporter(results) {
+          assert.strictEqual(Object.keys(results.modules).length, 1);
+        }
+      };
+
+      return runTests({
+        source,
+        'fail-fast': true
+      }, settings({
+        globals
+      })).catch(err => {
+        return err;
+      }).then(err => {
+        assert.ok(err instanceof Error);
+        if (err.name === 'ERR_ASSERTION') {
+          throw err;
+        }
+      });
+    });
+  });
+
+  [
+    'before',
+    'beforeAsync',
+    'beforeWithClient',
+    'beforeEach',
+    'beforeEachAsync',
+    'beforeEachWithClient',
+    'beforeEachAsyncWithClient',
+    'beforeEachAsyncWithClientMultiple',
+    'afterEach',
+    'afterEachAsync',
+    'afterEachWithClient',
+    'after',
+    'afterAsync',
+    'afterWithClient'
+  ].forEach(function(hook) {
+    it(`testRunner with ${hook} hook and explicit callback error without fail-fast argument`, function() {
+      let source = [
+        path.join(__dirname, '../../asynchookstests/async-provide-error/' + hook + '.js'),
+        path.join(__dirname, '../../sampletests/async/test/sample.js'),
+      ];
+
+      let globals = {
+        calls: 0,
+        asyncHookTimeout: 50,
+
+        reporter(results) {
+          assert.strictEqual(Object.keys(results.modules).length, 2);
+        }
+      };
+
+      return runTests({
+        source
+      }, settings({
         globals
       }));
     });

@@ -17,11 +17,16 @@ try {
           Logger.error(err);
         }
 
-        runner.processListener.setExitCode(10);
+        runner.processListener.setExitCode(10).exit();
       });
   });
 } catch (err) {
-  err.message = 'An error occurred while trying to start the Nightwatch Runner: ' + err.message;
+  const {message} = err;
+  err.message = 'An error occurred while trying to start the Nightwatch Runner:';
+  err.showTrace = false;
+  err.detailedErr = message;
+
   Logger.error(err);
+
   process.exit(2);
 }

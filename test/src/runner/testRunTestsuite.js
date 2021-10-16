@@ -54,6 +54,62 @@ describe('testRunTestSuite', function() {
     }));
   });
 
+  it('testRunner with --fail-fast cli argument', function() {
+    let src_folders = [
+      path.join(__dirname, '../../sampletests/withfailures'),
+      path.join(__dirname, '../../sampletests/withsubfolders')
+    ];
+
+    let globals = {
+      calls: 0,
+      retryAssertionTimeout: 0,
+      reporter(results, cb) {
+        assert.strictEqual(Object.keys(results.modules).length, 1);
+        cb();
+      }
+    };
+
+    return runTests({
+      'fail-fast': true
+    }, settings({
+      output: false,
+      src_folders,
+      globals
+    })).catch(err => {
+      return err;
+    }).then(err => {
+      assert.ok(err instanceof Error);
+    });
+  });
+
+  it('testRunner with enable_fail_fast setting', function() {
+    let src_folders = [
+      path.join(__dirname, '../../sampletests/withfailures'),
+      path.join(__dirname, '../../sampletests/withsubfolders')
+    ];
+
+    let globals = {
+      calls: 0,
+      retryAssertionTimeout: 0,
+      reporter(results, cb) {
+        assert.strictEqual(Object.keys(results.modules).length, 1);
+        cb();
+      }
+    };
+
+    return runTests({
+    }, settings({
+      output: false,
+      enable_fail_fast: true,
+      src_folders,
+      globals
+    })).catch(err => {
+      return err;
+    }).then(err => {
+      assert.ok(err instanceof Error);
+    });
+  });
+
   it('testRunner with suiteRetries and describe interface', function() {
     const testsPath = path.join(__dirname, '../../sampletests/withdescribe/suite-retries/sample.js');
 
