@@ -91,7 +91,7 @@ describe('testRunWithHooks', function() {
     it(`testRunner with ${hook} hook and explicit callback error with --fail-fast argument`, function() {
       let source = [
         path.join(__dirname, '../../asynchookstests/async-provide-error/' + hook + '.js'),
-        path.join(__dirname, '../../sampletests/async/test/sample.js'),
+        path.join(__dirname, '../../sampletests/async/test/sample.js')
       ];
 
       let globals = {
@@ -138,7 +138,7 @@ describe('testRunWithHooks', function() {
     it(`testRunner with ${hook} hook and explicit callback error without fail-fast argument`, function() {
       let source = [
         path.join(__dirname, '../../asynchookstests/async-provide-error/' + hook + '.js'),
-        path.join(__dirname, '../../sampletests/async/test/sample.js'),
+        path.join(__dirname, '../../sampletests/async/test/sample.js')
       ];
 
       let globals = {
