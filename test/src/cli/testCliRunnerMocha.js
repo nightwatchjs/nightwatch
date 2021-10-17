@@ -55,7 +55,7 @@ describe('test CLI Runner Mocha', function() {
 
     const defaultOptions = {timeout: 20000, reporterOptions: {}};
     if (isCi) {
-      defaultOptions.colors = false;
+      defaultOptions.color = false;
     }
 
     mockery.registerMock('./withmocha.json', {
@@ -88,7 +88,7 @@ describe('test CLI Runner Mocha', function() {
     let testFiles = [];
     const defaultOptions = {timeout: 20000, reporterOptions: {}};
     if (isCi) {
-      defaultOptions.colors = false;
+      defaultOptions.color = false;
     }
 
     mockery.registerMock('./withmocha.json', {
@@ -130,7 +130,7 @@ describe('test CLI Runner Mocha', function() {
     };
 
     if (isCi) {
-      defaultOptions.colors = false;
+      defaultOptions.color = false;
     }
 
     mockery.registerMock('./withmocha.json', {
