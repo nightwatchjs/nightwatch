@@ -43,14 +43,17 @@ $ npx nightwatch examples/cucumberJs/features/step_definitions --parallel 2
 ```
 
  - Use other [test runner options](https://nightwatchjs.org/guide/running-tests/command-line-options.html) as usual:
+
 ```sh
 $ npx nightwatch examples/cucumberJs/features/step_definitions --headless
 ```
 
 ### Reporting
-Reporting is currently not fully integrated with Nightwatch reporters (like JUnit XML reports or the [global custom reporter](https://nightwatchjs.org/guide/extending-nightwatch/custom-reporter.html)). 
+When using the integrated Cucumber test runner, you need to use the Cucumber [formatters](https://github.com/cucumber/cucumber-js/blob/main/docs/formatters.md) for generating output.
 
-The mean reason is that reporting is delegated to the Cucumber CLI but we're working working on ways to provide an integrated solution. Here's how the output looks like when running the example tests here in Firefox:
+Nightwatch reporters (like JUnit XML reports or the [global custom reporter](https://nightwatchjs.org/guide/extending-nightwatch/custom-reporter.html)) are not available. The mean reason is that reporting is delegated to the Cucumber CLI. 
+
+Here's how the output looks like when running the example tests here in Firefox:
 
 ```sh
 ℹ Connected to GeckoDriver on port 4444 (1740ms).
