@@ -1,6 +1,15 @@
-# Using Cucumber.js with Nightwatch out of the box
+# Using Cucumber.js with Nightwatch 2
 
-### Configuration
+Nightwatch 2 brings integrated support for using [Cucumber.js](https://cucumber.io/) directly as an alternative test runner. No other plugins are necessary, other than the [Cucumber library](https://www.npmjs.com/package/@cucumber/cucumber) itself (version 7.3 or higher). 
+
+Simply run the following in the same project where Nightwatch is also installed:
+
+```sh
+$ npm i @cucumber/cucumber --save-dev
+```
+
+
+## Configuration
 ```js
 {
   test_runner: {
@@ -24,37 +33,37 @@
 }
 ```
 
-### Running
+## Running
 Cucumber spec files/step definition files can be provided in `src_folders` in Nightwatch config or as a CLI argument.
 
- - With `src_folders` defined:
+With `src_folders` defined:
 
 ```sh
 $ npx nightwatch 
 ```
 
- - Without `src_folders` defined:
+Without `src_folders` defined:
 
 ```sh
 $ npx nightwatch examples/cucumber-js/features/step_definitions 
 ```
 
- - Parallel running using 2 workers:
+Parallel running using 2 workers:
 
 ```sh
 $ nightwatch examples/cucumber-js/features/step_definitions --parallel 2 
 ```
 
- - Use other [test runner options](https://nightwatchjs.org/guide/running-tests/command-line-options.html) as usual:
+Use other [test runner options](https://nightwatchjs.org/guide/running-tests/command-line-options.html) as usual:
 
 ```sh
 $ npx nightwatch examples/cucumber-js/features/step_definitions --headless
 ```
 
-### Disable the automatic session start
+## Disable the automatic session start
 You might need sometimes to not start the Webdriver session automatically after Nightwatch is instantiated. For this purpose, Nightwatch provides the instance available as `this.client`, which contains an `launchBrowser()` method.
 
-#### Configuration:
+### Configuration:
 ```js
 test_runner: {
   type: 'cucumber',
@@ -99,7 +108,7 @@ You might also want to inspect the built-in setup file that Nightwatch uses for 
 $ nightwatch examples/cucumber-js/features/step_definitions --require {/full/path/to/_extra_setup.js}
 ```
 
-### Reporting
+## Reporting
 When using the integrated Cucumber test runner, you need to use the Cucumber [formatters](https://github.com/cucumber/cucumber-js/blob/main/docs/formatters.md) for generating output.
 
 Nightwatch reporters (like JUnit XML reports or the [global custom reporter](https://nightwatchjs.org/guide/extending-nightwatch/custom-reporter.html)) are not available. The main reason is that reporting is delegated to the Cucumber CLI. You can also [write your own](https://github.com/cucumber/cucumber-js/blob/main/docs/custom_formatters.md) Cucumber formatter.
