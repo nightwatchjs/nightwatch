@@ -1,12 +1,12 @@
 {
   "name": "nightwatch",
   "description": "Easy to use Node.js based End-to-End testing solution for browser based apps and websites, using the W3C WebDriver API.",
-  "version": "2.0.0-alpha.3",
+  "version": "2.0.0-alpha.4",
   "author": {
     "name": "Andrei Rusu",
     "email": "andrei@nightwatchjs.org"
   },
-  "homepage": "http://nightwatchjs.org",
+  "homepage": "https://nightwatchjs.org",
   "main": "./lib/index.js",
   "license": "MIT",
   "bugs": "https://github.com/nightwatchjs/nightwatch/issues",
@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "assertion-error": "^1.1.0",
+    "boxen": "^5.1.2",
     "chai-nightwatch": "^0.4.1",
     "ci-info": "^3.2.0",
     "didyoumean": "^1.2.2",
@@ -29,11 +30,9 @@
     "minimatch": "3.0.4",
     "minimist": "^1.2.5",
     "mkpath": "1.0.0",
-    "mocha": "^9.1.2",
+    "mocha": "^9.1.3",
     "ora": "^5.4.1",
-    "request": "^2.88.2",
-    "request-promise": "^4.2.5",
-    "selenium-webdriver": "^4.0.0-rc-1",
+    "selenium-webdriver": "^4.0.0",
     "semver": "^7.3.5",
     "strip-ansi": "^6.0.0"
   },
@@ -76,10 +75,9 @@
   },
   "man": "",
   "scripts": {
-    "eslint": "eslint index.js lib bin examples --quiet && eslint --config ./test/.eslintrc test/ --quiet",
+    "eslint": "eslint index.js lib bin api examples cucumber-js test --quiet",
     "mocha-coverage": "nyc --reporter=html mocha test/src/ --recursive",
     "test": "mocha test/src/ --recursive",
-    "test-ci": "mocha test/src/ --bail",
     "coverage": "npx nyc report --reporter=text-lcov > ./coverage/mocha_coverage.lcov"
   },
   "eslintConfig": {
@@ -119,7 +117,9 @@
     "examples",
     "lib",
     "api",
+    "cucumber-js",
     "README.md",
+    "CODE_OF_CONDUCT.md",
     "LICENSE.md",
     "index.js"
   ]

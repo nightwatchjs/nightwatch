@@ -124,6 +124,14 @@ describe('test Settings', function () {
     eq(client.options.accessKey, 'test-access-key');
   });
 
+  it('testEnableFailFast', function () {
+    let client = Nightwatch.createClient({}, null, {
+      'fail-fast': true
+    });
+
+    eq(client.options.enable_fail_fast, true);
+  });
+
   it('testSetOptionsScreenshots – path empty', function () {
     let client = Nightwatch.createClient({
       screenshots: {

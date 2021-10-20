@@ -675,7 +675,7 @@ describe('Test CLI Runner', function() {
     try {
       Runner.getTestSource(invalidGroupInMultiSrcRunner.test_settings, invalidGroupInMultiSrcRunner.argv);
     } catch (ex) {
-      assert.ok(ex.message.includes('No test source specified, please check configuration; src_folders: "tests1", "tests2"; group(s): "group_doesnotexist".'));
+      assert.ok(ex.message.includes('No test source specified, please check "src_folders" config; src_folders: "tests1", "tests2"; group(s): "group_doesnotexist".'));
     }
   });
 
@@ -738,32 +738,6 @@ describe('Test CLI Runner', function() {
     assert.deepStrictEqual(walker3.testSource, ['tests1/demoGroup1', 'tests1/demoGroup2', 'tests2/demoGroup2']);
   });
 
-  it('testParseTestSettingsInvalid', function() {
-    mockery.registerMock('fs', {
-      statSync: function(module) {
-        if (module === './empty.json') {
-          return {
-            isFile: function() {
-              return true;
-            }
-          };
-        }
-        throw new Error('Does not exist');
-      },
-      constants,
-      rmdirSync
-    });
-
-    const CliRunner = common.require('runner/cli/cli.js');
-    assert.throws(function() {
-      new CliRunner({
-        config: './empty.json',
-        env: 'default'
-      }).setup();
-    }, /No testing environment defined in the configuration file\./);
-
-  });
-
   it('testParseTestSettingsNull', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
@@ -814,7 +788,7 @@ describe('Test CLI Runner', function() {
         config: './incorrect.json',
         env: 'incorrect'
       }).setup();
-    }, /Invalid testing environment specified: incorrect\. Available environments are: default/);
+    }, /Invalid testing environment specified: incorrect\./);
   });
 
   it('testReadExternalGlobals', function() {

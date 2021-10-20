@@ -518,7 +518,7 @@ describe('expect.cookie', function() {
       return this.client.start(function() {
         strictEqual(expect.assertion.waitForMs, 60);
         strictEqual(expect.assertion.passed, false);
-        assert.ok(expect.assertion.retries > 1);
+        assert.ok(expect.assertion.retries >= 1);
         assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" to equal: "hp vasq" in 60ms'));
       });
     });

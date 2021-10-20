@@ -27,7 +27,7 @@ describe('testRunWithCustomCommands', function() {
   });
 
   afterEach(function() {
-    Object.keys(require.cache).forEach(function(module) {
+    Object.keys(require.cache).filter(i => i.includes('/sampletests')).forEach(function(module) {
       delete require.cache[module];
     });
   });
@@ -37,6 +37,8 @@ describe('testRunWithCustomCommands', function() {
     let globals = {
       increment: 0,
       retryAssertionTimeout: 0,
+      waitForConditionPollInterval: 10,
+      waitForConditionTimeout: 20,
       reporter(results, cb) {
         assert.strictEqual(globals.increment, 4);
         cb();

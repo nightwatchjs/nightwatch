@@ -1,5 +1,5 @@
 const assert = require('assert');
-const Nightwatch = require('../../lib/nightwatch.js');
+const Nightwatch = require('../../../lib/nightwatch.js');
 const ChromeOptions = require('selenium-webdriver/chrome').Options;
 
 describe('Test chrome options', function () {

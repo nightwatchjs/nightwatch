@@ -26,7 +26,7 @@ describe('testRunWithTags', function() {
   });
 
   afterEach(function() {
-    Object.keys(require.cache).forEach(function(module) {
+    Object.keys(require.cache).filter(i => i.includes('/sampletests')).forEach(function(module) {
       delete require.cache[module];
     });
   });
@@ -128,6 +128,8 @@ describe('testRunWithTags', function() {
       _source: [testsPath],
       skiptags: ['other']
     }, settings({
+      output: false,
+      disable_typescript: true,
       globals: {
         reporter(results) {
           assert.strictEqual(Object.keys(results.modules).length, 2);

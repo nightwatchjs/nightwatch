@@ -31,7 +31,7 @@ describe('test Mocha integration', function() {
       retryAssertionTimeout: 0
     };
 
-    let testsPath = path.join(__dirname, '../../../mochatests/');
+    let testsPath = path.join(__dirname, '../../../mochatests');
     let error;
 
     return runTests(testsPath, settings({
@@ -42,8 +42,8 @@ describe('test Mocha integration', function() {
           timeout: 5000
         }
       },
-      output: true,
-      silent: true
+      output: false,
+      silent: false
     })).catch(err => {
       error = err;
     }).then((err) => {

@@ -26,7 +26,7 @@ describe('testRunWithGlobalReporter', function() {
   });
 
   afterEach(function() {
-    Object.keys(require.cache).forEach(function(module) {
+    Object.keys(require.cache).filter(i => i.includes('/sampletests')).forEach(function(module) {
       //delete require.cache[module];
     });
   });
@@ -50,9 +50,13 @@ describe('testRunWithGlobalReporter', function() {
       output_folder: false
     };
 
-    return runTests(testsPath, settings).then(_ => {
-      assert.strictEqual(settings.globals.reporterCount, 1);
-    });
+    return runTests(testsPath, settings)
+      .catch(err => {
+        return err;
+      })
+      .then(err => {
+        assert.strictEqual(settings.globals.reporterCount, 1);
+      });
   });
 
   it('testRunner with global async reporter', function() {
@@ -77,9 +81,11 @@ describe('testRunWithGlobalReporter', function() {
       output_folder: false
     };
 
-    return runTests(testsPath, settings).then(_ => {
-      assert.strictEqual(reporterCount, 1);
-    });
+    return runTests(testsPath, settings)
+      .catch(err => (err))
+      .then(_ => {
+        assert.strictEqual(reporterCount, 1);
+      });
   });
 
   it('testRunner with global async reporter and timeout error', function() {
