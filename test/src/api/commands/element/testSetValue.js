@@ -41,9 +41,6 @@ describe('setValue', function() {
       })
       .setValue('#weblogin', 'password', function callback(result) {
         assert.strictEqual(result.status, 0);
-      })
-      .setValue('#weblogin', 'password', function callback(result) {
-        assert.strictEqual(result.status, 0);
       });
 
     this.client.start(done);
