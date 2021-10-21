@@ -6,7 +6,6 @@
 [![npm package](https://img.shields.io/npm/dm/nightwatch.svg)](https://www.npmjs.com/package/nightwatch)
 [![Join the chat at https://gitter.im/nightwatchjs/nightwatch](https://badges.gitter.im/nightwatchjs/nightwatch.svg)](https://gitter.im/nightwatchjs/nightwatch)
 [![Node Support](https://img.shields.io/badge/node-%3E0.10.x-brightgreen.svg)](https://github.com/nightwatchjs/nightwatch/blob/27a855a2ec0c2008073708d5a2286c2819584fdc/.github/workflows/build-node.yaml#L19)
-[![Twitter Follow](https://img.shields.io/twitter/follow/nightwatchjs.svg?style=social)](https://twitter.com/nightwatchjs)
 
 
 <p align="center">
@@ -20,11 +19,16 @@ Automated end-to-end testing framework powered by [Node.js](http://nodejs.org/) 
 
 Nightwatch is a complete and integrated solution for end-to-end testing of web applications and websites. It can also be used for Node.js unit and integration testing. 
 
-## Nightwatch v1.7
+## Nightwatch v2.0-alpha
 
-#### [Changelog](https://github.com/nightwatchjs/nightwatch/releases/tag/v1.7.0) | [Github Discussions](https://github.com/nightwatchjs/nightwatch/discussions)
+#### [Release Notes](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.0.0-alpha.4) | [Discussions](https://github.com/nightwatchjs/nightwatch/discussions)
 
-We're delighted to announce the release of __Nightwatch v1.7__ in the NPM. Please see the [release notes](https://github.com/nightwatchjs/nightwatch/releases/tag/v1.7.0) and [upgrade guide](https://github.com/nightwatchjs/nightwatch/wiki/Migrating-to-Nightwatch-1.0) if you are upgrading from a pre v1.0 version. 
+We're delighted to announce that [Nightwatch v2.0](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.0.0-alpha.4) is now in alpha and available in NPM. Read the [blog post](https://nightwatchjs.org/blog/nightwatch-v2-alpha-is-released.html) about the new features and changes.
+
+Install with: 
+```sh
+npm i nightwatch@alpha
+```
 
 ## Up &amp; Running in 2 Minutes:
 
@@ -96,7 +100,7 @@ desiredCapabilities : {
 
 > It's important to note that, while the Selenium Server was required with older Nightwatch versions (`v0.9` and prior), starting with version `1.0` Selenium is no longer necessary.
 
-Specific WebDriver setup guides can be found on the [Docs website](http://nightwatchjs.org/gettingstarted/#browser-drivers-setup). Legacy Selenium drivers setup guides along with debugging instructions can be found on the [**Wiki**](https://github.com/nightwatchjs/nightwatch/wiki).
+Specific WebDriver setup guides can be found on the [Docs website](https://nightwatchjs.org/gettingstarted/browser-drivers-setup/). Legacy Selenium drivers setup guides along with debugging instructions can be found on the [**Wiki**](https://github.com/nightwatchjs/nightwatch/wiki).
 
 ## Examples
 Example tests are included in the [`examples`](https://github.com/nightwatchjs/nightwatch/tree/main/examples) folder which demonstrate the usage of several Nightwatch features. 
