@@ -13,7 +13,3 @@ Before(async function(testCase) {
 
   this.browser = await this.client.launchBrowser();
 });
-
-After(async function() {
-
-});
