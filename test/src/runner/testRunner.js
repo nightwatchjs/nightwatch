@@ -117,14 +117,10 @@ describe('testRunner', function() {
   });
 
   it('readTestSource with glob pattern that matches no file', async  function(){
-   
     await assert.rejects(async function() {
       await Runner.readTestSource({
         src_folders: [path.join(__dirname, '../../sampletests/srcfolders/nightwatch/*.js')]
       },  {});
     }, 'Should be rejected');
   });
-
-  
-
 });
