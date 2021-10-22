@@ -2,7 +2,7 @@
  * Module dependencies
  */
 const Nightwatch = require('../lib/index.js');
-const {Logger} = require('../lib/utils');
+const {Logger, shouldReplaceStack} = require('../lib/utils');
 
 try {
   Nightwatch.cli(function(argv) {
@@ -14,12 +14,20 @@ try {
       .setupAsync()
       .then(() => runner.runTests())
       .catch((err) => {
-        Logger.error(err);
-        runner.processListener.setExitCode(10);
+        if (!err.displayed) {
+          Logger.error(err);
+        }
+      
+        runner.processListener.setExitCode(10).exit();
       });
   });
 } catch (err) {
-  err.message = 'An error occurred while trying to start the Nightwatch Runner: ' + err.message;
+  const {message} = err;
+  err.message = 'An error occurred while trying to start the Nightwatch Runner:';
+  err.showTrace = !shouldReplaceStack(err);
+  err.detailedErr = message;
+
   Logger.error(err);
+
   process.exit(2);
 }

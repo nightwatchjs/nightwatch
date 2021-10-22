@@ -1,5 +1,5 @@
 const assert = require('assert');
-const Nightwatch = require('../../lib/nightwatch.js');
+const Nightwatch = require('../../../lib/nightwatch.js');
 const SafariOptions =  require('selenium-webdriver/safari').Options;
 
 describe('Test safari options', function(){
@@ -14,6 +14,8 @@ describe('Test safari options', function(){
     const options =  client.transport.createOptions();
     
     assert.strictEqual(options, safariOptions);
+    assert.strictEqual(client.api.isSafari(), true);
+    assert.strictEqual(client.api.browserName, 'safari');
   });
 
   it('proxy option', function(){

@@ -82,7 +82,7 @@ describe('test NightwatchIndex', function () {
     });
   });
 
-  it('test new Chrome session with wrong driver version error message', function (done) {
+  it('test new Chrome session with wrong driver version error message', function () {
     MockServer.addMock({
       url: '/session',
       response: {
@@ -115,10 +115,9 @@ describe('test NightwatchIndex', function () {
       output: false
     });
 
-    client.startSession().catch(err => {
+    return client.startSession().catch(err => {
       assert.ok(err instanceof Error);
-      assert.strictEqual(err.message, 'An error occurred while retrieving a new session: [SessionNotCreatedError] session not created: This version of ChromeDriver only supports Chrome version 75');
-      done();
+      assert.strictEqual(err.message, 'An error occurred while creating a new ChromeDriver session: [SessionNotCreatedError] session not created: This version of ChromeDriver only supports Chrome version 75');
     });
   });
 

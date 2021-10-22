@@ -63,7 +63,7 @@ describe('expect.value', function() {
         .value(null);
 
       let expect = this.client.api.expect.element('#weblogin').to.have.value.equal('xx');
-      assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have value'));
+      assert.ok(expect.assertion.message.startsWith('Expected element %s to have value'));
 
       return this.client.start(function() {
         strictEqual(expect.assertion.expected, 'equal to \'xx\'');
@@ -243,7 +243,7 @@ describe('expect.value', function() {
       Nocks.elementFound().value('xx');
 
       let expect = this.client.api.expect.element('#weblogin').to.have.value.not.equal('vasq');
-      assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have value'));
+      assert.ok(expect.assertion.message.startsWith('Expected element %s to have value'));
 
       return this.client.start(function() {
         strictEqual(expect.assertion.expected, 'not equal to \'vasq\'');
@@ -266,7 +266,7 @@ describe('expect.value', function() {
         .value('xx');
 
       let expect = this.client.api.expect.element('#weblogin').to.have.value.not.equal('xx');
-      assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have value'));
+      assert.ok(expect.assertion.message.startsWith('Expected element %s to have value'));
 
       return this.client.start(function() {
         strictEqual(expect.assertion.expected, 'not equal to \'xx\'');
@@ -282,7 +282,7 @@ describe('expect.value', function() {
 
       let expect = this.client.api.expect.element('#weblogin').to.have.value.not.contains('vasq');
 
-      assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have value'));
+      assert.ok(expect.assertion.message.startsWith('Expected element %s to have value'));
 
       return this.client.start(function() {
         strictEqual(expect.assertion.expected, 'not contain \'vasq\'');
@@ -300,7 +300,7 @@ describe('expect.value', function() {
 
       let expect = this.client.api.expect.element('#weblogin').to.have.value.which.contains('vasq');
 
-      assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have value'));
+      assert.ok(expect.assertion.message.startsWith('Expected element %s to have value'));
 
       return this.client.start(function() {
         strictEqual(expect.assertion.expected, 'contains \'vasq\'');
@@ -324,7 +324,7 @@ describe('expect.value', function() {
         .value('xx');
 
       let expect = this.client.api.expect.element('#weblogin').to.have.value.not.contains('xx');
-      assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have value'));
+      assert.ok(expect.assertion.message.startsWith('Expected element %s to have value'));
 
       return this.client.start(function() {
         strictEqual(expect.assertion.expected, 'not contain \'xx\'');
@@ -346,7 +346,7 @@ describe('expect.value', function() {
         .value(null);
 
       let expect = this.client.api.expect.element('#weblogin').to.have.value.equal('xx');
-      assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have value'));
+      assert.ok(expect.assertion.message.startsWith('Expected element %s to have value'));
 
       return this.client.start(function() {
         strictEqual(expect.assertion.expected, 'equal to \'xx\'');
@@ -362,7 +362,7 @@ describe('expect.value', function() {
 
       let expect = this.client.api.expect.element('#weblogin').to.have.value.not.match(/vasq/);
 
-      assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have value'));
+      assert.ok(expect.assertion.message.startsWith('Expected element %s to have value'));
 
       return this.client.start(function() {
         strictEqual(expect.assertion.expected, 'not match \'/vasq/\'');
@@ -380,7 +380,7 @@ describe('expect.value', function() {
 
       let expect = this.client.api.expect.element('#weblogin').to.have.value.which.matches(/vasq/);
 
-      assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have value'));
+      assert.ok(expect.assertion.message.startsWith('Expected element %s to have value'));
 
       return this.client.start(function() {
         strictEqual(expect.assertion.expected, 'matches \'/vasq/\'');
@@ -404,7 +404,7 @@ describe('expect.value', function() {
         .value('xx');
 
       let expect = this.client.api.expect.element('#weblogin').to.have.value.not.match(/xx/);
-      assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have value'));
+      assert.ok(expect.assertion.message.startsWith('Expected element %s to have value'));
 
       return this.client.start(function() {
         strictEqual(expect.assertion.expected, 'not match \'/xx/\'');
@@ -426,7 +426,7 @@ describe('expect.value', function() {
         .elementNotFound();
 
       let expect = this.client.api.expect.element('#weblogin').to.have.value.equal('vasq');
-      assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have value'));
+      assert.ok(expect.assertion.message.startsWith('Expected element %s to have value'));
 
       return this.client.start(function() {
         strictEqual(expect.assertion.expected, 'equal to \'vasq\'');

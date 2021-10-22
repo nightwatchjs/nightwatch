@@ -1,5 +1,5 @@
 const assert = require('assert');
-const Nightwatch = require('../../lib/nightwatch.js');
+const Nightwatch = require('../../../lib/nightwatch.js');
 const FirefoxOptions =  require('selenium-webdriver/firefox').Options;
 
 describe('Firefox driver options', function(){
@@ -13,6 +13,8 @@ describe('Firefox driver options', function(){
 
     const options =  client.transport.createOptions();
     assert.strictEqual(options, firefoxOptions);
+    assert.strictEqual(client.api.isFirefox(), true);
+    assert.strictEqual(client.api.browserName, 'firefox');
   });
 
   it('moz:firefoxOptions detach driver option', function(){
@@ -28,6 +30,8 @@ describe('Firefox driver options', function(){
 
     assert.strictEqual(options instanceof FirefoxOptions, true);
     assert.deepStrictEqual(options.get('moz:firefoxOptions').detach, true);
+    assert.strictEqual(client.api.isFirefox(), true);
+    assert.strictEqual(client.api.browserName, 'firefox');
   });
 
   it('Firefox Binary Path option', function(){

@@ -19,6 +19,34 @@ describe('test Settings', function () {
     eq(client.api.launch_url, '/home');
   });
 
+  it('test set test_runner invalid value', function () {
+    assert.throws(function() {
+      let client = Nightwatch.createClient({
+        test_runner: null
+      });
+    }, /Error: Invalid "test_runner" settings specified; received: null/);
+  });
+
+  it('test set test_runner invalid value - function', function () {
+    assert.throws(function() {
+      let client = Nightwatch.createClient({
+        test_runner: function() {}
+      });
+    }, /Error: Invalid "test_runner" settings specified; received: function\(\) \{\}/);
+  });
+
+  it('test set test_runner string value', function () {
+
+    let client = Nightwatch.createClient({
+      test_runner: 'mocha'
+    });
+
+    assert.deepStrictEqual(client.settings.test_runner, {
+      options: {},
+      type: 'mocha'
+    });
+  });
+
   it('testSetWebdriverOptionsDefaults', function () {
     HttpRequest.globalSettings = {};
     let client = Nightwatch.createClientDefaults();
@@ -122,6 +150,14 @@ describe('test Settings', function () {
     eq(client.api.options.username, 'test-user');
     eq(client.api.options.accessKey, 'test-access-key');
     eq(client.options.accessKey, 'test-access-key');
+  });
+
+  it('testEnableFailFast', function () {
+    let client = Nightwatch.createClient({}, null, {
+      'fail-fast': true
+    });
+
+    eq(client.options.enable_fail_fast, true);
   });
 
   it('testSetOptionsScreenshots – path empty', function () {

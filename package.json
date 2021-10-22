@@ -1,12 +1,12 @@
 {
   "name": "nightwatch",
   "description": "Easy to use Node.js based End-to-End testing solution for browser based apps and websites, using the W3C WebDriver API.",
-  "version": "2.0.0-alpha.2",
+  "version": "2.0.0-alpha.4",
   "author": {
     "name": "Andrei Rusu",
     "email": "andrei@nightwatchjs.org"
   },
-  "homepage": "http://nightwatchjs.org",
+  "homepage": "https://nightwatchjs.org",
   "main": "./lib/index.js",
   "license": "MIT",
   "bugs": "https://github.com/nightwatchjs/nightwatch/issues",
@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "assertion-error": "^1.1.0",
+    "boxen": "^5.1.2",
     "chai-nightwatch": "^0.4.1",
     "ci-info": "^3.2.0",
     "didyoumean": "^1.2.2",
@@ -28,15 +29,14 @@
     "minimatch": "3.0.4",
     "minimist": "^1.2.5",
     "mkpath": "1.0.0",
-    "mocha": "6.2.3",
+    "mocha": "^9.1.3",
     "ora": "^5.4.1",
-    "request": "^2.88.2",
-    "request-promise": "^4.2.5",
-    "selenium-webdriver": "^4.0.0-rc-1",
+    "selenium-webdriver": "^4.0.0",
     "semver": "^7.3.5",
     "strip-ansi": "^6.0.0"
   },
   "devDependencies": {
+    "@cucumber/cucumber": "^7.3.1",
     "@types/node": "^16.7.1",
     "chai": "^4.2.0",
     "coveralls": "^3.0.11",
@@ -47,9 +47,14 @@
     "nock": "^10.0.6",
     "nyc": "^15.1.0",
     "ts-node": "^10.2.1",
-    "typescript": "^4.3.5"
+    "typescript": "^4.3.5",
+    "mocha-junit-reporter": "^2.0.0",
+    "mochawesome": "^6.2.2",
+    "mochawesome-merge": "^4.2.0",
+    "mochawesome-report-generator": "^5.2.0"
   },
   "peerDependencies": {
+    "@cucumber/cucumber": "^7.3.1",
     "chromedriver": "*",
     "geckodriver": "*"
   },
@@ -59,18 +64,19 @@
     },
     "geckodriver": {
       "optional": true
+    },
+    "@cucumber/cucumber": {
+      "optional": true
     }
   },
-  "optionalDependencies": {},
   "bin": {
     "nightwatch": "./bin/nightwatch"
   },
   "man": "",
   "scripts": {
-    "eslint": "eslint index.js lib bin examples --quiet && eslint --config ./test/.eslintrc test/ --quiet",
-    "mocha-coverage": "nyc --reporter=html mocha test/src/",
-    "test": "mocha test/src/",
-    "test-ci": "mocha test/src/ --bail",
+    "eslint": "eslint index.js lib bin api examples cucumber-js test --quiet",
+    "mocha-coverage": "nyc --reporter=html mocha test/src/ --recursive",
+    "test": "mocha test/src/ --recursive",
     "coverage": "npx nyc report --reporter=text-lcov > ./coverage/mocha_coverage.lcov"
   },
   "eslintConfig": {
@@ -92,7 +98,7 @@
     }
   },
   "engines": {
-    "node": ">= 8.0.0"
+    "node": ">= 10.0.0"
   },
   "keywords": [
     "nightwatch",
@@ -109,7 +115,10 @@
     "bin",
     "examples",
     "lib",
+    "api",
+    "cucumber-js",
     "README.md",
+    "CODE_OF_CONDUCT.md",
     "LICENSE.md",
     "index.js"
   ]

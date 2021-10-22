@@ -1,11 +1,10 @@
 const path = require('path');
 const MockServer = require('../../../lib/mockserver.js');
-const Mocks = require('../../../lib/command-mocks.js');
 const common = require('../../../common.js');
 const {settings} = common;
 const NightwatchClient = common.require('index.js');
 
-describe('element global demos', function() {
+describe('find elements with page commands', function() {
   beforeEach(function(done) {
     this.server = MockServer.init();
     this.server.on('listening', () => {
@@ -19,18 +18,14 @@ describe('element global demos', function() {
     });
   });
 
-  it('getText on element global instance', function() {
-    const testsPath = path.join(__dirname, '../../../apidemos/elementGlobal/elementGlobalTest.js');
-    Mocks.elementText();
-    Mocks.tagName('0', 'div');
-    Mocks.visible('0', true, {
-      times: 1
-    });
+  it('test custom command', function() {
+    const testsPath = path.join(__dirname, '../../../apidemos/elements/findElementsPageCommands.js');
 
     const globals = {
+      calls: 0,
       waitForConditionPollInterval: 50,
       waitForConditionTimeout: 120,
-      retryAssertionTimeout: 1000,
+      retryAssertionTimeout: 100,
 
       reporter(results) {
         if (results.lastError) {
@@ -42,9 +37,10 @@ describe('element global demos', function() {
     return NightwatchClient.runTests(testsPath, settings({
       output: false,
       skip_testcases_on_fail: false,
+      page_objects_path: [path.join(__dirname, '../../../extra/pageobjects/pages')],
       globals
     }));
   });
 
-  
+
 });

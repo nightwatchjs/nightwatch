@@ -340,7 +340,7 @@ describe('expect.visible', function() {
         assert.ok(expect.assertion.retries >= 2);
         strictEqual(expect.assertion.passed, false);
         strictEqual(expect.assertion.resultValue, null);
-        strictEqual(expect.assertion.actual, '[WebDriverError]');
+        strictEqual(expect.assertion.actual, 'not visible');
       });
     });
 

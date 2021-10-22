@@ -2,38 +2,38 @@ describe('Demo test with Mocha', function() {
 
   describe('for testing purposes', function() {
 
-    before(function(client, done) {
-      client.globals.test_calls++;
+    before(function(browser, done) {
+      browser.globals.test_calls++;
       done();
     });
 
-    after(function(client, done) {
+    after(function(browser, done) {
       setTimeout(function() {
-        client.globals.test_calls++;
+        browser.globals.test_calls++;
         done();
       }, 100);
     });
 
-    afterEach(function(client, done) {
+    afterEach(function(browser, done) {
       setTimeout(function() {
-        client.globals.test_calls++;
+        browser.globals.test_calls++;
         done();
       }, 100);
     });
 
-    beforeEach(function(client, done) {
+    beforeEach(function(browser, done) {
       setTimeout(function() {
-        client.globals.test_calls++;
+        browser.globals.test_calls++;
         done();
       }, 100);
     });
 
-    it('demoTestAsyncOne', function(client) {
-      client.url('http://localhost');
+    it('demoTestAsyncOne', function(browser) {
+      browser.url('http://localhost');
     });
 
-    it('demoTestAsyncTwo', function(client) {
-      client.end();
+    it('demoTestAsyncTwo', function(browser) {
+      browser.end();
     });
 
   });

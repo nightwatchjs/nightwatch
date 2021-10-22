@@ -1,6 +1,8 @@
 const common = require('../../common.js');
 const mockery = require('mockery');
 const assert = require('assert');
+const CI_Info = require('ci-info');
+const isCi = CI_Info.isCI;
 
 describe('test CLI Runner Mocha', function() {
   beforeEach(function() {
@@ -51,6 +53,11 @@ describe('test CLI Runner Mocha', function() {
   it('testRunWithMochaDefaults', function() {
     let testFiles = [];
 
+    const defaultOptions = {timeout: 20000, reporterOptions: {}};
+    if (isCi) {
+      defaultOptions.color = false;
+    }
+
     mockery.registerMock('./withmocha.json', {
       src_folders: ['tests'],
       output_folder: false,
@@ -63,7 +70,7 @@ describe('test CLI Runner Mocha', function() {
     });
 
     createMockedMocha(function(options) {
-      assert.deepStrictEqual(options, {timeout: 10000});
+      assert.deepStrictEqual(options, defaultOptions);
     }, testFiles);
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -79,6 +86,10 @@ describe('test CLI Runner Mocha', function() {
 
   it('testRunWithMochaPerEnvironment', function() {
     let testFiles = [];
+    const defaultOptions = {timeout: 20000, reporterOptions: {}};
+    if (isCi) {
+      defaultOptions.color = false;
+    }
 
     mockery.registerMock('./withmocha.json', {
       src_folders: ['tests'],
@@ -95,7 +106,7 @@ describe('test CLI Runner Mocha', function() {
     });
 
     createMockedMocha(function(options) {
-      assert.deepStrictEqual(options, {timeout: 10000});
+      assert.deepStrictEqual(options, defaultOptions);
     }, testFiles);
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -111,6 +122,16 @@ describe('test CLI Runner Mocha', function() {
 
   it('testRunWithMochaCustomOpts', function() {
     let testFiles = [];
+
+    const defaultOptions = {
+      ui: 'tdd',
+      timeout: 20000,
+      reporterOptions: {}
+    };
+
+    if (isCi) {
+      defaultOptions.color = false;
+    }
 
     mockery.registerMock('./withmocha.json', {
       src_folders: ['tests'],
@@ -129,10 +150,7 @@ describe('test CLI Runner Mocha', function() {
     });
 
     createMockedMocha(function(options) {
-      assert.deepStrictEqual(options, {
-        ui: 'tdd',
-        timeout: 10000
-      });
+      assert.deepStrictEqual(options, defaultOptions);
     }, testFiles);
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -150,7 +168,9 @@ describe('test CLI Runner Mocha', function() {
 
 function createMockedMocha(assertionFn = function() {}, testFiles = []) {
   function Mocha(options) {
-    this.suite = {};
+    this.suite = {
+      on() {}
+    };
     assertionFn(options);
   }
 

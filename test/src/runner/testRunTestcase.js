@@ -26,7 +26,7 @@ describe('testRunTestcase', function() {
   });
 
   afterEach(function() {
-    Object.keys(require.cache).forEach(function(module) {
+    Object.keys(require.cache).filter(i => i.includes('/sampletests')).forEach(function(module) {
       delete require.cache[module];
     });
   });

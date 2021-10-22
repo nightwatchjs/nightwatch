@@ -125,7 +125,7 @@ describe('expect.text', function() {
     Nocks.elementFound().text('xx');
 
     let expect = this.client.api.expect.element('#weblogin').text.to.not.equal('vasq');
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
+    assert.ok(expect.assertion.message.startsWith('Expected element %s text to'));
 
     return this.client.start(function() {
       strictEqual(expect.assertion.expected, 'not equal \'vasq\'');
@@ -148,7 +148,7 @@ describe('expect.text', function() {
       .text('xx');
 
     let expect = this.client.api.expect.element('#weblogin').text.to.not.equal('xx');
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
+    assert.ok(expect.assertion.message.startsWith('Expected element %s text to'));
 
     return this.client.start(function() {
       strictEqual(expect.assertion.expected, 'not equal \'xx\'');
@@ -166,7 +166,7 @@ describe('expect.text', function() {
 
     let expect = this.client.api.expect.element('#weblogin').text.to.not.contain('vasq');
 
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
+    assert.ok(expect.assertion.message.startsWith('Expected element %s text to'));
 
     return this.client.start(function() {
       strictEqual(expect.assertion.expected, 'not contain \'vasq\'');
@@ -184,7 +184,7 @@ describe('expect.text', function() {
 
     let expect = this.client.api.expect.element('#weblogin').text.to.contain('vasq');
 
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
+    assert.ok(expect.assertion.message.startsWith('Expected element %s text to'));
 
     return this.client.start(function() {
       strictEqual(expect.assertion.expected, 'contain \'vasq\'');
@@ -202,7 +202,7 @@ describe('expect.text', function() {
 
     let expect = this.client.api.expect.element('#weblogin').text.to.startWith('va');
 
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
+    assert.ok(expect.assertion.message.startsWith('Expected element %s text to'));
 
     return this.client.start(function() {
       strictEqual(expect.assertion.expected, 'start with \'va\'');
@@ -220,7 +220,7 @@ describe('expect.text', function() {
 
     let expect = this.client.api.expect.element('#weblogin').text.to.endWith('sq');
 
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
+    assert.ok(expect.assertion.message.startsWith('Expected element %s text to'));
 
     return this.client.start(function() {
       strictEqual(expect.assertion.expected, 'end with \'sq\'');
@@ -243,7 +243,7 @@ describe('expect.text', function() {
       .text('xx');
 
     let expect = this.client.api.expect.element('#weblogin').text.to.not.contains('xx');
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
+    assert.ok(expect.assertion.message.startsWith('Expected element %s text to'));
 
     return this.client.start(function() {
       strictEqual(expect.assertion.expected, 'not contain \'xx\'');
@@ -260,7 +260,7 @@ describe('expect.text', function() {
 
     let expect = this.client.api.expect.element('#weblogin').text.to.match(/vasq/);
 
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
+    assert.ok(expect.assertion.message.startsWith('Expected element %s text to'));
 
     return this.client.start(function() {
       strictEqual(expect.assertion.expected, 'match \'/vasq/\'');
@@ -278,7 +278,7 @@ describe('expect.text', function() {
 
     let expect = this.client.api.expect.element('#weblogin').text.to.not.match(/vasq/);
 
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
+    assert.ok(expect.assertion.message.startsWith('Expected element %s text to'));
 
     return this.client.start(function() {
       strictEqual(expect.assertion.expected, 'not match \'/vasq/\'');
@@ -301,7 +301,7 @@ describe('expect.text', function() {
       .text('xx');
 
     let expect = this.client.api.expect.element('#weblogin').text.to.not.match(/xx/);
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
+    assert.ok(expect.assertion.message.startsWith('Expected element %s text to'));
 
     return this.client.start(function() {
       strictEqual(expect.assertion.expected, 'not match \'/xx/\'');
@@ -325,7 +325,7 @@ describe('expect.text', function() {
     return runExpectAssertion.call(this, {
       fn: expect => {
         expect.text.to.equal('vasq');
-        assert.ok(expect.assertion.message.startsWith('Expected element <%s> text to'));
+        assert.ok(expect.assertion.message.startsWith('Expected element %s text to'));
       },
 
       assertion({expected, negate, actual, resultValue, passed, messageParts, message, elapsedTime}) {

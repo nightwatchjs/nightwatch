@@ -26,7 +26,7 @@ describe('testRunWithGlobalHooks', function() {
   });
 
   afterEach(function() {
-    Object.keys(require.cache).forEach(function(module) {
+    Object.keys(require.cache).filter(i => i.includes('/sampletests')).forEach(function(module) {
       delete require.cache[module];
     });
   });
@@ -172,6 +172,12 @@ describe('testRunWithGlobalHooks', function() {
             });
         },
         reporter(results, cb) {
+          assert.deepStrictEqual(Object.keys(results.modules), [
+            'sampleSingleTest',
+            'sampleWithBeforeAndAfter',
+            'sampleWithBeforeAndAfterNoCallback',
+            'syncBeforeAndAfter'
+          ]);
           assert.strictEqual(results.modules.sampleSingleTest.errmessages.length, 2);
           assert.strictEqual(results.modules.sampleWithBeforeAndAfter.errmessages.length, 1);
           assert.strictEqual(results.modules.syncBeforeAndAfter.errmessages.length, 1);
