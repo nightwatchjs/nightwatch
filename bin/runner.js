@@ -9,14 +9,15 @@ try {
     argv._source = argv['_'].slice(0);
 
     const runner = Nightwatch.CliRunner(argv);
-    runner.setup();
 
-    return runner.runTests()
-      .catch(err => {
+    return runner
+      .setupAsync()
+      .then(() => runner.runTests())
+      .catch((err) => {
         if (!err.displayed) {
           Logger.error(err);
         }
-
+      
         runner.processListener.setExitCode(10).exit();
       });
   });

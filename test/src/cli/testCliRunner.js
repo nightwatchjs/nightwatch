@@ -32,8 +32,18 @@ describe('Test CLI Runner', function() {
       }
     };
 
+    let promiseConfig = Promise.resolve({
+      src_folders: ['promiseTests'],
+      test_settings: {
+        default: {
+          silent: true
+        }
+      }
+    });
+
     mockery.registerMock('./nightwatch.json', config);
     mockery.registerMock('./nightwatch.conf.js', config);
+    mockery.registerMock('./nightwatchPromise.conf.js', promiseConfig);
 
     mockery.registerMock('./output_disabled.json', {
       src_folders: ['tests'],
@@ -243,6 +253,9 @@ describe('Test CLI Runner', function() {
         if (b === './extra/globals-err.js') {
           return './extra/globals-err.js';
         }
+        if (b === './nightwatchPromise.conf.js') {
+          return './nightwatchPromise.conf.js';
+        }
 
         return './nightwatch.json';
       },
@@ -295,6 +308,29 @@ describe('Test CLI Runner', function() {
     }).setup();
 
     assert.deepStrictEqual(runner.settings.src_folders, ['tests']);
+    assert.strictEqual(runner.test_settings.silent, true);
+    assert.strictEqual(runner.test_settings.custom_commands_path, null);
+    assert.strictEqual(runner.test_settings.custom_assertions_path, null);
+    assert.strictEqual(runner.test_settings.output, true);
+    assert.strictEqual(runner.test_settings.tag_filter, undefined);
+    assert.strictEqual(runner.test_settings.skiptags, '');
+    assert.strictEqual(runner.test_settings.filename_filter, undefined);
+    assert.strictEqual(runner.test_settings.skipgroup, '');
+    assert.strictEqual(runner.globals.settings.output_folder, 'tests_output');
+    assert.strictEqual(runner.globals.settings.parallel_mode, false);
+    assert.strictEqual(runner.globals.settings.start_session, true);
+  });
+
+  it('should have defaults for CLI argument for promise config', async () => {
+    registerNoSettingsJsonMock();
+
+    const CliRunner = common.require('runner/cli/cli.js');
+    const instance = new CliRunner({
+      config: './nightwatchPromise.conf.js'
+    });
+    const runner = await instance.setupAsync();
+
+    assert.deepStrictEqual(runner.settings.src_folders, ['promiseTests']);
     assert.strictEqual(runner.test_settings.silent, true);
     assert.strictEqual(runner.test_settings.custom_commands_path, null);
     assert.strictEqual(runner.test_settings.custom_assertions_path, null);
