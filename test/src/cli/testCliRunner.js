@@ -325,9 +325,10 @@ describe('Test CLI Runner', function() {
     registerNoSettingsJsonMock();
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = await new CliRunner({
+    const instance = new CliRunner({
       config: './nightwatchPromise.conf.js'
-    }).setupAsync();
+    });
+    const runner = await instance.setupAsync();
 
     assert.deepStrictEqual(runner.settings.src_folders, ['promiseTests']);
     assert.strictEqual(runner.test_settings.silent, true);
