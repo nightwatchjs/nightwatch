@@ -18,6 +18,7 @@
     "assertion-error": "^1.1.0",
     "boxen": "^5.1.2",
     "chai-nightwatch": "^0.4.1",
+    "chalk": "^4.1.2",
     "ci-info": "^3.2.0",
     "didyoumean": "^1.2.2",
     "dotenv": "10.0.0",
@@ -33,6 +34,7 @@
     "ora": "^5.4.1",
     "selenium-webdriver": "^4.0.0",
     "semver": "^7.3.5",
+    "stacktrace-parser": "^0.1.10",
     "strip-ansi": "^6.0.0"
   },
   "devDependencies": {
@@ -43,15 +45,15 @@
     "eslint": "^6.8.0",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.21",
+    "mocha-junit-reporter": "^2.0.2",
+    "mochawesome": "^6.2.2",
+    "mochawesome-merge": "^4.2.0",
+    "mochawesome-report-generator": "^5.2.0",
     "mockery": "~2.1.0",
     "nock": "^10.0.6",
     "nyc": "^15.1.0",
     "ts-node": "^10.2.1",
-    "typescript": "^4.3.5",
-    "mocha-junit-reporter": "^2.0.0",
-    "mochawesome": "^6.2.2",
-    "mochawesome-merge": "^4.2.0",
-    "mochawesome-report-generator": "^5.2.0"
+    "typescript": "^4.3.5"
   },
   "peerDependencies": {
     "@cucumber/cucumber": "^7.3.1",
