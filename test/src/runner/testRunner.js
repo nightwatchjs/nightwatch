@@ -101,4 +101,26 @@ describe('testRunner', function() {
       globals
     }));
   });
+
+  it('readTestSource with glob pattern', async function(){
+    const modules =  await Runner.readTestSource({
+      src_folders: [path.join(__dirname, '../../sampletests/srcfolders/*.js')]
+    },  {});
+    assert.deepStrictEqual(modules, [path.join(__dirname, '../../sampletests/srcfolders/other_sample.js')]);
+  });
+
+  it('readTestSource with glob pattern and normal folder', async function(){
+    const modules =  await Runner.readTestSource({
+      src_folders: [path.join(__dirname, '../../sampletests/srcfolders/*.js'), path.join(__dirname, '../../sampletests/async/')]
+    },  {});
+    assert.deepStrictEqual(modules, [path.join(__dirname, '../../sampletests/srcfolders/other_sample.js'), path.join(__dirname, '../../sampletests/async/test/sample.js')]);
+  });
+
+  it('readTestSource with glob pattern that matches no file', async  function(){
+    await assert.rejects(async function() {
+      await Runner.readTestSource({
+        src_folders: [path.join(__dirname, '../../sampletests/srcfolders/nightwatch/*.js')]
+      },  {});
+    }, 'Should be rejected');
+  });
 });
