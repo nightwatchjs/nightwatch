@@ -307,7 +307,7 @@ describe('testRunnerSessionCreate', function() {
         assert.strictEqual(results.lastError.sessionCreate, true);
         assert.strictEqual(results.lastError.showTrace, false);
         assert.ok(results.lastError instanceof Error);
-        assert.ok(results.lastError.detailedErr.startsWith('Verify if GeckoDriver is configured correctly; using:'));
+        assert.ok(results.lastError.detailedErr.startsWith(' Verify if GeckoDriver is configured correctly; using:'));
         assert.strictEqual(results.lastError.message, 'An error occurred while creating a new GeckoDriver session: [Error] Server terminated early with status 2');
       }
     };

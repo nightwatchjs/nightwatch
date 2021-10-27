@@ -11,7 +11,7 @@ describe('Test safari options', function(){
     const client = Nightwatch.createClient({
       capabilities: safariOptions
     });
-    const options =  client.transport.createOptions();
+    const options =  client.transport.createSessionOptions();
     
     assert.strictEqual(options, safariOptions);
     assert.strictEqual(client.api.isSafari(), true);
@@ -27,7 +27,7 @@ describe('Test safari options', function(){
         browserName: 'safari'
       }
     });
-    const options = client.transport.createOptions();
+    const options = client.transport.createSessionOptions();
 
     assert.strictEqual(options instanceof SafariOptions, true);
     assert.deepStrictEqual(options.getProxy(), {

@@ -2,7 +2,7 @@
  * Module dependencies
  */
 const Nightwatch = require('../lib/index.js');
-const {Logger, shouldReplaceStack} = require('../lib/utils');
+const {Logger, shouldReplaceStack, alwaysDisplayError} = require('../lib/utils');
 
 try {
   Nightwatch.cli(function(argv) {
@@ -14,7 +14,7 @@ try {
       .setupAsync()
       .then(() => runner.runTests())
       .catch((err) => {
-        if (!err.displayed) {
+        if (!err.displayed || alwaysDisplayError(err)) {
           Logger.error(err);
         }
       

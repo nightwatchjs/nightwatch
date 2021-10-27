@@ -6,7 +6,7 @@ describe('sendKeys', function() {
 
   before(function(done) {
     CommandGlobals.beforeEach.call(this, done, {
-      output: true
+      output: false
     });
   });
 

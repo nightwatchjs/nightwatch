@@ -12,7 +12,7 @@ describe('Test edge option', function(){
       capabilities: edgeoptions
     });
 
-    const options =  client.transport.createOptions();
+    const options =  client.transport.createSessionOptions();
     assert.strictEqual(options, edgeoptions);
     assert.strictEqual(client.api.isEdge(), true);
     assert.strictEqual(client.api.browserName, 'MicrosoftEdge');
@@ -27,7 +27,7 @@ describe('Test edge option', function(){
         }
       }
     });
-    const options = client.transport.createOptions();
+    const options = client.transport.createSessionOptions();
 
     assert.strictEqual(options instanceof EdgeOptions, true);
     assert.strictEqual(options.options_.detach, true);
@@ -44,7 +44,7 @@ describe('Test edge option', function(){
         browserName: 'edge'
       }
     });
-    const options = client.transport.createOptions();
+    const options = client.transport.createSessionOptions();
 
     assert.strictEqual(options instanceof EdgeOptions, true);
     assert.strictEqual(options.options_.binary, '/Applications/Edge.app/Contents/MacOS/Edge');
@@ -59,7 +59,7 @@ describe('Test edge option', function(){
         browserName: 'edge'
       }
     });
-    const options = client.transport.createOptions();
+    const options = client.transport.createSessionOptions();
 
     assert.strictEqual(options instanceof EdgeOptions, true);
     assert.strictEqual(options.options_.logPath, '/Nightwatch/EdgeLog/');
@@ -72,7 +72,7 @@ describe('Test edge option', function(){
         browserName: 'edge'
       }
     });
-    const options = client.transport.createOptions({headless: true});
+    const options = client.transport.createSessionOptions({headless: true});
 
     assert.strictEqual(options instanceof EdgeOptions, true);
     assert.deepStrictEqual(options.options_.args, ['headless']);
@@ -88,7 +88,7 @@ describe('Test edge option', function(){
         browserName: 'edge'
       }
     });
-    const options =  client.transport.createOptions();
+    const options =  client.transport.createSessionOptions();
 
     assert.strictEqual(options instanceof EdgeOptions, true);
     assert.deepStrictEqual(options.options_.args, ['window-size=100,100']);
@@ -103,7 +103,7 @@ describe('Test edge option', function(){
         browserName: 'edge'
       }
     });
-    const options = client.transport.createOptions();
+    const options = client.transport.createSessionOptions();
     
     assert.strictEqual(options instanceof EdgeOptions, true);
     assert.strictEqual(options.options_.androidPackage, 'com.android.edge');
@@ -118,7 +118,7 @@ describe('Test edge option', function(){
         }
       }
     });
-    const options = client.transport.createOptions();
+    const options = client.transport.createSessionOptions();
 
     assert.strictEqual(options instanceof EdgeOptions, true);
     assert.deepStrictEqual(options.getProxy(), {
