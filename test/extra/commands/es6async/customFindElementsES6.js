@@ -7,4 +7,4 @@ module.exports.command = async function(selector, callback = function() {}) {
   callback(elements);
 
   return elements;
-}
+};

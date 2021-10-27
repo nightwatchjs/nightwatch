@@ -270,6 +270,7 @@ describe('test programmatic apis', function () {
     let customConfig;
     CliRunner.prototype.loadConfig = function () {
       customConfig = this.argv.config;
+
       return defaultConfig;
     };
 

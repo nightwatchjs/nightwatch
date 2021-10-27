@@ -12,6 +12,7 @@ module.exports = {
   stop(done) {
     if (!server) {
       done();
+
       return;
     }
 
