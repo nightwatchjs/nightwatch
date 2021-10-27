@@ -1,4 +1,5 @@
 const assert = require('assert');
+const path = require('path');
 const common = require('../../common.js');
 const Utils = common.require('utils');
 
@@ -153,5 +154,19 @@ describe('test Utils', function() {
     assert.strictEqual(Utils.filterStackTrace(stackTrace), expectedStackTrace);
   });
 
+  it('readFolderRecursively with normal folder', async function(){
+    const absPath = [];
+    Utils.readFolderRecursively(path.join(__dirname, '../../extra/commands/other/'), [], (sourcePath, resource) => {
+      absPath.push(path.join(sourcePath, resource));
+    });
+    assert.deepStrictEqual(absPath, [path.join(__dirname, '../../extra/commands/other/otherCommand.js')]);
+  });
 
+  it('readFolderRecursively with glob pattern', async function(){
+    const absPath = [];
+    Utils.readFolderRecursively(path.join(__dirname, '../../extra/commands/typescript/*.js'), [], (sourcePath, resource) => {
+      absPath.push(path.join(sourcePath, resource));
+    });
+    assert.deepStrictEqual(absPath, [path.join(__dirname, '../../extra/commands/typescript/tsWait.js')]);
+  });
 });
