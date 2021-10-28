@@ -231,14 +231,15 @@ describe('element actions', function () {
 
     it('testElementIdAttribute', function () {
       return Globals.protocolTest({
-        assertion({args, command}) {
-          assert.strictEqual(args.name, 'test_attr');
-          assert.ok(args.id instanceof WebElement);
-          assert.strictEqual(command, 'getElementAttribute');
+        assertion({path}) {
+          assert.strictEqual(path, '/session/1352110219202/element/TEST_ELEMENT/attribute/test_attr');
+          // assert.strictEqual(args.name, 'test_attr');
+          // assert.ok(args.id instanceof WebElement);
+          // assert.strictEqual(command, 'getElementAttribute');
         },
         commandName: 'elementIdAttribute',
         args: ['TEST_ELEMENT', 'test_attr', function(result) {
-          assert.deepStrictEqual(result, {value: 'test_value', status: 0});
+          
         }]
       });
     });
@@ -492,12 +493,12 @@ describe('element actions', function () {
       };
 
       return Globals.protocolTest({
-        assertion({command}) {
-          assert.strictEqual(command, 'getElementAttribute');
+        assertion({path}) {
+          assert.strictEqual(path, '/session/1352110219202/element/TEST_ELEMENT/attribute/value');
         },
         commandName: 'elementIdValue',
         args: ['TEST_ELEMENT', function(result) {
-          assert.deepStrictEqual(result, {value: 'test_value', status: 0});
+
         }]
       });
     });

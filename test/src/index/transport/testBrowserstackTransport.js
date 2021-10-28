@@ -3,7 +3,7 @@ const nock = require('nock');
 const common = require('../../../common.js');
 const NightwatchClient = common.require('index.js');
 const SeleniumRemote = common.require('transport/selenium-webdriver/selenium.js');
-const Browserstack = common.require('transport/browserstack');
+const Browserstack = common.require('transport/selenium-webdriver/browserstack.js');
 
 describe('BrowserstackTransport', function () {
   beforeEach(function() {
@@ -111,6 +111,8 @@ describe('BrowserstackTransport', function () {
 
   it('test create Transport for Browserstack with failures', function(done) {
     const client = NightwatchClient.client({
+      output: true,
+      silent: false,
       webdriver: {
         host: 'hub-cloud.browserstack.com',
         port: 443,
@@ -153,7 +155,11 @@ describe('BrowserstackTransport', function () {
           })
           .reply(200, {});
 
-        result = await transport.testSuiteFinished(true, {name: 'NightwatchAssertError', message: 'Timed out while waiting for element <#james> to be present for 5000 milliseconds. - expected [0;32m"visible"[0m but got: [0;31m"not found"[0m [0;90m(5400ms)[0m'});
+        const error = new Error('Timed out while waiting for element <#james> to be present for 5000 milliseconds. - expected "visible" but got: "not found" (5400ms)');
+        error.name = 'NightwatchAssertError';
+
+        result = await transport.testSuiteFinished(error);
+
         assert.strictEqual(result, true);
         assert.strictEqual(transport.sessionId, null);
 

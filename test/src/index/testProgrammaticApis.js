@@ -61,6 +61,8 @@ describe('test programmatic apis', function () {
 
     const client = Nightwatch.createClient({
       headless: true,
+      silent: false,
+      output: false,
       enable_global_apis: true
     });
 
@@ -79,6 +81,54 @@ describe('test programmatic apis', function () {
       browserName: 'firefox',
       browserVersion: '65.0.1'
     });
+
+    CliRunner.createDefaultConfig = createDefaultConfig;
+    CliRunner.prototype.loadConfig = loadConfig;
+  });
+
+  it('test createClient() programmatic API defaults with log_file_name', async function() {
+    const CliRunner = common.require('runner/cli/cli.js');
+    const Nightwatch = common.require('index.js');
+    MockServer.createFirefoxSession({});
+
+    const defaultConfig = {
+      test_settings: {
+        default: {
+          launchUrl: 'http://localhost'
+        }
+      },
+      selenium: {
+        port: 10195,
+        start_process: false
+      },
+      selenium_host: 'localhost'
+    };
+
+    const createDefaultConfig = CliRunner.createDefaultConfig;
+    const loadConfig = CliRunner.prototype.loadConfig;
+
+    CliRunner.createDefaultConfig = function(destFileName) {
+      return defaultConfig;
+    };
+
+    CliRunner.prototype.loadConfig = function () {
+      return defaultConfig;
+    };
+
+    const client = Nightwatch.createClient({
+      headless: true,
+      silent: false,
+      output: false,
+      enable_global_apis: true,
+      webdriver: {
+        log_path: '',
+        log_file_name: 'test-file'
+      }
+    });
+
+
+    assert.strictEqual(client.settings.webdriver.log_path, '');
+    assert.strictEqual(client.settings.webdriver.log_file_name, 'test-file');
 
     CliRunner.createDefaultConfig = createDefaultConfig;
     CliRunner.prototype.loadConfig = loadConfig;

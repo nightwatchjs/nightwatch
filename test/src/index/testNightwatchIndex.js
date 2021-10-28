@@ -186,6 +186,23 @@ describe('test NightwatchIndex', function () {
     }).catch(err => done(err));
   });
 
+  it('test create Transport for with browserName disabled', function() {
+    const Nightwatch = common.require('index.js');
+    const client = Nightwatch.client({
+      selenium: {
+        start_process: false
+      },
+      webdriver: {},
+      desiredCapabilities: {
+        browserName: null
+      },
+      selenium_host: 'remote.url'
+    });
+
+    assert.strictEqual(client.options.desiredCapabilities.browserName, null);
+  });
+
+
   it('test runner API', function(done) {
     const Nightwatch = common.require('index.js');
     const CliRunner = common.require('runner/cli/cli.js');

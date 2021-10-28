@@ -64,6 +64,10 @@ class MockServer {
             item.onRequest(item);
           }
 
+          if (item.onResponse) {
+            item.onResponse();
+          }
+
           if (item.__once) {
             this.removeMock(item);
           }

@@ -137,15 +137,25 @@ describe('test Request With Credentials', function () {
       output: false
     });
 
+    let sessionOptions;
+    const driverFn = client.transport.createDriver;
+    client.transport.createDriver = function({options}) {
+      sessionOptions = options;
+
+      return driverFn.call(client.transport, {options});
+    };
+
     const session = await client.createSession({
-      headless: true
+      argv: {
+        headless: true
+      }
     });
 
     assert.deepStrictEqual(session, {
       sessionId: '1352110219202',
       capabilities: {browserName: 'firefox', version: 'TEST', platform: 'TEST'}
     });
-    assert.deepStrictEqual(client.transport.options.get('moz:firefoxOptions'), {args: ['-headless']});
+    assert.deepStrictEqual(sessionOptions.get('moz:firefoxOptions'), {args: ['-headless']});
   });
 
   it('Test create session with headless mode in Chrome', async function () {
@@ -170,15 +180,25 @@ describe('test Request With Credentials', function () {
       }
     });
 
+    let sessionOptions;
+    const driverFn = client.transport.createDriver;
+    client.transport.createDriver = function({options}) {
+      sessionOptions = options;
+
+      return driverFn.call(client.transport, {options});
+    };
+
     const session = await client.createSession({
-      headless: true
+      argv: {
+        headless: true
+      }
     });
 
     assert.deepStrictEqual(session, {
       sessionId: '1352110219202',
       capabilities: {browserName: 'chrome', version: 'TEST', platform: 'TEST'}
     });
-    assert.deepStrictEqual(client.transport.options.get('goog:chromeOptions'), {args: ['headless']});
+    assert.deepStrictEqual(sessionOptions.get('goog:chromeOptions'), {args: ['headless']});
   });
 
   it('Test create session with headless mode in Edge', async function () {
@@ -203,8 +223,18 @@ describe('test Request With Credentials', function () {
       }
     });
 
+    let sessionOptions;
+    const driverFn = client.transport.createDriver;
+    client.transport.createDriver = function({options}) {
+      sessionOptions = options;
+
+      return driverFn.call(client.transport, {options});
+    };
+
     const session = await client.createSession({
-      headless: true
+      argv: {
+        headless: true
+      }
     });
 
     assert.deepStrictEqual(session, {
@@ -212,7 +242,7 @@ describe('test Request With Credentials', function () {
       capabilities: {browserName: 'MicrosoftEdge', version: 'TEST', platform: 'TEST'}
     });
 
-    assert.deepStrictEqual(client.transport.options.get('ms:edgeOptions'), {args: ['headless']});
+    assert.deepStrictEqual(sessionOptions.get('ms:edgeOptions'), {args: ['headless']});
   });
 
   it('Test create session with headless mode in Chrome with existing args', async function () {
@@ -240,11 +270,21 @@ describe('test Request With Credentials', function () {
       }
     });
 
+    let sessionOptions;
+    const driverFn = client.transport.createDriver;
+    client.transport.createDriver = function({options}) {
+      sessionOptions = options;
+
+      return driverFn.call(client.transport, {options});
+    };
+
     const session = await client.createSession({
-      headless: true
+      argv: {
+        headless: true
+      }
     });
 
-    assert.deepStrictEqual(client.transport.options.get('goog:chromeOptions'), {
+    assert.deepStrictEqual(sessionOptions.get('goog:chromeOptions'), {
       args: [
         '--no-sandbox',
         'headless'
@@ -277,11 +317,21 @@ describe('test Request With Credentials', function () {
       }
     });
 
+    let sessionOptions;
+    const driverFn = client.transport.createDriver;
+    client.transport.createDriver = function({options}) {
+      sessionOptions = options;
+
+      return driverFn.call(client.transport, {options});
+    };
+
     const session = await client.createSession({
-      headless: true
+      argv: {
+        headless: true
+      }
     });
 
-    assert.deepStrictEqual(client.transport.options.get('ms:edgeOptions'), {
+    assert.deepStrictEqual(sessionOptions.get('ms:edgeOptions'), {
       args: [
         '--no-sandbox',
         'headless'

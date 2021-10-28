@@ -11,7 +11,7 @@ describe('Test chrome options', function () {
       capabilities
     });
     
-    const options = client.transport.createOptions();
+    const options = client.transport.createSessionOptions();
     assert.strictEqual(options, capabilities);
     assert.strictEqual(client.api.isChrome(), true);
     assert.strictEqual(client.api.browserName, 'chrome');
@@ -26,7 +26,7 @@ describe('Test chrome options', function () {
         }
       }
     });
-    const options = client.transport.createOptions();
+    const options = client.transport.createSessionOptions();
 
     assert.strictEqual(options instanceof ChromeOptions, true);
     assert.strictEqual(options.options_.detach, true);
@@ -43,7 +43,7 @@ describe('Test chrome options', function () {
         browserName: 'chrome'
       }
     });
-    const options = client.transport.createOptions();
+    const options = client.transport.createSessionOptions();
 
     assert.strictEqual(options instanceof ChromeOptions, true);
     assert.strictEqual(options.options_.binary, '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome');
@@ -60,7 +60,7 @@ describe('Test chrome options', function () {
         browserName: 'chrome'
       }
     });
-    const options = client.transport.createOptions();
+    const options = client.transport.createSessionOptions();
 
     assert.strictEqual(options instanceof ChromeOptions, true);
     assert.strictEqual(options.options_.logPath, '/Nightwatch/ChromeLog/');
@@ -76,7 +76,7 @@ describe('Test chrome options', function () {
         browserName: 'chrome'
       }
     });
-    const options = client.transport.createOptions();
+    const options = client.transport.createSessionOptions();
     
     assert.strictEqual(options instanceof ChromeOptions, true);
     assert.strictEqual(options.options_.androidPackage, 'com.android.chrome');
@@ -88,7 +88,7 @@ describe('Test chrome options', function () {
         browserName: 'chrome'
       }
     });
-    const options = client.transport.createOptions({headless: true});
+    const options = client.transport.createSessionOptions({headless: true});
 
     assert.strictEqual(options instanceof ChromeOptions, true);
     assert.deepStrictEqual(options.options_.args, ['headless']);
@@ -104,7 +104,7 @@ describe('Test chrome options', function () {
         browserName: 'chrome'
       }
     });
-    const options =  client.transport.createOptions();
+    const options =  client.transport.createSessionOptions();
 
     assert.strictEqual(options instanceof ChromeOptions, true);
     assert.deepStrictEqual(options.options_.args, ['window-size=100,100']);
@@ -119,7 +119,7 @@ describe('Test chrome options', function () {
         }
       }
     });
-    const options = client.transport.createOptions();
+    const options = client.transport.createSessionOptions();
     
     assert.strictEqual(options instanceof ChromeOptions, true);
     assert.deepStrictEqual(options.getProxy(), {
