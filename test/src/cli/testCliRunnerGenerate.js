@@ -167,6 +167,16 @@ describe('Test CLI Runner Generate', function() {
           }
         });
 
+        assert.deepStrictEqual(configData.test_settings['cucumber-js'], {
+          src_folders: ['examples/cucumber-js/features/step_definitions'],
+          test_runner: {
+            type: 'cucumber',
+            options: {
+              feature_path: 'node_modules/nightwatch/examples/cucumber-js/*/*.feature'
+            }
+          }
+        });
+
         assert.deepStrictEqual(configData.test_settings.selenium_server, {
           selenium: {
             start_process: true,
@@ -178,7 +188,6 @@ describe('Test CLI Runner Generate', function() {
             }
           }
         });
-
       },
       constants,
       rmdirSync
