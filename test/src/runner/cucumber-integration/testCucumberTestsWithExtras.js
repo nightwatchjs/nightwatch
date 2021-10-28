@@ -5,7 +5,7 @@ const common = require('../../../common.js');
 const MockServer = require('../../../lib/mockserver.js');
 const {runTests} = common.require('index.js');
 
-describe('Cucumber integration - with extras', function() {
+xdescribe('Cucumber integration - with extras', function() {
   beforeEach(function(done) {
     // FIXME: clearing the require cache is only a symptom of using CSM instead of ESM modules
     // consider moving to ESM soon

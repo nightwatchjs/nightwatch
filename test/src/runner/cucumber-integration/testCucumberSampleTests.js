@@ -40,4 +40,5 @@ describe('Cucumber integration', function() {
       assert.strictEqual(failures, true, 'Cucumber tests should have failed. Run with verbose to investigate.');
     });
   });
+
 });
