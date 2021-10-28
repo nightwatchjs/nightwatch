@@ -26,7 +26,7 @@ describe('Cucumber integration - parallel running', function() {
     Globals.afterEach.call(this, done);
   });
 
-  it('testCucumberSampleTests in parallel', function() {
+  it('testCucumberSampleTests in parallel with single formatter', function() {
     const source = [
       path.join(__dirname, '../../../cucumbertests/testSample.js')
     ];
@@ -50,4 +50,27 @@ describe('Cucumber integration - parallel running', function() {
       });
   });
 
+  it('testCucumberSampleTests in parallel with multiple formatters', function() {
+    const source = [
+      path.join(__dirname, '../../../cucumbertests/testSample.js')
+    ];
+
+    return runTests({
+      source,
+      parallel: true,
+      verbose: false,
+      timeout: 10,
+      format: ['progress', 'usage'],
+      config: path.join(__dirname, '../../../extra/cucumber-config.js'),
+      'format-options': '',
+      ['retry-interval']: 5,
+      ['persist-globals']: true,
+      ['webdriver-host']: 'localhost',
+      ['start-process']: false,
+      ['webdriver-port']: 10195
+    }, {})
+      .then(errorOrFailed => {
+        assert.strictEqual(errorOrFailed, true);
+      });
+  });
 });
