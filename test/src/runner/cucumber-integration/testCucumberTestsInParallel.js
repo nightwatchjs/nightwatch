@@ -5,9 +5,10 @@ const common = require('../../../common.js');
 const MockServer = require('../../../lib/mockserver.js');
 const {runTests} = common.require('index.js');
 
-describe('Cucumber integration', function() {
-  before(function(done) {
-    let moduleKeys = Object.keys(require.cache).filter(item => item.includes('_setup_cucumber_runner'));
+describe('Cucumber integration - parallel running', function() {
+  beforeEach(function(done) {
+    let moduleKeys = Object.keys(require.cache).filter(item => (item.includes('_setup_cucumber_runner')));
+
     moduleKeys.forEach(item => {
       delete require.cache[item];
     });
@@ -21,7 +22,7 @@ describe('Cucumber integration', function() {
     this.server.on('listening', () => done());
   });
 
-  after(function(done) {
+  afterEach(function(done) {
     Globals.afterEach.call(this, done);
   });
 
