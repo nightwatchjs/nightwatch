@@ -76,7 +76,7 @@ describe('Test CLI Runner Generate', function() {
             browserName: 'chrome',
             'goog:chromeOptions': {
               args: [],
-              w3c: false
+              w3c: true
             }
           },
 
@@ -154,7 +154,7 @@ describe('Test CLI Runner Generate', function() {
           desiredCapabilities: {
             browserName: 'chrome',
             chromeOptions: {
-              w3c: false
+              w3c: true
             }
           }
         });
