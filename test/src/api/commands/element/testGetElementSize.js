@@ -111,7 +111,10 @@ describe('getElementSize', function() {
         start_process: false
       },
       silent: false,
-      output: false
+      output: true,
+      globals: {
+        waitForConditionPollInterval: 10
+      }
     }).then(client => {
       MockServer.addMock({
         statusCode: 404,
@@ -123,13 +126,14 @@ describe('getElementSize', function() {
             message: 'Unable to locate element: #webdriver-notfound',
             stacktrace: 'WebDriverError@chrome://marionette/content/error.js:172:5\nNoSuchElementError@chrome://marionette/content/error.js:400:5'
           }
-        }
-      }, true);
+        },
+        times: 2
+      });
 
-      client.api.getElementSize({selector: '#webdriver-notfound', timeout: 0}, function(result) {
+      client.api.getElementSize({selector: '#webdriver-notfound', timeout: 10}, function(result) {
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.value.error, 'An error occurred while running .getElementSize() command on <#webdriver-notfound>: NoSuchElementError: Unable to locate element: #webdriver-notfound using css selector');
-        assert.strictEqual(result.value.message, 'An error occurred while running .getElementSize() command on <#webdriver-notfound>: NoSuchElementError: Unable to locate element: #webdriver-notfound using css selector');
+        assert.strictEqual(result.value.error, 'An error occurred while running .getElementSize() command on <#webdriver-notfound>: Timed out while waiting for element "#webdriver-notfound" with "css selector" to be present for 10 milliseconds.');
+        assert.strictEqual(result.value.message, 'An error occurred while running .getElementSize() command on <#webdriver-notfound>: Timed out while waiting for element "#webdriver-notfound" with "css selector" to be present for 10 milliseconds.');
       });
 
       client.start(done);

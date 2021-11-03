@@ -96,7 +96,7 @@ describe('test index in element selectors', function() {
       .elementsFound();
 
     Nightwatch.api()
-      .waitForElementPresent({selector: '.nock', index: 999}, 1, false, function callback(result) {
+      .waitForElementPresent({selector: '.nock', index: 999, retryInterval: 10}, 1, false, function callback(result) {
         assert.strictEqual(result.value, null, 'waitforPresent out of bounds index expected false');
       });
 

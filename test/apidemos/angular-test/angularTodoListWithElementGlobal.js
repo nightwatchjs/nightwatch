@@ -1,4 +1,4 @@
-describe('angularjs homepage todo list', function() {
+describe('angularjs homepage todo list - with element global', function() {
 
   // using the new element() global utility in Nightwatch 2 to init elements
   // before tests and use them later
@@ -12,7 +12,7 @@ describe('angularjs homepage todo list', function() {
 
     // adding a new task to the list
     browser
-      .navigateTo('https://angularjs.org')
+      .navigateTo('http://localhost')
       .sendKeys(todoElement, 'what is nightwatch?')
       .click(addButtonEl);
 
@@ -43,26 +43,6 @@ describe('angularjs homepage todo list', function() {
 
     // verify if there are 2 tasks which are marked as done in the list
     expect.elements('*[module=todoApp] li .done-true').count.to.equal(2);
-  });
-
-  it('should add a todo using custom commands', async function(browser) {
-    // adding a new task to the list
-    await browser
-      .navigateTo('https://angularjs.org')
-      .sendKeys('[ng-model="todoList.todoText"]', 'what is nightwatch?')
-      .click('[value="add"]');
-
-    const elements = await browser.angular.getAllElementsInList('todoList.todos');
-
-    // verifying if the third task if the one we have just added
-    await expect(elements[2]).text.toEqual('what is nightwatch?');
-
-    // find our task in the list and mark it as done
-    const inputElement = await element(elements[2]).findElement('input');
-    await browser.click(inputElement);
-
-    // verify if there are 2 tasks which are marked as done in the list
-    await expect.elements('*[module=todoApp] li .done-true').count.to.equal(2);
   });
 
 });

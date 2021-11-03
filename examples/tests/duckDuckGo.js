@@ -1,15 +1,11 @@
-describe('duck duck go basic tests', function(){
+describe('duckduckgo example', function() {
 
-  const searchBar = element(by.css('#search_form_input_homepage'));
-  const searchButton =  element(by.css('#search_button_homepage'));
-  
-  test('Search Nightwatch.js and check results', function(){
+  it('Search Nightwatch.js and check results', function(browser) {
     browser
-      .url('https://duckduckgo.com')
+      .navigateTo('https://duckduckgo.com')
       .waitForElementVisible('#search_form_input_homepage')
-      .waitForElementVisible('#search_button_homepage')
-      .sendKeys(searchBar, ['Nightwatch.js', browser.keys.ENTER])
-      .click(searchButton)
+      .sendKeys('#search_form_input_homepage', ['Nightwatch.js'])
+      .click('#search_button_homepage')
       .assert.visible('.results--main')
       .assert.containsText('.results--main', 'Nightwatch.js');
   }); 

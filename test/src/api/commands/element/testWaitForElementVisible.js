@@ -4,7 +4,9 @@ const CommandGlobals = require('../../../../lib/globals/commands.js');
 
 describe('waitForElementVisible', function() {
   beforeEach(function(done) {
-    CommandGlobals.beforeEach.call(this, done);
+    CommandGlobals.beforeEach.call(this, done, {
+      output: false
+    });
   });
 
   afterEach(function(done) {
@@ -202,7 +204,7 @@ describe('waitForElementVisible', function() {
   it('client.waitForElementVisible() with element not found', function () {
     let result;
 
-    this.client.api.globals.waitForConditionPollInterval = 5;
+    this.client.settings.globals.waitForConditionPollInterval = 5;
     this.client.api.waitForElementVisible('.weblogin', 11, function (res, instance) {
       commandInstance = instance;
       result = res;

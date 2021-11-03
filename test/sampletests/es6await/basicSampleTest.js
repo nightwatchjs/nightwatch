@@ -29,7 +29,7 @@ describe('basicSampleTest', function() {
     await browser.end();
   });
 
-  it('test with ES6 async/await perform error and try/catch', async (browser) => {
+  xit('test with ES6 async/await perform error and try/catch', async (browser) => {
     let error;
     try {
       await browser.perform(async function() {
@@ -44,21 +44,4 @@ describe('basicSampleTest', function() {
 
     await browser.end();
   });
-
-  it('test with ES6 async/await perform with callback – error and try/catch', async (browser) => {
-    let error;
-    try {
-      await browser.perform(function(browser, done) {
-        throw new Error('Error from perform with callback');
-      });
-    } catch (err) {
-      error = err;
-    }
-
-    assert.ok(error instanceof Error);
-    assert.strictEqual(error.message, 'Error while running "perform" command: Error from perform with callback');
-
-    await browser.end();
-  });
-
 });

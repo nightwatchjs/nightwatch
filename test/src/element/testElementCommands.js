@@ -582,7 +582,7 @@ describe('element base commands', function() {
       assert.strictEqual(expectedError.name, 'NoSuchElementError');
       assert.strictEqual(instance.suppressNotFoundErrors, false);
       assert.strictEqual(result.status, -1);
-      assert.strictEqual(result.value.error, 'An error occurred while running .isVisible() command on <.not_found>: NoSuchElementError: Unable to locate element: .not_found using css selector');
+      assert.strictEqual(result.value.error, 'An error occurred while running .isVisible() command on <.not_found>: Timed out while waiting for element ".not_found" with "css selector" to be present for 10 milliseconds.');
     });
 
     return Nightwatch.start();
