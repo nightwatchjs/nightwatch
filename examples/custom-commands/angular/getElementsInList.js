@@ -1,8 +1,3 @@
-/**
- *
- * @type {module.AngularCommand}
- */
-
 module.exports = class AngularCommand {
   async command(listName, cb = function(r) {return r}) {
     return this.api.executeScript(function(listName) {
