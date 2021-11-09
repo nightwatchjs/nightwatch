@@ -30,10 +30,11 @@ describe('.saveScreenshot()', function() {
 
       this.client.api.options.log_screenshot_data = false;
 
-      Screenshots.writeScreenshotToFile = function(fileName, data, cb) {
+      Screenshots.writeScreenshotToFile = function(fileName, data) {
         assert.strictEqual(fileName, 'screenshot.png');
         assert.strictEqual(data, base64Image);
-        cb();
+
+        return fileName;
       };
 
       this.client.api.saveScreenshot('screenshot.png', function(result) {
@@ -68,10 +69,11 @@ describe('.saveScreenshot()', function() {
 
       this.client.api.options.log_screenshot_data = false;
 
-      Screenshots.writeScreenshotToFile = function(fileName, data, cb) {
+      Screenshots.writeScreenshotToFile = function(fileName, data) {
         assert.strictEqual(fileName, 'screenshot.png');
         assert.strictEqual(data, base64Image);
-        cb();
+
+        return fileName;
       };
 
       this.client.api.saveScreenshot('screenshot.png', function(result) {
