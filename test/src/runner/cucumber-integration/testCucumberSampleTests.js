@@ -6,12 +6,12 @@ const MockServer = require('../../../lib/mockserver.js');
 const {runTests} = common.require('index.js');
 
 describe('Cucumber integration', function() {
-  before(function(done) {
+  beforeEach(function(done) {
     this.server = MockServer.init();
     this.server.on('listening', () => done());
   });
 
-  after(function(done) {
+  afterEach(function(done) {
     Globals.afterEach.call(this, done);
   });
 
@@ -40,4 +40,5 @@ describe('Cucumber integration', function() {
       assert.strictEqual(failures, true, 'Cucumber tests should have failed. Run with verbose to investigate.');
     });
   });
+
 });

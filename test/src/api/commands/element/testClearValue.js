@@ -130,12 +130,20 @@ describe('clearValue', function() {
         start_process: false
       },
       silent: false,
-      output: false
+      output: false,
+      globals: {
+        waitForConditionPollInterval: 5
+      }
     }).then(client => {
+      let retries = 0;
       MockServer.addMock({
         statusCode: 404,
         url: '/session/13521-10219-202/elements',
         postdata: {using: 'css selector', value: '#webdriver-notfound'},
+        times: 2,
+        onResponse() {
+          retries++;
+        },
         response: {
           value: {
             error: 'no such element',
@@ -143,12 +151,13 @@ describe('clearValue', function() {
             stacktrace: 'WebDriverError@chrome://marionette/content/error.js:172:5\nNoSuchElementError@chrome://marionette/content/error.js:400:5'
           }
         }
-      }, true);
+      });
 
-      client.api.clearValue({selector: '#webdriver-notfound', timeout: 0}, function(result) {
+      client.api.clearValue({selector: '#webdriver-notfound', timeout: 11}, function(result) {
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.value.error, 'An error occurred while running .clearValue() command on <#webdriver-notfound>: NoSuchElementError: Unable to locate element: #webdriver-notfound using css selector');
-        assert.strictEqual(result.value.message, 'An error occurred while running .clearValue() command on <#webdriver-notfound>: NoSuchElementError: Unable to locate element: #webdriver-notfound using css selector');
+        assert.strictEqual(retries, 2);
+        assert.strictEqual(result.value.error, 'An error occurred while running .clearValue() command on <#webdriver-notfound>: Timed out while waiting for element "#webdriver-notfound" with "css selector" to be present for 11 milliseconds.');
+        assert.strictEqual(result.value.message, 'An error occurred while running .clearValue() command on <#webdriver-notfound>: Timed out while waiting for element "#webdriver-notfound" with "css selector" to be present for 11 milliseconds.');
       });
 
       client.start(done);

@@ -127,6 +127,41 @@ describe('testRunWithCustomCommands', function() {
     })).then(_ => {
       process.exit = origExit;
 
+
+      assert.strictEqual(testResults.errmessages.length, 0);
+      assert.strictEqual(testResults.assertions, 1);
+      assert.strictEqual(testResults.passed, 1);
+    });
+  });
+  
+  it('testRunner custom command path as glob pattern', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/withcustomcommands/element');
+    let testResults;
+    const origExit = process.exit;
+    process.exit = function() {};
+
+    let globals = {
+      increment: 0,
+      logResult: null,
+      retryAssertionTimeout: 0,
+      reporter(results, cb) {
+        if (results.lastError instanceof Error) {
+          throw results.lastError;
+        }
+        testResults = results;
+
+        cb();
+      }
+    };
+
+    return runTests({
+      _source: [testsPath]
+    }, settings({
+      custom_commands_path: [path.join(__dirname, '../../extra/commands/*.js')],
+      globals
+    })).then(_ => {
+      process.exit = origExit;
+
       assert.strictEqual(testResults.errmessages.length, 0);
       assert.strictEqual(testResults.assertions, 1);
       assert.strictEqual(testResults.passed, 1);

@@ -4,13 +4,6 @@ const nocks = require('../../lib/nockselements.js');
 const Nightwatch = require('../../lib/nightwatch.js');
 const {strictEqual} = assert;
 
-// FIXME:
-// TypeError: Cannot read property 'args' of undefined (and Mocha's done() called multiple times)
-// at AsyncTree.<anonymous> (test/src/element/testPageObjectElementSelectors.js:233:36)
-//   at AsyncTree.done (lib/core/asynctree.js:111:10)
-//   at AsyncTree.traverse (lib/core/asynctree.js:47:19)
-//   at CommandQueue.traverse (lib/core/queue.js:82:8)
-//   at Timeout.scheduleTimeoutId.setTimeout [as _onTimeout] (lib/core/queue.js:59:52)
 describe('test page object element selectors', function() {
 
   before(function() {
@@ -129,15 +122,13 @@ describe('test page object element selectors', function() {
     section.sectionElement(function(result) {
       assert.strictEqual(result.status, 0);
       assert.deepStrictEqual(result.value, {ELEMENT: '0'});
-      assert.deepStrictEqual(result.result.value, {ELEMENT: '0'});
-      assert.strictEqual(result.result.WebdriverElementId, '0');
+      assert.strictEqual(result.WebdriverElementId, '0');
     });
 
     section.sectionElements(function(result) {
       assert.strictEqual(result.status, 0);
       assert.deepStrictEqual(result.value, [{ELEMENT: '4'}, {ELEMENT: '5'}, {ELEMENT: '6'}]);
-      assert.deepStrictEqual(result.result.value, [{ELEMENT: '4'}, {ELEMENT: '5'}, {ELEMENT: '6'}]);
-      assert.strictEqual(result.result.WebdriverElementId, '4');
+      assert.strictEqual(result.WebdriverElementId, '4');
     });
 
     Nightwatch.start(done);
@@ -153,7 +144,7 @@ describe('test page object element selectors', function() {
 
     section.api.elements('@help', function callback(response) {
       strictEqual(response.status, 0, 'section element selector string found');
-      strictEqual(response.result.value.length, 1);
+      strictEqual(response.value.length, 1);
       assert.deepStrictEqual(response.value, [{ELEMENT: '12345'}]);
     });
 
@@ -200,7 +191,7 @@ describe('test page object element selectors', function() {
 
     section.api.element('#helpBtn', function callback(response) {
       strictEqual(response.status, 0, 'section element selector string found');
-      strictEqual(response.result.value.ELEMENT, '12345');
+      strictEqual(response.value.ELEMENT, '12345');
       assert.deepStrictEqual(response.value, {ELEMENT: '12345'});
     });
 

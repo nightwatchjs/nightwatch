@@ -1,27 +1,28 @@
 module.exports = {
-  'Demo Google search test using page objects': function (client) {
-    var homePage = client.page.home();
+  'Demo Google search test using page objects': function (browser) {
+    const homePage = browser.page.google.search();
+    const consentPage = browser.page.google.consent();
+
     homePage.navigate();
-    homePage.expect.element('@searchBar').to.be.enabled;
+    homePage.expect.section('@consentModal').to.be.visible;
+
+    const {consentModal} = homePage.section;
+    consentModal.click('@customizeButton');
+
+    browser.expect.url().toContain('https://consent.google.');
+    consentPage.turnOffEverything();
 
     homePage.setValue('@searchBar', 'Nightwatch.js');
     homePage.submit();
 
-    var resultsPage = client.page.searchResults();
-    resultsPage.expect.element('@results').to.be.present.after(2000);
-    resultsPage.expect.element('@results').to.contain.text('Nightwatch.js');
+    const resultsPage = browser.page.google.searchResults();
+    resultsPage.expect.element('@results').to.be.present;
+    resultsPage.expect.element('@results').text.toContain('Nightwatch.js');
     resultsPage.expect.section('@menu').to.be.visible;
 
-    var menuSection = resultsPage.section.menu;
-    menuSection.expect.element('@web').to.be.visible;
-    menuSection.expect.element('@video').to.be.visible;
-    menuSection.expect.element('@images').to.be.visible;
-    menuSection.expect.element('@shopping').to.be.visible;
+    const menuSection = resultsPage.section.menu;
+    menuSection.expect.element('@all').to.be.visible;
 
-    menuSection.productIsSelected('@web', function(result) {
-      this.assert.ok(result, 'Web results are shown by default on search results page');
-    });
-
-    client.end();
+    browser.quit();
   }
 };

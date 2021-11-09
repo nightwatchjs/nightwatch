@@ -1,7 +1,7 @@
 {
   "name": "nightwatch",
   "description": "Easy to use Node.js based End-to-End testing solution for browser based apps and websites, using the W3C WebDriver API.",
-  "version": "2.0.0-alpha.4",
+  "version": "2.0.0-beta.1",
   "author": {
     "name": "Andrei Rusu",
     "email": "andrei@nightwatchjs.org"
@@ -23,6 +23,7 @@
     "dotenv": "10.0.0",
     "ejs": "^3.1.6",
     "envinfo": "^7.8.1",
+    "glob": "^7.2.0",
     "lodash.clone": "3.0.3",
     "lodash.defaultsdeep": "^4.6.1",
     "lodash.merge": "^4.6.2",
@@ -36,22 +37,22 @@
     "strip-ansi": "^6.0.0"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "^7.3.1",
+    "@cucumber/cucumber": "^8.0.0-rc.1",
     "@types/node": "^16.7.1",
     "chai": "^4.2.0",
     "coveralls": "^3.0.11",
-    "eslint": "^6.8.0",
+    "eslint": "^7.32.0",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.21",
+    "mocha-junit-reporter": "^2.0.0",
+    "mochawesome": "^6.2.2",
+    "mochawesome-merge": "^4.2.0",
+    "mochawesome-report-generator": "^5.2.0",
     "mockery": "~2.1.0",
     "nock": "^10.0.6",
     "nyc": "^15.1.0",
     "ts-node": "^10.2.1",
-    "typescript": "^4.3.5",
-    "mocha-junit-reporter": "^2.0.0",
-    "mochawesome": "^6.2.2",
-    "mochawesome-merge": "^4.2.0",
-    "mochawesome-report-generator": "^5.2.0"
+    "typescript": "^4.3.5"
   },
   "peerDependencies": {
     "@cucumber/cucumber": "^7.3.1",

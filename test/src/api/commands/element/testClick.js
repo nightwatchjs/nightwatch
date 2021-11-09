@@ -96,6 +96,7 @@ describe('.click()', function() {
       let response;
       client.api.click({
         retryInterval: 50,
+        timeout: 100,
         selector: '#webdriver'
       }, function(result) {
         response = result;
@@ -104,7 +105,7 @@ describe('.click()', function() {
       client.start(function() {
         try {
           assert.strictEqual(response.status, -1);
-          assert.strictEqual(response.value.error, 'An error occurred while running .click() command on <#webdriver>: ElementNotInteractableError: Element <h1> could not be scrolled into view');
+          assert.strictEqual(response.value.error, 'An error occurred while running .click() command on <#webdriver>: Element <h1> could not be scrolled into view');
 
           done();
         } catch (err) {

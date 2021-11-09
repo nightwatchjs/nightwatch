@@ -1,5 +1,5 @@
-var Utils = require('../../lib/util/utils.js');
-var expect = require('chai').expect;
+const Utils = require('../../lib/utils/');
+const expect = require('chai').expect;
 
 module.exports = {
   testFormatElapsedTime: function() {
@@ -16,14 +16,4 @@ module.exports = {
     var resultMs = Utils.formatElapsedTime(999);
     expect(resultMs).to.equal('999ms');
   }
-
-  // testMakeFnAsync : function(client) {
-  //   function asynFn(done) {
-  //     done();
-  //   }
-  //
-  //   function syncFn() {}
-  //
-  //   expect(Utils.makeFnAsync(1, asynFn)).to.equal(asynFn);
-  // }
 };

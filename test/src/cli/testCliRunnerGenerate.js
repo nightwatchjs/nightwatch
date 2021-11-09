@@ -76,7 +76,7 @@ describe('Test CLI Runner Generate', function() {
             browserName: 'chrome',
             'goog:chromeOptions': {
               args: [],
-              w3c: false
+              w3c: true
             }
           },
 
@@ -154,7 +154,7 @@ describe('Test CLI Runner Generate', function() {
           desiredCapabilities: {
             browserName: 'chrome',
             chromeOptions: {
-              w3c: false
+              w3c: true
             }
           }
         });
@@ -164,6 +164,16 @@ describe('Test CLI Runner Generate', function() {
           desiredCapabilities: {
             browserName: 'internet explorer',
             browserVersion: '11.0'
+          }
+        });
+
+        assert.deepStrictEqual(configData.test_settings['cucumber-js'], {
+          src_folders: ['examples/cucumber-js/features/step_definitions'],
+          test_runner: {
+            type: 'cucumber',
+            options: {
+              feature_path: 'node_modules/nightwatch/examples/cucumber-js/*/*.feature'
+            }
           }
         });
 
@@ -178,7 +188,6 @@ describe('Test CLI Runner Generate', function() {
             }
           }
         });
-
       },
       constants,
       rmdirSync

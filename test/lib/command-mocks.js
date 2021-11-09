@@ -142,6 +142,11 @@ module.exports = {
     }, true);
   },
 
+  /**
+   * @deprecated
+   * @param elementId
+   * @param text
+   */
   elementText(elementId = '0', text = 'sample text') {
     MockServer.addMock({
       url: `/wd/hub/session/1352110219202/element/${elementId}/text`,
@@ -173,6 +178,83 @@ module.exports = {
       }),
       times
     });
+
+    return this;
+  },
+
+  findElements({using = 'css selector', value = '#container', response = null, times = 0}) {
+    const mockOpts = {
+      url: '/session/13521-10219-202/elements',
+      method: 'POST',
+      postdata: JSON.stringify({using, value}),
+      response: JSON.stringify(response)
+    };
+
+    if (times > 0) {
+      mockOpts.times = times;
+    }
+
+    MockServer.addMock(mockOpts, times === 0);
+
+    return this;
+  },
+
+  getElementText({elementId, responseText, sessionId = '13521-10219-202'}) {
+    MockServer.addMock({
+      url: `/session/${sessionId}/element/${elementId}/text`,
+      method: 'GET',
+      response: JSON.stringify({
+        value: responseText
+      })
+    });
+
+    return this;
+  },
+
+  findElementFromParent({elementId, sessionId = '13521-10219-202', response}) {
+    MockServer.addMock({
+      url: `/session/${sessionId}/element/${elementId}/element`,
+      method: 'POST',
+      response: JSON.stringify(response)
+    });
+
+    return this;
+  },
+
+  clickElement({elementId, sessionId = '13521-10219-202'}) {
+    MockServer.addMock({
+      url: `/session/${sessionId}/element/${elementId}/click`,
+      method: 'POST',
+      response: JSON.stringify({
+        value: null
+      })
+    });
+
+    return this;
+  },
+
+  setElementValue({
+    sessionId = '13521-10219-202',
+    elementId,
+    text,
+    times = 0,
+    response = null,
+    statusCode = 200
+  }) {
+    MockServer.addMock({
+      url: `/session/${sessionId}/element/${elementId}/value`,
+      method: 'POST',
+      postdata: JSON.stringify({
+        text,
+        value: text.split('')
+      }),
+      response: response || {
+        value: null
+      },
+      statusCode
+    }, times === 0);
+
+    return this;
   },
 
   createFirefoxSession({
@@ -280,13 +362,14 @@ module.exports = {
     browserName = 'firefox',
     sessionId = '13521-10219-202',
     persist = false,
-    deleteSession = true
+    deleteSession = true,
+    postdata = null
   } = {}) {
     MockServer.addMock({
       url: '/session',
       statusCode: 201,
       method: 'POST',
-      postdata: JSON.stringify({
+      postdata: JSON.stringify(postdata || {
         desiredCapabilities: {browserName, name: testName},
         capabilities: {alwaysMatch: {browserName}}
       }),
@@ -314,6 +397,23 @@ module.exports = {
         value: null
       }
     }, !persist);
+
+    return this;
+  },
+
+  navigateTo({url, persist = false, sessionId = '13521-10219-202'}) {
+    MockServer.addMock({
+      url: `/session/${sessionId}/url`,
+      method: 'POST',
+      postdata: JSON.stringify({
+        url
+      }),
+      response: {
+        value: null
+      }
+    }, !persist);
+
+    return this;
   }
 };
 

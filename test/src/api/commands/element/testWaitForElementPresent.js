@@ -28,8 +28,7 @@ describe('waitForElementPresent', function() {
         assert.strictEqual(instance.expectedValue, 'found');
         assert.strictEqual(result.status, 0);
         assert.deepStrictEqual(result.value, [
-          {'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'},
-          {'element-6066-11e4-a52e-4f735466cecf': '3783b042-7001-0740-a2c0-afdaac732e9f'}
+          {'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'}
         ]);
       });
 

@@ -7,7 +7,9 @@ describe('expect.elements count', function() {
   describe('with backwards compat mode', function() {
     beforeEach(function(done) {
       ExpectGlobals.beforeEach.call(this, {
-        backwards_compatibility_mode: true
+        backwards_compatibility_mode: true,
+        output: false,
+        silent: false
       }, () => {
         this.client.api.globals.abortOnAssertionFailure = false;
         done();

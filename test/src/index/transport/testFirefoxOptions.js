@@ -11,7 +11,7 @@ describe('Firefox driver options', function(){
       capabilities: firefoxOptions
     });
 
-    const options =  client.transport.createOptions();
+    const options =  client.transport.createSessionOptions();
     assert.strictEqual(options, firefoxOptions);
     assert.strictEqual(client.api.isFirefox(), true);
     assert.strictEqual(client.api.browserName, 'firefox');
@@ -26,7 +26,7 @@ describe('Firefox driver options', function(){
         }
       }
     });
-    const options =  client.transport.createOptions();
+    const options =  client.transport.createSessionOptions();
 
     assert.strictEqual(options instanceof FirefoxOptions, true);
     assert.deepStrictEqual(options.get('moz:firefoxOptions').detach, true);
@@ -43,7 +43,7 @@ describe('Firefox driver options', function(){
         browserName: 'firefox'
       }
     });
-    const options = client.transport.createOptions();
+    const options = client.transport.createSessionOptions();
 
     assert.strictEqual(options instanceof FirefoxOptions, true);
     assert.strictEqual(options.get('moz:firefoxOptions').binary, '/Applications/Firefox.app/Contents/MacOS/Firefox');
@@ -58,7 +58,7 @@ describe('Firefox driver options', function(){
         browserName: 'firefox'
       }
     });
-    const options = client.transport.createOptions();
+    const options = client.transport.createSessionOptions();
 
     assert.strictEqual(options instanceof FirefoxOptions, true);
     assert.strictEqual(options.get('moz:firefoxOptions').profile.template_, 'Nightwatch');
@@ -71,7 +71,7 @@ describe('Firefox driver options', function(){
         browserName: 'firefox'
       }
     });
-    const options = client.transport.createOptions({headless: true});
+    const options = client.transport.createSessionOptions({headless: true});
 
     assert.strictEqual(options instanceof FirefoxOptions, true);
     assert.deepStrictEqual(options.get('moz:firefoxOptions').args, ['-headless']);
@@ -88,7 +88,7 @@ describe('Firefox driver options', function(){
       }
     });
 
-    const options = client.transport.createOptions();
+    const options = client.transport.createSessionOptions();
 
     assert.strictEqual(options instanceof FirefoxOptions, true);
     assert.deepStrictEqual(options.get('moz:firefoxOptions').args, ['--width=100', '--height=100']);
@@ -103,7 +103,7 @@ describe('Firefox driver options', function(){
         browserName: 'firefox'
       }
     });
-    const options = client.transport.createOptions();
+    const options = client.transport.createSessionOptions();
 
     assert.strictEqual(options instanceof FirefoxOptions, true);
     assert.deepStrictEqual(options.getProxy(), {

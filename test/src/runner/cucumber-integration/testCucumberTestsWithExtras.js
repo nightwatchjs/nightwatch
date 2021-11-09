@@ -5,11 +5,12 @@ const common = require('../../../common.js');
 const MockServer = require('../../../lib/mockserver.js');
 const {runTests} = common.require('index.js');
 
-describe('Cucumber integration', function() {
-  before(function(done) {
+xdescribe('Cucumber integration - with extras', function() {
+  beforeEach(function(done) {
     // FIXME: clearing the require cache is only a symptom of using CSM instead of ESM modules
     // consider moving to ESM soon
-    let moduleKeys = Object.keys(require.cache).filter(item => item.includes('_setup_cucumber_runner'));
+    let moduleKeys = Object.keys(require.cache).filter(item => (item.includes('_setup_cucumber_runner')));
+
     moduleKeys.forEach(item => {
       delete require.cache[item];
     });
@@ -23,7 +24,7 @@ describe('Cucumber integration', function() {
     this.server.on('listening', () => done());
   });
 
-  after(function(done) {
+  afterEach(function(done) {
     Globals.afterEach.call(this, done);
   });
 

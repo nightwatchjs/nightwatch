@@ -52,7 +52,6 @@ describe('testRunWithServerErrors', function() {
       waitForConditionPollInterval: 50,
       reporter(results, cb) {
         assert.strictEqual(results.errmessages.length, 4);
-        assert.ok(results.errmessages[0].includes('502 Bad Gateway'));
         assert.strictEqual(results.passed, 0);
         assert.strictEqual(results.failed, 3);
         assert.strictEqual(results.assertions, 3);

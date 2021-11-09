@@ -1,5 +1,5 @@
 const util = require('util');
-const menuXpath = '//div[contains(@class, "hdtb-mitem")][contains(., %s)]';
+const menuXpath = '//div[contains(@class, "hdtb-mitem")][contains(., "%s")]';
 
 const menuCommands = {
   productIsSelected: function (product, callback) {
@@ -14,20 +14,20 @@ const menuCommands = {
 
 module.exports = {
   elements: {
-    results: {selector: '#ires'}
+    results: {selector: '#rso'}
   },
   sections: {
     menu: {
       selector: '#hdtb-msb',
       commands: [menuCommands],
       elements: {
-        web: {
-          selector: util.format(menuXpath, 'Web'),
+        all: {
+          selector: util.format(menuXpath, 'All'),
           locateStrategy: 'xpath',
           index: 0
         },
         video: {
-          selector: util.format(menuXpath, 'Video'),
+          selector: util.format(menuXpath, 'Videos'),
           locateStrategy: 'xpath',
           index: 0
         },
@@ -36,8 +36,8 @@ module.exports = {
           locateStrategy: 'xpath',
           index: 0
         },
-        shopping: {
-          selector: util.format(menuXpath, 'Shopping'),
+        news: {
+          selector: util.format(menuXpath, 'News'),
           locateStrategy: 'xpath',
           index: 0
         }

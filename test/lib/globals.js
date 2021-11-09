@@ -109,6 +109,11 @@ class Globals {
         assertion(opts);
       };
 
+      client.elementLocator.sendElementsAction = function({transportAction, args}) {
+        //assertion(opts);
+        return this.transport.executeProtocolAction(transportAction, args);
+      };
+
       let driver;
 
       if (browserDriver === 'chrome') {
