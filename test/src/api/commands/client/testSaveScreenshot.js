@@ -33,8 +33,6 @@ describe('.saveScreenshot()', function() {
       Screenshots.writeScreenshotToFile = function(fileName, data) {
         assert.strictEqual(fileName, 'screenshot.png');
         assert.strictEqual(data, base64Image);
-
-        return fileName;
       };
 
       this.client.api.saveScreenshot('screenshot.png', function(result) {
@@ -72,8 +70,6 @@ describe('.saveScreenshot()', function() {
       Screenshots.writeScreenshotToFile = function(fileName, data) {
         assert.strictEqual(fileName, 'screenshot.png');
         assert.strictEqual(data, base64Image);
-
-        return fileName;
       };
 
       this.client.api.saveScreenshot('screenshot.png', function(result) {
