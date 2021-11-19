@@ -1,6 +1,5 @@
 const assert = require('assert');
 const Nightwatch = require('../../../../lib/nightwatch.js');
-const MockServer  = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 
 describe('.rightClick()', function() {
