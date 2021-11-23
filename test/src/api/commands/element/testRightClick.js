@@ -1,6 +1,6 @@
 const assert = require('assert');
 const Nightwatch = require('../../../../lib/nightwatch.js');
-const CommandGlobals = require('../../../../lib/globals/commands.js');
+const CommandGlobals = require('../../../../lib/globals/commands-w3c.js');
 
 describe('.rightClick()', function() {
   beforeEach(function(done) {
@@ -13,18 +13,19 @@ describe('.rightClick()', function() {
 
   it('client.rightClick()', function(done) {
     const api = this.client.api;
-    this.client.transport.driver.actions = function() {
-      return {
-        contextClick: function() {
-          return {
-            perform:  function() {
-              return Promise.resolve()
-            }
-          }
-        }
-      }
+    let rightClickArgs;
+    
+    this.client.transport.Actions.session.contextClick = function (args) {
+      rightClickArgs = args;
+      
+      return Promise.resolve({
+        status:0,
+        value: null
+      })
     }
+
     this.client.api.rightClick('#weblogin', function callback(result) {
+      assert.deepStrictEqual(rightClickArgs.args,['5cc459b8-36a8-3042-8b4a-258883ea642b'])
       assert.strictEqual(result.status, 0);
       assert.strictEqual(this, api);
     });
@@ -33,97 +34,49 @@ describe('.rightClick()', function() {
   });
 
   it('client.rightClick() with xpath', function(done) {
-
-    this.client.transport.driver.actions = function() {
-      return {
-        contextClick: function() {
-          return {
-            perform:  function() {
-              return Promise.resolve()
-            }
-          }
-        }
-      }
+    let rightClickArgs;
+    this.client.transport.Actions.session.contextClick = function (args) {
+      rightClickArgs = args;
+      
+      return Promise.resolve({
+        status:0,
+        value: null
+      })
     }
 
     this.client.api.useXpath()
       .rightClick('//weblogin', function callback(result) {
+        assert.deepStrictEqual(rightClickArgs.args, ['5cc459b8-36a8-3042-8b4a-258883ea642b'])
         assert.strictEqual(result.status, 0);
       })
-      .rightClick('css selector', '#weblogin', function callback(result) {
-        assert.strictEqual(result.status, 0);
-      });
 
     this.client.start(done);
   });
 
-  it('client.rightClick() with webdriver protocol', function(done) {
-    Nightwatch.initW3CClient({
-      silent: false,
-      output: false
-    }).then(client => {
-        
-      this.client.transport.driver.actions = function() {
-        return {
-          contextClick: function() {
-            return {
-              perform:  function() {
-                return Promise.resolve()
-              }
-            }
-          }
-        }
-      }
-
-      client.api.rightClick('#webdriver', function(result) {
-        assert.strictEqual(result.value, null);
-      }).rightClick('css selector', '#webdriver', function(result) {
-        assert.strictEqual(result.value, null);
-      });
-
-      client.start(done);
-    });
-  });
-
   it('client.rightClick() - element not interactable error - failed', function(done) {
-    Nightwatch.initW3CClient({
-      output: false,
-      silent: false
-    }).then(client => {
-    
-      client.transport.driver.actions = function() {
-        return {
-          contextClick: function() {
-            return {
-              perform:  function() {
-                return Promise.reject(new Error('Element <h1> could not be scrolled into view'))
-              }
-            }
-          }
-        }
-      }    
-
-      let response;
-      client.api.rightClick({
-        retryInterval: 50,
-        timeout: 100,
-        selector: '#webdriver'
-      }, function(result) {
-        response = result;
+    let rightClickArgs;
+    this.client.transport.Actions.session.contextClick = function(args) {
+      rightClickArgs = args;
+      return Promise.resolve({
+        status: -1,
+        value: null,
+        error: new Error('Element could not be scrolled into view')
       });
+    }
 
-      client.start(function() {
-        try {
-          assert.strictEqual(response.status, -1);
-          assert.strictEqual(response.value.error, 'An error occurred while running .rightClick() command on <#webdriver>: Element <h1> could not be scrolled into view');
-
-          done();
-        } catch (err) {
-          done(err);
-        }
-      });
+    this.client.api.rightClick({
+      retryInterval: 50,
+      timeout: 100,
+      selector: '#weblogin'
+    }, function(result) {
+      assert.deepStrictEqual(rightClickArgs.args,['5cc459b8-36a8-3042-8b4a-258883ea642b'])
+      assert.strictEqual(result.status, -1);
+      assert.strictEqual(result.value.error,'An error occurred while running .rightClick() command on <#weblogin>: Element could not be scrolled into view')
     });
+
+    this.client.start(done);
   });
+
 
 
 });
