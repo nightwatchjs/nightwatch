@@ -1,6 +1,5 @@
 const assert = require('assert');
-const Nightwatch = require('../../../../lib/nightwatch.js');
-const CommandGlobals = require('../../../../lib/globals/commands.js');
+const CommandGlobals = require('../../../../lib/globals/commands-w3c.js');
 
 describe('.clickAndHold()', function() {
   beforeEach(function(done) {
@@ -13,24 +12,19 @@ describe('.clickAndHold()', function() {
 
   it('client.clickAndHold()', function(done) {
     const api = this.client.api;
-
-    this.client.transport.driver.actions = function() {
-      return {
-        move: function() {
-          return {
-            press:  function() {
-              return {
-                perform: function () {
-                  return Promise.resolve();
-                }
-              }
-            }
-          }
-        }
-      }
+    let clickAndHoldArgs;
+    
+    this.client.transport.Actions.session.pressAndHold = function(args) {
+      clickAndHoldArgs = args;
+      
+      return Promise.resolve({
+        status: 0,
+        value:null
+      });
     }
     
     this.client.api.clickAndHold('#weblogin', function callback(result) {
+      assert.deepStrictEqual(clickAndHoldArgs.args, ['5cc459b8-36a8-3042-8b4a-258883ea642b'])
       assert.strictEqual(result.status, 0);
       assert.strictEqual(this, api);
     });
@@ -40,108 +34,52 @@ describe('.clickAndHold()', function() {
 
   it('client.clickAndHold() with xpath', function(done) {
 
-    this.client.transport.driver.actions = function() {
-      return {
-        move: function() {
-          return {
-            press:  function() {
-              return {
-                perform: function () {
-                  return Promise.resolve();
-                }
-              }
-            }
-          }
-        }
-      }
+    let clickAndHoldArgs;
+    this.client.transport.Actions.session.pressAndHold = function(args) {
+      clickAndHoldArgs = args;
+
+      return Promise.resolve({
+        status:0,
+        value: null
+      })
     }
 
     this.client.api.useXpath()
       .clickAndHold('//weblogin', function callback(result) {
+        assert.deepStrictEqual(clickAndHoldArgs.args, ['5cc459b8-36a8-3042-8b4a-258883ea642b'])
         assert.strictEqual(result.status, 0);
       })
-      .clickAndHold('css selector', '#weblogin', function callback(result) {
-        assert.strictEqual(result.status, 0);
-      });
+     
 
     this.client.start(done);
   });
 
-  it('client.clickAndHold() with webdriver protocol', function(done) {
-    Nightwatch.initW3CClient({
-      silent: false,
-      output: false
-    }).then(client => {
-        
-      client.transport.driver.actions = function() {
-        return {
-          move: function() {
-            return {
-              press:  function() {
-                return {
-                  perform: function () {
-                    return Promise.resolve();
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-
-      client.api.clickAndHold('#webdriver', function(result) {
-        assert.strictEqual(result.value, null);
-      }).clickAndHold('css selector', '#webdriver', function(result) {
-        assert.strictEqual(result.value, null);
-      });
-
-      client.start(done);
-    });
-  });
 
   it('client.clickAndHold() - element not interactable error - failed', function(done) {
-    Nightwatch.initW3CClient({
-      output: false,
-      silent: false
-    }).then(client => {
     
-      client.transport.driver.actions = function() {
-        return {
-          move: function() {
-            return {
-              press:  function() {
-                return {
-                  perform: function () {
-                    return Promise.reject(new Error('Element <h1> could not be scrolled into view'));
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-
-      let response;
-      client.api.clickAndHold({
-        retryInterval: 50,
-        timeout: 100,
-        selector: '#webdriver'
-      }, function(result) {
-        response = result;
+    let clickAndHoldArgs;
+    this.client.transport.Actions.session.pressAndHold = function(args) {
+      clickAndHoldArgs = args;
+      return Promise.resolve({
+        status: -1,
+        value: null,
+        error: new Error('Element could not be scrolled into view')
       });
+    }
 
-      client.start(function() {
-        try {
-          assert.strictEqual(response.status, -1);
-          assert.strictEqual(response.value.error, 'An error occurred while running .clickAndHold() command on <#webdriver>: Element <h1> could not be scrolled into view');
-
-          done();
-        } catch (err) {
-          done(err);
-        }
-      });
+    this.client.api.clickAndHold({
+      retryInterval: 50,
+      timeout: 100,
+      selector: '#weblogin'
+    }, function(result) {
+      assert.deepStrictEqual(clickAndHoldArgs.args,['5cc459b8-36a8-3042-8b4a-258883ea642b'])
+      assert.strictEqual(result.status, -1);
+      assert.strictEqual(result.value.error,'An error occurred while running .clickAndHold() command on <#weblogin>: Element could not be scrolled into view')
     });
+
+    this.client.start(done);
   });
+
 
 
 });
