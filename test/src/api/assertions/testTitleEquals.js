@@ -21,7 +21,7 @@ describe('assert.titleEquals', function () {
         assert.strictEqual(args.length, 1);
         assert.strictEqual(typeof args[0], 'function');
       },
-      assertion({reporter, instance, failure}) {
+      assertion({instance, failure}) {
         assert.strictEqual(failure, false);
         assert.strictEqual(instance.getActual(), 'Nightwatch.js');
         assert.strictEqual(instance.hasFailure(), false);
@@ -58,7 +58,7 @@ describe('assert.titleEquals', function () {
         assert.strictEqual(args.length, 1);
         assert.strictEqual(typeof args[0], 'function');
       },
-      assertion({reporter, instance, failure}) {
+      assertion({instance, failure}) {
         assert.strictEqual(failure, false);
         assert.strictEqual(instance.getActual(), 'John Doe');
         assert.strictEqual(instance.hasFailure(), false);
@@ -75,7 +75,7 @@ describe('assert.titleEquals', function () {
       assertResult: true,
       negate: true,
       assertError: true,
-      assertion({reporter, instance, failure}) {
+      assertion({instance, failure}) {
         assert.strictEqual(failure, 'Expected "is not \'Nightwatch.js\'" but got: "Nightwatch.js"');
         assert.strictEqual(instance.getActual(), 'Nightwatch.js');
         assert.strictEqual(instance.hasFailure(), false);
