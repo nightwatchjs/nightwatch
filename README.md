@@ -21,7 +21,7 @@ Nightwatch is a complete and integrated solution for end-to-end testing of web a
 
 ## Nightwatch v2.0-beta
 
-#### [Release Notes](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.0.0-beta.1) | [Discussions](https://github.com/nightwatchjs/nightwatch/discussions)
+####  [What's New](https://v2.nightwatchjs.org/guide/getting-started/whats-new-v2.html) | [Release Notes](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.0.0-beta.1) | [Discussions](https://github.com/nightwatchjs/nightwatch/discussions)
 
 We're delighted to announce that [Nightwatch v2.0](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.0.0-beta.1) is now in beta and available in NPM. Read the [blog post](https://nightwatchjs.org/blog/nightwatch-v2-alpha-is-released.html) about the new features and changes.
 
