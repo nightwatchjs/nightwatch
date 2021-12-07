@@ -44,7 +44,6 @@
     "eslint": "^7.32.0",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.21",
-    "mocha-junit-reporter": "^2.0.0",
     "mochawesome": "^6.2.2",
     "mochawesome-merge": "^4.2.0",
     "mochawesome-report-generator": "^5.2.0",
