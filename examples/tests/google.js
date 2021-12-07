@@ -1,30 +1,32 @@
-module.exports = {
-  tags: ['google'],
-  '@disabled': true,
+describe('sample google search', function() {
+  this.tags = ['google'];
 
-  'Demo test Google': function (client) {
-    client
-      .url('http://google.no')
-      .pause(1000);
+  it('demo test using expect apis', function(browser) {
+    browser
+      .navigateTo('http://google.no')
+      .waitForElementVisible('[aria-modal="true"][title="Before you continue to Google Search"]')
+      .click('[aria-modal="true"] div.VDity button:nth-child(1)')
 
-    client.expect.element('body').to.be.present;
+      // Wait until we are on conset page
+      .expect.url().toContain('https://consent.google.no')
 
-    client.expect.element('#lst-ib').to.have.css('display');
+    // Turn everything off
+      .click('button[aria-label="Turn off Search customization"]')
+      .click('button[aria-label="Turn off YouTube History"]')
+      .click('button[aria-label="Turn off Ad personalization"]')
 
-    client.expect.element('body').to.have.attribute('class').which.contains('vasq');
-    client.expect.element('body').to.have.attribute('class').which.matches(/vasq$/);
-    client.expect.element('body').to.have.attribute('class').before(1000);
+    // click on confirm button
+      .click('form[action^="https://consent.google.no"] button')
 
-    client.expect.element('#lst-ib').to.be.enabled;
+    // saving the consent form takes some time, no need to check for anything else
+      .pause(1000)
 
-    //client.expect.element('#hplogo').text.to.match(/Norge/).before(1000);
+      .waitForElementVisible('form[action="/search"] input[type=text]')
 
-    client.setValue('#lst-ib', 'Norway').pause(500);
-    client.expect.element('#lst-ib').to.have.value.equal('Norway');
-    client.expect.element('#lst-ib').to.be.an('input');
-    client.expect.element('#lst-ib').to.be.not.selected;
-    client.expect.element('#lst-ib').to.be.visible;
+      .sendKeys('form[action="/search"] input[type=text]', ['Nightwatch.js', browser.Keys.ENTER])
+      .assert.containsText('#rso>:first-child', 'Nightwatch.js')
 
-    client.end();
-  }
-};
+      .end();
+
+  });
+});

@@ -5,14 +5,37 @@ mocks:
   postdata:
     desiredCapabilities:
       browserName: firefox
-      name: ''
+      name: 'testSuite'
+    capabilities:
+      alwaysMatch:
+        browserName: firefox
   response:
     status: 0
     sessionId: &sessionId '1352110219202'
     value:
       browserName: firefox
-      browserVersion: TEST
+      browserVersion: TEST_firefox
       platformVersion: TEST
+    state:
+  responseHeaders: {}
+  statusCode: 201
+  method: POST
+  matchEmpty: false
+
+- url: '/wd/hub/session'
+  postdata:
+    desiredCapabilities:
+      browserName: firefox
+      name: ''
+    capabilities:
+      alwaysMatch:
+        browserName: firefox
+  response:
+    status: 0
+    sessionId: &sessionId '1352110219202'
+    value:
+      browserName: firefox
+      browserVersion: TEST_firefox
     state:
   responseHeaders: {}
   statusCode: 201

@@ -30,6 +30,27 @@ describe('test HttpRequest', function() {
         state: null
       });
 
+    nock('http://localhost:4444')
+      .delete('/wd/hub/session')
+      .reply(200, {
+        status: 0,
+        sessionId: '123456-789'
+      });
+
+    nock('http://localhost:4444')
+      .get('/wd/hub/session')
+      .reply(200, {
+        status: 0,
+        sessionId: '123456-789'
+      });
+
+    nock('http://localhost:4444')
+      .put('/wd/hub/session')
+      .reply(200, {
+        status: 0,
+        sessionId: '123456-789'
+      });
+
     callback();
   });
 
@@ -42,7 +63,7 @@ describe('test HttpRequest', function() {
   });
 
   it('testSendPostRequest', function(done) {
-    var options = {
+    const options = {
       path: '/session',
       method: 'POST',
       port: 4444,
@@ -53,16 +74,16 @@ describe('test HttpRequest', function() {
       }
     };
 
-    var request = new HttpRequest(options);
+    const request = new HttpRequest(options);
     request.on('success', function () {
       done();
     }).send();
 
-    var data = '{"desiredCapabilities":{"browserName":"firefox"}}';
+    const data = '{"desiredCapabilities":{"browserName":"firefox"}}';
     assert.strictEqual(request.data, data);
     assert.strictEqual(request.contentLength, data.length);
 
-    var opts = request.reqOptions;
+    const opts = request.reqOptions;
     assert.strictEqual(opts.path, '/wd/hub/session');
     assert.strictEqual(opts.hostname, 'localhost');
     assert.strictEqual(opts.port, 4444);
@@ -73,7 +94,7 @@ describe('test HttpRequest', function() {
   });
 
   it('testSendPostRequestWithCredentials', function (done) {
-    var options = {
+    const options = {
       path: '/session',
       method: 'POST',
       port: 4444,
@@ -93,7 +114,7 @@ describe('test HttpRequest', function() {
       }
     };
 
-    var request = new HttpRequest(options);
+    const request = new HttpRequest(options);
     request.on('success', function () {
       done();
     }).on('error', function(err) {
@@ -102,7 +123,7 @@ describe('test HttpRequest', function() {
     }).send();
 
     try {
-      var authHeader = Buffer.from('test:test-key').toString('base64');
+      const authHeader = Buffer.from('test:test-key').toString('base64');
       assert.strictEqual(request.httpRequest.getHeader('Authorization'), 'Basic ' + authHeader);
     } catch (err) {
       done(err);
@@ -117,7 +138,7 @@ describe('test HttpRequest', function() {
 
     mockery.registerMock('proxy-agent', ProxyAgentMock);
 
-    var options = {
+    const options = {
       path: '/session',
       method: 'POST',
       port: 4444,
@@ -134,35 +155,14 @@ describe('test HttpRequest', function() {
       proxy: 'http://localhost:8080'
     };
 
-    var request = new HttpRequest(options);
+    const request = new HttpRequest(options);
     request.on('success', function () {
       done();
     }).send();
 
-    var opts = request.reqOptions;
+    const opts = request.reqOptions;
     assert.ok('agent' in opts);
     assert.ok('proxy' in opts.agent);
-  });
-
-  it('testResponseWithRedirect', function (done) {
-    nock('http://localhost:4444')
-      .post('/wd/hub/redirect')
-      .reply(302, {}, {
-        Location: 'http://localhost/wd/hub/session'
-      });
-
-    var options = {
-      path: '/redirect',
-      method: 'POST',
-      port: 4444,
-      data: {}
-    };
-    var request = new HttpRequest(options);
-    request.on('success', function (result, response, redirected) {
-      assert.strictEqual(redirected, true);
-      done();
-    }).send();
-
   });
 
   it('testGetRequest', function (done) {
@@ -170,46 +170,21 @@ describe('test HttpRequest', function() {
       .get('/wd/hub/123456/element')
       .reply(200, {});
 
-    var options = {
+    const options = {
       path: '/:sessionId/element',
       method: 'GET',
       port: 4444,
       sessionId: '123456'
     };
 
-    var request = new HttpRequest(options);
+    const request = new HttpRequest(options);
+    assert.strictEqual(request.data, '');
     request.on('success', function (result) {
       done();
     }).send();
 
     assert.strictEqual(request.httpRequest.getHeader('Accept'), 'application/json');
     assert.strictEqual(request.reqOptions.path, '/wd/hub/123456/element');
-  });
-
-  it('testErrorResponse', function (done) {
-    nock('http://localhost:4444')
-      .post('/wd/hub/error')
-      .reply(500, {
-        value: {
-          status: -1,
-          stackTrace: '{}',
-          message: 'Unable to locate element'
-        }
-      });
-
-    var options = {
-      path: '/wd/hub/error',
-      method: 'POST',
-      data: {}
-    };
-
-    var request = new HttpRequest(options);
-    request.on('error', function (result, response, screenshotContent) {
-      assert.strictEqual(typeof result.stackTrace, 'undefined');
-      assert.strictEqual(typeof result.message, 'undefined');
-      done();
-    }).send();
-
   });
 
   it('testErrorResponseLocalised', function (done) {
@@ -224,18 +199,17 @@ describe('test HttpRequest', function() {
         }
       });
 
-    var options = {
+    const options = {
+      host: 'localhost',
       path: '/wd/hub/error',
       method: 'POST',
       port: 4444,
       data: {}
     };
 
-    var request = new HttpRequest(options);
-    request.on('error', function (result, response, screenshotContent) {
-      assert.ok(typeof result.stackTrace == 'undefined');
-      assert.ok(typeof result.localizedMessage == 'undefined');
-      assert.ok(typeof result.message == 'undefined');
+    const request = new HttpRequest(options);
+    request.on('complete', function (result, response) {
+      assert.strictEqual(result.value.status, -1);
       done();
     }).send();
   });
@@ -331,4 +305,105 @@ describe('test HttpRequest', function() {
     const opts = request.reqOptions;
     assert.strictEqual(typeof opts.agent, 'undefined');
   });
+
+  it('send POST request with empty data object', function(done){
+    const options = {
+      path: '/session',
+      method: 'POST',
+      port: 4444,
+      data: {}
+    };
+
+    HttpRequest.globalSettings = {
+      default_path: '/wd/hub',
+      port: 4444
+    };
+
+    const request = new HttpRequest(options);
+    request.on('success', function () {
+      done();
+    }).send();
+
+    assert.strictEqual(request.data, '{}');
+    assert.deepStrictEqual(request.params, {});
+  });
+
+  it('send DELETE request with data', function(done){
+    const options = {
+      path: '/session',
+      method: 'DELETE',
+      port: 4444,
+      data: {
+        desiredCapabilities: {
+          browserName: 'firefox'
+        }
+      }
+    };
+
+    HttpRequest.globalSettings = {
+      default_path: '/wd/hub',
+      port: 4444
+    };
+
+    const request = new HttpRequest(options);
+    request.on('success', function () {
+      done();
+    }).send();
+
+    assert.strictEqual(request.data, '');
+    assert.strictEqual(request.params, '');
+    
+  });
+
+
+  it('send GET request with data', function(done){
+    const options = {
+      path: '/session',
+      method: 'GET',
+      port: 4444,
+      data: {
+        desiredCapabilities: {
+          browserName: 'firefox'
+        }
+      }
+    };
+
+    HttpRequest.globalSettings = {
+      default_path: '/wd/hub',
+      port: 4444
+    };
+    const request = new HttpRequest(options);
+    request.on('success', function () {
+      done();
+    }).send();
+
+    assert.strictEqual(request.data, '');
+    assert.strictEqual(request.params, '');
+    
+  });
+
+
+  it('send PUT request with data', function(done){
+    const options = {
+      path: '/session',
+      method: 'PUT',
+      port: 4444,
+      data: {}
+    };
+
+    HttpRequest.globalSettings = {
+      default_path: '/wd/hub',
+      port: 4444
+    };
+    const request = new HttpRequest(options);
+    request.on('success', function () {
+      done();
+    }).send();
+
+    assert.strictEqual(request.data, '{}');
+    assert.deepStrictEqual(request.params, {});
+    
+  });
+
+
 });

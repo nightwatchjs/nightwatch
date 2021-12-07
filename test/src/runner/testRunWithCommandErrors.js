@@ -3,7 +3,8 @@ const assert = require('assert');
 const common = require('../../common.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
-const NightwatchClient = common.require('index.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('testRunWithCommandErrors', function() {
 
@@ -20,9 +21,9 @@ describe('testRunWithCommandErrors', function() {
   });
 
   describe('testRunWithWindowCommandErrors', function() {
-    it('testRunner with open new window error and report errors on', function() {
+    it('testRunner with error and report errors on', function() {
       MockServer.addMock({
-        url: '/wd/hub/session/1352110219202/window/new',
+        url: '/wd/hub/session/1352110219202/frame/parent',
         statusCode: 500,
         response: {
           sessionId: null,
@@ -42,7 +43,7 @@ describe('testRunWithCommandErrors', function() {
         waitForConditionPollInterval: 90,
         reporter(results, cb) {
           assert.strictEqual(results.errmessages.length, 1);
-          assert.ok(results.errmessages[0].includes('Error while running .openNewWindow():'));
+          assert.ok(results.errmessages[0].includes('Error while running .frameParent():'));
           assert.strictEqual(results.passed, 1);
           assert.strictEqual(results.failed, 0);
           assert.strictEqual(results.assertions, 1);
@@ -52,30 +53,20 @@ describe('testRunWithCommandErrors', function() {
         }
       };
 
-      let settings = {
-        selenium: {
-          port: 10195,
-          version2: true,
-          start_process: true
-        },
+      return runTests({
+        _source: [testsPath]
+      }, settings({
+        output: false,
         report_command_errors: true,
         skip_testcases_on_fail: false,
-        output: false,
-        silent: false,
-        persist_globals: true,
         disable_error_log: 0,
-        globals,
-        output_folder: false
-      };
-
-      return NightwatchClient.runTests({
-        _source: [testsPath]
-      }, settings);
+        globals
+      }));
     });
 
-    it('testRunner with open new window socket hang up error', function() {
+    it('testRunner with socket hang up error', function() {
       MockServer.addMock({
-        url: '/wd/hub/session/1352110219202/window/new',
+        url: '/wd/hub/session/1352110219202/frame/parent',
         socketDelay: 200,
         response: ''
       }, true);
@@ -88,7 +79,7 @@ describe('testRunWithCommandErrors', function() {
         waitForConditionPollInterval: 90,
         reporter(results, cb) {
           assert.strictEqual(results.errmessages.length, 1);
-          assert.ok(results.errmessages[0].includes('Error while running .openNewWindow(): Error ECONNRESET: socket hang up'));
+          assert.ok(results.errmessages[0].includes('Error while running .frameParent(): Error: ECONNRESET socket hang up'));
           assert.strictEqual(results.passed, 1);
           assert.strictEqual(results.failed, 0);
           assert.strictEqual(results.assertions, 1);
@@ -98,51 +89,28 @@ describe('testRunWithCommandErrors', function() {
         }
       };
 
-      let settings = {
-        selenium: {
-          port: 10195,
-          version2: true,
-          start_process: true
-        },
+      return runTests({
+        _source: [testsPath]
+      }, settings({
         webdriver: {
           timeout_options: {
             timeout: 50
           }
         },
-        report_command_errors: false,
-        skip_testcases_on_fail: false,
         output: false,
-        silent: false,
-        persist_globals: true,
+        report_command_errors: true,
+        report_network_errors: true,
+        skip_testcases_on_fail: false,
         disable_error_log: 0,
-        globals,
-        output_folder: false
-      };
-
-      return NightwatchClient.runTests({
-        _source: [testsPath]
-      }, settings);
+        globals
+      }));
     });
 
-    it('testRunner with open new window socket hang up error and retry then success', function() {
+    it('testRunner with socket hang up error and report errors disabled', function() {
       MockServer.addMock({
-        url: '/wd/hub/session/1352110219202/window/new',
+        url: '/wd/hub/session/1352110219202/frame/parent',
         socketDelay: 200,
         response: ''
-      }, true);
-
-      MockServer.addMock({
-        url: '/wd/hub/session/1352110219202/window/new',
-        socketDelay: 200,
-        response: ''
-      }, true);
-
-      MockServer.addMock({
-        url: '/wd/hub/session/1352110219202/window/new',
-        statusCode: 200,
-        response: {
-          value: null
-        }
       }, true);
 
       let testsPath = path.join(__dirname, '../../sampletests/withcommanderrors');
@@ -162,48 +130,96 @@ describe('testRunWithCommandErrors', function() {
         }
       };
 
-      let settings = {
-        selenium: {
-          port: 10195,
-          version2: true,
-          start_process: true
+      return runTests({
+        _source: [testsPath]
+      }, settings({
+        webdriver: {
+          timeout_options: {
+            timeout: 50
+          }
         },
+        output: false,
+        report_command_errors: false,
+        skip_testcases_on_fail: false,
+        disable_error_log: 0,
+        globals
+      }));
+    });
+
+    it('testRunner with socket hang up error and retry then success', function() {
+      let requestCount = 0;
+
+      MockServer.addMock({
+        url: '/wd/hub/session/1352110219202/frame/parent',
+        socketDelay: 200,
+        response: '',
+        times: 2,
+        onRequest() {
+          requestCount++;
+        }
+      });
+
+      MockServer.addMock({
+        url: '/wd/hub/session/1352110219202/frame/parent',
+        statusCode: 200,
+        response: {
+          value: null
+        },
+        onRequest() {
+          requestCount++;
+        }
+      }, true);
+
+      let testsPath = path.join(__dirname, '../../sampletests/withcommanderrors');
+      let globals = {
+        retryAssertionTimeout: 90,
+        abortOnElementLocateError: true,
+        waitForConditionTimeout: 90,
+        waitForConditionPollInterval: 90,
+        reporter(results, cb) {
+          assert.strictEqual(results.errmessages.length, 0);
+          assert.strictEqual(requestCount, 3);
+          assert.strictEqual(results.passed, 1);
+          assert.strictEqual(results.failed, 0);
+          assert.strictEqual(results.assertions, 1);
+          assert.strictEqual(results.errors, 0);
+          assert.strictEqual(results.skipped, 0);
+          cb();
+        }
+      };
+
+      return runTests({
+        _source: [testsPath]
+      }, settings({
         webdriver: {
           timeout_options: {
             timeout: 50,
             retry_attempts: 2
           }
         },
+        output: false,
         report_command_errors: true,
         skip_testcases_on_fail: false,
-        output: false,
-        silent: false,
-        persist_globals: true,
         disable_error_log: 0,
-        globals,
-        output_folder: false
-      };
-
-      return NightwatchClient.runTests({
-        _source: [testsPath]
-      }, settings);
+        globals
+      }));
     });
 
     it('testRunner with open new window socket hang up error and retry then success - default settings', function() {
       MockServer.addMock({
-        url: '/wd/hub/session/1352110219202/window/new',
+        url: '/wd/hub/session/1352110219202/frame/parent',
         socketDelay: 200,
         response: ''
       }, true);
 
       MockServer.addMock({
-        url: '/wd/hub/session/1352110219202/window/new',
+        url: '/wd/hub/session/1352110219202/frame/parent',
         socketDelay: 200,
         response: ''
       }, true);
 
       MockServer.addMock({
-        url: '/wd/hub/session/1352110219202/window/new',
+        url: '/wd/hub/session/1352110219202/frame/parent',
         statusCode: 200,
         response: {
           value: null
@@ -227,12 +243,9 @@ describe('testRunWithCommandErrors', function() {
         }
       };
 
-      let settings = {
-        selenium: {
-          port: 10195,
-          version2: true,
-          start_process: true
-        },
+      return runTests({
+        _source: [testsPath]
+      }, settings({
         webdriver: {
           timeout_options: {
             timeout: 50,
@@ -240,131 +253,10 @@ describe('testRunWithCommandErrors', function() {
           }
         },
         report_command_errors: false,
-        output: false,
-        silent: false,
-        globals,
-        output_folder: false
-      };
-
-      return NightwatchClient.runTests({
-        _source: [testsPath]
-      }, settings);
+        globals
+      }));
     });
 
-    it('testRunner with open new window socket hang up error and retry then fail', function() {
-      MockServer.addMock({
-        url: '/wd/hub/session/1352110219202/window/new',
-        socketDelay: 200,
-        response: ''
-      }, true);
-
-      MockServer.addMock({
-        url: '/wd/hub/session/1352110219202/window/new',
-        socketDelay: 200,
-        response: ''
-      }, true);
-
-      MockServer.addMock({
-        url: '/wd/hub/session/1352110219202/window/new',
-        socketDelay: 200,
-        response: ''
-      }, true);
-
-      let testsPath = path.join(__dirname, '../../sampletests/withcommanderrors');
-      let globals = {
-        retryAssertionTimeout: 90,
-        abortOnElementLocateError: true,
-        waitForConditionTimeout: 90,
-        waitForConditionPollInterval: 90,
-        reporter(results, cb) {
-          assert.strictEqual(results.errmessages.length, 1);
-          assert.strictEqual(results.passed, 1);
-          assert.strictEqual(results.failed, 0);
-          assert.strictEqual(results.assertions, 1);
-          assert.strictEqual(results.errors, 1);
-          assert.strictEqual(results.skipped, 0);
-          cb();
-        }
-      };
-
-      let settings = {
-        selenium: {
-          port: 10195,
-          version2: true,
-          start_process: true
-        },
-        webdriver: {
-          timeout_options: {
-            timeout: 50,
-            retry_attempts: 2
-          }
-        },
-        report_command_errors: true,
-        skip_testcases_on_fail: false,
-        output: false,
-        silent: false,
-        persist_globals: true,
-        disable_error_log: 0,
-        globals,
-        output_folder: false
-      };
-
-      return NightwatchClient.runTests({
-        _source: [testsPath]
-      }, settings);
-    });
-
-    it('testRunner with open new window error and report errors off', function() {
-      MockServer.addMock({
-        url: '/wd/hub/session/1352110219202/window/new',
-        statusCode: 500,
-        response: {
-          sessionId: null,
-          state: 'unhandled error',
-          value: {
-            message: 'POST /session'
-          },
-          status: 13
-        }
-      }, true);
-
-      let testsPath = path.join(__dirname, '../../sampletests/withcommanderrors');
-      let globals = {
-        retryAssertionTimeout: 90,
-        abortOnElementLocateError: true,
-        waitForConditionTimeout: 90,
-        waitForConditionPollInterval: 90,
-        reporter(results, cb) {
-          assert.strictEqual(results.errmessages.length, 0);
-          assert.strictEqual(results.passed, 1);
-          assert.strictEqual(results.failed, 0);
-          assert.strictEqual(results.assertions, 1);
-          assert.strictEqual(results.errors, 0);
-          assert.strictEqual(results.skipped, 0);
-          cb();
-        }
-      };
-
-      let settings = {
-        selenium: {
-          port: 10195,
-          version2: true,
-          start_process: true
-        },
-        report_command_errors: false,
-        skip_testcases_on_fail: false,
-        output: false,
-        silent: false,
-        persist_globals: true,
-        disable_error_log: 0,
-        globals,
-        output_folder: false
-      };
-
-      return NightwatchClient.runTests({
-        _source: [testsPath]
-      }, settings);
-    });
   });
 
   describe('testRunWithElementLocateErrors', function() {
@@ -397,24 +289,14 @@ describe('testRunWithCommandErrors', function() {
         }
       };
 
-      let settings = {
-        selenium: {
-          port: 10195,
-          version2: true,
-          start_process: true
-        },
-        skip_testcases_on_fail: false,
-        output: false,
-        silent: true,
-        persist_globals: true,
-        disable_error_log: 0,
-        globals,
-        output_folder: false
-      };
-
-      return NightwatchClient.runTests({
+      return runTests({
         _source: [testsPath]
-      }, settings);
+      }, settings({
+        output: false,
+        skip_testcases_on_fail: false,
+        disable_error_log: 0,
+        globals
+      }));
     });
 
     it('testRunner with element locate errors disabled', function() {
@@ -445,22 +327,11 @@ describe('testRunWithCommandErrors', function() {
         }
       };
 
-      let settings = {
-        selenium: {
-          port: 10195,
-          version2: true,
-          start_process: true
-        },
-        output: false,
-        silent: true,
-        persist_globals: true,
-        globals,
-        output_folder: false
-      };
-
-      return NightwatchClient.runTests({
+      return runTests({
         _source: [testsPath]
-      }, settings);
+      }, settings({
+        globals
+      }));
     });
 
   });

@@ -19,6 +19,34 @@ describe('test Settings', function () {
     eq(client.api.launch_url, '/home');
   });
 
+  it('test set test_runner invalid value', function () {
+    assert.throws(function() {
+      let client = Nightwatch.createClient({
+        test_runner: null
+      });
+    }, /Error: Invalid "test_runner" settings specified; received: null/);
+  });
+
+  it('test set test_runner invalid value - function', function () {
+    assert.throws(function() {
+      let client = Nightwatch.createClient({
+        test_runner: function() {}
+      });
+    }, /Error: Invalid "test_runner" settings specified; received: function\(\) \{\}/);
+  });
+
+  it('test set test_runner string value', function () {
+
+    let client = Nightwatch.createClient({
+      test_runner: 'mocha'
+    });
+
+    assert.deepStrictEqual(client.settings.test_runner, {
+      options: {},
+      type: 'mocha'
+    });
+  });
+
   it('testSetWebdriverOptionsDefaults', function () {
     HttpRequest.globalSettings = {};
     let client = Nightwatch.createClientDefaults();
@@ -39,6 +67,7 @@ describe('test Settings', function () {
       webdriver: {
         host: '127.0.0.1',
         ssl: false,
+        port: 10195,
         timeout_options: {
           timeout: 10000,
           retry_attempts: 3
@@ -66,7 +95,9 @@ describe('test Settings', function () {
         log_path: './logs'
       }
     }, {
-      screenshots: {},
+      screenshots: {
+        bla: false
+      },
       test_settings: {
         default: {
           webdriver: {
@@ -142,7 +173,15 @@ describe('test Settings', function () {
     eq(client.options.accessKey, 'test-access-key');
   });
 
-  it('testSetOptionsScreenshots', function () {
+  it('testEnableFailFast', function () {
+    let client = Nightwatch.createClient({}, null, {
+      'fail-fast': true
+    });
+
+    eq(client.options.enable_fail_fast, true);
+  });
+
+  it('testSetOptionsScreenshots – path empty', function () {
     let client = Nightwatch.createClient({
       screenshots: {
         enabled: true,
@@ -153,7 +192,24 @@ describe('test Settings', function () {
 
     eq(client.api.options.log_screenshot_data, true);
     eq(client.options.screenshots.on_error, true);
+    eq(client.settings.screenshots.on_error, true);
+    eq(client.settings.screenshots.path, '');
   });
+
+  it('testSetOptionsScreenshots – path not empty', function () {
+    let client = Nightwatch.createClient({
+      screenshots: {
+        enabled: true,
+        path: '/tmp/'
+      },
+      log_screenshot_data: true
+    });
+
+    eq(client.api.options.log_screenshot_data, true);
+    eq(client.options.screenshots.on_error, true);
+    eq(client.settings.screenshots.path, '/tmp');
+  });
+
 
   it('testSetOptionsScreenshotsOnError', function () {
     let client = Nightwatch.createClient({
@@ -186,12 +242,9 @@ describe('test Settings', function () {
     });
 
     eq(client.options.end_session_on_fail, true);
-    eq(client.session.endSessionOnFail, true);
-
     client.endSessionOnFail(false);
     eq(client.endSessionOnFail(), false);
     eq(client.options.end_session_on_fail, false);
-    eq(client.session.endSessionOnFail, false);
   });
 
   it('testSetRequestTimeoutOptions', function () {

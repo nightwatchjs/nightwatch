@@ -60,9 +60,14 @@ class MockServer {
           headers['Content-Length'] = responsedata.length;
           res.writeHead(Number(item.statusCode), headers);
 
+          if (item.onRequest) {
+            item.onRequest(item);
+          }
+
           if (item.onResponse) {
             item.onResponse();
           }
+
           if (item.__once) {
             this.removeMock(item);
           }
@@ -97,7 +102,9 @@ class MockServer {
    * @param {boolean} once
    */
   addMock(item, once = false) {
-    if (once) {
+    item.times = item.times || 1;
+
+    if (once || item.times > 1) {
       item.__once = true;
     }
 
@@ -117,7 +124,10 @@ class MockServer {
       }
     }
 
-    this.mocks.push(item);
+    for (let i = 0; i < item.times; i++) {
+      this.mocks.push(item);
+    }
+
   }
 
   removeMock(mock) {
@@ -220,7 +230,7 @@ const normalizeJSONString = (data) => {
 let server;
 
 module.exports = {
-  init(callback = function() {}) {
+  init(callback = function() {}, {port = 10195} = {}) {
     Object.keys(require.cache).forEach(function(module) {
       if (module.indexOf('/mocks.json') > -1) {
         delete require.cache[module];
@@ -234,9 +244,11 @@ module.exports = {
       fs.readFileSync(path.join(__dirname, './mocks/mocks-w3c.yaml'), 'utf8')
     );
 
+    const mocks = mockObjectsJsonWire.mocks.concat(mockObjectsW3C.mocks);
+
     server = new MockServer({
-      port: 10195,
-      mocks: mockObjectsJsonWire.mocks.concat(mockObjectsW3C.mocks)
+      port,
+      mocks
     }, callback);
 
     try {
@@ -247,12 +259,28 @@ module.exports = {
     }
   },
 
+  initAsync({port, mocks = []} = {}) {
+    return new Promise(function(resolve, reject) {
+      server = new MockServer({
+        port,
+        mocks
+      }, function() {});
+      const httpServer = server.listen();
+      httpServer.on('listening', function () {
+        resolve(server);
+      });
+    });
+  },
+
   /**
    *
    * @param {Object} item
    * @param {boolean} once
    */
   addMock(item, once, twice) {
+    if (!server) {
+      throw new Error('Server is not yet created');
+    }
     server.addMock(item, once);
     if (twice) {
       server.addMock(item, once);

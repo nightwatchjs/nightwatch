@@ -41,7 +41,7 @@ describe('test Request With Credentials', function () {
     });
 
     const result = await client.createSession();
-    assert.deepStrictEqual(client.session.desiredCapabilities, {
+    assert.deepStrictEqual(client.transport.desiredCapabilities, {
       browserName: 'firefox'
     });
     assert.deepStrictEqual(result, {
@@ -73,7 +73,7 @@ describe('test Request With Credentials', function () {
     });
 
     const result = await client.createSession();
-    assert.deepStrictEqual(client.session.desiredCapabilities, {
+    assert.deepStrictEqual(client.transport.desiredCapabilities, {
       browserName: 'chrome'
     });
     assert.deepStrictEqual(result, {
@@ -107,7 +107,7 @@ describe('test Request With Credentials', function () {
     });
 
     const result = await client.createSession();
-    assert.deepStrictEqual(client.session.desiredCapabilities, {
+    assert.deepStrictEqual(client.transport.desiredCapabilities, {
       browserName: 'MicrosoftEdge'
     });
     assert.deepStrictEqual(result, {
@@ -118,7 +118,7 @@ describe('test Request With Credentials', function () {
     });
   });
 
-  it('Test create session with headless mode in Firefox', function () {
+  it('Test create session with headless mode in Firefox', async function () {
     nock('http://localhost:10195')
       .post('/wd/hub/session')
       .reply(201, {
@@ -137,21 +137,28 @@ describe('test Request With Credentials', function () {
       output: false
     });
 
-    client.createSession({
-      headless: true
+    let sessionOptions;
+    const driverFn = client.transport.createDriver;
+    client.transport.createDriver = function({options}) {
+      sessionOptions = options;
+
+      return driverFn.call(client.transport, {options});
+    };
+
+    const session = await client.createSession({
+      argv: {
+        headless: true
+      }
     });
 
-    assert.deepStrictEqual(client.session.desiredCapabilities, {
-      alwaysMatch: {
-        'moz:firefoxOptions': {
-          args: ['-headless']
-        }
-      },
-      browserName: 'firefox'
+    assert.deepStrictEqual(session, {
+      sessionId: '1352110219202',
+      capabilities: {browserName: 'firefox', version: 'TEST', platform: 'TEST'}
     });
+    assert.deepStrictEqual(sessionOptions.get('moz:firefoxOptions'), {args: ['-headless']});
   });
 
-  it('Test create session with headless mode in Chrome', function () {
+  it('Test create session with headless mode in Chrome', async function () {
     nock('http://localhost:10195')
       .post('/wd/hub/session')
       .reply(201, {
@@ -173,19 +180,28 @@ describe('test Request With Credentials', function () {
       }
     });
 
-    client.createSession({
-      headless: true
+    let sessionOptions;
+    const driverFn = client.transport.createDriver;
+    client.transport.createDriver = function({options}) {
+      sessionOptions = options;
+
+      return driverFn.call(client.transport, {options});
+    };
+
+    const session = await client.createSession({
+      argv: {
+        headless: true
+      }
     });
 
-    assert.deepStrictEqual(client.settings.desiredCapabilities, {
-      'goog:chromeOptions': {
-        args: ['--headless']
-      },
-      browserName: 'chrome'
+    assert.deepStrictEqual(session, {
+      sessionId: '1352110219202',
+      capabilities: {browserName: 'chrome', version: 'TEST', platform: 'TEST'}
     });
+    assert.deepStrictEqual(sessionOptions.get('goog:chromeOptions'), {args: ['headless']});
   });
 
-  it('Test create session with headless mode in Edge', function () {
+  it('Test create session with headless mode in Edge', async function () {
     nock('http://localhost:10195')
       .post('/wd/hub/session')
       .reply(201, {
@@ -207,19 +223,29 @@ describe('test Request With Credentials', function () {
       }
     });
 
-    client.createSession({
-      headless: true
+    let sessionOptions;
+    const driverFn = client.transport.createDriver;
+    client.transport.createDriver = function({options}) {
+      sessionOptions = options;
+
+      return driverFn.call(client.transport, {options});
+    };
+
+    const session = await client.createSession({
+      argv: {
+        headless: true
+      }
     });
 
-    assert.deepStrictEqual(client.settings.desiredCapabilities, {
-      'ms:edgeOptions': {
-        args: ['--headless']
-      },
-      browserName: 'MicrosoftEdge'
+    assert.deepStrictEqual(session, {
+      sessionId: '1352110219202',
+      capabilities: {browserName: 'MicrosoftEdge', version: 'TEST', platform: 'TEST'}
     });
+
+    assert.deepStrictEqual(sessionOptions.get('ms:edgeOptions'), {args: ['headless']});
   });
 
-  it('Test create session with headless mode in Chrome with existing args', function () {
+  it('Test create session with headless mode in Chrome with existing args', async function () {
     nock('http://localhost:10195')
       .post('/wd/hub/session')
       .reply(201, {
@@ -238,25 +264,35 @@ describe('test Request With Credentials', function () {
       output: false,
       desiredCapabilities: {
         browserName: 'chrome',
-        chromeOptions: {
+        'goog:chromeOptions': {
           args: ['--no-sandbox']
         }
       }
     });
 
-    client.createSession({
-      headless: true
+    let sessionOptions;
+    const driverFn = client.transport.createDriver;
+    client.transport.createDriver = function({options}) {
+      sessionOptions = options;
+
+      return driverFn.call(client.transport, {options});
+    };
+
+    const session = await client.createSession({
+      argv: {
+        headless: true
+      }
     });
 
-    assert.deepStrictEqual(client.settings.desiredCapabilities, {
-      'goog:chromeOptions': {
-        args: ['--no-sandbox', '--headless']
-      },
-      browserName: 'chrome'
+    assert.deepStrictEqual(sessionOptions.get('goog:chromeOptions'), {
+      args: [
+        '--no-sandbox',
+        'headless'
+      ]
     });
   });
 
-  it('Test create session with headless mode in Edge with existing args', function () {
+  it('Test create session with headless mode in Edge with existing args', async function () {
     nock('http://localhost:10195')
       .post('/wd/hub/session')
       .reply(201, {
@@ -275,21 +311,31 @@ describe('test Request With Credentials', function () {
       output: false,
       desiredCapabilities: {
         browserName: 'MicrosoftEdge',
-        edgeOptions: {
+        'ms:edgeOptions': {
           args: ['--no-sandbox']
         }
       }
     });
 
-    client.createSession({
-      headless: true
+    let sessionOptions;
+    const driverFn = client.transport.createDriver;
+    client.transport.createDriver = function({options}) {
+      sessionOptions = options;
+
+      return driverFn.call(client.transport, {options});
+    };
+
+    const session = await client.createSession({
+      argv: {
+        headless: true
+      }
     });
 
-    assert.deepStrictEqual(client.settings.desiredCapabilities, {
-      'ms:edgeOptions': {
-        args: ['--no-sandbox', '--headless']
-      },
-      browserName: 'MicrosoftEdge'
+    assert.deepStrictEqual(sessionOptions.get('ms:edgeOptions'), {
+      args: [
+        '--no-sandbox',
+        'headless'
+      ]
     });
   });
 });

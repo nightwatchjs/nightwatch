@@ -4,7 +4,7 @@ const assert = require('assert');
 const common = require('../../common.js');
 const Runner = common.require('runner/runner.js');
 const Settings = common.require('settings/settings.js');
-const NightwatchClient = common.require('index.js');
+const {runTests} = common.require('index.js');
 
 describe('testRunnerUnitTests', function() {
   beforeEach(function() {
@@ -16,7 +16,7 @@ describe('testRunnerUnitTests', function() {
   it('testRunUnitTests', function() {
     let testsPath = path.join(__dirname, '../../sampletests/unittests');
 
-    return NightwatchClient.runTests(testsPath, {
+    return runTests(testsPath, {
       output_folder: false,
       unit_tests_mode: true,
       output: false,
@@ -49,7 +49,7 @@ describe('testRunnerUnitTests', function() {
       }
     };
 
-    return NightwatchClient.runTests(testsPath, settings);
+    return runTests(testsPath, settings);
   });
 
   it('testRunner unit tests with annotation and describe', function() {
@@ -71,7 +71,7 @@ describe('testRunnerUnitTests', function() {
       }
     };
 
-    return NightwatchClient.runTests(testsPath, settings);
+    return runTests(testsPath, settings);
   });
 
   it('testRunner unit tests with annotation and error thrown', function() {
@@ -88,7 +88,7 @@ describe('testRunnerUnitTests', function() {
       }
     };
 
-    return NightwatchClient.runTests(testsPath, settings);
+    return runTests(testsPath, settings);
   });
 
   it('test run unit tests with junit output and failures', function() {
@@ -96,40 +96,39 @@ describe('testRunnerUnitTests', function() {
       path.join(__dirname, '../../asynchookstests/unittest-failure')
     ];
 
-    return NightwatchClient
-      .runTests(testsPath, {
-        output_folder: 'output',
-        unit_tests_mode: true,
-        output: false,
-        globals: {
-          reporter(results) {
-            assert.strictEqual(results.passed, 0);
-            assert.strictEqual(results.failed, 1);
-            assert.strictEqual(results.errors, 0);
-            assert.strictEqual(results.assertions, 1);
-            assert.strictEqual(results.errmessages.length, 0);
-            assert.ok(results.lastError instanceof Error);
-            assert.strictEqual(results.lastError.name, 'AssertionError');
-            assert.ok(results.modules['unittest-failure'].lastError instanceof Error);
-            assert.strictEqual(results.modules['unittest-failure'].lastError.name, 'AssertionError');
-            assert.strictEqual(results.modules['unittest-failure'].assertionsCount, 1);
-            assert.strictEqual(results.modules['unittest-failure'].testsCount, 1);
-            assert.strictEqual(results.modules['unittest-failure'].failedCount, 1);
-            assert.strictEqual(results.modules['unittest-failure'].errorsCount, 0);
-            assert.strictEqual(results.modules['unittest-failure'].passedCount, 0);
-            assert.strictEqual(results.modules['unittest-failure'].completed.demoTest.assertions.length, 1);
+    return runTests(testsPath, {
+      output_folder: 'output',
+      unit_tests_mode: true,
+      output: false,
+      globals: {
+        reporter(results) {
+          assert.strictEqual(results.passed, 0);
+          assert.strictEqual(results.failed, 1);
+          assert.strictEqual(results.errors, 0);
+          assert.strictEqual(results.assertions, 1);
+          assert.strictEqual(results.errmessages.length, 0);
+          assert.ok(results.lastError instanceof Error);
+          assert.strictEqual(results.lastError.name, 'AssertionError');
+          assert.ok(results.modules['unittest-failure'].lastError instanceof Error);
+          assert.strictEqual(results.modules['unittest-failure'].lastError.name, 'AssertionError');
+          assert.strictEqual(results.modules['unittest-failure'].assertionsCount, 1);
+          assert.strictEqual(results.modules['unittest-failure'].testsCount, 1);
+          assert.strictEqual(results.modules['unittest-failure'].failedCount, 1);
+          assert.strictEqual(results.modules['unittest-failure'].errorsCount, 0);
+          assert.strictEqual(results.modules['unittest-failure'].passedCount, 0);
+          assert.strictEqual(results.modules['unittest-failure'].completed.demoTest.assertions.length, 1);
 
-            const {completed} = results.modules['unittest-failure'];
-            const {assertions} = completed.demoTest;
-            assert.strictEqual(completed.demoTest.failed, 1);
-            assert.ok(completed.demoTest.stackTrace.startsWith('AssertionError [ERR_ASSERTION]: Expected values to be strictly equal'));
-            assert.strictEqual(assertions[0].failure, 'expected "0" but got: "1"');
-            assert.strictEqual(assertions[0].fullMsg, 'Expected values to be strictly equal:\n\n1 !== 0\n - expected "0" but got: "1"');
-            assert.strictEqual(assertions[0].message, 'Expected values to be strictly equal:\n\n1 !== 0\n - expected "0" but got: "1"');
-            assert.ok(assertions[0].stackTrace.startsWith, 'AssertionError [ERR_ASSERTION]: 1 == 0 - expected "0" but got: "1"');
-          }
+          const {completed} = results.modules['unittest-failure'];
+          const {assertions} = completed.demoTest;
+          assert.strictEqual(completed.demoTest.failed, 1);
+          assert.ok(completed.demoTest.stackTrace.startsWith('AssertionError [ERR_ASSERTION]: Expected values to be strictly equal'));
+          assert.strictEqual(assertions[0].failure, 'expected "0" but got: "1"');
+          assert.strictEqual(assertions[0].fullMsg, 'Expected values to be strictly equal:\n\n1 !== 0\n - expected "0" but got: "1"');
+          assert.strictEqual(assertions[0].message, 'Expected values to be strictly equal:\n\n1 !== 0\n - expected "0" but got: "1"');
+          assert.ok(assertions[0].stackTrace.startsWith, 'AssertionError [ERR_ASSERTION]: 1 == 0 - expected "0" but got: "1"');
         }
-      })
+      }
+    })
       .then(runner => {
         let sampleReportFile = 'output/unittest-failure.xml';
         assert.ok(fileExistsSync(sampleReportFile), 'The sample file report was not created.');

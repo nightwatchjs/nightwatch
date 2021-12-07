@@ -7,7 +7,8 @@ const Globals = require('../../lib/globals.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const Runner = common.require('runner/runner.js');
 const Settings = common.require('settings/settings.js');
-const NightwatchClient = common.require('index.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('testRunner', function() {
   const emptyPath = path.join(__dirname, '../../sampletests/empty/testdir');
@@ -80,7 +81,7 @@ describe('testRunner', function() {
 
     assert.throws(function() {
       Runner.readTestSource(settings);
-    }, /No test source specified, please check configuration/);
+    }, /No test source specified, please check "src_folders" config/);
   });
 
   it('testRunSimple', function() {
@@ -96,16 +97,30 @@ describe('testRunner', function() {
       }
     };
 
-    return NightwatchClient.runTests(testsPath, {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      output: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    });
+    return runTests(testsPath, settings({
+      globals
+    }));
+  });
+
+  it('readTestSource with glob pattern', async function(){
+    const modules =  await Runner.readTestSource({
+      src_folders: [path.join(__dirname, '../../sampletests/srcfolders/*.js')]
+    },  {});
+    assert.deepStrictEqual(modules, [path.join(__dirname, '../../sampletests/srcfolders/other_sample.js')]);
+  });
+
+  it('readTestSource with glob pattern and normal folder', async function(){
+    const modules =  await Runner.readTestSource({
+      src_folders: [path.join(__dirname, '../../sampletests/srcfolders/*.js'), path.join(__dirname, '../../sampletests/async/')]
+    },  {});
+    assert.deepStrictEqual(modules, [path.join(__dirname, '../../sampletests/srcfolders/other_sample.js'), path.join(__dirname, '../../sampletests/async/test/sample.js')]);
+  });
+
+  it('readTestSource with glob pattern that matches no file', async  function(){
+    await assert.rejects(async function() {
+      await Runner.readTestSource({
+        src_folders: [path.join(__dirname, '../../sampletests/srcfolders/nightwatch/*.js')]
+      },  {});
+    }, 'Should be rejected');
   });
 });

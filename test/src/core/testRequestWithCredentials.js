@@ -52,5 +52,4 @@ describe('test Request With Credentials', function () {
 
     await client.createSession();
   });
-
 });

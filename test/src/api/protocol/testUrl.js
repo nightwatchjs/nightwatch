@@ -9,50 +9,26 @@ describe('url', function() {
   it('client.url() get', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/url');
+        assert.strictEqual(opts.command, 'url');
       },
       commandName: 'url',
       args: []
+    }).then((result) => {
+      assert.strictEqual(result, 'http://localhost');
     });
   });
 
   it('client.url() new', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/url');
-        assert.deepStrictEqual(opts.data, {url: 'http://localhost'});
+        assert.strictEqual(opts.command, 'url');
+        assert.strictEqual(opts.url, 'http://localhost');
       },
       commandName: 'url',
       args: ['http://localhost']
+    }).then((result) => {
+      assert.strictEqual(result, null);
     });
   });
 
-  it('client.url() get with callback', function() {
-    return Globals.protocolTest({
-      assertion: function(opts) {
-        assert.strictEqual(opts.method, 'GET');
-        assert.strictEqual(opts.path, '/session/1352110219202/url');
-      },
-      commandName: 'url',
-      args: [function() {
-        assert.strictEqual(this.toString(), 'Nightwatch API');
-      }]
-    });
-  });
-
-  it('client.url() new with callback', function() {
-    return Globals.protocolTest({
-      assertion: function(opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/url');
-        assert.deepStrictEqual(opts.data, {url: 'http://localhost'});
-      },
-      commandName: 'url',
-      args: ['http://localhost', function() {
-
-      }]
-    });
-  });
 });

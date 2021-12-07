@@ -9,12 +9,12 @@ describe('client.submit', function() {
   it('testSubmit', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/element/TEST_ELEMENT/submit');
-        assert.deepStrictEqual(opts.data, {});
+        assert.strictEqual(opts.command, 'submit');
       },
       commandName: 'submit',
       args: ['TEST_ELEMENT']
+    }).then((result) => {
+      assert.deepStrictEqual(result, null);
     });
   });
 

@@ -3,10 +3,11 @@ const assert = require('assert');
 const common = require('../../common.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
-const NightwatchClient = common.require('index.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('testRunWithGlobalReporter', function() {
-  before(function(done) {
+  beforeEach(function(done) {
     this.server = MockServer.init();
 
     this.server.on('listening', () => {
@@ -14,7 +15,7 @@ describe('testRunWithGlobalReporter', function() {
     });
   });
 
-  after(function(done) {
+  afterEach(function(done) {
     CommandGlobals.afterEach.call(this, done);
   });
 
@@ -24,48 +25,30 @@ describe('testRunWithGlobalReporter', function() {
     process.removeAllListeners('unhandledRejection');
   });
 
-  afterEach(function() {
-    Object.keys(require.cache).forEach(function(module) {
-      //delete require.cache[module];
-    });
-  });
-
   it('testRunWithGlobalReporter', function() {
     let testsPath = path.join(__dirname, '../../sampletests/before-after');
-
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
-      persist_globals: true,
-      globals: {
-        reporterCount: 0
-      },
-      globals_path: path.join(__dirname, '../../extra/external-globals.js'),
-      output_folder: false
+    const globals = {
+      reporterCount: 0
     };
 
-    return NightwatchClient.runTests(testsPath, settings).then(_ => {
-      assert.strictEqual(settings.globals.reporterCount, 1);
-    });
+    return runTests(testsPath, settings({
+      globals,
+      globals_path: path.join(__dirname, '../../extra/external-globals.js'),
+      output_folder: false
+    }))
+      .catch(err => {
+        return err;
+      })
+      .then(err => {
+        assert.strictEqual(globals.reporterCount, 1);
+      });
   });
 
   it('testRunner with global async reporter', function() {
     let testsPath = path.join(__dirname, '../../sampletests/before-after');
     let reporterCount = 0;
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
+    return runTests(testsPath, settings({
       globals: {
         reporter(results, cb) {
           assert.ok('modules' in results);
@@ -74,25 +57,18 @@ describe('testRunWithGlobalReporter', function() {
         }
       },
       output_folder: false
-    };
-
-    return NightwatchClient.runTests(testsPath, settings).then(_ => {
-      assert.strictEqual(reporterCount, 1);
-    });
+    }))
+      .catch(err => (err))
+      .then(_ => {
+        assert.strictEqual(reporterCount, 1);
+      });
   });
 
   it('testRunner with global async reporter and timeout error', function() {
     let testsPath = path.join(__dirname, '../../sampletests/before-after');
     let reporterCount = 0;
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
+    return runTests(testsPath, settings({
       globals: {
         customReporterCallbackTimeout: 10,
         reporter(results, cb) {
@@ -101,9 +77,7 @@ describe('testRunWithGlobalReporter', function() {
         }
       },
       output_folder: false
-    };
-
-    return NightwatchClient.runTests(testsPath, settings).then(_ => {
+    })).then(_ => {
       assert.strictEqual(reporterCount, 1);
     }).catch(err => {
       assert.strictEqual(err.message, 'Timeout while waiting (20s) for the custom global reporter callback to be called.');

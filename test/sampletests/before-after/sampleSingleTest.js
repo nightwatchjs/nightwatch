@@ -5,6 +5,7 @@ describe('samepleSingleTest', function() {
     let testName = client.currentTest.name;
     assert.strictEqual(testName, '');
     client.globals.calls++;
+    client.globals.singleTestCalled = true;
     callback();
   });
 
@@ -31,6 +32,7 @@ describe('samepleSingleTest', function() {
 
   after(function(client, callback) {
     var testName = client.currentTest.name;
+
     assert.strictEqual(testName, 'demoTest');
     client.globals.calls++;
     callback();

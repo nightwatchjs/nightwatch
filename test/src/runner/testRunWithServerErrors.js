@@ -3,7 +3,8 @@ const assert = require('assert');
 const common = require('../../common.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
-const NightwatchClient = common.require('index.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('testRunWithServerErrors', function() {
 
@@ -26,7 +27,7 @@ describe('testRunWithServerErrors', function() {
   });
 
   afterEach(function() {
-    Object.keys(require.cache).forEach(function(module) {
+    Object.keys(require.cache).filter(i => i.includes('/sampletests')).forEach(function(module) {
       delete require.cache[module];
     });
   });
@@ -41,7 +42,7 @@ describe('testRunWithServerErrors', function() {
       statusCode: 502,
       contentType: 'text/html',
       response: '<html>\n<head>\n<title>502 Bad Gateway</title>\n</head>\n<body>\n</body></html>'
-    }, false, true);
+    });
 
     let testsPath = path.join(__dirname, '../../sampletests/withservererrors');
     let globals = {
@@ -50,41 +51,28 @@ describe('testRunWithServerErrors', function() {
       waitForConditionTimeout: 150,
       waitForConditionPollInterval: 50,
       reporter(results, cb) {
-        assert.strictEqual(results.errmessages.length, 1);
-        assert.ok(results.errmessages[0].includes('502 Bad Gateway'));
-        assert.strictEqual(results.passed, 2);
-        assert.strictEqual(results.failed, 2);
-        assert.strictEqual(results.assertions, 4);
-        assert.strictEqual(results.errors, 1);
+        assert.strictEqual(results.errmessages.length, 4);
+        assert.strictEqual(results.passed, 0);
+        assert.strictEqual(results.failed, 3);
+        assert.strictEqual(results.assertions, 3);
+        assert.strictEqual(results.errors, 4);
         assert.strictEqual(results.skipped, 0);
         const {completed} = results.modules.sampleTestWithServerError;
-        assert.ok(completed.demoTest.lastError.message.includes(`An unknown error has occurred – 
-
-502 Bad Gateway`));
+        assert.ok(completed.demoTest.lastError.message.includes('502 Bad Gateway'), `Result: ${completed.demoTest.lastError.message}`);
 
         cb();
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      skip_testcases_on_fail: false,
-      output: false,
-      report_command_errors: true,
-      silent: true,
-      persist_globals: true,
-      disable_error_log: 0,
-      globals,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests({
+    return runTests({
       _source: [testsPath]
-    }, settings);
+    }, settings({
+      output: false,
+      skip_testcases_on_fail: false,
+      report_command_errors: true,
+      disable_error_log: 0,
+      globals
+    }));
   });
 
 });

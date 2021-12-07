@@ -1,4 +1,5 @@
 const assert = require('assert');
+const path = require('path');
 const common = require('../../common.js');
 const Utils = common.require('utils');
 
@@ -145,8 +146,7 @@ describe('test Utils', function() {
         at processTicksAndRejections (internal/process/task_queues.js:93:5)
         at async DefaultRunner.runTestSuite (/node_modules/nightwatch/lib/runner/test-runners/default.js:68:7)`;
     let expectedStackTrace = `Error
-        at Object.this test should fail and capture screenshot (/Projects/nightwatch/examples/tests/sample.js:5:16)
-        at processTicksAndRejections (internal/process/task_queues.js:93:5)`; 
+        at Object.this test should fail and capture screenshot (/Projects/nightwatch/examples/tests/sample.js:5:16)`; 
     assert.strictEqual(Utils.filterStackTrace(stackTrace), expectedStackTrace);
   
     stackTrace = '';
@@ -154,5 +154,19 @@ describe('test Utils', function() {
     assert.strictEqual(Utils.filterStackTrace(stackTrace), expectedStackTrace);
   });
 
+  it('readFolderRecursively with normal folder', async function(){
+    const absPath = [];
+    Utils.readFolderRecursively(path.join(__dirname, '../../extra/commands/other/'), [], (sourcePath, resource) => {
+      absPath.push(path.join(sourcePath, resource));
+    });
+    assert.deepStrictEqual(absPath, [path.join(__dirname, '../../extra/commands/other/otherCommand.js')]);
+  });
 
+  it('readFolderRecursively with glob pattern', async function(){
+    const absPath = [];
+    Utils.readFolderRecursively(path.join(__dirname, '../../extra/commands/typescript/*.js'), [], (sourcePath, resource) => {
+      absPath.push(path.join(sourcePath, resource));
+    });
+    assert.deepStrictEqual(absPath, [path.join(__dirname, '../../extra/commands/typescript/tsWait.js')]);
+  });
 });

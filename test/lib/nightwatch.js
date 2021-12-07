@@ -1,15 +1,16 @@
-const common = require('../common.js');
 const lodashMerge = require('lodash.merge');
-const Nightwatch = common.require('index.js');
-const Settings = common.require('settings/settings.js');
 const MockServer  = require('./mockserver.js');
-const Logger = common.require('utils').Logger;
+const common = require('../common.js');
+const Settings = common.require('settings/settings.js');
+const {Logger} = common.require('utils');
+const Nightwatch = common.require('index.js');
 
 module.exports = new function () {
   let _client = null;
   let _mockServer = null;
 
-  Logger.setOutputEnabled(process.env.VERBOSE === '1' || false);
+  //Logger.setOutputEnabled(process.env.VERBOSE === '1' || false);
+  Logger.setOutputEnabled(true);
   Logger.enable();
 
   this.startMockServer = function (done = function() {}) {
@@ -48,7 +49,8 @@ module.exports = new function () {
     let opts = {
       selenium: {
         port: 10195,
-        start_process: true,
+        host: 'localhost',
+        start_process: false,
         version2: true
       },
       webdriver: {
@@ -64,7 +66,11 @@ module.exports = new function () {
 
     lodashMerge(opts, options);
 
-    let settings = Settings.parse(opts);
+    if (opts.output) {
+      Logger.setOutputEnabled(true);
+    }
+
+    const settings = Settings.parse(opts);
 
     return Nightwatch.client(settings, reporter, argv);
   };
@@ -104,6 +110,22 @@ module.exports = new function () {
 
       _client.createSession().catch(err => reject(err));
     });
+  };
+
+  this.initW3CClient = function(opts = {}) {
+    const settings = Object.assign({
+      selenium: {
+        version2: false,
+        start_process: false,
+        host: null
+      },
+      webdriver: {
+        start_process: false,
+        host: 'localhost'
+      }
+    }, opts);
+
+    return this.initClient(settings);
   };
 
   this.initClient = function(options, reporter) {

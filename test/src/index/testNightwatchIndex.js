@@ -37,11 +37,10 @@ describe('test NightwatchIndex', function () {
     MockServer.addMock({
       url: '/wd/hub/session',
 
-      postdata: JSON.stringify({
-        desiredCapabilities: {
-          browserName: 'chrome'
-        }
-      }),
+      postdata: {
+        desiredCapabilities: {browserName: 'chrome', 'goog:chromeOptions': {}},
+        capabilities: {alwaysMatch: {browserName: 'chrome', 'goog:chromeOptions': {}}}
+      },
 
       responseHeaders: {
         location: 'http://localhost:10195/wd/hub/session/1352110219202'
@@ -78,19 +77,14 @@ describe('test NightwatchIndex', function () {
       done();
     });
 
-    client.startSession().catch(err => done(err));
+    client.startSession().catch(err => {
+      done(err);
+    });
   });
 
-  it('test new Chrome session with wrong driver version error message', function (done) {
+  it('test new Chrome session with wrong driver version error message', function () {
     MockServer.addMock({
       url: '/session',
-
-      postdata: {
-        desiredCapabilities: {
-          browserName: 'chrome'
-        }
-      },
-
       response: {
         sessionId: '8abea23aaa6bca9eb83f8f7c0f0cb17e',
         status: 33,
@@ -106,10 +100,13 @@ describe('test NightwatchIndex', function () {
 
     let client = Nightwatch.createClient({
       selenium: {
-        start_process: false
+        start_process: false,
+        host: null
       },
       webdriver: {
-        start_process: true
+        start_process: false,
+        host: 'localhost',
+        port: '10195'
       },
       desiredCapabilities: {
         browserName: 'chrome'
@@ -118,24 +115,15 @@ describe('test NightwatchIndex', function () {
       output: false
     });
 
-    client.startSession().catch(err => {
+    return client.startSession().catch(err => {
       assert.ok(err instanceof Error);
-      assert.strictEqual(err.message, 'An error occurred while retrieving a new session: "session not created: This version of ChromeDriver only supports Chrome version 75"');
-      done();
+      assert.strictEqual(err.message, 'An error occurred while creating a new ChromeDriver session: [SessionNotCreatedError] session not created: This version of ChromeDriver only supports Chrome version 75');
     });
   });
 
   it('test createSession on Selenium Grid with Firefox', function (done) {
     MockServer.addMock({
       url: '/wd/hub/session',
-
-      postdata: JSON.stringify({
-        desiredCapabilities: {
-          browserName: 'firefox',
-          platform: 'TEST'
-        }
-      }),
-
       response: JSON.stringify({
         platform: 'TEST',
         value: {
@@ -178,11 +166,6 @@ describe('test NightwatchIndex', function () {
   it('test session response with status success and no sessionId', function (done) {
     MockServer.addMock({
       url: '/wd/hub/session',
-      postdata: JSON.stringify({
-        desiredCapabilities: {
-          browserName: 'safari'
-        }
-      }),
       response: '{"value":{"message":"Could not find device : iPhone 6"}}',
       statusCode: 200,
       method: 'POST'
@@ -198,15 +181,27 @@ describe('test NightwatchIndex', function () {
 
     client.startSession().catch(err => {
       assert.ok(err instanceof Error);
-      assert.strictEqual(typeof err.data, 'string');
-      assert.deepStrictEqual(JSON.parse(err.data), {
-        message: 'Could not find device : iPhone 6',
-        error: []
-      });
-      assert.ok(err.message.indexOf('Could not find device : iPhone 6') > 0);
+      assert.ok(err.message.includes('Could not find device : iPhone 6'));
       done();
     }).catch(err => done(err));
   });
+
+  it('test create Transport for with browserName disabled', function() {
+    const Nightwatch = common.require('index.js');
+    const client = Nightwatch.client({
+      selenium: {
+        start_process: false
+      },
+      webdriver: {},
+      desiredCapabilities: {
+        browserName: null
+      },
+      selenium_host: 'remote.url'
+    });
+
+    assert.strictEqual(client.options.desiredCapabilities.browserName, null);
+  });
+
 
   it('test runner API', function(done) {
     const Nightwatch = common.require('index.js');

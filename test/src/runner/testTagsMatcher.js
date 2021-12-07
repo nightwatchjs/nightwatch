@@ -4,7 +4,6 @@ const common = require('../../common.js');
 const TagsMatcher = common.require('runner/matchers/tags.js');
 
 describe('test TagsMatcher', function() {
-
   describe('reading module tags and skiptags from settings', function() {
     const testCases = [
       ['undefined', undefined, []],
@@ -224,7 +223,7 @@ describe('test TagsMatcher', function() {
     ];
 
     testCases.forEach(([description, modulePath, tag_filter, skiptags, expected]) => {
-      it(`${description}`, function () {
+      it(description, function () {
         const fullModulePath = path.join(__dirname, '../../' + modulePath);
 
         const matcher = new TagsMatcher({

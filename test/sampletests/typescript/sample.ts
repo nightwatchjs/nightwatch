@@ -1,7 +1,7 @@
 module.exports = {
   demoTest: function(client: any) {
     client.url('http://localhost')
-      .typescript.wait(10)
+      .typescript.tsWait(10)
       .assert.elementPresent('#weblogin');
   },
 

@@ -136,7 +136,7 @@ describe('assert.domPropertyEquals', function () {
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.getValue(), 'visible-element');
         assert.strictEqual(instance.getActual(), 'visible-element');
-        assert.strictEqual(err.message, `Error while running "domPropertyEquals" command: Testing if dom property 'className' of element <.test_element> doesn't equal 'visible-element' in 5ms - expected "not visible-element" but got: "visible-element" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Testing if dom property 'className' of element <.test_element> doesn't equal 'visible-element' in 5ms - expected "not visible-element" but got: "visible-element" (${instance.elapsedTime}ms)`);
       }
     });
   });
@@ -187,7 +187,7 @@ describe('assert.domPropertyEquals', function () {
         assert.strictEqual(instance.expected(), 'visible-element');
         assert.strictEqual(instance.getValue(), null);
         assert.strictEqual(failure, 'Expected "visible-element" but got: "element could not be located"');
-        assert.strictEqual(err.message, `Error while running "domPropertyEquals" command: Test attribute 'className' from element "<.test_element>" == 'visible-element' in 5ms - expected "visible-element" but got: "element could not be located" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Test attribute 'className' from element "<.test_element>" == 'visible-element' in 5ms - expected "visible-element" but got: "element could not be located" (${instance.elapsedTime}ms)`);
       }
     });
   });
