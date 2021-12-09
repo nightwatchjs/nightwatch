@@ -18,15 +18,15 @@ describe('client.release()', function() {
       return {
         release: function() {
           return {
-            perform:  function() {
-              return Promise.resolve()
+            perform: function() {
+              return Promise.resolve();
             }
-          }
+          };
         }
-      }
-    }
+      };
+    };
 
-    this.client.api.release(function callback(result) {
+    this.client.api.releaseMouseButton(function callback(result) {
       callbackResult = result;
     });
 
@@ -43,15 +43,15 @@ describe('client.release()', function() {
       return {
         release: function() {
           return {
-            perform:  function() {
-              return Promise.reject(new Error('no such window'))
+            perform: function() {
+              return Promise.reject(new Error('no such window'));
             }
-          }
+          };
         }
-      }
-    }
+      };
+    };
 
-    this.client.api.release(function callback(result) {
+    this.client.api.releaseMouseButton(function callback(result) {
       callbackResult = result;
     });
 
