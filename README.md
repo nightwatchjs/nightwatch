@@ -12,22 +12,22 @@
   <img alt="Nightwatch.js Schematic Logo" src=".github/assets/nightwatch-logo.svg" width=300 />
 </p>
 
-#### [Homepage](https://nightwatchjs.org) &bullet; [Getting Started](https://nightwatchjs.org/gettingstarted) &bullet; [Developer Guide](https://nightwatchjs.org/guide) &bullet; [API Reference](https://nightwatchjs.org/api) &bullet; [About](https://nightwatchjs.org/about)
+#### [Homepage](https://nightwatchjs.org) &bullet; [Developer Guide](https://nightwatchjs.org/guide) &bullet; [API Reference](https://nightwatchjs.org/api) &bullet; [About](https://nightwatchjs.org/about) &bullet; [Blog](https://nightwatchjs.org/blog)
 
 ***
 Automated end-to-end testing framework powered by [Node.js](http://nodejs.org/) and using [W3C Webdriver](https://www.w3.org/TR/webdriver/) (formerly [Selenium](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol)).
 
 Nightwatch is a complete and integrated solution for end-to-end testing of web applications and websites. It can also be used for Node.js unit and integration testing. 
 
-## Nightwatch v2.0-alpha
+## Nightwatch v2.0-beta
 
-#### [Release Notes](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.0.0-alpha.4) | [Discussions](https://github.com/nightwatchjs/nightwatch/discussions)
+####  [What's New](https://v2.nightwatchjs.org/guide/getting-started/whats-new-v2.html) | [Release Notes](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.0.0-beta.1) | [Discussions](https://github.com/nightwatchjs/nightwatch/discussions)
 
-We're delighted to announce that [Nightwatch v2.0](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.0.0-alpha.4) is now in alpha and available in NPM. Read the [blog post](https://nightwatchjs.org/blog/nightwatch-v2-alpha-is-released.html) about the new features and changes.
+We're delighted to announce that [Nightwatch v2.0](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.0.0-beta.1) is now in beta and available in NPM. Read the [what's new](https://v2.nightwatchjs.org/guide/getting-started/whats-new-v2.html) docs page for an overview of the new featues, improvements, and important changes.
 
 Install with: 
 ```sh
-npm i nightwatch@alpha
+npm i nightwatch@next
 ```
 
 ## Up &amp; Running in 2 Minutes:
