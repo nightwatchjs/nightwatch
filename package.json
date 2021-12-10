@@ -1,7 +1,7 @@
 {
   "name": "nightwatch",
   "description": "Easy to use Node.js based End-to-End testing solution for browser based apps and websites, using the W3C WebDriver API.",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0-dev.12",
   "author": {
     "name": "Andrei Rusu",
     "email": "andrei@nightwatchjs.org"
@@ -44,7 +44,6 @@
     "eslint": "^7.32.0",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.21",
-    "mocha-junit-reporter": "^2.0.0",
     "mochawesome": "^6.2.2",
     "mochawesome-merge": "^4.2.0",
     "mochawesome-report-generator": "^5.2.0",
