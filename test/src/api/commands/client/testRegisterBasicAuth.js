@@ -1,5 +1,7 @@
 const assert = require('assert');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
+const MockServer = require('../../../../lib/mockserver.js');
+const Nightwatch = require('../../../../lib/nightwatch.js');
 
 describe('.registerBasicAuth()', function () {
   beforeEach(function (done) {
@@ -11,22 +13,59 @@ describe('.registerBasicAuth()', function () {
   });
 
   it('browser.registerBasicAuth()', function (done) {
-    let expectedUsername;
-    let expectedPassword;
 
-    this.client.transport.driver.createCDPConnection =  function() {
-      return  Promise.resolve();
-    }
-    this.client.transport.driver.register =  (username,password) =>{
-      expectedUsername = username;
-      expectedPassword = password
-    }
-    this.client.api.registerBasicAuth('nightwatch', 'BarnOwl', function (){
-      assert.strictEqual(expectedUsername,'nightwatch');
-      assert.strictEqual(expectedPassword,'BarnOwl')
+    MockServer.addMock({
+      url: '/session',
+      response: {
+        value: {
+          sessionId: '13521-10219-202',
+          capabilities: {
+            browserName: 'chrome',
+            browserVersion: '92.0'
+          }
+        }
+      },
+      method: 'POST',
+      statusCode: 201
+    }, true);
+
+    Nightwatch.initW3CClient({
+      desiredCapabilities: {
+        browserName: 'chrome',
+        'goog:chromeOptions': {}
+      }
+    }).then(client=>{
+
+      let expectedUsername;
+      let expectedPassword;
+
+      client.transport.driver.createCDPConnection =  function() {
+        return  Promise.resolve();
+      };
+      client.transport.driver.register =  (username, password) =>{
+        expectedUsername = username;
+        expectedPassword = password;
+      };
+      client.api.registerBasicAuth('nightwatch', 'BarnOwl', function (){
+        assert.strictEqual(expectedUsername, 'nightwatch');
+        assert.strictEqual(expectedPassword, 'BarnOwl');
+      });
+      client.start(done);
     });
+  });
 
-    this.client.start(done);
+  it('browser.registerBasicAuth - driver not supported', function(done){
+    Nightwatch.initW3CClient({
+      desiredCapabilities: {
+        browserName: 'firefox'
+      }
+    }).then(client=>{
+      client.api.registerBasicAuth('admin', 'admin', function(result){
+        assert.strictEqual(result.status, -1);
+        assert.strictEqual(result.error, 'RegisterBasicAuth is not supported while using this driver');
+      });
+      client.start(done);
+    });
   });
 
 });
