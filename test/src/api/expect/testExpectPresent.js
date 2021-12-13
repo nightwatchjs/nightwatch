@@ -184,7 +184,7 @@ describe('expect.present', function() {
         assert.strictEqual(expect.assertion.selector, '#weblogin');
         assert.strictEqual(expect.assertion.negate, true);
         assert.strictEqual(expect.assertion.passed, true);
-        assert.strictEqual(expect.assertion.expected, 'present');
+        assert.strictEqual(expect.assertion.expected, 'not present');
         assert.strictEqual(expect.assertion.actual, 'not present');
         assert.strictEqual(expect.assertion.resultErrorStatus.name, 'NoSuchElementError');
         assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not be present'));
