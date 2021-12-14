@@ -19,12 +19,12 @@ describe('custom commands with es6 async', function() {
     });
   });
 
-  it('custom execute es6 async', function() {
+  xit('custom execute es6 async', function() {
     const testsPath = path.join(__dirname, '../../../apidemos/custom-commands/testUsingCustomExecute.js');
     Mocks.createNewW3CSession({
       testName: 'custom execute'
     });
-    Mocks.customExecute();
+    //Mocks.customExecute();
 
     const globals = {
       waitForConditionPollInterval: 50,
