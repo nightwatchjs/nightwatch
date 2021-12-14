@@ -33,7 +33,7 @@ $ npm i @cucumber/cucumber --save-dev
 }
 ```
 
-## CLI OPTIONS
+## CLI Options
 | option             |  description |
 |------------------------|------------------------------|
 | --dry-run          | Do all the aggregation work of looking at your feature files, loading your support code etc but without actually executing the tests. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/dry_run.md)
