@@ -72,12 +72,4 @@ describe('Cucumber cli arguements', function(){
     assert.ok(cliArgs.includes('--dry-run'));
   });
 
-  it('Cli args --parallel 0', function(){
-    const runner =  new CucumberRunner({test_runner: {
-      type: 'cucumber',
-      options: {}
-    }}, {parallel: 0}, {});
-    runner.createTestSuite({modules: [path.join(__dirname, '../../../cucumbertests/testSample.js')], modulePath: [path.join(__dirname, '../../../cucumbertests/testSample.js')]});
-    assert.ok(!cliArgs.includes('--parallel'));
-  });
 });
