@@ -32,8 +32,6 @@ npm i nightwatch@next
 
 ## Up &amp; Running in 2 Minutes:
 
-
-
 #### 1. Install Nightwatch from NPM
 
 ```sh
