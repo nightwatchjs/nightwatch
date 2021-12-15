@@ -338,4 +338,53 @@ describe('test Request With Credentials', function () {
       ]
     });
   });
+
+  it('Test blank object capabilities', async function () {
+    nock('http://localhost:10195')
+      .post('/wd/hub/session')
+      .reply(201, {
+        status: 0,
+        sessionId: '1352110219202',
+        value: {
+          browserName: 'chrome',
+          version: 'TEST',
+          platform: 'TEST'
+        }
+      });
+
+    let client = Nightwatch.createClient({
+      selenium_port: 10195,
+      silent: false,
+      output: false,
+      desiredCapabilities: {
+        browserName: 'chrome'
+      },
+      capabilities: {}
+    });
+
+    const result = await client.createSession();
+    assert.deepStrictEqual(client.transport.desiredCapabilities, {
+      browserName: 'chrome'
+    });
+    assert.deepStrictEqual(result, {
+      sessionId: '1352110219202',
+      capabilities: {
+        browserName: 'chrome', version: 'TEST', platform: 'TEST'
+      }
+    });
+  });
+
+  it('Test blank browserName', async function () {
+    assert.throws(function() {
+      let client = Nightwatch.createClient({
+        selenium_port: 10195,
+        silent: false,
+        output: false,
+        desiredCapabilities: {},
+        capabilities: {
+          alwaysMatch: {}
+        }
+      });
+    }, /Error: Unknown browser:/);
+  });
 });
