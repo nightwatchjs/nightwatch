@@ -5,7 +5,7 @@
 [![codecov](https://codecov.io/gh/nightwatchjs/nightwatch/branch/main/graph/badge.svg?token=MSObyfECEh)](https://codecov.io/gh/nightwatchjs/nightwatch)
 [![npm package](https://img.shields.io/npm/dm/nightwatch.svg)](https://www.npmjs.com/package/nightwatch)
 [![Join the chat at https://gitter.im/nightwatchjs/nightwatch](https://badges.gitter.im/nightwatchjs/nightwatch.svg)](https://gitter.im/nightwatchjs/nightwatch)
-[![Node Support](https://img.shields.io/badge/node-%3E0.10.x-brightgreen.svg)](https://github.com/nightwatchjs/nightwatch/blob/27a855a2ec0c2008073708d5a2286c2819584fdc/.github/workflows/build-node.yaml#L19)
+[![Node Support](https://img.shields.io/badge/node-%3E12.x-brightgreen.svg)](https://github.com/nightwatchjs/nightwatch/blob/27a855a2ec0c2008073708d5a2286c2819584fdc/.github/workflows/build-node.yaml#L19)
 
 
 <p align="center">
@@ -23,7 +23,7 @@ Nightwatch is a complete and integrated solution for end-to-end testing of web a
 
 ####  [What's New](https://v2.nightwatchjs.org/guide/getting-started/whats-new-v2.html) | [Release Notes](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.0.0-beta.1) | [Discussions](https://github.com/nightwatchjs/nightwatch/discussions)
 
-We're delighted to announce that [Nightwatch v2.0](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.0.0-beta.1) is now in beta and available in NPM. Read the [what's new](https://v2.nightwatchjs.org/guide/getting-started/whats-new-v2.html) docs page for an overview of the new featues, improvements, and important changes.
+We're delighted to announce that [Nightwatch v2.0](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.0.0-beta.2) is now in beta and available in NPM. Read the [what's new](https://v2.nightwatchjs.org/guide/getting-started/whats-new-v2.html) docs page for an overview of the new featues, improvements, and important changes.
 
 Install with: 
 ```sh
@@ -31,6 +31,8 @@ npm i nightwatch@next
 ```
 
 ## Up &amp; Running in 2 Minutes:
+
+
 
 #### 1. Install Nightwatch from NPM
 
@@ -61,12 +63,12 @@ $ npm install nightwatch geckodriver chromedriver --save-dev
 
 #### 3. Run a Demo Test:
 
-Nightwatch comes with an `examples` folder containing a few sample tests.
+Nightwatch comes with an `examples` folder containing several sample tests.
 
 Below will run a basic test which opens the search engine [Ecosia.org](https://ecosia.org), searches for the term "nightwatch", and verifies if the term first result is the Nightwatch.js website.
 
 ```sh
-$ npx nightwatch node_modules/nightwatch/examples/tests/ecosia.js
+$ npx nightwatch examples/tests/ecosia.js
 ```
 
 ---
@@ -80,25 +82,15 @@ Nightwatch includes support for automatically managing the following services:
 - for running tests against the Chrome browser;
 - download url: [https://sites.google.com/a/chromium.org/chromedriver/downloads](https://sites.google.com/a/chromium.org/chromedriver/downloads).
 
-Starting with __version 75__, Chromedriver has [W3C Webdriver](https://www.w3.org/TR/webdriver1) protocol enabled by default. If you'd like to stick to the JSONWire for now adjust the `chromeOptions`:
-```js
-desiredCapabilities : {
-  browserName : 'chrome',
-  chromeOptions: {
-    w3c: false
-  }
-}
-```
-
 #### GeckoDriver
 - for running tests against the Mozilla Firefox browser;
 - download url: [https://github.com/mozilla/geckodriver/releases](https://github.com/mozilla/geckodriver/releases).
  
 #### Selenium Standalone Server 
 - allows managing multiple browser configurations in one place and also to make use of the [Selenium Grid](https://github.com/SeleniumHQ/selenium/wiki/Grid2) service;
-- the selenium server jar file `selenium-server-standalone-3.x.x.jar` can be downloaded from the Selenium releases page: https://selenium-release.storage.googleapis.com/index.html
+- the selenium server jar file `selenium-server-standalone-4.x.x.jar` can be downloaded from the Selenium releases page: https://selenium-release.storage.googleapis.com/index.html
 
-> It's important to note that, while the Selenium Server was required with older Nightwatch versions (`v0.9` and prior), starting with version `1.0` Selenium is no longer necessary.
+> It's important to note that, while the Selenium Server was required with older Nightwatch versions (`v0.9` and prior), starting with version `1.0` the Selenium Server is no longer necessary.
 
 Specific WebDriver setup guides can be found on the [Docs website](https://nightwatchjs.org/gettingstarted/browser-drivers-setup/). Legacy Selenium drivers setup guides along with debugging instructions can be found on the [**Wiki**](https://github.com/nightwatchjs/nightwatch/wiki).
 
@@ -131,7 +123,10 @@ $ npm run mocha-coverage
 ```
 and then open the generated _coverage/index.html_ file in your browser.
 
-## Support Nightwatch
-Nightwatch is built by [@pineviewlabs](https://github.com/pineviewlabs/) - an independent software consultancy based in Oslo, Norway, with help from [our contributors](https://github.com/nightwatchjs/nightwatch/graphs/contributors). 
+## About Nightwatch
+Nightwatch was initially built by [@pineviewlabs](https://github.com/pineviewlabs/) - an independent software consultancy based in Oslo, Norway, with help from [contributors](https://github.com/nightwatchjs/nightwatch/graphs/contributors). In mid 2021, Nightwatch has become a part of the [@BrowserStack](https://github.com/browserstack) family and it is being developed further at the BrowserStack Open-source Program Office. Read more on [our blog](https://nightwatchjs.org/blog/nightwatch-has-joined-the-browserstack-family.html).
 
-Please consider supporting Nightwatch by becoming a backer or sponsor on the [OpenCollective](https://opencollective.com/nightwatch/) platform.
+We are thankful for everyone who supported Nightwatch on the [OpenCollective](https://opencollective.com/) platform.
+
+## Licence
+[MIT](https://github.com/nightwatchjs/nightwatch/blob/main/LICENSE.md)
