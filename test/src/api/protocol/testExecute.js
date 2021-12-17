@@ -18,8 +18,8 @@ describe('client.executeScript', function() {
     }).then((result) => {
       assert.deepStrictEqual(opts.command, 'executeScript');
       assert.deepStrictEqual(opts.script, '<script>function(){return test();}</script>');
-      assert.deepStrictEqual(opts.args, ['arg1']);
-      assert.deepStrictEqual(result, ['arg1']);
+      assert.strictEqual(opts.args, 'arg1');
+      assert.strictEqual(result, 'arg1');
     });
   });
 
@@ -36,9 +36,9 @@ describe('client.executeScript', function() {
       }, ['arg1']]
     }).then((result) => {
       assert.deepStrictEqual(opts.command, 'executeScript');
-      assert.deepStrictEqual(opts.args, ['arg1']);
+      assert.strictEqual(opts.args, 'arg1');
       assert.deepStrictEqual(opts.script, 'var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {\n        return test();\n      }).apply(window, passedArgs);');
-      assert.deepStrictEqual(result, ['arg1']);
+      assert.strictEqual(result, 'arg1');
     });
   });
 
@@ -55,9 +55,9 @@ describe('client.executeScript', function() {
       }]
     }).then((result) => {
       assert.deepStrictEqual(opts.command, 'executeScript');
-      assert.deepStrictEqual(opts.args.length, 0);
+      assert.strictEqual(opts.args, undefined);
       assert.deepStrictEqual(opts.script, 'var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {\n        return test();\n      }).apply(window, passedArgs);');
-      assert.deepStrictEqual(result, []);
+      assert.deepStrictEqual(result, {value: undefined, status: 0});
     });
   });
 
@@ -74,9 +74,9 @@ describe('client.executeScript', function() {
       }, ['arg1']]
     }).then((result) => {
       assert.deepStrictEqual(opts.command, 'executeAsyncScript');
-      assert.deepStrictEqual(opts.args, ['arg1']);
+      assert.strictEqual(opts.args, 'arg1');
       assert.deepStrictEqual(opts.script, 'var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {\n        return test();\n      }).apply(window, passedArgs);');
-      assert.deepStrictEqual(result, ['arg1']);
+      assert.strictEqual(result, 'arg1');
     });
   });
 
@@ -92,8 +92,8 @@ describe('client.executeScript', function() {
     }).then((result) => {
       assert.deepStrictEqual(opts.command, 'executeAsyncScript');
       assert.deepStrictEqual(opts.script, '<script>function(){return test();}</script>');
-      assert.deepStrictEqual(opts.args, ['arg1']);
-      assert.deepStrictEqual(result, ['arg1']);
+      assert.strictEqual(opts.args, 'arg1');
+      assert.strictEqual(result, 'arg1');
     });
   });
 });
