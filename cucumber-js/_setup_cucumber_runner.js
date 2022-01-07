@@ -50,6 +50,9 @@ Before(function({pickle}) {
     });
   }
 
+  // eslint-disable-next-line
+  console.log('\n');
+
   const {options = {}} = this.client.settings.test_runner;
 
   // auto_start_session is true by default
