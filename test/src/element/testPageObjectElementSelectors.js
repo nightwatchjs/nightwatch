@@ -4,13 +4,6 @@ const nocks = require('../../lib/nockselements.js');
 const Nightwatch = require('../../lib/nightwatch.js');
 const {strictEqual} = assert;
 
-// FIXME:
-// TypeError: Cannot read property 'args' of undefined (and Mocha's done() called multiple times)
-// at AsyncTree.<anonymous> (test/src/element/testPageObjectElementSelectors.js:233:36)
-//   at AsyncTree.done (lib/core/asynctree.js:111:10)
-//   at AsyncTree.traverse (lib/core/asynctree.js:47:19)
-//   at CommandQueue.traverse (lib/core/queue.js:82:8)
-//   at Timeout.scheduleTimeoutId.setTimeout [as _onTimeout] (lib/core/queue.js:59:52)
 describe('test page object element selectors', function() {
 
   before(function() {
@@ -31,7 +24,10 @@ describe('test page object element selectors', function() {
       output: false,
       silent: false,
       globals: {
-        abortOnAssertionFailure: true
+        abortOnAssertionFailure: true,
+        waitForConditionTimeout: 100,
+        waitForConditionPollInterval: 60,
+        retryAssertionTimeout: 100
       }
     }, done);
   });
@@ -40,6 +36,7 @@ describe('test page object element selectors', function() {
     nocks
       .elementsFound('#weblogin')
       .elementsFound('weblogin', [{ELEMENT: '0'}], 'id')
+      .elementsFound('*[id="weblogin"]', [{ELEMENT: '0'}])
       .elementsByXpath('//weblogin')
       .elementsByXpath('#weblogin', [])
       .text(0, 'first')
@@ -113,6 +110,30 @@ describe('test page object element selectors', function() {
     Nightwatch.start(done);
   });
 
+  it('page section custom commands', function(done) {
+    nocks
+      .elementsFound('#signupSection')
+      .elementsId('0', '.btn', [{ELEMENT: '4'}, {ELEMENT: '5'}, {ELEMENT: '6'}])
+      .elementId('0', '#helpBtn');
+
+    const page = Nightwatch.api().page.simplePageObj();
+    const section = page.section.signUp;
+
+    section.sectionElement(function(result) {
+      assert.strictEqual(result.status, 0);
+      assert.deepStrictEqual(result.value, {ELEMENT: '0'});
+      assert.strictEqual(result.WebdriverElementId, '0');
+    });
+
+    section.sectionElements(function(result) {
+      assert.strictEqual(result.status, 0);
+      assert.deepStrictEqual(result.value, [{ELEMENT: '4'}, {ELEMENT: '5'}, {ELEMENT: '6'}]);
+      assert.strictEqual(result.WebdriverElementId, '4');
+    });
+
+    Nightwatch.start(done);
+  });
+
   it('page section protocol .elements()', function(done) {
     nocks
       .elementsFound('#signupSection')
@@ -123,8 +144,8 @@ describe('test page object element selectors', function() {
 
     section.api.elements('@help', function callback(response) {
       strictEqual(response.status, 0, 'section element selector string found');
-      strictEqual(response.result.value.length, 1);
-      strictEqual(response.value, '12345');
+      strictEqual(response.value.length, 1);
+      assert.deepStrictEqual(response.value, [{ELEMENT: '12345'}]);
     });
 
     Nightwatch.start(done);
@@ -170,8 +191,8 @@ describe('test page object element selectors', function() {
 
     section.api.element('#helpBtn', function callback(response) {
       strictEqual(response.status, 0, 'section element selector string found');
-      strictEqual(response.result.value.ELEMENT, '12345');
-      strictEqual(response.value, '12345');
+      strictEqual(response.value.ELEMENT, '12345');
+      assert.deepStrictEqual(response.value, {ELEMENT: '12345'});
     });
 
     Nightwatch.start(done);
@@ -180,15 +201,15 @@ describe('test page object element selectors', function() {
   it('page section protocol .elementIdElements()', function(done) {
     nocks
       .elementsFound('#signupSection')
-      .elementsId('0', '#helpBtn', {ELEMENT: '12345'})
+      .elementsId('0', '#helpBtn', [{ELEMENT: '12345'}])
       .elementsId('12345', 'a', [{ELEMENT: 'abc-12345'}]);
 
     let page = Nightwatch.api().page.simplePageObj();
     let section = page.section.signUp;
 
     section.api.elementIdElements('@help', 'css selector', 'a', function callback(response) {
-      strictEqual(response.status, 0, 'section element selector string found');
-      strictEqual(response.value[0].ELEMENT, 'abc-12345');
+      strictEqual(response.status, 0, 'section element selector string not found');
+      assert.deepStrictEqual(response.value, [{ELEMENT: 'abc-12345'}]);
     });
 
     Nightwatch.start(done);
@@ -198,7 +219,7 @@ describe('test page object element selectors', function() {
     nocks
       .elementsFound('#signupSection')
       .elementsId('0', '#helpBtn', [{ELEMENT: '12345'}])
-      .elementId('12345', 'a', 'css selector', {ELEMENT: 'abc-12345'})
+      .elementId('12345', 'a', 'css selector', {ELEMENT: 'abc-12345'});
 
     let page = Nightwatch.api().page.simplePageObj();
     let section = page.section.signUp;
@@ -262,7 +283,7 @@ describe('test page object element selectors', function() {
     let section = page.section.signUp;
 
     section.assert.not.elementPresent('@help', function(result) {
-      assert.strictEqual(result, true);
+      assert.strictEqual(result.passed, true);
       done();
     });
 
@@ -279,16 +300,47 @@ describe('test page object element selectors', function() {
 
     const page = Nightwatch.api().page.simplePageObj();
     page.customCommandWithSelector('@loginAsString', function(result) {
-      assert.deepEqual(result, {
-        selector: '#weblogin',
-        locateStrategy: 'css selector',
-        name: 'loginAsString'
-      });
+      assert.strictEqual(result.name, 'loginAsString');
+      assert.strictEqual(result.selector, '#weblogin');
+      assert.strictEqual(result.locateStrategy, 'css selector');
     });
 
     Nightwatch.start(function() {
       done();
     });
+  });
+
+  it('customCommand with section element selector', function(done) {
+    nocks
+      .elementsFound('#signupSection')
+      .elementFound('#getStarted')
+      .elementFound('#helpBtn')
+      .elementsId('0', '#helpBtn', [{ELEMENT: '10'}])
+      .clearValue('10');
+
+
+    let page = Nightwatch.api().page.simplePageObj();
+    let section = page.section.signUp;
+
+    section.customClearValue('@help', function(selector, result) {
+      assert.deepStrictEqual(selector, {
+        WebdriverElementId: '10',
+        locateStrategy: 'css selector',
+        name: 'help',
+        response: {
+          status: 0,
+          value: {ELEMENT: '10'}
+        },
+        selector: '#helpBtn'
+      });
+
+      assert.deepStrictEqual(result, {
+        status: 0,
+        value: null
+      });
+    });
+
+    Nightwatch.start(done);
   });
 
   it('page object element command with custom message and no args', function(done) {
@@ -298,7 +350,7 @@ describe('test page object element selectors', function() {
     page.waitForElementPresent('@loginAsString', 'element found');
 
     const client = Nightwatch.client();
-    client.session.commandQueue.tree.once('asynctree:finished', function(tree) {
+    client.queue.tree.once('asynctree:finished', function(tree) {
       const command = tree.currentNode.childNodes[0];
       try {
         strictEqual(command.args.length, 2);
@@ -326,11 +378,12 @@ describe('test page object element selectors', function() {
 
     section
       .customCommandWithSelector('@help', function(result) {
-        assert.deepEqual(result, {
+        assert.deepStrictEqual(result, {
           selector: '#helpBtn',
+          WebdriverElementId: '0',
           locateStrategy: 'css selector',
           name: 'help',
-          response: {status: 0, value: '0'}
+          response: {status: 0, value: {ELEMENT: '0'}}
         });
       });
 
@@ -370,7 +423,7 @@ describe('test page object element selectors', function() {
         try {
           strictEqual(this.opts.rescheduleInterval, 50);
           strictEqual(this.opts.timeout, 100);
-          strictEqual(result, true);
+          strictEqual(result.passed, true);
           strictEqual(assertion.element.selector, '#weblogin');
           strictEqual(assertion.element.locateStrategy, 'css selector');
           strictEqual(assertion.element.name, 'loginAsString');
@@ -381,8 +434,9 @@ describe('test page object element selectors', function() {
       })
       .assert.customAssertionWithSelector('@loginAsString', 1, function(result, assertion) {
         try {
-          assert.ok(result instanceof Error);
-          assert.ok(result.message.includes('in 100ms'));
+          assert.strictEqual(result.passed, false);
+          assert.ok(result.err instanceof Error);
+          assert.ok(result.err.message.includes('in 100ms'));
           strictEqual(assertion.rescheduleInterval, 50);
           strictEqual(assertion.retryAssertionTimeout, 100);
           strictEqual(assertion.element.selector, '#weblogin');
@@ -409,13 +463,14 @@ describe('test page object element selectors', function() {
 
     section.assert.customAssertionWithSelector('@help', 0, function(result, assertion) {
       try {
-        strictEqual(result, true);
-        assert.deepEqual(assertion.element, {
+        strictEqual(result.passed, true);
+        assert.deepStrictEqual(assertion.element, {
           selector: '#helpBtn',
+          WebdriverElementId: '0',
           locateStrategy: 'css selector',
           name: 'help',
           response: {
-            status: 0, value: '0'
+            status: 0, value: {ELEMENT: '0'}
           }
         });
         done();
@@ -430,21 +485,22 @@ describe('test page object element selectors', function() {
   it('page object customAssertion with indexed element called on section', function(done) {
     nocks
       .elementsFound('#signupSection') // page.section
-      .elementsId(0, '#helpBtn', [{ELEMENT: '1'},{ELEMENT: '2'}])
+      .elementsId(0, '#helpBtn', [{ELEMENT: '1'}, {ELEMENT: '2'}])
       .elementId(0, '#helpBtn', null, {ELEMENT: '1'});
 
     let page = Nightwatch.api().page.simplePageObj();
     let section = page.section.signUp;
 
-    section.assert.customAssertionWithSelector({selector:'@help', index: 1}, 0, function(result, assertion) {
+    section.assert.customAssertionWithSelector({selector: '@help', index: 1}, 0, function(result, assertion) {
       try {
-        strictEqual(result, true);
-        assert.deepEqual(assertion.element, {
+        strictEqual(result.passed, true);
+        assert.deepStrictEqual(assertion.element, {
           selector: '#helpBtn',
+          WebdriverElementId: '2',
           locateStrategy: 'css selector',
           name: 'help',
           index: 1,
-          response: {status: 0, value: '2'}
+          response: {status: 0, value: {ELEMENT: '2'}}
         });
         done();
       } catch (err) {

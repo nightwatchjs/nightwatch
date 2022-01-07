@@ -1,11 +1,11 @@
 module.exports = {
-  demoTest : function (client) {
+  demoTest: function (client) {
     client.url('http://localhost')
       .assert.elementPresent('#weblogin')
       .end();
   },
 
-  afterEach : function(client, done) {
+  afterEach: function(client, done) {
     client.end(function() {
       done(new Error('Provided error afterEachWithClient'));
     });

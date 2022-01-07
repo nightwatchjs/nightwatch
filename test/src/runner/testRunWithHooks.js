@@ -3,7 +3,8 @@ const assert = require('assert');
 const common = require('../../common.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
-const NightwatchClient = common.require('index.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('testRunWithHooks', function() {
   before(function(done) {
@@ -21,7 +22,7 @@ describe('testRunWithHooks', function() {
   });
 
   afterEach(function() {
-    Object.keys(require.cache).forEach(function(module) {
+    Object.keys(require.cache).filter(i => i.includes('/sampletests')).forEach(function(module) {
       delete require.cache[module];
     });
   });
@@ -52,7 +53,8 @@ describe('testRunWithHooks', function() {
 
       let globals = {
         calls: 0,
-        asyncHookTimeout: 100,
+        asyncHookTimeout: 50,
+
         reporter(results) {
           assert.ok(results.lastError instanceof Error);
           assert.ok(results.lastError.message.includes(expectedErrorMessage));
@@ -60,25 +62,99 @@ describe('testRunWithHooks', function() {
           if (hook.indexOf('before') === 0) {
             assert.strictEqual(results.assertions, 0);
           }
-          assert.equal(results.errors, 1);
+          assert.strictEqual(results.errors, 1);
         }
       };
 
-      let settings = {
-        selenium: {
-          port: 10195,
-          version2: true,
-          start_process: true
-        },
-        silent: true,
-        output: false,
-        persist_globals: true,
-        globals: globals,
-        output_folder: false,
-        start_session: true
+      return runTests(provideErrorTestPath, settings({
+        globals
+      }));
+    });
+  });
+
+  [
+    'before',
+    'beforeAsync',
+    'beforeWithClient',
+    'beforeEach',
+    'beforeEachAsync',
+    'beforeEachWithClient',
+    'beforeEachAsyncWithClient',
+    'beforeEachAsyncWithClientMultiple',
+    'afterEach',
+    'afterEachAsync',
+    'afterEachWithClient',
+    'after',
+    'afterAsync',
+    'afterWithClient'
+  ].forEach(function(hook) {
+    it(`testRunner with ${hook} hook and explicit callback error with --fail-fast argument`, function() {
+      let source = [
+        path.join(__dirname, '../../asynchookstests/async-provide-error/' + hook + '.js'),
+        path.join(__dirname, '../../sampletests/async/test/sample.js')
+      ];
+
+      let globals = {
+        calls: 0,
+        asyncHookTimeout: 50,
+
+        reporter(results) {
+          assert.strictEqual(Object.keys(results.modules).length, 1);
+        }
       };
 
-      return NightwatchClient.runTests(provideErrorTestPath, settings);
+      return runTests({
+        source,
+        'fail-fast': true
+      }, settings({
+        globals
+      })).catch(err => {
+        return err;
+      }).then(err => {
+        assert.ok(err instanceof Error);
+        if (err.name === 'ERR_ASSERTION') {
+          throw err;
+        }
+      });
+    });
+  });
+
+  [
+    'before',
+    'beforeAsync',
+    'beforeWithClient',
+    'beforeEach',
+    'beforeEachAsync',
+    'beforeEachWithClient',
+    'beforeEachAsyncWithClient',
+    'beforeEachAsyncWithClientMultiple',
+    'afterEach',
+    'afterEachAsync',
+    'afterEachWithClient',
+    'after',
+    'afterAsync',
+    'afterWithClient'
+  ].forEach(function(hook) {
+    it(`testRunner with ${hook} hook and explicit callback error without fail-fast argument`, function() {
+      let source = [
+        path.join(__dirname, '../../asynchookstests/async-provide-error/' + hook + '.js'),
+        path.join(__dirname, '../../sampletests/async/test/sample.js')
+      ];
+
+      let globals = {
+        calls: 0,
+        asyncHookTimeout: 50,
+
+        reporter(results) {
+          assert.strictEqual(Object.keys(results.modules).length, 2);
+        }
+      };
+
+      return runTests({
+        source
+      }, settings({
+        globals
+      }));
     });
   });
 
@@ -86,28 +162,17 @@ describe('testRunWithHooks', function() {
     let globals = {
       calls: 0,
       reporter(results) {
-        assert.equal(globals.calls, 2);
+        assert.strictEqual(globals.calls, 2);
         assert.ok('test/sample' in results.modules);
         assert.ok('demoTestAsync' in results.modules['test/sample'].completed);
       }
     };
 
     let testsPath = path.join(__dirname, '../../sampletests/async');
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      seleniumPort: 10195,
-      silent: false,
-      output: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    };
 
-    return NightwatchClient.runTests(testsPath, settings);
+    return runTests(testsPath, settings({
+      globals
+    }));
   });
 
   it('test run with async afterEach', function() {
@@ -127,22 +192,11 @@ describe('testRunWithHooks', function() {
     };
 
     let testsPath = path.join(__dirname, '../../sampletests/mixed');
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      seleniumPort: 10195,
-      silent: false,
-      output: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false,
-      start_session: true
-    };
 
-    return NightwatchClient.runTests(testsPath, settings);
+    return runTests(testsPath, settings({
+      seleniumPort: 10195,
+      globals
+    }));
   });
 
   it('testRunner async with before and after', function() {
@@ -153,7 +207,7 @@ describe('testRunWithHooks', function() {
         if (results.lastError) {
           throw results.lastError;
         }
-        assert.equal(settings.globals.calls, 19);
+        assert.strictEqual(globals.calls, 19);
         assert.ok('sampleWithBeforeAndAfter' in results.modules);
 
         let result = results.modules.sampleWithBeforeAndAfter.completed;
@@ -173,21 +227,10 @@ describe('testRunWithHooks', function() {
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
+    return runTests(testsPath, settings({
       seleniumPort: 10195,
-      silent: false,
-      output: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests(testsPath, settings);
+      globals
+    }));
   });
 
   it('testRunner before and after without callback', function() {
@@ -198,26 +241,15 @@ describe('testRunWithHooks', function() {
         if (results.lastError) {
           throw results.lastError;
         }
-        assert.equal(settings.globals.calls, 2);
+        assert.strictEqual(globals.calls, 2);
         assert.ok('sampleWithBeforeAndAfterNoCallback' in results.modules);
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
+    return runTests(testsPath, settings({
       seleniumPort: 10195,
-      silent: false,
-      output: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests(testsPath, settings);
+      globals
+    }));
   });
 
   it('testRunner with assertion failed in after hook', function() {
@@ -230,23 +262,12 @@ describe('testRunWithHooks', function() {
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      seleniumPort: 10195,
-      silent: true,
-      output: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests({
+    return runTests({
       _source: [testsPath]
-    }, settings);
+    }, settings({
+      seleniumPort: 10195,
+      globals
+    }));
   });
 
   it('testRunner with --testcase and before and after', function() {
@@ -258,7 +279,7 @@ describe('testRunWithHooks', function() {
           throw results.lastError;
         }
 
-        assert.equal(globals.calls, 4);
+        assert.strictEqual(globals.calls, 4);
         let result = results.modules.syncBeforeAndAfter.completed;
         assert.ok('demoTestSyncOne' in result);
         assert.ok(!('beforeEach' in result));
@@ -268,24 +289,15 @@ describe('testRunWithHooks', function() {
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      seleniumPort: 10195,
-      silent: true,
-      output: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    };
 
-    return NightwatchClient.runTests({
+    return runTests({
       _source: [testsPath],
       testcase: 'demoTestSyncOne'
-    }, settings);
+    }, settings({
+      seleniumPort: 10195,
+      globals,
+      output_folder: false
+    }));
   });
 
   it('testRunWithAsyncHooks', function() {
@@ -297,26 +309,14 @@ describe('testRunWithHooks', function() {
           throw results.lastError;
         }
 
-        assert.equal(globals.calls, 7);
+        assert.strictEqual(globals.calls, 7);
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      seleniumPort: 10195,
+    return runTests(testsPath, settings({
       custom_commands_path: path.join(__dirname, '../../extra/commands'),
-      silent: true,
-      output: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests(testsPath, settings);
+      globals
+    }));
   });
 
   it('test async afterEach hook timeout error', function() {
@@ -326,26 +326,14 @@ describe('testRunWithHooks', function() {
       asyncHookTimeout: 10,
       reporter(results) {
         assert.ok(results.lastError instanceof Error);
-        assert.equal(results.lastError.message, 'done() callback timeout of 10ms was reached while executing "afterEach". ' +
+        assert.strictEqual(results.lastError.message, 'done() callback timeout of 10ms was reached while executing "afterEach". ' +
           'Make sure to call the done() callback when the operation finishes.');
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      seleniumPort: 10195,
-      silent: false,
-      output: false,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests(testsPath, settings);
+    return runTests(testsPath, settings({
+      globals
+    }));
   });
 });
 

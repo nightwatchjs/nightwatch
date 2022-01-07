@@ -64,7 +64,7 @@ describe('assert.visible', function () {
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.getValue(), true);
         assert.strictEqual(instance.getActual(), 'visible');
-        assert.strictEqual(err.message, `Error while running "visible" command: Testing if element <.test_element> is not visible in 5ms - expected "is not visible" but got: "visible" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Testing if element <.test_element> is not visible in 5ms - expected "is not visible" but got: "visible" (${instance.elapsedTime}ms)`);
       }
     });
   });
@@ -87,6 +87,26 @@ describe('assert.visible', function () {
     });
   });
 
+  it('visible assertion passed with selector object and timeout', function () {
+    return assertionTest({
+      args: [{selector: '.test_element', timeout: 10, retryInterval: 15}],
+      commandResult: {
+        status: 0,
+        value: true
+      },
+      assertion({instance, failure, message, err}) {
+        assert.strictEqual(err, undefined);
+        assert.deepStrictEqual(instance.options, {elementSelector: true});
+        assert.strictEqual(instance.getActual(), 'visible');
+        assert.strictEqual(instance.hasFailure(), false);
+        assert.strictEqual(instance.retryAssertionTimeout, 10);
+        assert.strictEqual(instance.rescheduleInterval, 15);
+        assert.ok(message.startsWith('Testing if element <.test_element> is visible'), message);
+        assert.strictEqual(failure, false);
+      }
+    });
+  });
+  
   it('visible assertion failed', function () {
     return assertionTest({
       args: ['.test_element'],
@@ -117,7 +137,7 @@ describe('assert.visible', function () {
         assert.strictEqual(instance.expected(), 'is visible');
         assert.strictEqual(instance.getValue(), null);
         assert.strictEqual(failure, 'Expected "is visible" but got: "element could not be located"');
-        assert.strictEqual(err.message, `Error while running "visible" command: Testing if element <.test_element> is visible in 5ms - expected "is visible" but got: "element could not be located" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Testing if element <.test_element> is visible in 5ms - expected "is visible" but got: "element could not be located" (${instance.elapsedTime}ms)`);
       }
     });
   });

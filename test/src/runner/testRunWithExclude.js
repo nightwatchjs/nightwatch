@@ -3,19 +3,10 @@ const assert = require('assert');
 const common = require('../../common.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
-const NightwatchClient = common.require('index.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 const originalCwd = process.cwd();
-const defaultSettings = {
-  selenium: {
-    port: 10195,
-    version2: true,
-    start_process: true
-  },
-  silent: true,
-  output: false,
-  output_folder: false,
-};
 
 describe('testRunWithExclude', function() {
   before(function(done) {
@@ -41,7 +32,9 @@ describe('testRunWithExclude', function() {
   });
 
   it('testRunWithExcludeFolder', function() {
-    const settings = Object.assign({
+    return runTests({
+      _source: ['./withexclude']
+    }, settings({
       globals: {
         reporter(results, cb) {
           assert.ok(!('excluded/excluded-module' in results.modules));
@@ -49,18 +42,14 @@ describe('testRunWithExclude', function() {
           assert.ok('simple/sample' in results.modules);
 
           cb();
-        },
+        }
       },
-      exclude: ['./withexclude/excluded'],
-    }, defaultSettings);
-
-    return NightwatchClient.runTests({
-      _source: ['./withexclude']
-    }, settings);
+      exclude: ['./withexclude/excluded']
+    }));
   });
 
   it('testRun with exclude folder name and multiple src_folders', function()  {
-    const settings = Object.assign({
+    return runTests(settings({
       globals: {
         reporter(results, cb) {
           assert.ok('excluded/excluded-module' in results.modules);
@@ -71,14 +60,12 @@ describe('testRunWithExclude', function() {
         }
       },
       src_folders: ['./withexclude/excluded', './withexclude/simple'],
-      exclude: './withexclude/simple',
-    }, defaultSettings);
-
-    return NightwatchClient.runTests(settings);
+      exclude: './withexclude/simple'
+    }));
   });
 
   it('testRun with exclude folder pattern and multiple src_folders', function()  {
-    const settings = Object.assign({
+    return runTests(settings({
       globals: {
         reporter(results, cb) {
           assert.ok('excluded/excluded-module' in results.modules);
@@ -89,14 +76,12 @@ describe('testRunWithExclude', function() {
         }
       },
       src_folders: ['./withexclude/excluded', './withexclude/simple'],
-      exclude: './withexclude/simple/*',
-    }, defaultSettings);
-
-    return NightwatchClient.runTests(settings);
+      exclude: './withexclude/simple/*'
+    }));
   });
 
   it('testRun with filter folder name and multiple src_folders', function()  {
-    const settings = Object.assign({
+    return runTests(settings({
       globals: {
         reporter(results, cb) {
           assert.ok(!('excluded/excluded-module' in results.modules));
@@ -107,14 +92,12 @@ describe('testRunWithExclude', function() {
         }
       },
       src_folders: ['./withexclude/excluded', './withexclude/simple'],
-      filter: 'withexclude/simple',
-    }, defaultSettings);
-
-    return NightwatchClient.runTests(settings);
+      filter: 'withexclude/simple'
+    }));
   });
 
   it('testRun with filter pattern and multiple src_folders', function()  {
-    const settings = Object.assign({
+    return runTests(settings({
       globals: {
         reporter(results, cb) {
           assert.ok(!('excluded/excluded-module' in results.modules));
@@ -125,14 +108,12 @@ describe('testRunWithExclude', function() {
         }
       },
       src_folders: ['./withexclude/excluded', './withexclude/simple'],
-      filter: 'withexclude/simple/*',
-    }, defaultSettings);
-
-    return NightwatchClient.runTests(settings);
+      filter: 'withexclude/simple/*'
+    }));
   });
 
   it('testRun with filter pattern relative and single src_folders', function()  {
-    const settings = Object.assign({
+    return runTests(settings({
       globals: {
         reporter(results, cb) {
           assert.ok(!('excluded/excluded-module' in results.modules));
@@ -143,14 +124,12 @@ describe('testRunWithExclude', function() {
         }
       },
       src_folders: ['./withexclude'],
-      filter: 'simple/*',
-    }, defaultSettings);
-
-    return NightwatchClient.runTests(settings);
+      filter: 'simple/*'
+    }));
   });
 
   it('testRun with both filter and exclude patterns and single src_folder', function()  {
-    const settings = Object.assign({
+    return runTests(settings({
       globals: {
         reporter(results, cb) {
           assert.ok(!('excluded/excluded-module' in results.modules));
@@ -162,14 +141,14 @@ describe('testRunWithExclude', function() {
       },
       src_folders: ['./withexclude'],
       filter: 'excluded/*',
-      exclude: 'excluded/excluded-*',
-    }, defaultSettings);
-
-    return NightwatchClient.runTests(settings);
+      exclude: 'excluded/excluded-*'
+    }));
   });
 
   it('testRunWithExcludePattern', function()  {
-    const settings = Object.assign({
+    return runTests({
+      _source: ['./withexclude']
+    }, settings({
       globals: {
         reporter(results, cb) {
           assert.ok(!('excluded/excluded-module' in results.modules));
@@ -180,16 +159,14 @@ describe('testRunWithExclude', function() {
         }
       },
       exclude: ['withexclude/excluded/excluded-*'],
-      start_session: true,
-    }, defaultSettings);
-
-    return NightwatchClient.runTests({
-      _source: ['./withexclude']
-    }, settings);
+      start_session: true
+    }));
   });
 
   it('testRunWithExcludeFile', function()  {
-    const settings = Object.assign({
+    return runTests({
+      _source: [path.join(__dirname, '../../sampletests/withexclude')]
+    }, settings({
       globals: {
         reporter(results, cb) {
           assert.ok(!('excluded/excluded-module' in results.modules));
@@ -199,16 +176,12 @@ describe('testRunWithExclude', function() {
         }
       },
       exclude: [path.join('withexclude', 'excluded', 'excluded-module.js')],
-      start_session: true,
-    }, defaultSettings);
-
-    return NightwatchClient.runTests({
-      _source: [path.join(__dirname, '../../sampletests/withexclude')]
-    }, settings);
+      start_session: true
+    }));
   });
 
   it('test running with multiple excludes will exclude all matches with single src folder', function()  {
-    const settings = Object.assign({
+    return runTests(settings({
       globals: {
         reporter(results, cb) {
           assert.ok(!('excluded/excluded-module' in results.modules));
@@ -221,15 +194,13 @@ describe('testRunWithExclude', function() {
       src_folders: './withexclude',
       exclude: [
         path.join('withexclude', 'excluded', 'excluded-module.js'),
-        path.join('withexclude', 'simple'),
-      ],
-    }, defaultSettings);
-
-    return NightwatchClient.runTests(settings);
+        path.join('withexclude', 'simple')
+      ]
+    }));
   });
 
   it('test running with multiple excludes will exclude all matches with multiple src folders', function()  {
-    const settings = Object.assign({
+    return runTests(settings({
       globals: {
         reporter(results, cb) {
           assert.ok(!('excluded/excluded-module' in results.modules));
@@ -241,14 +212,12 @@ describe('testRunWithExclude', function() {
       },
       src_folders: [
         path.join('withexclude', 'excluded'),
-        path.join('withexclude', 'simple'),
+        path.join('withexclude', 'simple')
       ],
       exclude: [
         path.join('withexclude', 'excluded', 'excluded-module.js'),
-        path.join('withexclude', 'simple'),
-      ],
-    }, defaultSettings);
-
-    return NightwatchClient.runTests(settings);
+        path.join('withexclude', 'simple')
+      ]
+    }));
   });
 });

@@ -3,20 +3,10 @@ const assert = require('assert');
 const common = require('../../common.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
-const NightwatchClient = common.require('index.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 const originalCwd = process.cwd();
-const defaultSettings = {
-  selenium: {
-    port: 10195,
-    version2: true,
-    start_process: true
-  },
-  silent: false,
-  output: false,
-  output_folder: false,
-};
-
 describe('testRunWithVerify', function() {
   before(function(done) {
     this.server = MockServer.init();
@@ -38,7 +28,9 @@ describe('testRunWithVerify', function() {
   });
 
   it('using verify in tests', function() {
-    const settings = Object.assign({
+    return runTests({
+      _source: ['./withverify']
+    }, settings({
       globals: {
         waitForConditionPollInterval: 20,
         waitForConditionTimeout: 50,
@@ -50,13 +42,9 @@ describe('testRunWithVerify', function() {
           assert.strictEqual(results.assertions, 3);
 
           cb();
-        },
+        }
       }
-    }, defaultSettings);
-
-    return NightwatchClient.runTests({
-      _source: ['./withverify']
-    }, settings);
+    }));
   });
 
 

@@ -1,102 +1,99 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
-describe('client.execute', function() {
+describe('client.executeScript', function() {
   before(function() {
     Globals.protocolBefore();
   });
 
-  it('testExecuteString', function() {
-    return Globals.protocolTest({
-      assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.equal(opts.path, '/session/1352110219202/execute');
-        assert.deepEqual(opts.data, {script: '<script>test();</script>', args: ['arg1']});
-      },
-      commandName: 'execute',
-      args: ['<script>test();</script>', ['arg1']]
-    });
-  });
+  it('testExecuteString', function () {
+    let opts;
 
-  it('testExecuteString W3C WebDriver', function() {
-    return Globals.protocolTestWebdriver({
-      assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.equal(opts.path, '/session/1352110219202/execute/sync');
+    return Globals.protocolTest({
+      assertion: function (args) {
+        opts = args;
       },
-      commandName: 'execute',
-      args: ['<script>test();</script>', ['arg1']]
+      commandName: 'executeScript',
+      args: ['<script>function(){return test();}</script>', ['arg1']]
+    }).then((result) => {
+      assert.deepStrictEqual(opts.command, 'executeScript');
+      assert.deepStrictEqual(opts.script, '<script>function(){return test();}</script>');
+      assert.strictEqual(opts.args, 'arg1');
+      assert.strictEqual(result, 'arg1');
     });
   });
 
   it('testExecuteFunction', function() {
+    let opts;
+
     return Globals.protocolTest({
-      assertion: function(opts) {
-        assert.deepEqual(opts.data, {
-          args: ['arg1'],
-          script: 'var passedArgs = Array.prototype.slice.call(arguments,0); return function () {\n        return test();\n      }.apply(window, passedArgs);'
-        });
+      assertion: function(args) {
+        opts = args;
       },
-      commandName: 'execute',
+      commandName: 'executeScript',
       args: [function () {
         return test();
       }, ['arg1']]
+    }).then((result) => {
+      assert.deepStrictEqual(opts.command, 'executeScript');
+      assert.strictEqual(opts.args, 'arg1');
+      assert.deepStrictEqual(opts.script, 'var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {\n        return test();\n      }).apply(window, passedArgs);');
+      assert.strictEqual(result, 'arg1');
     });
   });
 
   it('testExecuteFunctionNoArgs', function() {
+    let opts;
+
     return Globals.protocolTest({
-      assertion: function(opts) {
-        assert.deepEqual(opts.data, {
-          args: [],
-          script: 'var passedArgs = Array.prototype.slice.call(arguments,0); return function () {\n        return test();\n      }.apply(window, passedArgs);'
-        });
+      assertion: function(args) {
+        opts = args;
       },
-      commandName: 'execute',
+      commandName: 'executeScript',
       args: [function () {
         return test();
       }]
+    }).then((result) => {
+      assert.deepStrictEqual(opts.command, 'executeScript');
+      assert.strictEqual(opts.args, undefined);
+      assert.deepStrictEqual(opts.script, 'var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {\n        return test();\n      }).apply(window, passedArgs);');
+      assert.deepStrictEqual(result, {value: undefined, status: 0});
     });
   });
 
   it('testExecuteAsyncFunction', function() {
+    let opts;
+
     return Globals.protocolTest({
-      assertion: function(opts) {
-        assert.deepEqual(opts.data, {
-          args: ['arg1'],
-          script: 'var passedArgs = Array.prototype.slice.call(arguments,0); return function () {\n        return test();\n      }.apply(window, passedArgs);'
-        });
+      assertion: function(args) {
+        opts = args;
       },
-      commandName: 'executeAsync',
+      commandName: 'executeAsyncScript',
       args: [function () {
         return test();
       }, ['arg1']]
+    }).then((result) => {
+      assert.deepStrictEqual(opts.command, 'executeAsyncScript');
+      assert.strictEqual(opts.args, 'arg1');
+      assert.deepStrictEqual(opts.script, 'var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {\n        return test();\n      }).apply(window, passedArgs);');
+      assert.strictEqual(result, 'arg1');
     });
   });
 
-  it('testExecuteAsync', function() {
+  it('testExecuteAsyncString', function() {
+    let opts;
+
     return Globals.protocolTest({
-      assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.equal(opts.path, '/session/1352110219202/execute_async');
-        assert.deepEqual(opts.data, {
-          args: ['arg1'],
-          script: '<script>test();</script>'
-        });
+      assertion: function(args) {
+        opts = args;
       },
-      commandName: 'executeAsync',
-      args: ['<script>test();</script>', ['arg1']]
-    });
-  });
-
-  it('testExecuteAsync W3C WebDriver', function() {
-    return Globals.protocolTestWebdriver({
-      assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.equal(opts.path, '/session/1352110219202/execute/async');
-      },
-      commandName: 'executeAsync',
-      args: ['<script>test();</script>', ['arg1']]
+      commandName: 'executeAsyncScript',
+      args: ['<script>function(){return test();}</script>', ['arg1']]
+    }).then((result) => {
+      assert.deepStrictEqual(opts.command, 'executeAsyncScript');
+      assert.deepStrictEqual(opts.script, '<script>function(){return test();}</script>');
+      assert.strictEqual(opts.args, 'arg1');
+      assert.strictEqual(result, 'arg1');
     });
   });
 });

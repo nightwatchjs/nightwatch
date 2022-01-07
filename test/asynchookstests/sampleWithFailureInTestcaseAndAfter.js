@@ -5,11 +5,11 @@ describe('sampleWithFailureInTestcaseAndAfter', function() {
 
   test('demo test async', c => {
     c.url('http://localhost');
-    c.assert.equal(0,1)
+    c.assert.equal(0, 1);
   });
 
   after(function(c) {
-    c.assert.strictEqual(0,1)
-  })
+    c.assert.strictEqual(0, 1);
+  });
 
 });

@@ -43,7 +43,7 @@ module.exports = {
   elementFound(selector = '#nock', using = 'css selector', foundElem = {ELEMENT: '0'}) {
     this._addNock(this._requestUri)
       .persist()
-      .post(this._protocolUri + 'element', {using:using, value: selector})
+      .post(this._protocolUri + 'element', {using: using, value: selector})
       .reply(200, {
         status: 0,
         state: 'success',
@@ -56,7 +56,7 @@ module.exports = {
   elementsFound(selector, foundArray, using) {
     this._addNock(this._requestUri)
       .persist()
-      .post(this._protocolUri + 'elements', {'using':using || 'css selector','value':selector || '.nock'})
+      .post(this._protocolUri + 'elements', {'using': using || 'css selector', 'value': selector || '.nock'})
       .reply(200, {
         status: 0,
         state: 'success',
@@ -87,7 +87,7 @@ module.exports = {
   elementsNotFound(selector) {
     this._addNock(this._requestUri)
       .persist()
-      .post(this._protocolUri + 'elements', {'using':'css selector','value':selector || '.nock-none'})
+      .post(this._protocolUri + 'elements', {'using': 'css selector', 'value': selector || '.nock-none'})
       .reply(200, {
         status: 0,
         state: 'success',
@@ -100,11 +100,11 @@ module.exports = {
   elementByXpath(selector, foundElem) {
     this._addNock(this._requestUri)
       .persist()
-      .post(this._protocolUri + 'element', {'using':'xpath','value':selector || '//[@id="nock"]'})
+      .post(this._protocolUri + 'element', {'using': 'xpath', 'value': selector || '//[@id="nock"]'})
       .reply(200, {
         status: 0,
         state: 'success',
-        value: foundElem || { ELEMENT: '0' }
+        value: foundElem || {ELEMENT: '0'}
       });
 
     return this;
@@ -113,7 +113,7 @@ module.exports = {
   elementsByXpath(selector = '//[@class="nock"]', foundArray = [{ELEMENT: '0'}, {ELEMENT: '1'}, {ELEMENT: '2'}]) {
     this._addNock(this._requestUri)
       .persist()
-      .post(this._protocolUri + 'elements', {'using':'xpath','value':selector})
+      .post(this._protocolUri + 'elements', {'using': 'xpath', 'value': selector})
       .reply(200, {
         status: 0,
         state: 'success',
@@ -139,11 +139,11 @@ module.exports = {
     this._addNock(this._requestUri)
       .persist()
       .post(this._protocolUri + 'element/' + (id || 0) + '/element',
-        {'using':using || 'css selector','value':selector || '#nock'})
+        {'using': using || 'css selector', 'value': selector || '#nock'})
       .reply(200, {
         status: 0,
-        state : 'success',
-        value: foundElem || { ELEMENT: '0' }
+        state: 'success',
+        value: foundElem || {ELEMENT: '0'}
       });
 
     return this;
@@ -158,7 +158,7 @@ module.exports = {
       })
       .reply(200, {
         status: 0,
-        state : 'success',
+        state: 'success',
         value: foundArray
       });
 
@@ -169,7 +169,7 @@ module.exports = {
     this._addNock(this._requestUri)
       .persist()
       .post(this._protocolUri + 'element/' + (id || 0) + '/element',
-        {'using':using || 'css selector','value':selector || '#nock'})
+        {'using': using || 'css selector', 'value': selector || '#nock'})
       .reply(200, {
         status: -1,
         value: {},
@@ -183,11 +183,11 @@ module.exports = {
   elementsByTag(selector, foundArray) {
     this._addNock(this._requestUri)
       .persist()
-      .post(this._protocolUri + 'elements', {'using':'tag name','value':selector || 'nock'})
+      .post(this._protocolUri + 'elements', {'using': 'css selector', 'value': selector || 'nock'})
       .reply(200, {
         status: 0,
         state: 'success',
-        value: foundArray || [ { ELEMENT: '0' }, { ELEMENT: '1' }, { ELEMENT: '2' } ]
+        value: foundArray || [{ELEMENT: '0'}, {ELEMENT: '1'}, {ELEMENT: '2'}]
       });
 
     return this;
@@ -199,7 +199,7 @@ module.exports = {
       .get(this._protocolUri + 'element/' + (id || 0) + '/text')
       .reply(200, {
         status: 0,
-        state : 'success',
+        state: 'success',
         value: value || 'textValue'
       });
 
@@ -216,7 +216,7 @@ module.exports = {
       .post(this._protocolUri + 'element/' + (id || 0) + '/clear')
       .reply(200, {
         status: 0,
-        state : 'success',
+        state: 'success',
         value: null
       });
 
@@ -246,5 +246,5 @@ module.exports = {
     }
 
     return this;
-  },
+  }
 };

@@ -329,7 +329,7 @@ describe('expect.attribute', function() {
       assert.strictEqual(expect.assertion.actual, 'hp vasq');
       assert.strictEqual(expect.assertion.resultValue, 'hp vasq');
       assert.strictEqual(expect.assertion.passed, false);
-      assert.ok(expect.assertion.messageParts.includes( ' equal to: "vasq"'));
+      assert.ok(expect.assertion.messageParts.includes(' equal to: "vasq"'));
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have attribute "class" equal to: "vasq"'));
     });
   });
@@ -414,6 +414,7 @@ describe('expect.attribute', function() {
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').equal('hp vasq').before(110);
     Nocks.attributeValue(null)
+      .attributeValue(null)
       .attributeValue(null)
       .attributeValue(null);
 
@@ -517,7 +518,7 @@ describe('expect.attribute', function() {
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').not.contains('vasq');
 
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have attribute "class"'));
+    assert.ok(expect.assertion.message.startsWith('Expected element %s to have attribute "class"'));
     this.client.api.perform(function() {
       assert.strictEqual(expect.assertion.expected, 'not contain \'vasq\'');
       assert.strictEqual(expect.assertion.actual, 'xx');
@@ -536,7 +537,7 @@ describe('expect.attribute', function() {
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').not.startsWith('vasq');
 
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have attribute "class"'));
+    assert.ok(expect.assertion.message.startsWith('Expected element %s to have attribute "class"'));
     this.client.api.perform(function() {
       assert.strictEqual(expect.assertion.expected, 'not start with \'vasq\'');
       assert.strictEqual(expect.assertion.actual, 'xx');
@@ -555,7 +556,7 @@ describe('expect.attribute', function() {
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').not.endsWith('vasq');
 
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have attribute "class"'));
+    assert.ok(expect.assertion.message.startsWith('Expected element %s to have attribute "class"'));
     this.client.api.perform(function() {
       assert.strictEqual(expect.assertion.expected, 'not end with \'vasq\'');
       assert.strictEqual(expect.assertion.actual, 'xx');
@@ -574,7 +575,7 @@ describe('expect.attribute', function() {
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').which.contains('vasq');
 
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have attribute "class"'));
+    assert.ok(expect.assertion.message.startsWith('Expected element %s to have attribute "class"'));
     this.client.api.perform(function() {
       assert.strictEqual(expect.assertion.expected, 'contains \'vasq\'');
       assert.strictEqual(expect.assertion.actual, 'vasq');
@@ -600,7 +601,7 @@ describe('expect.attribute', function() {
     this.client.api.globals.waitForConditionPollInterval = 20;
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').not.contains('xx');
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have attribute "class"'));
+    assert.ok(expect.assertion.message.startsWith('Expected element %s to have attribute "class"'));
 
     return this.client.start(function(err) {
       assert.ok(err instanceof Error);
@@ -609,7 +610,7 @@ describe('expect.attribute', function() {
       assert.strictEqual(expect.assertion.negate, true);
       assert.strictEqual(expect.assertion.resultValue, 'xx');
       assert.strictEqual(expect.assertion.passed, false);
-      assert.strictEqual(expect.assertion.messageParts[0], ' not contain: "xx"' );
+      assert.strictEqual(expect.assertion.messageParts[0], ' not contain: "xx"');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have attribute "class" not contain: "xx"'));
     });
   });
@@ -625,7 +626,7 @@ describe('expect.attribute', function() {
     this.client.api.globals.waitForConditionPollInterval = 20;
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').not.startsWith('xx');
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have attribute "class"'));
+    assert.ok(expect.assertion.message.startsWith('Expected element %s to have attribute "class"'));
 
     return this.client.start(function(err) {
       assert.ok(err instanceof Error);
@@ -634,7 +635,7 @@ describe('expect.attribute', function() {
       assert.strictEqual(expect.assertion.negate, true);
       assert.strictEqual(expect.assertion.resultValue, 'xx');
       assert.strictEqual(expect.assertion.passed, false);
-      assert.strictEqual(expect.assertion.messageParts[0], ' not start with: "xx"' );
+      assert.strictEqual(expect.assertion.messageParts[0], ' not start with: "xx"');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have attribute "class" not start with: "xx"'));
     });
   });
@@ -650,7 +651,7 @@ describe('expect.attribute', function() {
     this.client.api.globals.waitForConditionPollInterval = 20;
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').not.endsWith('xx');
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have attribute "class"'));
+    assert.ok(expect.assertion.message.startsWith('Expected element %s to have attribute "class"'));
 
     return this.client.start(function(err) {
       assert.ok(err instanceof Error);
@@ -659,7 +660,7 @@ describe('expect.attribute', function() {
       assert.strictEqual(expect.assertion.negate, true);
       assert.strictEqual(expect.assertion.resultValue, 'xx');
       assert.strictEqual(expect.assertion.passed, false);
-      assert.strictEqual(expect.assertion.messageParts[0], ' not end with: "xx"' );
+      assert.strictEqual(expect.assertion.messageParts[0], ' not end with: "xx"');
       assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have attribute "class" not end with: "xx"'));
     });
   });
@@ -670,7 +671,7 @@ describe('expect.attribute', function() {
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').which.matches(/vasq/);
 
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have attribute "class"'));
+    assert.ok(expect.assertion.message.startsWith('Expected element %s to have attribute "class"'));
     this.client.api.perform(function() {
       assert.strictEqual(expect.assertion.expected, 'matches \'/vasq/\'');
       assert.strictEqual(expect.assertion.actual, 'vasq');
@@ -690,7 +691,7 @@ describe('expect.attribute', function() {
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').not.match(/vasq/);
 
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have attribute "class"'));
+    assert.ok(expect.assertion.message.startsWith('Expected element %s to have attribute "class"'));
     this.client.api.perform(function() {
       assert.strictEqual(expect.assertion.expected, 'not match \'/vasq/\'');
       assert.strictEqual(expect.assertion.actual, 'xx');
@@ -715,7 +716,7 @@ describe('expect.attribute', function() {
     this.client.api.globals.waitForConditionPollInterval = 20;
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').not.match(/xx/);
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have attribute "class"'));
+    assert.ok(expect.assertion.message.startsWith('Expected element %s to have attribute "class"'));
 
     return this.client.start(function(err) {
       assert.ok(err instanceof Error);
@@ -739,7 +740,7 @@ describe('expect.attribute', function() {
       .elementNotFound();
 
     let expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').equal('vasq');
-    assert.ok(expect.assertion.message.startsWith('Expected element <%s> to have attribute "class"'));
+    assert.ok(expect.assertion.message.startsWith('Expected element %s to have attribute "class"'));
 
     return this.client.start(function(err) {
       assert.ok(err instanceof Error);

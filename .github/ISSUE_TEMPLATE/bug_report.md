@@ -18,7 +18,7 @@ Please make sure to format the code samples, verbose output, configuration and o
 <!-- 
 Include a sample test which reproduces the problem you're experiencing. If possible, the test should be against a public url.
 
-Please add the test and other info inline, not as attachements or screenshosts.
+Please add the test and other info inline, not as attachments or screenshots.
 -->
 
 <details><summary>sampleTest.js</summary><p>

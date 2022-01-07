@@ -34,13 +34,15 @@ describe('assert.urlContains', function () {
     return assertionTest({
       args: ['nightwatchjs'],
       assertError: true,
-      commandResult: {},
+      commandResult: {
+        status: -1
+      },
       assertion({instance, failure, err}) {
         assert.strictEqual(instance.getActual(), '');
         assert.strictEqual(instance.expected(), 'contains \'nightwatchjs\'');
-        assert.strictEqual(instance.getValue(), '');
+        assert.strictEqual(instance.getValue(), null);
         assert.strictEqual(failure, 'Expected "contains \'nightwatchjs\'" but got: ""');
-        assert.strictEqual(err.message, `Error while running "urlContains" command: Testing if the URL contains 'nightwatchjs' in 5ms - expected "contains 'nightwatchjs'" but got: "" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Testing if the URL contains 'nightwatchjs' in 5ms - expected "contains 'nightwatchjs'" but got: "" (${instance.elapsedTime}ms)`);
       }
     });
   });
@@ -55,7 +57,7 @@ describe('assert.urlContains', function () {
         assert.strictEqual(instance.expected(), 'contains \'nightwatchjs\'');
         assert.strictEqual(instance.getValue(), '');
         assert.strictEqual(failure, 'Expected "contains \'nightwatchjs\'" but got: ""');
-        assert.strictEqual(err.message, `Error while running "urlContains" command: Testing if the URL contains 'nightwatchjs' in 5ms - expected "contains 'nightwatchjs'" but got: "" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Testing if the URL contains 'nightwatchjs' in 5ms - expected "contains 'nightwatchjs'" but got: "" (${instance.elapsedTime}ms)`);
       }
     });
   });
@@ -71,7 +73,7 @@ describe('assert.urlContains', function () {
         assert.strictEqual(instance.expected(), 'contains \'http://\'');
         assert.strictEqual(instance.getValue(), 'https://nightwatchjs.org');
         assert.strictEqual(failure, 'Expected "contains \'http://\'" but got: "https://nightwatchjs.org"');
-        assert.strictEqual(err.message, `Error while running "urlContains" command: Testing if the URL contains 'http://' in 5ms - expected "contains 'http://'" but got: "https://nightwatchjs.org" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Testing if the URL contains 'http://' in 5ms - expected "contains 'http://'" but got: "https://nightwatchjs.org" (${instance.elapsedTime}ms)`);
       }
     });
   });

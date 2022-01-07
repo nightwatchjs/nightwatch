@@ -9,7 +9,6 @@ mocks:
       browserName: firefox
     desiredCapabilities:
       browserName: firefox
-      platform: ANY
   response:
     value:
       sessionId: &webdriverSessionId '13521-10219-202'
@@ -26,6 +25,52 @@ mocks:
           pageLoad: 300000
           script: 30000
         unhandledPromptBehavior: 'dismiss and notify'
+  responseHeaders: {}
+  statusCode: 201
+  method: POST
+
+- url: '/session'
+  postdata:
+    desiredCapabilities:
+      browserName: firefox
+    capabilities:
+      alwaysMatch:
+        browserName: firefox
+  response:
+    value:
+      sessionId: '13521-10219-202'
+      capabilities:
+        acceptInsecureCerts: false
+        browserName: firefox
+        browserVersion: 65.0.1
+        platformName: linux
+        platformVersion: 4.9.125-linuxkit
+        setWindowRect: true
+        strictFileInteractability: false
+        timeouts:
+          implicit: 0
+          pageLoad: 300000
+          script: 30000
+        unhandledPromptBehavior: 'dismiss and notify'
+  responseHeaders: {}
+  statusCode: 201
+  method: POST
+
+- url: '/session'
+  postdata:
+    capabilities:
+      alwaysMatch:
+        browserName: firefox
+    desiredCapabilities:
+      browserName: firefox
+  response:
+    value:
+      sessionId: '13521-10219-202'
+      capabilities:
+        browserName: firefox
+        browserVersion: 65.0.1
+        platformName: linux
+        platformVersion: 4.9.125-linuxkit
   responseHeaders: {}
   statusCode: 201
   method: POST
@@ -64,5 +109,14 @@ mocks:
     value: '#webdriver'
   response:
     value:
+    - element-6066-11e4-a52e-4f735466cecf: 5cc459b8-36a8-3042-8b4a-258883ea642b
+    - element-6066-11e4-a52e-4f735466cecf: 3783b042-7001-0740-a2c0-afdaac732e9f
+
+- url: '/session/13521-10219-202/elements'
+  postdata:
+    using: 'css selector'
+    value: '#weblogin'
+  response: 
+    value: 
     - element-6066-11e4-a52e-4f735466cecf: 5cc459b8-36a8-3042-8b4a-258883ea642b
     - element-6066-11e4-a52e-4f735466cecf: 3783b042-7001-0740-a2c0-afdaac732e9f

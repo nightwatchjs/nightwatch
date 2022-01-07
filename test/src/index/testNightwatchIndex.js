@@ -25,8 +25,8 @@ describe('test NightwatchIndex', function () {
     });
 
     client.on('nightwatch:session.create', function (data) {
-      assert.equal(client.api.sessionId, 1352110219202, 'Testing if session ID was set correctly');
-      assert.equal(client.api.capabilities.browserName, 'firefox');
+      assert.strictEqual(client.api.sessionId, '1352110219202', 'Testing if session ID was set correctly');
+      assert.strictEqual(client.api.capabilities.browserName, 'firefox');
       done();
     });
 
@@ -37,12 +37,10 @@ describe('test NightwatchIndex', function () {
     MockServer.addMock({
       url: '/wd/hub/session',
 
-      postdata: JSON.stringify({
-        desiredCapabilities: {
-          browserName: 'chrome',
-          platform: 'ANY'
-        }
-      }),
+      postdata: {
+        desiredCapabilities: {browserName: 'chrome', 'goog:chromeOptions': {}},
+        capabilities: {alwaysMatch: {browserName: 'chrome', 'goog:chromeOptions': {}}}
+      },
 
       responseHeaders: {
         location: 'http://localhost:10195/wd/hub/session/1352110219202'
@@ -74,32 +72,26 @@ describe('test NightwatchIndex', function () {
     });
 
     client.on('nightwatch:session.create', function (data) {
-      assert.equal(data.sessionId, 1352110219202);
-      assert.equal(client.api.capabilities.browserName, 'chrome');
+      assert.strictEqual(data.sessionId, '1352110219202');
+      assert.strictEqual(client.api.capabilities.browserName, 'chrome');
       done();
     });
 
-    client.startSession().catch(err => done(err));
+    client.startSession().catch(err => {
+      done(err);
+    });
   });
 
-  it('test new Chrome session with wrong driver version error message', function (done) {
+  it('test new Chrome session with wrong driver version error message', function () {
     MockServer.addMock({
       url: '/session',
-
-      postdata: {
-        desiredCapabilities: {
-          browserName: 'chrome',
-          platform: 'ANY'
-        }
-      },
-
       response: {
         sessionId: '8abea23aaa6bca9eb83f8f7c0f0cb17e',
         status: 33,
         value: {
           message: 'session not created: This version of ChromeDriver only supports Chrome version 75',
           error: [
-            '  (Driver info: chromedriver=75.0.3770.8 (681f24ea911fe754973dda2fdc6d2a2e159dd300-refs/branch-heads/3770@{#40}),platform=Mac OS X 10.14.4 x86_64)' ]
+            '  (Driver info: chromedriver=75.0.3770.8 (681f24ea911fe754973dda2fdc6d2a2e159dd300-refs/branch-heads/3770@{#40}),platform=Mac OS X 10.14.4 x86_64)']
         }
       },
       statusCode: 200,
@@ -108,10 +100,13 @@ describe('test NightwatchIndex', function () {
 
     let client = Nightwatch.createClient({
       selenium: {
-        start_process: false
+        start_process: false,
+        host: null
       },
       webdriver: {
-        start_process: true
+        start_process: false,
+        host: 'localhost',
+        port: '10195'
       },
       desiredCapabilities: {
         browserName: 'chrome'
@@ -120,24 +115,15 @@ describe('test NightwatchIndex', function () {
       output: false
     });
 
-    client.startSession().catch(err => {
+    return client.startSession().catch(err => {
       assert.ok(err instanceof Error);
-      assert.equal(err.message, 'An error occurred while retrieving a new session: "session not created: This version of ChromeDriver only supports Chrome version 75"');
-      done();
+      assert.strictEqual(err.message, 'An error occurred while creating a new ChromeDriver session: [SessionNotCreatedError] session not created: This version of ChromeDriver only supports Chrome version 75');
     });
   });
 
   it('test createSession on Selenium Grid with Firefox', function (done) {
     MockServer.addMock({
       url: '/wd/hub/session',
-
-      postdata: JSON.stringify({
-        desiredCapabilities: {
-          browserName: 'firefox',
-          platform: 'TEST'
-        }
-      }),
-
       response: JSON.stringify({
         platform: 'TEST',
         value: {
@@ -170,8 +156,8 @@ describe('test NightwatchIndex', function () {
 
     client.createSession()
       .then(data => {
-        assert.equal(data.sessionId, 'abc-123456');
-        assert.equal(client.api.capabilities.browserName, 'firefox');
+        assert.strictEqual(data.sessionId, 'abc-123456');
+        assert.strictEqual(client.api.capabilities.browserName, 'firefox');
         done();
       })
       .catch(err => done(err));
@@ -180,12 +166,6 @@ describe('test NightwatchIndex', function () {
   it('test session response with status success and no sessionId', function (done) {
     MockServer.addMock({
       url: '/wd/hub/session',
-      postdata: JSON.stringify({
-        desiredCapabilities: {
-          browserName: 'safari',
-          platform: 'ANY'
-        }
-      }),
       response: '{"value":{"message":"Could not find device : iPhone 6"}}',
       statusCode: 200,
       method: 'POST'
@@ -201,24 +181,39 @@ describe('test NightwatchIndex', function () {
 
     client.startSession().catch(err => {
       assert.ok(err instanceof Error);
-      assert.equal(typeof err.data, 'string');
-      assert.deepEqual(JSON.parse(err.data), {message: 'Could not find device : iPhone 6', error: []});
-      assert.ok(err.message.indexOf('Could not find device : iPhone 6') > 0);
+      assert.ok(err.message.includes('Could not find device : iPhone 6'));
       done();
     }).catch(err => done(err));
   });
+
+  it('test create Transport for with browserName disabled', function() {
+    const Nightwatch = common.require('index.js');
+    const client = Nightwatch.client({
+      selenium: {
+        start_process: false
+      },
+      webdriver: {},
+      desiredCapabilities: {
+        browserName: null
+      },
+      selenium_host: 'remote.url'
+    });
+
+    assert.strictEqual(client.options.desiredCapabilities.browserName, null);
+  });
+
 
   it('test runner API', function(done) {
     const Nightwatch = common.require('index.js');
     const CliRunner = common.require('runner/cli/cli.js');
     const init = CliRunner.prototype.initTestSettings;
     CliRunner.prototype.initTestSettings = function(opts = {}, baseSettings = null, argv = null, testEnv = null) {
-      assert.deepEqual(argv, {
+      assert.deepStrictEqual(argv, {
         config: path.resolve('./test/extra/nightwatch.json'),
         verbose: true,
         reporter: 'junit',
         source: 'test.js',
-        _source: 'test.js'
+        _source: ['test.js']
       });
 
       init.call(this, opts, baseSettings, argv, testEnv);

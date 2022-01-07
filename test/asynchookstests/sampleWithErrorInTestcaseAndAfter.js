@@ -10,7 +10,7 @@ describe('sampleWithFailureInTestcaseAndAfter', function() {
   });
 
   after(function(c) {
-    c.assert.strictEqual(0,1)
-  })
+    c.assert.strictEqual(0, 1);
+  });
 
 });

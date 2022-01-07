@@ -1,19 +1,19 @@
 var c = 0;
 module.exports = {
-  demoTest1 : function (client) {
+  demoTest1: function (client) {
     client.url('http://localhost');
   },
 
-  demoTest2 : function (client) {
+  demoTest2: function (client) {
     client
       .assert.elementPresent('#weblogin')
       .end();
   },
 
-  beforeEach : function(client, done) {
+  beforeEach: function(client, done) {
     c++;
 
-    if (c == 1) {
+    if (c === 1) {
       return done();
     }
 

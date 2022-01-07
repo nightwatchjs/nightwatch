@@ -5,7 +5,10 @@ const {strictEqual} = assert;
 
 describe('expect.title', function() {
   beforeEach(function(done) {
-    ExpectGlobals.beforeEach.call(this, () => {
+    ExpectGlobals.beforeEach.call(this, {
+      output: false,
+      silent: false
+    }, () => {
       this.client.api.globals.abortOnAssertionFailure = false;
       done();
     });
@@ -48,7 +51,7 @@ describe('expect.title', function() {
     return this.client.start(function(err) {
       assert.ok('capabilities' in api);
       assert.ok(err instanceof Error);
-      assert.ok(/^Error while running "title" command: Expected page title to equal: "vasq" - expected "equal 'vasq'" but got: "hp vasq" \(\d+ms\)$/.test(err.message), err.message);
+      assert.ok(/^Expected page title to equal: "vasq" - expected "equal 'vasq'" but got: "hp vasq" \(\d+ms\)$/.test(err.message), err.message);
     });
   });
 
@@ -116,7 +119,7 @@ describe('expect.title', function() {
       strictEqual(expect.assertion.actual, 'hp vasq');
       strictEqual(expect.assertion.resultValue, 'hp vasq');
       strictEqual(expect.assertion.passed, false);
-      strictEqual(expect.assertion.messageParts[0], ' not equal: "hp vasq"' );
+      strictEqual(expect.assertion.messageParts[0], ' not equal: "hp vasq"');
       assert.ok(expect.assertion.message.startsWith('Expected page title to not equal: "hp vasq"'));
     });
   });
@@ -189,7 +192,7 @@ describe('expect.title', function() {
       strictEqual(expect.assertion.negate, true);
       strictEqual(expect.assertion.resultValue, 'xx');
       strictEqual(expect.assertion.passed, false);
-      assert.deepEqual(expect.assertion.messageParts[0], ' not equal: "xx"');
+      assert.deepStrictEqual(expect.assertion.messageParts[0], ' not equal: "xx"');
       assert.ok(expect.assertion.message.startsWith('Expected page title to not equal: "xx"'));
     });
   });

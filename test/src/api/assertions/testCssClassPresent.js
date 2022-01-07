@@ -17,12 +17,15 @@ describe('assert.cssClassPresent', function () {
       },
       assertResult: true,
       assertApiCommandArgs(args) {
-        assert.strictEqual(args[0], '.test_element');
+        assert.deepStrictEqual(args[0], {
+          selector: '.test_element',
+          suppressNotFoundErrors: true
+        });
         assert.strictEqual(args[1], 'class');
         assert.strictEqual(typeof args[2], 'function');
       },
       assertion({reporter, instance, queueOpts, failure, message}) {
-        assert.deepStrictEqual(instance.args, [ '.test_element', 'test-css-class' ]);
+        assert.deepStrictEqual(instance.args, ['.test_element', 'test-css-class']);
         assert.deepStrictEqual(instance.options, {elementSelector: true});
         assert.strictEqual(failure, false);
         assert.strictEqual(instance.hasFailure(), false);
@@ -40,12 +43,15 @@ describe('assert.cssClassPresent', function () {
       },
       assertResult: true,
       assertApiCommandArgs(args) {
-        assert.strictEqual(args[0], '.test_element');
+        assert.deepStrictEqual(args[0], {
+          selector: '.test_element',
+          suppressNotFoundErrors: true
+        });
         assert.strictEqual(args[1], 'class');
         assert.strictEqual(typeof args[2], 'function');
       },
       assertion({reporter, instance, queueOpts, failure, message}) {
-        assert.deepStrictEqual(instance.args, [ '.test_element', ['test-css-class', 'other-css-class'] ]);
+        assert.deepStrictEqual(instance.args, ['.test_element', ['test-css-class', 'other-css-class']]);
         assert.deepStrictEqual(instance.options, {elementSelector: true});
         assert.strictEqual(failure, false);
         assert.strictEqual(instance.hasFailure(), false);
@@ -63,7 +69,10 @@ describe('assert.cssClassPresent', function () {
       },
       assertResult: true,
       assertApiCommandArgs(args) {
-        assert.strictEqual(args[0], '.test_element');
+        assert.deepStrictEqual(args[0], {
+          selector: '.test_element',
+          suppressNotFoundErrors: true
+        });
         assert.strictEqual(args[1], 'class');
         assert.strictEqual(typeof args[2], 'function');
       },
@@ -164,7 +173,7 @@ describe('assert.cssClassPresent', function () {
       },
       assertResult: true,
       assertApiCommandArgs(args) {
-        assert.deepStrictEqual(args[0], {selector: '.test_element'});
+        assert.deepStrictEqual(args[0], {selector: '.test_element', suppressNotFoundErrors: true});
         assert.strictEqual(args[1], 'class');
         assert.strictEqual(typeof args[2], 'function');
       },
@@ -206,9 +215,9 @@ describe('assert.cssClassPresent', function () {
       assertion({instance, failure, err}) {
         assert.strictEqual(instance.getActual(), 'element could not be located');
         assert.strictEqual(instance.expected(), 'has test-css-class');
-        assert.strictEqual(instance.getValue(), '');
+        assert.strictEqual(instance.getValue(), null);
         assert.strictEqual(failure, 'Expected "has test-css-class" but got: "element could not be located"');
-        assert.strictEqual(err.message, `Error while running "cssClassPresent" command: Element <.test_element> doesnt have css class "'test-css-class'" in 5ms - expected "has test-css-class" but got: "element could not be located" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(err.message, `Element <.test_element> doesnt have css class "'test-css-class'" in 5ms - expected "has test-css-class" but got: "element could not be located" (${instance.elapsedTime}ms)`);
       }
     });
   });

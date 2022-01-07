@@ -21,7 +21,7 @@ describe('test Request With Credentials', function () {
     Nocks.disable();
   });
 
-  it('Test initialization with credentials', function (done) {
+  it('Test initialization with credentials', async function () {
     nock('http://localhost:10195')
       .post('/wd/hub/session')
       .basicAuth({
@@ -47,117 +47,9 @@ describe('test Request With Credentials', function () {
     });
 
     client.on('nightwatch:session.create', function (data) {
-      assert.equal(data.sessionId, '1352110219202');
-      done();
+      assert.strictEqual(data.sessionId, '1352110219202');
     });
 
-    client.startSession();
-  });
-
-  it('Test create session with headless mode in Firefox', function () {
-    nock('http://localhost:10195')
-      .post('/wd/hub/session')
-      .reply(201, {
-        status: 0,
-        sessionId: '1352110219202',
-        value: {
-          browserName: 'firefox',
-          version: 'TEST',
-          platform: 'TEST'
-        }
-      });
-
-    let client = Nightwatch.createClient({
-      selenium_port: 10195,
-      silent: false,
-      output: false
-    });
-
-    client.createSession({
-      headless: true
-    });
-
-    assert.deepStrictEqual(client.settings.desiredCapabilities, {
-      alwaysMatch: {
-        'moz:firefoxOptions': {
-          args: ['-headless']
-        }
-      },
-      browserName: 'firefox',
-      platform: 'ANY'
-    });
-  });
-
-  it('Test create session with headless mode in Chrome', function () {
-    nock('http://localhost:10195')
-      .post('/wd/hub/session')
-      .reply(201, {
-        status: 0,
-        sessionId: '1352110219202',
-        value: {
-          browserName: 'chrome',
-          version: 'TEST',
-          platform: 'TEST'
-        }
-      });
-
-    let client = Nightwatch.createClient({
-      selenium_port: 10195,
-      silent: false,
-      output: false,
-      desiredCapabilities: {
-        browserName: 'chrome'
-      }
-    });
-
-    client.createSession({
-      headless: true
-    });
-
-    assert.deepStrictEqual(client.settings.desiredCapabilities, {
-      chromeOptions: {
-        args: ['--headless']
-      },
-      browserName: 'chrome',
-      platform: 'ANY'
-    });
-  });
-
-  it('Test create session with headless mode in Chrome with existing args', function () {
-    nock('http://localhost:10195')
-      .post('/wd/hub/session')
-      .reply(201, {
-        status: 0,
-        sessionId: '1352110219202',
-        value: {
-          browserName: 'chrome',
-          version: 'TEST',
-          platform: 'TEST'
-        }
-      });
-
-    let client = Nightwatch.createClient({
-      selenium_port: 10195,
-      silent: false,
-      output: false,
-      desiredCapabilities: {
-        browserName: 'chrome',
-        chromeOptions: {
-          args : ['--no-sandbox']
-        }
-      }
-    });
-
-    client.createSession({
-      headless: true
-    });
-
-    assert.deepStrictEqual(client.settings.desiredCapabilities, {
-      chromeOptions: {
-        args: ['--no-sandbox', '--headless']
-      },
-      browserName: 'chrome',
-      platform: 'ANY'
-    });
+    await client.createSession();
   });
 });

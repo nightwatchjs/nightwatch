@@ -30,15 +30,15 @@ module.exports = {
   // Automatically retrying failed assertions - You can tell Nightwatch to automatically retry failed assertions until a given timeout is reached, before the test runner gives up and fails the test.
   retryAssertionTimeout: 1000,
 
-  'default' : {
-    myGlobal : function() {
+  'default': {
+    myGlobal: function() {
       return 'I\'m a method';
     }
   },
 
-  'test_env' : {
+  'test_env': {
     myGlobal: 'test_global',
-    beforeEach : function() {
+    beforeEach: function() {
 
     }
   },

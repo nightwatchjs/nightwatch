@@ -1,19 +1,22 @@
 const MockServer  = require('../mockserver.js');
 const Nightwatch = require('../nightwatch.js');
 
-module.exports = {
-  beforeEach(done) {
+const Commands = {
+  beforeEach(done, settings = {}) {
     this.server = MockServer.init();
 
     this.server.on('listening', () => {
-
-      Nightwatch.initClient({
-        webdriver:{
+      Nightwatch.initClient(Object.assign({
+        desiredCapabilities: {
+          name: 'testSuite'
+        },
+        selenium: {
+          port: 10195,
           start_process: false
         },
-        output: false,
+        output: process.env.VERBOSE === '1' || false,
         silent: false
-      })
+      }, settings))
         .then(client => {
           this.client = client;
           done();
@@ -27,3 +30,5 @@ module.exports = {
     });
   }
 };
+
+module.exports = Commands;

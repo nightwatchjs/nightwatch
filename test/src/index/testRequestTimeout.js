@@ -20,13 +20,13 @@ describe('test HttpRequestTimeout', function() {
 
   it('testRequestTimeout', function (done) {
     MockServer.addMock({
-      url : '/wd/hub/123456/element',
-      response : '',
+      url: '/wd/hub/123456/element',
+      response: '',
       method: 'GET',
-      socketDelay : 400
+      socketDelay: 400
     }, true);
 
-    var options = {
+    const options = {
       path: '/:sessionId/element',
       method: 'GET',
       sessionId: '123456'
@@ -38,10 +38,10 @@ describe('test HttpRequestTimeout', function() {
       port: 10195
     };
 
-    var request = new HttpRequest(options);
+    const request = new HttpRequest(options);
 
     request.on('error', function (err) {
-      assert.equal(err.code, 'ECONNRESET');
+      assert.strictEqual(err.code, 'ECONNRESET');
       assert.ok(err instanceof Error);
       done();
     }).on('success', function(result, response) {
@@ -52,17 +52,17 @@ describe('test HttpRequestTimeout', function() {
 
   it('testRetryAttempts', function (done) {
     MockServer.addMock({
-      url : '/wd/hub/10000000/element',
-      response : '',
+      url: '/wd/hub/10000000/element',
+      response: '',
       method: 'GET',
-      socketDelay : 200
+      socketDelay: 200
     }, true).addMock({
-      url : '/wd/hub/10000000/element',
-      response : '',
+      url: '/wd/hub/10000000/element',
+      response: '',
       method: 'GET'
     }, true);
 
-    var options = {
+    const options = {
       path: '/:sessionId/element',
       selenium_port: 10195,
       method: 'GET',
@@ -81,9 +81,9 @@ describe('test HttpRequestTimeout', function() {
       }
     };
 
-    var request = new HttpRequest(options);
-    assert.equal(request.retryAttempts, 1);
-    assert.deepEqual(request.httpOpts, {
+    const request = new HttpRequest(options);
+    assert.strictEqual(request.retryAttempts, 1);
+    assert.deepStrictEqual(request.httpOpts, {
       host: 'localhost',
       port: 10195,
       default_path: '/wd/hub',
@@ -99,9 +99,9 @@ describe('test HttpRequestTimeout', function() {
 
     request
       .on('error', function(err) {
-        assert.equal(request.retryCount, 1);
+        assert.strictEqual(request.retryCount, 1);
         assert.ok(err instanceof Error);
-        assert.equal(err.code, 'ECONNRESET');
+        assert.strictEqual(err.code, 'ECONNRESET');
       })
       .on('success', function () {
         assert.strictEqual(request.retryAttempts, 0);

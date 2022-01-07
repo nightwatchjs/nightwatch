@@ -26,23 +26,23 @@ describe('test Queue', function () {
 
     client.api.url('http://localhost').end();
 
-    assert.equal(queue.tree.rootNode.childNodes.length, 2);
+    assert.strictEqual(queue.tree.rootNode.childNodes.length, 2);
     urlCommand = queue.tree.rootNode.childNodes[0];
     endCommand = queue.tree.rootNode.childNodes[1];
 
-    assert.equal(endCommand.done, false);
-    assert.equal(urlCommand.done, false);
-    assert.equal(endCommand.started, false);
+    assert.strictEqual(endCommand.done, false);
+    assert.strictEqual(urlCommand.done, false);
+    assert.strictEqual(endCommand.started, false);
 
     return this.client.start(err => {
       if (err) {
         throw err;
       }
-      assert.equal(urlCommand.started, true);
-      assert.equal(urlCommand.done, true);
-      assert.equal(endCommand.childNodes.length, 1);
-      assert.equal(endCommand.done, true);
-      assert.equal(queue.tree.rootNode.childNodes.length, 0);
+      assert.strictEqual(urlCommand.started, true);
+      assert.strictEqual(urlCommand.done, true);
+      assert.strictEqual(endCommand.childNodes.length, 1);
+      assert.strictEqual(endCommand.done, true);
+      assert.strictEqual(queue.tree.rootNode.childNodes.length, 0);
     });
   });
 });

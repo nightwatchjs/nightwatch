@@ -3,7 +3,8 @@ const assert = require('assert');
 const common = require('../../common.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
-const NightwatchClient = common.require('index.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('testRunWithMultipleSources', function() {
   before(function(done) {
@@ -32,27 +33,16 @@ describe('testRunWithMultipleSources', function() {
     let globals = {
       calls: 0,
       reporter(results) {
-        assert.equal(globals.calls, 7);
-        assert.equal(Object.keys(results.modules).length, 2);
+        assert.strictEqual(globals.calls, 7);
+        assert.strictEqual(Object.keys(results.modules).length, 2);
         assert.ok('sample' in results.modules);
         assert.ok('sampleSingleTest' in results.modules);
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
-      globals: globals,
-      persist_globals: true,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests(testsPath, settings);
+    return runTests(testsPath, settings({
+      globals
+    }));
   });
 
   it('testRunWithSourceFilesAndFolders', function() {
@@ -64,8 +54,8 @@ describe('testRunWithMultipleSources', function() {
     let globals = {
       calls: 0,
       reporter(results) {
-        assert.equal(globals.calls, 21);
-        assert.equal(Object.keys(results.modules).length, 5);
+        assert.strictEqual(globals.calls, 21);
+        assert.strictEqual(Object.keys(results.modules).length, 5);
         assert.ok('sample' in results.modules);
         assert.ok('sampleSingleTest' in results.modules);
         assert.ok('sampleWithBeforeAndAfter' in results.modules);
@@ -73,20 +63,9 @@ describe('testRunWithMultipleSources', function() {
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
-      globals,
-      persist_globals: true,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests(testsPath, settings);
+    return runTests(testsPath, settings({
+      globals
+    }));
   });
 
   it('testRunner with multiple src_folders value', function() {
@@ -100,25 +79,14 @@ describe('testRunWithMultipleSources', function() {
       reporter(results) {
         assert.ok('async/test/sample' in results.modules);
         assert.ok('simple/test/sample' in results.modules);
-        assert.equal(Object.keys(results.modules).length, 2);
+        assert.strictEqual(Object.keys(results.modules).length, 2);
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
+    return runTests(settings({
       src_folders: testsPath,
-      silent: false,
-      output: false,
-      globals: globals,
-      persist_globals: true,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests(settings);
+      globals
+    }));
   });
 
   it('testRunner with multiple src_folders value - with unit tests error', function() {
@@ -129,7 +97,7 @@ describe('testRunWithMultipleSources', function() {
       this.onuncaught = function(err) {};
     });
 
-    let uncaughtErr = null
+    let uncaughtErr = null;
     process.on('uncaughtException', function(err) {
       uncaughtErr = err;
     });
@@ -147,25 +115,14 @@ describe('testRunWithMultipleSources', function() {
         assert.ok('test/sample' in results.modules);
         assert.ok('unittests/sample' in results.modules);
         assert.ok('unittests/sampleAnnotation' in results.modules);
-        assert.equal(Object.keys(results.modules).length, 3);
+        assert.strictEqual(Object.keys(results.modules).length, 3);
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
+    return Client.runTests(settings({
       src_folders: testsPath,
-      silent: true,
-      output: false,
-      globals: globals,
-      persist_globals: true,
-      output_folder: false
-    };
-
-    return Client.runTests(settings).then(_ => {
+      globals
+    })).then(_ => {
       mockery.deregisterAll();
       mockery.disable();
       assert.ok(uncaughtErr instanceof TypeError);

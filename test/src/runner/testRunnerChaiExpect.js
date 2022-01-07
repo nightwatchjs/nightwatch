@@ -23,8 +23,8 @@ describe('testRunnerChaiExpect', function() {
     let settings = Settings.parse({
       selenium: {
         port: 10195,
-        version2: true,
-        start_process: true
+        host: 'localhost',
+        start_process: false
       },
       globals: {
         test: assert,
@@ -42,8 +42,8 @@ describe('testRunnerChaiExpect', function() {
 
     return Globals.startTestRunner(testsPath, settings)
       .then(runner => {
-        assert.equal(runner.results.modules.sampleWithChai.tests, 2);
-        assert.equal(runner.results.modules.sampleWithChai.failures, 0);
+        assert.strictEqual(runner.results.modules.sampleWithChai.tests, 2);
+        assert.strictEqual(runner.results.modules.sampleWithChai.failures, 0);
       });
   });
 });

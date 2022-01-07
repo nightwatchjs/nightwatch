@@ -2,33 +2,32 @@
  * Module dependencies
  */
 const Nightwatch = require('../lib/index.js');
-const {Logger} = require('../lib/utils');
+const {Logger, shouldReplaceStack, alwaysDisplayError} = require('../lib/utils');
 
 try {
   Nightwatch.cli(function(argv) {
     argv._source = argv['_'].slice(0);
 
     const runner = Nightwatch.CliRunner(argv);
-    runner.setup()
-      .startWebDriver()
-      .catch(err => {
-        throw err;
-      })
-      .then(() => {
-        return runner.runTests();
-      })
-      .catch(err => {
-        runner.processListener.setExitCode(10);
-      })
-      .then(() => {
-        return runner.stopWebDriver();
-      })
-      .catch(err => {
-        Logger.error(err);
+
+    return runner
+      .setupAsync()
+      .then(() => runner.runTests())
+      .catch((err) => {
+        if (!err.displayed || alwaysDisplayError(err)) {
+          Logger.error(err);
+        }
+      
+        runner.processListener.setExitCode(10).exit();
       });
   });
 } catch (err) {
-  err.message = 'An error occurred while trying to start the Nightwatch Runner: ' + err.message;
+  const {message} = err;
+  err.message = 'An error occurred while trying to start the Nightwatch Runner:';
+  err.showTrace = !shouldReplaceStack(err);
+  err.detailedErr = message;
+
   Logger.error(err);
+
   process.exit(2);
 }

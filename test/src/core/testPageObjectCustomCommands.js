@@ -49,10 +49,44 @@ describe('test PageObject Commands', function () {
     let api = this.client.api;
 
     const page = api.page.simplePageObjWithCommandsObject();
-    assert.equal(typeof page.dropdownSelect, 'function');
-    assert.equal(typeof page.testCommand, 'function');
-    assert.equal(typeof page.getUrl, 'function');
+    assert.strictEqual(typeof page.dropdownSelect, 'function');
+    assert.strictEqual(typeof page.testCommand, 'function');
+    assert.strictEqual(typeof page.getUrl, 'function');
 
+  });
+
+  it('testPageObject - custom commands class definition', function () {
+    let api = this.client.api;
+
+    const page = api.page.simplePageObjWithCommandsClass();
+
+    assert.strictEqual(typeof page.basicCommand, 'function');
+    assert.strictEqual(typeof page.dropdownSelectByText, 'function');
+    assert.strictEqual(typeof page.dropdownSelect, 'function');
+    assert.strictEqual(typeof page.scrollToElement, 'function');
+    assert.strictEqual(page.name, 'simplePageObjWithCommandsClass');
+    assert.strictEqual(typeof page.getUrl, 'function');
+
+    const result = page.basicCommand();
+    assert.deepStrictEqual(result, {
+      basicResult: 'from-helper-class',
+      otherResult: 'from-other-helper-class'
+    });
+
+  });
+
+  it('testPageObject - custom commands class definition - throws Error', function () {
+    let api = this.client.api;
+    let expectedError;
+    try {
+      const page = api.page.simplePageObjWithCommandsClassThrowsError();
+    } catch (err) {
+      expectedError = err;
+    }
+
+    assert.ok(expectedError instanceof Error, 'Expected error was not thrown');
+    assert.strictEqual(expectedError.message, 'Trying to overwrite page object/section "simplePageObjWithCommandsClassThrowsError"  method/property "name".');
+    assert.strictEqual(expectedError.detailedErr, 'Using basicCommand,dropdownSelect,dropdownSelectByText,name.');
   });
 
   it('testPageObject - custom command with args[0] as Array', function () {
@@ -74,7 +108,7 @@ describe('test PageObject Commands', function () {
     });
     let api = this.client.api;
 
-    const page = api.page.simplePageObjWithCommandsObject().customExecute({ prop: true });
+    const page = api.page.simplePageObjWithCommandsObject().customExecute({prop: true});
 
     return this.client.start();
   });
@@ -86,8 +120,8 @@ describe('test PageObject Commands', function () {
       api.page.simplePageObjWithError();
     } catch (err) {
       assert.ok(err instanceof Error);
-      assert.equal(err.message, 'Trying to overwrite page object/section "simplePageObjWithError"  method/property "name".');
-      assert.equal(err.detailedErr, 'Using dropdownSelect, dropdownSelectByText, scrollToElement, name, testCommand.' );
+      assert.strictEqual(err.message, 'Trying to overwrite page object/section "simplePageObjWithError"  method/property "name".');
+      assert.strictEqual(err.detailedErr, 'Using dropdownSelect, dropdownSelectByText, scrollToElement, name, testCommand.');
 
       done();
     }

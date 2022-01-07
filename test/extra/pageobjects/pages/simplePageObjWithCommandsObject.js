@@ -1,35 +1,36 @@
-const commonCommands = {
-  dropdownSelect() {
-    return this;
-  },
-
-  dropdownSelectByText() {
-    return this;
-  },
-
-  scrollToElement() {
-    return this;
-  }
-};
-
-const testCommands = {
-  ...commonCommands,
-
-  testCommand() {
-    return this;
-  }
-};
-
-const o = {
+module.exports = {
   url: 'http://localhost.com',
   elements: {
     loginAsString: '#weblogin',
     loginCss: {selector: '#weblogin'},
-    loginIndexed: {selector: '#weblogin', index: 1},
-    loginXpath: {selector: '//weblogin', locateStrategy: 'xpath'},
-    loginId: {selector: 'weblogin', locateStrategy: 'id'}
+    loginIndexed: {
+      selector: '#weblogin',
+      index: 1
+    },
+    loginXpath: {
+      selector: '//weblogin',
+      locateStrategy: 'xpath'
+    },
+    loginId: {
+      selector: 'weblogin',
+      locateStrategy: 'id'
+    }
   },
-  commands: testCommands
-};
+  commands: {
+    dropdownSelect() {
+      return this;
+    },
 
-module.exports = o;
+    dropdownSelectByText() {
+      return this;
+    },
+
+    scrollToElement() {
+      return this;
+    },
+
+    testCommand() {
+      return this;
+    }
+  }
+};

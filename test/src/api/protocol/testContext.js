@@ -9,8 +9,7 @@ describe('context commands', function() {
   it('testContexts', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'GET');
-        assert.equal(opts.path, '/session/1352110219202/contexts');
+        assert.strictEqual(opts.path, '/session/1352110219202/contexts');
       },
       commandName: 'contexts',
       args: []
@@ -20,8 +19,7 @@ describe('context commands', function() {
   it('testCurrentContext', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'GET');
-        assert.equal(opts.path, '/session/1352110219202/context');
+        assert.strictEqual(opts.path, '/session/1352110219202/context');
       },
       commandName: 'currentContext',
       args: []
@@ -30,11 +28,12 @@ describe('context commands', function() {
 
   it('testSetContext', function() {
     let text = 'NATIVE';
+
     return Globals.protocolTest({
       assertion: function(opts) {
-        assert.equal(opts.method, 'POST');
-        assert.equal(opts.path, '/session/1352110219202/context');
-        assert.deepEqual(opts.data, {'name': text});
+        assert.strictEqual(opts.method, 'POST');
+        assert.strictEqual(opts.path, '/session/1352110219202/context');
+        assert.deepStrictEqual(opts.data, {name: text});
       },
       commandName: 'setContext',
       args: [text]

@@ -3,11 +3,16 @@ const assert = require('assert');
 const common = require('../../common.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
-const NightwatchClient = common.require('index.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('testRunTestSuite', function() {
 
-  before(function(done) {
+  beforeEach(function(done) {
+    process.removeAllListeners('exit');
+    process.removeAllListeners('uncaughtException');
+    process.removeAllListeners('unhandledRejection');
+
     this.server = MockServer.init();
 
     this.server.on('listening', () => {
@@ -15,288 +20,97 @@ describe('testRunTestSuite', function() {
     });
   });
 
-  after(function(done) {
-    CommandGlobals.afterEach.call(this, done);
-  });
-
-  beforeEach(function() {
-    process.removeAllListeners('exit');
-    process.removeAllListeners('uncaughtException');
-    process.removeAllListeners('unhandledRejection');
-  });
-
-  afterEach(function() {
-    Object.keys(require.cache).forEach(function(module) {
-      delete require.cache[module];
-    });
-  });
-
-  it('testRunner with suiteRetries', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withfailures');
-    let globals = {
-      calls: 0,
-      retryAssertionTimeout: 0,
-      reporter(results, cb) {
-        assert.strictEqual(settings.globals.calls, 8);
-        assert.deepEqual(results.errmessages, []);
-        assert.strictEqual(results.passed, 1);
-        assert.strictEqual(results.failed, 1);
-        assert.strictEqual(results.errors, 0);
-        assert.strictEqual(results.skipped, 0);
-        cb();
-      }
-    };
-
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      output: false,
-      silent: true,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests({
-      suiteRetries: 1,
-      _source: [testsPath]
-    }, settings);
-  });
-
-  it('testRunner with suiteRetries and describe interface', function() {
-    const testsPath = path.join(__dirname, '../../sampletests/withdescribe/suite-retries/sample.js');
-
-    const globals = {
-      calls: 0,
-      retryAssertionTimeout: 0,
-      reporter(results, cb) {
-        assert.strictEqual(settings.globals.calls, 8);
-        assert.deepEqual(results.errmessages, []);
-        assert.strictEqual(results.passed, 1);
-        assert.strictEqual(results.failed, 1);
-        assert.strictEqual(results.errors, 0);
-        assert.strictEqual(results.skipped, 0);
-        cb();
-      }
-    };
-
-    const settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      output: false,
-      silent: true,
-      persist_globals: true,
-      globals,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests({
-      suiteRetries: 1,
-      _source: [testsPath]
-    }, settings);
-  });
-
-  it('testRunner with suiteRetries and describe interface with attribute', function() {
-    const testsPath = path.join(__dirname, '../../sampletests/withdescribe/suite-retries/sampleWithAttribute.js');
-
-    const globals = {
-      calls: 0,
-      retryAssertionTimeout: 0,
-      reporter(results, cb) {
-        assert.strictEqual(settings.globals.calls, 8);
-        assert.deepEqual(results.errmessages, []);
-        assert.strictEqual(results.passed, 1);
-        assert.strictEqual(results.failed, 1);
-        assert.strictEqual(results.errors, 0);
-        assert.strictEqual(results.skipped, 0);
-        cb();
-      }
-    };
-
-    const settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      output: false,
-      silent: true,
-      persist_globals: true,
-      globals,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests({
-      _source: [testsPath]
-    }, settings);
-  });
-
-  it('testRunner with suiteRetries and describe interface with both attribute and argument', function() {
-    const testsPath = path.join(__dirname,
-      '../../sampletests/withdescribe/suite-retries/sampleWithAttribute.js');
-
-    const globals = {
-      calls: 0,
-      retryAssertionTimeout: 0,
-      reporter(results, cb) {
-        assert.strictEqual(settings.globals.calls, 8);
-        cb();
-      }
-    };
-
-    const settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      output: false,
-      silent: true,
-      persist_globals: true,
-      globals,
-      output_folder: false
-    };
-
-    return NightwatchClient.runTests({
-      suiteRetries:2,
-      _source: [testsPath]
-    }, settings);
-  });
-
-  it('testRunner with suiteRetries and skip_testcases_on_fail=false', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withfailures');
-    let globals = {
-      calls: 0,
-      retryAssertionTimeout: 0,
-      reporter(results, cb) {
-        assert.strictEqual(settings.globals.calls, 12);
-        assert.strictEqual(results.errors, 0);
-        cb();
-      }
-    };
-
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
-      persist_globals: true,
-      globals: globals,
-      skip_testcases_on_fail: false,
-      output_folder: false,
-    };
-
-    return NightwatchClient.runTests({
-      suiteRetries: 1,
-      _source: [testsPath]
-    }, settings);
-  });
-
-  it('testRunner with suiteRetries and locate strategy change', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/suiteretries/locate-strategy');
-    let globals = {
-      calls: 0,
-      reporter(results, cb) {
-        assert.strictEqual(runner.currentSuite.client.locateStrategy, 'css selector');
-        cb();
-      }
-    };
-
-    const Runner = common.require('runner/runner.js');
-    const Settings = common.require('settings/settings.js');
-
-    const settings = Settings.parse({
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
-      persist_globals: true,
-      globals,
-      skip_testcases_on_fail: false,
-      output_folder: false,
-    });
-
-    const argv = {
-      reporter: 'junit',
-      suiteRetries: 1,
-      _source: [testsPath]
-    };
-
-    let runner = Runner.create(settings, argv);
-
-    return Runner.readTestSource(settings, argv)
-      .then(modules => {
-        return runner.run(modules);
+  afterEach(function(done) {
+    CommandGlobals.afterEach.call(this, function() {
+      Object.keys(require.cache).forEach(function(module) {
+        delete require.cache[module];
       });
+
+      done();
+    });
   });
 
-  it('test clear command queue when run with suiteRetries', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/suiteretries/sample');
+  it('testRunner with --fail-fast cli argument', function() {
+    let src_folders = [
+      path.join(__dirname, '../../sampletests/withfailures'),
+      path.join(__dirname, '../../sampletests/withsubfolders')
+    ];
+
     let globals = {
       calls: 0,
+      retryAssertionTimeout: 0,
       reporter(results, cb) {
-        assert.strictEqual(globals.calls, 3);
-        assert.strictEqual(results.passed, 2);
+        assert.strictEqual(Object.keys(results.modules).length, 1);
         cb();
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
+    return runTests({
+      'fail-fast': true
+    }, settings({
       output: false,
-      silent: true,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
+      src_folders,
+      globals
+    })).catch(err => {
+      return err;
+    }).then(err => {
+      assert.ok(err instanceof Error);
+    });
+  });
+
+  it('testRunner with enable_fail_fast setting', function() {
+    let src_folders = [
+      path.join(__dirname, '../../sampletests/withfailures'),
+      path.join(__dirname, '../../sampletests/withsubfolders')
+    ];
+
+    let globals = {
+      calls: 0,
+      retryAssertionTimeout: 0,
+      reporter(results, cb) {
+        assert.strictEqual(Object.keys(results.modules).length, 1);
+        cb();
+      }
     };
 
-    return NightwatchClient.runTests({
-      suiteRetries: 1,
-      _source: [testsPath]
-    }, settings);
+    return runTests({
+    }, settings({
+      output: false,
+      enable_fail_fast: true,
+      src_folders,
+      globals
+    })).catch(err => {
+      return err;
+    }).then(err => {
+      assert.ok(err instanceof Error);
+    });
   });
 
   it('testRunModuleSyncName', function() {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/elements',
-      postdata : '{"using":"css selector","value":"#finlandia"}',
-      response: JSON.stringify({sessionId:'1352110219202',status:0,value:[{ELEMENT: '10'}]})
+      postdata: '{"using":"css selector","value":"#finlandia"}',
+      response: JSON.stringify({sessionId: '1352110219202', status: 0, value: [{ELEMENT: '10'}]})
     });
 
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element/10/displayed',
       statusCode: 200,
       method: 'GET',
-      response: JSON.stringify({sessionId:'1352110219202',status:0,value:true})
+      response: JSON.stringify({sessionId: '1352110219202', status: 0, value: true})
     });
 
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element',
       statusCode: 200,
-      response: JSON.stringify({sessionId:'1352110219202',status:0,value: {ELEMENT: '10'}})
+      response: JSON.stringify({sessionId: '1352110219202', status: 0, value: {ELEMENT: '10'}})
     });
 
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element/10/text',
       statusCode: 200,
       method: 'GET',
-      response: JSON.stringify({sessionId:'1352110219202',status:0,value:'jean sibelius'})
+      response: JSON.stringify({sessionId: '1352110219202', status: 0, value: 'jean sibelius'})
     }, true);
 
     let globals = {
@@ -316,23 +130,13 @@ describe('testRunTestSuite', function() {
     };
 
     let testsPath = path.join(__dirname, '../../sampletests/syncnames');
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
-      sync_test_names: true,
-      persist_globals: true,
-      globals: globals,
-      output_folder: false
-    };
 
-    return NightwatchClient.runTests({
+    return runTests({
       _source: [testsPath]
-    }, settings);
+    }, settings({
+      sync_test_names: true,
+      globals
+    }));
 
   });
 
@@ -353,21 +157,11 @@ describe('testRunTestSuite', function() {
       }
     };
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: true,
-      output: false,
-      globals: globals,
-      output_folder: false,
+    return runTests(settings({
+      globals,
       start_session: true,
       src_folders: srcFolders
-    };
-
-    return NightwatchClient.runTests(settings);
+    }));
   });
 
   it('testRunMultipleSrcFolders', function() {
@@ -376,12 +170,7 @@ describe('testRunTestSuite', function() {
       path.join(__dirname, '../../sampletests/srcfolders')
     ];
 
-    let settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
+    return runTests(settings({
       globals: {
         reporter(results, cb) {
           if (results.lastError) {
@@ -396,13 +185,8 @@ describe('testRunTestSuite', function() {
           cb();
         }
       },
-      silent: true,
-      output: false,
-      output_folder: false,
       src_folders: srcFolders
-    };
-
-    return NightwatchClient.runTests(settings);
+    }));
   });
 
   it('test runner with multiple test interfaces - exports/describe', function() {
@@ -411,12 +195,7 @@ describe('testRunTestSuite', function() {
       path.join(__dirname, '../../sampletests/withdescribe/basic')
     ];
 
-    const settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
+    return runTests(settings({
       globals: {
         reporter(results, cb) {
           if (results.lastError) {
@@ -435,13 +214,8 @@ describe('testRunTestSuite', function() {
           cb();
         }
       },
-      silent: true,
-      output: false,
-      output_folder: false,
       src_folders: srcFolders
-    };
-
-    return NightwatchClient.runTests(settings);
+    }));
   });
 
   it('test runner with describe and .only()', function() {
@@ -449,12 +223,7 @@ describe('testRunTestSuite', function() {
       path.join(__dirname, '../../sampletests/withdescribe/basic/sampleWithOnly.js')
     ];
 
-    const settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
+    return runTests(settings({
       globals: {
         reporter(results, cb) {
           if (results.lastError) {
@@ -466,13 +235,8 @@ describe('testRunTestSuite', function() {
           cb();
         }
       },
-      silent: true,
-      output: false,
-      output_folder: false,
       src_folders: srcFolders
-    };
-
-    return NightwatchClient.runTests(settings);
+    }));
   });
 
   it('testRunner with describe and skipTestcasesOnFail=true', function() {
@@ -481,29 +245,19 @@ describe('testRunTestSuite', function() {
       calls: 0,
       retryAssertionTimeout: 0,
       reporter(results, cb) {
-        assert.strictEqual(settings.globals.calls, 2);
+        assert.strictEqual(globals.calls, 2);
         assert.strictEqual(results.errors, 0);
         assert.strictEqual(results.failed, 2);
         cb();
       }
     };
 
-    const settings = {
-      selenium: {
-        port: 10195,
-        version2: true,
-        start_process: true
-      },
-      silent: false,
-      output: false,
-      persist_globals: true,
-      globals,
-      skip_testcases_on_fail: true,
-      output_folder: false,
-    };
-
-    return NightwatchClient.runTests({
+    return runTests({
       _source: [testsPath]
-    }, settings);
+    }, settings({
+      globals,
+      output: false,
+      skip_testcases_on_fail: true
+    }));
   });
 });

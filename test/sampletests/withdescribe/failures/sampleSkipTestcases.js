@@ -1,10 +1,20 @@
+const assert = require('assert');
+
 describe('sample test with skipTestcasesOnFail', function () {
   this.skipTestcasesOnFail = false;
   this.endSessionOnFail = false;
-  this.timeout(10);
-  this.retryInterval(5);
+
+  this.waitForTimeout(10);
+  this.waitForRetryInterval(5);
 
   this.tags = ['login'];
+
+  assert.strictEqual(this.waitForTimeout(), 10);
+  assert.strictEqual(this.waitForRetryInterval(), 5);
+
+  assert.strictEqual(this.globals.waitForConditionTimeout, 10);
+  assert.strictEqual(this.globals.retryAssertionTimeout, 10);
+  assert.strictEqual(this.globals.waitForConditionPollInterval, 5);
 
   let endFn;
 
@@ -25,7 +35,7 @@ describe('sample test with skipTestcasesOnFail', function () {
     client.globals.calls++;
 
     client.end = function () {
-      client.assert.fail('End should not be called.')
+      client.assert.fail('End should not be called.');
     };
 
     client.url('http://localhost')
