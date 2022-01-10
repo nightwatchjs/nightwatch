@@ -66,6 +66,7 @@ describe('assert.attributeMatches', function () {
         assert.strictEqual(typeof err, 'undefined');
         assert.strictEqual(failure, false);
         assert.strictEqual(instance.getActual(), 'random value');
+        assert.strictEqual(instance.message, 'Test message');
         assert.strictEqual(instance.hasFailure(), false);
       }
     });
