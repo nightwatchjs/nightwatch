@@ -199,15 +199,15 @@ describe('.click()', function() {
     });
     const api = this.client.api;
     this.client.api
-    .click('#weblogin', 'Clicked weblogin element')
-    .click('css selector', '#weblogin', 'Clicked css selector')
-    .click('#weblogin', function callback(result) {
-      assert.strictEqual(result.status, 0);
-      assert.strictEqual(this, api);
-    }, 'Clicked weblogin element')
-    .click('css selector', '#weblogin', function callback(result) {
-      assert.strictEqual(result.status, 0);
-    }, 'Clicked css selector');
+      .click('#weblogin', 'Clicked weblogin element')
+      .click('css selector', '#weblogin', 'Clicked css selector')
+      .click('#weblogin', function callback(result) {
+        assert.strictEqual(result.status, 0);
+        assert.strictEqual(this, api);
+      }, 'Clicked weblogin element')
+      .click('css selector', '#weblogin', function callback(result) {
+        assert.strictEqual(result.status, 0);
+      }, 'Clicked css selector');
     
     this.client.start(done);
   });
