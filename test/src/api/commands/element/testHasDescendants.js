@@ -1,30 +1,30 @@
 const assert = require('assert');
-const MockServer  = require('../../../../lib/mockserver.js');
+const MockServer = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 const Nightwatch = require('../../../../lib/nightwatch.js');
 
-describe('browser.hasDescendants', function(){
+describe('browser.hasDescendants', function () {
 
-  
-  before(function(done) {
+
+  before(function (done) {
     CommandGlobals.beforeEach.call(this, done);
   });
-    
-  after(function(done) {
+
+  after(function (done) {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('.hasDescendants', function(done){
+  it('.hasDescendants', function (done) {
 
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/execute',
+      url: '/wd/hub/session/1352110219202/execute/sync',
       method: 'POST',
       response: {
         value: 1
       }
     }, true);
 
-    this.client.api.hasDescendants('#weblogin', function callback(result){
+    this.client.api.hasDescendants('#weblogin', function callback(result) {
       assert.ok(result.value);
       assert.strictEqual(result.value, true);
     });
@@ -32,7 +32,7 @@ describe('browser.hasDescendants', function(){
   });
 
 
-  it('.hasDescendants - no child element', function(done) {
+  it('.hasDescendants - no child element', function (done) {
 
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/elements',
@@ -41,7 +41,7 @@ describe('browser.hasDescendants', function(){
         using: 'css selector',
         value: '#badDriver'
       },
-     
+
       response: {
         status: 0,
         sessionId: '1352110219202',
@@ -52,7 +52,7 @@ describe('browser.hasDescendants', function(){
     });
 
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/execute',
+      url: '/wd/hub/session/1352110219202/execute/sync',
       method: 'POST',
       response: {
         status: 0,
@@ -60,16 +60,16 @@ describe('browser.hasDescendants', function(){
       }
     });
 
-    this.client.api.hasDescendants('#badDriver', function callback(result){
+    this.client.api.hasDescendants('#badDriver', function callback(result) {
       assert.strictEqual(result.value, false);
     });
-    
+
     this.client.start(done);
   });
 
 
 
-  it('.hasDescendants - webdriver protcol', function(done){
+  it('.hasDescendants - webdriver protcol', function (done) {
     Nightwatch.initW3CClient({
       silent: true,
       output: false
@@ -88,18 +88,18 @@ describe('browser.hasDescendants', function(){
           value: 2
         }
       }, true);
-  
-      client.api.hasDescendants('#webdriver', function(result) {
+
+      client.api.hasDescendants('#webdriver', function (result) {
         assert.strictEqual(result.value, true);
-      }).hasDescendants('#webdriver', function callback(result){
+      }).hasDescendants('#webdriver', function callback(result) {
         assert.strictEqual(result.value, true);
       });
-  
+
       client.start(done);
     });
   });
 
-  it('.hasDescendants - webdriver protcol no such element', function(done){
+  it('.hasDescendants - webdriver protcol no such element', function (done) {
     Nightwatch.initW3CClient({
       silent: true,
       output: false
@@ -111,11 +111,11 @@ describe('browser.hasDescendants', function(){
           value: 0
         }
       });
-  
-      client.api.hasDescendants('#webdriver', function(result) {
+
+      client.api.hasDescendants('#webdriver', function (result) {
         assert.strictEqual(result.value, false);
       });
-  
+
       client.start(done);
     });
   });
