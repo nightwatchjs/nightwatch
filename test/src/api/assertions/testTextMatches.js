@@ -71,6 +71,25 @@ describe('assert.textMatches', function () {
     });
   });
 
+  it('textMatches assertion - element not found', function() {
+    return assertionTest({
+      args: ['.test_element', 'text'],
+      commandResult: {
+        value: [],
+        status: -1
+      },
+      assertError: true,
+      assertFailure: true,
+      assertResult: true,
+      assertion({instance, failure, err}) {
+        assert.strictEqual(instance.getActual(), 'element could not be located');
+        assert.strictEqual(instance.expected(), 'matches \'text\'');
+        assert.strictEqual(failure, 'Expected "matches \'text\'" but got: "element could not be located"');
+        assert.strictEqual(err.message, `Testing if the text matches <.test_element> 'text' in 5ms - expected "matches 'text'" but got: "element could not be located" (${instance.elapsedTime}ms)`);
+      }
+    });
+  });
+
   it('.not.textMatches assertion failed', function () {
     return assertionTest({
       args: ['.test_element', 'text'],
