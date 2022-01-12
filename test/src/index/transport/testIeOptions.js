@@ -16,6 +16,18 @@ describe('Internet Explorer driver options', function(){
     assert.strictEqual(client.api.browserName, 'internet explorer');
   });
 
+  it('Internet Explorer with instance of IeOptions', function(){
+    const ieOptions =  new IeOptions();
+    const client = Nightwatch.createClient({
+      desiredCapabilities: ieOptions
+    });
+
+    const options =  client.transport.createSessionOptions();
+    assert.deepStrictEqual(options, ieOptions);
+    assert.strictEqual(client.api.isInternetExplorer(), true);
+    assert.strictEqual(client.api.browserName, 'internet explorer');
+  });
+
   it('IE initialBrowserUrl option', function(){
     const client = Nightwatch.createClient({
       desiredCapabilities: {
