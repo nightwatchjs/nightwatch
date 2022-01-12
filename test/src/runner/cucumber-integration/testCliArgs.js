@@ -2,27 +2,20 @@ const assert = require('assert');
 const path = require('path');
 const mockery = require('mockery');
 const common = require('../../../common.js');
-const CucumberRunner =  common.require('runner/test-runners/cucumber.js');
+const CucumberRunner = common.require('runner/test-runners/cucumber.js');
 
-
-
-
-describe('Cucumber cli arguements', function(){
+describe('Cucumber cli arguments', function(){
   let cliArgs;
 
-  this.beforeAll(function(){
+  this.beforeAll(function() {
     mockery.enable();
-    mockery.registerMock('@cucumber/cucumber/lib/cli/index', 
-      {
-        default: class CucumberCli {
-          constructor({
-            argv, cwd, stdout
-          }){
-            cliArgs =argv;
-          }
+    mockery.registerMock('@cucumber/cucumber/lib/cli/index', {
+      default: class CucumberCli {
+        constructor({argv, cwd, stdout}) {
+          cliArgs = argv;
         }
-  
-      });
+      }
+    });
   });
 
   this.afterAll(function(){
@@ -35,6 +28,7 @@ describe('Cucumber cli arguements', function(){
       type: 'cucumber',
       options: {}
     }}, {'require-module': ['coffeescript/register', 'ts-node/register']});
+
     runner.createTestSuite({modules: [path.join(__dirname, '../../../cucumbertests/testSample.js')], modulePath: [path.join(__dirname, '../../../cucumbertests/testSample.js')]});
     assert.ok(cliArgs.includes('--require-module'));
     let index = cliArgs.indexOf('--require-module')+1;
@@ -48,7 +42,12 @@ describe('Cucumber cli arguements', function(){
       type: 'cucumber',
       options: {}
     }}, {'no-strict': true, retries: 2, profile: 'local', 'fail-fast': true, parallel: 3, name: 'sample', 'retry-tag-filter': '@nightwatch'}, {});
-    runner.createTestSuite({modules: [path.join(__dirname, '../../../cucumbertests/testSample.js')], modulePath: [path.join(__dirname, '../../../cucumbertests/testSample.js')]});
+
+    runner.createTestSuite({
+      modules: [path.join(__dirname, '../../../cucumbertests/testSample.js')],
+      modulePath: [path.join(__dirname, '../../../cucumbertests/testSample.js')]
+    });
+
     assert.ok(cliArgs.includes('--name'));
     assert.strictEqual(cliArgs[cliArgs.indexOf('--name')+1], 'sample');
     assert.ok(cliArgs.includes('--fail-fast'));

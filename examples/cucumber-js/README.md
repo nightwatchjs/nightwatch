@@ -36,20 +36,20 @@ $ npm i @cucumber/cucumber --save-dev
 ## CLI Options
 | option             |  description |
 |------------------------|------------------------------|
-| --dry-run          | Do all the aggregation work of looking at your feature files, loading your support code etc but without actually executing the tests. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/dry_run.md)
-| --name             | Specify a scenario by its name matching a regular expression. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/cli.md#running-specific-features)    
-| --tags             | Use tags to run specific scenario or features. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/cli.md#tags)
-| --require          | Use `--require <GLOB OR DIR OR FILE>` to explicitly require support files before executing the features. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/cli.md#requiring-support-files)
-| --format           | Use `--format <TYPE[:PATH]>` to specify the format of the output. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/cli.md#formats)
-| --format-options   | Many formatters, including the built-in ones, support some configurability via options. You can provide this data as a JSON literal via the --format-options CLI option. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/formatters.md#options)         
-| --fail-fast        | Abort the run on first failure (default: false). [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/cli.md#--fail-fast)        
-| --retries            | Use `--retries <NUMBER-OF-ATTEMPT>` to have Cucumber attempt it multiple times until either it passes or the maximum number of attempts is reached. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/retry.md#retry)       
-| --retry-tag-filter |  Use `--retry-tag-filter` to retry failed scenarios based on tags. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/retry.md#targeting-scenarios)
-| --require-module   | [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/cli.md#transpilation)
-| --no-strict        | By default, cucumber runner works in strict mode, meaning it will fail if there are pending steps.         
-| --parallel         | Use `--parallel <NUMBER-OF-WORKER-THREADS>` to run your scenarios in parallel. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/parallel.md#parallel)               
-| --profile          | As of now only `cucumber.js` is considered while picking up profiles. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/profiles.md)        
-| --world-parameters | Provide this data as a JSON literal via the `--world-parameters`. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/support_files/world.md#world-parameters)
+| `--dry-run`        | Do all the aggregation work of looking at your feature files, loading your support code etc but without actually executing the tests. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/dry_run.md)
+| `--name`           | Specify a scenario by its name matching a regular expression. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/cli.md#running-specific-features)    
+| `--tags`             | Use tags to run specific scenario or features. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/cli.md#tags)
+| `--require`        | Use `--require <GLOB OR DIR OR FILE>` to explicitly require support files before executing the features. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/cli.md#requiring-support-files)
+| `--format`           | Use `--format <TYPE[:PATH]>` to specify the format of the output. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/cli.md#formats)
+| `--format-options`   | Many formatters, including the built-in ones, support some configurability via options. You can provide this data as a JSON literal via the --format-options CLI option. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/formatters.md#options)         
+| `--fail-fast`        | Abort the run on first failure (default: false). [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/cli.md#--fail-fast)        
+| `--retries`            | Use `--retries <NUMBER-OF-ATTEMPT>` to have Cucumber attempt it multiple times until either it passes or the maximum number of attempts is reached. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/retry.md#retry)       
+| `--retry-tag-filter` |  Use `--retry-tag-filter` to retry failed scenarios based on tags. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/retry.md#targeting-scenarios)
+| `--require-module`   | [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/cli.md#transpilation)
+| `--no-strict`        | By default, cucumber runner works in strict mode, meaning it will fail if there are pending steps.         
+| `--parallel`         | Use `--parallel <NUMBER-OF-WORKER-THREADS>` to run your scenarios in parallel. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/parallel.md#parallel)               
+| `--profile`          | As of now only `cucumber.js` is considered while picking up profiles. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/profiles.md)        
+| `--world-parameters` | Provide this data as a JSON literal via the `--world-parameters`. [read more](https://github.com/cucumber/cucumber-js/blob/main/docs/support_files/world.md#world-parameters)
 
 
 ## Running
