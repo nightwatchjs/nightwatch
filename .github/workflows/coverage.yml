@@ -28,6 +28,7 @@ jobs:
     - run: npm ci
     - run: npm run eslint
     - run: npm run mocha-coverage
+    - run: npm run text-lcov-coverage
     - run: npm run coverage
 
     - name: Upload coverage to Codecov
@@ -40,3 +41,11 @@ jobs:
         fail_ci_if_error: true
         path_to_write_report: codecov_report.txt
         verbose: false
+
+    - name: upload coverage to codeclimate
+      uses: paambaati/codeclimate-action@v3.0.0
+      env:
+        CC_TEST_REPORTER_ID: fd95ac5340c6e2e9d45cd50bcd56131f9097f68f95771c256e1a7c89ebb67787
+      with:
+        coverageCommand: npm run coverage
+        debug: false
