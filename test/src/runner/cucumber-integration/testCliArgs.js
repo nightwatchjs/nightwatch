@@ -48,6 +48,7 @@ describe('Cucumber cli arguments', function(){
       modulePath: [path.join(__dirname, '../../../cucumbertests/testSample.js')]
     });
 
+    assert.strictEqual(cliArgs.length, 21);
     assert.ok(cliArgs.includes('--name'));
     assert.strictEqual(cliArgs[cliArgs.indexOf('--name')+1], 'sample');
     assert.ok(cliArgs.includes('--fail-fast'));
