@@ -163,13 +163,13 @@ describe('test TagsMatcher', function() {
           skiptags: skiptags
         });
 
-        matcher.context = {
+        const context = {
           getTags() {
             return moduleTags;
           }
         };
 
-        const matched = matcher.checkModuleTags();
+        const matched = matcher.checkModuleTags(context);
 
         expect(matched).to.equal(expected);
       });
@@ -223,7 +223,7 @@ describe('test TagsMatcher', function() {
     ];
 
     testCases.forEach(([description, modulePath, tag_filter, skiptags, expected]) => {
-      it(description, function () {
+      it(description, async function () {
         const fullModulePath = path.join(__dirname, '../../' + modulePath);
 
         const matcher = new TagsMatcher({
@@ -231,7 +231,7 @@ describe('test TagsMatcher', function() {
           skiptags: skiptags
         });
 
-        const matched = matcher.match(fullModulePath);
+        const matched = await matcher.match(fullModulePath);
 
         expect(matched).to.equal(expected);
       });
