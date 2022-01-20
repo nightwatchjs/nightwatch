@@ -13,6 +13,8 @@ describe('test Parallel Execution', function() {
 
   beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
+
+    mockery.registerMock('package.json', {});
     mockery.registerMock('child_process', {
       spawn: function(path, args, opts) {
         allArgs.push(args);

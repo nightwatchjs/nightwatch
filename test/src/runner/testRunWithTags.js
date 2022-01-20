@@ -35,7 +35,7 @@ describe('testRunWithTags', function() {
     let testsPath = path.join(__dirname, '../../sampletests');
 
     return runTests(testsPath, settings({
-      output: false,
+      output: true,
       disable_typescript: true,
       globals: {
         waitForConditionPollInterval: 10,
@@ -148,6 +148,7 @@ describe('testRunWithTags', function() {
       skiptags: ['login']
     }, settings({
       globals: {},
+      output: true,
       tag_filter: ['other']
     })).catch(err => {
       return err;
