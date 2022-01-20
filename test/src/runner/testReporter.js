@@ -54,4 +54,20 @@ describe('testReporter', function() {
       assert.strictEqual(result.length, 2);
     });
   });
+
+  it('test with multiple reporters', function() {
+    let reporter = new Reporter([path.join(__dirname, '../../extra/reporter/custom.js'), path.join(__dirname, '../../extra/reporter/custom.js')], {
+      globals: {
+        reporter(results, done) {
+          done();
+        }
+      },
+      output_folder: 'output'
+    });
+
+    return reporter.writeReportToFile({passed: true}).then((result) => {
+      assert.ok(Array.isArray(result));
+      assert.strictEqual(result.length, 2);
+    });
+  });
 });
