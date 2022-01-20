@@ -159,7 +159,7 @@ describe('testRunWithGlobalHooks', function() {
   });
 
   it('test run with global async beforeEach and exception', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after/sampleSingleTest.js');
+    let testsPath = path.join(__dirname, '../../sampletests/before-after/');
 
     return runTests(testsPath, settings({
       output: false,
@@ -174,14 +174,14 @@ describe('testRunWithGlobalHooks', function() {
         reporter(results, cb) {
           assert.deepStrictEqual(Object.keys(results.modules), [
             'sampleSingleTest',
-            // 'sampleWithBeforeAndAfter',
-            // 'sampleWithBeforeAndAfterNoCallback',
-            // 'syncBeforeAndAfter'
+            'sampleWithBeforeAndAfter',
+            'sampleWithBeforeAndAfterNoCallback',
+            'syncBeforeAndAfter'
           ]);
-          // assert.strictEqual(results.modules.sampleSingleTest.errmessages.length, 2);
-          // assert.strictEqual(results.modules.sampleWithBeforeAndAfter.errmessages.length, 1);
-          // assert.strictEqual(results.modules.syncBeforeAndAfter.errmessages.length, 1);
-          // assert.ok(results.modules.sampleSingleTest.errmessages[0].includes('Error while running "perform" command:'));
+          assert.strictEqual(results.modules.sampleSingleTest.errmessages.length, 2);
+          assert.strictEqual(results.modules.sampleWithBeforeAndAfter.errmessages.length, 1);
+          assert.strictEqual(results.modules.syncBeforeAndAfter.errmessages.length, 1);
+          assert.ok(results.modules.sampleSingleTest.errmessages[0].includes('Error while running "perform" command:'));
 
           cb();
         }
