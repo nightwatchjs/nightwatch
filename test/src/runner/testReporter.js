@@ -15,7 +15,7 @@ describe('testReporter', function() {
       output_folder: 'output'
     });
 
-    return reporter.loadFile()
+    return reporter.loadFile(reporter.reporterFile)
       .catch(err => {
         assert.ok(err instanceof Error);
         assert.strictEqual(err.message, 'The custom reporter file name "unknown" cannot be resolved.');
@@ -32,7 +32,7 @@ describe('testReporter', function() {
       output_folder: 'output'
     });
 
-    return reporter.loadFile()
+    return reporter.loadFile(reporter.reporterFile)
       .catch(err => {
         assert.strictEqual(err.message, 'The reporter module must have a public ".write()" method defined.');
       });
