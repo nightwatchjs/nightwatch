@@ -159,7 +159,7 @@ describe('testRunWithGlobalHooks', function() {
   });
 
   it('test run with global async beforeEach and exception', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after');
+    let testsPath = path.join(__dirname, '../../sampletests/before-after/');
 
     return runTests(testsPath, settings({
       output: false,

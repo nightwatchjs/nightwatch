@@ -94,6 +94,51 @@ describe('Test chrome options', function () {
     assert.deepStrictEqual(options.options_.args, ['headless']);
   });
 
+  it('devtools cli arg', function(){
+    const client = Nightwatch.createClient({
+      desiredCapabilities: {
+        browserName: 'chrome'
+      }
+    });
+
+    const options = client.transport.createSessionOptions({devtools: true});
+
+    assert.strictEqual(options instanceof ChromeOptions, true);
+    assert.deepStrictEqual(options.options_.args, ['auto-open-devtools-for-tabs']);
+  });
+
+  it('devtools cli arg with already defined setting', function(){
+    const client = Nightwatch.createClient({
+      desiredCapabilities: {
+        browserName: 'chrome',
+        'goog:chromeOptions': {
+          args: ['auto-open-devtools-for-tabs']
+        }
+      }
+    });
+
+    const options = client.transport.createSessionOptions({devtools: true});
+
+    assert.strictEqual(options instanceof ChromeOptions, true);
+    assert.deepStrictEqual(options.options_.args, ['auto-open-devtools-for-tabs']);
+  });
+
+  it('devtools cli arg with already defined setting 2', function(){
+    const client = Nightwatch.createClient({
+      desiredCapabilities: {
+        browserName: 'chrome',
+        'goog:chromeOptions': {
+          args: ['--auto-open-devtools-for-tabs']
+        }
+      }
+    });
+
+    const options = client.transport.createSessionOptions({devtools: true});
+
+    assert.strictEqual(options instanceof ChromeOptions, true);
+    assert.deepStrictEqual(options.options_.args, ['--auto-open-devtools-for-tabs']);
+  });
+
   it('window size option', function(){
     const client =  Nightwatch.createClient({
       window_size: {

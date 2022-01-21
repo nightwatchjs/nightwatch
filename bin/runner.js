@@ -12,9 +12,16 @@ try {
 
     return runner
       .setupAsync()
+      .catch(err => {
+        if (err.code === 'ERR_REQUIRE_ESM') {
+          err.showTrace = false;
+        }
+
+        throw err;
+      })
       .then(() => runner.runTests())
       .catch((err) => {
-        if (!err.displayed || alwaysDisplayError(err)) {
+        if (!err.displayed || alwaysDisplayError(err) && !err.displayed) {
           Logger.error(err);
         }
       

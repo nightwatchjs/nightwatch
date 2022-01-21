@@ -13,6 +13,7 @@ describe('test Parallel Execution Exit Code', function() {
   beforeEach(function() {
     let index = 0;
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
+    mockery.registerMock('package.json', {});
     mockery.registerMock('child_process', {
       spawn: function(path, args, opts) {
         allArgs.push(args);
