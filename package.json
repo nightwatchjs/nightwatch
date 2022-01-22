@@ -40,7 +40,6 @@
   "devDependencies": {
     "@cucumber/cucumber": "^8.0.0-rc.1",
     "@types/node": "^16.7.1",
-    "chai": "^4.2.0",
     "coveralls": "^3.0.11",
     "eslint": "^7.32.0",
     "js-yaml": "^3.13.1",
