@@ -5,6 +5,7 @@ const common = require('../../../common.js');
 const MockServer = require('../../../lib/mockserver.js');
 const {runTests} = common.require('index.js');
 
+// FIXME: disabled, but can be ran manually
 xdescribe('Cucumber integration - with extras', function() {
   beforeEach(function(done) {
     // FIXME: clearing the require cache is only a symptom of using CSM instead of ESM modules
