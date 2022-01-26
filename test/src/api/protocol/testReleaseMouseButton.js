@@ -1,7 +1,7 @@
 const assert = require('assert');
 const CommandGlobals = require('../../../lib/globals/commands-w3c.js');
 
-describe('client.doubleClick()', function() {
+describe('client.release()', function() {
   let callbackResult;
 
   before(function(done) {
@@ -12,11 +12,11 @@ describe('client.doubleClick()', function() {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('test .elementIdDoubleClick() - successful', function() {
+  it('test .release() - successful', function() {
 
     this.client.transport.driver.actions = function() {
       return {
-        doubleClick: function() {
+        release: function() {
           return {
             perform: function() {
               return Promise.resolve();
@@ -26,7 +26,7 @@ describe('client.doubleClick()', function() {
       };
     };
 
-    this.client.api.elementIdDoubleClick(function callback(result) {
+    this.client.api.releaseMouseButton(function callback(result) {
       callbackResult = result;
     });
 
@@ -37,11 +37,11 @@ describe('client.doubleClick()', function() {
     });
   });
 
-  it('test .elementIdDoubleClick - failed', function() {
+  it('test .release - failed', function() {
 
     this.client.transport.driver.actions = function() {
       return {
-        doubleClick: function() {
+        release: function() {
           return {
             perform: function() {
               return Promise.reject(new Error('no such window'));
@@ -51,7 +51,7 @@ describe('client.doubleClick()', function() {
       };
     };
 
-    this.client.api.elementIdDoubleClick(function callback(result) {
+    this.client.api.releaseMouseButton(function callback(result) {
       callbackResult = result;
     });
 
