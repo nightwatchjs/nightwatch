@@ -4,7 +4,7 @@ const IeOptions =  require('selenium-webdriver/ie').Options;
 
 describe('Internet Explorer driver options', function(){
 
-  it('Internet Explorer option object with headless', function(){
+  it('Internet Explorer option object defaults', function(){
     const ieOptions =  new IeOptions();
     const client = Nightwatch.createClient({
       capabilities: ieOptions
