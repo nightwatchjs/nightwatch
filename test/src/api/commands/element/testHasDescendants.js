@@ -3,7 +3,7 @@ const MockServer  = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 const Nightwatch = require('../../../../lib/nightwatch.js');
 
-describe('browser.hasDescendants', function(){
+xdescribe('browser.hasDescendants', function(){
 
   
   before(function(done) {
@@ -14,10 +14,8 @@ describe('browser.hasDescendants', function(){
     CommandGlobals.afterEach.call(this, done);
   });
 
-
-
   it('.hasDescendants', function(done){
-      
+
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element/0/elements',
       method: 'POST',
