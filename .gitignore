@@ -2,7 +2,8 @@
 .DS_Store
 *.idea
 *.vscode
-/*.log
+*.log
+*.env
 /nightwatch.json
 /nightwatch.conf.js
 node_modules
@@ -24,4 +25,3 @@ screenshot.png
 /sample
 /screens
 /logs
-
