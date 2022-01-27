@@ -3,7 +3,7 @@ const Globals = require('../../../lib/globals.js');
 
 describe('assert.hasAttribute', function () {
   const assertionName = 'hasAttribute';
-  const api = 'getElementProperty';
+  const api = 'getAttribute';
 
   function assertionTest(opts) {
     return Globals.assertion(assertionName, api, opts);
