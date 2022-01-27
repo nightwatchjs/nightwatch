@@ -41,6 +41,7 @@ describe('Test CLI Runner', function() {
       }
     });
 
+    mockery.registerMock('package.json', {});
     mockery.registerMock('./nightwatch.json', config);
     mockery.registerMock('./nightwatch.conf.js', config);
     mockery.registerMock('./nightwatchPromise.conf.js', promiseConfig);
@@ -355,9 +356,13 @@ describe('Test CLI Runner', function() {
       tag: 'danger',
       filter: 'test-filename-filter',
       skipgroup: 'test-skip-group',
-      timeout: 11
+      timeout: 11,
+      devtools: true,
+      debug: true
     }).setup();
 
+    assert.strictEqual(runner.argv.devtools, true);
+    assert.strictEqual(runner.argv.debug, true);
     assert.strictEqual(runner.test_settings.silent, false);
     assert.strictEqual(runner.test_settings.tag_filter, 'danger');
     assert.strictEqual(runner.test_settings.skiptags, 'home,arctic');
@@ -859,15 +864,18 @@ describe('Test CLI Runner', function() {
     assert.strictEqual(runner.test_settings.globals.testGlobalTwo.two.three, '5');
     assert.strictEqual(runner.test_settings.globals.testGlobalTwo.one, 1);
 
-    assert.throws(function() {
+
+    try {
       new CliRunner({
         config: './custom.json',
         env: 'extra'
       }).setup({
         globals_path: './doesnotexist.json'
       });
+    } catch (er) {
+      assert.strictEqual(er.message, 'cannot read external global file using "./doesnotexist.json"');
+    }
 
-    }, /Error reading external global file using "\.\/doesnotexist.json"/);
 
   });
 
@@ -888,15 +896,41 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    assert.throws(function() {
+
+    try {
       new CliRunner({
         config: './custom.json',
         env: 'extra'
       }).setup({
         globals_path: './extra/globals-err.js'
       });
-
-    }, /Error reading external global file using "\.\/extra\/globals-err.js"/);
+    } catch (err) {
+      assert.strictEqual(err.message, 'cannot read external global file using "./extra/globals-err.js"');
+    }
   });
 
+  it('using ES module config file', function() {
+    mockery.deregisterMock('package.json');
+    mockery.registerMock('./nightwatch.conf.cjs', {
+      src_folders: ['tests'],
+      test_settings: {
+        default: {
+          silent: true
+        }
+      }
+    });
+
+    mockery.registerMock('package.json', {
+      type: 'module'
+    });
+
+    registerNoSettingsJsonMock();
+
+    const CliRunner = common.require('runner/cli/cli.js');
+    let runner = new CliRunner({
+      config: './nightwatch.json'
+    }).setup();
+
+    assert.strictEqual(runner.argv.config, './nightwatch.conf.cjs');
+  });
 });

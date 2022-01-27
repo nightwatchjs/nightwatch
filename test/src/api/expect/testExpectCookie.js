@@ -470,7 +470,7 @@ describe('expect.cookie', function() {
       return this.client.start(function() {
         assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" to equal: "vasq" - no cookie "cookie-name" was found'), expect.assertion.message);
         strictEqual(expect.assertion.negate, false);
-        strictEqual(expect.assertion.resultValue, null);
+        strictEqual(expect.assertion.resultValue, undefined);
         strictEqual(expect.assertion.passed, false);
         assert.ok(expect.assertion.messageParts.includes(' equal: "vasq"'));
         assert.ok(expect.assertion.messageParts.includes(' - no cookie "cookie-name" was found'));
