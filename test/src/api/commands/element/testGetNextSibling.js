@@ -3,7 +3,7 @@ const MockServer  = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 const Nightwatch = require('../../../../lib/nightwatch.js');
 
-describe('browser.getNextSibling', function(){
+xdescribe('browser.getNextSibling', function(){
 
   
   before(function(done) {

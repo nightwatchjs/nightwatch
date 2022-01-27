@@ -3,9 +3,8 @@ const MockServer  = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 const Nightwatch = require('../../../../lib/nightwatch.js');
 
-describe('browser.getFirstElementChild', function(){
+xdescribe('browser.getFirstElementChild', function(){
 
-  
   before(function(done) {
     CommandGlobals.beforeEach.call(this, done);
   });
@@ -13,8 +12,6 @@ describe('browser.getFirstElementChild', function(){
   after(function(done) {
     CommandGlobals.afterEach.call(this, done);
   });
-
-
 
   it('.getFirstElementChild', function(done){
       

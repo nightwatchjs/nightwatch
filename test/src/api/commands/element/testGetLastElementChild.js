@@ -3,7 +3,7 @@ const MockServer  = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 const Nightwatch = require('../../../../lib/nightwatch.js');
 
-describe('browser.getLastElementChild', function(){
+xdescribe('browser.getLastElementChild', function(){
 
   
   before(function(done) {
