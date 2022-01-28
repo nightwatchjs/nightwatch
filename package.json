@@ -38,7 +38,7 @@
     "@nightwatch/chai": "5.0.1"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "^8.0.0-rc.1",
+    "@cucumber/cucumber": "^8.0.0-rc.2",
     "@types/node": "^16.7.1",
     "coveralls": "^3.0.11",
     "eslint": "^8.7.0",

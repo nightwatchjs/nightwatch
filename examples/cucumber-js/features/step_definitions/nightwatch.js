@@ -25,9 +25,9 @@ Given(/^I search "([^"]*)"$/, async function(searchTerm) {
 });
 
 Then(/^the title is "([^"]*)"$/, function(title) {
-  return browser.assert.title(title);
+  return browser.assert.titleEquals(title);
 });
 
 Then(/^Body contains "([^"]*)"$/, function(contains) {
-  return  browser.assert.containsText('.search-results', contains);
+  return  browser.assert.textContains('.search-results', contains);
 });
