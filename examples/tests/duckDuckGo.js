@@ -7,6 +7,6 @@ describe('duckduckgo example', function() {
       .sendKeys('#search_form_input_homepage', ['Nightwatch.js'])
       .click('#search_button_homepage')
       .assert.visible('.results--main')
-      .assert.textContain('.results--main', 'Nightwatch.js');
+      .assert.textContains('.results--main', 'Nightwatch.js');
   }); 
 });
