@@ -24,7 +24,7 @@ describe('sample google search', function() {
       .waitForElementVisible('form[action="/search"] input[type=text]')
 
       .sendKeys('form[action="/search"] input[type=text]', ['Nightwatch.js', browser.Keys.ENTER])
-      .assert.containsText('#rso>:first-child', 'Nightwatch.js')
+      .assert.textContain('#rso>:first-child', 'Nightwatch.js')
 
       .end();
 
