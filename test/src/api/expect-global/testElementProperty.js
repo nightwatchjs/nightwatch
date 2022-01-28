@@ -24,9 +24,7 @@ describe('expect(element.property)', function() {
     const weblogin = this.client.api.createElement('#weblogin');
     this.client.api.expect(weblogin.property('className')).which.matches(/vasq/);
 
-    this.client.start((err)=>{
-      done(err);
-    });
+    this.client.start(done);
   });
 
   it('to have property equals [FAILED]', function(done) {
@@ -74,18 +72,9 @@ describe('expect(element.property)', function() {
       .elementFound()
       .propertyValue(['class-one', 'class-two'], 'classList');
 
-    let expect = this.client.api.expect.element('#weblogin').to.have.property('classList').equal(['class-one', 'class-two']);
-
-    assert.strictEqual(expect.assertion.message, 'Expected element %s to have dom property "classList"');
-    this.client.api.perform(function() {
-      assert.strictEqual(expect.assertion.expected, 'equal to \'class-one,class-two\'');
-      assert.deepStrictEqual(expect.assertion.actual, ['class-one', 'class-two']);
-      assert.strictEqual(expect.assertion.negate, false);
-      assert.deepStrictEqual(expect.assertion.resultValue, ['class-one', 'class-two']);
-      assert.strictEqual(expect.assertion.passed, true);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have dom property "classList" equal to: "class-one,class-two"'), expect.assertion.message);
-    });
-
+    const weblogin = this.client.api.createElement('#weblogin');
+    this.client.api.expect(weblogin.property('classList')).to.contain('class-one').and.contain('class-two');
+  
     this.client.start(done);
   });
 
