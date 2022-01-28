@@ -356,9 +356,13 @@ describe('Test CLI Runner', function() {
       tag: 'danger',
       filter: 'test-filename-filter',
       skipgroup: 'test-skip-group',
-      timeout: 11
+      timeout: 11,
+      devtools: true,
+      debug: true
     }).setup();
 
+    assert.strictEqual(runner.argv.devtools, true);
+    assert.strictEqual(runner.argv.debug, true);
     assert.strictEqual(runner.test_settings.silent, false);
     assert.strictEqual(runner.test_settings.tag_filter, 'danger');
     assert.strictEqual(runner.test_settings.skiptags, 'home,arctic');

@@ -39,7 +39,7 @@ describe('custom commands with es6 async', function() {
     };
 
     return NightwatchClient.runTests(testsPath, settings({
-      output: true,
+      output: false,
       selenium_host: null,
       custom_commands_path: [path.join(__dirname, '../../../extra/commands/es6async')],
       globals
