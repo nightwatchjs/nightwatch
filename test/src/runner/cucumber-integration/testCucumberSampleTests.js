@@ -3,6 +3,7 @@ const assert = require('assert');
 const Globals = require('../../../lib/globals/commands.js');
 const common = require('../../../common.js');
 const MockServer = require('../../../lib/mockserver.js');
+const commandMocks = require('../../../lib/command-mocks');
 const {runTests} = common.require('index.js');
 
 describe('Cucumber integration', function() {
@@ -15,8 +16,11 @@ describe('Cucumber integration', function() {
     Globals.afterEach.call(this, done);
   });
 
-  it('testCucumberSampleTests', function() {
+  it.only('testCucumberSampleTests', function() {
     const source = [path.join(__dirname, '../../../cucumbertests/testSample.js')];
+    commandMocks.elementText('5cc459b8-36a8-3042-8b4a-258883ea642b', 'BarnOwl');
+
+
 
     return runTests({
       source,

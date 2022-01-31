@@ -19,6 +19,12 @@ Then('I check if badElement is present', function() {
   return browser.assert.elementPresent('#badElement');
 });
 
+Then('text equal Barn owl', function(){
+  browser.globals.test_calls++;
+
+  return browser.expect.element('#webdriver').text.to.equal('BarnOwl');
+});
+
 After(function() {
-  assert.strictEqual(browser.globals.test_calls, 2);
+  assert.strictEqual(browser.globals.test_calls, 3);
 });
