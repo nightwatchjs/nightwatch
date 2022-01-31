@@ -16,7 +16,7 @@ describe('Cucumber integration', function() {
     Globals.afterEach.call(this, done);
   });
 
-  it.only('testCucumberSampleTests', function() {
+  it('testCucumberSampleTests', function() {
     const source = [path.join(__dirname, '../../../cucumbertests/testSample.js')];
     commandMocks.elementText('5cc459b8-36a8-3042-8b4a-258883ea642b', 'BarnOwl');
 
