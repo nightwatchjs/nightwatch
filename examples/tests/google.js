@@ -5,13 +5,13 @@ describe('sample google search', function() {
     browser.navigateTo('http://google.no');
 
     const consentPresent = await browser.isPresent('[aria-modal="true"][title="Before you continue to Google Search"]');
-
+      // Wait until we are on consent page
     if (consentPresent === true) {
       browser
         .waitForElementVisible('[aria-modal="true"][title="Before you continue to Google Search"]')
         .click('[aria-modal="true"] div.VDity button:nth-child(1)')
 
-        // Wait until we are on conset page
+        // Wait until we are on consent page
         .expect.url().toContain('https://consent.google.no')
 
         // Turn everything off
