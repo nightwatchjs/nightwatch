@@ -21,7 +21,9 @@ module.exports = {
 
     const resultsPage = browser.page.google.searchResults();
     resultsPage.expect.element('@results').to.be.present;
-    resultsPage.expect.element('@results').text.toContain('Nightwatch.js');
+
+    await resultsPage.expect.element('@results').text.to.contain('Nightwatch.js');
+
     resultsPage.expect.section('@menu').to.be.visible;
 
     const menuSection = resultsPage.section.menu;

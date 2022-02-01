@@ -19,7 +19,7 @@ describe('test commands element selectors', function() {
   beforeEach(function (done) {
     nocks.cleanAll().createSession();
     Nightwatch.init({
-      output: true,
+      output: false,
       silent: false,
       globals: {
         waitForConditionTimeout: 100,

@@ -82,7 +82,7 @@ describe('test expect element selectors', function() {
 
     assert.throws(function() {
       api.expect.element('.nock').to.be.hidden;
-    }, /Error: Unknown property: "hidden"\. Please consult docs at: http:\/\/nightwatchjs\.org\/api\./);
+    }, /Error: Unknown property: "hidden"\. Please consult docs at: https:\/\/nightwatchjs\.org\/api\/expect/);
 
     Nightwatch.start();
   });
