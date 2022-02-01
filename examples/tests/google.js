@@ -5,7 +5,8 @@ describe('sample google search', function() {
     browser.navigateTo('http://google.no');
 
     const consentPresent = await browser.isPresent('[aria-modal="true"][title="Before you continue to Google Search"]');
-      // Wait until we are on consent page
+
+    // Wait until we are on consent page
     if (consentPresent === true) {
       browser
         .waitForElementVisible('[aria-modal="true"][title="Before you continue to Google Search"]')

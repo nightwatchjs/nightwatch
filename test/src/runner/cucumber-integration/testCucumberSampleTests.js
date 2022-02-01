@@ -39,8 +39,8 @@ describe('Cucumber integration', function() {
       output: false,
       globals: {
         waitForConditionTimeout: 10,
-        waitForConditionPollInterval: 50,
-      },
+        waitForConditionPollInterval: 50
+      }
     })).then(failures => {
       assert.strictEqual(failures, true, 'Cucumber should have test failures');
     });
