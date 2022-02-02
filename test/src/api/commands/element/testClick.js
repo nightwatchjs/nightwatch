@@ -200,12 +200,12 @@ describe('.click()', function() {
     const api = this.client.api;
     this.client.api
       .click('#weblogin', function callback(result, instance) {
-        assert.strictEqual(instance.message, 'Clicked weblogin element');
+        assert.strictEqual(instance.message, 'Clicked weblogin element - with callback');
         assert.strictEqual(this, api);
-      }, 'Clicked weblogin element')
+      }, 'Clicked weblogin element - with callback')
       .click('css selector', '#weblogin', function callback(result, instance) {
-        assert.strictEqual(instance.message, 'Clicked css selector');
-      }, 'Clicked css selector')
+        assert.strictEqual(instance.message, 'Clicked css selector - with callback');
+      }, 'Clicked css selector - with callback')
       .click('#weblogin', 'Clicked weblogin element')
       .click('css selector', '#weblogin', 'Clicked css selector');
     
