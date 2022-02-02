@@ -38,13 +38,15 @@ describe('testRunWithGlobalHooks', function() {
 
     let globals = {
       calls: 0,
-      beforeEach: function globalBeforeEach() {
+
+      beforeEach() {
         beforeEachCount++;
       },
       afterEach() {
         afterEachCount++;
       },
       reporter(results, cb) {
+
         assert.strictEqual(globals.singleTestCalled, true);
         assert.deepStrictEqual(globals.settings.selenium, {
           check_process_delay: 500,
