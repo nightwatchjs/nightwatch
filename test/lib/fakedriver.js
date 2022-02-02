@@ -154,6 +154,16 @@ const createGenericCommandMocks = function(assertion) {
       return '<html><body></body></html>';
     },
 
+    getSession() {
+      return {
+        sessionId: '123'
+      };
+    },
+
+    quit() {
+      return;
+    },
+
     setFileDetector() {
       assertion({
         command: 'setFileDetector'
@@ -241,6 +251,9 @@ const createWaitCommandMocks = function (assertion, args) {
           switchTo() {
             return {
               frame() {
+                return Promise.resolve(null);
+              },
+              parentFrame() {
                 return Promise.resolve(null);
               },
               alert() {
@@ -402,6 +415,19 @@ module.exports = {
 
         return result;
       },
+
+      actions() {
+        return {
+          move(options) {
+            return {
+              perform() {
+                return null;
+              }
+            };
+          }
+        };
+      },
+
       switchTo() {
         return {
           activeElement() {
@@ -438,9 +464,11 @@ module.exports = {
 
             return null;
           },
-          frameParent() {
+
+          parentFrame() {
             return null;
           },
+
           window(handleOrName) {
             assertion({
               command: 'window',
