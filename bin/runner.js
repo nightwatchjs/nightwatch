@@ -12,7 +12,9 @@ try {
 
     return runner
       .setupAsync()
-      .then(() => runner.runTests())
+      .then(async () => {
+        argv.sequential ? await runner.runTests(): runner.runTests();
+      })
       .catch((err) => {
         if (!err.displayed || alwaysDisplayError(err)) {
           Logger.error(err);
