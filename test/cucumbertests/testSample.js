@@ -13,6 +13,12 @@ Then('I check if webdriver is present', function() {
   return browser.assert.elementPresent('#webdriver');
 });
 
+Then('I check if webdriver is present and contains text', async function() {
+  browser.globals.test_calls++;
+
+  await browser.expect.element('#webdriver').text.to.contain('xx')
+});
+
 Then('I check if badElement is present', function() {
   browser.globals.test_calls++;
 

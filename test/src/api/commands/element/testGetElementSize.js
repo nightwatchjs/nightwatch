@@ -111,7 +111,7 @@ describe('getElementSize', function() {
         start_process: false
       },
       silent: false,
-      output: true,
+      output: false,
       globals: {
         waitForConditionPollInterval: 10
       }

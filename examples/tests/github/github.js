@@ -4,9 +4,8 @@ module.exports = {
     client
       .url('https://github.com/nightwatchjs/nightwatch')
       .waitForElementVisible('body')
-      .waitForElementVisible('.container h1 strong a')
-      .assert.containsText('.container h1 strong a', 'nightwatch', 'Checking project title is set to nightwatch')
-      .expect.element('.branch-select-menu button').to.be.active;
+      .assert.visible('#repository-container-header h1')
+      .assert.containsText('#repository-container-header h1', 'nightwatch', 'Checking if project title is set to nightwatch');
   },
 
   after(client) {

@@ -52,10 +52,10 @@ describe('angularjs homepage todo list', function() {
       .sendKeys('[ng-model="todoList.todoText"]', 'what is nightwatch?')
       .click('[value="add"]');
 
-    const elements = await browser.angular.getAllElementsInList('todoList.todos');
+    const elements = await browser.angular.getElementsInList('todoList.todos');
 
     // verifying if the third task if the one we have just added
-    await expect(elements[2]).text.toEqual('what is nightwatch?');
+    await expect.element(elements[2]).text.toEqual('what is nightwatch?');
 
     // find our task in the list and mark it as done
     const inputElement = await element(elements[2]).findElement('input');

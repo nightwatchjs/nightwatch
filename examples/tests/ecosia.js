@@ -10,7 +10,7 @@ describe('Ecosia.org Demo', function() {
       .setValue('input[type=search]', 'nightwatch')
       .assert.visible('button[type=submit]')
       .click('button[type=submit]')
-      .assert.containsText('.mainline-results', 'Nightwatch.js');
+      .assert.textContains('.mainline-results', 'Nightwatch.js');
   });
 
   after(browser => browser.end());

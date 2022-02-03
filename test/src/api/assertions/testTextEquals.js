@@ -72,11 +72,11 @@ describe('assert.textEquals', function () {
       assertArgs: true,
       assertResult: true,
       assertion({instance, failure, message, err}) {
-        assert.ok(message.startsWith('Testing if element <.test_element> equals \'text result\''), message);
+        assert.ok(message.startsWith('Testing if element\'s <.test_element> inner text equals \'text result\''), message);
         assert.deepStrictEqual(instance.options, {elementSelector: true});
         assert.strictEqual(instance.getActual(), 'equals \'text result\'');
         assert.strictEqual(instance.hasFailure(), false);
-        assert.ok(message.startsWith('Testing if element <.test_element> equals \'text result\''), message);
+        assert.ok(message.startsWith('Testing if element\'s <.test_element> inner text equals \'text result\''), message);
         assert.strictEqual(failure, false);
       }
     });

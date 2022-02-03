@@ -1,7 +1,7 @@
 {
   "name": "nightwatch",
-  "description": "Easy to use Node.js based End-to-End testing solution for browser based apps and websites, using the W3C WebDriver API.",
-  "version": "2.0.0-beta.1",
+  "description": "Easy to use Node.js based end-to-end testing solution for web applications using the W3C WebDriver API.",
+  "version": "2.0.4",
   "author": {
     "name": "Andrei Rusu",
     "email": "andrei@nightwatchjs.org"
@@ -15,9 +15,9 @@
     "url": "git@github.com:nightwatchjs/nightwatch.git"
   },
   "dependencies": {
-    "assertion-error": "^1.1.0",
-    "boxen": "^5.1.2",
-    "chai-nightwatch": "^0.4.1",
+    "assertion-error": "1.1.0",
+    "boxen": "5.1.2",
+    "chai-nightwatch": "0.5.2",
     "ci-info": "^3.2.0",
     "didyoumean": "^1.2.2",
     "dotenv": "10.0.0",
@@ -30,24 +30,23 @@
     "minimatch": "3.0.4",
     "minimist": "^1.2.5",
     "mkpath": "1.0.0",
-    "mocha": "^9.1.3",
+    "mocha": "9.2.0",
     "ora": "^5.4.1",
-    "selenium-webdriver": "^4.0.0",
+    "selenium-webdriver": "4.1.0",
     "semver": "^7.3.5",
-    "strip-ansi": "^6.0.0"
+    "strip-ansi": "^6.0.0",
+    "@nightwatch/chai": "5.0.1"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "^8.0.0-rc.1",
+    "@cucumber/cucumber": "^8.0.0-rc.2",
     "@types/node": "^16.7.1",
-    "chai": "^4.2.0",
     "coveralls": "^3.0.11",
-    "eslint": "^7.32.0",
+    "eslint": "^8.7.0",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.21",
-    "mocha-junit-reporter": "^2.0.0",
-    "mochawesome": "^6.2.2",
-    "mochawesome-merge": "^4.2.0",
-    "mochawesome-report-generator": "^5.2.0",
+    "mochawesome": "^7.0.1",
+    "mochawesome-merge": "^4.2.1",
+    "mochawesome-report-generator": "^6.0.1",
     "mockery": "~2.1.0",
     "nock": "^10.0.6",
     "nyc": "^15.1.0",

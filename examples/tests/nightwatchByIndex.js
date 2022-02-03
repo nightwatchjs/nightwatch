@@ -8,7 +8,7 @@ module.exports = {
     var featuresPage = client.page.nightwatchFeatures();
 
     featuresPage
-      .assert.containsText('@featuresHeading', 'Main Features')
+      .assert.textContains('@featuresHeading', 'Main Features')
       .getFeatureCount(function (result) {
 
         client.assert.equal(result.status, 0, 'status counting features');
