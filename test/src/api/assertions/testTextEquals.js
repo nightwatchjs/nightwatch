@@ -39,7 +39,7 @@ describe('assert.textEquals', function () {
 
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.getValue(), 'other text');
-        assert.strictEqual(instance.getActual(), 'doesn\'t equal \'text result\'');
+        assert.strictEqual(instance.getActual(), 'other text');
         assert.strictEqual(instance.message, 'Test message');
       }
     });
@@ -57,8 +57,8 @@ describe('assert.textEquals', function () {
         assert.strictEqual(queueOpts.negate, true);
         assert.strictEqual(instance.hasFailure(), false);
         assert.strictEqual(instance.getValue(), 'text result');
-        assert.strictEqual(instance.getActual(), 'equals \'text result\'');
-        assert.strictEqual(err.message, `Test message in 5ms - expected "doesn't equal 'text result'" but got: "equals 'text result'" (${instance.elapsedTime}ms)`);
+        assert.strictEqual(instance.getActual(), 'text result');
+        assert.strictEqual(err.message, `Test message in 5ms - expected "doesn't equal 'text result'" but got: "text result" (${instance.elapsedTime}ms)`);
       }
     });
   });
@@ -74,7 +74,7 @@ describe('assert.textEquals', function () {
       assertion({instance, failure, message, err}) {
         assert.ok(message.startsWith('Testing if element\'s <.test_element> inner text equals \'text result\''), message);
         assert.deepStrictEqual(instance.options, {elementSelector: true});
-        assert.strictEqual(instance.getActual(), 'equals \'text result\'');
+        assert.strictEqual(instance.getActual(), 'text result');
         assert.strictEqual(instance.hasFailure(), false);
         assert.ok(message.startsWith('Testing if element\'s <.test_element> inner text equals \'text result\''), message);
         assert.strictEqual(failure, false);
@@ -91,8 +91,8 @@ describe('assert.textEquals', function () {
       assertError: true,
       assertResult: true,
       assertion({instance, failure}) {
-        assert.strictEqual(instance.getActual(), 'doesn\'t equal \'text result\'');
-        assert.strictEqual(failure, 'Expected "equals \'text result\'" but got: "doesn\'t equal \'text result\'"');
+        assert.strictEqual(instance.getActual(), 'not_expected');
+        assert.strictEqual(failure, 'Expected "equals \'text result\'" but got: "not_expected"');
       }
     });
   });
