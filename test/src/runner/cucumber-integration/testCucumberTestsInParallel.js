@@ -6,6 +6,7 @@ const MockServer = require('../../../lib/mockserver.js');
 const {runTests} = common.require('index.js');
 
 describe('Cucumber integration - parallel running', function() {
+  this.timeout(10000);
   beforeEach(function(done) {
     let moduleKeys = Object.keys(require.cache).filter(item => (item.includes('_setup_cucumber_runner')));
 

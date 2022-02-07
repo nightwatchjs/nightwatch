@@ -1,5 +1,7 @@
 const assert = require('assert');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
+const common = require('../../../../common.js');
+const Utils = common.require('utils');
 
 describe('setAttribute', function() {
   before(function(done) {
@@ -10,10 +12,10 @@ describe('setAttribute', function() {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('client.setAttribute()', function(done) {
+  it.only('client.setAttribute()', function(done) {
     let commandArgs;
     // eslint-disable-next-line
-    const fn = function(e,a,v){try {if(e&&typeof e.setAttribute=='function'){e.setAttribute(a,v)} return true} catch(err){return {error:err.message,message:err.name+': '+err.message}}};
+    const fn = Utils.scriptFn;
     const script = 'var passedArgs = Array.prototype.slice.call(arguments,0); ' +
       'return (' + fn.toString() + ').apply(window, passedArgs);';
 
