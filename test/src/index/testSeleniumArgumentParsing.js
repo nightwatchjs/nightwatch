@@ -4,34 +4,34 @@ const SeleniumServiceBuilder = common.require('transport/selenium-webdriver/serv
 
 describe('test selenium argument parsing', function() {
   it('should convert simple arguments to jvmArgs', function() {
-    let settings = {
+    const settings = {
       start_process: true,
       port: 4444,
-      server_path: ('/usr/dummy/path'),
+      server_path: ('/example/path'),
       cli_args: {
-        'webdriver.chrome.driver': '/usr/dummy/path/chromedriver'
+        'webdriver.chrome.driver': '/example/path/chromedriver'
       }
     };
      
-    let {parsedCliArgs, parsedJvmArgs} = SeleniumServiceBuilder._parseCliArgs(settings);
+    const {parsedCliArgs, parsedJvmArgs} = SeleniumServiceBuilder._parseCliArgs(settings);
     assert.strictEqual(parsedCliArgs.length, 0);
     assert.strictEqual(parsedJvmArgs.length, 1);
-    assert.strictEqual(parsedJvmArgs[0], '-Dwebdriver.chrome.driver=/usr/dummy/path/chromedriver');
+    assert.strictEqual(parsedJvmArgs[0], '-Dwebdriver.chrome.driver=/example/path/chromedriver');
   });
 
   it('should pass on arguments prefexed with -', function() {
-    let settings = {
+    const settings = {
       start_process: true,
       port: 4444,
-      server_path: ('/usr/dummy/path'),
+      server_path: ('/example/path'),
       cli_args: {
-        'webdriver.chrome.driver': '/usr/dummy/path/chromedriver',
+        'webdriver.chrome.driver': '/example/path/chromedriver',
         '-version': '',
         '-output': 'some/path'
       }
     };
 
-    let {parsedCliArgs, parsedJvmArgs} = SeleniumServiceBuilder._parseCliArgs(settings);
+    const {parsedCliArgs, parsedJvmArgs} = SeleniumServiceBuilder._parseCliArgs(settings);
     assert.strictEqual(parsedCliArgs.length, 3);
     assert.strictEqual(parsedJvmArgs.length, 1);
     assert.strictEqual(parsedCliArgs[0], '-output');
@@ -41,17 +41,17 @@ describe('test selenium argument parsing', function() {
   });
 
   it('sould accept empty and falsy values', function() {
-    let settings = {
+    const settings = {
       start_process: true,
       port: 4444,
-      server_path: ('/usr/dummy/path'),
+      server_path: ('/example/path'),
       cli_args: {
         'skipTests': '',
         '-verbose': false
       }
     };
 
-    let {parsedCliArgs, parsedJvmArgs} = SeleniumServiceBuilder._parseCliArgs(settings);
+    const {parsedCliArgs, parsedJvmArgs} = SeleniumServiceBuilder._parseCliArgs(settings);
     assert.strictEqual(parsedCliArgs.length, 2);
     assert.strictEqual(parsedJvmArgs.length, 1);
     assert.strictEqual(parsedJvmArgs[0], '-DskipTests');
