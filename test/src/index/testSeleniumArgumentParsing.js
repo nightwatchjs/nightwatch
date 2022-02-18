@@ -13,7 +13,7 @@ describe('test selenium argument parsing', function() {
       }
     };
      
-    const {parsedCliArgs, parsedJvmArgs} = SeleniumServiceBuilder._parseCliArgs(settings);
+    const {parsedCliArgs, parsedJvmArgs} = SeleniumServiceBuilder.parseCliArgs(settings);
     assert.strictEqual(parsedCliArgs.length, 0);
     assert.strictEqual(parsedJvmArgs.length, 1);
     assert.strictEqual(parsedJvmArgs[0], '-Dwebdriver.chrome.driver=/example/path/chromedriver');
@@ -31,7 +31,7 @@ describe('test selenium argument parsing', function() {
       }
     };
 
-    const {parsedCliArgs, parsedJvmArgs} = SeleniumServiceBuilder._parseCliArgs(settings);
+    const {parsedCliArgs, parsedJvmArgs} = SeleniumServiceBuilder.parseCliArgs(settings);
     assert.strictEqual(parsedCliArgs.length, 3);
     assert.strictEqual(parsedJvmArgs.length, 1);
     assert.strictEqual(parsedCliArgs[0], '-output');
@@ -51,11 +51,11 @@ describe('test selenium argument parsing', function() {
       }
     };
 
-    const {parsedCliArgs, parsedJvmArgs} = SeleniumServiceBuilder._parseCliArgs(settings);
+    const {parsedCliArgs, parsedJvmArgs} = SeleniumServiceBuilder.parseCliArgs(settings);
     assert.strictEqual(parsedCliArgs.length, 2);
     assert.strictEqual(parsedJvmArgs.length, 1);
     assert.strictEqual(parsedJvmArgs[0], '-DskipTests');
     assert.strictEqual(parsedCliArgs[0], '-verbose');
-    assert.strictEqual(parsedCliArgs[1], 'false');
+    assert.strictEqual(parsedCliArgs[1], false);
   });
 });
