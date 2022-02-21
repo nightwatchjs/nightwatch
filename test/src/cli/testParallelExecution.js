@@ -175,6 +175,20 @@ describe('test Parallel Execution', function() {
     });
   });
 
+  it('test parallel execution with parallel=count arg', function() {
+    const CliRunner = common.require('runner/cli/cli.js');
+    let runner = new CliRunner({
+      config: path.join(__dirname, '../../extra/parallelism-count.json'),
+      parallel: 2
+    });
+
+    runner.setup();
+    assert.deepStrictEqual(runner.test_settings.test_workers, {
+      enabled: true,
+      workers: 2
+    });
+  });
+
   it('test parallel execution with workers count and extended envs', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({

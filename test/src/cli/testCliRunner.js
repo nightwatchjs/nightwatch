@@ -936,7 +936,7 @@ describe('Test CLI Runner', function() {
 
   it('using no package.json file', function() {
     mockery.deregisterMock('package.json');
-    mockery.registerMock('package.json', );
+    mockery.registerMock('package.json');
 
     registerNoSettingsJsonMock();
 

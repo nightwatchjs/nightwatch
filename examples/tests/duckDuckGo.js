@@ -1,4 +1,5 @@
 describe('duckduckgo example', function() {
+  this.timeout(999999);
 
   it('Search Nightwatch.js and check results', function(browser) {
     browser

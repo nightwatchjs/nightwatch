@@ -291,8 +291,8 @@ describe('SeleniumServer Transport Tests', function () {
     assert.strictEqual(serverPath, '/path/to/selenium-server-standalone.3.0.jar');
     assert.deepStrictEqual(options.args, ['-timeout', 1000]);
     assert.deepStrictEqual(options.jvmArgs,  [
-       '-Dwebdriver.gecko.driver=/path/to/geckodriver',
-       '-Dwebdriver.chrome.driver=/path/to/chromedriver'
+      '-Dwebdriver.gecko.driver=/path/to/geckodriver',
+      '-Dwebdriver.chrome.driver=/path/to/chromedriver'
     ]);
     assert.deepStrictEqual(options.stdio, ['pipe', undefined, undefined]);
     assert.ok(logFilePath.endsWith('testModuleKey_selenium-server.log'));
