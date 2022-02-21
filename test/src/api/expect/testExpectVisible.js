@@ -360,7 +360,7 @@ describe('expect.visible', function () {
       let expect = this.client.api.expect.element('#weblogin').to.be.visible;
 
       return this.client.start(function () {
-        strictEqual(expect.assertion.retries, 2);
+        assert.ok(expect.assertion.retries >= 2);
         strictEqual(expect.assertion.passed, false);
         strictEqual(expect.assertion.resultValue, null);
         strictEqual(expect.assertion.actual, '[WebDriverError]');
