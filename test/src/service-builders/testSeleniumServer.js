@@ -356,7 +356,7 @@ describe('SeleniumServer Transport Tests', function () {
     assert.deepStrictEqual(session, {
       sessionId: '1111', capabilities: {}
     });
-    assert.strictEqual(serverPath, 'java');
+
     assert.strictEqual(serverPort, 9999);
     assert.strictEqual(options.port, 9999);
     assert.strictEqual(options.path, '/wd/hub');
