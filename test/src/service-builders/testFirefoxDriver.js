@@ -3,6 +3,8 @@ const mockery = require('mockery');
 const common = require('../../common.js');
 const NightwatchClient = common.require('index.js');
 const Settings = common.require('settings/settings.js');
+const HttpRequest = common.require('http/request.js');
+const HttpClient = common.require('transport/selenium-webdriver/httpclient.js')({});
 
 describe('GeckoDriver Transport Tests', function () {
   beforeEach(function() {
@@ -28,15 +30,17 @@ describe('GeckoDriver Transport Tests', function () {
     mockery.resetCache();
   });
 
+  const RANDOM_PORT = 6732;
+  
   const sessionData = {
     sessionId: '111',
     getId() {
-      return '1111'
+      return '1111';
     },
     getCapabilities() {
       return {
         getPlatform() {
-          return 'MAC'
+          return 'MAC';
         },
         getBrowserName() {
           return 'firefox';
@@ -50,7 +54,7 @@ describe('GeckoDriver Transport Tests', function () {
         keys() {
           return new Map();
         }
-      }
+      };
     }
   };
 
@@ -61,9 +65,9 @@ describe('GeckoDriver Transport Tests', function () {
     async getExecutor() {
       return {
         w3c: true
-      }
+      };
     }
-  }
+  };
 
   const fn = function() {};
   function deleteFromRequireCache(location) {
@@ -80,6 +84,8 @@ describe('GeckoDriver Transport Tests', function () {
     const {Builder} = require('selenium-webdriver');
     class MockBuilder extends Builder {
       build() {
+        const httpClient =  new HttpClient(`http://localhost:${RANDOM_PORT}`);
+
         return Promise.resolve(mockDriver);
       }
     }
@@ -128,9 +134,9 @@ describe('GeckoDriver Transport Tests', function () {
 
           },
           async start() {
-            return 'http://localhost'
+            return 'http://localhost';
           }
-        }
+        };
       }
     }
 
@@ -211,7 +217,7 @@ describe('GeckoDriver Transport Tests', function () {
       serverPath,
       serverPort,
       verboseLogging
-    }
+    };
   }
 
   it('test create session with firefox driver -- not found error', async function() {
@@ -282,6 +288,8 @@ describe('GeckoDriver Transport Tests', function () {
     });
     assert.strictEqual(serverPath, '/path/to/geckodriver');
     assert.strictEqual(serverPort, undefined);
-  });
 
+    //Global port should be set to random assigned Port
+    assert.strictEqual(HttpRequest.globalSettings.port, RANDOM_PORT);
+  });
 });
