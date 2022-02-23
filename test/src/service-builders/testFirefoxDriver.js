@@ -30,7 +30,7 @@ describe('GeckoDriver Transport Tests', function () {
     mockery.resetCache();
   });
 
-  const RANDOM_PORT = '6732';
+  const RANDOM_PORT = 6732;
   
   const sessionData = {
     sessionId: '111',
