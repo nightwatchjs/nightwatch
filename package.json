@@ -15,6 +15,8 @@
     "url": "git@github.com:nightwatchjs/nightwatch.git"
   },
   "dependencies": {
+    "@nightwatch/chai": "5.0.1",
+    "@nightwatch/selenium-server": "^4.1.2",
     "assertion-error": "1.1.0",
     "boxen": "5.1.2",
     "chai-nightwatch": "0.5.3",
@@ -34,8 +36,7 @@
     "ora": "^5.4.1",
     "selenium-webdriver": "4.1.0",
     "semver": "^7.3.5",
-    "strip-ansi": "^6.0.0",
-    "@nightwatch/chai": "5.0.1"
+    "strip-ansi": "^6.0.0"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^8.0.0-rc.2",

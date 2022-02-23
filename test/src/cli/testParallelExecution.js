@@ -100,7 +100,7 @@ describe('test Parallel Execution', function() {
     assert.ok(runner.test_settings.test_workers);
 
     return runner.runTests().then(_ => {
-      assert.strictEqual(allArgs.length, 54);
+      assert.strictEqual(allArgs.length, 4);
       assert.strictEqual(runner.concurrency.globalExitCode, 0);
     });
   });
@@ -142,7 +142,7 @@ describe('test Parallel Execution', function() {
     });
 
     return runner.runTests().then(_ => {
-      assert.strictEqual(allArgs.length, 54);
+      assert.strictEqual(allArgs.length, 4);
     });
   });
 
@@ -171,7 +171,7 @@ describe('test Parallel Execution', function() {
     });
 
     return runner.runTests().then(_ => {
-      assert.strictEqual(allArgs.length, 54);
+      assert.strictEqual(allArgs.length, 4);
     });
   });
 
@@ -242,6 +242,60 @@ describe('test Parallel Execution', function() {
     assert.strictEqual(runner.isConcurrencyEnabled(), true);
   });
 
+  it('test parallel execution using selenium server', function() {
+    mockery.registerMock('geckodriver', {
+      path: '/path/to/geckodriver'
+    });
+
+    mockery.registerMock('chromedriver', {
+      path: '/path/to/chromedriver'
+    });
+
+    mockery.registerMock('@nightwatch/selenium-server', {
+      path: '/path/to/selenium-server-standalone.3.0.jar'
+    });
+
+    mockery.registerMock('./service-builders/selenium.js', class SeleniumServer {
+      constructor(settings) {
+        this.settings = settings;
+        this.service = {
+          kill() {
+            return Promise.resolve();
+          }
+        };
+      }
+
+      async init() {
+        this.initCalled = true;
+      }
+
+      stop() {
+        this.stopped = true;
+      }
+      setOutputFile(filename) {
+        this.outfilename = filename;
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+    const runner = new CliRunner({
+      config: path.join(__dirname, '../../extra/parallelism-selenium-server.json')
+    });
+
+    runner.setup();
+
+    return runner.runTests().then(_ => {
+      assert.ok(runner.parallelMode());
+      assert.strictEqual(runner.concurrency.globalExitCode, 0);
+      assert.strictEqual(allArgs.length, 4);
+      assert.strictEqual(runner.seleniumService.initCalled, true);
+      assert.strictEqual(runner.seleniumService.stopped, true);
+      assert.strictEqual(runner.seleniumService.outfilename, '');
+      assert.ok(allArgs[0].join(' ').includes('--test-worker --parallel-mode'));
+      assert.ok(allArgs[1].join(' ').includes('--test-worker --parallel-mode'));
+    });
+  });
+
   it('test parallel execution to ensure preservation of all process.execArgv', function() {
     const argv = process.execArgv;
     process.execArgv = ['--inspect'];
@@ -260,18 +314,16 @@ describe('test Parallel Execution', function() {
     assert.ok(args.includes('--parallel-mode'));
   });
 
-  it('test parallel execution with specified node options to be passed to child processes', function() {
+  it('test parallel execution to ensure worker start_process is disabled when using selenium server', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     const runner = new CliRunner({
-      config: path.join(__dirname, '../../extra/parallelism-execArgv-selected.json')
+      config: path.join(__dirname, '../../extra/parallelism-selenium-server.json')
     });
 
     runner.setup();
     const worker = runner.concurrency.createChildProcess('test-worker');
-    const args = worker.getArgs();
+    console.log(worker.settings.selenium)
 
-    assert.strictEqual(args.includes('--inspect'), false);
-    assert.ok(args.includes('--parallel-mode'));
-    assert.ok(args.includes('--harmony'));
   });
+
 });
