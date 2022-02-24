@@ -79,6 +79,50 @@ describe('expect.type', function() {
     });
   });
 
+  it('to not be [PASSED] with upper case', function() {
+    Nocks.elementFound().name('INPUT');
+    this.client.api.globals.waitForConditionTimeout = 40;
+    this.client.api.globals.waitForConditionPollInterval = 20;
+    let expect = this.client.api.expect.element('#weblogin').to.be.an('input');
+
+    return this.client.start(function() {
+      strictEqual(expect.assertion.passed, true);
+    });
+  });
+
+  it('to not be [FAILED] with upper case', function() {
+    Nocks.elementFound().name('INPUT');
+    this.client.api.globals.waitForConditionTimeout = 40;
+    this.client.api.globals.waitForConditionPollInterval = 20;
+    let expect = this.client.api.expect.element('#weblogin').to.not.be.an('input');
+
+    return this.client.start(function() {
+      strictEqual(expect.assertion.passed, false);
+    });
+  });
+
+  it('to not be [PASSED] with regex', function() {
+    Nocks.elementFound().name('INPUT');
+    this.client.api.globals.waitForConditionTimeout = 40;
+    this.client.api.globals.waitForConditionPollInterval = 20;
+    let expect = this.client.api.expect.element('#weblogin').to.be.an(/^input/i);
+
+    return this.client.start(function() {
+      strictEqual(expect.assertion.passed, true);
+    });
+  });
+
+  it('to not be [FAILED] with regex', function() {
+    Nocks.elementFound().name('INPUT');
+    this.client.api.globals.waitForConditionTimeout = 40;
+    this.client.api.globals.waitForConditionPollInterval = 20;
+    let expect = this.client.api.expect.element('#weblogin').to.not.be.an(/^input/i);
+
+    return this.client.start(function() {
+      strictEqual(expect.assertion.passed, false);
+    });
+  });
+
   it('to not be - element not found', function() {
     this.client.api.globals.waitForConditionTimeout = 40;
     this.client.api.globals.waitForConditionPollInterval = 20;

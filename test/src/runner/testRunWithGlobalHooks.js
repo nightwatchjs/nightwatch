@@ -38,13 +38,15 @@ describe('testRunWithGlobalHooks', function() {
 
     let globals = {
       calls: 0,
-      beforeEach: function globalBeforeEach() {
+
+      beforeEach() {
         beforeEachCount++;
       },
       afterEach() {
         afterEachCount++;
       },
       reporter(results, cb) {
+
         assert.strictEqual(globals.singleTestCalled, true);
         assert.deepStrictEqual(globals.settings.selenium, {
           check_process_delay: 500,
@@ -159,7 +161,7 @@ describe('testRunWithGlobalHooks', function() {
   });
 
   it('test run with global async beforeEach and exception', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after');
+    let testsPath = path.join(__dirname, '../../sampletests/before-after/');
 
     return runTests(testsPath, settings({
       output: false,

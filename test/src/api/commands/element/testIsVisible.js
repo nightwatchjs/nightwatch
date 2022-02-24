@@ -37,4 +37,24 @@ describe('isVisible', function() {
 
     this.client.start(done);
   });
+
+  it('client.isVisible()', function(done) {
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/element/0/displayed',
+      method: 'GET',
+      response: JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0,
+        value: false
+      })
+    });
+
+    this.client.api.isVisible('css selector', '#weblogin', function callback(result) {
+      assert.strictEqual(result.value, false);
+    }).isVisible('#weblogin', function callback(result) {
+      assert.strictEqual(result.value, false);
+    });
+
+    this.client.start(done);
+  });
 });
