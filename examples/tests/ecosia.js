@@ -2,7 +2,7 @@ describe('Ecosia.org Demo', function() {
 
   before(browser => browser.navigateTo('https://www.ecosia.org/'));
 
-  test('Demo test ecosia.org', function(browser) {
+  it('Demo test ecosia.org', function(browser) {
     browser
       .waitForElementVisible('body')
       .assert.titleContains('Ecosia')

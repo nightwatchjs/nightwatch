@@ -7,7 +7,7 @@ const CucumberRunner = common.require('runner/test-runners/cucumber.js');
 describe('Cucumber cli arguments', function(){
   let cliArgs;
 
-  this.beforeAll(function() {
+  before(function() {
     mockery.enable();
     mockery.registerMock('@cucumber/cucumber/lib/cli/index', {
       default: class CucumberCli {
@@ -18,7 +18,7 @@ describe('Cucumber cli arguments', function(){
     });
   });
 
-  this.afterAll(function(){
+  after(function(){
     mockery.deregisterAll();
     mockery.disable();
   });

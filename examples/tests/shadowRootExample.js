@@ -1,5 +1,8 @@
 describe('Shadow Root example test', function() {
 
+  // Doesn't work in Firefox due to a serialization issue in Geckodriver
+  this.disabled = this.settings.desiredCapabilities.browserName === 'firefox';
+
   it('retrieve the shadowRoot', async function(browser) {
     await browser
       .navigateTo('https://mdn.github.io/web-components-examples/popup-info-box-web-component/')

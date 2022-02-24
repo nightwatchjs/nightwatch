@@ -1,5 +1,5 @@
 {
-  "src_folders" : ["./test/sampletests"],
+  "src_folders" : ["./test/sampletests/before-after"],
   "output_folder" : false,
   "test_workers" : true,
   "output" : false,
