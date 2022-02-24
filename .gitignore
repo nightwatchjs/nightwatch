@@ -25,3 +25,5 @@ screenshot.png
 /sample
 /screens
 /logs
+html-report/
+test-results.xml

@@ -34,6 +34,8 @@ describe('Selenium Server Transport', function () {
       }
     });
 
+    client.settings.selenium['[_started]'] = true;
+
     const transport = new SeleniumRemote(client);
     assert.strictEqual(client.settings.selenium.start_process, false);
     assert.strictEqual(client.settings.webdriver.start_process, false);
