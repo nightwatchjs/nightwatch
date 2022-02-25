@@ -19,7 +19,6 @@
     "assertion-error": "1.1.0",
     "boxen": "5.1.2",
     "chai-nightwatch": "0.5.3",
-    "chalk": "^4.1.2",
     "ci-info": "^3.2.0",
     "didyoumean": "^1.2.2",
     "dotenv": "10.0.0",
