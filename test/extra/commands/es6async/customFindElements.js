@@ -5,4 +5,4 @@ module.exports.command = function(selector, callback = function() {}) {
   }, function(result) {
     callback(result.value);
   });
-}
+};

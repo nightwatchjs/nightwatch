@@ -28,4 +28,4 @@ module.exports = {
   },
   output: false,
   silent: false
-}
+};
