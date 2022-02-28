@@ -180,15 +180,13 @@ describe('test Utils', function() {
     let expectedLines = '';
     fs.readFileSync(errorFilePath, 'utf-8').split(/\r?\n/).forEach(function(line) {
       if (pos === lineNumber) {
-        // eslint-disable-next-line no-console
-        expectedLines += Utils.Logger.colors.cyan('\t' + pos + ' ' + line + '\n');
+        expectedLines += Utils.Logger.colors.cyan(`\t${pos} ${line}`);
       } else if (pos<=lineNumber+2 && pos>=lineNumber-2) {
-        // eslint-disable-next-line no-console
-        expectedLines +=  ('\t' + pos + ' ' + line + '\n');
+        expectedLines +=  (`\t${pos} ${line}\n`);
       }
       pos++;
     });
-    expectedLines+='\n';
+    expectedLines += '\n';
 
     const error = {
       name: 'NightwatchAssertError',
