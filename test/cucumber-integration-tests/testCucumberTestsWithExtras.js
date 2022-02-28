@@ -1,27 +1,13 @@
 const path = require('path');
 const assert = require('assert');
-const Globals = require('../../../lib/globals/commands.js');
-const common = require('../../../common.js');
-const MockServer = require('../../../lib/mockserver.js');
+const Globals = require('../lib/globals/commands.js');
+const common = require('../common.js');
+const MockServer = require('../lib/mockserver.js');
 const {runTests} = common.require('index.js');
 
-// FIXME: disabled, but can be ran manually
-xdescribe('Cucumber integration - with extras', function() {
+describe('Cucumber integration - with extras', function() {
   beforeEach(function(done) {
-    // FIXME: clearing the require cache is only a symptom of using CSM instead of ESM modules
-    // consider moving to ESM soon
-    let moduleKeys = Object.keys(require.cache).filter(item => (item.includes('_setup_cucumber_runner')));
-
-    moduleKeys.forEach(item => {
-      delete require.cache[item];
-    });
-
-    moduleKeys = Object.keys(require.cache).filter(item => item.includes('cucumbertests/'));
-    moduleKeys.forEach(item => {
-      delete require.cache[item];
-    });
-
-    this.server = MockServer.init();
+    this.server = MockServer.init(null, {port: 10193});
     this.server.on('listening', () => done());
   });
 
@@ -30,7 +16,7 @@ xdescribe('Cucumber integration - with extras', function() {
   });
 
   it('testCucumberSampleTests with disable_session_autocreate=true', function() {
-    const source = [path.join(__dirname, '../../../cucumbertests/testSample.js')];
+    const source = [path.join(__dirname, './sample_cucumber_tests/with-extra-setup/testSample.js')];
 
     MockServer.addMock({
       url: '/wd/hub/session',
@@ -56,8 +42,8 @@ xdescribe('Cucumber integration - with extras', function() {
       source,
       tags: ['@pass'],
       verbose: false,
-      config: path.join(__dirname, '../../../extra/cucumber-config-noautostart.js'),
-      require: path.join(__dirname, '../../../cucumbertests/_extra_setup.js')
+      config: path.join(__dirname, '../extra/cucumber-config-noautostart.js'),
+      require: path.join(__dirname, './sample_cucumber_tests/with-extra-setup/_extra_setup.js')
     }, {})
       .then(failures => {
         assert.strictEqual(failures, false);

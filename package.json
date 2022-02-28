@@ -78,6 +78,7 @@
     "eslint": "eslint index.js lib bin api examples cucumber-js test --quiet",
     "mocha-coverage": "nyc --reporter=html mocha test/src/ --recursive",
     "test": "mocha test/src/ --recursive",
+    "test-cucumber": "mocha test/cucumber-integration-tests --parallel",
     "coverage": "npx nyc report --reporter=text-lcov > ./coverage/mocha_coverage.lcov"
   },
   "eslintConfig": {

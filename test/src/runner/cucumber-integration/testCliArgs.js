@@ -29,9 +29,18 @@ describe('Cucumber cli arguments', function(){
       options: {}
     }}, {'require-module': ['coffeescript/register', 'ts-node/register']});
 
-    runner.createTestSuite({modules: [path.join(__dirname, '../../../cucumbertests/testSample.js')], modulePath: [path.join(__dirname, '../../../cucumbertests/testSample.js')]});
+    runner.createTestSuite({
+      modules: [
+        path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')
+      ],
+      modulePath: [
+        path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')
+      ]
+    });
+
     assert.ok(cliArgs.includes('--require-module'));
-    let index = cliArgs.indexOf('--require-module')+1;
+    let index = cliArgs.indexOf('--require-module') + 1;
+
     assert.strictEqual(cliArgs[index], 'coffeescript/register');
     index =  cliArgs.indexOf('--require-module', index)+1;
     assert.strictEqual(cliArgs[index], 'ts-node/register');
@@ -44,8 +53,8 @@ describe('Cucumber cli arguments', function(){
     }}, {'no-strict': true, retries: 2, profile: 'local', 'fail-fast': true, parallel: 3, name: 'sample', 'retry-tag-filter': '@nightwatch'}, {});
 
     runner.createTestSuite({
-      modules: [path.join(__dirname, '../../../cucumbertests/testSample.js')],
-      modulePath: [path.join(__dirname, '../../../cucumbertests/testSample.js')]
+      modules: [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')],
+      modulePath: [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')]
     });
 
     assert.strictEqual(cliArgs.length, 21);
@@ -64,11 +73,20 @@ describe('Cucumber cli arguments', function(){
   });
 
   it('Cucumber cli arg --dry-run', function(){
-    const runner =  new CucumberRunner({test_runner: {
-      type: 'cucumber',
-      options: {}
-    }}, {'dry-run': true}, {});
-    runner.createTestSuite({modules: [path.join(__dirname, '../../../cucumbertests/testSample.js')], modulePath: [path.join(__dirname, '../../../cucumbertests/testSample.js')]});
+    const runner = new CucumberRunner({
+      test_runner: {
+        type: 'cucumber',
+        options: {}
+      }
+    }, {
+      'dry-run': true
+    }, {});
+
+    runner.createTestSuite({
+      modules: [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')],
+      modulePath: [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')]
+    });
+
     assert.ok(cliArgs.includes('--dry-run'));
   });
 
