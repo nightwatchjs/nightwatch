@@ -23,4 +23,24 @@ describe('chrome api demo', function () {
       assert.strictEqual(typeof browser.chrome[command], 'function');
     });
   });
+
+  it('test sample chrome CDP command', async function(browser) {
+    browser.driver.sendAndGetDevToolsCommand = function(command, args) {
+      return Promise.resolve({
+        args,
+        command
+      });
+    }
+
+    const dom = await browser.chrome.sendAndGetDevToolsCommand('DOMSnapshot.captureSnapshot', {
+      computedStyles: []
+    });
+
+    assert.deepStrictEqual(dom, {
+      command: 'DOMSnapshot.captureSnapshot',
+      args: {
+        computedStyles: []
+      }
+    });
+  })
 });
