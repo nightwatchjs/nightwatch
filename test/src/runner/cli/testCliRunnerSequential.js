@@ -4,6 +4,7 @@ const common = require('../../../common.js');
 const NightwatchClient = common.require('index.js');
 
 describe('Test CLI Runner in Sequential Mode', function () {
+  const testPath = path.join(__dirname, '../../../sampletests/async/test/sample.js');
   
   beforeEach(function() {
     NightwatchClient.argv = {
@@ -17,7 +18,6 @@ describe('Test CLI Runner in Sequential Mode', function () {
     };
     
     const Utils = common.require('utils');
-    const testPath = path.join(__dirname, '../../../sampletests/async/test/sample.js');
   
     NightwatchClient.cli = function(callback) {
       const argv = this.argv;
