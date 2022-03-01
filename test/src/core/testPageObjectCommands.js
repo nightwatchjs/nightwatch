@@ -274,5 +274,23 @@ describe('test PageObject Commands', function () {
 
     this.client.start();
   });
+
+
+  it('testPageObject navigate with url as a function using api object', function (done) {
+    const page = this.client.api.page.simplePageObj();
+    page.api.launch_url = 'https://nightwatchjs.org';
+    
+    page.url = function (url) {
+      return this.api.launch_url;
+    };
+
+    page.navigate(function (result) {
+      //check if callback function is called
+      assert.strictEqual(result.status, 0);
+      done();
+    });
+
+    this.client.start();
+  });
 });
 
