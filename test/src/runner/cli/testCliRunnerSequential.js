@@ -16,7 +16,7 @@ describe('Test CLI Runner in Sequential Mode', function () {
     process.argv = [
       ...processArgs,
       '-e', 'safari',
-      '-e', 'chrome',
+      '-e', 'chrome'
     ]
     NightwatchClient.cli(function(argv) {
       let runner = NightwatchClient.CliRunner({...argv, source: testPath});
@@ -27,7 +27,7 @@ describe('Test CLI Runner in Sequential Mode', function () {
   it('Passed strings of environments to check sequential mode disabled', function () {
     process.argv = [
       ...processArgs,
-      '-e', "safari,chrome",
+      '-e', 'safari,chrome'
     ]
     NightwatchClient.cli(function(argv) {
       let runner = NightwatchClient.CliRunner({...argv, source: testPath});
