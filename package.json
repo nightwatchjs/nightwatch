@@ -1,7 +1,7 @@
 {
   "name": "nightwatch",
   "description": "Easy to use Node.js based end-to-end testing solution for web applications using the W3C WebDriver API.",
-  "version": "2.0.7",
+  "version": "2.0.9",
   "author": {
     "name": "Andrei Rusu",
     "email": "andrei@nightwatchjs.org"
@@ -78,6 +78,7 @@
     "eslint": "eslint index.js lib bin api examples cucumber-js test --quiet",
     "mocha-coverage": "nyc --reporter=html mocha test/src/ --recursive",
     "test": "mocha test/src/ --recursive",
+    "test-cucumber": "mocha test/cucumber-integration-tests --parallel",
     "coverage": "npx nyc report --reporter=text-lcov > ./coverage/mocha_coverage.lcov"
   },
   "eslintConfig": {

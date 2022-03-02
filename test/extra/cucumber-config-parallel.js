@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   selenium: {
-    port: 10195,
+    port: 10190,
     host: 'localhost'
   },
 
@@ -23,7 +23,7 @@ module.exports = {
   test_runner: {
     type: 'cucumber',
     options: {
-      feature_path: path.join(__dirname, '../cucumber-integration-tests/sample_cucumber_tests/integration/sample.feature')
+      feature_path: path.join(__dirname, '../cucumber-integration-tests/sample_cucumber_tests/parallel/sample.feature')
     }
   },
   output: false,
