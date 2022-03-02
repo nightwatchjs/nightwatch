@@ -30,29 +30,11 @@ describe('test Runner with async and assertion failure', function() {
       test_calls: 0,
       retryAssertionTimeout: 0,
       reporter(results) {
-        assert.strictEqual(globals.test_calls, 16);
+        assert.strictEqual(globals.test_calls, 12);
       }
     };
 
     return runTests(path.join(__dirname, '../../sampletests/asyncwithfailures/'), settings({
-      globals,
-      skip_testcases_on_fail: false,
-      output: false,
-      silent: false
-    }));
-  });
-
-  it('test run mocha samples with async where first and third test passes', function() {
-    const globals = {
-      test_calls: 0,
-      retryAssertionTimeout: 0,
-      reporter(results) {
-        assert.strictEqual(globals.test_calls, 6);
-        assert.strictEqual(results.failed, 1);
-      }
-    };
-
-    return runTests(path.join(__dirname, '../../sampletests/asyncwithfailures/sampleWithAsyncWithSingleTestFailure.js'), settings({
       globals,
       skip_testcases_on_fail: false,
       output: false,
