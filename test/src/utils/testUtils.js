@@ -4,6 +4,24 @@ const fs = require('fs');
 const common = require('../../common.js');
 const Utils = common.require('utils');
 
+const buildStackTrace = function(errorFilePath, lineNumber) {
+  let expectedLines = fs.readFileSync(errorFilePath, 'utf-8').split(/\r?\n/).reduce(function(lines, line, index) {
+    const pos = index + 1;
+    if (pos === lineNumber) {
+      lines += Utils.Logger.colors.cyan(`\t${pos} ${line}\n`);
+    } else if ((pos <= lineNumber + 2) && (pos >= lineNumber - 2)) {
+      lines += `\t${pos} ${line}\n`;
+    }
+
+    return lines;
+  }, '');
+  expectedLines += '\n';
+
+  return expectedLines;
+};
+
+
+
 describe('test Utils', function() {
 
   it('testFormatElapsedTime', function() {
@@ -171,22 +189,11 @@ describe('test Utils', function() {
     assert.deepStrictEqual(absPath, [path.join(__dirname, '../../extra/commands/typescript/tsWait.js')]);
   });
 
-  it('beautifyStackTrace -  read file lines', async function() {
+  it('beautifyStackTrace -  read file lines (NightwatchAssertError)', async function() {
 
     const errorFilePath = path.join(__dirname, '../../sampletests/withfailures/sample.js');
     const lineNumber = 15;
-
-    let pos = 1;
-    let expectedLines = '';
-    fs.readFileSync(errorFilePath, 'utf-8').split(/\r?\n/).forEach(function(line) {
-      if (pos === lineNumber) {
-        expectedLines += Utils.Logger.colors.cyan(`\t${pos} ${line}`);
-      } else if (pos<=lineNumber+2 && pos>=lineNumber-2) {
-        expectedLines +=  (`\t${pos} ${line}\n`);
-      }
-      pos++;
-    });
-    expectedLines += '\n';
+    const expectedLines = buildStackTrace(errorFilePath, lineNumber);
 
     const error = {
       name: 'NightwatchAssertError',
@@ -206,4 +213,31 @@ describe('test Utils', function() {
     const errorLines = Utils.beautifyStackTrace(error);
     assert.strictEqual(errorLines, expectedLines);
   });
+
+  it('beautifyStackTrace - Unknown API method', function() {
+    const errorFilePath = path.join(__dirname, '../../sampletests/unknown-method/UnknownMethod.js');
+    const lineNumber  = 4;
+
+    const expectedLines = buildStackTrace(errorFilePath, lineNumber);
+
+    const error = {
+      name: 'Error',
+      message: 'Unknown api method "elmentPresen".',
+      stack: `Error: Unknown api method "elementPresen".
+      at Proxy.<anonymous> (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/api/index.js:142:19)
+      at DescribeInstance.<anonymous> (${errorFilePath}:${lineNumber}:21)
+      at Context.call (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/context.js:430:35)
+      at TestCase.run (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/testcase.js:58:31)
+      at Runnable.__runFn (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:669:80)
+      at Runnable.run (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/runnable.js:126:21)
+      at TestSuite.createRunnable (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:776:33)
+      at TestSuite.handleRunnable (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:781:33)
+      at /Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:669:21
+      at processTicksAndRejections (node:internal/process/task_queues:96:5)`
+    };
+
+    const errorLines = Utils.beautifyStackTrace(error);
+    assert.strictEqual(errorLines, expectedLines);
+  });
+
 });
