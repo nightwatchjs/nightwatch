@@ -95,7 +95,6 @@ describe('.waitUntil()', function () {
       this.client.start(function(err) {
         try {
           assert.ok(err instanceof Error);
-          console.log(err.message);
           assert.ok(err.message.includes('Error while running "waitUntil" command: [TimeoutError] Wait timed out after'), 'Should include: ' + err.message);
           done();
         } catch (err) {
