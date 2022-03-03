@@ -38,6 +38,10 @@ describe('.setNetworkConditions()', function () {
       }
     }).then((client) => {
       client.transport.driver.setNetworkConditions = function (spec) {
+        assert.strictEqual('download_throughput', 460800);
+        assert.strictEqual('latency', 50000);
+        assert.strictEqual('offline', false);
+        assert.strictEqual('upload_throughput', 153600);
 
         return Promise.resolve();
       };
