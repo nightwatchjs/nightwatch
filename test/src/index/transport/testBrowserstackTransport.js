@@ -111,7 +111,7 @@ describe('BrowserstackTransport', function () {
 
   it('test create Transport for Browserstack with failures', function(done) {
     const client = NightwatchClient.client({
-      output: true,
+      output: false,
       silent: false,
       webdriver: {
         host: 'hub-cloud.browserstack.com',

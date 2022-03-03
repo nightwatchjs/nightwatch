@@ -15,6 +15,14 @@ describe('basicSampleTest', function() {
     await browser.end();
   });
 
+  it('basic test with ES6 async/await and no await commands', async (browser) => {
+    browser
+      .url('http://localhost')
+      .assert.elementPresent('#weblogsin');
+
+    browser.assert.strictEqual(0, 1)
+  });
+
   it('test with ES6 async/await assertion error and try/catch', async (browser) => {
     let error;
     try {

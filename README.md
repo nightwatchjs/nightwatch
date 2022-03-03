@@ -4,7 +4,7 @@
 [![Node.js CI](https://github.com/nightwatchjs/nightwatch/actions/workflows/build-node.yaml/badge.svg?branch=main)](https://github.com/nightwatchjs/nightwatch/actions/workflows/build-node.yaml)
 [![codecov](https://codecov.io/gh/nightwatchjs/nightwatch/branch/main/graph/badge.svg?token=MSObyfECEh)](https://codecov.io/gh/nightwatchjs/nightwatch)
 [![npm package](https://img.shields.io/npm/dm/nightwatch.svg)](https://www.npmjs.com/package/nightwatch)
-[![Join the chat at https://gitter.im/nightwatchjs/nightwatch](https://badges.gitter.im/nightwatchjs/nightwatch.svg)](https://gitter.im/nightwatchjs/nightwatch)
+[![Discord][discord-badge]][discord]
 [![Node Support](https://img.shields.io/badge/node-%3E12.x-brightgreen.svg)](https://github.com/nightwatchjs/nightwatch/blob/27a855a2ec0c2008073708d5a2286c2819584fdc/.github/workflows/build-node.yaml#L19)
 
 
@@ -19,15 +19,15 @@ Automated end-to-end testing framework powered by [Node.js](http://nodejs.org/) 
 
 Nightwatch is a complete and integrated solution for end-to-end testing of web applications and websites. It can also be used for Node.js unit and integration testing. 
 
-## Nightwatch v2.0-beta
+## Nightwatch v2.0
 
-####  [What's New](https://v2.nightwatchjs.org/guide/getting-started/whats-new-v2.html) | [Release Notes](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.0.0-beta.1) | [Discussions](https://github.com/nightwatchjs/nightwatch/discussions)
+####  [What's New](https://nightwatchjs.org/guide/getting-started/whats-new-v2.html) | [Release Notes](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.0.0) | [Discussions](https://github.com/nightwatchjs/nightwatch/discussions)
 
-We're delighted to announce that [Nightwatch v2.0](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.0.0-beta.2) is now in beta and available in NPM. Read the [what's new](https://v2.nightwatchjs.org/guide/getting-started/whats-new-v2.html) docs page for an overview of the new featues, improvements, and important changes.
+We're delighted to announce that [Nightwatch v2.0](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.0.0) is now available in the public NPM channel. Read the [what's new](https://nightwatchjs.org/guide/getting-started/whats-new-v2.html) docs page for an overview of the new features, improvements, and important changes.
 
 Install with: 
 ```sh
-npm i nightwatch@next
+npm i nightwatch
 ```
 
 ## Up &amp; Running in 2 Minutes:
@@ -154,3 +154,6 @@ We are thankful for everyone who supported Nightwatch on the [OpenCollective](ht
 
 ## Licence
 [MIT](https://github.com/nightwatchjs/nightwatch/blob/main/LICENSE.md)
+
+[discord-badge]: https://img.shields.io/discord/618399631038218240.svg?color=7389D8&labelColor=6A7EC2&logo=discord&logoColor=ffffff&style=flat-square
+[discord]: https://discord.gg/SN8Da2X

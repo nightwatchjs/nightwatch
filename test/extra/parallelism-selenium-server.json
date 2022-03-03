@@ -1,0 +1,23 @@
+{
+  "src_folders" : ["./test/sampletests/before-after"],
+  "output_folder" : false,
+  "test_workers" : {
+    "enabled" : true,
+    "workers" : 2
+  },
+  "output" : false,
+  "selenium" : {
+    "start_process" : true
+  },
+
+  "test_settings": {
+    "default" : {
+      "silent" : true,
+      "desiredCapabilities" : {
+        "browserName" : "firefox"
+      }
+    }
+  }
+}
+
+

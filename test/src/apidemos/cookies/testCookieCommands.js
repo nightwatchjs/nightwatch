@@ -70,7 +70,8 @@ describe('cookie demos', function() {
       webdriver: {
         start_process: false,
         timeout_options: {
-          timeout: 50
+          timeout: 50,
+          retry_attempts: 0
         }
       },
       output: false,

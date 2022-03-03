@@ -23,7 +23,7 @@ module.exports = {
   test_runner: {
     type: 'cucumber',
     options: {
-      feature_path: path.join(__dirname, '../cucumbertests/sample.feature')
+      feature_path: path.join(__dirname, '../cucumber-integration-tests/sample_cucumber_tests/integration/sample.feature')
     }
   },
   output: false,
