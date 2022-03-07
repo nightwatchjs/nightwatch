@@ -1,7 +1,7 @@
 {
   "name": "nightwatch",
   "description": "Easy to use Node.js based end-to-end testing solution for web applications using the W3C WebDriver API.",
-  "version": "2.0.7",
+  "version": "2.0.10",
   "author": {
     "name": "Andrei Rusu",
     "email": "andrei@nightwatchjs.org"
