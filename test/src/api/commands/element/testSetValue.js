@@ -1,25 +1,35 @@
 const assert = require('assert');
 const MockServer  = require('../../../../lib/mockserver.js');
-const CommandGlobals = require('../../../../lib/globals/commands.js');
+const CommandGlobals = require('../../../../lib/globals/commands-w3c.js');
 
 describe('setValue', function() {
 
-  before(function(done) {
+  beforeEach(function(done) {
     CommandGlobals.beforeEach.call(this, done);
   });
 
-  after(function(done) {
+  afterEach(function(done) {
     CommandGlobals.afterEach.call(this, done);
   });
 
   it('client.setValue()', function(done) {
+    
+     
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/element/0/value',
+      url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/clear',
       method: 'POST',
-      postdata: {value: ['p', 'a', 's', 's', 'w', 'o', 'r', 'd']},
+      statusCode: 200,
       response: {
-        sessionId: '1352110219202',
-        status: 0
+        value: null
+      }
+    });
+
+    MockServer.addMock({
+      url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/value',
+      method: 'POST',
+      postdata: {text: 'password', value: ['p', 'a', 's', 's', 'w', 'o', 'r', 'd']},
+      response: {
+        value: null
       }
     });
 
@@ -44,5 +54,38 @@ describe('setValue', function() {
       });
 
     this.client.start(done);
+  });
+
+  it('client.setValue - non editable element', function(done) {
+    
+    MockServer.addMock({
+      url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/clear',
+      method: 'POST',
+      statusCode: 400,
+      response: {
+        value: {
+          error: 'invalid element state',
+          message: 'Unable to clear element that cannot be edited',
+          stacktrace: ''
+        }
+      }
+    });
+
+    MockServer.addMock({
+      url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/value',
+      method: 'POST',
+      postdata: {text: 'password', value: ['p', 'a', 's', 's', 'w', 'o', 'r', 'd']},
+      response: {
+        sessionId: '1352110219202',
+        status: 0
+      }
+    });
+
+    this.client.api.setValue('#weblogin', 'password', function callback(result) {
+      assert.strictEqual(result.status, 0);
+    });
+
+    this.client.start(done);
+    
   });
 });

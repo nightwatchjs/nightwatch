@@ -22,6 +22,12 @@ describe('Mocha tests with failures', function() {
       .end();
   });
 
+  it('demoTest3', function (browser) {
+    browser.url('http://localhost')
+      .assert.elementPresent('#weblogin')
+      .end();
+  });
+
   afterEach(function(browser, callback) {
     browser.globals.test_calls++;
     callback();
