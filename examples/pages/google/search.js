@@ -9,6 +9,8 @@ const searchCommands = {
   }
 };
 
+const consentModal = '[aria-modal="true"]';
+
 module.exports = {
   url: 'https://google.no',
   commands: [
@@ -17,7 +19,7 @@ module.exports = {
 
   sections: {
     consentModal: {
-      selector: '[aria-modal="true"][title="Before you continue to Google Search"]',
+      selector: consentModal,
       elements: {
         customizeButton: 'div.VDity button:nth-child(1)'
       }
@@ -25,6 +27,8 @@ module.exports = {
   },
 
   elements: {
+    consentModal,
+
     searchBar: {
       selector: 'input[name=q]'
     },

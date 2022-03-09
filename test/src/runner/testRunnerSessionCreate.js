@@ -268,8 +268,8 @@ describe('testRunnerSessionCreate', function() {
         assert.strictEqual(results.lastError.sessionCreate, true);
         assert.strictEqual(results.lastError.showTrace, false);
         assert.ok(results.lastError instanceof Error);
-        assert.ok(results.lastError.detailedErr.includes('The specified executable path does not exist: /bin/xxxxx; verify if webdriver is configured correctly; using:'));
-        assert.strictEqual(results.lastError.message, 'Unable to create the GeckoDriver process:');
+        assert.ok(results.lastError.detailedErr.includes('verify if webdriver is configured correctly; using:'));
+        assert.strictEqual(results.lastError.message, 'Unable to create the GeckoDriver process: The specified executable path does not exist: /bin/xxxxx');
       }
     };
 

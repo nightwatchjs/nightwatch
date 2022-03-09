@@ -2,7 +2,7 @@ describe('sample google search', function() {
   this.tags = ['google'];
 
   it('demo test using expect apis', async function(browser) {
-    browser.navigateTo('http://google.no');
+    await browser.navigateTo('http://google.no');
 
     const consentPresent = await browser.isPresent('[aria-modal="true"][title="Before you continue to Google Search"]');
 

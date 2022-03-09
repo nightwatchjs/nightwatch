@@ -6,7 +6,7 @@ const MockServer = require('../../../lib/mockserver.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
 
-describe('test Mocha integration', function() {
+describe('test Mocha Runner async', function() {
   const originalExit = process.exit;
   this.timeout(10000);
 
@@ -25,16 +25,13 @@ describe('test Mocha integration', function() {
     Globals.afterEach.call(this, done);
   });
 
-  it('testRunMochaSampleTests', function() {
+  it('test run mocha samples with async and failures', function() {
     const globals = {
       test_calls: 0,
       retryAssertionTimeout: 0
     };
 
-    let testsPath = path.join(__dirname, '../../../mochatests');
-    let error;
-
-    return runTests(testsPath, settings({
+    return runTests(path.join(__dirname, '../../../mochatests/async/'), settings({
       globals,
       test_runner: {
         type: 'mocha',
@@ -45,13 +42,11 @@ describe('test Mocha integration', function() {
       output: false,
       silent: false
     })).catch(err => {
-      error = err;
+      return err;
     }).then((err) => {
-      assert.strictEqual(globals.waitForConditionTimeout, 1100);
-      assert.strictEqual(globals.retryAssertionTimeout, 1100);
-      assert.strictEqual(globals.waitForConditionPollInterval, 100);
-
-      assert.strictEqual(globals.test_calls, 17);
+      assert.ok(err instanceof Error);
+      assert.strictEqual(globals.test_calls, 12);
+      assert.strictEqual(err.failures, 2);
     });
   });
 });
