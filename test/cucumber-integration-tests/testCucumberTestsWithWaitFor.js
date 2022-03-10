@@ -17,16 +17,6 @@ describe('Cucumber integration with .expect APIs', function() {
   });
 
   it('testCucumberSampleTests -- with waitFor failure', function() {
-    MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/text',
-      statusCode: 200,
-      method: 'GET',
-      response: {
-        value: 'jean sibelius'
-      },
-      times: 3
-    });
-
     const source = [path.join(__dirname, './sample_cucumber_tests/withWaitFor/testWithFailures.js')];
 
     return runTests({
