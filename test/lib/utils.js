@@ -38,5 +38,9 @@ module.exports = {
 
   getSlash: function () {
     return process.platform === 'win32' ? '\\' : '/';
+  },
+
+  getLineBreak: function() {
+    return process.platform === 'win32' ? '\n\r' : '\n';
   }
 };
