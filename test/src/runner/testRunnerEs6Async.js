@@ -5,6 +5,7 @@ const CommandGlobals = require('../../lib/globals/commands.js');
 const common = require('../../common.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
+const utils = require('../../lib/utils');
 
 describe('testRunner ES6 Async', function() {
   before(function(done) {
@@ -91,22 +92,22 @@ describe('testRunner ES6 Async', function() {
       waitForConditionPollInterval: 50,
 
       reporter(results) {
-        assert.ok('failures/sampleWithFailures' in results.modules, 'sampleWithFailures module not found in results');
+        assert.ok(`failures${utils.getSlash()}sampleWithFailures` in results.modules, 'sampleWithFailures module not found in results');
         assert.ok('basicSampleTestSelenium' in results.modules);
         if (results.modules.basicSampleTestSelenium.lastError) {
           throw results.modules.basicSampleTestSelenium.lastError;
         }
 
-        if (results.modules['failures/sampleWithFailures'].completed.asyncGetCookiesTest.lastError) {
-          throw results.modules['failures/sampleWithFailures'].completed.asyncGetCookiesTest.lastError;
+        if (results.modules[`failures${utils.getSlash()}sampleWithFailures`].completed.asyncGetCookiesTest.lastError) {
+          throw results.modules[`failures${utils.getSlash()}sampleWithFailures`].completed.asyncGetCookiesTest.lastError;
         }
 
-        assert.ok('failures/sampleWithFailures' in results.modules);
-        assert.strictEqual(results.modules['failures/sampleWithFailures'].completed.verify.assertions.length, 2);
+        assert.ok(`failures${utils.getSlash()}sampleWithFailures` in results.modules);
+        assert.strictEqual(results.modules[`failures${utils.getSlash()}sampleWithFailures`].completed.verify.assertions.length, 2);
 
-        assert.ok(results.modules['failures/sampleWithFailures'].completed.verify.assertions[0].failure.includes('Expected "is present" but got: "not present"'));
-        assert.strictEqual(results.modules['failures/sampleWithFailures'].completed.verify.assertions[1].failure, false);
-        assert.strictEqual(results.modules['failures/sampleWithFailures'].completed.waitFor.failed, 1);
+        assert.ok(results.modules[`failures${utils.getSlash()}sampleWithFailures`].completed.verify.assertions[0].failure.includes('Expected "is present" but got: "not present"'));
+        assert.strictEqual(results.modules[`failures${utils.getSlash()}sampleWithFailures`].completed.verify.assertions[1].failure, false);
+        assert.strictEqual(results.modules[`failures${utils.getSlash()}sampleWithFailures`].completed.waitFor.failed, 1);
 
         assert.ok(results.lastError instanceof Error);
         assert.strictEqual(results.lastError.name, 'NightwatchAssertError');

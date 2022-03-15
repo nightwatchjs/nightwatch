@@ -14,7 +14,7 @@ describe('basic describe test', function () {
       .assert.elementPresent('#weblogin');
   });
 
-  test.only('demoTest two', function (client) {
+  test('demoTest two', function (client) {
     client.assert.strictEqual(client.options.globals.waitForConditionTimeout, 55);
     client.assert.strictEqual(this.settings.desiredCapabilities.name, 'basicDescribe');
 

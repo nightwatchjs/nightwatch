@@ -26,7 +26,7 @@ describe('testRunWithUncaughtErrors', function() {
     process.removeAllListeners('unhandledRejection');
   });
 
-  it('test runner with uncaught exception', function(done) {
+  xit('test runner with uncaught exception', function(done) {
     let testsPath = path.join(__dirname, '../../sampletests/withuncaughterrors');
     let errorReported = false;
     let testErr;

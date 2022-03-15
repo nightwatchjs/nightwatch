@@ -9,6 +9,7 @@ const Runner = common.require('runner/runner.js');
 const Settings = common.require('settings/settings.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
+const utils = require('../../lib/utils');
 
 describe('testRunner', function() {
   const emptyPath = path.join(__dirname, '../../sampletests/empty/testdir');
@@ -88,8 +89,8 @@ describe('testRunner', function() {
     let testsPath = path.join(__dirname, '../../sampletests/simple');
     let globals = {
       reporter(results) {
-        assert.ok('test/sample' in results.modules);
-        assert.ok('demoTest' in results.modules['test/sample'].completed);
+        assert.ok(`test${utils.getSlash()}sample` in results.modules);
+        assert.ok('demoTest' in results.modules[`test${utils.getSlash()}sample`].completed);
 
         if (results.lastError) {
           throw results.lastError;

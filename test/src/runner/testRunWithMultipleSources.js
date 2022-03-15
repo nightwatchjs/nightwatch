@@ -5,6 +5,7 @@ const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
+const utils = require('../../lib/utils');
 
 describe('testRunWithMultipleSources', function() {
   before(function(done) {
@@ -77,8 +78,8 @@ describe('testRunWithMultipleSources', function() {
     let globals = {
       calls: 0,
       reporter(results) {
-        assert.ok('async/test/sample' in results.modules);
-        assert.ok('simple/test/sample' in results.modules);
+        assert.ok(`async${utils.getSlash()}test${utils.getSlash()}sample` in results.modules);
+        assert.ok(`simple${utils.getSlash()}test${utils.getSlash()}sample` in results.modules);
         assert.strictEqual(Object.keys(results.modules).length, 2);
       }
     };
@@ -112,9 +113,9 @@ describe('testRunWithMultipleSources', function() {
     let globals = {
       calls: 0,
       reporter(results) {
-        assert.ok('test/sample' in results.modules);
-        assert.ok('unittests/sample' in results.modules);
-        assert.ok('unittests/sampleAnnotation' in results.modules);
+        assert.ok(`test${utils.getSlash()}sample` in results.modules);
+        assert.ok(`unittests${utils.getSlash()}sample` in results.modules);
+        assert.ok(`unittests${utils.getSlash()}sampleAnnotation` in results.modules);
         assert.strictEqual(Object.keys(results.modules).length, 3);
       }
     };

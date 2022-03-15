@@ -34,5 +34,9 @@ module.exports = {
 
     var origRun = queueRunnerPatched.origRun = queue.run;
     queue.run = queueRunnerPatched;
+  },
+
+  getSlash: function () {
+    return process.platform === 'win32' ? '\\' : '/';
   }
 };

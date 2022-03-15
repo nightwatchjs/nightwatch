@@ -5,6 +5,7 @@ const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
+const utils = require('../../lib/utils');
 
 describe('testRunWithHooks', function() {
   before(function(done) {
@@ -163,8 +164,8 @@ describe('testRunWithHooks', function() {
       calls: 0,
       reporter(results) {
         assert.strictEqual(globals.calls, 2);
-        assert.ok('test/sample' in results.modules);
-        assert.ok('demoTestAsync' in results.modules['test/sample'].completed);
+        assert.ok(`test${utils.getSlash()}sample` in results.modules);
+        assert.ok('demoTestAsync' in results.modules[`test${utils.getSlash()}sample`].completed);
       }
     };
 

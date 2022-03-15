@@ -5,6 +5,7 @@ const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
+const utils = require('../../lib/utils');
 
 describe('testRunWithTags', function() {
   before(function(done) {
@@ -43,9 +44,9 @@ describe('testRunWithTags', function() {
         retryAssertionTimeout: 10,
         reporter(results) {
           assert.strictEqual(Object.keys(results.modules).length, 3);
-          assert.ok('demoTagTest' in results.modules['tags/sample'].completed);
-          assert.ok('otherDemoTagTest' in results.modules['withsubfolders/tags/sampleTags'].completed);
-          assert.ok('demoTest' in results.modules['withdescribe/failures/sampleSkipTestcases'].completed);
+          assert.ok('demoTagTest' in results.modules[`tags${utils.getSlash()}sample`].completed);
+          assert.ok('otherDemoTagTest' in results.modules[`withsubfolders${utils.getSlash()}tags${utils.getSlash()}sampleTags`].completed);
+          assert.ok('demoTest' in results.modules[`withdescribe${utils.getSlash()}failures${utils.getSlash()}sampleSkipTestcases`].completed);
         }
       },
       tag_filter: ['login']
@@ -73,7 +74,7 @@ describe('testRunWithTags', function() {
     return runTests(testsPath, settings({
       globals: {
         reporter(results) {
-          assert.ok('demoTagTest' in results.modules['tags/sample'].completed);
+          assert.ok('demoTagTest' in results.modules[`tags${utils.getSlash()}sample`].completed);
           assert.strictEqual(Object.keys(results.modules).length, 1);
         }
       },
@@ -91,7 +92,7 @@ describe('testRunWithTags', function() {
     }, settings({
       globals: {
         reporter(results) {
-          assert.ok('demoTagTest' in results.modules['tags/sample'].completed);
+          assert.ok('demoTagTest' in results.modules[`tags${utils.getSlash()}sample`].completed);
           assert.strictEqual(Object.keys(results.modules).length, 1);
         }
       },
@@ -133,7 +134,7 @@ describe('testRunWithTags', function() {
       globals: {
         reporter(results) {
           assert.strictEqual(Object.keys(results.modules).length, 2);
-          assert.ok('otherDemoTagTest' in results.modules['withsubfolders/tags/sampleTags'].completed);
+          assert.ok('otherDemoTagTest' in results.modules[`withsubfolders${utils.getSlash()}tags${utils.getSlash()}sampleTags`].completed);
         }
       },
       tag_filter: ['login']
