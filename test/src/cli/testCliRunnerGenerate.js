@@ -181,11 +181,14 @@ describe('Test CLI Runner Generate', function() {
           selenium: {
             start_process: true,
             port: 4444,
+            command: 'standalone',
             server_path: '',
             cli_args: {
-              'webdriver.gecko.driver': '',
-              'webdriver.chrome.driver': ''
             }
+          },
+          webdriver: {
+            start_process: false,
+            default_path_prefix: '/wd/hub'
           }
         });
       },
@@ -200,6 +203,12 @@ describe('Test CLI Runner Generate', function() {
     }).setup();
 
     assert.strictEqual(ieRunner.argv.config, path.join(process.cwd(), 'nightwatch.conf.js'));
+
+    const chromeLocalRunner = new CliRunner({
+      config: './nightwatch.json',
+      env: 'browserstack.local_chrome'
+    }).setup();
+
     assert.deepStrictEqual(ieRunner.test_settings.desiredCapabilities, {
       browserName: 'internet explorer',
       browserVersion: '11.0',
@@ -208,12 +217,6 @@ describe('Test CLI Runner Generate', function() {
         accessKey: '${BROWSERSTACK_KEY}'
       }
     });
-
-    const chromeLocalRunner = new CliRunner({
-      config: './nightwatch.json',
-      env: 'browserstack.local_chrome'
-    }).setup();
-
     assert.deepStrictEqual(chromeLocalRunner.test_settings.desiredCapabilities, {
       browserName: 'chrome',
       'browserstack.local': true,

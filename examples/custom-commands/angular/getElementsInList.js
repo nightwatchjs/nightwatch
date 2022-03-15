@@ -3,8 +3,8 @@ module.exports = class AngularCommand {
     return this.api.executeScript(function(listName) {
       // executed in the browser context
       // eslint-disable-next-line
-      var element = document.querySelectorAll('*[ng-repeat$='+listName+'"]');
-      if (element && element[0]) {return element[0]}
+      var elements = document.querySelectorAll('*[ng-repeat$="'+listName+'"]');
+      if (elements) {return elements}
       // eslint-disable-next-line
       return null;
     }, [listName], async function(result) {

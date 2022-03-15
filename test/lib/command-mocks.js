@@ -12,6 +12,7 @@ module.exports = {
   stop(done) {
     if (!server) {
       done();
+
       return;
     }
 
@@ -228,6 +229,16 @@ module.exports = {
       response: JSON.stringify({
         value: null
       })
+    });
+
+    return this;
+  },
+
+  elementProperty(elementId, property, response) {
+    MockServer.addMock({
+      url: `/wd/hub/session/1352110219202/element/${elementId}/property/${property}`,
+      method: 'GET',
+      response: JSON.stringify(response)
     });
 
     return this;

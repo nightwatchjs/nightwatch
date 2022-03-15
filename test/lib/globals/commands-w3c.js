@@ -16,8 +16,7 @@ module.exports = {
           port: 10195,
           host: 'localhost'
         },
-        // output: process.env.VERBOSE === '1' || false,
-        output: false,
+        output: process.env.VERBOSE === '1' || false,
         silent: false
       })
         .then(client => {

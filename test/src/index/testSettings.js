@@ -249,20 +249,17 @@ describe('test Settings', function () {
 
   it('testSetRequestTimeoutOptions', function () {
     let client = Nightwatch.createClient({
-      request_timeout_options: {
-        timeout: 10000,
-        retry_attempts: 3
+      webdriver: {
+        timeout_options: {
+          timeout: 10000,
+          retry_attempts: 5
+        }
       }
-    });
-
-    assert.deepStrictEqual(client.options.request_timeout_options, {
-      timeout: 10000,
-      retry_attempts: 3
     });
 
     assert.deepStrictEqual(client.options.webdriver.timeout_options, {
       timeout: 10000,
-      retry_attempts: 3
+      retry_attempts: 5
     });
 
 
@@ -270,7 +267,7 @@ describe('test Settings', function () {
     let request = new HttpRequest({});
 
     assert.strictEqual(request.httpOpts.timeout, 10000);
-    assert.strictEqual(request.retryAttempts, 3);
+    assert.strictEqual(request.retryAttempts, 5);
   });
 
   it('Test initialize with parallel cli argument', function () {

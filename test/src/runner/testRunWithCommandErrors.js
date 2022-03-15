@@ -21,6 +21,65 @@ describe('testRunWithCommandErrors', function() {
   });
 
   describe('testRunWithWindowCommandErrors', function() {
+    it('testRunner with socket hang up error and retry then success', function() {
+      let requestCount = 0;
+
+      MockServer.addMock({
+        url: '/wd/hub/session/1352110219202/frame/parent',
+        socketDelay: 200,
+        response: '',
+        times: 2,
+        onRequest() {
+          requestCount++;
+        }
+      });
+
+      MockServer.addMock({
+        url: '/wd/hub/session/1352110219202/frame/parent',
+        statusCode: 200,
+        response: {
+          value: null
+        },
+        onRequest() {
+          requestCount++;
+        }
+      }, true);
+
+      let testsPath = path.join(__dirname, '../../sampletests/withcommanderrors');
+      let globals = {
+        retryAssertionTimeout: 90,
+        abortOnElementLocateError: true,
+        waitForConditionTimeout: 90,
+        waitForConditionPollInterval: 90,
+        reporter(results, cb) {
+          assert.strictEqual(results.errmessages.length, 0);
+          assert.strictEqual(requestCount, 3);
+          assert.strictEqual(results.passed, 1);
+          assert.strictEqual(results.failed, 0);
+          assert.strictEqual(results.assertions, 1);
+          assert.strictEqual(results.errors, 0);
+          assert.strictEqual(results.skipped, 0);
+          cb();
+        }
+      };
+
+      return runTests({
+        _source: [testsPath]
+      }, settings({
+        webdriver: {
+          timeout_options: {
+            timeout: 50,
+            retry_attempts: 2
+          }
+        },
+        output: false,
+        report_command_errors: true,
+        skip_testcases_on_fail: false,
+        disable_error_log: 0,
+        globals
+      }));
+    });
+    
     it('testRunner with error and report errors on', function() {
       MockServer.addMock({
         url: '/wd/hub/session/1352110219202/frame/parent',
@@ -69,7 +128,7 @@ describe('testRunWithCommandErrors', function() {
         url: '/wd/hub/session/1352110219202/frame/parent',
         socketDelay: 200,
         response: ''
-      }, true);
+      }, null, true);
 
       let testsPath = path.join(__dirname, '../../sampletests/withcommanderrors');
       let globals = {
@@ -135,7 +194,8 @@ describe('testRunWithCommandErrors', function() {
       }, settings({
         webdriver: {
           timeout_options: {
-            timeout: 50
+            timeout: 50,
+            retry_attempts: 0
           }
         },
         output: false,
@@ -146,64 +206,7 @@ describe('testRunWithCommandErrors', function() {
       }));
     });
 
-    it('testRunner with socket hang up error and retry then success', function() {
-      let requestCount = 0;
 
-      MockServer.addMock({
-        url: '/wd/hub/session/1352110219202/frame/parent',
-        socketDelay: 200,
-        response: '',
-        times: 2,
-        onRequest() {
-          requestCount++;
-        }
-      });
-
-      MockServer.addMock({
-        url: '/wd/hub/session/1352110219202/frame/parent',
-        statusCode: 200,
-        response: {
-          value: null
-        },
-        onRequest() {
-          requestCount++;
-        }
-      }, true);
-
-      let testsPath = path.join(__dirname, '../../sampletests/withcommanderrors');
-      let globals = {
-        retryAssertionTimeout: 90,
-        abortOnElementLocateError: true,
-        waitForConditionTimeout: 90,
-        waitForConditionPollInterval: 90,
-        reporter(results, cb) {
-          assert.strictEqual(results.errmessages.length, 0);
-          assert.strictEqual(requestCount, 3);
-          assert.strictEqual(results.passed, 1);
-          assert.strictEqual(results.failed, 0);
-          assert.strictEqual(results.assertions, 1);
-          assert.strictEqual(results.errors, 0);
-          assert.strictEqual(results.skipped, 0);
-          cb();
-        }
-      };
-
-      return runTests({
-        _source: [testsPath]
-      }, settings({
-        webdriver: {
-          timeout_options: {
-            timeout: 50,
-            retry_attempts: 2
-          }
-        },
-        output: false,
-        report_command_errors: true,
-        skip_testcases_on_fail: false,
-        disable_error_log: 0,
-        globals
-      }));
-    });
 
     it('testRunner with open new window socket hang up error and retry then success - default settings', function() {
       MockServer.addMock({
