@@ -1,5 +1,4 @@
 const assert = require('assert');
-const { platform } = require('os');
 const common = require('../../common.js');
 const Nightwatch = require('../../lib/nightwatch.js');
 const HttpRequest = common.require('http/request.js');
@@ -209,7 +208,7 @@ describe('test Settings', function () {
     eq(client.api.options.log_screenshot_data, true);
     eq(client.options.screenshots.on_error, true);
 
-    if(process.platform == 'win32') {
+    if (process.platform === 'win32') {
       eq(client.settings.screenshots.path, 'C:\\tmp');
     } else {
       eq(client.settings.screenshots.path, '/tmp');
