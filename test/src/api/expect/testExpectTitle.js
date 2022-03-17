@@ -176,7 +176,7 @@ describe('expect.title', function() {
     });
   });
 
-  it.only('to not equal to [FAILED]', function() {
+  it('to not equal to [FAILED]', function() {
     // No need to retry
     this.client.api.globals.waitForConditionTimeout = 0;
     

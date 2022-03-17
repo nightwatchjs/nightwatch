@@ -208,7 +208,7 @@ describe('expect.url', function() {
       });
     });
 
-    it.only('to not equal to [FAILED]', function() {
+    it('to not equal to [FAILED]', function() {
       this.client.api.globals.waitForConditionTimeout = 0;
 
       Nocks.url().getUrl();
