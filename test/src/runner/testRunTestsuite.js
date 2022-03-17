@@ -219,7 +219,7 @@ describe('testRunTestSuite', function() {
     }));
   });
 
-  xit('test runner with describe and .only()', function() {
+  it('test runner with describe and .only()', function() {
     let srcFolders = [
       path.join(__dirname, '../../sampletests/withdescribe/basic/sampleWithOnly.js')
     ];

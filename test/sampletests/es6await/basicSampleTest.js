@@ -37,7 +37,7 @@ describe('basicSampleTest', function() {
     await browser.end();
   });
 
-  xit('test with ES6 async/await perform error and try/catch', async (browser) => {
+  it('test with ES6 async/await perform error and try/catch', async (browser) => {
     let error;
     try {
       await browser.perform(async function() {

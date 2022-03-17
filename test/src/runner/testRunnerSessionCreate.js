@@ -25,7 +25,7 @@ describe('testRunnerSessionCreate', function() {
     process.removeAllListeners('unhandledRejection');
   });
 
-  xit('testRunner with session create error using webdriver', function() {
+  it('testRunner with session create error using webdriver', function() {
     let testsPath = [
       path.join(__dirname, '../../sampletests/simple'),
       path.join(__dirname, '../../sampletests/async')

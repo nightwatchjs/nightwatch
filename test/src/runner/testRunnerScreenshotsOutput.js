@@ -35,7 +35,7 @@ describe('testRunnerScreenshotsOutput', function() {
     process.removeAllListeners('unhandledRejection');
   });
 
-  xit('takes screenshot on each test failure', function () {
+  it('takes screenshot on each test failure', function () {
     let testsPath = [
       path.join(__dirname, '../../sampletests/withfailures')
     ];
@@ -76,7 +76,7 @@ describe('testRunnerScreenshotsOutput', function() {
       });
   });
 
-  xit('takes screenshot for failed test and exits if skip_testcases_on_fail is set to true', function () {
+  it('takes screenshot for failed test and exits if skip_testcases_on_fail is set to true', function () {
 
     let testsPath = [
       path.join(__dirname, '../../sampletests/withfailures')
