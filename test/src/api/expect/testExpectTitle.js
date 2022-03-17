@@ -176,14 +176,13 @@ describe('expect.title', function() {
     });
   });
 
-  it('to not equal to [FAILED]', function() {
-    this.client.api.globals.waitForConditionTimeout = 10;
-    this.client.api.globals.waitForConditionPollInterval = 9;
-
+  it.only('to not equal to [FAILED]', function() {
+    // No need to retry
+    this.client.api.globals.waitForConditionTimeout = 0;
+    
     Nocks.title('xx');
-    Nocks.title('xx');
 
-    let expect = this.client.api.expect.title().to.not.equal('xx');
+    const expect = this.client.api.expect.title().to.not.equal('xx');
     assert.ok(expect.assertion.message.startsWith('Expected page title to'));
 
     return this.client.start(function() {
