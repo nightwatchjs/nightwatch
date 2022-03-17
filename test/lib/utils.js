@@ -41,6 +41,6 @@ module.exports = {
   },
 
   getLineBreak: function() {
-    return process.platform === 'win32' ? '\n\r' : '\n';
+    return process.platform === 'win32' ? '\r\n' : '\n';
   }
 };

@@ -209,7 +209,7 @@ describe('test Settings', function () {
     eq(client.options.screenshots.on_error, true);
 
     if (process.platform === 'win32') {
-      eq(client.settings.screenshots.path, 'C:\\tmp');
+      assert.ok(client.settings.screenshots.path.endsWith('\\tmp'));
     } else {
       eq(client.settings.screenshots.path, '/tmp');
     }

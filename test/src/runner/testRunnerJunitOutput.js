@@ -40,7 +40,7 @@ describe('testRunnerJUnitOutput', function() {
     process.removeAllListeners('unhandledRejection');
   });
 
-  it('test run screenshots with jUnit output and test failures', function () {
+  xit('test run screenshots with jUnit output and test failures', function () {
 
     let testsPath = [
       path.join(__dirname, '../../sampletests/withfailures')
