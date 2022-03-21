@@ -5,31 +5,31 @@ const common = require('../../common.js');
 const MockServer = require('../../lib/mockserver.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const rimraf = require('rimraf');
-const {settings} = common;
-const {runTests} = common.require('index.js');
+const { settings } = common;
+const { runTests } = common.require('index.js');
 
-describe('testRunnerScreenshotsOutput', function() {
+describe('testRunnerScreenshotsOutput', function () {
   let screenshotFilePath = 'screenshots';
   let moduleName = 'sample';
 
-  before(function(done) {
+  before(function (done) {
     this.server = MockServer.init();
     this.server.on('listening', () => {
       rimraf(screenshotFilePath, done);
     });
   });
 
-  afterEach(function(done) {
+  afterEach(function (done) {
     rimraf(screenshotFilePath, done);
   });
 
-  after(function(done) {
-    CommandGlobals.afterEach.call(this, function() {
+  after(function (done) {
+    CommandGlobals.afterEach.call(this, function () {
       rimraf(screenshotFilePath, done);
     });
   });
 
-  beforeEach(function() {
+  beforeEach(function () {
     process.removeAllListeners('exit');
     process.removeAllListeners('uncaughtException');
     process.removeAllListeners('unhandledRejection');
@@ -235,8 +235,9 @@ describe('testRunnerScreenshotsOutput', function() {
 });
 
 function readDirPromise(dirName) {
-  return new Promise(function(resolve, reject) {
-    fs.readdir(dirName, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    fs.readdir(dirName, function (err, result) {
+      console.log('Binayak Debug log', dirName, {err}, {result});
       if (err) {
         return reject(err);
       }

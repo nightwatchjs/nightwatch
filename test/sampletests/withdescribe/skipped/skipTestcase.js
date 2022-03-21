@@ -20,7 +20,7 @@ describe('sample test with failures', function() {
       .end();
   });
 
-  it('demoTest4', function (client) {
+  xit('demoTest4', function (client) {
     client.globals.calls++;
     client.url('http://localhost')
       .assert.elementPresent('#weblogin')
