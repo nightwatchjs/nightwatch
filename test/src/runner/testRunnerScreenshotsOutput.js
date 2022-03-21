@@ -5,12 +5,12 @@ const common = require('../../common.js');
 const MockServer = require('../../lib/mockserver.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const rimraf = require('rimraf');
-const { settings } = common;
-const { runTests } = common.require('index.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('testRunnerScreenshotsOutput', function () {
-  let screenshotFilePath = 'screenshots';
-  let moduleName = 'sample';
+  const screenshotFilePath = 'screenshots';
+  const moduleName = 'sample';
 
   before(function (done) {
     this.server = MockServer.init();
@@ -36,7 +36,7 @@ describe('testRunnerScreenshotsOutput', function () {
   });
 
   it('takes screenshot on each test failure', function () {
-    let testsPath = [
+    const testsPath = [
       path.join(__dirname, '../../sampletests/withfailures')
     ];
 
@@ -78,7 +78,7 @@ describe('testRunnerScreenshotsOutput', function () {
 
   it('takes screenshot for failed test and exits if skip_testcases_on_fail is set to true', function () {
 
-    let testsPath = [
+    const testsPath = [
       path.join(__dirname, '../../sampletests/withfailures')
     ];
 
@@ -122,7 +122,7 @@ describe('testRunnerScreenshotsOutput', function () {
 
   it('doesnt save file if screenshot call is failed', function () {
 
-    let testsPath = [
+    const testsPath = [
       path.join(__dirname, '../../sampletests/withfailures')
     ];
 
@@ -169,7 +169,7 @@ describe('testRunnerScreenshotsOutput', function () {
 
   it('does not take screenshot if screenshot is disabled', function () {
 
-    let testsPath = [
+    const testsPath = [
       path.join(__dirname, '../../sampletests/withfailures')
     ];
 
@@ -201,7 +201,7 @@ describe('testRunnerScreenshotsOutput', function () {
 
   it('does not take screenshot if screenshot is enabled but on_failure is set to false', function () {
 
-    let testsPath = [
+    const testsPath = [
       path.join(__dirname, '../../sampletests/withfailures')
     ];
 
