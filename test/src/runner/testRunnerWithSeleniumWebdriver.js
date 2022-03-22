@@ -5,10 +5,10 @@ const MockServer = require('../../lib/mockserver.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
 
-xdescribe('testRunnerWithSeleniumWebdriver', function() {
+xdescribe('testRunnerWithSeleniumWebdriver', function () {
   this.timeout(10000);
 
-  before(function(done) {
+  before(function (done) {
     this.server = MockServer.init();
     this.server.keepAliveTimeout = 500;
     this.server.on('listening', () => {
@@ -16,14 +16,14 @@ xdescribe('testRunnerWithSeleniumWebdriver', function() {
     });
   });
 
-  after(function(done) {
-    this.server.close(function() {
+  after(function (done) {
+    this.server.close(function () {
       done();
     });
   });
 
   // TODO: consider fixing this if it turns out that people actually need it
-  it('test runner using selenium-webdriver library', function() {
+  it('test runner using selenium-webdriver library', function () {
     const testsPath = path.join(__dirname, '../../sampletests/withwebdriver/sampleTestUsingSeleniumWebdriver.js');
 
     MockServer.addMock({
@@ -51,8 +51,8 @@ xdescribe('testRunnerWithSeleniumWebdriver', function() {
     }, true);
 
     MockServer.addMock({
-      url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/displayed',
-      method: 'GET',
+      url: '/wd/hub/session/1352110219202/execute/sync',
+      method: 'POST',
       response: {
         value: true
       }
