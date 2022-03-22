@@ -10,7 +10,7 @@ describe('test Runner with async and assertion failure', function() {
   const originalExit = process.exit;
   this.timeout(10000);
 
-  before(function(done) {
+  beforeEach(function(done) {
     this.server = MockServer.init();
 
     this.server.on('listening', () => {
@@ -30,7 +30,7 @@ describe('test Runner with async and assertion failure', function() {
       test_calls: 0,
       retryAssertionTimeout: 0,
       reporter(results) {
-        assert.strictEqual(globals.test_calls, 10);
+        assert.strictEqual(globals.test_calls, 12);
       }
     };
 

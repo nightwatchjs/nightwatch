@@ -39,13 +39,14 @@ describe('test Mocha Runner async', function() {
           timeout: 5000
         }
       },
-      output: true,
+      output: false,
       silent: false
     })).catch(err => {
       return err;
     }).then((err) => {
       assert.ok(err instanceof Error);
-      assert.strictEqual(globals.test_calls, 10);
+      assert.strictEqual(globals.test_calls, 12);
+      assert.strictEqual(err.failures, 2);
     });
   });
 });
