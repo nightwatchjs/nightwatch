@@ -1,6 +1,7 @@
 const assert = require('assert');
 const path = require('path');
 const fs = require('fs');
+const lodashMerge = require('lodash.merge');
 const common = require('../../common.js');
 const Utils = common.require('utils');
 
@@ -210,7 +211,10 @@ describe('test Utils', function() {
       at /Users/BarnOwl/Documents/Projects/Nightwatch/node_modules/nightwatch/lib/testsuite/index.js:659:21
       at processTicksAndRejections (node:internal/process/task_queues:96:5)`
     };
-    const errorLines = Utils.beautifyStackTrace(error);
+
+    const errorInstance = new Error();
+    Object.assign(errorInstance, error);
+    const errorLines = Utils.beautifyStackTrace(errorInstance);
     assert.strictEqual(errorLines, expectedLines);
   });
 
@@ -236,7 +240,9 @@ describe('test Utils', function() {
       at processTicksAndRejections (node:internal/process/task_queues:96:5)`
     };
 
-    const errorLines = Utils.beautifyStackTrace(error);
+    const errorInstance = new Error();
+    Object.assign(errorInstance, error);
+    const errorLines = Utils.beautifyStackTrace(errorInstance);
     assert.strictEqual(errorLines, expectedLines);
   });
 
