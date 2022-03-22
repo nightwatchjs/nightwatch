@@ -76,7 +76,7 @@ describe('testRunnerScreenshotsOutput', function () {
       });
   });
 
-  it.only('takes screenshot for failed test and exits if skip_testcases_on_fail is set to true', function () {
+  it('takes screenshot for failed test and exits if skip_testcases_on_fail is set to true', function () {
 
     const testsPath = [
       path.join(__dirname, '../../sampletests/withfailures')
