@@ -77,13 +77,13 @@ module.exports = {
       .reply(200, {
         status: 0,
         state: 'success',
-        value: [{ELEMENT: '0'}]
+        value: [{'element-6066-11e4-a52e-4f735466cecf': '0'}]
       });
 
     return this;
   },
 
-  elementStateError({error, times, code = 400, url = '/wd/hub/session/1352110219202/element/0/displayed', method = 'get', reply}) {
+  elementStateError({error, times, code = 400, url = '/wd/hub/session/1352110219202/execute/sync', method = 'post', reply}) {
     const mock = nock('http://localhost:10195')[method](url);
 
     if (times) {
@@ -119,7 +119,7 @@ module.exports = {
       .reply(200, {
         status: 0,
         state: 'success',
-        value: [{ELEMENT: '0'}]
+        value: [{'element-6066-11e4-a52e-4f735466cecf': '0'}]
       });
 
     return this;
@@ -256,7 +256,7 @@ module.exports = {
 
   visible() {
     nock('http://localhost:10195')
-      .get('/wd/hub/session/1352110219202/element/0/displayed')
+      .post('/wd/hub/session/1352110219202/execute/sync')
       .reply(200, {
         status: 0,
         sessionId: '1352110219202',
@@ -269,7 +269,7 @@ module.exports = {
 
   notVisible(times) {
     var mock = nock('http://localhost:10195')
-      .get('/wd/hub/session/1352110219202/element/0/displayed');
+      .post('/wd/hub/session/1352110219202/execute/sync');
 
     if (times) {
       mock.times(times);
@@ -348,11 +348,11 @@ module.exports = {
 
   active() {
     nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/element/active')
+      .get('/wd/hub/session/1352110219202/element/active')
       .reply(200, {
         status: 0,
         state: 'success',
-        value: {ELEMENT: '0'}
+        value: {'element-6066-11e4-a52e-4f735466cecf': '0'}
       });
 
     return this;
@@ -360,11 +360,11 @@ module.exports = {
 
   notActive() {
     nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/element/active')
+      .get('/wd/hub/session/1352110219202/element/active')
       .reply(200, {
         status: 0,
         state: 'success',
-        value: {ELEMENT: 'other'}
+        value: {'element-6066-11e4-a52e-4f735466cecf': 'other'}
       });
 
     return this;
@@ -433,10 +433,10 @@ module.exports = {
         status: 0,
         state: 'success',
         value: [
-          {ELEMENT: '0'},
-          {ELEMENT: '1'},
-          {ELEMENT: '2'},
-          {ELEMENT: '3'}
+          {'element-6066-11e4-a52e-4f735466cecf': '0'},
+          {'element-6066-11e4-a52e-4f735466cecf': '1'},
+          {'element-6066-11e4-a52e-4f735466cecf': '2'},
+          {'element-6066-11e4-a52e-4f735466cecf': '3'}
         ]
       });
 
@@ -457,7 +457,7 @@ module.exports = {
 
   cookie(name, value) {
     nock('http://localhost:10195')
-      .get('/wd/hub/session/1352110219202/cookie')
+      .get(`/wd/hub/session/1352110219202/cookie/${name}`)
       .reply(200, {
         status: 0,
         state: 'success',

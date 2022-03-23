@@ -1,22 +1,22 @@
 const assert = require('assert');
-const MockServer  = require('../../../../lib/mockserver.js');
+const MockServer = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 const Nightwatch = require('../../../../lib/nightwatch.js');
 
-describe('browser.getNextSibling', function(){
+describe('browser.getNextSibling', function () {
 
-  before(function(done) {
+  before(function (done) {
     CommandGlobals.beforeEach.call(this, done);
   });
-    
-  after(function(done) {
+
+  after(function (done) {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('.getNextSibling', function(done){
-    
+  it('.getNextSibling', function (done) {
+
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/execute',
+      url: '/wd/hub/session/1352110219202/execute/sync',
       method: 'POST',
       response: {
         value: {
@@ -25,7 +25,7 @@ describe('browser.getNextSibling', function(){
       }
     }, true);
 
-    this.client.api.getNextSibling('#weblogin', function callback(result){
+    this.client.api.getNextSibling('#weblogin', function callback(result) {
       assert.ok(result.value);
       assert.strictEqual(result.value.getId(), '1');
     });
@@ -33,7 +33,7 @@ describe('browser.getNextSibling', function(){
   });
 
 
-  it('.getNextSibling - no such element', function(done) {
+  it('.getNextSibling - no such element', function (done) {
 
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/elements',
@@ -42,7 +42,7 @@ describe('browser.getNextSibling', function(){
         using: 'css selector',
         value: '#badDriver'
       },
-     
+
       response: {
         status: 0,
         sessionId: '1352110219202',
@@ -53,7 +53,7 @@ describe('browser.getNextSibling', function(){
     });
 
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/execute',
+      url: '/wd/hub/session/1352110219202/execute/sync',
       method: 'POST',
       response: {
         status: 0,
@@ -61,14 +61,14 @@ describe('browser.getNextSibling', function(){
       }
     });
 
-    this.client.api.getNextSibling('#badDriver', function callback(result){
+    this.client.api.getNextSibling('#badDriver', function callback(result) {
       assert.strictEqual(result.value, null);
     });
-    
+
     this.client.start(done);
   });
 
-  it('.getNextSibling - webdriver protcol', function(done){
+  it('.getNextSibling - webdriver protcol', function (done) {
     Nightwatch.initW3CClient({
       silent: true,
       output: false
@@ -91,20 +91,20 @@ describe('browser.getNextSibling', function(){
           }
         }
       }, true);
-  
-      client.api.getNextSibling('#webdriver', function(result) {
+
+      client.api.getNextSibling('#webdriver', function (result) {
         assert.ok(result.value);
         assert.strictEqual(result.value.getId(), 'f54dc0ef-c84f-424a-bad0-16fef6595a70');
-      }).getNextSibling('#webdriver', function callback(result){
+      }).getNextSibling('#webdriver', function callback(result) {
         assert.ok(result.value);
         assert.strictEqual(result.value.getId(), 'f54dc0ef-c84f-424a-bad0-16fef6595a70');
       });
-  
+
       client.start(done);
     });
   });
 
-  it('.getNextSibling - webdriver protcol no such element', function(done){
+  it('.getNextSibling - webdriver protcol no such element', function (done) {
     Nightwatch.initW3CClient({
       silent: true,
       output: false
@@ -116,11 +116,11 @@ describe('browser.getNextSibling', function(){
           value: null
         }
       });
-  
-      client.api.getNextSibling('#webdriver', function(result) {
+
+      client.api.getNextSibling('#webdriver', function (result) {
         assert.strictEqual(result.value, null);
       });
-  
+
       client.start(done);
     });
   });

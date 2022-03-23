@@ -233,7 +233,7 @@ mocks:
     sessionId: *sessionId
     status: 0
 
-- url: '/wd/hub/session/1352110219202/log'
+- url: '/wd/hub/session/1352110219202/se/log'
   postdata:
     type: 'browser'
   method: POST
