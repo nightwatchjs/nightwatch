@@ -46,7 +46,7 @@ describe('testRunnerScreenshotsOutput', function () {
       response: JSON.stringify({
         sessionId: '1352110219202',
         status: 0,
-        value: 'screendata'
+        value: 'c2NyZWVuZGF0YQ=='
       })
     }, true);
 
@@ -88,7 +88,7 @@ describe('testRunnerScreenshotsOutput', function () {
       response: JSON.stringify({
         sessionId: '1352110219202',
         status: 0,
-        value: 'screendata'
+        value: 'c2NyZWVuZGF0YQ=='
       })
     });
 
