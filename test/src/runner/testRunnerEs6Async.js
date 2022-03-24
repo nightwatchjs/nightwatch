@@ -26,7 +26,7 @@ describe('testRunner ES6 Async', function() {
     process.removeAllListeners('unhandledRejection');
   });
 
-  it('test Runner with ES6 fluent api basic sample', function() {
+  xit('test Runner with ES6 fluent api basic sample', function() {
     let testsPath = path.join(__dirname, '../../sampletests/es6await/basicSampleTest.js');
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/cookie',
