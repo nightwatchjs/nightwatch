@@ -7,9 +7,9 @@ const {settings} = common;
 const {runTests} = common.require('index.js');
 const utils = require('../../lib/utils');
 
-describe('testRunTestSuite', function() {
+describe('testRunTestSuite', function () {
 
-  beforeEach(function(done) {
+  beforeEach(function (done) {
     process.removeAllListeners('exit');
     process.removeAllListeners('uncaughtException');
     process.removeAllListeners('unhandledRejection');
@@ -21,9 +21,9 @@ describe('testRunTestSuite', function() {
     });
   });
 
-  afterEach(function(done) {
-    CommandGlobals.afterEach.call(this, function() {
-      Object.keys(require.cache).forEach(function(module) {
+  afterEach(function (done) {
+    CommandGlobals.afterEach.call(this, function () {
+      Object.keys(require.cache).forEach(function (module) {
         delete require.cache[module];
       });
 
@@ -31,7 +31,7 @@ describe('testRunTestSuite', function() {
     });
   });
 
-  it('testRunner with --fail-fast cli argument', function() {
+  it('testRunner with --fail-fast cli argument', function () {
     let src_folders = [
       path.join(__dirname, '../../sampletests/withfailures'),
       path.join(__dirname, '../../sampletests/withsubfolders')
@@ -59,7 +59,7 @@ describe('testRunTestSuite', function() {
     });
   });
 
-  it('testRunner with enable_fail_fast setting', function() {
+  it('testRunner with enable_fail_fast setting', function () {
     let src_folders = [
       path.join(__dirname, '../../sampletests/withfailures'),
       path.join(__dirname, '../../sampletests/withsubfolders')
@@ -87,7 +87,7 @@ describe('testRunTestSuite', function() {
     });
   });
 
-  it('testRunModuleSyncName', function() {
+  it('testRunModuleSyncName', function () {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/elements',
       postdata: '{"using":"css selector","value":"#finlandia"}',
@@ -95,9 +95,9 @@ describe('testRunTestSuite', function() {
     });
 
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/element/10/displayed',
+      url: '/wd/hub/session/1352110219202/execute/sync',
       statusCode: 200,
-      method: 'GET',
+      method: 'POST',
       response: JSON.stringify({sessionId: '1352110219202', status: 0, value: true})
     });
 
@@ -141,7 +141,7 @@ describe('testRunTestSuite', function() {
 
   });
 
-  it('test run multiple sources and same module name', function() {
+  it('test run multiple sources and same module name', function () {
     let srcFolders = [
       path.join(__dirname, '../../sampletests/simple'),
       path.join(__dirname, '../../sampletests/mixed')
@@ -165,7 +165,7 @@ describe('testRunTestSuite', function() {
     }));
   });
 
-  it('testRunMultipleSrcFolders', function() {
+  it('testRunMultipleSrcFolders', function () {
     let srcFolders = [
       path.join(__dirname, '../../sampletests/simple'),
       path.join(__dirname, '../../sampletests/srcfolders')
@@ -190,7 +190,7 @@ describe('testRunTestSuite', function() {
     }));
   });
 
-  it('test runner with multiple test interfaces - exports/describe', function() {
+  it('test runner with multiple test interfaces - exports/describe', function () {
     let srcFolders = [
       path.join(__dirname, '../../sampletests/simple'),
       path.join(__dirname, '../../sampletests/withdescribe/basic')
@@ -219,7 +219,7 @@ describe('testRunTestSuite', function() {
     }));
   });
 
-  it('test runner with describe and .only()', function() {
+  it('test runner with describe and .only()', function () {
     let srcFolders = [
       path.join(__dirname, '../../sampletests/withdescribe/basic/sampleWithOnly.js')
     ];
@@ -240,7 +240,7 @@ describe('testRunTestSuite', function() {
     }));
   });
 
-  it('testRunner with describe and skipTestcasesOnFail=true', function() {
+  it('testRunner with describe and skipTestcasesOnFail=true', function () {
     let testsPath = path.join(__dirname, '../../sampletests/withdescribe/failures/sampleSkipTestcases.js');
     let globals = {
       calls: 0,

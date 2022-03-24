@@ -3,36 +3,25 @@ const MockServer = require('../../../../lib/mockserver.js');
 const Nightwatch = require('../../../../lib/nightwatch.js');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 
-describe('getLocation', function() {
-  before(function(done) {
+describe('getLocation', function () {
+  before(function (done) {
     CommandGlobals.beforeEach.call(this, done);
   });
 
-  after(function(done) {
+  after(function (done) {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('client.getLocation()', function(done) {
+  it('client.getLocation()', function (done) {
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/element/0/size',
-      method: 'GET',
-      response: JSON.stringify({
-        sessionId: '1352110219202',
-        status: 0,
-        value: {
-          width: 10,
-          height: 20
-        }
-      })
-    });
-
-    MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/element/0/location',
+      url: '/wd/hub/session/1352110219202/element/0/rect',
       method: 'GET',
       response: {
         sessionId: '1352110219202',
         status: 0,
         value: {
+          width: 10,
+          height: 20,
           x: 1,
           y: 0
         }
@@ -48,7 +37,7 @@ describe('getLocation', function() {
     this.client.start(done);
   });
 
-  it('client.getLocation() with webdriver protocol', function(done) {
+  it('client.getLocation() with webdriver protocol', function (done) {
     Nightwatch.initW3CClient({
     }).then(client => {
       MockServer.addMock({
@@ -64,7 +53,7 @@ describe('getLocation', function() {
         }
       }, true);
 
-      client.api.getLocation('#webdriver', function(result) {
+      client.api.getLocation('#webdriver', function (result) {
         assert.deepStrictEqual(result, {
           status: 0,
           value: {

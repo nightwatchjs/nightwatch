@@ -3,42 +3,31 @@ const MockServer = require('../../../../lib/mockserver.js');
 const Nightwatch = require('../../../../lib/nightwatch.js');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 
-describe('getElementSize', function() {
-  before(function(done) {
+describe('getElementSize', function () {
+  before(function (done) {
     CommandGlobals.beforeEach.call(this, done, {
       output: false
     });
   });
 
-  after(function(done) {
+  after(function (done) {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('client.getElementSize()', function(done) {
+  it('client.getElementSize()', function (done) {
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/element/0/size',
+      url: '/wd/hub/session/1352110219202/element/0/rect',
       method: 'GET',
       response: JSON.stringify({
         sessionId: '1352110219202',
         status: 0,
         value: {
           width: 10,
-          height: 20
-        }
-      })
-    }, null, true);
-
-    MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/element/0/location',
-      method: 'GET',
-      response: {
-        sessionId: '1352110219202',
-        status: 0,
-        value: {
+          height: 20,
           x: 1,
           y: 0
         }
-      }
+      })
     }, null, true);
 
     this.client.api.getElementSize('#weblogin', function callback(result) {
@@ -66,7 +55,7 @@ describe('getElementSize', function() {
     this.client.start(done);
   });
 
-  it('client.getElementSize() with webdriver protocol', function(done) {
+  it('client.getElementSize() with webdriver protocol', function (done) {
     Nightwatch.initW3CClient({
 
     }).then(client => {
@@ -83,7 +72,7 @@ describe('getElementSize', function() {
         }
       }, true);
 
-      client.api.getElementSize('#webdriver', function(result) {
+      client.api.getElementSize('#webdriver', function (result) {
         assert.deepStrictEqual(result, {
           status: 0,
           value: {
@@ -99,7 +88,7 @@ describe('getElementSize', function() {
     });
   });
 
-  it('client.getElementSize() with webdriver protocol - element not found', function(done) {
+  it('client.getElementSize() with webdriver protocol - element not found', function (done) {
     Nightwatch.initClient({
       selenium: {
         version2: false,
@@ -130,7 +119,7 @@ describe('getElementSize', function() {
         times: 2
       });
 
-      client.api.getElementSize({selector: '#webdriver-notfound', timeout: 10}, function(result) {
+      client.api.getElementSize({selector: '#webdriver-notfound', timeout: 10}, function (result) {
         assert.strictEqual(result.status, -1);
         assert.strictEqual(result.value.error, 'An error occurred while running .getElementSize() command on <#webdriver-notfound>: Timed out while waiting for element "#webdriver-notfound" with "css selector" to be present for 10 milliseconds.');
         assert.strictEqual(result.value.message, 'An error occurred while running .getElementSize() command on <#webdriver-notfound>: Timed out while waiting for element "#webdriver-notfound" with "css selector" to be present for 10 milliseconds.');
