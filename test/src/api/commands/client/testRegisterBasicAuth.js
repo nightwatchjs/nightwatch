@@ -59,7 +59,7 @@ describe('.registerBasicAuth()', function () {
       desiredCapabilities: {
         browserName: 'firefox'
       }
-    }).then(client=>{
+    }).then(client => {
       client.api.registerBasicAuth('admin', 'admin', function(result){
         assert.strictEqual(result.status, -1);
         assert.strictEqual(result.error, 'RegisterBasicAuth is not supported while using this driver');
