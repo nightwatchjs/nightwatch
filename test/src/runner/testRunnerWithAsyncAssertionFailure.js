@@ -25,7 +25,7 @@ describe('test Runner with async and assertion failure', function() {
     Globals.afterEach.call(this, done);
   });
 
-  it.only('test run mocha samples with async and failures', function() {
+  it('test run mocha samples with async and failures', function() {
     const globals = {
       test_calls: 0,
       retryAssertionTimeout: 0,
