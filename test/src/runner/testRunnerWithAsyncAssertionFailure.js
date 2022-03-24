@@ -30,7 +30,7 @@ describe('test Runner with async and assertion failure', function() {
       test_calls: 0,
       retryAssertionTimeout: 0,
       reporter(results) {
-        assert.strictEqual(globals.test_calls, 12);
+        assert.strictEqual(globals.test_calls, 16);
       }
     };
 
