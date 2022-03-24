@@ -3,9 +3,9 @@ const Nocks = require('../../../lib/nocks.js');
 const ExpectGlobals = require('../../../lib/globals/expect.js');
 const {strictEqual, deepStrictEqual} = assert;
 
-describe('expect.cookie', function() {
-  describe('with backwards compat mode', function() {
-    beforeEach(function(done) {
+describe('expect.cookie', function () {
+  describe('with backwards compat mode', function () {
+    beforeEach(function (done) {
       ExpectGlobals.beforeEach.call(this, {
         backwards_compatibility_mode: true,
         output: false,
@@ -16,22 +16,22 @@ describe('expect.cookie', function() {
       });
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
       Nocks.cleanAll();
       ExpectGlobals.afterEach.call(this, done);
     });
 
-    it('to contain [PASSED]', function() {
+    it('to contain [PASSED]', function () {
       Nocks.cookie('cookie-name', 'cookie-value');
       let expect = this.client.api.expect.cookie('cookie-name').to.contain('cookie-value');
 
-      return this.client.start(function() {
+      return this.client.start(function () {
         strictEqual(expect.assertion.passed, true);
         assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" to contain: "cookie-value"'), expect.assertion.message);
       });
     });
 
-    it('contains [PASSED]', function() {
+    it('contains [PASSED]', function () {
       this.client.api.globals.waitForConditionTimeout = 40;
       this.client.api.globals.waitForConditionPollInterval = 20;
 
@@ -39,7 +39,7 @@ describe('expect.cookie', function() {
 
       let expect = this.client.api.expect.cookie('cookie-name').contains('cookie-value');
 
-      return this.client.start(function() {
+      return this.client.start(function () {
         strictEqual(expect.assertion.waitForMs, 40);
         strictEqual(expect.assertion.passed, true);
         assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" to contain: "cookie-value"'));
@@ -47,8 +47,8 @@ describe('expect.cookie', function() {
     });
   });
 
-  describe('without compat mode', function() {
-    beforeEach(function(done) {
+  describe('without compat mode', function () {
+    beforeEach(function (done) {
       ExpectGlobals.beforeEach.call(this, {
         output: false,
         silent: false
@@ -58,22 +58,22 @@ describe('expect.cookie', function() {
       });
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
       Nocks.cleanAll();
       ExpectGlobals.afterEach.call(this, done);
     });
 
-    it('to contain [PASSED]', function() {
+    it('to contain [PASSED]', function () {
       Nocks.cookie('cookie-name', 'cookie-value');
       let expect = this.client.api.expect.cookie('cookie-name').to.contain('cookie-value');
 
-      return this.client.start(function() {
+      return this.client.start(function () {
         strictEqual(expect.assertion.passed, true);
         assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" to contain: "cookie-value"'), expect.assertion.message);
       });
     });
 
-    it('contains [PASSED]', function() {
+    it('contains [PASSED]', function () {
       this.client.api.globals.waitForConditionTimeout = 40;
       this.client.api.globals.waitForConditionPollInterval = 20;
 
@@ -81,14 +81,14 @@ describe('expect.cookie', function() {
 
       let expect = this.client.api.expect.cookie('cookie-name').contains('cookie-value');
 
-      return this.client.start(function() {
+      return this.client.start(function () {
         strictEqual(expect.assertion.waitForMs, 40);
         strictEqual(expect.assertion.passed, true);
         assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" to contain: "cookie-value"'));
       });
     });
 
-    it('toContain [PASSED]', function() {
+    it('toContain [PASSED]', function () {
       this.client.api.globals.waitForConditionTimeout = 40;
       this.client.api.globals.waitForConditionPollInterval = 20;
 
@@ -96,13 +96,13 @@ describe('expect.cookie', function() {
 
       const api = this.client.api.expect.cookie('cookie-name').toContain('cookie-value');
 
-      return this.client.start(function(err) {
+      return this.client.start(function (err) {
         assert.ok('capabilities' in api);
         assert.strictEqual(err, undefined);
       });
     });
 
-    it('toContain [FAILED]', function() {
+    it('toContain [FAILED]', function () {
       this.client.api.globals.waitForConditionTimeout = 40;
       this.client.api.globals.waitForConditionPollInterval = 20;
       this.client.api.globals.abortOnAssertionFailure = true;
@@ -113,7 +113,7 @@ describe('expect.cookie', function() {
 
       const api = this.client.api.expect.cookie('cookie-name').toContain('other-value');
 
-      return this.client.start(function(err) {
+      return this.client.start(function (err) {
         assert.ok('capabilities' in api);
         assert.ok(err instanceof Error);
         assert.ok(/^Expected cookie "cookie-name" to contain: "other-value" - expected "contain 'other-value'" but got: "cookie-value" \(\d+ms\)/.test(err.message), err.message);
@@ -121,7 +121,7 @@ describe('expect.cookie', function() {
     });
 
 
-    it('toEqual [PASSED]', function() {
+    it('toEqual [PASSED]', function () {
       this.client.api.globals.waitForConditionTimeout = 40;
       this.client.api.globals.waitForConditionPollInterval = 20;
 
@@ -129,13 +129,13 @@ describe('expect.cookie', function() {
 
       const api = this.client.api.expect.cookie('cookie-name').toEqual('cookie-value');
 
-      return this.client.start(function(err) {
+      return this.client.start(function (err) {
         assert.ok('capabilities' in api);
         assert.strictEqual(err, undefined);
       });
     });
 
-    it('toEqual [FAILED]', function() {
+    it('toEqual [FAILED]', function () {
       this.client.api.globals.waitForConditionTimeout = 40;
       this.client.api.globals.waitForConditionPollInterval = 20;
       this.client.api.globals.abortOnAssertionFailure = true;
@@ -146,14 +146,14 @@ describe('expect.cookie', function() {
 
       const api = this.client.api.expect.cookie('cookie-name').toEqual('other-value');
 
-      return this.client.start(function(err) {
+      return this.client.start(function (err) {
         assert.ok('capabilities' in api);
         assert.ok(err instanceof Error);
         assert.ok(/^Expected cookie "cookie-name" to equal: "other-value" - expected "equal 'other-value'" but got: "cookie-value" \(\d+ms\)/.test(err.message), err.message);
       });
     });
 
-    it('toMatch [PASSED]', function() {
+    it('toMatch [PASSED]', function () {
       this.client.api.globals.waitForConditionTimeout = 40;
       this.client.api.globals.waitForConditionPollInterval = 20;
 
@@ -161,13 +161,13 @@ describe('expect.cookie', function() {
 
       const api = this.client.api.expect.cookie('cookie-name').toMatch(/cookie-value/);
 
-      return this.client.start(function(err) {
+      return this.client.start(function (err) {
         assert.ok('capabilities' in api);
         assert.strictEqual(err, undefined);
       });
     });
 
-    it('toMatch no regex [FAILED]', function() {
+    it('toMatch no regex [FAILED]', function () {
       this.client.api.globals.waitForConditionTimeout = 40;
       this.client.api.globals.waitForConditionPollInterval = 20;
 
@@ -183,7 +183,7 @@ describe('expect.cookie', function() {
       assert.ok(error instanceof Error);
     });
 
-    it('toMatch [FAILED]', function() {
+    it('toMatch [FAILED]', function () {
       this.client.api.globals.waitForConditionTimeout = 40;
       this.client.api.globals.waitForConditionPollInterval = 20;
       this.client.api.globals.abortOnAssertionFailure = true;
@@ -194,14 +194,14 @@ describe('expect.cookie', function() {
 
       const api = this.client.api.expect.cookie('cookie-name').toMatch(/other-value/);
 
-      return this.client.start(function(err) {
+      return this.client.start(function (err) {
         assert.ok('capabilities' in api);
         assert.ok(err instanceof Error);
         assert.ok(/^Expected cookie "cookie-name" to match: "\/other-value\/" - expected "match '\/other-value\/'" but got: "cookie-value" \(\d+ms\)/.test(err.message), err.message);
       });
     });
 
-    it('not.toEqual [PASSED]', function() {
+    it('not.toEqual [PASSED]', function () {
       this.client.api.globals.waitForConditionTimeout = 40;
       this.client.api.globals.waitForConditionPollInterval = 20;
 
@@ -209,13 +209,13 @@ describe('expect.cookie', function() {
 
       const api = this.client.api.expect.cookie('cookie-name').not.toEqual('other');
 
-      return this.client.start(function(err) {
+      return this.client.start(function (err) {
         assert.ok('capabilities' in api);
         assert.strictEqual(err, undefined);
       });
     });
 
-    it('not.toEqual [FAILED]', function() {
+    it('not.toEqual [FAILED]', function () {
       this.client.api.globals.waitForConditionTimeout = 40;
       this.client.api.globals.waitForConditionPollInterval = 20;
       this.client.api.globals.abortOnAssertionFailure = true;
@@ -226,14 +226,14 @@ describe('expect.cookie', function() {
 
       const api = this.client.api.expect.cookie('cookie-name').not.toEqual('cookie-value');
 
-      return this.client.start(function(err) {
+      return this.client.start(function (err) {
         assert.ok('capabilities' in api);
         assert.ok(err instanceof Error);
         assert.ok(/^Expected cookie "cookie-name" to not equal: "cookie-value" - expected "not equal 'cookie-value'" but got: "cookie-value" \(\d+ms\)/.test(err.message), err.message);
       });
     });
 
-    it('to equal to [FAILED]', function() {
+    it('to equal to [FAILED]', function () {
       this.client.api.globals.waitForConditionTimeout = 40;
       this.client.api.globals.waitForConditionPollInterval = 20;
 
@@ -243,7 +243,7 @@ describe('expect.cookie', function() {
 
       let expect = this.client.api.expect.cookie('cookie-name').to.equal('other-cookie-value');
 
-      return this.client.start(function() {
+      return this.client.start(function () {
         strictEqual(expect.assertion.expected, 'equal \'other-cookie-value\'');
         strictEqual(expect.assertion.negate, false);
         strictEqual(expect.assertion.actual, 'cookie-value');
@@ -254,12 +254,12 @@ describe('expect.cookie', function() {
       });
     });
 
-    it('to NOT equal to [PASSED]', function() {
+    it('to NOT equal to [PASSED]', function () {
       Nocks.cookie('cookie-name', 'cookie-value');
 
       let expect = this.client.api.expect.cookie('cookie-name').to.not.equal('xx');
 
-      return this.client.start(function() {
+      return this.client.start(function () {
         strictEqual(expect.assertion.negate, true);
         strictEqual(expect.assertion.passed, true);
         strictEqual(expect.assertion.resultValue, 'cookie-value');
@@ -268,7 +268,7 @@ describe('expect.cookie', function() {
       });
     });
 
-    it('to NOT equal to [FAILED]', function() {
+    it('to NOT equal to [FAILED]', function () {
       this.client.api.globals.waitForConditionTimeout = 40;
       this.client.api.globals.waitForConditionPollInterval = 50;
 
@@ -277,7 +277,7 @@ describe('expect.cookie', function() {
 
       let expect = this.client.api.expect.cookie('cookie-name').to.not.equal('cookie-value');
 
-      return this.client.start(function() {
+      return this.client.start(function () {
         strictEqual(expect.assertion.negate, true);
         strictEqual(expect.assertion.resultValue, 'cookie-value');
         strictEqual(expect.assertion.passed, false);
@@ -287,7 +287,7 @@ describe('expect.cookie', function() {
       });
     });
 
-    it('to equal waitFor [PASSED]', function() {
+    it('to equal waitFor [PASSED]', function () {
       this.client.api.globals.waitForConditionPollInterval = 50;
       Nocks.cookie('cookie-name', 'other');
       Nocks.cookie('cookie-name', 'cookie-value');
@@ -295,7 +295,7 @@ describe('expect.cookie', function() {
       let expect = this.client.api.expect.cookie('cookie-name').to.equal('cookie-value').before(110);
       Nocks.cookie('cookie-name', 'cookie-value');
 
-      return this.client.start(function() {
+      return this.client.start(function () {
         strictEqual(expect.assertion.waitForMs, 110);
         strictEqual(expect.assertion.passed, true);
         strictEqual(expect.assertion.retries, 1);
@@ -303,7 +303,7 @@ describe('expect.cookie', function() {
       });
     });
 
-    it('to equal and waitFor [FAILED] - value not equal', function() {
+    it('to equal and waitFor [FAILED] - value not equal', function () {
       this.client.api.globals.waitForConditionTimeout = 10;
       this.client.api.globals.waitForConditionPollInterval = 30;
 
@@ -313,7 +313,7 @@ describe('expect.cookie', function() {
 
       let expect = this.client.api.expect.cookie('cookie-name').to.equal('cookie-value').before(30);
 
-      return this.client.start(function() {
+      return this.client.start(function () {
         strictEqual(expect.assertion.waitForMs, 30);
         strictEqual(expect.assertion.passed, false);
         assert.ok(expect.assertion.retries >= 1);
@@ -322,12 +322,12 @@ describe('expect.cookie', function() {
     });
 
 
-    it('to not contains [PASSED]', function() {
+    it('to not contains [PASSED]', function () {
       Nocks.cookie('cookie-name', 'other');
 
       let expect = this.client.api.expect.cookie('cookie-name').to.not.contains('vasq');
 
-      return this.client.start(function() {
+      return this.client.start(function () {
         strictEqual(expect.assertion.expected, 'not contain \'vasq\'');
         strictEqual(expect.assertion.actual, 'other');
         strictEqual(expect.assertion.negate, true);
@@ -339,18 +339,18 @@ describe('expect.cookie', function() {
     });
 
 
-    it('with domain to contain [PASSED]', function() {
+    it('with domain to contain [PASSED]', function () {
       Nocks.cookie('cookie-name', 'cookie-value');
       let expect = this.client.api.expect.cookie('cookie-name', 'cookie-domain').to.contain('cookie-value');
 
-      return this.client.start(function() {
+      return this.client.start(function () {
         strictEqual(expect.assertion.passed, true);
         assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" for domain "cookie-domain" to contain: "cookie-value"'),
           `Message: ${expect.assertion.message}`);
       });
     });
 
-    it('with domain to equal - cookie not found [FAILED]', function() {
+    it('with domain to equal - cookie not found [FAILED]', function () {
       this.client.api.globals.waitForConditionTimeout = 40;
       this.client.api.globals.waitForConditionPollInterval = 50;
 
@@ -360,13 +360,13 @@ describe('expect.cookie', function() {
         .cookieNotFound();
       let expect = this.client.api.expect.cookie('cookie-name', 'cookie-domain').to.equal('other-cookie-value');
 
-      return this.client.start(function() {
+      return this.client.start(function () {
         strictEqual(expect.assertion.passed, false);
         assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" for domain "cookie-domain" to equal: "other-cookie-value" - no cookie "cookie-name" for domain "cookie-domain" was found - expected "equal \'other-cookie-value\'" but got: "[NotFoundError]"'), expect.assertion.message);
       });
     });
 
-    it('with domain to contain [FAILED]', function() {
+    it('with domain to contain [FAILED]', function () {
       this.client.api.globals.waitForConditionTimeout = 40;
       this.client.api.globals.waitForConditionPollInterval = 50;
 
@@ -374,23 +374,23 @@ describe('expect.cookie', function() {
       Nocks.cookie('cookie-name', 'cookie-value');
       let expect = this.client.api.expect.cookie('cookie-name', 'cookie-domain').to.contain('other-cookie-value');
 
-      return this.client.start(function() {
+      return this.client.start(function () {
         strictEqual(expect.assertion.passed, false);
         assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" for domain "cookie-domain" to contain: "other-cookie-value"'));
       });
     });
 
-    it('with domain to NOT contain [PASSED]', function() {
+    it('with domain to NOT contain [PASSED]', function () {
       Nocks.cookie('cookie-name', 'cookie-value');
       let expect = this.client.api.expect.cookie('cookie-name', 'cookie-domain').not.to.contain('other-cookie-value');
 
-      return this.client.start(function() {
+      return this.client.start(function () {
         strictEqual(expect.assertion.passed, true);
         assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" for domain "cookie-domain" to not contain: "other-cookie-value"'), expect.assertion.message);
       });
     });
 
-    it('with domain to NOT contain [FAILED]', function() {
+    it('with domain to NOT contain [FAILED]', function () {
       this.client.api.globals.waitForConditionTimeout = 40;
       this.client.api.globals.waitForConditionPollInterval = 50;
 
@@ -398,14 +398,14 @@ describe('expect.cookie', function() {
       Nocks.cookie('cookie-name', 'cookie-value');
       let expect = this.client.api.expect.cookie('cookie-name', 'cookie-domain').not.to.contain('cookie-value');
 
-      return this.client.start(function() {
+      return this.client.start(function () {
         strictEqual(expect.assertion.passed, false);
         assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" for domain "cookie-domain" to not contain: "cookie-value"'), expect.assertion.message);
       });
     });
 
 
-    it('to not contain [FAILED]', function() {
+    it('to not contain [FAILED]', function () {
       this.client.api.globals.waitForConditionTimeout = 40;
       this.client.api.globals.waitForConditionPollInterval = 50;
 
@@ -414,7 +414,7 @@ describe('expect.cookie', function() {
 
       let expect = this.client.api.expect.cookie('cookie-name').to.not.contains('other');
 
-      return this.client.start(function() {
+      return this.client.start(function () {
         strictEqual(expect.assertion.negate, true);
         strictEqual(expect.assertion.resultValue, 'other');
         strictEqual(expect.assertion.passed, false);
@@ -423,12 +423,12 @@ describe('expect.cookie', function() {
       });
     });
 
-    it('to not match [PASSED]', function() {
+    it('to not match [PASSED]', function () {
       Nocks.cookie('cookie-name', 'other');
 
       let expect = this.client.api.expect.cookie('cookie-name').to.not.match(/vasq/);
 
-      return this.client.start(function() {
+      return this.client.start(function () {
         assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" to'));
         strictEqual(expect.assertion.expected, 'not match \'/vasq/\'');
         strictEqual(expect.assertion.actual, 'other');
@@ -440,7 +440,7 @@ describe('expect.cookie', function() {
       });
     });
 
-    it('to not match [FAILED]', function() {
+    it('to not match [FAILED]', function () {
       this.client.api.globals.waitForConditionTimeout = 40;
       this.client.api.globals.waitForConditionPollInterval = 50;
 
@@ -449,7 +449,7 @@ describe('expect.cookie', function() {
 
       let expect = this.client.api.expect.cookie('cookie-name').to.not.match(/other/);
 
-      return this.client.start(function() {
+      return this.client.start(function () {
         assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" to'));
         strictEqual(expect.assertion.negate, true);
         strictEqual(expect.assertion.resultValue, 'other');
@@ -459,7 +459,7 @@ describe('expect.cookie', function() {
       });
     });
 
-    it('to equal to - cookie not found', function() {
+    it('to equal to - cookie not found', function () {
       this.client.api.globals.waitForConditionTimeout = 40;
       this.client.api.globals.waitForConditionPollInterval = 50;
 
@@ -467,7 +467,7 @@ describe('expect.cookie', function() {
       Nocks.cookie('', 'other');
       let expect = this.client.api.expect.cookie('cookie-name').to.equal('vasq');
 
-      return this.client.start(function() {
+      return this.client.start(function () {
         assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" to equal: "vasq" - no cookie "cookie-name" was found'), expect.assertion.message);
         strictEqual(expect.assertion.negate, false);
         strictEqual(expect.assertion.resultValue, undefined);
@@ -478,21 +478,21 @@ describe('expect.cookie', function() {
       });
     });
 
-    it('to equal with waitFor - cookie found on retry', function() {
+    it('to equal with waitFor - cookie found on retry', function () {
       this.client.api.globals.waitForConditionPollInterval = 50;
       Nocks.cookie('', 'other');
       Nocks.cookie('cookie-name', 'hp vasq');
 
       let expect = this.client.api.expect.cookie('cookie-name').to.equal('hp vasq').before(60);
 
-      return this.client.start(function() {
+      return this.client.start(function () {
         strictEqual(expect.assertion.waitForMs, 60);
         strictEqual(expect.assertion.passed, true);
         assert.ok(expect.assertion.message.startsWith('Expected cookie "cookie-name" to equal: "hp vasq" in 60ms (' + expect.assertion.elapsedTime + 'ms)'));
       });
     });
 
-    it('to match - throws exception on invalid regex', function() {
+    it('to match - throws exception on invalid regex', function () {
       this.client.api.globals.waitForConditionTimeout = 40;
       this.client.api.globals.waitForConditionPollInterval = 50;
 
@@ -500,14 +500,14 @@ describe('expect.cookie', function() {
       Nocks.cookie('cookie-name', 'other');
 
       let expect = this.client.api.expect.cookie('cookie-name');
-      assert.throws(function() {
+      assert.throws(function () {
         expect.matches('');
       }.bind(this));
 
       return this.client.start();
     });
 
-    it('to equal and waitFor [FAILED] - value not found', function() {
+    it('to equal and waitFor [FAILED] - value not found', function () {
       this.client.api.globals.waitForConditionPollInterval = 50;
       Nocks.cookie('cookie-name', 'other');
       Nocks.cookie('cookie-name', 'other');
@@ -515,7 +515,7 @@ describe('expect.cookie', function() {
 
       let expect = this.client.api.expect.cookie('cookie-name').to.equal('hp vasq').before(60);
 
-      return this.client.start(function() {
+      return this.client.start(function () {
         strictEqual(expect.assertion.waitForMs, 60);
         strictEqual(expect.assertion.passed, false);
         assert.ok(expect.assertion.retries >= 1);
