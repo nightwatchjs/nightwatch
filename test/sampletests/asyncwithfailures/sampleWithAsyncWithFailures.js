@@ -21,6 +21,21 @@ describe('Mocha tests with failures', function() {
       .end();
   });
 
+  it('demoTest3', async function(browser) {
+    browser.url('http://localhost')
+      .waitForElementPresent('#weblogin')
+      .waitForElementPresent('#badlogin')
+      .end();
+  });
+
+  it('demoTest4', async function(browser) {
+    await browser.url('http://localhost')
+      .waitForElementPresent('#weblogin')
+      .pause(100)
+      .waitForElementPresent('#badelement')
+      .end();
+  });
+
   afterEach(function(browser, callback) {
     browser.globals.test_calls++;
     callback();
