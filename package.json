@@ -35,6 +35,7 @@
     "ora": "^5.4.1",
     "selenium-webdriver": "4.1.1",
     "semver": "^7.3.5",
+    "stacktrace-parser": "^0.1.10",
     "strip-ansi": "^6.0.0"
   },
   "devDependencies": {
