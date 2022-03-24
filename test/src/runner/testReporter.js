@@ -6,7 +6,7 @@ const Reporter = common.require('reporter/global-reporter.js');
 describe('testReporter', function() {
 
   it('test with unknown reporter', function() {
-    let reporter = new Reporter('unknown', {
+    const reporter = new Reporter('unknown', {
       globals: {
         reporter(results, done) {
           done();
@@ -23,7 +23,7 @@ describe('testReporter', function() {
   });
 
   it('test with invalid reporter', function() {
-    let reporter = new Reporter(path.join(__dirname, '../../extra/reporter/notvalid.js'), {
+    const reporter = new Reporter(path.join(__dirname, '../../extra/reporter/notvalid.js'), {
       globals: {
         reporter(results, done) {
           done();
@@ -40,7 +40,7 @@ describe('testReporter', function() {
 
   it('test with valid reporter', function() {
 
-    let reporter = new Reporter(path.join(__dirname, '../../extra/reporter/custom.js'), {
+    const reporter = new Reporter(path.join(__dirname, '../../extra/reporter/custom.js'), {
       globals: {
         reporter(results, done) {
           done();
@@ -48,6 +48,10 @@ describe('testReporter', function() {
       },
       output_folder: 'output'
     });
+
+    reporter.writeReport = function(reporter, globalResults) {
+      Promise.resolve();
+    };
 
     return reporter.save().then(function(result) {
       assert.ok(Array.isArray(result));
@@ -56,7 +60,7 @@ describe('testReporter', function() {
   });
 
   it('test with multiple reporters', function() {
-    let reporter = new Reporter([path.join(__dirname, '../../extra/reporter/custom.js'), path.join(__dirname, '../../extra/reporter/custom.js')], {
+    const reporter = new Reporter([path.join(__dirname, '../../extra/reporter/custom.js'), path.join(__dirname, '../../extra/reporter/custom.js')], {
       globals: {
         reporter(results, done) {
           done();
@@ -65,9 +69,13 @@ describe('testReporter', function() {
       output_folder: 'output'
     });
 
+    reporter.writeReport = function(reporter, globalResults) {
+      Promise.resolve();
+    };
+
     return reporter.writeReportToFile({passed: true}).then((result) => {
       assert.ok(Array.isArray(result));
-      assert.strictEqual(result.length, 2);
+      assert.strictEqual(result.length, 3);
     });
   });
 });
