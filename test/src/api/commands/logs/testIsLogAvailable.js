@@ -1,26 +1,26 @@
 const assert = require('assert');
-const MockServer  = require('../../../../lib/mockserver.js');
+const MockServer = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 
-describe('isLogAvailable', function() {
-  before(function(done) {
+describe('isLogAvailable', function () {
+  before(function (done) {
     CommandGlobals.beforeEach.call(this, done);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     MockServer.removeMock({
-      url: '/wd/hub/session/1352110219202/log/types',
+      url: '/wd/hub/session/1352110219202/se/log/types',
       method: 'GET'
     });
   });
 
-  after(function(done) {
+  after(function (done) {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('client.isLogAvailable()', function(done) {
+  it('client.isLogAvailable()', function (done) {
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/log/types',
+      url: '/wd/hub/session/1352110219202/se/log/types',
       method: 'GET',
       response: JSON.stringify({
         sessionId: '1352110219202',
@@ -44,9 +44,9 @@ describe('isLogAvailable', function() {
     this.client.start(done);
   });
 
-  it('client.isLogAvailable() failure', function(done) {
+  it('client.isLogAvailable() failure', function (done) {
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/log/types',
+      url: '/wd/hub/session/1352110219202/se/log/types',
       method: 'GET',
       response: JSON.stringify({
         sessionId: '1352110219202',

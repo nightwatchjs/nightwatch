@@ -172,8 +172,8 @@ module.exports = {
 
   visible(elementId = '0', value = true, {times = 0} = {}) {
     MockServer.addMock({
-      url: `/wd/hub/session/1352110219202/element/${elementId}/displayed`,
-      method: 'GET',
+      url: '/wd/hub/session/1352110219202/execute/sync',
+      method: 'POST',
       response: JSON.stringify({
         value
       }),

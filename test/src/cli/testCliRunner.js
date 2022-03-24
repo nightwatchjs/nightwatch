@@ -933,4 +933,17 @@ describe('Test CLI Runner', function() {
 
     assert.strictEqual(runner.argv.config, './nightwatch.conf.cjs');
   });
+
+  it('using no package.json file', function() {
+    mockery.deregisterMock('package.json');
+    mockery.registerMock('package.json');
+
+    registerNoSettingsJsonMock();
+
+    const CliRunner = common.require('runner/cli/cli.js');
+    let runner = new CliRunner({});
+
+    const config = runner.getLocalConfigFileName();
+    assert.strictEqual(config, './nightwatch.conf.js');
+  });
 });

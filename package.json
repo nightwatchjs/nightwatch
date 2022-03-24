@@ -1,7 +1,7 @@
 {
   "name": "nightwatch",
   "description": "Easy to use Node.js based end-to-end testing solution for web applications using the W3C WebDriver API.",
-  "version": "2.0.0-dev.19",
+  "version": "2.0.10",
   "author": {
     "name": "Andrei Rusu",
     "email": "andrei@nightwatchjs.org"
@@ -15,9 +15,10 @@
     "url": "git@github.com:nightwatchjs/nightwatch.git"
   },
   "dependencies": {
+    "@nightwatch/chai": "5.0.2",
     "assertion-error": "1.1.0",
     "boxen": "5.1.2",
-    "chai-nightwatch": "0.4.2",
+    "chai-nightwatch": "0.5.3",
     "ci-info": "^3.2.0",
     "didyoumean": "^1.2.2",
     "dotenv": "10.0.0",
@@ -28,22 +29,22 @@
     "lodash.defaultsdeep": "^4.6.1",
     "lodash.merge": "^4.6.2",
     "minimatch": "3.0.4",
-    "minimist": "^1.2.5",
+    "minimist": "1.2.6",
     "mkpath": "1.0.0",
     "mocha": "9.2.0",
     "ora": "^5.4.1",
-    "selenium-webdriver": "4.1.0",
+    "selenium-webdriver": "4.1.1",
     "semver": "^7.3.5",
-    "strip-ansi": "^6.0.0",
-    "@nightwatch/chai": "5.0.1"
+    "strip-ansi": "^6.0.0"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "^8.0.0-rc.1",
+    "@cucumber/cucumber": "^8.0.0-rc.2",
     "@types/node": "^16.7.1",
-    "coveralls": "^3.0.11",
-    "eslint": "^8.7.0",
+    "coveralls": "^3.1.1",
+    "eslint": "^8.9.0",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.21",
+    "mocha-junit-reporter": "^2.0.2",
     "mochawesome": "^7.0.1",
     "mochawesome-merge": "^4.2.1",
     "mochawesome-report-generator": "^6.0.1",
@@ -77,6 +78,7 @@
     "eslint": "eslint index.js lib bin api examples cucumber-js test --quiet",
     "mocha-coverage": "nyc --reporter=html mocha test/src/ --recursive",
     "test": "mocha test/src/ --recursive",
+    "test-cucumber": "mocha test/cucumber-integration-tests --parallel",
     "coverage": "npx nyc report --reporter=text-lcov > ./coverage/mocha_coverage.lcov"
   },
   "eslintConfig": {
