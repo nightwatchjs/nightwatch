@@ -1,22 +1,22 @@
 const assert = require('assert');
-const MockServer  = require('../../../../lib/mockserver.js');
+const MockServer = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 const Nightwatch = require('../../../../lib/nightwatch.js');
 
-describe('browser.getFirstElementChild', function(){
+describe('browser.getFirstElementChild', function () {
 
-  before(function(done) {
+  before(function (done) {
     CommandGlobals.beforeEach.call(this, done);
   });
-    
-  after(function(done) {
+
+  after(function (done) {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('.getFirstElementChild', function(done){
-      
+  it('.getFirstElementChild', function (done) {
+
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/execute',
+      url: '/wd/hub/session/1352110219202/execute/sync',
       method: 'POST',
       response: {
         value: {
@@ -25,14 +25,14 @@ describe('browser.getFirstElementChild', function(){
       }
     }, true);
 
-    this.client.api.getFirstElementChild('#weblogin', function callback(result){
+    this.client.api.getFirstElementChild('#weblogin', function callback(result) {
       assert.strictEqual(result.value.getId(), '1');
     });
     this.client.start(done);
   });
 
 
-  it('.getFirstElementChild - no such element', function(done) {
+  it('.getFirstElementChild - no such element', function (done) {
 
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/elements',
@@ -41,7 +41,7 @@ describe('browser.getFirstElementChild', function(){
         using: 'css selector',
         value: '#badDriver'
       },
-     
+
       response: {
         status: 0,
         sessionId: '1352110219202',
@@ -54,23 +54,23 @@ describe('browser.getFirstElementChild', function(){
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/execute',
       method: 'POST',
-  
+
       response: {
         status: 0,
         value: null
       }
     });
 
-    this.client.api.getFirstElementChild('#badDriver', function callback(result){
+    this.client.api.getFirstElementChild('#badDriver', function callback(result) {
       assert.strictEqual(result.value, null);
     });
-    
+
     this.client.start(done);
   });
 
 
 
-  it('.getFirstElementChild - webdriver protcol', function(done){
+  it('.getFirstElementChild - webdriver protcol', function (done) {
     Nightwatch.initW3CClient({
       silent: true,
       output: false
@@ -93,20 +93,20 @@ describe('browser.getFirstElementChild', function(){
           }
         }
       }, true);
-  
-      client.api.getFirstElementChild('#webdriver', function(result) {
+
+      client.api.getFirstElementChild('#webdriver', function (result) {
         assert.ok(result.value);
         assert.strictEqual(result.value.getId(), 'f54dc0ef-c84f-424a-bad0-16fef6595a70');
-      }).getFirstElementChild('#webdriver', function callback(result){
+      }).getFirstElementChild('#webdriver', function callback(result) {
         assert.ok(result.value);
         assert.strictEqual(result.value.getId(), 'f54dc0ef-c84f-424a-bad0-16fef6595a70');
       });
-  
+
       client.start(done);
     });
   });
 
-  it('.getFirstElementChild - webdriver protcol no such element', function(done){
+  it('.getFirstElementChild - webdriver protcol no such element', function (done) {
     Nightwatch.initW3CClient({
       silent: true,
       output: false
@@ -118,11 +118,11 @@ describe('browser.getFirstElementChild', function(){
           value: null
         }
       });
-  
-      client.api.getFirstElementChild('#webdriver', function(result) {
+
+      client.api.getFirstElementChild('#webdriver', function (result) {
         assert.strictEqual(result.value, null);
       });
-  
+
       client.start(done);
     });
   });
