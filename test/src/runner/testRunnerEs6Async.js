@@ -27,7 +27,7 @@ describe('testRunner ES6 Async', function () {
   });
 
 
-  xit('test Runner with ES6 fluent api basic sample', function() {
+  it('test Runner with ES6 fluent api basic sample', function() {
     let testsPath = path.join(__dirname, '../../sampletests/es6await/basicSampleTest.js');
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/cookie/test_cookie',
@@ -48,10 +48,10 @@ describe('testRunner ES6 Async', function () {
     }, true);
 
     let globals = {
-      waitForConditionPollInterval: 50,
+      waitForConditionPollInterval: 150,
       waitForConditionTimeout: 100,
       retryAssertionTimeout: 150,
-
+      
       reporter(results) {
         assert.ok('basicSampleTest' in results.modules);
 

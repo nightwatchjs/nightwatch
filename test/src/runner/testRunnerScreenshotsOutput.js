@@ -90,7 +90,7 @@ describe('testRunnerScreenshotsOutput', function () {
         status: 0,
         value: 'c2NyZWVuZGF0YQ=='
       })
-    });
+    }, true);
 
 
     return runTests(testsPath, settings({
@@ -138,7 +138,7 @@ describe('testRunnerScreenshotsOutput', function () {
         error: 'Unknown command 404 Not Found',
         httpStatusCode: 404
       })
-    });
+    }, true);
 
 
     return runTests(testsPath, settings({
@@ -237,7 +237,6 @@ describe('testRunnerScreenshotsOutput', function () {
 function readDirPromise(dirName) {
   return new Promise(function (resolve, reject) {
     fs.readdir(dirName, function (err, result) {
-      console.log('Binayak Debug log', dirName, {err}, {result});
       if (err) {
         return reject(err);
       }
