@@ -9,6 +9,7 @@ const {settings} = common;
 const {runTests} = common.require('index.js');
 
 describe('testRunnerScreenshotsOutput', function () {
+  this.timeout(10000);
   const screenshotFilePath = 'screenshots';
   const moduleName = 'sample';
 
