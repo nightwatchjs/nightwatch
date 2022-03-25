@@ -44,8 +44,8 @@ describe('expect.title', function() {
     this.client.api.globals.waitForConditionPollInterval = 9;
     this.client.api.globals.abortOnAssertionFailure = true;
 
-    Nocks.title('hp vasq');
-    Nocks.title('hp vasq');
+    Nocks.title('hp vasq').title('hp vasq').title('hp vasq').title('hp vasq');
+    
     let api = this.client.api.expect.title().to.toEqual('vasq');
 
     return this.client.start(function(err) {
@@ -180,8 +180,7 @@ describe('expect.title', function() {
     this.client.api.globals.waitForConditionTimeout = 10;
     this.client.api.globals.waitForConditionPollInterval = 9;
 
-    Nocks.title('xx');
-    Nocks.title('xx');
+    Nocks.title('xx').title('xx').title('xx').title('xx');
 
     let expect = this.client.api.expect.title().to.not.equal('xx');
     assert.ok(expect.assertion.message.startsWith('Expected page title to'));
