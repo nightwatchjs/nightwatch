@@ -7,7 +7,6 @@ module.exports = {
   },
 
   persist_globals: true,
-  output: false,
 
   webdriver: {
     start_process: false
