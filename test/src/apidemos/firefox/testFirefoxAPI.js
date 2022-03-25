@@ -41,7 +41,7 @@ describe('firefox api demos', function () {
       silent: true,
       persist_globals: true,
       globals,
-      output_folder: false
+      output: false
     });
   });
 });

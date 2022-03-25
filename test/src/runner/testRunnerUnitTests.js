@@ -14,10 +14,10 @@ describe('testRunnerUnitTests', function() {
   });
 
   it('testRunUnitTests', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/unittests');
+    const testsPath = path.join(__dirname, '../../sampletests/unittests');
 
     return runTests(testsPath, {
-      output_folder: false,
+      output: false,
       unit_tests_mode: true,
       output: false,
       globals: {
@@ -31,10 +31,10 @@ describe('testRunnerUnitTests', function() {
   });
 
   it('testRunner unit tests with annotation', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/unittests/sampleAnnotation.js');
+    const testsPath = path.join(__dirname, '../../sampletests/unittests/sampleAnnotation.js');
 
     const settings = {
-      output_folder: false,
+      output: false,
       output: false,
       persist_globals: true,
       globals: {
@@ -53,10 +53,10 @@ describe('testRunnerUnitTests', function() {
   });
 
   it('testRunner unit tests with annotation and describe', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withdescribe/unittests/');
+    const testsPath = path.join(__dirname, '../../sampletests/withdescribe/unittests/');
 
     const settings = {
-      output_folder: false,
+      output: false,
       output: false,
       persist_globals: true,
       globals: {
@@ -75,10 +75,10 @@ describe('testRunnerUnitTests', function() {
   });
 
   it('testRunner unit tests with annotation and error thrown', function() {
-    let testsPath = path.join(__dirname, '../../asynchookstests/unittest-error.js');
+    const testsPath = path.join(__dirname, '../../asynchookstests/unittest-error.js');
 
     const settings = {
-      output_folder: false,
+      output: false,
       output: false,
       globals: {
         reporter(results) {
@@ -92,7 +92,7 @@ describe('testRunnerUnitTests', function() {
   });
 
   it('test run unit tests with junit output and failures', function() {
-    let testsPath = [
+    const testsPath = [
       path.join(__dirname, '../../asynchookstests/unittest-failure')
     ];
 
@@ -130,21 +130,21 @@ describe('testRunnerUnitTests', function() {
       }
     })
       .then(runner => {
-        let sampleReportFile = 'output/unittest-failure.xml';
+        const sampleReportFile = 'output/unittest-failure.xml';
         assert.ok(fileExistsSync(sampleReportFile), 'The sample file report was not created.');
 
         return readFilePromise(sampleReportFile);
       })
       .then(data => {
-        let content = data.toString();
+        const content = data.toString();
         assert.ok(content.includes('<failure message="Expected values to be strictly equal:\n\n1 !== 0\n - expected &#34;0&#34; but got: &#34;1&#34;">AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:'), 'Report does not contain failure information.');
       });
   });
 
   it('test async unit test with timeout error', function() {
-    let testsPath = path.join(__dirname, '../../asynchookstests/unittest-async-timeout.js');
+    const testsPath = path.join(__dirname, '../../asynchookstests/unittest-async-timeout.js');
 
-    let settings = Settings.parse({
+    const settings = Settings.parse({
       output_folder: 'output',
       unit_tests_mode: true,
       persist_globals: true,
@@ -156,7 +156,7 @@ describe('testRunnerUnitTests', function() {
       }
     });
 
-    let runner = Runner.create(settings, {
+    const runner = Runner.create(settings, {
       reporter: 'junit'
     });
 
@@ -169,7 +169,7 @@ describe('testRunnerUnitTests', function() {
       .then(hasFailed => {
         assert.ok(hasFailed);
 
-        let err = runner.results.lastError;
+        const err = runner.results.lastError;
         assert.ok(err instanceof Error);
         assert.ok(fileExistsSync('output/unittest-async-timeout.xml'));
         assert.strictEqual(err.name, 'TimeoutError');

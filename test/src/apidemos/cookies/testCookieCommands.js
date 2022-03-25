@@ -44,7 +44,7 @@ describe('cookie demos', function() {
       silent: false,
       persist_globals: true,
       globals,
-      output_folder: false
+      output: false
     });
   });
 
@@ -80,7 +80,7 @@ describe('cookie demos', function() {
       silent: false,
       persist_globals: true,
       globals,
-      output_folder: false
+      output: false
     });
   });
 });

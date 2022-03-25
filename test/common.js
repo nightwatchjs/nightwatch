@@ -15,7 +15,7 @@ module.exports = {
   },
 
   requireMock(relativeFilePath, ...args) {
-    let mockedModule = require(path.join(__dirname, './lib/mocks', relativeFilePath));
+    const mockedModule = require(path.join(__dirname, './lib/mocks', relativeFilePath));
 
     return mockedModule(...args);
   },
@@ -28,7 +28,7 @@ module.exports = {
       },
       selenium_host: 'localhost',
       persist_globals: true,
-      output_folder: false,
+      output: false,
       output: false,
       silent: false
     }, settings);

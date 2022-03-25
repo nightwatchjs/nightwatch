@@ -53,7 +53,7 @@ describe('test CLI Runner Mocha', function() {
   });
 
   it('testRunWithMochaDefaults', function() {
-    let testFiles = [];
+    const testFiles = [];
 
     const defaultOptions = {timeout: 20000, reporterOptions: {}};
     if (isCi) {
@@ -62,7 +62,7 @@ describe('test CLI Runner Mocha', function() {
 
     mockery.registerMock('./withmocha.json', {
       src_folders: ['tests'],
-      output_folder: false,
+      output: false,
       test_settings: {
         'default': {
           silent: true
@@ -76,7 +76,7 @@ describe('test CLI Runner Mocha', function() {
     }, testFiles);
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    const runner = new CliRunner({
       config: './withmocha.json',
       env: 'default'
     }).setup();
@@ -87,7 +87,7 @@ describe('test CLI Runner Mocha', function() {
   });
 
   it('testRunWithMochaPerEnvironment', function() {
-    let testFiles = [];
+    const testFiles = [];
     const defaultOptions = {timeout: 20000, reporterOptions: {}};
     if (isCi) {
       defaultOptions.color = false;
@@ -95,7 +95,7 @@ describe('test CLI Runner Mocha', function() {
 
     mockery.registerMock('./withmocha.json', {
       src_folders: ['tests'],
-      output_folder: false,
+      output: false,
       test_settings: {
         'default': {
           silent: true
@@ -112,7 +112,7 @@ describe('test CLI Runner Mocha', function() {
     }, testFiles);
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    const runner = new CliRunner({
       config: './withmocha.json',
       env: 'mochatests'
     }).setup();
@@ -123,7 +123,7 @@ describe('test CLI Runner Mocha', function() {
   });
 
   it('testRunWithMochaCustomOpts', function() {
-    let testFiles = [];
+    const testFiles = [];
 
     const defaultOptions = {
       ui: 'tdd',
@@ -137,7 +137,7 @@ describe('test CLI Runner Mocha', function() {
 
     mockery.registerMock('./withmocha.json', {
       src_folders: ['tests'],
-      output_folder: false,
+      output: false,
       test_settings: {
         'default': {
           silent: true
@@ -156,7 +156,7 @@ describe('test CLI Runner Mocha', function() {
     }, testFiles);
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    const runner = new CliRunner({
       config: './withmocha.json',
       env: 'default'
     }).setup();

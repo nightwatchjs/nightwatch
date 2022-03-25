@@ -59,7 +59,7 @@ describe('Test CLI Runner in Parallel', function () {
     }, {
       silent: false,
       output: false,
-      output_folder: false
+      output: false
     });
   });
 
@@ -75,7 +75,7 @@ describe('Test CLI Runner in Parallel', function () {
     runner.setup({
       silent: false,
       output: false,
-      output_folder: false
+      output: false
     });
 
     const Utils = common.require('utils');

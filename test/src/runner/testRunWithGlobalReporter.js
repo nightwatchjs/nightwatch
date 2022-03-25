@@ -26,7 +26,7 @@ describe('testRunWithGlobalReporter', function() {
   });
 
   it('testRunWithGlobalReporter', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after');
+    const testsPath = path.join(__dirname, '../../sampletests/before-after');
     const globals = {
       reporterCount: 0
     };
@@ -34,7 +34,7 @@ describe('testRunWithGlobalReporter', function() {
     return runTests(testsPath, settings({
       globals,
       globals_path: path.join(__dirname, '../../extra/external-globals.js'),
-      output_folder: false
+      output: false
     }))
       .then(err => {
         assert.strictEqual(globals.reporterCount, 1);
@@ -42,7 +42,7 @@ describe('testRunWithGlobalReporter', function() {
   });
 
   it('testRunner with global async reporter', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after');
+    const testsPath = path.join(__dirname, '../../sampletests/before-after');
     let reporterCount = 0;
 
     return runTests(testsPath, settings({
@@ -53,7 +53,7 @@ describe('testRunWithGlobalReporter', function() {
           cb();
         }
       },
-      output_folder: false
+      output: false
     }))
       .catch(err => (err))
       .then(_ => {
@@ -62,7 +62,7 @@ describe('testRunWithGlobalReporter', function() {
   });
 
   it('testRunner with global async reporter and timeout error', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after');
+    const testsPath = path.join(__dirname, '../../sampletests/before-after');
     let reporterCount = 0;
 
     return runTests(testsPath, settings({
@@ -73,7 +73,7 @@ describe('testRunWithGlobalReporter', function() {
           reporterCount++;
         }
       },
-      output_folder: false
+      output: false
     })).then(_ => {
       assert.strictEqual(reporterCount, 1);
     }).catch(err => {

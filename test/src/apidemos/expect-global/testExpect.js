@@ -79,7 +79,7 @@ describe('expect(element.<command>) - passed', function() {
       silent: false,
       persist_globals: true,
       globals,
-      output_folder: false
+      output: false
     });
   });
 

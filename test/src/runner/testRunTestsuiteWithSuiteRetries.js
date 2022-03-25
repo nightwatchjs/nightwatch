@@ -32,8 +32,8 @@ describe('testRunTestsuiteWithSuiteRetries', function() {
 
   it('testRunner with suiteRetries', function() {
     let sessionFinishedCalled = false;
-    let testsPath = path.join(__dirname, '../../sampletests/withfailures');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/withfailures');
+    const globals = {
       calls: 0,
       retryAssertionTimeout: 0,
       reporter(results, cb) {
@@ -137,8 +137,8 @@ describe('testRunTestsuiteWithSuiteRetries', function() {
   });
 
   it('testRunner with suiteRetries and skip_testcases_on_fail=false', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withfailures');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/withfailures');
+    const globals = {
       calls: 0,
       retryAssertionTimeout: 0,
       reporter(results, cb) {
@@ -158,8 +158,8 @@ describe('testRunTestsuiteWithSuiteRetries', function() {
   });
 
   it('testRunner with suiteRetries and locate strategy change', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/suiteretries/locate-strategy');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/suiteretries/locate-strategy');
+    const globals = {
       calls: 0,
       reporter(results, cb) {
         assert.strictEqual(runner.currentSuite.client.locateStrategy, 'css selector');
@@ -181,7 +181,7 @@ describe('testRunTestsuiteWithSuiteRetries', function() {
       persist_globals: true,
       globals,
       skip_testcases_on_fail: false,
-      output_folder: false
+      output: false
     });
 
     const argv = {
@@ -190,7 +190,7 @@ describe('testRunTestsuiteWithSuiteRetries', function() {
       _source: [testsPath]
     };
 
-    let runner = Runner.create(settings, argv);
+    const runner = Runner.create(settings, argv);
 
     return Runner.readTestSource(settings, argv)
       .then(modules => {
@@ -199,8 +199,8 @@ describe('testRunTestsuiteWithSuiteRetries', function() {
   });
 
   it('test clear command queue when run with suiteRetries', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/suiteretries/sample');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/suiteretries/sample');
+    const globals = {
       calls: 0,
       reporter(results, cb) {
         assert.strictEqual(globals.calls, 3);

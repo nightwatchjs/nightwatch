@@ -48,10 +48,10 @@ describe('testRunWithHooks', function() {
     'afterWithClient'
   ].forEach(function(hook) {
     it(`testRunner with ${hook} hook and explicit callback error`, function() {
-      let provideErrorTestPath = path.join(__dirname, '../../asynchookstests/async-provide-error/' + hook + '.js');
-      let expectedErrorMessage = 'Provided error ' + hook;
+      const provideErrorTestPath = path.join(__dirname, '../../asynchookstests/async-provide-error/' + hook + '.js');
+      const expectedErrorMessage = 'Provided error ' + hook;
 
-      let globals = {
+      const globals = {
         calls: 0,
         asyncHookTimeout: 50,
 
@@ -89,12 +89,12 @@ describe('testRunWithHooks', function() {
     'afterWithClient'
   ].forEach(function(hook) {
     it(`testRunner with ${hook} hook and explicit callback error with --fail-fast argument`, function() {
-      let source = [
+      const source = [
         path.join(__dirname, '../../asynchookstests/async-provide-error/' + hook + '.js'),
         path.join(__dirname, '../../sampletests/async/test/sample.js')
       ];
 
-      let globals = {
+      const globals = {
         calls: 0,
         asyncHookTimeout: 50,
 
@@ -136,12 +136,12 @@ describe('testRunWithHooks', function() {
     'afterWithClient'
   ].forEach(function(hook) {
     it(`testRunner with ${hook} hook and explicit callback error without fail-fast argument`, function() {
-      let source = [
+      const source = [
         path.join(__dirname, '../../asynchookstests/async-provide-error/' + hook + '.js'),
         path.join(__dirname, '../../sampletests/async/test/sample.js')
       ];
 
-      let globals = {
+      const globals = {
         calls: 0,
         asyncHookTimeout: 50,
 
@@ -159,7 +159,7 @@ describe('testRunWithHooks', function() {
   });
 
   it('test run with async before and after', function() {
-    let globals = {
+    const globals = {
       calls: 0,
       reporter(results) {
         assert.strictEqual(globals.calls, 2);
@@ -168,7 +168,7 @@ describe('testRunWithHooks', function() {
       }
     };
 
-    let testsPath = path.join(__dirname, '../../sampletests/async');
+    const testsPath = path.join(__dirname, '../../sampletests/async');
 
     return runTests(testsPath, settings({
       globals
@@ -176,10 +176,10 @@ describe('testRunWithHooks', function() {
   });
 
   it('test run with async afterEach', function() {
-    let origExit = process.exit;
+    const origExit = process.exit;
     process.exit = function() {};
 
-    let globals = {
+    const globals = {
       calls: 0,
       reporter(results) {
         if (results.lastError) {
@@ -191,7 +191,7 @@ describe('testRunWithHooks', function() {
       }
     };
 
-    let testsPath = path.join(__dirname, '../../sampletests/mixed');
+    const testsPath = path.join(__dirname, '../../sampletests/mixed');
 
     return runTests(testsPath, settings({
       seleniumPort: 10195,
@@ -200,8 +200,8 @@ describe('testRunWithHooks', function() {
   });
 
   it('testRunner async with before and after', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/before-after');
+    const globals = {
       calls: 0,
       reporter(results) {
         if (results.lastError) {
@@ -210,7 +210,7 @@ describe('testRunWithHooks', function() {
         assert.strictEqual(globals.calls, 19);
         assert.ok('sampleWithBeforeAndAfter' in results.modules);
 
-        let result = results.modules.sampleWithBeforeAndAfter.completed;
+        const result = results.modules.sampleWithBeforeAndAfter.completed;
         assert.ok('demoTestAsyncOne' in result);
         assert.ok('demoTestAsyncTwo' in result);
         assert.ok(!('beforeEach' in result));
@@ -234,8 +234,8 @@ describe('testRunWithHooks', function() {
   });
 
   it('testRunner before and after without callback', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after/sampleWithBeforeAndAfterNoCallback.js');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/before-after/sampleWithBeforeAndAfterNoCallback.js');
+    const globals = {
       calls: 0,
       reporter(results) {
         if (results.lastError) {
@@ -253,8 +253,8 @@ describe('testRunWithHooks', function() {
   });
 
   it('testRunner with assertion failed in after hook', function() {
-    let testsPath = path.join(__dirname, '../../asynchookstests/sampleWithAssertionFailedInAfter.js');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../asynchookstests/sampleWithAssertionFailedInAfter.js');
+    const globals = {
       calls: 0,
       reporter(results) {
         assert.ok(results.lastError instanceof Error);
@@ -271,8 +271,8 @@ describe('testRunWithHooks', function() {
   });
 
   it('testRunner with --testcase and before and after', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after/syncBeforeAndAfter.js');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/before-after/syncBeforeAndAfter.js');
+    const globals = {
       calls: 0,
       reporter(results) {
         if (results.lastError) {
@@ -280,7 +280,7 @@ describe('testRunWithHooks', function() {
         }
 
         assert.strictEqual(globals.calls, 4);
-        let result = results.modules.syncBeforeAndAfter.completed;
+        const result = results.modules.syncBeforeAndAfter.completed;
         assert.ok('demoTestSyncOne' in result);
         assert.ok(!('beforeEach' in result));
         assert.ok(!('before' in result));
@@ -296,13 +296,13 @@ describe('testRunWithHooks', function() {
     }, settings({
       seleniumPort: 10195,
       globals,
-      output_folder: false
+      output: false
     }));
   });
 
   it('testRunWithAsyncHooks', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withasynchooks');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/withasynchooks');
+    const globals = {
       calls: 0,
       reporter(results) {
         if (results.lastError) {
@@ -320,8 +320,8 @@ describe('testRunWithHooks', function() {
   });
 
   it('test async afterEach hook timeout error', function() {
-    let testsPath = path.join(__dirname, '../../asynchookstests/afterEach-timeout');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../asynchookstests/afterEach-timeout');
+    const globals = {
       calls: 0,
       asyncHookTimeout: 10,
       reporter(results) {
@@ -336,4 +336,3 @@ describe('testRunWithHooks', function() {
     }));
   });
 });
-

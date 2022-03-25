@@ -45,7 +45,7 @@ describe('testRunner', function() {
   it('testRunEmptyFolder', function(done) {
     Globals
       .startTestRunner(emptyPath, {
-        output_folder: false
+        output: false
       })
       .catch(err => {
         assert.ok(err instanceof Error);
@@ -58,11 +58,11 @@ describe('testRunner', function() {
   });
 
   it('testRunEmptySubFolder', function(done) {
-    let testsPath = path.dirname(emptyPath);
+    const testsPath = path.dirname(emptyPath);
 
     Globals
       .startTestRunner(testsPath, {
-        output_folder: false
+        output: false
       })
       .catch(err => {
         assert.ok(err instanceof Error);
@@ -75,8 +75,8 @@ describe('testRunner', function() {
   });
 
   it('testRunNoSrcFoldersArgument', function() {
-    let settings = Settings.parse({
-      output_folder: false
+    const settings = Settings.parse({
+      output: false
     });
 
     assert.throws(function() {
@@ -85,8 +85,8 @@ describe('testRunner', function() {
   });
 
   it('testRunSimple', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/simple');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/simple');
+    const globals = {
       reporter(results) {
         assert.ok('test/sample' in results.modules);
         assert.ok('demoTest' in results.modules['test/sample'].completed);
