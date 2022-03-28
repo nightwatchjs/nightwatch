@@ -3,7 +3,8 @@ const MockServer  = require('../../../lib/mockserver.js');
 const CommandGlobals = require('../../../lib/globals/commands.js');
 
 describe('sendKeys', function() {
-
+  this.timeout(20000);
+  
   before(function(done) {
     CommandGlobals.beforeEach.call(this, done, {
       output: false
@@ -43,6 +44,14 @@ describe('sendKeys', function() {
       })
       .sendKeys('#weblogin', 'password', function callback(result) {
         assert.strictEqual(result.status, 0);
+      })
+      .sendKeys('#weblogin', undefined, function callback(result) {
+        assert.strictEqual(result.status, -1);
+        assert.ok(result.value.message.includes("each key must be a number of string"))
+      })
+      .sendKeys('#weblogin', ['password', undefined], function callback(result) {
+        assert.strictEqual(result.status, -1);
+        assert.ok(result.value.message.includes("each key must be a number of string"))
       });
 
     this.client.start(done);
