@@ -3,7 +3,7 @@ const MockServer  = require('../../../lib/mockserver.js');
 const CommandGlobals = require('../../../lib/globals/commands.js');
 
 describe('sendKeys', function() {
-  this.timeout(20000);
+  this.timeout(12000);
   
   before(function(done) {
     CommandGlobals.beforeEach.call(this, done, {
