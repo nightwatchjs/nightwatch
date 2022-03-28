@@ -9,4 +9,4 @@ module.exports.command = async function(selector, callback = function() {}) {
   callback.call(this, elements);
 
   return elements;
-}
+};

@@ -6,8 +6,8 @@ Given('I navigate to localhost', function() {
   return browser.url('http://localhost');
 });
 
-Then('I check if badElement is present', function() {
+Then('I wait for badElement to be present', function() {
   browser.globals.test_calls++;
 
-  return browser.assert.elementPresent('#badElement');
+  return browser.waitForElementPresent('#badElement');
 });

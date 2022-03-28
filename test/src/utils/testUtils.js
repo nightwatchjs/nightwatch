@@ -1,19 +1,39 @@
 const assert = require('assert');
 const path = require('path');
+const fs = require('fs');
+const lodashMerge = require('lodash.merge');
 const common = require('../../common.js');
 const Utils = common.require('utils');
+
+const buildStackTrace = function(errorFilePath, lineNumber) {
+  let expectedLines = fs.readFileSync(errorFilePath, 'utf-8').split(/\r?\n/).reduce(function(lines, line, index) {
+    const pos = index + 1;
+    if (pos === lineNumber) {
+      lines += Utils.Logger.colors.cyan(`\t${pos} ${line}\n`);
+    } else if ((pos <= lineNumber + 2) && (pos >= lineNumber - 2)) {
+      lines += `\t${pos} ${line}\n`;
+    }
+
+    return lines;
+  }, '');
+  expectedLines += '\n';
+
+  return expectedLines;
+};
+
+
 
 describe('test Utils', function() {
 
   it('testFormatElapsedTime', function() {
 
-    let resultMs = Utils.formatElapsedTime(999);
+    const resultMs = Utils.formatElapsedTime(999);
     assert.strictEqual(resultMs, '999ms');
 
-    let resultSec = Utils.formatElapsedTime(1999);
+    const resultSec = Utils.formatElapsedTime(1999);
     assert.strictEqual(resultSec, '1.999s');
 
-    let resultMin = Utils.formatElapsedTime(122299, true);
+    const resultMin = Utils.formatElapsedTime(122299, true);
     assert.strictEqual(resultMin, '2m 2s / 122299ms');
   });
 
@@ -25,7 +45,7 @@ describe('test Utils', function() {
     function syncFn() {
     }
 
-    let convertedFn = Utils.makeFnAsync(1, syncFn);
+    const convertedFn = Utils.makeFnAsync(1, syncFn);
     let called = false;
     convertedFn(function() {
       called = true;
@@ -36,16 +56,16 @@ describe('test Utils', function() {
   });
 
   it('testCheckFunction', function() {
-    let g = {
+    const g = {
       fn: function() {
       }
     };
 
-    let o = {
+    const o = {
       fn: false
     };
 
-    let x = {
+    const x = {
       y: {
         testFn: function() {
         }
@@ -169,4 +189,61 @@ describe('test Utils', function() {
     });
     assert.deepStrictEqual(absPath, [path.join(__dirname, '../../extra/commands/typescript/tsWait.js')]);
   });
+
+  it('beautifyStackTrace -  read file lines (NightwatchAssertError)', async function() {
+
+    const errorFilePath = path.join(__dirname, '../../sampletests/withfailures/sample.js');
+    const lineNumber = 15;
+    const expectedLines = buildStackTrace(errorFilePath, lineNumber);
+
+    const error = {
+      name: 'NightwatchAssertError',
+      message: '\'Timed out while waiting for element <input[name=a]> to be present for 5000 milliseconds. - expected [0;32m"found"[0m but got: [0;31m"not found"[0m [0;90m(5123ms)[0m\'',
+      stack: `Error
+      at Proxy.<anonymous> (/Users/BarnOwl/Documents/Projects/Nightwatch/node_modules/nightwatch/lib/api/index.js:145:30)
+      at DescribeInstance.<anonymous> (${errorFilePath}:${lineNumber}:23)
+      at Context.call (/Users/BarnOwl/Documents/Projects/Nightwatch/node_modules/nightwatch/lib/testsuite/context.js:430:35)
+      at TestCase.run (/Users/BarnOwl/Documents/Projects/Nightwatch/node_modules/nightwatch/lib/testsuite/testcase.js:58:31)
+      at Runnable.__runFn (/Users/BarnOwl/Documents/Projects/Nightwatch/node_modules/nightwatch/lib/testsuite/index.js:659:80)
+      at Runnable.run (/Users/BarnOwl/Documents/Projects/Nightwatch/node_modules/nightwatch/lib/testsuite/runnable.js:126:21)
+      at TestSuite.createRunnable (/Users/BarnOwl/Documents/Projects/Nightwatch/node_modules/nightwatch/lib/testsuite/index.js:766:33)
+      at TestSuite.handleRunnable (/Users/BarnOwl/Documents/Projects/Nightwatch/node_modules/nightwatch/lib/testsuite/index.js:771:33)
+      at /Users/BarnOwl/Documents/Projects/Nightwatch/node_modules/nightwatch/lib/testsuite/index.js:659:21
+      at processTicksAndRejections (node:internal/process/task_queues:96:5)`
+    };
+
+    const errorInstance = new Error();
+    Object.assign(errorInstance, error);
+    const errorLines = Utils.beautifyStackTrace(errorInstance);
+    assert.strictEqual(errorLines, expectedLines);
+  });
+
+  it('beautifyStackTrace - Unknown API method', function() {
+    const errorFilePath = path.join(__dirname, '../../sampletests/unknown-method/UnknownMethod.js');
+    const lineNumber  = 4;
+
+    const expectedLines = buildStackTrace(errorFilePath, lineNumber);
+
+    const error = {
+      name: 'Error',
+      message: 'Unknown api method "elmentPresen".',
+      stack: `Error: Unknown api method "elementPresen".
+      at Proxy.<anonymous> (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/api/index.js:142:19)
+      at DescribeInstance.<anonymous> (${errorFilePath}:${lineNumber}:21)
+      at Context.call (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/context.js:430:35)
+      at TestCase.run (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/testcase.js:58:31)
+      at Runnable.__runFn (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:669:80)
+      at Runnable.run (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/runnable.js:126:21)
+      at TestSuite.createRunnable (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:776:33)
+      at TestSuite.handleRunnable (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:781:33)
+      at /Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:669:21
+      at processTicksAndRejections (node:internal/process/task_queues:96:5)`
+    };
+
+    const errorInstance = new Error();
+    Object.assign(errorInstance, error);
+    const errorLines = Utils.beautifyStackTrace(errorInstance);
+    assert.strictEqual(errorLines, expectedLines);
+  });
+
 });

@@ -161,7 +161,9 @@ describe('SeleniumServer Transport Tests', function () {
       async writeLogFile() {
       }
       async createSinkProcess() {
-        this.process = {};
+        this.process = {
+          kill: () => {}
+        };
         const logPath = this.getLogPath();
         if (!logPath) {
           return true;
