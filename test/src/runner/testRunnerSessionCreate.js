@@ -35,7 +35,7 @@ describe('testRunnerSessionCreate', function() {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        desiredCapabilities: {browserName: 'firefox', name: 'Async/Test/Sample'},
+        desiredCapabilities: {browserName: 'firefox', name: 'test-Async'},
         capabilities: {alwaysMatch: {browserName: 'firefox'}}
       }),
       response: JSON.stringify({
