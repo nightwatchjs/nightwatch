@@ -44,9 +44,9 @@ describe('testRunWithTags', function() {
         retryAssertionTimeout: 10,
         reporter(results) {
           assert.strictEqual(Object.keys(results.modules).length, 3);
-          assert.ok('demoTagTest' in results.modules[`tags${utils.getSlash()}sample`].completed);
-          assert.ok('otherDemoTagTest' in results.modules[`withsubfolders${utils.getSlash()}tags${utils.getSlash()}sampleTags`].completed);
-          assert.ok('demoTest' in results.modules[`withdescribe${utils.getSlash()}failures${utils.getSlash()}sampleSkipTestcases`].completed);
+          assert.ok('demoTagTest' in results.modules[`tags${path.sep}sample`].completed);
+          assert.ok('otherDemoTagTest' in results.modules[`withsubfolders${path.sep}tags${path.sep}sampleTags`].completed);
+          assert.ok('demoTest' in results.modules[`withdescribe${path.sep}failures${path.sep}sampleSkipTestcases`].completed);
         }
       },
       tag_filter: ['login']
@@ -74,7 +74,7 @@ describe('testRunWithTags', function() {
     return runTests(testsPath, settings({
       globals: {
         reporter(results) {
-          assert.ok('demoTagTest' in results.modules[`tags${utils.getSlash()}sample`].completed);
+          assert.ok('demoTagTest' in results.modules[`tags${path.sep}sample`].completed);
           assert.strictEqual(Object.keys(results.modules).length, 1);
         }
       },
@@ -92,7 +92,7 @@ describe('testRunWithTags', function() {
     }, settings({
       globals: {
         reporter(results) {
-          assert.ok('demoTagTest' in results.modules[`tags${utils.getSlash()}sample`].completed);
+          assert.ok('demoTagTest' in results.modules[`tags${path.sep}sample`].completed);
           assert.strictEqual(Object.keys(results.modules).length, 1);
         }
       },
@@ -134,7 +134,7 @@ describe('testRunWithTags', function() {
       globals: {
         reporter(results) {
           assert.strictEqual(Object.keys(results.modules).length, 2);
-          assert.ok('otherDemoTagTest' in results.modules[`withsubfolders${utils.getSlash()}tags${utils.getSlash()}sampleTags`].completed);
+          assert.ok('otherDemoTagTest' in results.modules[`withsubfolders${path.sep}tags${path.sep}sampleTags`].completed);
         }
       },
       tag_filter: ['login']

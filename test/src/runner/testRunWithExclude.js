@@ -38,9 +38,9 @@ describe('testRunWithExclude', function() {
     }, settings({
       globals: {
         reporter(results, cb) {
-          assert.ok(!(`excluded${utils.getSlash()}excluded-module` in results.modules));
-          assert.ok(!(`excluded${utils.getSlash()}not-excluded` in results.modules));
-          assert.ok(`simple${utils.getSlash()}sample` in results.modules);
+          assert.ok(!(`excluded${path.sep}excluded-module` in results.modules));
+          assert.ok(!(`excluded${path.sep}not-excluded` in results.modules));
+          assert.ok(`simple${path.sep}sample` in results.modules);
 
           cb();
         }
@@ -53,9 +53,9 @@ describe('testRunWithExclude', function() {
     return runTests(settings({
       globals: {
         reporter(results, cb) {
-          assert.ok(`excluded${utils.getSlash()}excluded-module` in results.modules);
-          assert.ok(`excluded${utils.getSlash()}not-excluded` in results.modules);
-          assert.ok(!(`simple${utils.getSlash()}sample` in results.modules));
+          assert.ok(`excluded${path.sep}excluded-module` in results.modules);
+          assert.ok(`excluded${path.sep}not-excluded` in results.modules);
+          assert.ok(!(`simple${path.sep}sample` in results.modules));
 
           cb();
         }
@@ -69,9 +69,9 @@ describe('testRunWithExclude', function() {
     return runTests(settings({
       globals: {
         reporter(results, cb) {
-          assert.ok(`excluded${utils.getSlash()}excluded-module` in results.modules);
-          assert.ok(`excluded${utils.getSlash()}not-excluded` in results.modules);
-          assert.ok(!(`simple${utils.getSlash()}sample` in results.modules));
+          assert.ok(`excluded${path.sep}excluded-module` in results.modules);
+          assert.ok(`excluded${path.sep}not-excluded` in results.modules);
+          assert.ok(!(`simple${path.sep}sample` in results.modules));
 
           cb();
         }
@@ -85,9 +85,9 @@ describe('testRunWithExclude', function() {
     return runTests(settings({
       globals: {
         reporter(results, cb) {
-          assert.ok(!(`excluded${utils.getSlash()}excluded-module` in results.modules));
-          assert.ok(!(`excluded${utils.getSlash()}not-excluded` in results.modules));
-          assert.ok(`simple${utils.getSlash()}sample` in results.modules);
+          assert.ok(!(`excluded${path.sep}excluded-module` in results.modules));
+          assert.ok(!(`excluded${path.sep}not-excluded` in results.modules));
+          assert.ok(`simple${path.sep}sample` in results.modules);
 
           cb();
         }
@@ -101,9 +101,9 @@ describe('testRunWithExclude', function() {
     return runTests(settings({
       globals: {
         reporter(results, cb) {
-          assert.ok(!(`excluded${utils.getSlash()}excluded-module` in results.modules));
-          assert.ok(!(`excluded${utils.getSlash()}not-excluded` in results.modules));
-          assert.ok(`simple${utils.getSlash()}sample` in results.modules);
+          assert.ok(!(`excluded${path.sep}excluded-module` in results.modules));
+          assert.ok(!(`excluded${path.sep}not-excluded` in results.modules));
+          assert.ok(`simple${path.sep}sample` in results.modules);
 
           cb();
         }
@@ -117,9 +117,9 @@ describe('testRunWithExclude', function() {
     return runTests(settings({
       globals: {
         reporter(results, cb) {
-          assert.ok(!(`excluded${utils.getSlash()}excluded-module` in results.modules));
-          assert.ok(!(`excluded${utils.getSlash()}not-excluded` in results.modules));
-          assert.ok(`simple${utils.getSlash()}sample` in results.modules);
+          assert.ok(!(`excluded${path.sep}excluded-module` in results.modules));
+          assert.ok(!(`excluded${path.sep}not-excluded` in results.modules));
+          assert.ok(`simple${path.sep}sample` in results.modules);
 
           cb();
         }
@@ -133,9 +133,9 @@ describe('testRunWithExclude', function() {
     return runTests(settings({
       globals: {
         reporter(results, cb) {
-          assert.ok(!(`excluded${utils.getSlash()}excluded-module` in results.modules));
-          assert.ok(`excluded${utils.getSlash()}not-excluded` in results.modules);
-          assert.ok(!(`simple${utils.getSlash()}sample` in results.modules));
+          assert.ok(!(`excluded${path.sep}excluded-module` in results.modules));
+          assert.ok(`excluded${path.sep}not-excluded` in results.modules);
+          assert.ok(!(`simple${path.sep}sample` in results.modules));
 
           cb();
         }
@@ -152,9 +152,9 @@ describe('testRunWithExclude', function() {
     }, settings({
       globals: {
         reporter(results, cb) {
-          assert.ok(!(`excluded${utils.getSlash()}excluded-module` in results.modules));
-          assert.ok(`excluded${utils.getSlash()}not-excluded` in results.modules);
-          assert.ok(`simple${utils.getSlash()}sample` in results.modules);
+          assert.ok(!(`excluded${path.sep}excluded-module` in results.modules));
+          assert.ok(`excluded${path.sep}not-excluded` in results.modules);
+          assert.ok(`simple${path.sep}sample` in results.modules);
 
           cb();
         }
@@ -170,9 +170,9 @@ describe('testRunWithExclude', function() {
     }, settings({
       globals: {
         reporter(results, cb) {
-          assert.ok(!(`excluded${utils.getSlash()}excluded-module` in results.modules));
-          assert.ok(`excluded${utils.getSlash()}not-excluded` in results.modules);
-          assert.ok(`simple${utils.getSlash()}sample` in results.modules);
+          assert.ok(!(`excluded${path.sep}excluded-module` in results.modules));
+          assert.ok(`excluded${path.sep}not-excluded` in results.modules);
+          assert.ok(`simple${path.sep}sample` in results.modules);
           cb();
         }
       },
@@ -185,9 +185,9 @@ describe('testRunWithExclude', function() {
     return runTests(settings({
       globals: {
         reporter(results, cb) {
-          assert.ok(!(`excluded${utils.getSlash()}excluded-module` in results.modules));
-          assert.ok(`excluded${utils.getSlash()}not-excluded` in results.modules);
-          assert.ok(!(`simple${utils.getSlash()}sample` in results.modules));
+          assert.ok(!(`excluded${path.sep}excluded-module` in results.modules));
+          assert.ok(`excluded${path.sep}not-excluded` in results.modules);
+          assert.ok(!(`simple${path.sep}sample` in results.modules));
 
           cb();
         }
@@ -204,9 +204,9 @@ describe('testRunWithExclude', function() {
     return runTests(settings({
       globals: {
         reporter(results, cb) {
-          assert.ok(!(`excluded${utils.getSlash()}excluded-module` in results.modules));
-          assert.ok(`excluded${utils.getSlash()}not-excluded` in results.modules);
-          assert.ok(!(`simple${utils.getSlash()}sample` in results.modules));
+          assert.ok(!(`excluded${path.sep}excluded-module` in results.modules));
+          assert.ok(`excluded${path.sep}not-excluded` in results.modules);
+          assert.ok(!(`simple${path.sep}sample` in results.modules));
 
           cb();
         }

@@ -74,7 +74,7 @@ describe('testRunnerJUnitOutput', function() {
       }
     }))
       .then(_ => {
-        return readFilePromise(`output${utils.getSlash()}FIREFOX_TEST_firefox__sample.xml`);
+        return readFilePromise(`output${path.sep}FIREFOX_TEST_firefox__sample.xml`);
       })
       .then(data => {
         let content = data.toString();

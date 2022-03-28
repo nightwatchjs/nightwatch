@@ -36,10 +36,6 @@ module.exports = {
     queue.run = queueRunnerPatched;
   },
 
-  getSlash: function () {
-    return process.platform === 'win32' ? '\\' : '/';
-  },
-
   getLineBreak: function() {
     return process.platform === 'win32' ? '\r\n' : '\n';
   }

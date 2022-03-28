@@ -149,10 +149,10 @@ describe('testRunTestSuite', function () {
 
     let globals = {
       reporter(results, cb) {
-        assert.ok(`test${utils.getSlash()}sample` in results.modules);
-        assert.ok(`mixed${utils.getSlash()}sample` in results.modules);
-        assert.ok('demoTest' in results.modules[`test${utils.getSlash()}sample`].completed);
-        assert.ok('demoTestMixed' in results.modules[`mixed${utils.getSlash()}sample`].completed);
+        assert.ok(`test${path.sep}sample` in results.modules);
+        assert.ok(`mixed${path.sep}sample` in results.modules);
+        assert.ok('demoTest' in results.modules[`test${path.sep}sample`].completed);
+        assert.ok('demoTestMixed' in results.modules[`mixed${path.sep}sample`].completed);
 
         cb();
       }
@@ -177,12 +177,12 @@ describe('testRunTestSuite', function () {
           if (results.lastError) {
             throw results.lastError;
           }
-          assert.ok(`test${utils.getSlash()}sample` in results.modules);
-          assert.ok('demoTest' in results.modules[`test${utils.getSlash()}sample`].completed);
-          assert.ok(`srcfolders${utils.getSlash()}other_sample` in results.modules);
+          assert.ok(`test${path.sep}sample` in results.modules);
+          assert.ok('demoTest' in results.modules[`test${path.sep}sample`].completed);
+          assert.ok(`srcfolders${path.sep}other_sample` in results.modules);
 
           const stringPath = ['test', 'sampletests', 'simple', 'test', 'sample.js'].join(path.sep);
-          assert.strictEqual(results.modules[`test${utils.getSlash()}sample`].modulePath.endsWith(stringPath), true);
+          assert.strictEqual(results.modules[`test${path.sep}sample`].modulePath.endsWith(stringPath), true);
           cb();
         }
       },
@@ -202,14 +202,14 @@ describe('testRunTestSuite', function () {
           if (results.lastError) {
             throw results.lastError;
           }
-          assert.ok(`test${utils.getSlash()}sample` in results.modules);
-          assert.ok('demoTest' in results.modules[`test${utils.getSlash()}sample`].completed);
-          let test = results.modules[`test${utils.getSlash()}sample`].completed.demoTest;
+          assert.ok(`test${path.sep}sample` in results.modules);
+          assert.ok('demoTest' in results.modules[`test${path.sep}sample`].completed);
+          let test = results.modules[`test${path.sep}sample`].completed.demoTest;
           assert.strictEqual(test.assertions.length, 2);
           assert.strictEqual(test.passed, 2);
 
-          assert.ok(`basic${utils.getSlash()}sample` in results.modules);
-          test = results.modules[`basic${utils.getSlash()}sample`].completed.demoTest;
+          assert.ok(`basic${path.sep}sample` in results.modules);
+          test = results.modules[`basic${path.sep}sample`].completed.demoTest;
           assert.strictEqual(test.assertions.length, 2);
           assert.strictEqual(test.passed, 2);
           cb();
