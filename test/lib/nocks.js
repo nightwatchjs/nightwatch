@@ -138,6 +138,19 @@ module.exports = {
     return this;
   },
 
+  attributeValueSync(value) {
+    nock('http://localhost:10195')
+      .post('/wd/hub/session/1352110219202/execute/sync')
+      .reply(200, {
+        status: 0,
+        sessionId: '1352110219202',
+        value: value,
+        state: 'success'
+      });
+
+    return this;
+  },
+
   propertyValue(value, propertyName = 'className') {
     nock('http://localhost:10195')
       .get('/wd/hub/session/1352110219202/element/0/property/' + propertyName)
