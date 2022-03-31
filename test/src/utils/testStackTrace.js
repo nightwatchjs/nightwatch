@@ -38,7 +38,6 @@ describe('test stackTrace parse', function() {
 
     const error = new AssertionError('Assertion Error');
     error.stack = `Error
-      at Proxy.<anonymous> (/Users/BarnOwl/Documents/Projects/Nightwatch/node_modules/nightwatch/lib/api/index.js:145:30)
       at DescribeInstance.<anonymous> (${errorFilePath}:${lineNumber}:23)
       at Context.call (/Users/BarnOwl/Documents/Projects/Nightwatch/node_modules/nightwatch/lib/testsuite/context.js:430:35)
       at TestCase.run (/Users/BarnOwl/Documents/Projects/Nightwatch/node_modules/nightwatch/lib/testsuite/testcase.js:58:31)
@@ -69,7 +68,6 @@ describe('test stackTrace parse', function() {
 
     const error = new TypeError('Unknown method');
     error.stack = `Error: Unknown api method "elementPresen".
-      at Proxy.<anonymous> (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/api/index.js:142:19)
       at DescribeInstance.<anonymous> (${errorFilePath}:${lineNumber}:21)
       at Context.call (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/context.js:430:35)
       at TestCase.run (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/testcase.js:58:31)
