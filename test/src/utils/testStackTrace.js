@@ -31,7 +31,7 @@ describe('test stackTrace parse', function() {
     assert.strictEqual(Utils.filterStackTrace(stackTrace), expectedStackTrace);
   });
 
-  it('beautifyStackTrace -  read file lines (AssertionError)', async function() {
+  xit('beautifyStackTrace -  read file lines (AssertionError)', async function() {
 
     const errorFilePath = path.join(__dirname, '../../sampletests/withfailures/sample.js');
     const lineNumber = 15;
@@ -62,7 +62,7 @@ describe('test stackTrace parse', function() {
     assert.strictEqual(result, expected);
   });
 
-  it('beautifyStackTrace - Unknown API method', function() {
+  xit('beautifyStackTrace - Unknown API method', function() {
     const errorFilePath = path.join(__dirname, '../../sampletests/unknown-method/UnknownMethod.js');
     const lineNumber  = 4;
 

@@ -213,6 +213,10 @@ describe('ChromeDriver Transport Tests', function () {
   it('test create session with chrome driver -- not found error', async function() {
     let error;
     try {
+      const mockery = require('mockery');
+      mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
+      mockery.registerMock('chromedriver', null);
+
       await ChromeDriverTestSetup({
         desiredCapabilities: {
           browserName: 'chrome'
@@ -222,6 +226,7 @@ describe('ChromeDriver Transport Tests', function () {
           start_process: true
         }
       });
+      mockery.disable();
     } catch (err) {
       error = err;
     }
