@@ -5,7 +5,6 @@ const CommandGlobals = require('../../lib/globals/commands.js');
 const common = require('../../common.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
-const utils = require('../../lib/utils');
 
 describe('testRunner ES6 Async', function () {
   before(function (done) {

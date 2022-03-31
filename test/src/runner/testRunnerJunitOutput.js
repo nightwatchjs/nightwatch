@@ -4,7 +4,6 @@ const assert = require('assert');
 const common = require('../../common.js');
 const MockServer = require('../../lib/mockserver.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
-const utils = require('../../lib/utils.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
 

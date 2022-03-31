@@ -9,7 +9,6 @@ const Runner = common.require('runner/runner.js');
 const Settings = common.require('settings/settings.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
-const utils = require('../../lib/utils');
 
 describe('testRunner', function() {
   const emptyPath = path.join(__dirname, '../../sampletests/empty/testdir');

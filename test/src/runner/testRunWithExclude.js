@@ -5,7 +5,6 @@ const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
-const utils = require('../../lib/utils');
 
 const originalCwd = process.cwd();
 
