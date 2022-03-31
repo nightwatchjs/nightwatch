@@ -1,4 +1,4 @@
-  const assert = require('assert');
+const assert = require('assert');
 const MockServer  = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands-w3c.js');
 
