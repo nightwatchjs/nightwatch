@@ -320,7 +320,7 @@ describe('testRunTestcase', function() {
       skip_testcases_on_fail: false
     })).catch((err) => {
       assert.strictEqual(err.displayed, true);
-      assert.match(err.message, /MODULE_NOT_FOUND: Cannot find module 'utilWhichDoesnotexist.js'/);
+      assert.match(err.message, /Cannot find module 'utilWhichDoesnotexist.js'/);
     });
   });
 
