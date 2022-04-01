@@ -48,14 +48,15 @@ describe('test stackTrace parse', function() {
       at /Users/BarnOwl/Documents/Projects/Nightwatch/node_modules/nightwatch/lib/testsuite/index.js:659:21
       at processTicksAndRejections (node:internal/process/task_queues:96:5)`;
 
+    const delimiter = (new Array(errorFilePath.length + 3).join('–'));
     const expected = ` ${errorFilePath}:
- –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+ ${delimiter}
   13 |     client.url('http://localhost')
   14 |       .assert.elementPresent('#weblogin')
   15 |       .assert.elementPresent('#badElement') 
   16 |       .assert.elementPresent('#webLogin')
   17 |       .end();
- –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+ ${delimiter}
 `;
 
     const result = beautifyStackTrace(error);
@@ -78,14 +79,15 @@ describe('test stackTrace parse', function() {
       at /Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:669:21
       at processTicksAndRejections (node:internal/process/task_queues:96:5)`;
 
+    const delimiter = (new Array(errorFilePath.length + 3).join('–'));      
     const expected = ` ${errorFilePath}:
- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+ ${delimiter}
   2 |   it('failure stack trace', function() {
   3 |    
   4 |     browser.url('http://localhost') 
   5 |       .assert.elementPresen('#badElement'); // mispelled API method
   6 |   });
- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+ ${delimiter}
 `;
 
     const result = Utils.beautifyStackTrace(error);
