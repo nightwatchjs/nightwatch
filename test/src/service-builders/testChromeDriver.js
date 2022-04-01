@@ -87,7 +87,7 @@ describe('ChromeDriver Transport Tests', function () {
     return new MockBuilder();
   }
 
-  function mockServiceBuilder({onConstruct = fn, onAddArguments = fn, onSetPort = fn, onSetHostname = fn, onSetPath = fn, OnEnableChromeLogging = fn}) {
+  function mockServiceBuilder({onConstruct = fn, onAddArguments = fn, onSetPort = fn, onSetHostname = fn, onSetPath = fn, OnEnableChromeLogging = fn, OnEnableVerboseLogging = fn}) {
     const chrome = require('selenium-webdriver/chrome');
     const {Options, ServiceBuilder} = chrome;
 
@@ -119,12 +119,16 @@ describe('ChromeDriver Transport Tests', function () {
       }
 
       enableChromeLogging() {
-        OnEnableChromeLogging('--enable-chrome-logs');
+        this.args.push('--enable-chrome-logs');
+        OnEnableChromeLogging(this.args);
 
         return this;
       }
 
       enableVerboseLogging() {
+        this.args.push('--verbose');
+        OnEnableVerboseLogging(this.args);
+
         return this;
       }
 
@@ -199,6 +203,10 @@ describe('ChromeDriver Transport Tests', function () {
 
 
       OnEnableChromeLogging(args) {
+        extraArgs = args;
+      },
+
+      OnEnableVerboseLogging(args) {
         extraArgs = args;
       }
 
@@ -318,10 +326,10 @@ describe('ChromeDriver Transport Tests', function () {
     });
     assert.strictEqual(serverPath, '/path/to/chromedriver');
     assert.strictEqual(serverPort, 9999);
-    assert.strictEqual(extraArgs, undefined);
+    assert.deepStrictEqual(extraArgs, ['--verbose']);
   });
 
-  it('test chromelogging is prenet in creating session with chrome driver on mac', async () => {
+  it('test chromelogging is present in creating session with chrome driver on mac', async () => {
     Object.defineProperty(process, 'platform', {
       value: 'darwin'
     });
@@ -346,6 +354,6 @@ describe('ChromeDriver Transport Tests', function () {
     });
     assert.strictEqual(serverPath, '/path/to/chromedriver');
     assert.strictEqual(serverPort, 9999);
-    assert.strictEqual(extraArgs, '--enable-chrome-logs');
+    assert.deepStrictEqual(extraArgs, ['--enable-chrome-logs', '--verbose']);
   });
 });
