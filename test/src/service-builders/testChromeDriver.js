@@ -31,12 +31,12 @@ describe('ChromeDriver Transport Tests', function () {
   const sessionData = {
     sessionId: '111',
     getId() {
-      return '1111'
+      return '1111';
     },
     getCapabilities() {
       return {
         getPlatform() {
-          return 'MAC'
+          return 'MAC';
         },
         getBrowserName() {
           return 'chrome';
@@ -50,7 +50,7 @@ describe('ChromeDriver Transport Tests', function () {
         keys() {
           return new Map();
         }
-      }
+      };
     }
   };
 
@@ -61,9 +61,9 @@ describe('ChromeDriver Transport Tests', function () {
     async getExecutor() {
       return {
         w3c: true
-      }
+      };
     }
-  }
+  };
 
   const fn = function() {};
   function deleteFromRequireCache(location) {
@@ -87,7 +87,7 @@ describe('ChromeDriver Transport Tests', function () {
     return new MockBuilder();
   }
 
-  function mockServiceBuilder({onConstruct = fn, onAddArguments = fn, onSetPort = fn, onSetHostname = fn, onSetPath = fn}) {
+  function mockServiceBuilder({onConstruct = fn, onAddArguments = fn, onSetPort = fn, onSetHostname = fn, onSetPath = fn, OnEnableChromeLogging = fn}) {
     const chrome = require('selenium-webdriver/chrome');
     const {Options, ServiceBuilder} = chrome;
 
@@ -96,6 +96,8 @@ describe('ChromeDriver Transport Tests', function () {
     class MockServiceBuilder extends ServiceBuilder {
       constructor(server_path) {
         super(server_path);
+
+        this.args = [];
 
         onConstruct.call(this, server_path);
       }
@@ -117,6 +119,8 @@ describe('ChromeDriver Transport Tests', function () {
       }
 
       enableChromeLogging() {
+        OnEnableChromeLogging('--enable-chrome-logs');
+
         return this;
       }
 
@@ -130,9 +134,9 @@ describe('ChromeDriver Transport Tests', function () {
 
           },
           async start() {
-            return 'http://localhost'
+            return 'http://localhost';
           }
-        }
+        };
       }
     }
 
@@ -178,6 +182,7 @@ describe('ChromeDriver Transport Tests', function () {
     let serverPort;
     let buildArgs;
     let logFilePath;
+    let extraArgs;
 
     mockServiceBuilder({
       onConstruct(server_path) {
@@ -190,7 +195,13 @@ describe('ChromeDriver Transport Tests', function () {
 
       onSetPort(p) {
         serverPort = p;
+      },
+
+
+      OnEnableChromeLogging(args) {
+        extraArgs = args;
       }
+
     });
 
     const settings = Settings.parse(useSettings);
@@ -206,8 +217,9 @@ describe('ChromeDriver Transport Tests', function () {
     return {
       session,
       serverPath,
-      serverPort
-    }
+      serverPort,
+      extraArgs
+    };
   }
 
   it('test create session with chrome driver -- not found error', async function() {
@@ -281,4 +293,59 @@ describe('ChromeDriver Transport Tests', function () {
     assert.strictEqual(serverPort, undefined);
   });
 
+  it('test chromelogging is absent in creating session with chrome driver on windows', async () => {
+    Object.defineProperty(process, 'platform', {
+      value: 'win32'
+    });
+
+    mockery.registerMock('chromedriver', {
+      path: '/path/to/chromedriver'
+    });
+
+    const {session, serverPath, serverPort, extraArgs} = await ChromeDriverTestSetup({
+      desiredCapabilities: {
+        browserName: 'chrome'
+      },
+      webdriver: {
+        port: 9999,
+        start_process: true
+      }
+    });
+
+    assert.deepStrictEqual(session, {
+      sessionId: '1111',
+      capabilities: {}
+    });
+    assert.strictEqual(serverPath, '/path/to/chromedriver');
+    assert.strictEqual(serverPort, 9999);
+    assert.strictEqual(extraArgs, undefined);
+  });
+
+  it('test chromelogging is prenet in creating session with chrome driver on mac', async () => {
+    Object.defineProperty(process, 'platform', {
+      value: 'darwin'
+    });
+
+    mockery.registerMock('chromedriver', {
+      path: '/path/to/chromedriver'
+    });
+
+    const {session, serverPath, serverPort, extraArgs} = await ChromeDriverTestSetup({
+      desiredCapabilities: {
+        browserName: 'chrome'
+      },
+      webdriver: {
+        port: 9999,
+        start_process: true
+      }
+    });
+
+    assert.deepStrictEqual(session, {
+      sessionId: '1111',
+      capabilities: {}
+    });
+    assert.strictEqual(serverPath, '/path/to/chromedriver');
+    assert.strictEqual(serverPort, 9999);
+    assert.strictEqual(extraArgs, '--enable-chrome-logs');
+  });
 });
