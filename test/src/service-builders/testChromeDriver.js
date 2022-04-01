@@ -354,6 +354,6 @@ describe('ChromeDriver Transport Tests', function () {
     });
     assert.strictEqual(serverPath, '/path/to/chromedriver');
     assert.strictEqual(serverPort, 9999);
-    assert.deepStrictEqual(extraArgs, ['--enable-chrome-logs', '--verbose']);
+    assert.deepStrictEqual(extraArgs, ['--verbose', '--enable-chrome-logs']);
   });
 });
