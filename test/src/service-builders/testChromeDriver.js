@@ -87,7 +87,7 @@ describe('ChromeDriver Transport Tests', function () {
     return new MockBuilder();
   }
 
-  function mockServiceBuilder({onConstruct = fn, onAddArguments = fn, onSetPort = fn, onSetHostname = fn, onSetPath = fn, OnEnableChromeLogging = fn, OnEnableVerboseLogging = fn}) {
+  function mockServiceBuilder({onConstruct = fn, onAddArguments = fn, onSetPort = fn, onSetHostname = fn, onSetPath = fn}) {
     const chrome = require('selenium-webdriver/chrome');
     const {Options, ServiceBuilder} = chrome;
 
@@ -96,8 +96,6 @@ describe('ChromeDriver Transport Tests', function () {
     class MockServiceBuilder extends ServiceBuilder {
       constructor(server_path) {
         super(server_path);
-
-        this.args = [];
 
         onConstruct.call(this, server_path);
       }
@@ -116,20 +114,6 @@ describe('ChromeDriver Transport Tests', function () {
 
       addArguments(args) {
         onAddArguments(args);
-      }
-
-      enableChromeLogging() {
-        this.args.push('--enable-chrome-logs');
-        OnEnableChromeLogging(this.args);
-
-        return this;
-      }
-
-      enableVerboseLogging() {
-        this.args.push('--verbose');
-        OnEnableVerboseLogging(this.args);
-
-        return this;
       }
 
       build() {
@@ -184,9 +168,8 @@ describe('ChromeDriver Transport Tests', function () {
 
     let serverPath;
     let serverPort;
-    let buildArgs;
+    let buildArgs = [];
     let logFilePath;
-    let extraArgs;
 
     mockServiceBuilder({
       onConstruct(server_path) {
@@ -194,22 +177,12 @@ describe('ChromeDriver Transport Tests', function () {
       },
 
       onAddArguments(args) {
-        buildArgs = args;
+        buildArgs.push(args);
       },
 
       onSetPort(p) {
         serverPort = p;
-      },
-
-
-      OnEnableChromeLogging(args) {
-        extraArgs = args;
-      },
-
-      OnEnableVerboseLogging(args) {
-        extraArgs = args;
       }
-
     });
 
     const settings = Settings.parse(useSettings);
@@ -226,7 +199,7 @@ describe('ChromeDriver Transport Tests', function () {
       session,
       serverPath,
       serverPort,
-      extraArgs
+      buildArgs
     };
   }
 
@@ -301,7 +274,7 @@ describe('ChromeDriver Transport Tests', function () {
     assert.strictEqual(serverPort, undefined);
   });
 
-  it('test chromelogging is absent in creating session with chrome driver on windows', async () => {
+  it('test chrome logging is absent in creating session with chrome driver on windows', async () => {
     Object.defineProperty(process, 'platform', {
       value: 'win32'
     });
@@ -310,7 +283,7 @@ describe('ChromeDriver Transport Tests', function () {
       path: '/path/to/chromedriver'
     });
 
-    const {session, serverPath, serverPort, extraArgs} = await ChromeDriverTestSetup({
+    const {session, serverPath, serverPort, buildArgs} = await ChromeDriverTestSetup({
       desiredCapabilities: {
         browserName: 'chrome'
       },
@@ -326,10 +299,10 @@ describe('ChromeDriver Transport Tests', function () {
     });
     assert.strictEqual(serverPath, '/path/to/chromedriver');
     assert.strictEqual(serverPort, 9999);
-    assert.deepStrictEqual(extraArgs, ['--verbose']);
+    assert.deepStrictEqual(buildArgs, ['--verbose']);
   });
 
-  it('test chromelogging is present in creating session with chrome driver on mac', async () => {
+  it('test chrome logging is present in creating session with chrome driver on mac', async () => {
     Object.defineProperty(process, 'platform', {
       value: 'darwin'
     });
@@ -338,7 +311,7 @@ describe('ChromeDriver Transport Tests', function () {
       path: '/path/to/chromedriver'
     });
 
-    const {session, serverPath, serverPort, extraArgs} = await ChromeDriverTestSetup({
+    const {session, serverPath, serverPort, buildArgs} = await ChromeDriverTestSetup({
       desiredCapabilities: {
         browserName: 'chrome'
       },
@@ -354,6 +327,6 @@ describe('ChromeDriver Transport Tests', function () {
     });
     assert.strictEqual(serverPath, '/path/to/chromedriver');
     assert.strictEqual(serverPort, 9999);
-    assert.deepStrictEqual(extraArgs, ['--verbose', '--enable-chrome-logs']);
+    assert.deepStrictEqual(buildArgs, ['--verbose', '--enable-chrome-logs']);
   });
 });
