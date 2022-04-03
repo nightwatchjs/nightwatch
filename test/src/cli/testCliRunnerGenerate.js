@@ -167,6 +167,57 @@ describe('Test CLI Runner Generate', function() {
           }
         });
 
+        assert.deepStrictEqual(configData.test_settings.sauce, {
+          desiredCapabilities: {
+            'sauce:options': {
+              username: '${SAUCE_USERNAME}',
+              access_key: '${SAUCE_ACCESS_KEY}',
+              // https://docs.saucelabs.com/dev/cli/sauce-connect-proxy/#--region
+              sauce_region: us-west-1,
+              // https://docs.saucelabs.com/dev/test-configuration-options/#tunnelidentifier
+              // parentTunnel: ''
+              // tunnelIdentifier: ''
+            }
+          },
+
+          selenium: {
+            host: 'ondemand.saucelabs.com',
+            port: 443
+          },
+
+          disable_error_log: false,
+          webdriver: {
+            start_process: false
+          }
+        });
+
+        assert.deepStrictEqual(configData.test_settings['sauce.chrome'], {
+          extends: 'sauce',
+          desiredCapabilities: {
+            browserName: 'chrome',
+            screenResolution: '1280x1024',
+            browserVersion: 'latest',
+            javascriptEnabled: true,
+            acceptSslCerts: true,
+            timeZone: 'New York',
+            chromeOptions : {
+                w3c: true
+            }
+          }
+        });
+
+        assert.deepStrictEqual(configData.test_settings['sauce.firefox'], {
+          extends: 'sauce',
+          desiredCapabilities: {
+            browserName: 'firefox',
+            screenResolution: '1280x1024',
+            browserVersion: 'latest',
+            javascriptEnabled: true,
+            acceptSslCerts: true,
+            timeZone: 'New York'
+          }
+        });
+
         assert.deepStrictEqual(configData.test_settings['cucumber-js'], {
           src_folders: ['examples/cucumber-js/features/step_definitions'],
           test_runner: {
