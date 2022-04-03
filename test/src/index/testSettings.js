@@ -207,7 +207,7 @@ describe('test Settings', function () {
 
     eq(client.api.options.log_screenshot_data, true);
     eq(client.options.screenshots.on_error, true);
-    eq(client.settings.screenshots.path, '/tmp');
+    eq(client.settings.screenshots.path, process.platform != 'win32' ? '/tmp' : 'C:\\tmp');
   });
 
 
