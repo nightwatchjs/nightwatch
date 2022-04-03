@@ -173,7 +173,7 @@ describe('Test CLI Runner Generate', function() {
               username: '${SAUCE_USERNAME}',
               access_key: '${SAUCE_ACCESS_KEY}',
               // https://docs.saucelabs.com/dev/cli/sauce-connect-proxy/#--region
-              sauce_region: us-west-1,
+              sauce_region: 'us-west-1'
               // https://docs.saucelabs.com/dev/test-configuration-options/#tunnelidentifier
               // parentTunnel: ''
               // tunnelIdentifier: ''
@@ -200,8 +200,8 @@ describe('Test CLI Runner Generate', function() {
             javascriptEnabled: true,
             acceptSslCerts: true,
             timeZone: 'New York',
-            chromeOptions : {
-                w3c: true
+            chromeOptions: {
+              w3c: true
             }
           }
         });
