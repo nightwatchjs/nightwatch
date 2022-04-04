@@ -25,7 +25,7 @@ describe('testRunnerScreenshotsOutput', function () {
   });
 
   after(function(done) {
-    CommandGlobals.afterEach.call(this, function () {
+    CommandGlobals.afterEach.call(this, function() {
       rimraf(screenshotFilePath, done);
     });
   });

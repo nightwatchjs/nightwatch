@@ -50,7 +50,7 @@ describe('testRunner ES6 Async', function () {
       waitForConditionPollInterval: 150,
       waitForConditionTimeout: 100,
       retryAssertionTimeout: 150,
-      
+
       reporter(results) {
         assert.ok('basicSampleTest' in results.modules);
 
