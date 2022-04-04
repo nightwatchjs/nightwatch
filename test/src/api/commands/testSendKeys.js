@@ -47,11 +47,11 @@ describe('sendKeys', function() {
       })
       .sendKeys('#weblogin', undefined, function callback(result) {
         assert.strictEqual(result.status, -1);
-        assert.ok(result.value.message.includes('each key must be a number of string'))
+        assert.ok(result.value.message.includes('each key must be a number'))
       })
       .sendKeys('#weblogin', ['password', undefined], function callback(result) {
         assert.strictEqual(result.status, -1);
-        assert.ok(result.value.message.includes('each key must be a number of string'))
+        assert.ok(result.value.message.includes('each key must be a number'))
       });
 
     this.client.start(done);
