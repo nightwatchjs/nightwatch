@@ -13,18 +13,18 @@ describe('testRunnerScreenshotsOutput', function () {
   const screenshotFilePath = 'screenshots';
   const moduleName = 'sample';
 
-  before(function (done) {
+  before(function(done) {
     this.server = MockServer.init();
     this.server.on('listening', () => {
       rimraf(screenshotFilePath, done);
     });
   });
 
-  afterEach(function (done) {
+  afterEach(function(done) {
     rimraf(screenshotFilePath, done);
   });
 
-  after(function (done) {
+  after(function(done) {
     CommandGlobals.afterEach.call(this, function () {
       rimraf(screenshotFilePath, done);
     });
@@ -37,7 +37,7 @@ describe('testRunnerScreenshotsOutput', function () {
   });
 
   it('takes screenshot on each test failure', function () {
-    const testsPath = [
+    let testsPath = [
       path.join(__dirname, '../../sampletests/withfailures')
     ];
 
@@ -79,7 +79,7 @@ describe('testRunnerScreenshotsOutput', function () {
 
   it('takes screenshot for failed test and exits if skip_testcases_on_fail is set to true', function () {
 
-    const testsPath = [
+    let testsPath = [
       path.join(__dirname, '../../sampletests/withfailures')
     ];
 
@@ -123,7 +123,7 @@ describe('testRunnerScreenshotsOutput', function () {
 
   it('doesnt save file if screenshot call is failed', function () {
 
-    const testsPath = [
+    let testsPath = [
       path.join(__dirname, '../../sampletests/withfailures')
     ];
 
@@ -170,7 +170,7 @@ describe('testRunnerScreenshotsOutput', function () {
 
   it('does not take screenshot if screenshot is disabled', function () {
 
-    const testsPath = [
+    let testsPath = [
       path.join(__dirname, '../../sampletests/withfailures')
     ];
 
@@ -202,7 +202,7 @@ describe('testRunnerScreenshotsOutput', function () {
 
   it('does not take screenshot if screenshot is enabled but on_failure is set to false', function () {
 
-    const testsPath = [
+    let testsPath = [
       path.join(__dirname, '../../sampletests/withfailures')
     ];
 
@@ -236,8 +236,8 @@ describe('testRunnerScreenshotsOutput', function () {
 });
 
 function readDirPromise(dirName) {
-  return new Promise(function (resolve, reject) {
-    fs.readdir(dirName, function (err, result) {
+  return new Promise(function(resolve, reject) {
+    fs.readdir(dirName, function(err, result) {
       if (err) {
         return reject(err);
       }
