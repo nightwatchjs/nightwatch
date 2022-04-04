@@ -213,8 +213,8 @@ describe('expect.url', function() {
 
       Nocks.url().getUrl();
 
+      let expect = this.client.api.expect.url().to.not.equal('http://localhost');
 
-      const expect = this.client.api.expect.url().to.not.equal('http://localhost');
       assert.ok(expect.assertion.message.startsWith('Expected current url to'));
 
       return this.client.start(function() {

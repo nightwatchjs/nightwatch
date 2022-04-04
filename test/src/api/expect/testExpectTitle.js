@@ -183,7 +183,7 @@ describe('expect.title', function() {
     
     Nocks.title('xx');
 
-    const expect = this.client.api.expect.title().to.not.equal('xx');
+    let expect = this.client.api.expect.title().to.not.equal('xx');
     assert.ok(expect.assertion.message.startsWith('Expected page title to'));
 
     return this.client.start(function() {

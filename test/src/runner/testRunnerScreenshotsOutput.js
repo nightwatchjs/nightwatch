@@ -30,7 +30,7 @@ describe('testRunnerScreenshotsOutput', function () {
     });
   });
 
-  beforeEach(function () {
+  beforeEach(function() {
     process.removeAllListeners('exit');
     process.removeAllListeners('uncaughtException');
     process.removeAllListeners('unhandledRejection');
