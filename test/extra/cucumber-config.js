@@ -27,12 +27,6 @@ module.exports = {
     }
   },
   test_settings: {
-    test_runner: {
-      type: 'cucumber',
-      options: {
-        feature_path: path.join(__dirname, '../cucumber-integration-tests/browserstack/sampleBrowserstack.feature')
-      }
-    },
     browserstack: {
       selenium: {
         host: 'hub-cloud.browserstack.com',
