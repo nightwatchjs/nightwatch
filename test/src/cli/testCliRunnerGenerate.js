@@ -167,13 +167,13 @@ describe('Test CLI Runner Generate', function() {
           }
         });
 
-        assert.deepStrictEqual(configData.test_settings.sauce, {
+        assert.deepStrictEqual(configData.test_settings.saucelabs, {
           desiredCapabilities: {
             'sauce:options': {
               username: '${SAUCE_USERNAME}',
-              access_key: '${SAUCE_ACCESS_KEY}',
+              accessKey: '${SAUCE_ACCESS_KEY}'
               // https://docs.saucelabs.com/dev/cli/sauce-connect-proxy/#--region
-              sauce_region: 'us-west-1'
+              // region: 'us-west-1'
               // https://docs.saucelabs.com/dev/test-configuration-options/#tunnelidentifier
               // parentTunnel: ''
               // tunnelIdentifier: ''
@@ -191,30 +191,30 @@ describe('Test CLI Runner Generate', function() {
           }
         });
 
-        assert.deepStrictEqual(configData.test_settings['sauce.chrome'], {
-          extends: 'sauce',
+        assert.deepStrictEqual(configData.test_settings['saucelabs.chrome'], {
+          extends: 'saucelabs',
           desiredCapabilities: {
             browserName: 'chrome',
             screenResolution: '1280x1024',
             browserVersion: 'latest',
             javascriptEnabled: true,
             acceptSslCerts: true,
-            timeZone: 'New York',
+            timeZone: 'London',
             chromeOptions: {
               w3c: true
             }
           }
         });
 
-        assert.deepStrictEqual(configData.test_settings['sauce.firefox'], {
-          extends: 'sauce',
+        assert.deepStrictEqual(configData.test_settings['saucelabs.firefox'], {
+          extends: 'saucelabs',
           desiredCapabilities: {
             browserName: 'firefox',
             screenResolution: '1280x1024',
             browserVersion: 'latest',
             javascriptEnabled: true,
             acceptSslCerts: true,
-            timeZone: 'New York'
+            timeZone: 'London'
           }
         });
 
