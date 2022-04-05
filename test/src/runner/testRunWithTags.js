@@ -148,6 +148,7 @@ describe('testRunWithTags', function() {
       skiptags: ['login']
     }, settings({
       globals: {},
+      output: false,
       tag_filter: ['other']
     })).catch(err => {
       return err;

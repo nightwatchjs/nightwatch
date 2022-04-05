@@ -12,6 +12,7 @@ module.exports = {
   stop(done) {
     if (!server) {
       done();
+
       return;
     }
 
@@ -169,10 +170,31 @@ module.exports = {
     });
   },
 
+  clearElement(elementId = '0') {
+    MockServer.addMock({
+      url: `/wd/hub/session/1352110219202/element/${elementId}/clear`,
+      method: 'POST',
+      response: JSON.stringify({
+        value: null
+      })
+    });
+  },
+
+  executeSync(response, {times = 0} = {}) {
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/execute/sync',
+      method: 'POST',
+      response: JSON.stringify(response),
+      times
+    });
+
+    return this;
+  },
+
   visible(elementId = '0', value = true, {times = 0} = {}) {
     MockServer.addMock({
-      url: `/wd/hub/session/1352110219202/element/${elementId}/displayed`,
-      method: 'GET',
+      url: '/wd/hub/session/1352110219202/execute/sync',
+      method: 'POST',
       response: JSON.stringify({
         value
       }),
@@ -228,6 +250,16 @@ module.exports = {
       response: JSON.stringify({
         value: null
       })
+    });
+
+    return this;
+  },
+
+  elementProperty(elementId, property, response) {
+    MockServer.addMock({
+      url: `/wd/hub/session/1352110219202/element/${elementId}/property/${property}`,
+      method: 'GET',
+      response: JSON.stringify(response)
     });
 
     return this;

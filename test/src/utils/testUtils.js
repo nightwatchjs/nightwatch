@@ -7,13 +7,13 @@ describe('test Utils', function() {
 
   it('testFormatElapsedTime', function() {
 
-    let resultMs = Utils.formatElapsedTime(999);
+    const resultMs = Utils.formatElapsedTime(999);
     assert.strictEqual(resultMs, '999ms');
 
-    let resultSec = Utils.formatElapsedTime(1999);
+    const resultSec = Utils.formatElapsedTime(1999);
     assert.strictEqual(resultSec, '1.999s');
 
-    let resultMin = Utils.formatElapsedTime(122299, true);
+    const resultMin = Utils.formatElapsedTime(122299, true);
     assert.strictEqual(resultMin, '2m 2s / 122299ms');
   });
 
@@ -25,7 +25,7 @@ describe('test Utils', function() {
     function syncFn() {
     }
 
-    let convertedFn = Utils.makeFnAsync(1, syncFn);
+    const convertedFn = Utils.makeFnAsync(1, syncFn);
     let called = false;
     convertedFn(function() {
       called = true;
@@ -36,16 +36,16 @@ describe('test Utils', function() {
   });
 
   it('testCheckFunction', function() {
-    let g = {
+    const g = {
       fn: function() {
       }
     };
 
-    let o = {
+    const o = {
       fn: false
     };
 
-    let x = {
+    const x = {
       y: {
         testFn: function() {
         }
@@ -133,27 +133,6 @@ describe('test Utils', function() {
     assert.strictEqual(Utils.isFileNameValid('/tests/sampleTest.json'), false);
   });
 
-  it('filterStackTrace', function() {
-    let stackTrace = `Error
-        at Object.this test should fail and capture screenshot (/Projects/nightwatch/examples/tests/sample.js:5:16)
-        at Context.call (/node_modules/nightwatch/lib/testsuite/context.js:375:35
-        at TestCase.run (/node_modules/nightwatch/lib/testsuite/testcase.js:53:31
-        at Runnable.__runFn (/node_modules/nightwatch/lib/testsuite/index.js:376:80)
-        at Runnable.run (/node_modules/nightwatch/lib/tes….js:123:21)
-        at TestSuite.createRunnable (/node_modules/nightwatch/lib/testsuite/index.js:443:33)
-        at TestSuite.handleRunnable (/node_modules/nightwatch/lib/testsuite/index.js:448:18)
-        at /node_modules/nightwatch/lib/testsuite/index.js:376:21
-        at processTicksAndRejections (internal/process/task_queues.js:93:5)
-        at async DefaultRunner.runTestSuite (/node_modules/nightwatch/lib/runner/test-runners/default.js:68:7)`;
-    let expectedStackTrace = `Error
-        at Object.this test should fail and capture screenshot (/Projects/nightwatch/examples/tests/sample.js:5:16)`; 
-    assert.strictEqual(Utils.filterStackTrace(stackTrace), expectedStackTrace);
-  
-    stackTrace = '';
-    expectedStackTrace = '';
-    assert.strictEqual(Utils.filterStackTrace(stackTrace), expectedStackTrace);
-  });
-
   it('readFolderRecursively with normal folder', async function(){
     const absPath = [];
     Utils.readFolderRecursively(path.join(__dirname, '../../extra/commands/other/'), [], (sourcePath, resource) => {
@@ -169,4 +148,5 @@ describe('test Utils', function() {
     });
     assert.deepStrictEqual(absPath, [path.join(__dirname, '../../extra/commands/typescript/tsWait.js')]);
   });
+
 });

@@ -36,9 +36,8 @@ describe('get text using element-global', function () {
 
     browser.assert.visible(weblogin);
 
-    expect(weblogin).to.be.visible;
-
-    expect('#weblogin').text.contains('sample');
+    await expect(weblogin).to.be.visible;
+    await expect.element('#weblogin').text.contains('sample');
 
     const webElement = await weblogin.getWebElement();
     assert.ok(webElement instanceof WebElement);

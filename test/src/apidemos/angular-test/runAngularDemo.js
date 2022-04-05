@@ -49,6 +49,7 @@ describe('angular demo tests', function() {
 
     const globals = {
       waitForConditionPollInterval: 50,
+      waitForConditionTimeout: 100,
 
       reporter(results) {
         if (results.lastError) {

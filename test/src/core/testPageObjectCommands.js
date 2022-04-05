@@ -219,5 +219,78 @@ describe('test PageObject Commands', function () {
 
     this.client.start();
   });
+
+  it('testPageObject navigate() with url param', function (done) {
+    let page = this.client.api.page.simplePageObj();
+    let urlsArr = [];
+    page.api.url = function (url) {
+      urlsArr.push(url);
+    };
+
+    page.navigate('http://local');
+
+    page.api.perform(function () {
+      page.url = function () {
+        return 'http://nightwatchjs.org';
+      };
+    });
+
+    page.api.perform(function () {
+      page.navigate();
+    });
+
+    page.api.perform(function () {
+      try {
+        assert.deepStrictEqual(urlsArr, ['http://local', 'http://nightwatchjs.org']);
+        done();
+      } catch (err) {
+        done(err);
+      }
+    });
+
+    this.client.start();
+  });
+
+  it('testPageObject navigate() with url param and callback', function (done) {
+    let page = this.client.api.page.simplePageObj();
+    let urlsArr = [];
+    page.api.url = function (url, callback) {
+      urlsArr.push(url);
+      callback();
+    };
+    let called = false;
+    page.navigate('http://local', function() {
+      called = true;
+    });
+
+    page.api.perform(function () {
+      try {
+        assert.strictEqual(called, true);
+        done();
+      } catch (err) {
+        done(err);
+      }
+    });
+
+    this.client.start();
+  });
+
+
+  it('testPageObject navigate with url as a function using api object', function (done) {
+    const page = this.client.api.page.simplePageObj();
+    page.api.launch_url = 'https://nightwatchjs.org';
+    
+    page.url = function (url) {
+      return this.api.launch_url;
+    };
+
+    page.navigate(function (result) {
+      //check if callback function is called
+      assert.strictEqual(result.status, 0);
+      done();
+    });
+
+    this.client.start();
+  });
 });
 

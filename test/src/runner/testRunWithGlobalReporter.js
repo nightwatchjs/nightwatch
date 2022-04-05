@@ -36,9 +36,6 @@ describe('testRunWithGlobalReporter', function() {
       globals_path: path.join(__dirname, '../../extra/external-globals.js'),
       output_folder: false
     }))
-      .catch(err => {
-        return err;
-      })
       .then(err => {
         assert.strictEqual(globals.reporterCount, 1);
       });

@@ -1,32 +1,36 @@
 describe('sample google search', function() {
   this.tags = ['google'];
 
-  it('demo test using expect apis', function(browser) {
-    browser
-      .navigateTo('http://google.no')
-      .waitForElementVisible('[aria-modal="true"][title="Before you continue to Google Search"]')
-      .click('[aria-modal="true"] div.VDity button:nth-child(1)')
+  it('demo test using expect apis', async function(browser) {
+    await browser.navigateTo('http://google.no');
 
-      // Wait until we are on conset page
-      .expect.url().toContain('https://consent.google.no')
+    const consentPresent = await browser.isPresent('[aria-modal="true"][title="Before you continue to Google Search"]');
 
-    // Turn everything off
-      .click('button[aria-label="Turn off Search customization"]')
-      .click('button[aria-label="Turn off YouTube History"]')
-      .click('button[aria-label="Turn off Ad personalization"]')
+    // Wait until we are on consent page
+    if (consentPresent === true) {
+      browser
+        .waitForElementVisible('[aria-modal="true"][title="Before you continue to Google Search"]')
+        .click('[aria-modal="true"] div.VDity button:nth-child(1)')
 
-    // click on confirm button
-      .click('form[action^="https://consent.google.no"] button')
+        // Wait until we are on consent page
+        .expect.url().toContain('https://consent.google.no')
 
-    // saving the consent form takes some time, no need to check for anything else
-      .pause(1000)
+        // Turn everything off
+        .click('button[aria-label="Turn off Search customization"]')
+        .click('button[aria-label="Turn off YouTube History"]')
+        .click('button[aria-label="Turn off Ad personalization"]')
 
+        // click on confirm button
+        .click('form[action^="https://consent.google.no"] button')
+
+        // saving the consent form takes some time, no need to check for anything else
+        .pause(1000);
+    }
+
+    await browser
       .waitForElementVisible('form[action="/search"] input[type=text]')
-
       .sendKeys('form[action="/search"] input[type=text]', ['Nightwatch.js', browser.Keys.ENTER])
-      .assert.containsText('#rso>:first-child', 'Nightwatch.js')
-
+      .assert.textContains('#rso>:first-child', 'Nightwatch.js')
       .end();
-
   });
 });

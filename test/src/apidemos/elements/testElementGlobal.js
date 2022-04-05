@@ -24,7 +24,7 @@ describe('element global demos', function() {
     Mocks.elementText();
     Mocks.tagName('0', 'div');
     Mocks.visible('0', true, {
-      times: 1
+      times: 2
     });
 
     const globals = {
