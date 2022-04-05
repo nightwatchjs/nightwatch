@@ -70,26 +70,26 @@ describe('updateValue', function() {
       const frameId = res.value
 
       client.api
-      .frame('frameid', function callback(result) {
-        assert.strictEqual(result.status, 0);
-        assert.strictEqual(result.value, null);
-      })
-      .frame('framename', function callback(result) {
-        assert.strictEqual(result.status, 0);
-        assert.strictEqual(result.value, null);
-      })
-      .frame(undefined, function callback(result) {
-        assert.strictEqual(result.status, 0);
-        assert.strictEqual(result.value, null);
-      })
-      .frame(frameId, function callback(result) {
-        assert.strictEqual(result.status, 0);
-        assert.strictEqual(result.value, null);
-      })
-      .frame(null, function callback(result) {
-        assert.strictEqual(result.status, 0);
-        assert.strictEqual(result.value, null);
-      })
+        .frame('frameid', function callback(result) {
+          assert.strictEqual(result.status, 0);
+          assert.strictEqual(result.value, null);
+        })
+        .frame('framename', function callback(result) {
+          assert.strictEqual(result.status, 0);
+          assert.strictEqual(result.value, null);
+        })
+        .frame(undefined, function callback(result) {
+          assert.strictEqual(result.status, 0);
+          assert.strictEqual(result.value, null);
+        })
+        .frame(frameId, function callback(result) {
+          assert.strictEqual(result.status, 0);
+          assert.strictEqual(result.value, null);
+        })
+        .frame(null, function callback(result) {
+          assert.strictEqual(result.status, 0);
+          assert.strictEqual(result.value, null);
+        })
     })
 
     this.client.start(done);
