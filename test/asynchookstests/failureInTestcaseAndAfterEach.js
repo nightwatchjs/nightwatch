@@ -1,16 +1,22 @@
-describe('Failure in testcase and afterEach', function() {
-  it('demo test', function(client) {
+module.exports = {
+  demoTest: function (client) {
+    client.message1 = 'AfterEach Executed';
+    client.message2 = 'Test Execution Performed';
+    client.message3 = 'Test Execution Finished';
+
     client.waitForElementPresent({
       selector: 'element_that_does_not_exit',
       timeout: 1000,
       abortOnFailure: true
     });
     throw Error('test failed');
-  });
+  },
 
-  afterEach(client => {
+  afterEach: function(client) {
+    client.assert.strictEqual(client.message1, 'AfterEach Executed');
     client.perform(() => { 
-      console.log('TEST EXECUTION FINISHED'); 
+      client.assert.strictEqual(client.message2, 'Test Execution Performed');
     });
-  });
-});
+    client.assert.strictEqual(client.message3, 'Test Execution Finished');
+  }
+};
