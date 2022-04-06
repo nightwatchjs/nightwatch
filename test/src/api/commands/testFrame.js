@@ -54,12 +54,32 @@ describe('updateValue', function() {
       url: '/wd/hub/session/1352110219202/element',
       method: 'POST',
       postdata: {
-        using: 'id',
-        value: 'frameElement'
+        using: 'css selector',
+        value: '*[id="no-frame"]'
       },
+      statusCode: 404,
       response: {
         value: {
-          'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
+          error: 'no such element',
+          message: 'Unable to locate element: .no-frame',
+          stacktrace: ''
+        }
+      }
+    });
+
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/element',
+      method: 'POST',
+      postdata: {
+        using: 'css selector',
+        value: '*[name="no-frame"]'
+      },
+      statusCode: 404,
+      response: {
+        value: {
+          error: 'no such element',
+          message: 'Unable to locate element: .no-frame',
+          stacktrace: ''
         }
       }
     });
@@ -89,6 +109,10 @@ describe('updateValue', function() {
         .frame(null, function callback(result) {
           assert.strictEqual(result.status, 0);
           assert.strictEqual(result.value, null);
+        })
+        .frame('no-frame', function callback(result) {
+          assert.strictEqual(result.status, -1);
+          assert.strictEqual(result.error.name, 'NoSuchElementError');
         })
     })
 
