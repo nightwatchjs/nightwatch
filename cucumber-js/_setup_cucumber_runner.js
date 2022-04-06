@@ -68,7 +68,7 @@ After(async function(testCase) {
   //send test-case result to cloud provider
   const {result} = testCase;
   if (this.client.transport && this.client.transport.usingBrowserstack && result) {
-    this.client.transport.sendReasonToBrowserstack((result.status === 'FAILED'), result.message);
+    await this.client.transport.sendReasonToBrowserstack((result.status === 'FAILED'), result.message);
   }
 
   if (this.browser) {
