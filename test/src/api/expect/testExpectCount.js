@@ -173,15 +173,15 @@ describe('expect.elements count', function() {
       Nocks.elementsNotFound('.classname');
 
       let expect = this.client.api.expect.elements('.classname').count.to.equal(4);
-      assert.ok(expect.assertion.message.startsWith('Expected elements <.classname> count to'), expect.assertion.message);
 
       return this.client.start(function() {
+        assert.ok(expect.assertion.message.startsWith('Expected elements <.classname> count to'));
         assert.strictEqual(expect.assertion.expected, 'equal \'4\'');
         assert.strictEqual(expect.assertion.negate, false);
         assert.strictEqual(expect.assertion.passed, false);
         assert.ok(expect.assertion.messageParts.includes(' equal: "4"'));
         assert.ok(expect.assertion.message.startsWith('Expected elements <.classname> count to equal: "4"'));
-        assert.strictEqual(expect.assertion.resultValue, null);
+        assert.strictEqual(expect.assertion.resultValue, undefined);
       });
     });
   });

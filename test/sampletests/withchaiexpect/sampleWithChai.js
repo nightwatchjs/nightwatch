@@ -11,7 +11,7 @@ module.exports = {
         client.globals.test.ok(result.value);
 
         let assertion = client.expect(result.value).to.have.length(1);
-        client.globals.test.deepEqual(assertion.__flags.object, [{ELEMENT: '0'}]);
+        client.globals.test.deepEqual(assertion.__flags.get('object'), [{ELEMENT: '0'}]);
 
         try {
           client.expect(result.value).to.have.length(2);

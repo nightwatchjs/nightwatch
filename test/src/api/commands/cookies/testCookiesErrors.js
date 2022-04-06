@@ -168,7 +168,7 @@ describe('getCookiesErrors', function() {
         method: 'GET',
         socketDelay: 200,
         response: ''
-      }, true);
+      }, null, true);
 
       client.api.getCookies(function callback(result) {
         assert.ok(result.error instanceof Error);

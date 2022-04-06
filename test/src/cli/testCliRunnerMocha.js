@@ -9,6 +9,8 @@ describe('test CLI Runner Mocha', function() {
     process.env['ENV_USERNAME'] = 'testuser';
 
     mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
+
+    mockery.registerMock('package.json', {});
     mockery.registerMock('./argv-setup.js', {
       isDefault(option, value) {
         return value.includes('nightwatch.');
