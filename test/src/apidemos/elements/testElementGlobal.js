@@ -47,7 +47,7 @@ describe('element global demos', function() {
   });
 
   it('set use_xpath locate-strategy in element global', function() {
-    const testsPath = path.join(__dirname, '../../../apidemos/elements/testGlobalLocateStrartegy.js');
+    const testsPath = path.join(__dirname, '../../../apidemos/elements/testGlobalLocateStrategy.js');
 
     return NightwatchClient.runTests(testsPath, settings({
       output: false,
