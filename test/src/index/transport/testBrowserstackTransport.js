@@ -25,7 +25,7 @@ describe('BrowserstackTransport', function () {
           port: 443
         }
       });
-    }, /BrowserStack access key is not set\. Verify that "browserstack\.key" capability is set correctly or set BROWSERSTACK_KEY \(or BROWSERSTACK_ACCESS_KEY\) environment variable \(\.env files are supported\)\./);
+    }, /BrowserStack access key is not set\. Verify that "browserstack\.key" capability is set correctly or set BROWSERSTACK_KEY environment variable \(\.env files are supported\)\./);
 
     assert.throws(function() {
       NightwatchClient.client({
@@ -37,7 +37,7 @@ describe('BrowserstackTransport', function () {
           'browserstack.key': 'test-access-key'
         }
       });
-    }, /BrowserStack username is not set\. Verify that "browserstack\.user" capability is set correctly or set BROWSERSTACK_USER \(or BROWSERSTACK_USERNAME\) environment variable \(\.env files are supported\)\./);
+    }, /BrowserStack username is not set\. Verify that "browserstack\.user" capability is set correctly or set BROWSERSTACK_USER environment variable \(\.env files are supported\)\./);
 
   });
 
