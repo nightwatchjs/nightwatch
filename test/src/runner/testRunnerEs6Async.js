@@ -296,8 +296,6 @@ describe('testRunner ES6 Async', function () {
     };
 
     return runTests(testsPath, settings({
-      output: true,
-      silent: false,
       globals
     }));
   });
