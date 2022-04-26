@@ -5,6 +5,14 @@ const CommandGlobals = require('../../../../lib/globals/commands.js');
 const {Screenshots} = common.require('utils');
 
 describe('.saveScreenshot()', function() {
+  before(function() {
+    this.writeScreenshotToFile = Screenshots.writeScreenshotToFile;
+  });
+
+  after(function() {
+    Screenshots.writeScreenshotToFile = this.writeScreenshotToFile;
+  });
+
   describe('with backwards compat mode', function() {
     before(function(done) {
       CommandGlobals.beforeEach.call(this, done, {
@@ -26,7 +34,7 @@ describe('.saveScreenshot()', function() {
           status: 0,
           value: base64Image
         })
-      });
+      }, true);
 
       this.client.api.options.log_screenshot_data = false;
 
@@ -64,7 +72,7 @@ describe('.saveScreenshot()', function() {
           status: 0,
           value: base64Image
         })
-      });
+      }, true);
 
       this.client.api.options.log_screenshot_data = false;
 
