@@ -18,7 +18,7 @@ describe('basicSampleTest', function() {
   it('basic test with ES6 async/await and no await commands', async (browser) => {
     browser
       .url('http://localhost')
-      .assert.elementPresent('#weblogsin');
+      .assert.elementPresent('#weblogin');
 
     browser.assert.strictEqual(0, 1)
   });
