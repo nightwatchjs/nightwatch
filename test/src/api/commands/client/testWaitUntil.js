@@ -123,7 +123,7 @@ describe('.waitUntil()', function () {
 
       this.client.start(err => {
         try {
-          assert.ok(timeDiff <= maxTimeout+25, `Expected lower than ${maxTimeout}, but got ${timeDiff}`);
+          assert.ok(timeDiff <= maxTimeout+100, `Expected lower than ${maxTimeout}, but got ${timeDiff}`);
           assert.strictEqual(result.status, -1);
           assert.strictEqual(tries, 3);
           assert.ok(err instanceof Error);
@@ -155,7 +155,7 @@ describe('.waitUntil()', function () {
       this.client.start(err => {
         try {
           assert.ok(err instanceof Error);
-          assert.ok(timeDiff <= maxTimeout+50, `Expected lower than ${maxTimeout}, but got ${timeDiff}`);
+          assert.ok(timeDiff <= maxTimeout+100, `Expected lower than ${maxTimeout}, but got ${timeDiff}`);
           assert.strictEqual(result.status, -1);
           assert.strictEqual(tries, 7);
           done();

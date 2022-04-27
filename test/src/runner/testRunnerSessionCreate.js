@@ -35,7 +35,7 @@ describe('testRunnerSessionCreate', function() {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        desiredCapabilities: {browserName: 'firefox', name: 'Async/Test/Sample'},
+        desiredCapabilities: {browserName: 'firefox', name: 'test-Async'},
         capabilities: {alwaysMatch: {browserName: 'firefox'}}
       }),
       response: JSON.stringify({
@@ -231,7 +231,7 @@ describe('testRunnerSessionCreate', function() {
         assert.ok(results.lastError instanceof Error);
         assert.strictEqual(results.lastError.code, 'ECONNREFUSED');
         assert.strictEqual(results.lastError.showTrace, false);
-        assert.strictEqual(results.lastError.message, 'An error occurred while creating a new GeckoDriver session: Connection refused to 127.0.0.1:9999. If the Webdriver/Selenium service is managed by Nightwatch, check if "start_process" is set to "true".');
+        assert.match(results.lastError.message, /An error occurred while creating a new GeckoDriver session: Connection refused to .*9999\. If the Webdriver\/Selenium service is managed by Nightwatch, check if "start_process" is set to "true"\./);
       }
     };
 
@@ -308,7 +308,7 @@ describe('testRunnerSessionCreate', function() {
         assert.strictEqual(results.lastError.showTrace, false);
         assert.ok(results.lastError instanceof Error);
         assert.ok(results.lastError.detailedErr.startsWith(' Verify if GeckoDriver is configured correctly; using:'));
-        assert.strictEqual(results.lastError.message, 'An error occurred while creating a new GeckoDriver session: [Error] Server terminated early with status 2');
+        assert.strictEqual(results.lastError.message, 'An error occurred while creating a new GeckoDriver session: [Error] Server terminated early with status 9');
       }
     };
 
@@ -316,7 +316,7 @@ describe('testRunnerSessionCreate', function() {
       selenium_host: null,
       webdriver: {
         start_process: true,
-        server_path: '/bin/bash',
+        server_path: process.argv[0],
         host: 'localhost',
         port: 4444
       },
