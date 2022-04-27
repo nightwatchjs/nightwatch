@@ -53,7 +53,7 @@ describe('testRunnerJUnitOutput', function() {
         status: 0,
         value: 'screendata'
       })
-    });
+    }, true);
 
 
     return runTests(testsPath, settings({
@@ -73,7 +73,7 @@ describe('testRunnerJUnitOutput', function() {
       }
     }))
       .then(_ => {
-        return readFilePromise('output/FIREFOX_TEST_firefox__sample.xml');
+        return readFilePromise(`output${path.sep}FIREFOX_TEST_firefox__sample.xml`);
       })
       .then(data => {
         let content = data.toString();

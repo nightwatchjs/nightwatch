@@ -25,7 +25,8 @@ describe('testRunner ES6 Async', function () {
     process.removeAllListeners('unhandledRejection');
   });
 
-  it('test Runner with ES6 fluent api basic sample', function () {
+
+  it('test Runner with ES6 fluent api basic sample', function() {
     let testsPath = path.join(__dirname, '../../sampletests/es6await/basicSampleTest.js');
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/cookie/test_cookie',
@@ -46,7 +47,7 @@ describe('testRunner ES6 Async', function () {
     }, true);
 
     let globals = {
-      waitForConditionPollInterval: 50,
+      waitForConditionPollInterval: 150,
       waitForConditionTimeout: 100,
       retryAssertionTimeout: 150,
 
@@ -91,22 +92,22 @@ describe('testRunner ES6 Async', function () {
       waitForConditionPollInterval: 50,
 
       reporter(results) {
-        assert.ok('failures/sampleWithFailures' in results.modules, 'sampleWithFailures module not found in results');
+        assert.ok(`failures${path.sep}sampleWithFailures` in results.modules, 'sampleWithFailures module not found in results');
         assert.ok('basicSampleTestSelenium' in results.modules);
         if (results.modules.basicSampleTestSelenium.lastError) {
           throw results.modules.basicSampleTestSelenium.lastError;
         }
 
-        if (results.modules['failures/sampleWithFailures'].completed.asyncGetCookiesTest.lastError) {
-          throw results.modules['failures/sampleWithFailures'].completed.asyncGetCookiesTest.lastError;
+        if (results.modules[`failures${path.sep}sampleWithFailures`].completed.asyncGetCookiesTest.lastError) {
+          throw results.modules[`failures${path.sep}sampleWithFailures`].completed.asyncGetCookiesTest.lastError;
         }
 
-        assert.ok('failures/sampleWithFailures' in results.modules);
-        assert.strictEqual(results.modules['failures/sampleWithFailures'].completed.verify.assertions.length, 2);
+        assert.ok(`failures${path.sep}sampleWithFailures` in results.modules);
+        assert.strictEqual(results.modules[`failures${path.sep}sampleWithFailures`].completed.verify.assertions.length, 2);
 
-        assert.ok(results.modules['failures/sampleWithFailures'].completed.verify.assertions[0].failure.includes('Expected "is present" but got: "not present"'));
-        assert.strictEqual(results.modules['failures/sampleWithFailures'].completed.verify.assertions[1].failure, false);
-        assert.strictEqual(results.modules['failures/sampleWithFailures'].completed.waitFor.failed, 1);
+        assert.ok(results.modules[`failures${path.sep}sampleWithFailures`].completed.verify.assertions[0].failure.includes('Expected "is present" but got: "not present"'));
+        assert.strictEqual(results.modules[`failures${path.sep}sampleWithFailures`].completed.verify.assertions[1].failure, false);
+        assert.strictEqual(results.modules[`failures${path.sep}sampleWithFailures`].completed.waitFor.failed, 1);
 
         assert.ok(results.lastError instanceof Error);
         assert.strictEqual(results.lastError.name, 'NightwatchAssertError');
