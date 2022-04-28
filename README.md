@@ -78,7 +78,7 @@ Nightwatch uses a [WebDriver](https://www.w3.org/TR/webdriver/) compatible serve
 Nightwatch includes support for automatically managing the following services:
 #### ChromeDriver 
 - for running tests against the Chrome browser;
-- download url: [https://sites.google.com/a/chromium.org/chromedriver/downloads](https://sites.google.com/a/chromium.org/chromedriver/downloads).
+- download url: [https://sites.google.com/chromium.org/driver/](https://sites.google.com/chromium.org/driver/).
 
 #### GeckoDriver
 - for running tests against the Mozilla Firefox browser;
