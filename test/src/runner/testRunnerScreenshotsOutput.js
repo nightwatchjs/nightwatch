@@ -96,6 +96,7 @@ describe('testRunnerScreenshotsOutput', function() {
     return runTests(testsPath, settings({
       skip_testcases_on_fail: true,
       output_folder: 'output',
+      output: false,
       globals: {
         waitForConditionPollInterval: 5,
         waitForConditionTimeout: 5,
