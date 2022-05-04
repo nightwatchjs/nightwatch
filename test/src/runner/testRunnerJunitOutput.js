@@ -358,6 +358,46 @@ describe('testRunnerJUnitOutput', function() {
           'Report does not contain the correct testcase element.');
       });
   });
+
+  it('testRun with jUnit output and failure of afterEach hook', function () {
+    let testsPath = [
+      path.join(__dirname, '../../asynchookstests/failureInTestcaseAndAfterEach.js')
+    ];
+
+    return runTests(testsPath, settings({
+      output_folder: 'output',
+      globals: {
+        waitForConditionPollInterval: 20,
+        waitForConditionTimeout: 50,
+        retryAssertionTimeout: 50,
+        reporter: function (results) {
+          assert.strictEqual(results.failed, 1);
+          assert.ok(results.lastError instanceof Error);
+          assert.strictEqual(typeof results.modules.failureInTestcaseAndAfterEach, 'object');
+          assert.strictEqual(results.modules.failureInTestcaseAndAfterEach.lastError.abortOnFailure, true);
+          assert.strictEqual(results.modules.failureInTestcaseAndAfterEach.failedCount, 1);
+          assert.strictEqual(results.modules.failureInTestcaseAndAfterEach.skipped.length, 0);
+          assert.strictEqual(results.modules.failureInTestcaseAndAfterEach.completed.demoTest.assertions.length, 4);
+          assert.strictEqual(results.modules.failureInTestcaseAndAfterEach.completed.demoTest.assertions[0].message.includes('Timed out while waiting for element'), true);
+          assert.ok(results.modules.failureInTestcaseAndAfterEach.completed.demoTest.assertions[1].message.includes('AfterEach Executed'), true);
+          assert.ok(results.modules.failureInTestcaseAndAfterEach.completed.demoTest.assertions[2].message.includes('Test Execution Performed'), true);
+          assert.ok(results.modules.failureInTestcaseAndAfterEach.completed.demoTest.assertions[3].message.includes(' Test Execution Finished'), true);
+        }
+      },
+      screenshots: {
+        enabled: false
+      }
+    }))
+      .then(_ => {
+        return readFilePromise('output/FIREFOX_TEST_firefox__failureInTestcaseAndAfterEach.xml');
+      })
+      .then(data => {
+        let content = data.toString();
+        assert.ok(content.includes('<system-err>'), 'Report should contain <system-err>');
+        assert.ok(content.indexOf('failureInTestcaseAndAfterEach.js') > -1, 'Report should contain stack trace');
+      });
+  });
+
 });
 
 function readFilePromise(fileName) {
