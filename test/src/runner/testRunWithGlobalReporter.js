@@ -82,14 +82,14 @@ describe('testRunWithGlobalReporter', function() {
   });
 
   it('to check skipped count in global reporter', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/globalReporterSkippedCount/skippedCount.js');
+    let testsPath = path.join(__dirname, '../../sampletests/globalreporterskippedcount/sample.js');
     let reporterCount = 0;
 
     return runTests(testsPath, settings({
       globals: {
         reporter(results, cb) {
           assert.strictEqual(results.skipped, 2);
-          assert.strictEqual(results.modules.skippedCount.skippedCount, 2);
+          assert.strictEqual(results.modules.sample.skippedCount, 2);
           reporterCount++;
           cb();
         }
