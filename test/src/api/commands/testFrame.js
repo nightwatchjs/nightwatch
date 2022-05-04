@@ -18,7 +18,7 @@ describe('updateValue', function() {
       method: 'POST',
       postdata: {
         using: 'css selector',
-        value: '*[id="frameid"]'
+        value: '#frameid, *[name="frameid"]'
       },
       response: {
         value: {
@@ -32,7 +32,7 @@ describe('updateValue', function() {
       method: 'POST',
       postdata: {
         using: 'css selector',
-        value: '*[name="framename"]'
+        value: '#framename, *[name="framename"]'
       },
       response: {
         value: {
@@ -55,24 +55,7 @@ describe('updateValue', function() {
       method: 'POST',
       postdata: {
         using: 'css selector',
-        value: '*[id="no-frame"]'
-      },
-      statusCode: 404,
-      response: {
-        value: {
-          error: 'no such element',
-          message: 'Unable to locate element: .no-frame',
-          stacktrace: ''
-        }
-      }
-    });
-
-    MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/element',
-      method: 'POST',
-      postdata: {
-        using: 'css selector',
-        value: '*[name="no-frame"]'
+        value: '#no-frame, *[name="no-frame"]'
       },
       statusCode: 404,
       response: {
@@ -87,7 +70,7 @@ describe('updateValue', function() {
     const client = this.client;
 
     client.api.element('id', 'frameid', function callback(res){
-      const frameId = res.value
+      const frameId = res.value;
 
       client.api
         .frame('frameid', function callback(result) {
@@ -113,8 +96,8 @@ describe('updateValue', function() {
         .frame('no-frame', function callback(result) {
           assert.strictEqual(result.status, -1);
           assert.strictEqual(result.error.name, 'NoSuchElementError');
-        })
-    })
+        });
+    });
 
     this.client.start(done);
   });
