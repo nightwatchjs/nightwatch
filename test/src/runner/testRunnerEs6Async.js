@@ -272,4 +272,32 @@ describe('testRunner ES6 Async', function () {
       globals
     }));
   });
+
+  it('test runner with async expect failure', function() {
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/element/0/text',
+      method: 'GET',
+      response: JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0,
+        value: 'Barn owl'
+      })
+    }, true);
+
+    const testsPath = path.join(__dirname, '../../sampletests/asyncwithexpectfailures');
+    const globals = {
+      waitForConditionPollInterval: 50,
+      waitForConditionTimeout: 100,
+      retryAssertionTimeout: 150,
+      reporter(results) {
+        assert.strictEqual(results.assertions, 2);
+        assert.strictEqual(results.failed, 1);
+        assert.strictEqual(results.passed, 1);
+      }
+    };
+
+    return runTests(testsPath, settings({
+      globals
+    }));
+  });
 });
