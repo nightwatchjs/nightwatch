@@ -180,6 +180,7 @@ describe('.setGeolocation()', function () {
           }
         });
       };
+
       client.api.setGeolocation({}, function (){
         assert.strictEqual(expectedCDPCommand, 'Emulation.clearGeolocationOverride');
         assert.deepEqual(expectedCoordinates, {});
@@ -189,6 +190,9 @@ describe('.setGeolocation()', function () {
         assert.strictEqual(expectedCDPCommand, 'Emulation.clearGeolocationOverride');
         assert.deepEqual(expectedCoordinates, {});
       });
+
+      // Checks if setGeolocation works (doesn't throw error) with not argument at all.
+      client.api.setGeolocation();
 
       client.start(done);
     });
