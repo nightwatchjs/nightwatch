@@ -170,7 +170,7 @@ describe('testRunTestcase', function() {
         assert.strictEqual(results.passed, 1);
         assert.strictEqual(results.failed, 1);
         assert.strictEqual(results.errors, 0);
-        assert.strictEqual(results.skipped, 0);
+        assert.strictEqual(results.skipped, 1);
         cb();
       },
       retryAssertionTimeout: 0
@@ -193,7 +193,7 @@ describe('testRunTestcase', function() {
         assert.strictEqual(results.passed, 1);
         assert.strictEqual(results.failed, 1);
         assert.strictEqual(results.errors, 0);
-        assert.strictEqual(results.skipped, 0);
+        assert.strictEqual(results.skipped, 1);
         cb();
       },
       retryAssertionTimeout: 0
@@ -216,7 +216,7 @@ describe('testRunTestcase', function() {
         assert.strictEqual(results.passed, 1);
         assert.strictEqual(results.failed, 1);
         assert.strictEqual(results.errors, 0);
-        assert.strictEqual(results.skipped, 0);
+        assert.strictEqual(results.skipped, 1);
         cb();
       },
       retryAssertionTimeout: 0

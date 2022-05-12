@@ -107,13 +107,13 @@ describe('Test CLI Runner Generate', function() {
         assert.deepStrictEqual(configData.test_settings.browserstack, {
           desiredCapabilities: {
             'bstack:options': {
-              userName: '${BROWSERSTACK_USER}',
-              accessKey: '${BROWSERSTACK_KEY}'
+              userName: '${BROWSERSTACK_USERNAME}',
+              accessKey: '${BROWSERSTACK_ACCESS_KEY}'
             }
           },
 
           selenium: {
-            host: 'hub-cloud.browserstack.com',
+            host: 'hub.browserstack.com',
             port: 443
           },
 
@@ -264,16 +264,16 @@ describe('Test CLI Runner Generate', function() {
       browserName: 'internet explorer',
       browserVersion: '11.0',
       'bstack:options': {
-        userName: '${BROWSERSTACK_USER}',
-        accessKey: '${BROWSERSTACK_KEY}'
+        userName: '${BROWSERSTACK_USERNAME}',
+        accessKey: '${BROWSERSTACK_ACCESS_KEY}'
       }
     });
     assert.deepStrictEqual(chromeLocalRunner.test_settings.desiredCapabilities, {
       browserName: 'chrome',
       'browserstack.local': true,
       'bstack:options': {
-        userName: '${BROWSERSTACK_USER}',
-        accessKey: '${BROWSERSTACK_KEY}'
+        userName: '${BROWSERSTACK_USERNAME}',
+        accessKey: '${BROWSERSTACK_ACCESS_KEY}'
       }
     });
   });
