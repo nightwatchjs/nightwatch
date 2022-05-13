@@ -3,7 +3,7 @@ const CommandGlobals = require('../../../../lib/globals/commands.js');
 const MockServer = require('../../../../lib/mockserver.js');
 const Nightwatch = require('../../../../lib/nightwatch.js');
 
-describe('.setDeviceMetrics()', function () {
+describe('.setDeviceDimensions()', function () {
   beforeEach(function (done) {
     CommandGlobals.beforeEach.call(this, done);
   });
@@ -12,8 +12,8 @@ describe('.setDeviceMetrics()', function () {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  // Should set device metrics when all four properties are provided.
-  it('browser.setDeviceMetrics({width, height, deviceScaleFactor, mobile})', function (done) {
+  // Should set device dimensions when all four properties are provided.
+  it('browser.setDeviceDimensions({width, height, deviceScaleFactor, mobile})', function (done) {
 
     MockServer.addMock({
       url: '/session',
@@ -54,7 +54,7 @@ describe('.setDeviceMetrics()', function () {
           }
         });
       };
-      client.api.setDeviceMetrics({width: 400, height: 600, deviceScaleFactor: 50, mobile: true}, function (){
+      client.api.setDeviceDimensions({width: 400, height: 600, deviceScaleFactor: 50, mobile: true}, function (){
         assert.strictEqual(expectedCDPCommand, 'Emulation.setDeviceMetricsOverride');
         assert.strictEqual(expectedWidth, 400);
         assert.strictEqual(expectedHeight, 600);
@@ -65,8 +65,8 @@ describe('.setDeviceMetrics()', function () {
     });
   });
 
-  // Should set device metrics when just two properties are provided.
-  it('browser.setDeviceMetrics({width, height})', function (done) {
+  // Should set device dimensions when just two properties are provided.
+  it('browser.setDeviceDimensions({width, height})', function (done) {
 
     MockServer.addMock({
       url: '/session',
@@ -107,7 +107,7 @@ describe('.setDeviceMetrics()', function () {
           }
         });
       };
-      client.api.setDeviceMetrics({width: 400, deviceScaleFactor: 100}, function (){
+      client.api.setDeviceDimensions({width: 400, deviceScaleFactor: 100}, function (){
         assert.strictEqual(expectedCDPCommand, 'Emulation.setDeviceMetricsOverride');
         assert.strictEqual(expectedWidth, 400);
         assert.strictEqual(expectedHeight, 0);
@@ -118,8 +118,8 @@ describe('.setDeviceMetrics()', function () {
     });
   });
 
-  // Should clear the device metrics override when no property is provided.
-  it('browser.setDeviceMetrics()', function (done) {
+  // Should clear the device dimensions override when no property is provided.
+  it('browser.setDeviceDimensions()', function (done) {
 
     MockServer.addMock({
       url: '/session',
@@ -155,27 +155,27 @@ describe('.setDeviceMetrics()', function () {
         });
       };
 
-      client.api.setDeviceMetrics({}, function () {
+      client.api.setDeviceDimensions({}, function () {
         assert.strictEqual(expectedCDPCommand, 'Emulation.setDeviceMetricsOverride');
         assert.deepEqual(expectedMetrics, {deviceScaleFactor: 0, height: 0, mobile: false, width: 0});
       });
 
-      // Checks if setDeviceMetrics works (doesn't throw error) with not argument at all.
-      client.api.setDeviceMetrics();
+      // Checks if setDeviceDimensions work (doesn't throw error) with not argument at all.
+      client.api.setDeviceDimensions();
 
       client.start(done);
     });
   });
 
-  it('browser.setDeviceMetrics - driver not supported', function(done){
+  it('browser.setDeviceDimensions - driver not supported', function(done){
     Nightwatch.initW3CClient({
       desiredCapabilities: {
         browserName: 'firefox'
       }
     }).then(client => {
-      client.api.setDeviceMetrics({width: 400, height: 600, deviceScaleFactor: 50}, function(result){
+      client.api.setDeviceDimensions({width: 400, height: 600, deviceScaleFactor: 50}, function(result){
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'SetDeviceMetrics is not supported while using this driver');
+        assert.strictEqual(result.error, 'SetDeviceDimensions is not supported while using this driver');
       });
       client.start(done);
     });
