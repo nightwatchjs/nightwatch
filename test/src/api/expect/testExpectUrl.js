@@ -98,7 +98,7 @@ describe('expect.url', function() {
       this.client.api.globals.waitForConditionTimeout = 10;
       this.client.api.globals.waitForConditionPollInterval = 9;
 
-      Nocks.url().getUrl();
+      Nocks.url().getUrl().getUrl().getUrl();
 
       let expect = this.client.api.expect.url().contains('localhost');
 
@@ -177,7 +177,7 @@ describe('expect.url', function() {
       this.client.api.globals.waitForConditionTimeout = 10;
       this.client.api.globals.waitForConditionPollInterval = 9;
 
-      Nocks.url().getUrl().getUrl();
+      Nocks.url().getUrl().getUrl().getUrl();
 
       let expect = this.client.api.expect.url().to.not.equal('http://localhost');
 
@@ -209,10 +209,9 @@ describe('expect.url', function() {
     });
 
     it('to not equal to [FAILED]', function() {
-      this.client.api.globals.waitForConditionTimeout = 10;
-      this.client.api.globals.waitForConditionPollInterval = 9;
+      this.client.api.globals.waitForConditionTimeout = 0;
 
-      Nocks.url().getUrl().getUrl();
+      Nocks.url().getUrl();
 
       let expect = this.client.api.expect.url().to.not.equal('http://localhost');
       assert.ok(expect.assertion.message.startsWith('Expected current url to'));
@@ -252,7 +251,7 @@ describe('expect.url', function() {
       this.client.api.globals.waitForConditionTimeout = 10;
       this.client.api.globals.waitForConditionPollInterval = 9;
 
-      Nocks.url().getUrl().getUrl().getUrl();
+      Nocks.url().getUrl().getUrl().getUrl().getUrl();
 
       let expect = this.client.api.expect.url().to.not.contains('http://localhost');
       assert.ok(expect.assertion.message.startsWith('Expected current url to'));

@@ -344,8 +344,8 @@ describe('expect.visible', function () {
       });
     });
 
-    it('to be visible - invalid json response', function () {
-      this.client.api.globals.waitForConditionTimeout = 50;
+    it('to be visible - invalid json response', function() {
+      this.client.api.globals.waitForConditionTimeout = 100;
       this.client.api.globals.waitForConditionPollInterval = 20;
 
       Nocks
@@ -353,7 +353,7 @@ describe('expect.visible', function () {
         .elementStateError({
           error: '',
           code: 500,
-          times: 5,
+          times: 15,
           reply: '<html></html>'
         });
 

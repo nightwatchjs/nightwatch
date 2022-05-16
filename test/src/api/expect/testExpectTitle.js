@@ -44,8 +44,8 @@ describe('expect.title', function() {
     this.client.api.globals.waitForConditionPollInterval = 9;
     this.client.api.globals.abortOnAssertionFailure = true;
 
-    Nocks.title('hp vasq');
-    Nocks.title('hp vasq');
+    Nocks.title('hp vasq').title('hp vasq').title('hp vasq').title('hp vasq');
+    
     let api = this.client.api.expect.title().to.toEqual('vasq');
 
     return this.client.start(function(err) {
@@ -177,10 +177,10 @@ describe('expect.title', function() {
   });
 
   it('to not equal to [FAILED]', function() {
-    this.client.api.globals.waitForConditionTimeout = 10;
-    this.client.api.globals.waitForConditionPollInterval = 9;
 
-    Nocks.title('xx');
+    // No need to retry
+    this.client.api.globals.waitForConditionTimeout = 0;
+    
     Nocks.title('xx');
 
     let expect = this.client.api.expect.title().to.not.equal('xx');

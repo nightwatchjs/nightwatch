@@ -3,6 +3,7 @@ const mockery = require('mockery');
 const common = require('../../common.js');
 const NightwatchClient = common.require('index.js');
 const Settings = common.require('settings/settings.js');
+const path = require('path');
 
 describe('SafariDriver Transport Tests', function () {
   beforeEach(function() {
@@ -204,7 +205,7 @@ describe('SafariDriver Transport Tests', function () {
     });
     assert.strictEqual(serverPath, '/usr/bin/safaridriver');
     assert.strictEqual(serverPort, 9999);
-    assert.ok(logFilePath.endsWith('logs/testModuleKey_safaridriver.log'), logFilePath);
+    assert.ok(logFilePath.endsWith(`logs${path.sep}testModuleKey_safaridriver.log`), logFilePath);
   });
 
   it('test create session with safari driver -- random port', async function() {

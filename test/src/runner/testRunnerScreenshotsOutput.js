@@ -8,9 +8,10 @@ const rimraf = require('rimraf');
 const {settings} = common;
 const {runTests} = common.require('index.js');
 
-describe('testRunnerScreenshotsOutput', function() {
-  let screenshotFilePath = 'screenshots';
-  let moduleName = 'sample';
+describe('testRunnerScreenshotsOutput', function () {
+  this.timeout(10000);
+  const screenshotFilePath = 'screenshots';
+  const moduleName = 'sample';
 
   before(function(done) {
     this.server = MockServer.init();
@@ -46,7 +47,7 @@ describe('testRunnerScreenshotsOutput', function() {
       response: JSON.stringify({
         sessionId: '1352110219202',
         status: 0,
-        value: 'screendata'
+        value: 'c2NyZWVuZGF0YQ=='
       })
     }, true);
 
@@ -88,14 +89,15 @@ describe('testRunnerScreenshotsOutput', function() {
       response: JSON.stringify({
         sessionId: '1352110219202',
         status: 0,
-        value: 'screendata'
+        value: 'c2NyZWVuZGF0YQ=='
       })
-    });
+    }, true);
 
 
     return runTests(testsPath, settings({
       skip_testcases_on_fail: true,
       output_folder: 'output',
+      output: false,
       globals: {
         waitForConditionPollInterval: 5,
         waitForConditionTimeout: 5,
@@ -138,7 +140,7 @@ describe('testRunnerScreenshotsOutput', function() {
         error: 'Unknown command 404 Not Found',
         httpStatusCode: 404
       })
-    });
+    }, true);
 
 
     return runTests(testsPath, settings({
