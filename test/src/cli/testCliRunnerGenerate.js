@@ -71,9 +71,7 @@ describe('Test CLI Runner Generate', function() {
 
         assert.strictEqual(typeof configData.safari, 'undefined');
 
-        assert.deepStrictEqual(configData.disable_typescript, {
-          disable_typescript: false
-        });
+        assert.strictEqual(configData.disable_typescript, false);
 
         assert.deepStrictEqual(configData.test_settings.chrome, {
           desiredCapabilities: {
