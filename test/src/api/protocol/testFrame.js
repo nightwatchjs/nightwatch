@@ -1,5 +1,6 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
+const {By} = require('selenium-webdriver');
 
 describe('client.frame', function() {
   before(function() {
@@ -18,8 +19,10 @@ describe('client.frame', function() {
 
   it('testFramePost', function () {
     return Globals.protocolTest({
-      assertion: function(frameId) {
-        assert.strictEqual(frameId, 'testFrame');
+      assertion: function(opts) {
+        if(opts.locator instanceof By){
+          assert.strictEqual(opts.locator.value, '#testFrame, *[name="testFrame"]');
+        }
       },
       commandName: 'frame',
       args: ['testFrame']
