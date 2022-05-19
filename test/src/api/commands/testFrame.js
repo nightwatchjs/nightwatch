@@ -93,12 +93,64 @@ describe('updateValue', function() {
           assert.strictEqual(result.status, 0);
           assert.strictEqual(result.value, null);
         })
-        .frame('no-frame', function callback(result) {
-          assert.strictEqual(result.status, -1);
-          assert.strictEqual(result.error.name, 'NoSuchElementError');
-        });
+        .frame('no-frame', function callback(result) {});
     });
 
-    this.client.start(done);
+    this.client.start(function(err) {
+      if(err){
+        assert.strictEqual(err.name, 'NoSuchElementError');
+        assert.strictEqual(err.abortOnFailure, true);
+        assert.ok(true)
+        done()
+      }
+      else{
+        assert.ok(false)
+      }
+    });
+  });
+
+  it('client.frame() without function - frame not found', function(done) {
+
+    this.client.api.frame('no-frame')
+
+    this.client.start(function(err) {
+      if(err){
+        assert.strictEqual(err.name, 'NoSuchElementError');
+        assert.strictEqual(err.abortOnFailure, true);
+        assert.ok(true)
+        done()
+      }
+      else{
+        assert.ok(false)
+      }
+    });
+  });
+
+  it('client.frame() without function - frame found', function(done) {
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/element',
+      method: 'POST',
+      postdata: {
+        using: 'css selector',
+        value: '#frameid, *[name="frameid"]'
+      },
+      response: {
+        value: {
+          'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
+        }
+      }
+    });
+
+    this.client.api.frame('frameid')
+
+    this.client.start(function(err) {
+      if(err){
+        assert.ok(false)
+      }
+      else{
+        assert.ok(true)
+        done()
+      }
+    });
   });
 });
