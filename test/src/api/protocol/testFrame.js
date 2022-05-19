@@ -17,22 +17,29 @@ describe('client.frame', function() {
     });
   });
 
-  it('testFramePost', function () {
-    return Globals.protocolTest({
+  it('testFramePost', async function () {
+    let assertionCalls = 0;
+    let commandArgs = {};
+
+    await Globals.protocolTest({
       assertion: function(opts) {
-        if(opts.locator instanceof By){
-          assert.strictEqual(opts.locator.value, '#testFrame, *[name="testFrame"]');
-        }
+        assertionCalls += 1;
+        commandArgs[opts.command] = opts;
       },
       commandName: 'frame',
       args: ['testFrame']
     });
+
+    assert.strictEqual(assertionCalls, 2);
+    assert.ok(commandArgs['findElement'].locator instanceof By);
+    assert.strictEqual(commandArgs['findElement'].locator.value, '#testFrame, *[name="testFrame"]');
+    assert.strictEqual(commandArgs['frame'].command, 'frame');
   });
 
   it('testFramePostWithZeroIndex', function () {
     return Globals.protocolTest({
-      assertion: function(frameId) {
-        assert.strictEqual(frameId, 0);
+      assertion: function(opts) {
+        assert.strictEqual(opts.frameId, 0);
       },
       commandName: 'frame',
       args: [0]
@@ -41,8 +48,8 @@ describe('client.frame', function() {
 
   it('testFramePostWithNull', function () {
     return Globals.protocolTest({
-      assertion: function(frameId) {
-        assert.strictEqual(frameId, null);
+      assertion: function(opts) {
+        assert.strictEqual(opts.frameId, null);
       },
       commandName: 'frame',
       args: [null]
@@ -51,8 +58,8 @@ describe('client.frame', function() {
 
   it('testFramePostWithUndefined', function () {
     return Globals.protocolTest({
-      assertion: function(frameId) {
-        assert.strictEqual(frameId, null);
+      assertion: function(opts) {
+        assert.strictEqual(opts.frameId, null);
       },
       commandName: 'frame',
       args: []

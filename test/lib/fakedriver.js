@@ -460,7 +460,7 @@ module.exports = {
             };
           },
           frame(frameId) {
-            assertion(frameId);
+            assertion({command: 'frame', frameId: frameId});
 
             return null;
           },

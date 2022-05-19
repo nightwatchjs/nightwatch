@@ -100,11 +100,10 @@ describe('updateValue', function() {
       if(err){
         assert.strictEqual(err.name, 'NoSuchElementError');
         assert.strictEqual(err.abortOnFailure, true);
-        assert.ok(true)
-        done()
-      }
-      else{
-        assert.ok(false)
+        assert.ok(true);
+        done();
+      } else {
+        assert.ok(false);
       }
     });
   });
@@ -117,11 +116,10 @@ describe('updateValue', function() {
       if(err){
         assert.strictEqual(err.name, 'NoSuchElementError');
         assert.strictEqual(err.abortOnFailure, true);
-        assert.ok(true)
-        done()
-      }
-      else{
-        assert.ok(false)
+        assert.ok(true);
+        done();
+      } else {
+        assert.ok(false);
       }
     });
   });
@@ -145,11 +143,10 @@ describe('updateValue', function() {
 
     this.client.start(function(err) {
       if(err){
-        assert.ok(false)
-      }
-      else{
-        assert.ok(true)
-        done()
+        assert.ok(false);
+      } else {
+        assert.ok(true);
+        done();
       }
     });
   });
