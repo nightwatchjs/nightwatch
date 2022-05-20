@@ -171,7 +171,8 @@ describe('Test CLI Runner Generate', function() {
           desiredCapabilities: {
             'sauce:options': {
               username: '${SAUCE_USERNAME}',
-              accessKey: '${SAUCE_ACCESS_KEY}'
+              accessKey: '${SAUCE_ACCESS_KEY}',
+              screenResolution: '1280x1024'
               // https://docs.saucelabs.com/dev/cli/sauce-connect-proxy/#--region
               // region: 'us-west-1'
               // https://docs.saucelabs.com/dev/test-configuration-options/#tunnelidentifier
@@ -195,7 +196,6 @@ describe('Test CLI Runner Generate', function() {
           extends: 'saucelabs',
           desiredCapabilities: {
             browserName: 'chrome',
-            screenResolution: '1280x1024',
             browserVersion: 'latest',
             javascriptEnabled: true,
             acceptSslCerts: true,
@@ -210,7 +210,6 @@ describe('Test CLI Runner Generate', function() {
           extends: 'saucelabs',
           desiredCapabilities: {
             browserName: 'firefox',
-            screenResolution: '1280x1024',
             browserVersion: 'latest',
             javascriptEnabled: true,
             acceptSslCerts: true,
