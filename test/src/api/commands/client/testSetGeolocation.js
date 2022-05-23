@@ -36,27 +36,23 @@ describe('.setGeolocation()', function () {
         'goog:chromeOptions': {}
       }
     }).then(client => {
-
-      let expectedCDPCommand;
-      let expectedLatitude;
-      let expectedLongitude;
-      let expectedAccuracy;
+      const expected = {};
 
       client.transport.driver.createCDPConnection = function() {
         return Promise.resolve({
           execute: function(command, coordinates) {
-            expectedCDPCommand = command;
-            expectedLatitude = coordinates.latitude;
-            expectedLongitude = coordinates.longitude;
-            expectedAccuracy = coordinates.accuracy;
+            expected['cdpCommand'] = command;
+            expected['latitude'] = coordinates.latitude;
+            expected['longitude'] = coordinates.longitude;
+            expected['accuracy'] = coordinates.accuracy;
           }
         });
       };
       client.api.setGeolocation({latitude: 35.689487, longitude: 139.691706, accuracy: 55}, function (){
-        assert.strictEqual(expectedCDPCommand, 'Emulation.setGeolocationOverride');
-        assert.strictEqual(expectedLatitude, 35.689487);
-        assert.strictEqual(expectedLongitude, 139.691706);
-        assert.strictEqual(expectedAccuracy, 55);
+        assert.strictEqual(expected.cdpCommand, 'Emulation.setGeolocationOverride');
+        assert.strictEqual(expected.latitude, 35.689487);
+        assert.strictEqual(expected.longitude, 139.691706);
+        assert.strictEqual(expected.accuracy, 55);
       });
       client.start(done);
     });
@@ -86,27 +82,23 @@ describe('.setGeolocation()', function () {
         'goog:chromeOptions': {}
       }
     }).then(client => {
-
-      let expectedCDPCommand;
-      let expectedLatitude;
-      let expectedLongitude;
-      let expectedAccuracy;
+      const expected = {};
 
       client.transport.driver.createCDPConnection = function() {
         return Promise.resolve({
           execute: function(command, coordinates) {
-            expectedCDPCommand = command;
-            expectedLatitude = coordinates.latitude;
-            expectedLongitude = coordinates.longitude;
-            expectedAccuracy = coordinates.accuracy;
+            expected['cdpCommand'] = command;
+            expected['latitude'] = coordinates.latitude;
+            expected['longitude'] = coordinates.longitude;
+            expected['accuracy'] = coordinates.accuracy;
           }
         });
       };
       client.api.setGeolocation({latitude: 35.689487, longitude: 139.691706}, function (){
-        assert.strictEqual(expectedCDPCommand, 'Emulation.setGeolocationOverride');
-        assert.strictEqual(expectedLatitude, 35.689487);
-        assert.strictEqual(expectedLongitude, 139.691706);
-        assert.strictEqual(expectedAccuracy, 100);
+        assert.strictEqual(expected.cdpCommand, 'Emulation.setGeolocationOverride');
+        assert.strictEqual(expected.latitude, 35.689487);
+        assert.strictEqual(expected.longitude, 139.691706);
+        assert.strictEqual(expected.accuracy, 100);
       });
       client.start(done);
     });
@@ -168,27 +160,25 @@ describe('.setGeolocation()', function () {
         'goog:chromeOptions': {}
       }
     }).then(client => {
-
-      let expectedCDPCommand;
-      let expectedCoordinates;
+      const expected = {};
 
       client.transport.driver.createCDPConnection = function() {
         return Promise.resolve({
           execute: function(command, coordinates) {
-            expectedCDPCommand = command;
-            expectedCoordinates = coordinates;
+            expected['cdpCommand'] = command;
+            expected['coordinates'] = coordinates;
           }
         });
       };
 
       client.api.setGeolocation({}, function (){
-        assert.strictEqual(expectedCDPCommand, 'Emulation.clearGeolocationOverride');
-        assert.deepEqual(expectedCoordinates, {});
+        assert.strictEqual(expected.cdpCommand, 'Emulation.clearGeolocationOverride');
+        assert.deepEqual(expected.coordinates, {});
       });
 
       client.api.setGeolocation({accuracy: 50}, function (){
-        assert.strictEqual(expectedCDPCommand, 'Emulation.clearGeolocationOverride');
-        assert.deepEqual(expectedCoordinates, {});
+        assert.strictEqual(expected.cdpCommand, 'Emulation.clearGeolocationOverride');
+        assert.deepEqual(expected.coordinates, {});
       });
 
       // Checks if setGeolocation works (doesn't throw error) with not argument at all.
