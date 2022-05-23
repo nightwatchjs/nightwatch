@@ -36,30 +36,25 @@ describe('.setDeviceDimensions()', function () {
         'goog:chromeOptions': {}
       }
     }).then(client => {
-
-      let expectedCDPCommand;
-      let expectedWidth;
-      let expectedHeight;
-      let expectedDeviceScaleFactor;
-      let expectedMobile;
+      const expected = {};
 
       client.transport.driver.createCDPConnection = function() {
         return Promise.resolve({
           execute: function(command, metrics) {
-            expectedCDPCommand = command;
-            expectedWidth = metrics.width;
-            expectedHeight = metrics.height;
-            expectedDeviceScaleFactor = metrics.deviceScaleFactor;
-            expectedMobile = metrics.mobile;
+            expected['cdpCommand'] = command;
+            expected['width'] = metrics.width;
+            expected['height'] = metrics.height;
+            expected['deviceScaleFactor'] = metrics.deviceScaleFactor;
+            expected['mobile'] = metrics.mobile;
           }
         });
       };
       client.api.setDeviceDimensions({width: 400, height: 600, deviceScaleFactor: 50, mobile: true}, function (){
-        assert.strictEqual(expectedCDPCommand, 'Emulation.setDeviceMetricsOverride');
-        assert.strictEqual(expectedWidth, 400);
-        assert.strictEqual(expectedHeight, 600);
-        assert.strictEqual(expectedDeviceScaleFactor, 50);
-        assert.strictEqual(expectedMobile, true);
+        assert.strictEqual(expected.cdpCommand, 'Emulation.setDeviceMetricsOverride');
+        assert.strictEqual(expected.width, 400);
+        assert.strictEqual(expected.height, 600);
+        assert.strictEqual(expected.deviceScaleFactor, 50);
+        assert.strictEqual(expected.mobile, true);
       });
       client.start(done);
     });
@@ -89,30 +84,25 @@ describe('.setDeviceDimensions()', function () {
         'goog:chromeOptions': {}
       }
     }).then(client => {
-
-      let expectedCDPCommand;
-      let expectedWidth;
-      let expectedHeight;
-      let expectedDeviceScaleFactor;
-      let expectedMobile;
+      const expected = {};
 
       client.transport.driver.createCDPConnection = function() {
         return Promise.resolve({
           execute: function(command, metrics) {
-            expectedCDPCommand = command;
-            expectedWidth = metrics.width;
-            expectedHeight = metrics.height;
-            expectedDeviceScaleFactor = metrics.deviceScaleFactor;
-            expectedMobile = metrics.mobile;
+            expected['cdpCommand'] = command;
+            expected['width'] = metrics.width;
+            expected['height'] = metrics.height;
+            expected['deviceScaleFactor'] = metrics.deviceScaleFactor;
+            expected['mobile'] = metrics.mobile;
           }
         });
       };
       client.api.setDeviceDimensions({width: 400, deviceScaleFactor: 100}, function (){
-        assert.strictEqual(expectedCDPCommand, 'Emulation.setDeviceMetricsOverride');
-        assert.strictEqual(expectedWidth, 400);
-        assert.strictEqual(expectedHeight, 0);
-        assert.strictEqual(expectedDeviceScaleFactor, 100);
-        assert.strictEqual(expectedMobile, false);
+        assert.strictEqual(expected.cdpCommand, 'Emulation.setDeviceMetricsOverride');
+        assert.strictEqual(expected.width, 400);
+        assert.strictEqual(expected.height, 0);
+        assert.strictEqual(expected.deviceScaleFactor, 100);
+        assert.strictEqual(expected.mobile, false);
       });
       client.start(done);
     });
@@ -142,22 +132,20 @@ describe('.setDeviceDimensions()', function () {
         'goog:chromeOptions': {}
       }
     }).then(client => {
-
-      let expectedCDPCommand;
-      let expectedMetrics;
+      const expected = {};
 
       client.transport.driver.createCDPConnection = function() {
         return Promise.resolve({
           execute: function(command, metrics) {
-            expectedCDPCommand = command;
-            expectedMetrics = metrics;
+            expected['cdpCommand'] = command;
+            expected['metrics'] = metrics;
           }
         });
       };
 
       client.api.setDeviceDimensions({}, function () {
-        assert.strictEqual(expectedCDPCommand, 'Emulation.setDeviceMetricsOverride');
-        assert.deepEqual(expectedMetrics, {deviceScaleFactor: 0, height: 0, mobile: false, width: 0});
+        assert.strictEqual(expected.cdpCommand, 'Emulation.setDeviceMetricsOverride');
+        assert.deepEqual(expected.metrics, {deviceScaleFactor: 0, height: 0, mobile: false, width: 0});
       });
 
       // Checks if setDeviceDimensions work (doesn't throw error) with not argument at all.
