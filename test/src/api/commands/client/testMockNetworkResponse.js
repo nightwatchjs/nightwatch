@@ -35,13 +35,9 @@ describe('.mockNetworkResponse()', function () {
         'goog:chromeOptions': {}
       }
     }).then(client => {
-
-      let expectedResponseCode;
-      let expectedResponseHeaders;
-      let expectedResponseBody;
-      let expectedRequestId;
-      let expectedWsEvent;
-      const expectedCdpCommands = [];
+      const expected = {
+        cdpCommands: []
+      };
 
       // Parameters of actual request made by browser
       const cdpFetchRequestPauseEvent = JSON.stringify({
@@ -58,17 +54,17 @@ describe('.mockNetworkResponse()', function () {
         return Promise.resolve({
           _wsConnection: {
             on: (event, callback) => {
-              expectedWsEvent = event;
+              expected['wsEvent'] = event;
               callback(cdpFetchRequestPauseEvent);
             }
           },
           execute: function(command, params) {
-            expectedCdpCommands.push(command);
+            expected.cdpCommands.push(command);
             if (command === 'Fetch.fulfillRequest') {
-              expectedRequestId = params.requestId;
-              expectedResponseCode = params.responseCode;
-              expectedResponseHeaders = params.responseHeaders;
-              expectedResponseBody = params.body;
+              expected['requestId'] = params.requestId;
+              expected['responseCode'] = params.responseCode;
+              expected['responseHeaders'] = params.responseHeaders;
+              expected['responseBody'] = params.body;
             }
           }
         });
@@ -81,13 +77,13 @@ describe('.mockNetworkResponse()', function () {
       };
       client.api.mockNetworkResponse('https://www.google.com/', response, function () {
         // Assert final response with response passed
-        assert.strictEqual(expectedResponseCode, response.status);
-        assert.deepEqual(expectedResponseHeaders, [{name: 'Content-Type', value: 'UTF-8'}]);
-        assert.strictEqual(expectedResponseBody, Buffer.from(response.body, 'utf-8').toString('base64'));
+        assert.strictEqual(expected.responseCode, response.status);
+        assert.deepEqual(expected.responseHeaders, [{name: 'Content-Type', value: 'UTF-8'}]);
+        assert.strictEqual(expected.responseBody, Buffer.from(response.body, 'utf-8').toString('base64'));
 
-        assert.strictEqual(expectedRequestId, JSON.parse(cdpFetchRequestPauseEvent).params.requestId);
-        assert.strictEqual(expectedWsEvent, 'message');
-        assert.deepEqual(expectedCdpCommands, ['Fetch.fulfillRequest', 'Fetch.enable', 'Network.setCacheDisabled']);
+        assert.strictEqual(expected.requestId, JSON.parse(cdpFetchRequestPauseEvent).params.requestId);
+        assert.strictEqual(expected.wsEvent, 'message');
+        assert.deepEqual(expected.cdpCommands, ['Fetch.fulfillRequest', 'Fetch.enable', 'Network.setCacheDisabled']);
       });
   
       client.start(done);
@@ -117,10 +113,9 @@ describe('.mockNetworkResponse()', function () {
         'goog:chromeOptions': {}
       }
     }).then(client => {
-
-      let expectedRequestId;
-      let expectedWsEvent;
-      const expectedCdpCommands = [];
+      const expected = {
+        cdpCommands: []
+      };
 
       // Parameters of actual request made by browser
       const cdpFetchRequestPauseEvent = JSON.stringify({
@@ -137,14 +132,14 @@ describe('.mockNetworkResponse()', function () {
         return Promise.resolve({
           _wsConnection: {
             on: (event, callback) => {
-              expectedWsEvent = event;
+              expected['wsEvent'] = event;
               callback(cdpFetchRequestPauseEvent);
             }
           },
           execute: function(command, params) {
-            expectedCdpCommands.push(command);
+            expected.cdpCommands.push(command);
             if (command === 'Fetch.continueRequest') {
-              expectedRequestId = params.requestId;
+              expected['requestId'] = params.requestId;
             }
           }
         });
@@ -157,9 +152,9 @@ describe('.mockNetworkResponse()', function () {
       };
       client.api.mockNetworkResponse('https://www.yahoo.com/', response, function () {
         // Request will not be intercepted, Fetch.continueRequest is called instead of Fetch.fulfillRequest
-        assert.strictEqual(expectedRequestId, JSON.parse(cdpFetchRequestPauseEvent).params.requestId);
-        assert.strictEqual(expectedWsEvent, 'message');
-        assert.deepEqual(expectedCdpCommands, ['Fetch.continueRequest', 'Fetch.enable', 'Network.setCacheDisabled']);
+        assert.strictEqual(expected.requestId, JSON.parse(cdpFetchRequestPauseEvent).params.requestId);
+        assert.strictEqual(expected.wsEvent, 'message');
+        assert.deepEqual(expected.cdpCommands, ['Fetch.continueRequest', 'Fetch.enable', 'Network.setCacheDisabled']);
       });
   
       client.start(done);
@@ -189,13 +184,9 @@ describe('.mockNetworkResponse()', function () {
         'goog:chromeOptions': {}
       }
     }).then(client => {
-
-      let expectedResponseCode;
-      let expectedResponseHeaders;
-      let expectedResponseBody;
-      let expectedRequestId;
-      let expectedWsEvent;
-      const expectedCdpCommands = [];
+      const expected = {
+        cdpCommands: []
+      };
 
       // Parameters of actual request made by browser
       const cdpFetchRequestPauseEvent = JSON.stringify({
@@ -212,17 +203,17 @@ describe('.mockNetworkResponse()', function () {
         return Promise.resolve({
           _wsConnection: {
             on: (event, callback) => {
-              expectedWsEvent = event;
+              expected['wsEvent'] = event;
               callback(cdpFetchRequestPauseEvent);
             }
           },
           execute: function(command, params) {
-            expectedCdpCommands.push(command);
+            expected.cdpCommands.push(command);
             if (command === 'Fetch.fulfillRequest') {
-              expectedRequestId = params.requestId;
-              expectedResponseCode = params.responseCode;
-              expectedResponseHeaders = params.responseHeaders;
-              expectedResponseBody = params.body;
+              expected['requestId'] = params.requestId;
+              expected['responseCode'] = params.responseCode;
+              expected['responseHeaders'] = params.responseHeaders;
+              expected['responseBody'] = params.body;
             }
           }
         });
@@ -231,13 +222,13 @@ describe('.mockNetworkResponse()', function () {
       const response = {};
       client.api.mockNetworkResponse('https://www.google.com/', response, function () {
         // Assert final response with response passed
-        assert.strictEqual(expectedResponseCode, 200);
-        assert.deepEqual(expectedResponseHeaders, []);
-        assert.strictEqual(expectedResponseBody, '');
+        assert.strictEqual(expected.responseCode, 200);
+        assert.deepEqual(expected.responseHeaders, []);
+        assert.strictEqual(expected.responseBody, '');
 
-        assert.strictEqual(expectedRequestId, JSON.parse(cdpFetchRequestPauseEvent).params.requestId);
-        assert.strictEqual(expectedWsEvent, 'message');
-        assert.deepEqual(expectedCdpCommands, ['Fetch.fulfillRequest', 'Fetch.enable', 'Network.setCacheDisabled']);
+        assert.strictEqual(expected.requestId, JSON.parse(cdpFetchRequestPauseEvent).params.requestId);
+        assert.strictEqual(expected.wsEvent, 'message');
+        assert.deepEqual(expected.cdpCommands, ['Fetch.fulfillRequest', 'Fetch.enable', 'Network.setCacheDisabled']);
       });
   
       client.start(done);
@@ -267,13 +258,9 @@ describe('.mockNetworkResponse()', function () {
         'goog:chromeOptions': {}
       }
     }).then(client => {
-
-      let expectedResponseCode;
-      let expectedResponseHeaders;
-      let expectedResponseBody;
-      let expectedRequestId;
-      let expectedWsEvent;
-      const expectedCdpCommands = [];
+      const expected = {
+        cdpCommands: []
+      };
 
       // Parameters of actual request made by browser
       const cdpFetchRequestPauseEvent = JSON.stringify({
@@ -290,17 +277,17 @@ describe('.mockNetworkResponse()', function () {
         return Promise.resolve({
           _wsConnection: {
             on: (event, callback) => {
-              expectedWsEvent = event;
+              expected['wsEvent'] = event;
               callback(cdpFetchRequestPauseEvent);
             }
           },
           execute: function(command, params) {
-            expectedCdpCommands.push(command);
+            expected.cdpCommands.push(command);
             if (command === 'Fetch.fulfillRequest') {
-              expectedRequestId = params.requestId;
-              expectedResponseCode = params.responseCode;
-              expectedResponseHeaders = params.responseHeaders;
-              expectedResponseBody = params.body;
+              expected['requestId'] = params.requestId;
+              expected['responseCode'] = params.responseCode;
+              expected['responseHeaders'] = params.responseHeaders;
+              expected['responseBody'] = params.body;
             }
           }
         });
@@ -308,13 +295,13 @@ describe('.mockNetworkResponse()', function () {
 
       client.api.mockNetworkResponse(undefined, undefined, function() {
         // Assert final response with response passed
-        assert.strictEqual(expectedResponseCode, 200);
-        assert.deepEqual(expectedResponseHeaders, []);
-        assert.strictEqual(expectedResponseBody, '');
+        assert.strictEqual(expected.responseCode, 200);
+        assert.deepEqual(expected.responseHeaders, []);
+        assert.strictEqual(expected.responseBody, '');
 
-        assert.strictEqual(expectedRequestId, JSON.parse(cdpFetchRequestPauseEvent).params.requestId);
-        assert.strictEqual(expectedWsEvent, 'message');
-        assert.deepEqual(expectedCdpCommands, ['Fetch.fulfillRequest', 'Fetch.enable', 'Network.setCacheDisabled']);
+        assert.strictEqual(expected.requestId, JSON.parse(cdpFetchRequestPauseEvent).params.requestId);
+        assert.strictEqual(expected.wsEvent, 'message');
+        assert.deepEqual(expected.cdpCommands, ['Fetch.fulfillRequest', 'Fetch.enable', 'Network.setCacheDisabled']);
       });
 
       client.start(done);
