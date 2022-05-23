@@ -35,11 +35,7 @@ describe('.captureNetworkCalls()', function () {
         'goog:chromeOptions': {}
       }
     }).then(client => {
-
-      let expectedCdpCommand;
-      let expectedCdpParams;
-      let expectedWsEvent;
-      let expectedRequestParams;
+      const expected = {};
 
       const cdpNetworkEvent = JSON.stringify({
         method: 'Network.requestWillBeSent',
@@ -56,25 +52,25 @@ describe('.captureNetworkCalls()', function () {
         return Promise.resolve({
           _wsConnection: {
             on: (event, callback) => {
-              expectedWsEvent = event;
+              expected['wsEvent'] = event;
               callback(cdpNetworkEvent);
             }
           },
           execute: function(command, params) {
-            expectedCdpCommand = command;
-            expectedCdpParams = params;
+            expected['cdpCommand'] = command;
+            expected['cdpParams'] = params;
           }
         });
       };
 
       const userCallback = (requestParams) => {
-        expectedRequestParams = requestParams;
+        expected['requestParams'] = requestParams;
       };
       client.api.captureNetworkCalls(userCallback, function () {
-        assert.deepEqual(expectedCdpCommand, 'Network.enable');
-        assert.deepEqual(expectedCdpParams, {});
-        assert.strictEqual(expectedWsEvent, 'message');
-        assert.deepEqual(expectedRequestParams, JSON.parse(cdpNetworkEvent).params);
+        assert.deepEqual(expected.cdpCommand, 'Network.enable');
+        assert.deepEqual(expected.cdpParams, {});
+        assert.strictEqual(expected.wsEvent, 'message');
+        assert.deepEqual(expected.requestParams, JSON.parse(cdpNetworkEvent).params);
       });
       client.start(done);
     });
