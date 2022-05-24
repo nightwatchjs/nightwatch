@@ -12,8 +12,7 @@ describe('.setDeviceDimensions()', function () {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  // Should set device dimensions when all four properties are provided.
-  it('browser.setDeviceDimensions({width, height, deviceScaleFactor, mobile})', function (done) {
+  it('should set device dimensions when all four properties are provided', function (done) {
 
     MockServer.addMock({
       url: '/session',
@@ -60,8 +59,7 @@ describe('.setDeviceDimensions()', function () {
     });
   });
 
-  // Should set device dimensions when just two properties are provided.
-  it('browser.setDeviceDimensions({width, height})', function (done) {
+  it('should set device dimensions when just any two properties are provided', function (done) {
 
     MockServer.addMock({
       url: '/session',
@@ -108,8 +106,7 @@ describe('.setDeviceDimensions()', function () {
     });
   });
 
-  // Should clear the device dimensions override when no property is provided.
-  it('browser.setDeviceDimensions()', function (done) {
+  it('should clear the device dimensions override when no property is provided', function (done) {
 
     MockServer.addMock({
       url: '/session',
