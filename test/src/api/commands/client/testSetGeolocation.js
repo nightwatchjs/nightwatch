@@ -12,8 +12,7 @@ describe('.setGeolocation()', function () {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  // Should mock geolocation when all three parameters are provided.
-  it('browser.setGeolocation({latitude, longitude, accuracy})', function (done) {
+  it('should mock geolocation when all three parameters are provided.', function (done) {
 
     MockServer.addMock({
       url: '/session',
@@ -58,8 +57,7 @@ describe('.setGeolocation()', function () {
     });
   });
 
-  // Should mock geolocation when just latitude and longitude is provided (accuracy default to 100)
-  it('browser.setGeolocation({latitude, longitude})', function (done) {
+  it('should mock geolocation when just latitude and longitude is provided (accuracy default to 100)', function (done) {
 
     MockServer.addMock({
       url: '/session',
@@ -104,8 +102,7 @@ describe('.setGeolocation()', function () {
     });
   });
 
-  // Should throw an error when just either of latitude and longitude are provided.
-  it('browser.setGeolocation({longitude})', function (done) {
+  it('should throw an error when just either of latitude and longitude are provided', function (done) {
 
     MockServer.addMock({
       url: '/session',
@@ -136,8 +133,7 @@ describe('.setGeolocation()', function () {
     });
   });
 
-  // Should clear the geolocation override
-  it('browser.setGeolocation()', function (done) {
+  it('should clear the geolocation override', function (done) {
 
     MockServer.addMock({
       url: '/session',
