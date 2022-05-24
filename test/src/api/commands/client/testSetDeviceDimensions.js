@@ -2,6 +2,7 @@ const assert = require('assert');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 const MockServer = require('../../../../lib/mockserver.js');
 const Nightwatch = require('../../../../lib/nightwatch.js');
+const CdpConnection = require('../../../../../lib/transport/selenium-webdriver/cdpConnection');
 
 describe('.setDeviceDimensions()', function () {
   beforeEach(function (done) {
@@ -37,6 +38,7 @@ describe('.setDeviceDimensions()', function () {
     }).then(client => {
       const expected = {};
 
+      CdpConnection.resetConnection();
       client.transport.driver.createCDPConnection = function() {
         return Promise.resolve({
           execute: function(command, metrics) {
@@ -84,6 +86,7 @@ describe('.setDeviceDimensions()', function () {
     }).then(client => {
       const expected = {};
 
+      CdpConnection.resetConnection();
       client.transport.driver.createCDPConnection = function() {
         return Promise.resolve({
           execute: function(command, metrics) {
@@ -131,6 +134,7 @@ describe('.setDeviceDimensions()', function () {
     }).then(client => {
       const expected = {};
 
+      CdpConnection.resetConnection();
       client.transport.driver.createCDPConnection = function() {
         return Promise.resolve({
           execute: function(command, metrics) {
