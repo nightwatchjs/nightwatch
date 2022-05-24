@@ -37,22 +37,22 @@ describe('.catchJsExceptions()', function () {
       }
     }).then(client => {
 
-      let expectedPageCdpConnection;
+      let expectedCdpConnection;
       let expectedUserCallback;
 
       CdpConnection.resetConnection();
       client.transport.driver.createCDPConnection = function() {
         return Promise.resolve();
       };
-      client.transport.driver.onLogException = (pageCdpConnection, userCallback) => {
-        expectedPageCdpConnection = pageCdpConnection;
+      client.transport.driver.onLogException = (cdpConnection, userCallback) => {
+        expectedCdpConnection = cdpConnection;
         expectedUserCallback = userCallback;
       };
 
       //eslint-disable-next-line
       const userCallback = (event) => {console.log(event)};
       client.api.catchJsExceptions(userCallback, function () {
-        assert.strictEqual(expectedPageCdpConnection, undefined);  // pageCdpConnection is mocked
+        assert.strictEqual(expectedCdpConnection, undefined);  // cdpConnection is mocked
         assert.strictEqual(expectedUserCallback, userCallback);
       });
 
@@ -84,20 +84,20 @@ describe('.catchJsExceptions()', function () {
       }
     }).then(client => {
 
-      let expectedPageCdpConnection;
+      let expectedCdpConnection;
       let expectedUserCallback;
 
       CdpConnection.resetConnection();
       client.transport.driver.createCDPConnection = function() {
         return Promise.resolve();
       };
-      client.transport.driver.onLogException = (pageCdpConnection, userCallback) => {
-        expectedPageCdpConnection = pageCdpConnection;
+      client.transport.driver.onLogException = (cdpConnection, userCallback) => {
+        expectedCdpConnection = cdpConnection;
         expectedUserCallback = userCallback;
       };
 
       client.api.catchJsExceptions(undefined, function () {
-        assert.strictEqual(expectedPageCdpConnection, undefined);  // pageCdpConnection is mocked
+        assert.strictEqual(expectedCdpConnection, undefined);  // cdpConnection is mocked
         assert.notStrictEqual(expectedUserCallback, undefined);
       });
 
