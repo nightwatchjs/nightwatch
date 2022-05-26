@@ -30,34 +30,28 @@ Install with:
 npm i nightwatch
 ```
 
-## Up &amp; Running in 2 Minutes:
+## Get started in 60 seconds!
 
 #### 1. Install Nightwatch from NPM
 
 ```sh
-$ npm install nightwatch --save-dev
+# from your existing project's root dir
+$ npm init nightwatch
+
+# if you want to initialize a new project
+$ npm init nightwatch path/to/new/project
 ```
 
-#### 2. Install Browser Drivers:
+#### 2. Answer a few questions about your preferred setup:
 
-##### Geckodriver (Firefox):
-Geckodriver is the WebDriver service used to drive the [Mozilla Firefox Browser](https://www.mozilla.org/en-US/firefox/new/).
+Choose your preferred:
+- Language-test runner combination
+- Local/remote environment
+- List of browsers (press space to select multiple browsers)
+- Folder name
+- Base URL
 
-```sh
-$ npm install geckodriver --save-dev
-```
-
-##### Chromedriver:
-Chromedriver is the WebDriver service used to drive the [Google Chrome Browser](https://www.google.com/chrome/).
-```sh
-$ npm install chromedriver --save-dev
-```
-
-or install everything with one line:
-
-```sh
-$ npm install nightwatch geckodriver chromedriver --save-dev
-```
+Nightwatch will do the entire setup for you based on your answers.
 
 #### 3. Run a Demo Test:
 
