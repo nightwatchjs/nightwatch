@@ -19,8 +19,6 @@ Automated end-to-end testing framework powered by [Node.js](http://nodejs.org/) 
 
 Nightwatch is a complete and integrated solution for end-to-end testing of web applications and websites. It can also be used for Node.js unit and integration testing. 
 
-![Nightwatch CLI](https://user-images.githubusercontent.com/2018070/170656512-d1755371-3d40-4bd2-ba12-c8782030cb32.gif)
-
 ## Nightwatch v2.0
 
 ####  [What's New](https://nightwatchjs.org/guide/getting-started/whats-new-v2.html) | [Release Notes](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.0.0) | [Discussions](https://github.com/nightwatchjs/nightwatch/discussions)
@@ -32,34 +30,27 @@ Install with:
 npm i nightwatch
 ```
 
-## Up &amp; Running in 2 Minutes:
-
+## Get started in 60 seconds!
 #### 1. Install Nightwatch from NPM
 
 ```sh
-$ npm install nightwatch --save-dev
+# from your existing project's root dir
+$ npm init nightwatch
+
+# if you want to initialize a new project
+$ npm init nightwatch path/to/new/project
 ```
 
-#### 2. Install Browser Drivers:
+#### 2. Answer a few questions about your preferred setup:
 
-##### Geckodriver (Firefox):
-Geckodriver is the WebDriver service used to drive the [Mozilla Firefox Browser](https://www.mozilla.org/en-US/firefox/new/).
+Choose your preferred:
+- Language-test runner combination
+- Local/remote environment
+- List of browsers (press space to select multiple browsers)
+- Folder name
+- Base URL
 
-```sh
-$ npm install geckodriver --save-dev
-```
-
-##### Chromedriver:
-Chromedriver is the WebDriver service used to drive the [Google Chrome Browser](https://www.google.com/chrome/).
-```sh
-$ npm install chromedriver --save-dev
-```
-
-or install everything with one line:
-
-```sh
-$ npm install nightwatch geckodriver chromedriver --save-dev
-```
+Nightwatch will do the entire setup for you based on your answers.
 
 #### 3. Run a Demo Test:
 
