@@ -19,6 +19,8 @@ Automated end-to-end testing framework powered by [Node.js](http://nodejs.org/) 
 
 Nightwatch is a complete and integrated solution for end-to-end testing of web applications and websites. It can also be used for Node.js unit and integration testing. 
 
+![Nightwatch CLI](https://user-images.githubusercontent.com/2018070/170656512-d1755371-3d40-4bd2-ba12-c8782030cb32.gif)
+
 ## Nightwatch v2.0
 
 ####  [What's New](https://nightwatchjs.org/guide/getting-started/whats-new-v2.html) | [Release Notes](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.0.0) | [Discussions](https://github.com/nightwatchjs/nightwatch/discussions)
