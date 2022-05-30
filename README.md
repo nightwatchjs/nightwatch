@@ -30,7 +30,9 @@ Install with:
 npm i nightwatch
 ```
 
-## Get started in 60 seconds!
+## Get started in 60 seconds
+![nightwatch-cli-gif](https://user-images.githubusercontent.com/2018070/170960356-6f80d072-3bea-4f90-a86f-b6307e6dfc67.gif)
+
 #### 1. Install Nightwatch from NPM
 
 ```sh
@@ -43,12 +45,11 @@ $ npm init nightwatch path/to/new/project
 
 #### 2. Answer a few questions about your preferred setup:
 
-Choose your preferred:
-- Language-test runner combination
-- Local/remote environment
-- List of browsers (press space to select multiple browsers)
-- Folder name
-- Base URL
+- What is your Language - Test Runner setup? 
+- Where do you want to run your e2e tests? 
+- Where you'll be testing on? 
+- Where do you plan to keep your end-to-end tests? 
+- What is the base_url of your project? 
 
 Nightwatch will do the entire setup for you based on your answers.
 
