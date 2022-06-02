@@ -60,6 +60,38 @@ describe('.startCapturingLogs()', function () {
     });
   });
 
+  it('throws error without callback', function (done) {
+
+    MockServer.addMock({
+      url: '/session',
+      response: {
+        value: {
+          sessionId: '13521-10219-202',
+          capabilities: {
+            browserName: 'chrome',
+            browserVersion: '92.0'
+          }
+        }
+      },
+      method: 'POST',
+      statusCode: 201
+    }, true);
+
+    Nightwatch.initW3CClient({
+      desiredCapabilities: {
+        browserName: 'chrome',
+        'goog:chromeOptions': {}
+      }
+    }).then(client => {
+      client.api.startCapturingLogs(undefined, function (result){
+        assert.strictEqual(result.status, -1);
+        assert.strictEqual(result.error, 'Callback is missing from .startCapturingLogs command.');
+      });
+
+      client.start(done);
+    });
+  });
+
   it('browser.startCapturingLogs - driver not supported', function(done){
     Nightwatch.initW3CClient({
       desiredCapabilities: {

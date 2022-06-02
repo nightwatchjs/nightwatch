@@ -60,7 +60,7 @@ describe('.catchJsExceptions()', function () {
     });
   });
 
-  it('does not throw error without callback', function (done) {
+  it('throws error without callback', function (done) {
 
     MockServer.addMock({
       url: '/session',
@@ -83,22 +83,9 @@ describe('.catchJsExceptions()', function () {
         'goog:chromeOptions': {}
       }
     }).then(client => {
-
-      let expectedCdpConnection;
-      let expectedUserCallback;
-
-      cdp.resetConnection();
-      client.transport.driver.createCDPConnection = function() {
-        return Promise.resolve();
-      };
-      client.transport.driver.onLogException = (cdpConnection, userCallback) => {
-        expectedCdpConnection = cdpConnection;
-        expectedUserCallback = userCallback;
-      };
-
-      client.api.catchJsExceptions(undefined, function () {
-        assert.strictEqual(expectedCdpConnection, undefined);  // cdpConnection is mocked
-        assert.notStrictEqual(expectedUserCallback, undefined);
+      client.api.catchJsExceptions(undefined, function (result){
+        assert.strictEqual(result.status, -1);
+        assert.strictEqual(result.error, 'Callback is missing from .catchJsExceptions command.');
       });
 
       client.start(done);
