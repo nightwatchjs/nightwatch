@@ -5,7 +5,11 @@ const Nightwatch = require('../../../../lib/nightwatch.js');
 
 describe('.registerBasicAuth()', function () {
   beforeEach(function (done) {
-    CommandGlobals.beforeEach.call(this, done);
+    this.server = MockServer.init();
+
+    this.server.on('listening', () => {
+      done();
+    });
   });
 
   afterEach(function (done) {
@@ -33,7 +37,9 @@ describe('.registerBasicAuth()', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         'goog:chromeOptions': {}
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client=>{
 
       let expectedUsername;
@@ -58,7 +64,9 @@ describe('.registerBasicAuth()', function () {
     Nightwatch.initW3CClient({
       desiredCapabilities: {
         browserName: 'firefox'
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       client.api.registerBasicAuth('admin', 'admin', function(result){
         assert.strictEqual(result.status, -1);

@@ -5,7 +5,11 @@ const Nightwatch = require('../../../../lib/nightwatch.js');
 
 describe('.setNetworkConditions()', function () {
   beforeEach(function (done) {
-    CommandGlobals.beforeEach.call(this, done);
+    this.server = MockServer.init();
+
+    this.server.on('listening', () => {
+      done();
+    });
   });
 
   afterEach(function (done) {
@@ -35,7 +39,9 @@ describe('.setNetworkConditions()', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         'goog:chromeOptions': {}
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then((client) => {
       client.transport.driver.setNetworkConditions = function (spec) {
         assert.strictEqual('download_throughput', 460800);
@@ -63,7 +69,9 @@ describe('.setNetworkConditions()', function () {
     Nightwatch.initW3CClient({
       desiredCapabilities: {
         browserName: 'firefox'
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then((client) => {
       client.api.setNetworkConditions({
         offline: false,
