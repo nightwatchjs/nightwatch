@@ -43,14 +43,17 @@ describe('.setNetworkConditions()', function () {
       output: process.env.VERBOSE === '1',
       silent: false
     }).then((client) => {
+      const expected = {};
+
       client.transport.driver.setNetworkConditions = function (spec) {
-        assert.strictEqual('download_throughput', 460800);
-        assert.strictEqual('latency', 50000);
-        assert.strictEqual('offline', false);
-        assert.strictEqual('upload_throughput', 153600);
+        expected['download_throughput'] = spec.download_throughput;
+        expected['latency'] = spec.latency;
+        expected['offline'] = spec.offline;
+        expected['upload_throughput'] = spec.upload_throughput;
 
         return Promise.resolve();
       };
+
       client.api.setNetworkConditions({
         offline: false,
         latency: 50000,
@@ -59,8 +62,11 @@ describe('.setNetworkConditions()', function () {
       },
       function (result) {
         assert.deepStrictEqual(result.value, null);
-      }
-      );
+        assert.strictEqual(expected.download_throughput, 460800);
+        assert.strictEqual(expected.latency, 50000);
+        assert.strictEqual(expected.offline, false);
+        assert.strictEqual(expected.upload_throughput, 153600);
+      });
       client.start(done);
     });
   });
