@@ -6,7 +6,11 @@ const cdp = require('../../../../../lib/transport/selenium-webdriver/cdp');
 
 describe('.setDeviceDimensions()', function () {
   beforeEach(function (done) {
-    CommandGlobals.beforeEach.call(this, done);
+    this.server = MockServer.init();
+
+    this.server.on('listening', () => {
+      done();
+    });
   });
 
   afterEach(function (done) {
@@ -34,7 +38,9 @@ describe('.setDeviceDimensions()', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         'goog:chromeOptions': {}
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       const expected = {};
 
@@ -82,7 +88,9 @@ describe('.setDeviceDimensions()', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         'goog:chromeOptions': {}
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       const expected = {};
 
@@ -130,7 +138,9 @@ describe('.setDeviceDimensions()', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         'goog:chromeOptions': {}
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       const expected = {};
 
@@ -160,7 +170,9 @@ describe('.setDeviceDimensions()', function () {
     Nightwatch.initW3CClient({
       desiredCapabilities: {
         browserName: 'firefox'
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       client.api.setDeviceDimensions({width: 400, height: 600, deviceScaleFactor: 50}, function(result){
         assert.strictEqual(result.status, -1);

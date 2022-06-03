@@ -6,7 +6,11 @@ const cdp = require('../../../../../lib/transport/selenium-webdriver/cdp');
 
 describe('.setGeolocation()', function () {
   beforeEach(function (done) {
-    CommandGlobals.beforeEach.call(this, done);
+    this.server = MockServer.init();
+
+    this.server.on('listening', () => {
+      done();
+    });
   });
 
   afterEach(function (done) {
@@ -34,7 +38,9 @@ describe('.setGeolocation()', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         'goog:chromeOptions': {}
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       const expected = {};
 
@@ -80,7 +86,9 @@ describe('.setGeolocation()', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         'goog:chromeOptions': {}
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       const expected = {};
 
@@ -126,7 +134,9 @@ describe('.setGeolocation()', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         'goog:chromeOptions': {}
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       client.api.setGeolocation({longitude: 139.691706}, function (result){
         assert.strictEqual(result.status, -1);
@@ -157,7 +167,9 @@ describe('.setGeolocation()', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         'goog:chromeOptions': {}
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       const expected = {};
 
@@ -192,7 +204,9 @@ describe('.setGeolocation()', function () {
     Nightwatch.initW3CClient({
       desiredCapabilities: {
         browserName: 'firefox'
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       client.api.setGeolocation({latitude: 35.689487, longitude: 139.691706, accuracy: 55}, function(result){
         assert.strictEqual(result.status, -1);

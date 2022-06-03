@@ -5,7 +5,11 @@ const Nightwatch = require('../../../../lib/nightwatch.js');
 
 describe('.enablePerformanceMetrics()', function () {
   beforeEach(function (done) {
-    CommandGlobals.beforeEach.call(this, done);
+    this.server = MockServer.init();
+
+    this.server.on('listening', () => {
+      done();
+    });
   });
 
   afterEach(function (done) {
@@ -32,7 +36,9 @@ describe('.enablePerformanceMetrics()', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         'goog:chromeOptions': {}
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       const expectedCdpCommands = [];
 
@@ -66,7 +72,9 @@ describe('.enablePerformanceMetrics()', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         'goog:chromeOptions': {}
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       const expectedCdpCommands = [];
 
@@ -84,7 +92,9 @@ describe('.enablePerformanceMetrics()', function () {
     Nightwatch.initW3CClient({
       desiredCapabilities: {
         browserName: 'firefox'
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       client.api.enablePerformanceMetrics(true, function(result){
         assert.strictEqual(result.status, -1);

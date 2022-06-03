@@ -6,7 +6,11 @@ const cdp = require('../../../../../lib/transport/selenium-webdriver/cdp');
 
 describe('.catchJsExceptions()', function () {
   beforeEach(function (done) {
-    CommandGlobals.beforeEach.call(this, done);
+    this.server = MockServer.init();
+
+    this.server.on('listening', () => {
+      done();
+    });
   });
 
   afterEach(function (done) {
@@ -34,7 +38,9 @@ describe('.catchJsExceptions()', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         'goog:chromeOptions': {}
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
 
       let expectedCdpConnection;
@@ -81,7 +87,9 @@ describe('.catchJsExceptions()', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         'goog:chromeOptions': {}
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       client.api.catchJsExceptions(undefined, function (result){
         assert.strictEqual(result.status, -1);
@@ -96,7 +104,9 @@ describe('.catchJsExceptions()', function () {
     Nightwatch.initW3CClient({
       desiredCapabilities: {
         browserName: 'firefox'
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       //eslint-disable-next-line
       const userCallback = (event) => {console.log(event)};

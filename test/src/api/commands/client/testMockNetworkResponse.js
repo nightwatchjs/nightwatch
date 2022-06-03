@@ -6,7 +6,11 @@ const cdp = require('../../../../../lib/transport/selenium-webdriver/cdp');
 
 describe('.mockNetworkResponse()', function () {
   beforeEach(function (done) {
-    CommandGlobals.beforeEach.call(this, done);
+    this.server = MockServer.init();
+
+    this.server.on('listening', () => {
+      done();
+    });
   });
 
   afterEach(function (done) {
@@ -34,7 +38,9 @@ describe('.mockNetworkResponse()', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         'goog:chromeOptions': {}
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       const expected = {
         cdpCommands: []
@@ -113,7 +119,9 @@ describe('.mockNetworkResponse()', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         'goog:chromeOptions': {}
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       const expected = {
         cdpCommands: []
@@ -185,7 +193,9 @@ describe('.mockNetworkResponse()', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         'goog:chromeOptions': {}
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       const expected = {
         cdpCommands: []
@@ -260,7 +270,9 @@ describe('.mockNetworkResponse()', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         'goog:chromeOptions': {}
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       const expected = {
         cdpCommands: []
@@ -317,7 +329,9 @@ describe('.mockNetworkResponse()', function () {
     Nightwatch.initW3CClient({
       desiredCapabilities: {
         browserName: 'firefox'
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       const response = {
         status: 200,

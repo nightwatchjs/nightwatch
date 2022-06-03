@@ -6,7 +6,11 @@ const cdp = require('../../../../../lib/transport/selenium-webdriver/cdp');
 
 describe('.captureNetworkCalls()', function () {
   beforeEach(function (done) {
-    CommandGlobals.beforeEach.call(this, done);
+    this.server = MockServer.init();
+
+    this.server.on('listening', () => {
+      done();
+    });
   });
 
   afterEach(function (done) {
@@ -34,7 +38,9 @@ describe('.captureNetworkCalls()', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         'goog:chromeOptions': {}
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       const expected = {};
 
@@ -99,7 +105,9 @@ describe('.captureNetworkCalls()', function () {
       desiredCapabilities: {
         browserName: 'chrome',
         'goog:chromeOptions': {}
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       client.api.captureNetworkCalls(undefined, function (result){
         assert.strictEqual(result.status, -1);
@@ -114,7 +122,9 @@ describe('.captureNetworkCalls()', function () {
     Nightwatch.initW3CClient({
       desiredCapabilities: {
         browserName: 'firefox'
-      }
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
     }).then(client => {
       // eslint-disable-next-line
       const userCallback = (requestParams) => {console.log(requestParams)}
