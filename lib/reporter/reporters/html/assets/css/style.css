@@ -3,11 +3,9 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: Helvetica;
 }
 
 html, body {
-  font-family: "museo_sans300", "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: #f8f8f8;
   color: #333;
   height: 100%;
@@ -60,7 +58,6 @@ a:hover {
   display: flex;
   align-items: center;
   height: 80px;
-  font-family: "museo_sans300";
   font-size: 17px;
   text-transform: capitalize;
   color: #638A98;
@@ -90,7 +87,6 @@ a:hover {
   align-items: center;
   justify-content: flex-end;
   height: 70px;
-  font-family: "museo_sans300";
   font-size: 17px;
   color: #638A98;
   padding: 0 !important;
@@ -506,10 +502,6 @@ h1 {
   white-space: nowrap;
 }
 
-strong {
-  font-family: "museo_sans500";
-}
-
 .stat-success {
   color: #0EDC8A;
 }
@@ -589,7 +581,6 @@ strong {
 .statusbadge {
   text-align: center;
   font-size: 10px;
-  font-family: "museo_sans500";
   margin-left: auto;
   margin-right: auto;
   margin-top: 6px;
@@ -655,7 +646,7 @@ strong {
 }
 
 .session-head, .sessionbox-head {
-  font-size: 20px;
+  font-size: 26px;
 }
 
 .session-head .breadcrumb, .sessionbox-head .breadcrumb {
@@ -814,6 +805,10 @@ a.session-head:hover {
   max-height: 200px;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+.sessionbox .tab-pane.raw-http-log {
+  max-height: 800px;
 }
 
 .statbox:not(:last-child) {
@@ -1001,8 +996,8 @@ a.session-head:hover {
   margin: 0;
   padding: 0;
   margin-right: 30px;
-  font-family: "museo_sans300";
-  font-size: 16px;
+  font-size: 18px;
+  text-decoration: none;
   color: #333;
   background-image: url("../images/arrows.svg");
   background-size: 15px, 400px;
@@ -1094,8 +1089,8 @@ a.session-head:hover {
 }
 
 .stat-sessionfull {
-  color: #333;
-  font-size: 16px;
+  color: #555;
+  font-size: 15px;
   margin-bottom: 10px;
 }
 
@@ -1105,6 +1100,10 @@ a.session-head:hover {
   font-size: 15px;
   white-space: pre;
   margin-bottom: 10px;
+}
+.raw-http-log.code-sessionfull {
+  color: #eee;
+  background: #112933;
 }
 .code-sessionfull-failure {
   font-family: "Monaco", monospace;
@@ -1259,7 +1258,6 @@ a.session-head:hover {
   margin: 0;
   padding: 0;
   padding-left: 30px;
-  font-family: "museo_sans300";
   font-size: 16px;
   color: #333;
   background-image: url("../images/arrows.svg");

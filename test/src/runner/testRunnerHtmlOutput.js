@@ -6,7 +6,7 @@ const CommandGlobals = require('../../lib/globals/commands.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
 
-describe('testRunnerHTMLOutput', function() {
+xdescribe('testRunnerHTMLOutput', function() {
   const emptyPath = path.join(__dirname, '../../sampletests/empty/testdir');
 
   before(function(done) {
