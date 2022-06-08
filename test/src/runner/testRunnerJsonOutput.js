@@ -72,10 +72,13 @@ describe('testRunnerJsontOutput', function() {
         assert.strictEqual(data.report.tests, 1);
         assert.strictEqual(data.report.errmessages.length, 0);
         assert.strictEqual(Object.keys(data.report.completed)[0], 'simpleDemoTest');
-        assert.strictEqual(data.report.modulePath.endsWith('test/sampletests/withsubfolders/simple/sample.js'), true);
         assert.strictEqual(data.name, 'sample');
         assert.strictEqual(Array.isArray(data.httpOutput), true);
         assert.strictEqual(data.httpOutput[0].length, 3);
+
+        assert.strictEqual(data.report.modulePath.endsWith(path.join(
+          'test', 'sampletests', 'withsubfolders', 'simple', 'sample.js'
+        )), true);
       });
   });
 });
