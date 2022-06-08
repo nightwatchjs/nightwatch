@@ -62,7 +62,9 @@ body:
     id: "verbose-output"
     attributes:
       label: "Verbose Output"
-      description: "Extended nightwatch command logging during the session"
+      description: |
+        "Extended nightwatch command logging during the session. 
+        Please use `nightwatch --verbose` and paste the output here"
       placeholder: |
         ```sh
         [Sample Test] Test Suite
@@ -113,6 +115,8 @@ body:
           webdriver: {},
           test_settings: {}
         }
+    validations:
+      required: true
   - type: "markdown"
     attributes:
       value: |
@@ -152,6 +156,8 @@ body:
       label: "Browser"
       description: "The browser(s) this issue occurred with."
       placeholder: "Google Chrome 101"
+    validations:
+      required: true
   - type: "checkboxes"
     id: "operating-system"
     attributes:
