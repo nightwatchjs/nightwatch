@@ -6,15 +6,15 @@ const CommandGlobals = require('../../lib/globals/commands.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
 
-xdescribe('testRunnerHTMLOutput', function() {
-  const emptyPath = path.join(__dirname, '../../sampletests/empty/testdir');
+describe('testRunnerHTMLOutput', function() {
+  const outputPath = path.join(__dirname, '../../sampletests/test_output');
 
   before(function(done) {
     this.server = MockServer.init();
     this.server.on('listening', () => {
-      fs.mkdir(emptyPath, function(err) {
+      fs.mkdir(outputPath, function(err) {
         if (err) {
-          return done();
+          return done(err);
         }
         done();
       });
@@ -23,9 +23,9 @@ xdescribe('testRunnerHTMLOutput', function() {
 
   after(function(done) {
     CommandGlobals.afterEach.call(this, function() {
-      fs.rmdir(emptyPath, function(err) {
+      fs.rm(outputPath, {recursive: true}, function(err) {
         if (err) {
-          return done();
+          return done(err);
         }
         done();
       });
@@ -56,7 +56,7 @@ xdescribe('testRunnerHTMLOutput', function() {
 
 
     return runTests({source: testsPath, reporter: 'html'}, settings({
-      output_folder: 'output',
+      output_folder: outputPath,
       globals: {
         waitForConditionPollInterval: 20,
         waitForConditionTimeout: 50,
@@ -72,12 +72,12 @@ xdescribe('testRunnerHTMLOutput', function() {
       }
     }))
       .then(_ => {
-        return readFilePromise(`output${path.sep}reporter.html`);
+        return readFilePromise(`${outputPath}${path.sep}nightwatch-html-report${path.sep}index.html`);
       }).
       then(_ => {
-        return Promise.all([readDirPromise(`output${path.sep}js`), 
-          readDirPromise(`output${path.sep}css`), 
-          readDirPromise(`output${path.sep}images`)]);
+        return Promise.all([readDirPromise(`${outputPath}${path.sep}nightwatch-html-report${path.sep}js`), 
+          readDirPromise(`${outputPath}${path.sep}nightwatch-html-report${path.sep}css`), 
+          readDirPromise(`${outputPath}${path.sep}nightwatch-html-report${path.sep}images`)]);
       });
      
   });
