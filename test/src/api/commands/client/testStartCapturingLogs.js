@@ -113,7 +113,7 @@ describe('.startCapturingLogs()', function () {
 
       client.api.startCapturingLogs(userCallback, function(result){
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'StartCapturingLogs is not supported while using this driver');
+        assert.strictEqual(result.error, 'StartCapturingLogs is only supported in Chrome and Edge drivers');
       });
       client.start(done);
     });

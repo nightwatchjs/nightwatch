@@ -210,7 +210,7 @@ describe('.setGeolocation()', function () {
     }).then(client => {
       client.api.setGeolocation({latitude: 35.689487, longitude: 139.691706, accuracy: 55}, function(result){
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'SetGeolocation is not supported while using this driver');
+        assert.strictEqual(result.error, 'SetGeolocation is only supported in Chrome and Edge drivers');
       });
       client.start(done);
     });

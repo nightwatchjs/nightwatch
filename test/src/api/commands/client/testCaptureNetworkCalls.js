@@ -130,7 +130,7 @@ describe('.captureNetworkCalls()', function () {
       const userCallback = (requestParams) => {console.log(requestParams)}
       client.api.captureNetworkCalls(userCallback, function(result){
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'CaptureNetworkCalls is not supported while using this driver');
+        assert.strictEqual(result.error, 'CaptureNetworkCalls is only supported in Chrome and Edge drivers');
       });
       client.start(done);
     });

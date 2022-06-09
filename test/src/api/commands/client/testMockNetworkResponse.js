@@ -340,7 +340,7 @@ describe('.mockNetworkResponse()', function () {
       };
       client.api.mockNetworkResponse('https://www.google.com', response, function(result){
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'MockNetworkResponse is not supported while using this driver');
+        assert.strictEqual(result.error, 'MockNetworkResponse is only supported in Chrome and Edge drivers');
       });
       client.start(done);
     });

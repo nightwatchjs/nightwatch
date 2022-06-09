@@ -78,7 +78,7 @@ describe('.getPerformanceMetrics()', function () {
     }).then(client => {
       client.api.getPerformanceMetrics(function(result){
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'GetPerformanceMetrics is not supported while using this driver');
+        assert.strictEqual(result.error, 'GetPerformanceMetrics is only supported in Chrome and Edge drivers');
       });
       client.start(done);
     });

@@ -113,7 +113,7 @@ describe('.catchJsExceptions()', function () {
 
       client.api.catchJsExceptions(userCallback, function(result){
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'CatchJsExceptions is not supported while using this driver');
+        assert.strictEqual(result.error, 'CatchJsExceptions is only supported in Chrome and Edge drivers');
       });
       client.start(done);
     });
