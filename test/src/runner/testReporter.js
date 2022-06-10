@@ -7,6 +7,9 @@ const jsonReporter = require.resolve('../../../lib/reporter/reporters/json');
 const junitReporter = require.resolve('../../../lib/reporter/reporters/junit');
 const htmlReporter = require.resolve('../../../lib/reporter/reporters/html');
 const Reporter = common.require('reporter/global-reporter.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
+const {readFilePromise, readDirPromise} = require('../../lib/utils');
 
 describe('testReporter', function() {
 
@@ -100,5 +103,30 @@ describe('testReporter', function() {
     return reporter.writeReportToFile().then(function(result) {
       assert.deepStrictEqual(result, ['junit', 'html', 'json', 'reporter_output']);
     });
+  });
+
+  it('test run tests with multiple reporters - html, junit, json', function () {
+    const testsPath = [path.join(__dirname, '../../sampletests/simple/test/sample.js')];
+
+    return runTests(
+      {source: testsPath, reporter: ['html', 'junit']},
+      settings({
+        output_folder: 'output',
+        globals: {
+          waitForConditionPollInterval: 20,
+          waitForConditionTimeout: 50,
+          retryAssertionTimeout: 50,
+          reporter: function () {}
+        },
+        output: false
+      })
+    )
+      .then((_) => {
+        readFilePromise(`output${path.sep}sample.json`);
+        readFilePromise(`output${path.sep}sample.xml`);
+        readDirPromise(`output${path.sep}nightwatch-html-report`);
+      }).catch((err) => {
+        console.error(err);
+      });
   });
 });
