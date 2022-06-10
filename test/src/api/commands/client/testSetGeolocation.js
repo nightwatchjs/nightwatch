@@ -2,7 +2,7 @@ const assert = require('assert');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 const MockServer = require('../../../../lib/mockserver.js');
 const Nightwatch = require('../../../../lib/nightwatch.js');
-const cdp = require('../../../../../lib/transport/selenium-webdriver/cdp');
+const cdp = require('../../../../../lib/transport/selenium-webdriver/cdp.js');
 
 describe('.setGeolocation()', function () {
   beforeEach(function (done) {
