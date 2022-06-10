@@ -3,12 +3,15 @@ const path = require('path');
 const mockery = require('mockery');
 
 const common = require('../../common.js');
+const jsonReporter = require.resolve('../../../lib/reporter/reporters/json');
+const junitReporter = require.resolve('../../../lib/reporter/reporters/junit');
+const htmlReporter = require.resolve('../../../lib/reporter/reporters/html');
 const Reporter = common.require('reporter/global-reporter.js');
 
 describe('testReporter', function() {
 
   it('test with unknown reporter', function() {
-    let reporter = new Reporter('unknown', {
+    const reporter = new Reporter('unknown', {
       globals: {
         reporter(results, done) {
           done();
@@ -25,7 +28,7 @@ describe('testReporter', function() {
   });
 
   it('test with invalid reporter', function() {
-    let reporter = new Reporter(path.join(__dirname, '../../extra/reporter/notvalid.js'), {
+    const reporter = new Reporter(path.join(__dirname, '../../extra/reporter/notvalid.js'), {
       globals: {
         reporter(results, done) {
           done();
@@ -42,7 +45,7 @@ describe('testReporter', function() {
 
   it('test with valid reporter file name', function() {
 
-    let reporter = new Reporter(path.join(__dirname, '../../extra/reporter/custom.js'), {
+    const reporter = new Reporter(path.join(__dirname, '../../extra/reporter/custom.js'), {
       globals: {
         reporter(results, done) {
           done();
@@ -50,6 +53,10 @@ describe('testReporter', function() {
       },
       output_folder: 'output'
     });
+
+    reporter.writeReport = function (reporter, globalResults) {
+      Promise.resolve();
+    };
 
     return reporter.save().then(function(result) {
       assert.ok(Array.isArray(result));
@@ -65,8 +72,23 @@ describe('testReporter', function() {
         return 'reporter_output';
       }
     });
+    mockery.registerMock(jsonReporter, {
+      async write(results, options) {
+        return 'json';
+      }
+    });
+    mockery.registerMock(htmlReporter, {
+      async write(results, options) {
+        return 'html';
+      }
+    });
+    mockery.registerMock(junitReporter, {
+      async write(results, options) {
+        return 'junit';
+      }
+    });
 
-    let reporter = new Reporter('nightwatch_reporter', {
+    const reporter = new Reporter('nightwatch_reporter', {
       globals: {
         reporter(results, done) {
           done();
@@ -76,7 +98,7 @@ describe('testReporter', function() {
     });
 
     return reporter.writeReportToFile().then(function(result) {
-      assert.strictEqual(result, 'reporter_output');
+      assert.deepStrictEqual(result, ['junit', 'html', 'json', 'reporter_output']);
     });
   });
 });
