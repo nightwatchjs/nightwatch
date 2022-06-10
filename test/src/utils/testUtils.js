@@ -158,4 +158,25 @@ describe('test Utils', function() {
     assert.strictEqual(Utils.SafeJSON.stringify(obj), '{"value":1,"cirRef":"[Circular]"}');
   });
 
+  it('SafeJSON.stringify for Proxy objects', function() {
+    
+    const target = {
+      value: 1
+    };
+
+    const proxyObj = new Proxy(target, {
+      get(target, property) {
+        return function(...args) {
+          if (!target[property]){
+            throw new Error('Unknown property');
+          }
+
+          return target[property];
+        };
+      }
+    });
+
+    assert.strictEqual(Utils.SafeJSON.stringify(proxyObj), '"[Error]"');
+  });
+
 });

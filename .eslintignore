@@ -2,3 +2,4 @@ node_modules
 package.json
 *.json
 lib/utils/requireModule.js
+lib/reporter/reporters/html
