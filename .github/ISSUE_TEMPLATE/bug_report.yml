@@ -8,8 +8,6 @@ body:
 
         Please search open/closed issues before submitting. Someone
         might have asked the same thing before 😉!
-
-        We're all volunteers here, so help us help you by taking the time to fill out this template accurately. ❤️
   - type: "input"
     id: "description"
     attributes:
