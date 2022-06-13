@@ -105,28 +105,30 @@ describe('testReporter', function() {
     });
   });
 
-  it('test run tests with multiple reporters - html, junit, json', function () {
+  it('test run tests with multiple reporters - html, junit, json', async function () {
+    let possibleError = null;
     const testsPath = [path.join(__dirname, '../../sampletests/simple/test/sample.js')];
 
-    return runTests(
-      {source: testsPath, reporter: ['html', 'junit']},
-      settings({
-        output_folder: 'output',
-        globals: {
-          waitForConditionPollInterval: 20,
-          waitForConditionTimeout: 50,
-          retryAssertionTimeout: 50,
-          reporter: function () {}
-        },
-        output: false
-      })
-    )
-      .then((_) => {
-        readFilePromise(`output${path.sep}sample.json`);
-        readFilePromise(`output${path.sep}sample.xml`);
-        readDirPromise(`output${path.sep}nightwatch-html-report`);
-      }).catch((err) => {
-        console.error(err);
-      });
+    try {
+      await runTests(
+        {source: testsPath, reporter: ['html', 'junit']},
+        settings({
+          output_folder: 'output',
+          globals: {
+            waitForConditionPollInterval: 20,
+            waitForConditionTimeout: 50,
+            retryAssertionTimeout: 50,
+            reporter: function () {}
+          },
+          output: false
+        })
+      );
+      await readFilePromise(`output${path.sep}sample.json`);
+      await readFilePromise(`output${path.sep}sample.xml`);
+      await readDirPromise(`output${path.sep}nightwatch-html-report`);
+    } catch (error) {
+      possibleError = error;
+    }
+    assert.strictEqual(possibleError, null);
   });
 });
