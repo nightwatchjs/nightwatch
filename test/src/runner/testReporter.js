@@ -31,7 +31,8 @@ describe('testReporter', function() {
   });
 
   it('test with invalid reporter', function() {
-    const reporter = new Reporter(path.join(__dirname, '../../extra/reporter/notvalid.js'), {
+    const custom_reporter = path.join(__dirname, '../../extra/reporter/notvalid.js');
+    const reporter = new Reporter(custom_reporter, {
       globals: {
         reporter(results, done) {
           done();
@@ -42,7 +43,7 @@ describe('testReporter', function() {
 
     return reporter.loadReporter()
       .catch(err => {
-        assert.strictEqual(err.message, 'The reporter module must have a public ".write(results, options, [callback])" method defined which should return a Promise.');
+        assert.strictEqual(err.message, `The custom reporter "${custom_reporter}" must have a public ".write(results, options, [callback])" method defined which should return a Promise.`);
       });
   });
 
@@ -75,21 +76,6 @@ describe('testReporter', function() {
         return 'reporter_output';
       }
     });
-    mockery.registerMock(jsonReporter, {
-      async write(results, options) {
-        return 'json';
-      }
-    });
-    mockery.registerMock(htmlReporter, {
-      async write(results, options) {
-        return 'html';
-      }
-    });
-    mockery.registerMock(junitReporter, {
-      async write(results, options) {
-        return 'junit';
-      }
-    });
 
     const reporter = new Reporter('nightwatch_reporter', {
       globals: {
@@ -101,7 +87,7 @@ describe('testReporter', function() {
     });
 
     return reporter.writeReportToFile().then(function(result) {
-      assert.deepStrictEqual(result, ['junit', 'html', 'json', 'reporter_output']);
+      assert.deepStrictEqual(result, ['reporter_output']);
     });
   });
 
