@@ -162,7 +162,7 @@ describe('testReporter', function() {
           reporter: function () {}
         },
         silent: true,
-        output: true
+        output: false
       }));
 
       await readFilePromise(`output${path.sep}FIREFOX_TEST_firefox__sample.xml`);
