@@ -20,6 +20,7 @@ describe('testReporter', function() {
           done();
         }
       },
+      default_reporter: ['junit', 'json', 'html'],
       output_folder: 'output'
     });
 
@@ -38,6 +39,7 @@ describe('testReporter', function() {
           done();
         }
       },
+      default_reporter: ['junit', 'json', 'html'],
       output_folder: 'output'
     });
 
@@ -55,6 +57,7 @@ describe('testReporter', function() {
           done();
         }
       },
+      default_reporter: ['junit', 'json', 'html'],
       output_folder: 'output'
     });
 
@@ -76,6 +79,21 @@ describe('testReporter', function() {
         return 'reporter_output';
       }
     });
+    mockery.registerMock(jsonReporter, {
+      async write(results, options) {
+        return 'json';
+      }
+    });
+    mockery.registerMock(htmlReporter, {
+      async write(results, options) {
+        return 'html';
+      }
+    });
+    mockery.registerMock(junitReporter, {
+      async write(results, options) {
+        return 'junit';
+      }
+    });
 
     const reporter = new Reporter('nightwatch_reporter', {
       globals: {
@@ -83,36 +101,39 @@ describe('testReporter', function() {
           done();
         }
       },
+      default_reporter: ['junit', 'json', 'html'],
       output_folder: 'output'
     });
 
     return reporter.writeReportToFile().then(function(result) {
-      assert.deepStrictEqual(result, ['reporter_output']);
+      assert.deepStrictEqual(result, ['junit', 'json', 'html', 'reporter_output']);
     });
   });
 
-  it('test run tests with multiple reporters - html, junit, json', function () {
+  it('test run tests with multiple reporters - html, junit, json', async function () {
+    let possibleError = null;
     const testsPath = [path.join(__dirname, '../../sampletests/simple/test/sample.js')];
 
-    return runTests(
-      {source: testsPath, reporter: ['html', 'junit']},
-      settings({
-        output_folder: 'output',
-        globals: {
-          waitForConditionPollInterval: 20,
-          waitForConditionTimeout: 50,
-          retryAssertionTimeout: 50,
-          reporter: function () {}
-        },
-        output: false
-      })
-    )
-      .then((_) => {
-        readFilePromise(`output${path.sep}sample.json`);
-        readFilePromise(`output${path.sep}sample.xml`);
-        readDirPromise(`output${path.sep}nightwatch-html-report`);
-      }).catch((err) => {
-        console.error(err);
-      });
+    try {
+      await runTests(
+        {source: testsPath, reporter: ['html', 'junit']},
+        settings({
+          output_folder: 'output',
+          globals: {
+            waitForConditionPollInterval: 20,
+            waitForConditionTimeout: 50,
+            retryAssertionTimeout: 50,
+            reporter: function () {}
+          },
+          output: false
+        })
+      );
+      await readFilePromise(`output${path.sep}sample.json`);
+      await readFilePromise(`output${path.sep}sample.xml`);
+      await readDirPromise(`output${path.sep}nightwatch-html-report`);
+    } catch (error) {
+      possibleError = error;
+    }
+    assert.strictEqual(possibleError, null);
   });
 });
