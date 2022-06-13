@@ -1,17 +1,42 @@
 const assert = require('assert');
 const path = require('path');
 const mockery = require('mockery');
+const mkpath = require('mkpath');
+const rimraf = require('rimraf');
 
 const common = require('../../common.js');
-const jsonReporter = require.resolve('../../../lib/reporter/reporters/json');
-const junitReporter = require.resolve('../../../lib/reporter/reporters/junit');
-const htmlReporter = require.resolve('../../../lib/reporter/reporters/html');
-const Reporter = common.require('reporter/global-reporter.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
-const {readFilePromise, readDirPromise} = require('../../lib/utils');
+const {readFilePromise, readDirPromise} = require('../../lib/utils.js');
+
+const MockServer = require('../../lib/mockserver.js');
+const Reporter = common.require('reporter/global-reporter.js');
 
 describe('testReporter', function() {
+
+  before(function(done) {
+    this.server = MockServer.init();
+    this.server.on('listening', () => done());
+  });
+
+  beforeEach(function(done) {
+    mkpath('output', function(err) {
+      if (err) {
+        return done(err);
+      }
+      done();
+    });
+  });
+
+  // afterEach(function(done) {
+  //   rimraf('output', done);
+  // });
+
+  after(function(done) {
+    this.server.close(function() {
+      done();
+    });
+  });
 
   it('test with unknown reporter', function() {
     const reporter = new Reporter('unknown', {
@@ -91,11 +116,15 @@ describe('testReporter', function() {
     });
   });
 
-  it('test run tests with multiple reporters - html, junit, json', function () {
+  it('test run tests with multiple reporters - html + junit', async function () {
+    let possibleError = null;
     const testsPath = [path.join(__dirname, '../../sampletests/simple/test/sample.js')];
 
-    return runTests(
-      {source: testsPath, reporter: ['html', 'junit']},
+    try {
+      await runTests({
+        source: testsPath,
+        reporter: ['html', 'junit']
+      },
       settings({
         output_folder: 'output',
         globals: {
@@ -105,14 +134,44 @@ describe('testReporter', function() {
           reporter: function () {}
         },
         output: false
-      })
-    )
-      .then((_) => {
-        readFilePromise(`output${path.sep}sample.json`);
-        readFilePromise(`output${path.sep}sample.xml`);
-        readDirPromise(`output${path.sep}nightwatch-html-report`);
-      }).catch((err) => {
-        console.error(err);
-      });
+      }));
+
+      await readFilePromise(`output${path.sep}FIREFOX_TEST_firefox__sample.xml`);
+      await readDirPromise(`output${path.sep}nightwatch-html-report`);
+    } catch (error) {
+      possibleError = error;
+    }
+
+    assert.strictEqual(possibleError, null);
+  });
+
+  it('test run tests with default reporters', async function () {
+    let possibleError = null;
+    const testsPath = [path.join(__dirname, '../../sampletests/simple/test/sample.js')];
+
+    try {
+      await runTests({
+        source: testsPath
+      },
+      settings({
+        output_folder: 'output',
+        globals: {
+          waitForConditionPollInterval: 20,
+          waitForConditionTimeout: 50,
+          retryAssertionTimeout: 50,
+          reporter: function () {}
+        },
+        silent: true,
+        output: true
+      }));
+
+      await readFilePromise(`output${path.sep}FIREFOX_TEST_firefox__sample.xml`);
+      await readFilePromise(`output${path.sep}FIREFOX_TEST_firefox__sample.json`);
+      await readDirPromise(`output${path.sep}nightwatch-html-report`);
+    } catch (error) {
+      possibleError = error;
+    }
+
+    assert.strictEqual(possibleError, null);
   });
 });

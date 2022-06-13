@@ -41,7 +41,7 @@ module.exports = {
     return process.platform === 'win32' ? '\r\n' : '\n';
   },
 
-  readFilePromise: function(fileName) {
+  readFilePromise(fileName) {
     return new Promise(function(resolve, reject) {
       fs.readFile(fileName, function(err, result) {
         if (err) {
@@ -53,7 +53,7 @@ module.exports = {
     });
   },
 
-  readDirPromise: function(dirName) {
+  readDirPromise(dirName) {
     return new Promise(function(resolve, reject) {
       fs.readdir(dirName, function(err, result) {
         if (err) {

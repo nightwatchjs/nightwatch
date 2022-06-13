@@ -1,42 +1,33 @@
 const path = require('path');
-const fs = require('fs');
 const common = require('../../common.js');
 const MockServer = require('../../lib/mockserver.js');
-const CommandGlobals = require('../../lib/globals/commands.js');
+
 const {settings} = common;
 const {runTests} = common.require('index.js');
-const {readFilePromise, readDirPromise} = require('../../lib/utils');
+const {readFilePromise, readDirPromise, rmFolder} = require('../../lib/utils.js');
+const mkpath = require('mkpath');
+const rimraf = require('rimraf');
 
 describe('testRunnerHTMLOutput', function() {
-  const outputPath = path.join(__dirname, '../../sampletests/test_output');
+  const outputPath = 'output';
 
   before(function(done) {
     this.server = MockServer.init();
-    this.server.on('listening', () => {
-      fs.mkdir(outputPath, function(err) {
-        if (err) {
-          return done(err);
-        }
-        done();
-      });
-    });
+    this.server.on('listening', () => done());
+  });
+
+  beforeEach(function(done) {
+    mkpath(outputPath, done);
+  });
+
+  afterEach(function(done) {
+    rimraf(outputPath, done);
   });
 
   after(function(done) {
-    CommandGlobals.afterEach.call(this, function() {
-      fs.rmdir(outputPath, {recursive: true}, function(err) {
-        if (err) {
-          return done(err);
-        }
-        done();
-      });
+    this.server.close(function() {
+      done();
     });
-  });
-
-  beforeEach(function() {
-    process.removeAllListeners('exit');
-    process.removeAllListeners('uncaughtException');
-    process.removeAllListeners('unhandledRejection');
   });
 
   it('test run screenshots with html output and test failures', function () {
