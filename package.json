@@ -33,7 +33,7 @@
     "mocha": "9.2.2",
     "open": "^8.4.0",
     "ora": "5.4.1",
-    "selenium-webdriver": "4.1.1",
+    "selenium-webdriver": "^4.2.0",
     "semver": "7.3.5",
     "stacktrace-parser": "^0.1.10",
     "strip-ansi": "6.0.1"
