@@ -23,7 +23,7 @@ describe('testRunnerHTMLOutput', function() {
 
   after(function(done) {
     CommandGlobals.afterEach.call(this, function() {
-      fs.rm(outputPath, {recursive: true}, function(err) {
+      fs.rmdir(outputPath, {recursive: true}, function(err) {
         if (err) {
           return done(err);
         }
