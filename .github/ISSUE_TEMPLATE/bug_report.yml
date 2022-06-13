@@ -141,21 +141,22 @@ body:
     attributes:
       label: "Node Version"
       description: "The version of Node you use."
-      placeholder: "8.12.1"
+      placeholder: "14.0.0"
   - type: "input"
     id: "yarn-version"
     attributes:
       label: "Yarn Version"
       description: "The version of Yarn you use."
       placeholder: "1.0.1"
-  - type: "input"
+  - type: "checkboxes"
     id: "browser"
     attributes:
       label: "Browser"
       description: "The browser(s) this issue occurred with."
-      placeholder: "Google Chrome 101"
-    validations:
-      required: true
+      options:
+        - label: "Google Chrome"
+        - label: "Firefox"
+        - label: "Safari"
   - type: "checkboxes"
     id: "operating-system"
     attributes:
