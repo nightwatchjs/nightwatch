@@ -4,7 +4,7 @@ const MockServer = require('../../../../lib/mockserver.js');
 const Nightwatch = require('../../../../lib/nightwatch.js');
 const cdp = require('../../../../../lib/transport/selenium-webdriver/cdp.js');
 
-describe('.captureNetworkCalls()', function () {
+describe('.captureNetworkRequests()', function () {
   beforeEach(function (done) {
     this.server = MockServer.init();
 
@@ -17,7 +17,7 @@ describe('.captureNetworkCalls()', function () {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('browser.captureNetworkCalls()', function (done) {
+  it('browser.captureNetworkRequests()', function (done) {
 
     MockServer.addMock({
       url: '/session',
@@ -74,7 +74,7 @@ describe('.captureNetworkCalls()', function () {
       const userCallback = (requestParams) => {
         expected['requestParams'] = requestParams;
       };
-      client.api.captureNetworkCalls(userCallback, function () {
+      client.api.captureNetworkRequests(userCallback, function () {
         assert.deepEqual(expected.cdpCommand, 'Network.enable');
         assert.deepEqual(expected.cdpParams, {});
         assert.strictEqual(expected.wsEvent, 'message');
@@ -109,16 +109,16 @@ describe('.captureNetworkCalls()', function () {
       output: process.env.VERBOSE === '1',
       silent: false
     }).then(client => {
-      client.api.captureNetworkCalls(undefined, function (result){
+      client.api.captureNetworkRequests(undefined, function (result){
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'Callback is missing from .captureNetworkCalls command.');
+        assert.strictEqual(result.error, 'Callback is missing from .captureNetworkRequests command.');
       });
 
       client.start(done);
     });
   });
 
-  it('browser.captureNetworkCalls - driver not supported', function(done) {
+  it('browser.captureNetworkRequests - driver not supported', function(done) {
     Nightwatch.initW3CClient({
       desiredCapabilities: {
         browserName: 'firefox'
@@ -128,9 +128,9 @@ describe('.captureNetworkCalls()', function () {
     }).then(client => {
       // eslint-disable-next-line
       const userCallback = (requestParams) => {console.log(requestParams)}
-      client.api.captureNetworkCalls(userCallback, function(result){
+      client.api.captureNetworkRequests(userCallback, function(result){
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'CaptureNetworkCalls is only supported in Chrome and Edge drivers');
+        assert.strictEqual(result.error, 'The command captureNetworkRequests() is only supported in Chrome and Edge drivers');
       });
       client.start(done);
     });
