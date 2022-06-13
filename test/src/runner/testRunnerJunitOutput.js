@@ -6,6 +6,8 @@ const MockServer = require('../../lib/mockserver.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
+const {readFilePromise, readDirPromise} = require('../../lib/utils');
+
 
 describe('testRunnerJUnitOutput', function() {
   const emptyPath = path.join(__dirname, '../../sampletests/empty/testdir');
@@ -359,30 +361,6 @@ describe('testRunnerJUnitOutput', function() {
       });
   });
 });
-
-function readFilePromise(fileName) {
-  return new Promise(function(resolve, reject) {
-    fs.readFile(fileName, function(err, result) {
-      if (err) {
-        return reject(err);
-      }
-
-      resolve(result);
-    });
-  });
-}
-
-function readDirPromise(dirName) {
-  return new Promise(function(resolve, reject) {
-    fs.readdir(dirName, function(err, result) {
-      if (err) {
-        return reject(err);
-      }
-
-      resolve(result);
-    });
-  });
-}
 
 // util to replace deprecated fs.existsSync
 function fileExistsSync(path) {
