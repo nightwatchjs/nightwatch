@@ -39,11 +39,15 @@ a:hover {
 
 .logo {
   width: 68px;
-  height: 43px;
+  height: 62px;
   background-image: url("../images/nightwatch-logo.svg");
   background-size: contain;
   background-position: left top;
   background-repeat: no-repeat;
+}
+
+.navbar-brand {
+  margin: 0 auto;
 }
 
 #navigation .navbar {
@@ -1104,6 +1108,7 @@ a.session-head:hover {
 .raw-http-log.code-sessionfull {
   color: #eee;
   background: #112933;
+  font-size:13px
 }
 .code-sessionfull-failure {
   font-family: "Monaco", monospace;

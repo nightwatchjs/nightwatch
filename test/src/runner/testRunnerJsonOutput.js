@@ -4,39 +4,32 @@ const assert = require('assert');
 const common = require('../../common.js');
 const MockServer = require('../../lib/mockserver.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
+const mkpath = require('mkpath');
+const rimraf = require('rimraf');
 const {settings} = common;
 const {runTests} = common.require('index.js');
 
-describe('testRunnerJsontOutput', function() {
-  const emptyPath = path.join(__dirname, '../../sampletests/empty/testdir');
-
+describe('testRunnerJsonOutput', function() {
   before(function(done) {
     this.server = MockServer.init();
-    this.server.on('listening', () => {
-      fs.mkdir(emptyPath, function(err) {
-        if (err) {
-          return done();
-        }
-        done();
-      });
+    this.server.on('listening', () => done());
+  });
+
+  beforeEach(function(done) {
+    mkpath('output', function(err) {
+      if (err) {
+        return done(err);
+      }
+      done();
     });
+  });
+
+  afterEach(function(done) {
+    rimraf('output', done);
   });
 
   after(function(done) {
-    CommandGlobals.afterEach.call(this, function() {
-      fs.rmdir(emptyPath, function(err) {
-        if (err) {
-          return done();
-        }
-        done();
-      });
-    });
-  });
-
-  beforeEach(function() {
-    process.removeAllListeners('exit');
-    process.removeAllListeners('uncaughtException');
-    process.removeAllListeners('unhandledRejection');
+    CommandGlobals.afterEach.call(this, done);
   });
 
   it('testRunWithJsonOutput', function() {

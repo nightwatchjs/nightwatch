@@ -1,41 +1,33 @@
 const path = require('path');
-const fs = require('fs');
 const common = require('../../common.js');
 const MockServer = require('../../lib/mockserver.js');
-const CommandGlobals = require('../../lib/globals/commands.js');
+
 const {settings} = common;
 const {runTests} = common.require('index.js');
+const {readFilePromise, readDirPromise} = require('../../lib/utils.js');
+const mkpath = require('mkpath');
+const rimraf = require('rimraf');
 
-xdescribe('testRunnerHTMLOutput', function() {
-  const emptyPath = path.join(__dirname, '../../sampletests/empty/testdir');
+describe('testRunnerHTMLOutput', function() {
+  const outputPath = 'output';
 
   before(function(done) {
     this.server = MockServer.init();
-    this.server.on('listening', () => {
-      fs.mkdir(emptyPath, function(err) {
-        if (err) {
-          return done();
-        }
-        done();
-      });
-    });
+    this.server.on('listening', () => done());
+  });
+
+  beforeEach(function(done) {
+    mkpath(outputPath, done);
+  });
+
+  afterEach(function(done) {
+    rimraf(outputPath, done);
   });
 
   after(function(done) {
-    CommandGlobals.afterEach.call(this, function() {
-      fs.rmdir(emptyPath, function(err) {
-        if (err) {
-          return done();
-        }
-        done();
-      });
+    this.server.close(function() {
+      done();
     });
-  });
-
-  beforeEach(function() {
-    process.removeAllListeners('exit');
-    process.removeAllListeners('uncaughtException');
-    process.removeAllListeners('unhandledRejection');
   });
 
   it('test run screenshots with html output and test failures', function () {
@@ -56,7 +48,7 @@ xdescribe('testRunnerHTMLOutput', function() {
 
 
     return runTests({source: testsPath, reporter: 'html'}, settings({
-      output_folder: 'output',
+      output_folder: outputPath,
       globals: {
         waitForConditionPollInterval: 20,
         waitForConditionTimeout: 50,
@@ -72,37 +64,13 @@ xdescribe('testRunnerHTMLOutput', function() {
       }
     }))
       .then(_ => {
-        return readFilePromise(`output${path.sep}reporter.html`);
+        return readFilePromise(`${outputPath}${path.sep}nightwatch-html-report${path.sep}index.html`);
       }).
       then(_ => {
-        return Promise.all([readDirPromise(`output${path.sep}js`), 
-          readDirPromise(`output${path.sep}css`), 
-          readDirPromise(`output${path.sep}images`)]);
+        return Promise.all([readDirPromise(`${outputPath}${path.sep}nightwatch-html-report${path.sep}js`), 
+          readDirPromise(`${outputPath}${path.sep}nightwatch-html-report${path.sep}css`), 
+          readDirPromise(`${outputPath}${path.sep}nightwatch-html-report${path.sep}images`)]);
       });
      
   });
 });
-
-function readFilePromise(fileName) {
-  return new Promise(function(resolve, reject) {
-    fs.readFile(fileName, function(err, result) {
-      if (err) {
-        return reject(err);
-      }
-
-      resolve(result);
-    });
-  });
-}
-
-function readDirPromise(dirName) {
-  return new Promise(function(resolve, reject) {
-    fs.readdir(dirName, function(err, result) {
-      if (err) {
-        return reject(err);
-      }
-
-      resolve(result);
-    });
-  });
-}
