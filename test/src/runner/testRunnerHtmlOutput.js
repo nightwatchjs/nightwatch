@@ -4,7 +4,7 @@ const MockServer = require('../../lib/mockserver.js');
 
 const {settings} = common;
 const {runTests} = common.require('index.js');
-const {readFilePromise, readDirPromise, rmFolder} = require('../../lib/utils.js');
+const {readFilePromise, readDirPromise} = require('../../lib/utils.js');
 const mkpath = require('mkpath');
 const rimraf = require('rimraf');
 

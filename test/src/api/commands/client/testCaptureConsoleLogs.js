@@ -4,7 +4,7 @@ const MockServer = require('../../../../lib/mockserver.js');
 const Nightwatch = require('../../../../lib/nightwatch.js');
 const cdp = require('../../../../../lib/transport/selenium-webdriver/cdp.js');
 
-describe('.captureConsoleLogs()', function () {
+describe('.captureBrowserConsoleLogs()', function () {
   beforeEach(function (done) {
     this.server = MockServer.init();
 
@@ -17,7 +17,7 @@ describe('.captureConsoleLogs()', function () {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('browser.captureConsoleLogs()', function (done) {
+  it('browser.captureBrowserConsoleLogs()', function (done) {
 
     MockServer.addMock({
       url: '/session',
@@ -57,7 +57,7 @@ describe('.captureConsoleLogs()', function () {
 
       //eslint-disable-next-line
       const userCallback = (event) => {console.log(event)};
-      client.api.captureConsoleLogs(userCallback, function () {
+      client.api.captureBrowserConsoleLogs(userCallback, function () {
         assert.strictEqual(expectedCdpConnection, undefined);  // cdpConnection is mocked
         assert.strictEqual(expectedUserCallback, userCallback);
       });
@@ -91,16 +91,16 @@ describe('.captureConsoleLogs()', function () {
       output: process.env.VERBOSE === '1',
       silent: false
     }).then(client => {
-      client.api.captureConsoleLogs(undefined, function (result){
+      client.api.captureBrowserConsoleLogs(undefined, function (result){
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'Callback is missing from .captureConsoleLogs command.');
+        assert.strictEqual(result.error, 'Callback is missing from .captureBrowserConsoleLogs() command.');
       });
 
       client.start(done);
     });
   });
 
-  it('browser.captureConsoleLogs - driver not supported', function(done){
+  it('browser.captureBrowserConsoleLogs - driver not supported', function(done){
     Nightwatch.initW3CClient({
       desiredCapabilities: {
         browserName: 'firefox'
@@ -111,9 +111,9 @@ describe('.captureConsoleLogs()', function () {
       //eslint-disable-next-line
       const userCallback = (event) => {console.log(event)};
 
-      client.api.captureConsoleLogs(userCallback, function(result){
+      client.api.captureBrowserConsoleLogs(userCallback, function(result){
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'The command .captureConsoleLogs() is only supported in Chrome and Edge drivers');
+        assert.strictEqual(result.error, 'The command .captureBrowserConsoleLogs() is only supported in Chrome and Edge drivers');
       });
       client.start(done);
     });
