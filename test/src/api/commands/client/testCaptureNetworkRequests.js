@@ -111,7 +111,7 @@ describe('.captureNetworkRequests()', function () {
     }).then(client => {
       client.api.captureNetworkRequests(undefined, function (result){
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'Callback is missing from .captureNetworkRequests command.');
+        assert.strictEqual(result.error, 'Callback is missing from .captureNetworkRequests() command.');
       });
 
       client.start(done);
@@ -130,7 +130,7 @@ describe('.captureNetworkRequests()', function () {
       const userCallback = (requestParams) => {console.log(requestParams)}
       client.api.captureNetworkRequests(userCallback, function(result){
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'The command captureNetworkRequests() is only supported in Chrome and Edge drivers');
+        assert.strictEqual(result.error, 'The command .captureNetworkRequests() is only supported in Chrome and Edge drivers');
       });
       client.start(done);
     });

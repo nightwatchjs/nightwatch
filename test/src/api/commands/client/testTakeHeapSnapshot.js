@@ -165,7 +165,7 @@ describe('.takeHeapSnapshot()', function(done) {
     }).then(client => {
       client.api.takeHeapSnapshot('snap.heapsnapshot', function(result) {
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'TakeHeapSnapshot is only supported in Chrome and Edge drivers');
+        assert.strictEqual(result.error, 'The command .takeHeapSnapshot() is only supported in Chrome and Edge drivers');
       });
       client.start(done);
     });
