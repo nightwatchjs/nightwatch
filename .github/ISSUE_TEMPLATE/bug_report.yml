@@ -4,10 +4,7 @@ body:
   - type: "markdown"
     attributes:
       value: |
-        Thanks for creating an issue 😄!
-
-        Please search open/closed issues before submitting. Someone
-        might have asked the same thing before 😉!
+        Before submitting a new issue, try searching for a similar one here: https://github.com/nightwatchjs/nightwatch/search?type=Issues.
   - type: "input"
     id: "description"
     attributes:
