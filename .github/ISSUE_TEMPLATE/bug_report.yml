@@ -123,7 +123,7 @@ body:
   - type: "input"
     id: "nightwatch-version"
     attributes:
-      label: "Nightwatch Js Version"
+      label: "Nightwatch.js Version"
       description: "The version of Nightwatch Js you use."
       placeholder: "2.1.7"
     validations:
