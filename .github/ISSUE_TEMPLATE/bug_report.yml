@@ -68,7 +68,6 @@ body:
         [Sample Test] Test Suite
         ────────────────────────────────────────────────────────
         ⠋ Starting ChromeDriver on port 9515...
-        ⠙ Starting ChromeDriver on port 9515...
           Request POST /session
           {
             desiredCapabilities: {
