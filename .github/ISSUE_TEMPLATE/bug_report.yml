@@ -124,7 +124,7 @@ body:
     id: "nightwatch-version"
     attributes:
       label: "Nightwatch.js Version"
-      description: "The version of Nightwatch Js you use."
+      description: "The version of Nightwatch you use."
       placeholder: "2.1.7"
     validations:
       required: true
