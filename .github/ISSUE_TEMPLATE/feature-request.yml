@@ -5,10 +5,7 @@ body:
   - type: "markdown"
     attributes:
       value: |
-        Thanks for filing an issue 😄!
-
-        Please search open/closed issues before submitting. Someone
-        might have asked the same thing before 😉!
+        Thanks in advance for your contribution. Before requesting a new feature, try searching for a similar issue here: https://github.com/nightwatchjs/nightwatch/search?type=Issues.
   - type: "textarea"
     id: "description"
     attributes:
