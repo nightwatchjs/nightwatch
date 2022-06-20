@@ -4,7 +4,7 @@ body:
   - type: "markdown"
     attributes:
       value: |
-        Before submitting a new issue, try searching for a similar one here: https://github.com/nightwatchjs/nightwatch/search?type=Issues.
+        Thanks in advance for your contribution. Before submitting a new issue, try searching for a similar one here: https://github.com/nightwatchjs/nightwatch/search?type=Issues.
   - type: "input"
     id: "description"
     attributes:
