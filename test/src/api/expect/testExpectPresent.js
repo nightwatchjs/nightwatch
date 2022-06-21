@@ -130,7 +130,7 @@ describe('expect.present', function() {
         assert.strictEqual(expect.assertion.waitForMs, 40);
         assert.strictEqual(expect.assertion.passed, false);
         assert.strictEqual(expect.assertion.expected, 'present');
-        assert.strictEqual(expect.assertion.actual, 'error while locating the element');
+        assert.strictEqual(expect.assertion.actual, 'not present');
         assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be present - element was not found'));
         assert.strictEqual(expect.assertion.messageParts[0], ' - element was not found');
       });
@@ -146,6 +146,27 @@ describe('expect.present', function() {
         assert.strictEqual(expect.assertion.waitForMs, 60);
         assert.strictEqual(expect.assertion.passed, true);
         assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be present in 60ms (' + expect.assertion.elapsedTime + 'ms)'));
+      });
+    });
+
+    it('to not be present [PASSED]', function() {
+      this.client.api.globals.waitForConditionTimeout = 40;
+      this.client.api.globals.waitForConditionPollInterval = 20;
+
+      Nocks.elementNotFound()
+        .elementNotFound()
+        .elementNotFound();
+
+      let expect = this.client.api.expect.element('#weblogin').to.not.be.present;
+
+      return this.client.start(function() {
+        assert.strictEqual(expect.assertion.selector, '#weblogin');
+        assert.strictEqual(expect.assertion.negate, true);
+        assert.strictEqual(expect.assertion.passed, true);
+        assert.strictEqual(expect.assertion.expected, 'not present');
+        assert.strictEqual(expect.assertion.actual, 'not present');
+        assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to not be present'));
+        assert.strictEqual(expect.assertion.messageParts.length, 2);
       });
     });
 
