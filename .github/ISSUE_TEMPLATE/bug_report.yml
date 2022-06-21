@@ -78,7 +78,6 @@ body:
                 'goog:chromeOptions': { w3c: true, args: [] }
               }
             }
-        ⠸ Starting ChromeDriver on port 9515...
         ```
   - type: textarea
     id: "configuration"
