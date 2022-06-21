@@ -31,7 +31,7 @@ npm i nightwatch
 ```
 
 ## Get started in 60 seconds
-![nightwatch-cli-gif](https://user-images.githubusercontent.com/39924567/174761950-fbf54e86-b160-4597-b169-976344ff6ef0.gif)
+![nightwatch-cli-gif](https://user-images.githubusercontent.com/39924567/174841680-59664ff6-da2d-44a3-a1df-52d22c69b1e2.gif)
 
 #### 1. Install Nightwatch from NPM
 
