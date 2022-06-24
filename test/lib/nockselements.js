@@ -183,7 +183,7 @@ module.exports = {
   elementsByTag(selector, foundArray) {
     this._addNock(this._requestUri)
       .persist()
-      .post(this._protocolUri + 'elements', {'using': 'tag name', 'value': selector || 'nock'})
+      .post(this._protocolUri + 'elements', {'using': 'css selector', 'value': selector || 'nock'})
       .reply(200, {
         status: 0,
         state: 'success',
