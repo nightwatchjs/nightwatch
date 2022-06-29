@@ -102,10 +102,14 @@ class MockServer {
    * @param {boolean} once
    */
   addMock(item, once = false) {
-    item.times = item.times || 1;
+    let {times = 0} = item;
 
-    if (once || item.times > 1) {
+    if (once || times >= 1) {
       item.__once = true;
+    }
+
+    if (!times) {
+      times = 1;
     }
 
     // if (item.response && typeof item.response == 'string') {
@@ -124,7 +128,7 @@ class MockServer {
       }
     }
 
-    for (let i = 0; i < item.times; i++) {
+    for (let i = 0; i < times; i++) {
       this.mocks.push(item);
     }
 

@@ -1,5 +1,6 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
+const utils = require('../../../lib/utils.js');
 
 describe('client.executeScript', function() {
   before(function() {
@@ -37,7 +38,7 @@ describe('client.executeScript', function() {
     }).then((result) => {
       assert.deepStrictEqual(opts.command, 'executeScript');
       assert.strictEqual(opts.args, 'arg1');
-      assert.deepStrictEqual(opts.script, 'var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {\n        return test();\n      }).apply(window, passedArgs);');
+      assert.deepStrictEqual(opts.script, `var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {${utils.getLineBreak()}        return test();${utils.getLineBreak()}      }).apply(window, passedArgs);`);
       assert.strictEqual(result, 'arg1');
     });
   });
@@ -56,7 +57,7 @@ describe('client.executeScript', function() {
     }).then((result) => {
       assert.deepStrictEqual(opts.command, 'executeScript');
       assert.strictEqual(opts.args, undefined);
-      assert.deepStrictEqual(opts.script, 'var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {\n        return test();\n      }).apply(window, passedArgs);');
+      assert.deepStrictEqual(opts.script, `var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {${utils.getLineBreak()}        return test();${utils.getLineBreak()}      }).apply(window, passedArgs);`);
       assert.deepStrictEqual(result, {value: undefined, status: 0});
     });
   });
@@ -75,7 +76,7 @@ describe('client.executeScript', function() {
     }).then((result) => {
       assert.deepStrictEqual(opts.command, 'executeAsyncScript');
       assert.strictEqual(opts.args, 'arg1');
-      assert.deepStrictEqual(opts.script, 'var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {\n        return test();\n      }).apply(window, passedArgs);');
+      assert.deepStrictEqual(opts.script, `var passedArgs = Array.prototype.slice.call(arguments,0); return (function () {${utils.getLineBreak()}        return test();${utils.getLineBreak()}      }).apply(window, passedArgs);`);
       assert.strictEqual(result, 'arg1');
     });
   });

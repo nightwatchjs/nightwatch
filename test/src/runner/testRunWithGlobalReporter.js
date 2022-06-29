@@ -80,4 +80,23 @@ describe('testRunWithGlobalReporter', function() {
       assert.strictEqual(err.message, 'Timeout while waiting (20s) for the custom global reporter callback to be called.');
     });
   });
+
+  it('to check skipped count in global reporter', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/globalreporterskippedcount/sample.js');
+    let reporterCount = 0;
+
+    return runTests(testsPath, settings({
+      globals: {
+        reporter(results, cb) {
+          assert.strictEqual(results.skipped, 2);
+          assert.strictEqual(results.modules.sample.skippedCount, 2);
+          reporterCount++;
+          cb();
+        }
+      },
+      output_folder: false
+    })).then(_ => {
+      assert.strictEqual(reporterCount, 1);
+    }).catch(err => (err))
+  });
 });

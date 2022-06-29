@@ -1,27 +1,7 @@
 const assert = require('assert');
 const path = require('path');
-const fs = require('fs');
-const lodashMerge = require('lodash.merge');
 const common = require('../../common.js');
 const Utils = common.require('utils');
-
-const buildStackTrace = function(errorFilePath, lineNumber) {
-  let expectedLines = fs.readFileSync(errorFilePath, 'utf-8').split(/\r?\n/).reduce(function(lines, line, index) {
-    const pos = index + 1;
-    if (pos === lineNumber) {
-      lines += Utils.Logger.colors.cyan(`\t${pos} ${line}\n`);
-    } else if ((pos <= lineNumber + 2) && (pos >= lineNumber - 2)) {
-      lines += `\t${pos} ${line}\n`;
-    }
-
-    return lines;
-  }, '');
-  expectedLines += '\n';
-
-  return expectedLines;
-};
-
-
 
 describe('test Utils', function() {
 
@@ -153,27 +133,6 @@ describe('test Utils', function() {
     assert.strictEqual(Utils.isFileNameValid('/tests/sampleTest.json'), false);
   });
 
-  it('filterStackTrace', function() {
-    let stackTrace = `Error
-        at Object.this test should fail and capture screenshot (/Projects/nightwatch/examples/tests/sample.js:5:16)
-        at Context.call (/node_modules/nightwatch/lib/testsuite/context.js:375:35
-        at TestCase.run (/node_modules/nightwatch/lib/testsuite/testcase.js:53:31
-        at Runnable.__runFn (/node_modules/nightwatch/lib/testsuite/index.js:376:80)
-        at Runnable.run (/node_modules/nightwatch/lib/tes….js:123:21)
-        at TestSuite.createRunnable (/node_modules/nightwatch/lib/testsuite/index.js:443:33)
-        at TestSuite.handleRunnable (/node_modules/nightwatch/lib/testsuite/index.js:448:18)
-        at /node_modules/nightwatch/lib/testsuite/index.js:376:21
-        at processTicksAndRejections (internal/process/task_queues.js:93:5)
-        at async DefaultRunner.runTestSuite (/node_modules/nightwatch/lib/runner/test-runners/default.js:68:7)`;
-    let expectedStackTrace = `Error
-        at Object.this test should fail and capture screenshot (/Projects/nightwatch/examples/tests/sample.js:5:16)`; 
-    assert.strictEqual(Utils.filterStackTrace(stackTrace), expectedStackTrace);
-  
-    stackTrace = '';
-    expectedStackTrace = '';
-    assert.strictEqual(Utils.filterStackTrace(stackTrace), expectedStackTrace);
-  });
-
   it('readFolderRecursively with normal folder', async function(){
     const absPath = [];
     Utils.readFolderRecursively(path.join(__dirname, '../../extra/commands/other/'), [], (sourcePath, resource) => {
@@ -190,60 +149,34 @@ describe('test Utils', function() {
     assert.deepStrictEqual(absPath, [path.join(__dirname, '../../extra/commands/typescript/tsWait.js')]);
   });
 
-  it('beautifyStackTrace -  read file lines (NightwatchAssertError)', async function() {
-
-    const errorFilePath = path.join(__dirname, '../../sampletests/withfailures/sample.js');
-    const lineNumber = 15;
-    const expectedLines = buildStackTrace(errorFilePath, lineNumber);
-
-    const error = {
-      name: 'NightwatchAssertError',
-      message: '\'Timed out while waiting for element <input[name=a]> to be present for 5000 milliseconds. - expected [0;32m"found"[0m but got: [0;31m"not found"[0m [0;90m(5123ms)[0m\'',
-      stack: `Error
-      at Proxy.<anonymous> (/Users/BarnOwl/Documents/Projects/Nightwatch/node_modules/nightwatch/lib/api/index.js:145:30)
-      at DescribeInstance.<anonymous> (${errorFilePath}:${lineNumber}:23)
-      at Context.call (/Users/BarnOwl/Documents/Projects/Nightwatch/node_modules/nightwatch/lib/testsuite/context.js:430:35)
-      at TestCase.run (/Users/BarnOwl/Documents/Projects/Nightwatch/node_modules/nightwatch/lib/testsuite/testcase.js:58:31)
-      at Runnable.__runFn (/Users/BarnOwl/Documents/Projects/Nightwatch/node_modules/nightwatch/lib/testsuite/index.js:659:80)
-      at Runnable.run (/Users/BarnOwl/Documents/Projects/Nightwatch/node_modules/nightwatch/lib/testsuite/runnable.js:126:21)
-      at TestSuite.createRunnable (/Users/BarnOwl/Documents/Projects/Nightwatch/node_modules/nightwatch/lib/testsuite/index.js:766:33)
-      at TestSuite.handleRunnable (/Users/BarnOwl/Documents/Projects/Nightwatch/node_modules/nightwatch/lib/testsuite/index.js:771:33)
-      at /Users/BarnOwl/Documents/Projects/Nightwatch/node_modules/nightwatch/lib/testsuite/index.js:659:21
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)`
+  it('SafeJSON.stringify for circurlar reference objects', function() {
+    const obj = {
+      value: 1
     };
+    obj.cirRef = obj;
 
-    const errorInstance = new Error();
-    Object.assign(errorInstance, error);
-    const errorLines = Utils.beautifyStackTrace(errorInstance);
-    assert.strictEqual(errorLines, expectedLines);
+    assert.strictEqual(Utils.SafeJSON.stringify(obj), '{"value":1,"cirRef":"[Circular]"}');
   });
 
-  it('beautifyStackTrace - Unknown API method', function() {
-    const errorFilePath = path.join(__dirname, '../../sampletests/unknown-method/UnknownMethod.js');
-    const lineNumber  = 4;
-
-    const expectedLines = buildStackTrace(errorFilePath, lineNumber);
-
-    const error = {
-      name: 'Error',
-      message: 'Unknown api method "elmentPresen".',
-      stack: `Error: Unknown api method "elementPresen".
-      at Proxy.<anonymous> (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/api/index.js:142:19)
-      at DescribeInstance.<anonymous> (${errorFilePath}:${lineNumber}:21)
-      at Context.call (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/context.js:430:35)
-      at TestCase.run (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/testcase.js:58:31)
-      at Runnable.__runFn (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:669:80)
-      at Runnable.run (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/runnable.js:126:21)
-      at TestSuite.createRunnable (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:776:33)
-      at TestSuite.handleRunnable (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:781:33)
-      at /Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:669:21
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)`
+  it('SafeJSON.stringify for Proxy objects', function() {
+    
+    const target = {
+      value: 1
     };
 
-    const errorInstance = new Error();
-    Object.assign(errorInstance, error);
-    const errorLines = Utils.beautifyStackTrace(errorInstance);
-    assert.strictEqual(errorLines, expectedLines);
+    const proxyObj = new Proxy(target, {
+      get(target, property) {
+        return function(...args) {
+          if (!target[property]){
+            throw new Error('Unknown property');
+          }
+
+          return target[property];
+        };
+      }
+    });
+
+    assert.strictEqual(Utils.SafeJSON.stringify(proxyObj), '"[Error]"');
   });
 
 });
