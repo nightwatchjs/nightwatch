@@ -327,7 +327,7 @@ describe('test Parallel Execution', function() {
 
   });
 
-  it.only('test random port assignment for parallel execution', function(){
+  it('test random port assignment for parallel execution', function(){
     const client = Nightwatch.createClient({
       webdriver: {
         port: 9999
