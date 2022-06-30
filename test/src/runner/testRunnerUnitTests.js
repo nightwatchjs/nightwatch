@@ -5,6 +5,7 @@ const common = require('../../common.js');
 const Runner = common.require('runner/runner.js');
 const Settings = common.require('settings/settings.js');
 const {runTests} = common.require('index.js');
+const {readFilePromise} = require('../../lib/utils');
 
 describe('testRunnerUnitTests', function() {
   beforeEach(function() {
@@ -178,18 +179,6 @@ describe('testRunnerUnitTests', function() {
       });
   });
 });
-
-function readFilePromise(fileName) {
-  return new Promise(function(resolve, reject) {
-    fs.readFile(fileName, function(err, result) {
-      if (err) {
-        return reject(err);
-      }
-
-      resolve(result);
-    });
-  });
-}
 
 // util to replace deprecated fs.existsSync
 function fileExistsSync(path) {
