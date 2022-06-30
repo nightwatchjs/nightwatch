@@ -4,6 +4,7 @@ const mockery = require('mockery');
 const path = require('path');
 const assert = require('assert');
 const common = require('../../common.js');
+const Nightwatch = require('../../lib/nightwatch.js');
 
 describe('test Parallel Execution', function() {
   const allArgs = [];
@@ -322,8 +323,23 @@ describe('test Parallel Execution', function() {
 
     runner.setup();
     const worker = runner.concurrency.createChildProcess('test-worker');
-    console.log(worker.settings.selenium)
+    console.log(worker.settings.selenium);
 
+  });
+
+  it.only('test random port assignment for parallel execution', function(){
+    const client = Nightwatch.createClient({
+      webdriver: {
+        port: 9999
+      },
+
+      'test_workers': {
+        'enabled': true,
+        'workers': 4
+      }
+    });
+
+    assert.notEqual(client.httpOpts.port, 9999);
   });
 
 });
