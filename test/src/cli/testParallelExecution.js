@@ -315,7 +315,8 @@ describe('test Parallel Execution', function() {
     assert.ok(args.includes('--parallel-mode'));
   });
 
-  it('test parallel execution to ensure worker start_process is disabled when using selenium server', function() {
+  // TODO: this test is not complete
+  xit('test parallel execution to ensure worker start_process is disabled when using selenium server', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     const runner = new CliRunner({
       config: path.join(__dirname, '../../extra/parallelism-selenium-server.json')
