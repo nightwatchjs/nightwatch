@@ -337,14 +337,14 @@ describe('test Parallel Execution', function() {
 
     runner.setup();
     const worker = runner.concurrency.createChildProcess('test-worker');
-    console.log(worker.settings.selenium);
 
   });
 
-  it('test random port assignment for parallel execution', function(){
+  it.only('test random port assignment for parallel execution', function(){
     const client = Nightwatch.createClient({
       webdriver: {
-        port: 9999
+        port: 9999,
+        start_process: false
       },
 
       'test_workers': {
