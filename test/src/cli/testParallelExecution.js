@@ -340,8 +340,21 @@ describe('test Parallel Execution', function() {
 
   });
 
-  it.only('test random port assignment for parallel execution', function(){
+  it('test random port assignment for parallel execution', function(){
     const client = Nightwatch.createClient({
+      webdriver: {
+        port: 9999,
+        start_process: true
+      },
+
+      'test_workers': {
+        'enabled': true,
+        'workers': 4
+      }
+    });
+    assert.equal(client.transport.settings.webdriver.port, undefined);
+
+    const client2 = Nightwatch.createClient({
       webdriver: {
         port: 9999,
         start_process: false
@@ -352,8 +365,7 @@ describe('test Parallel Execution', function() {
         'workers': 4
       }
     });
-
-    assert.notEqual(client.httpOpts.port, 9999);
+    assert.equal(client2.transport.settings.webdriver.port, 9999);
   });
 
 });
