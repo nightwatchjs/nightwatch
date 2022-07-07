@@ -181,7 +181,7 @@ describe('expect.elements count', function() {
         assert.strictEqual(expect.assertion.passed, false);
         assert.ok(expect.assertion.messageParts.includes(' equal: "4"'));
         assert.ok(expect.assertion.message.startsWith('Expected elements <.classname> count to equal: "4"'));
-        assert.strictEqual(expect.assertion.resultValue, undefined);
+        assert.strictEqual(expect.assertion.resultValue, 0);
       });
     });
   });
