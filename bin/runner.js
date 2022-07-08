@@ -3,6 +3,7 @@
  */
 const Nightwatch = require('../lib/index.js');
 const {Logger, shouldReplaceStack, alwaysDisplayError} = require('../lib/utils');
+const {getCount} = require('../lib/reqTracker.js');
 
 try {
   Nightwatch.cli(function(argv) {
@@ -26,6 +27,9 @@ try {
         }
       
         runner.processListener.setExitCode(10).exit();
+      }).then(() => {
+        // eslint-disable-next-line no-console
+        console.log('REQ COUNT:', getCount());
       });
   });
 } catch (err) {
