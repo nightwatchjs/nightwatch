@@ -13,7 +13,13 @@ describe('waitForElementVisible', function () {
     CommandGlobals.afterEach.call(this, done);
   });
 
+  let commandResult;
   let commandInstance;
+
+  function commandCallback(result, instance) {
+    commandResult = result;
+    commandInstance = instance;
+  }
 
   it('client.waitForElementVisible() failure', function (done) {
     MockServer.addMock({
@@ -336,4 +342,15 @@ describe('waitForElementVisible', function () {
     });
   });
 
+  it.only('client.waitForElementVisible() failure should not stop execution if abortOnFailure = false', function() {
+    this.client.api.globals.waitForConditionPollInterval = 10;
+    this.client.api.waitForElementVisible('.bad-element-3', 100, false, commandCallback);
+
+    return this.client.start(function(err) {
+      assert.strictEqual(err, undefined);
+      assert.deepStrictEqual(commandResult.value, null);
+      assert.strictEqual(commandInstance.expectedValue, 'visible');
+      assert.strictEqual(commandInstance.abortOnFailure, false);
+    });
+  });
 });
