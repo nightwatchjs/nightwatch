@@ -3,6 +3,14 @@ const MockServer = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 
 describe('waitForElementVisible', function () {
+  let commandResult;
+  let commandInstance;
+  
+  function commandCallback(result, instance) {
+    commandResult = result;
+    commandInstance = instance;
+  }
+
   beforeEach(function (done) {
     CommandGlobals.beforeEach.call(this, done, {
       output: false
@@ -13,7 +21,6 @@ describe('waitForElementVisible', function () {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  let commandInstance;
 
   it('client.waitForElementVisible() failure', function (done) {
     MockServer.addMock({
@@ -336,4 +343,17 @@ describe('waitForElementVisible', function () {
     });
   });
 
+  it('client.waitForElementNotPresent() continue execution if abort abortOnAssertionFailure is set to false', function () {
+    this.client.api.globals.waitForConditionPollInterval = 10;
+    this.client.api.globals.abortOnAssertionFailure = false;
+    
+    this.client.api.waitForElementVisible('.bad-element-3', 100, commandCallback);
+ 
+    return this.client.start(function(err) {
+      assert.strictEqual(err, undefined);
+      assert.deepStrictEqual(commandResult.value, null);
+      assert.strictEqual(commandInstance.expectedValue, 'visible');
+      assert.strictEqual(commandInstance.abortOnFailure, false);
+    });
+  });
 });
