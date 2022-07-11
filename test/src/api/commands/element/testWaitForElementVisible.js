@@ -342,7 +342,7 @@ describe('waitForElementVisible', function () {
     });
   });
 
-  it.only('client.waitForElementVisible() failure should not stop execution if abortOnFailure = false', function() {
+  it('client.waitForElementVisible() failure should not stop execution if abortOnFailure = false', function() {
     this.client.api.globals.waitForConditionPollInterval = 10;
     this.client.api.waitForElementVisible('.bad-element-3', 100, false, commandCallback);
 
