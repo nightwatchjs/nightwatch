@@ -1,46 +1,31 @@
-const MockServer = require('../../lib/mockserver');
+const Nocks = require('../../lib/nocks.js');
 const Globals = require('../../lib/globals/commands');
-const AnalyticsCollector = require('../../../lib/analytics');
+const analytics = require('../../../lib/analytics');
 const Settings = require('../../../lib/settings/settings');
 const assert = require('assert');
 
-describe.only('test analytics unitily', function() {
-  this.timeout(100000);
-    
-  //   beforeEach(function(done) {
-  //     // this.server = MockServer.init(null, {port: 13555});
-  //     // this.server.on('listening', () => done());
-  //   });
+describe('test analytics utility', function() {
+  afterEach(function() {
+    Nocks.cleanAll();
+  });
 
-  //   afterEach(function(done) {
-  //     Globals.afterEach.call(this, done);
-  //   });
-
-  it('sould send analytics data to GA', async function() {
-    // MockServer.addMock({
-    //   url: '/mp/collect',
-    //   statusCode: 500,
-    //   method: 'GET',
-    //   response: {
-    //     value: 'foo'
-    //   }
-    // });
+  it('should send analytics data to GA', async function() {
+    Nocks.analyticsCollector().active();
 
     const settings = Settings.parse({
       analytics: {
         enabled: true,
-        serverUrl: 'localhost:13555'
+        serverUrl: 'http://localhost:13555'
       }
     });
 
-    const analytics = new AnalyticsCollector(settings);
-    analytics.event('test', 'log');
+    analytics.updateSettings(settings);
+    analytics.event('test', {log: 'log'});
 
-    return analytics.flush().then((res) => {
-      assert.notEqual(res, undefined);
+    await analytics.flush().then((res) => {
+      assert.notEqual(res, 'foo');
     }).catch((err) => {
       assert.strictEqual(err, undefined);
     });
   });
-
 });

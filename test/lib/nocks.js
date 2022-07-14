@@ -508,6 +508,18 @@ module.exports = {
     return this;
   },
 
+  analyticsCollector() {
+    nock('http://localhost:13555')
+      .post('/mp/collect?api_secret=9xiYrxw1TlC-MlPayeCw5A&measurement_id=G-NJ5GYXJRCQ')
+      .reply(204, {
+        status: 0,
+        state: 'success',
+        value: []
+      });
+
+    return this;
+  },
+
   cleanAll() {
     nock.cleanAll();
 
