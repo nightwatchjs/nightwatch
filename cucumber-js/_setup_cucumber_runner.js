@@ -63,7 +63,15 @@ Before(function({pickle}) {
   }
 });
 
-After(async function() {
+After(async function(testCase) {
+
+  //send test-case result to cloud provider
+  const {result} = testCase;
+  if (this.client && result) {
+    const error = result.status === 'FAILED' ? new Error(result.message) : null;
+    await this.client.transport.testSuiteFinished(error);
+  }
+
   if (this.browser) {
     await this.browser.quit();
   }

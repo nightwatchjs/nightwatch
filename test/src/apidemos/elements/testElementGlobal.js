@@ -24,7 +24,7 @@ describe('element global demos', function() {
     Mocks.elementText();
     Mocks.tagName('0', 'div');
     Mocks.visible('0', true, {
-      times: 1
+      times: 2
     });
 
     const globals = {
@@ -46,5 +46,13 @@ describe('element global demos', function() {
     }));
   });
 
+  it('set use_xpath locate-strategy in element global', function() {
+    const testsPath = path.join(__dirname, '../../../apidemos/elements/testGlobalLocateStrategy.js');
+
+    return NightwatchClient.runTests(testsPath, settings({
+      output: false,
+      use_xpath: true
+    }));
+  });
   
 });

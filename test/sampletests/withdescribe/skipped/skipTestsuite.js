@@ -6,7 +6,7 @@ xdescribe('sample test with failures', function() {
       .end();
   });
 
-  xit('demoTest2', function (client) {
+  it('demoTest2', function (client) {
     client.globals.calls++;
     client.url('http://localhost')
       .assert.elementPresent('#weblogin')

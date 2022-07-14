@@ -7,7 +7,7 @@ const eq = assert.strictEqual;
 
 describe('test Settings', function () {
   it('testSetOptions', function () {
-    let client = Nightwatch.createClient({
+    const client = Nightwatch.createClient({
       use_xpath: true,
       launch_url: '/home'
     });
@@ -21,7 +21,7 @@ describe('test Settings', function () {
 
   it('test set test_runner invalid value', function () {
     assert.throws(function() {
-      let client = Nightwatch.createClient({
+      const client = Nightwatch.createClient({
         test_runner: null
       });
     }, /Error: Invalid "test_runner" settings specified; received: null/);
@@ -29,7 +29,7 @@ describe('test Settings', function () {
 
   it('test set test_runner invalid value - function', function () {
     assert.throws(function() {
-      let client = Nightwatch.createClient({
+      const client = Nightwatch.createClient({
         test_runner: function() {}
       });
     }, /Error: Invalid "test_runner" settings specified; received: function\(\) \{\}/);
@@ -37,7 +37,7 @@ describe('test Settings', function () {
 
   it('test set test_runner string value', function () {
 
-    let client = Nightwatch.createClient({
+    const client = Nightwatch.createClient({
       test_runner: 'mocha'
     });
 
@@ -49,7 +49,7 @@ describe('test Settings', function () {
 
   it('testSetWebdriverOptionsDefaults', function () {
     HttpRequest.globalSettings = {};
-    let client = Nightwatch.createClientDefaults();
+    const client = Nightwatch.createClientDefaults();
 
     eq(client.options.webdriver.host, 'localhost');
     eq(client.options.webdriver.port, 4444);
@@ -63,7 +63,7 @@ describe('test Settings', function () {
   });
 
   it('testSetWebdriverOptions', function () {
-    let client = Nightwatch.createClient({
+    const client = Nightwatch.createClient({
       webdriver: {
         host: '127.0.0.1',
         ssl: false,
@@ -78,8 +78,8 @@ describe('test Settings', function () {
       }
     });
 
-    let HttpRequest = common.require('http/request.js');
-    let request = new HttpRequest({});
+    const HttpRequest = common.require('http/request.js');
+    const request = new HttpRequest({});
 
     eq(request.reqOptions.host, '127.0.0.1');
     eq(request.reqOptions.port, 10195);
@@ -124,7 +124,7 @@ describe('test Settings', function () {
     const Nightwatch = common.require('index.js');
     const Settings = common.require('settings/settings.js');
 
-    let settings = Settings.parse({
+    const settings = Settings.parse({
       selenium: {
         start_process: false
       },
@@ -134,8 +134,8 @@ describe('test Settings', function () {
 
     Nightwatch.client(settings, null);
 
-    let HttpRequest = common.require('http/request.js');
-    let request = new HttpRequest({});
+    const HttpRequest = common.require('http/request.js');
+    const request = new HttpRequest({});
 
     eq(request.reqOptions.port, 80);
   });
@@ -143,7 +143,7 @@ describe('test Settings', function () {
   it('test create Transport for remote with Firefox', function() {
     const Settings = common.require('settings/settings.js');
 
-    let settings = Settings.parse({
+    const settings = Settings.parse({
       selenium: {
         start_process: false
       }
@@ -162,7 +162,7 @@ describe('test Settings', function () {
   });
 
   it('testSetOptionsCredentials', function () {
-    let client = Nightwatch.createClient({
+    const client = Nightwatch.createClient({
       username: 'test-user',
       accessKey: 'test-access-key'
     });
@@ -174,7 +174,7 @@ describe('test Settings', function () {
   });
 
   it('testEnableFailFast', function () {
-    let client = Nightwatch.createClient({}, null, {
+    const client = Nightwatch.createClient({}, null, {
       'fail-fast': true
     });
 
@@ -182,7 +182,7 @@ describe('test Settings', function () {
   });
 
   it('testSetOptionsScreenshots – path empty', function () {
-    let client = Nightwatch.createClient({
+    const client = Nightwatch.createClient({
       screenshots: {
         enabled: true,
         path: ''
@@ -197,7 +197,7 @@ describe('test Settings', function () {
   });
 
   it('testSetOptionsScreenshots – path not empty', function () {
-    let client = Nightwatch.createClient({
+    const client = Nightwatch.createClient({
       screenshots: {
         enabled: true,
         path: '/tmp/'
@@ -207,12 +207,17 @@ describe('test Settings', function () {
 
     eq(client.api.options.log_screenshot_data, true);
     eq(client.options.screenshots.on_error, true);
-    eq(client.settings.screenshots.path, '/tmp');
+    
+    if (process.platform === 'win32') {
+      assert.ok(client.settings.screenshots.path.endsWith('\\tmp'));
+    } else {
+      eq(client.settings.screenshots.path, '/tmp');
+    }
   });
 
 
   it('testSetOptionsScreenshotsOnError', function () {
-    let client = Nightwatch.createClient({
+    const client = Nightwatch.createClient({
       screenshots: {
         enabled: true,
         on_error: true,
@@ -225,7 +230,7 @@ describe('test Settings', function () {
   });
 
   it('testSetOptionsScreenshotsThrows', function () {
-    let client = Nightwatch.createClient({
+    const client = Nightwatch.createClient({
       screenshots: true
     });
 
@@ -237,7 +242,7 @@ describe('test Settings', function () {
   });
 
   it('testEndSessionOnFail', function () {
-    let client = Nightwatch.createClient({
+    const client = Nightwatch.createClient({
       end_session_on_fail: true
     });
 
@@ -248,7 +253,7 @@ describe('test Settings', function () {
   });
 
   it('testSetRequestTimeoutOptions', function () {
-    let client = Nightwatch.createClient({
+    const client = Nightwatch.createClient({
       webdriver: {
         timeout_options: {
           timeout: 10000,
@@ -263,15 +268,15 @@ describe('test Settings', function () {
     });
 
 
-    let HttpRequest = common.require('http/request.js');
-    let request = new HttpRequest({});
+    const HttpRequest = common.require('http/request.js');
+    const request = new HttpRequest({});
 
     assert.strictEqual(request.httpOpts.timeout, 10000);
     assert.strictEqual(request.retryAttempts, 5);
   });
 
   it('Test initialize with parallel cli argument', function () {
-    let settings = Settings.parse({
+    const settings = Settings.parse({
       selenium_port: 10195,
       silent: false,
       output: false

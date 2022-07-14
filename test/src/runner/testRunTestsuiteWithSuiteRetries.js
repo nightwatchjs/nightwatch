@@ -43,7 +43,7 @@ describe('testRunTestsuiteWithSuiteRetries', function() {
         assert.strictEqual(results.passed, 1);
         assert.strictEqual(results.failed, 1);
         assert.strictEqual(results.errors, 0);
-        assert.strictEqual(results.skipped, 0);
+        assert.strictEqual(results.skipped, 1);
         cb();
       }
     };
@@ -78,7 +78,7 @@ describe('testRunTestsuiteWithSuiteRetries', function() {
         assert.strictEqual(results.passed, 1);
         assert.strictEqual(results.failed, 1);
         assert.strictEqual(results.errors, 0);
-        assert.strictEqual(results.skipped, 0);
+        assert.strictEqual(results.skipped, 1);
         cb();
       }
     };
@@ -103,7 +103,7 @@ describe('testRunTestsuiteWithSuiteRetries', function() {
         assert.strictEqual(results.passed, 1);
         assert.strictEqual(results.failed, 1);
         assert.strictEqual(results.errors, 0);
-        assert.strictEqual(results.skipped, 0);
+        assert.strictEqual(results.skipped, 1);
         cb();
       }
     };

@@ -78,7 +78,8 @@ describe('test CLI Runner Mocha', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: './withmocha.json',
-      env: 'default'
+      env: 'default',
+      reporter: 'junit'
     }).setup();
 
     return runner.runTests().then(function() {
@@ -114,7 +115,8 @@ describe('test CLI Runner Mocha', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: './withmocha.json',
-      env: 'mochatests'
+      env: 'mochatests',
+      reporter: 'junit'
     }).setup();
 
     return runner.runTests().then(function() {
@@ -158,7 +160,8 @@ describe('test CLI Runner Mocha', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       config: './withmocha.json',
-      env: 'default'
+      env: 'default',
+      reporter: 'junit'
     }).setup();
 
     return runner.runTests().then(function() {
