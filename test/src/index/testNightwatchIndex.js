@@ -82,6 +82,49 @@ describe('test NightwatchIndex', function () {
     });
   });
 
+  it('testChromeSessionWithRelativeRedirectUrl', function (done) {
+    MockServer.addMock({
+      url: '/wd/hub/session',
+      responseHeaders: {
+        location: '/wd/hub/session/1352110219203'
+      },
+      statusCode: 302,
+      method: 'POST'
+    }, true);
+
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219203',
+      response: JSON.stringify({
+        status: 0,
+        sessionId: '1352110219203',
+        value: {browserName: 'chrome'}
+      }),
+      responseHeaders: {
+        statusCode: 201
+      },
+      method: 'GET'
+    }, true);
+
+
+    const client = Nightwatch.createClient({
+      desiredCapabilities: {
+        browserName: 'chrome'
+      },
+      silent: false,
+      output: false
+    });
+
+    client.on('nightwatch:session.create', function (data) {
+      assert.strictEqual(data.sessionId, '1352110219203');
+      assert.strictEqual(client.api.capabilities.browserName, 'chrome');
+      done();
+    });
+
+    client.startSession().catch(err => {
+      done(err);
+    });
+  });
+
   it('test new Chrome session with wrong driver version error message', function () {
     MockServer.addMock({
       url: '/session',
