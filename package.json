@@ -1,7 +1,7 @@
 {
   "name": "nightwatch",
   "description": "Easy to use Node.js based end-to-end testing solution for web applications using the W3C WebDriver API.",
-  "version": "2.2.2",
+  "version": "2.2.3-preview.1",
   "author": "Andrei Rusu",
   "homepage": "https://nightwatchjs.org",
   "main": "./lib/index.js",
@@ -26,6 +26,7 @@
     "glob": "^7.2.3",
     "lodash.clone": "3.0.3",
     "lodash.defaultsdeep": "4.6.1",
+    "lodash.escape": "^4.0.1",
     "lodash.merge": "4.6.2",
     "minimatch": "3.0.4",
     "minimist": "1.2.6",
@@ -33,7 +34,7 @@
     "mocha": "9.2.2",
     "open": "^8.4.0",
     "ora": "5.4.1",
-    "selenium-webdriver": "4.1.1",
+    "selenium-webdriver": "^4.3.1",
     "semver": "7.3.5",
     "stacktrace-parser": "^0.1.10",
     "strip-ansi": "6.0.1"
