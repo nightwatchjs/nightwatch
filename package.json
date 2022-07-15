@@ -44,7 +44,7 @@
     "@types/node": "^16.7.1",
     "coveralls": "^3.1.1",
     "eslint": "^8.9.0",
-    "geckodriver": "^3.0.1",
+    "geckodriver": "^3.0.2",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.21",
     "mocha-junit-reporter": "^2.0.2",
