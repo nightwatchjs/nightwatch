@@ -43,13 +43,15 @@ describe('test Parallel Execution Exit Code', function() {
       }
     });
 
-    const {platform, constants} = require('os');
+    const {platform, constants, homedir, release} = require('os');
     mockery.registerMock('os', {
       cpus: function() {
         return [0, 1, 2];
       },
       platform, 
-      constants
+      constants,
+      homedir,
+      release
     });
   });
 

@@ -3,6 +3,7 @@ const mockery = require('mockery');
 const assert = require('assert');
 const CI_Info = require('ci-info');
 const isCi = CI_Info.isCI;
+const path = require('path');
 
 describe('test CLI Runner Mocha', function() {
   beforeEach(function() {
@@ -24,7 +25,8 @@ describe('test CLI Runner Mocha', function() {
     mockery.registerMock('path', {
       resolve: function(a) {
         return a;
-      }
+      },
+      join: path.join
     });
 
     mockery.registerMock('./folder-walk.js', class Walk {

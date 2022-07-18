@@ -34,7 +34,10 @@ describe('Test CLI Runner Generate', function() {
       platform: function() {
         return 'win';
       },
-      constants: os.constants
+      constants: os.constants,
+      homedir: os.homedir,
+      release: os.release,
+      cpus: os.cpus
     });
 
     mockery.registerMock('fs', {
