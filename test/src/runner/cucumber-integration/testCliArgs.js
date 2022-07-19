@@ -90,4 +90,43 @@ describe('Cucumber cli arguments', function(){
     assert.ok(cliArgs.includes('--dry-run'));
   });
 
+  it('Cucumbr additional option --retries', function(){
+    const runner = new CucumberRunner({
+      test_runner: {
+        type: 'cucumber',
+        options: {
+          retries: 3
+        }
+      }
+    }, {}, {});
+
+    runner.createTestSuite({
+      modules: [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')],
+      modulePath: [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')]
+    });
+
+    assert.ok(cliArgs.includes('--retry'));
+  });
+
+  it('Cucumbr additional options --retry and --format', function(){
+    const runner = new CucumberRunner({
+      test_runner: {
+        type: 'cucumber',
+        options: {
+          retries: 3,
+          format: '@cucumber/pretty-formatter'
+        }
+      }
+    }, {}, {});
+
+    runner.createTestSuite({
+      modules: [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')],
+      modulePath: [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')]
+    });
+
+    assert.ok(cliArgs.includes('--retry'));
+    assert.ok(cliArgs.includes('--format'));
+    assert.strictEqual(cliArgs[cliArgs.indexOf('--retry')+1], 3);
+    assert.strictEqual(cliArgs[cliArgs.indexOf('--format')+1], '@cucumber/pretty-formatter');
+  });
 });
