@@ -45,7 +45,7 @@ describe('testRunWithUncaughtErrors', function() {
             assert.strictEqual(results.modules.demoTestFine.passedCount, 2);
             assert.strictEqual(results.modules.demoTestWithError.assertionsCount, 2);
             assert.strictEqual(results.modules.demoTestWithError.passedCount, 2);
-            assert.ok(results.errmessages[0].includes('Error: Test Error Uncaught'));
+            assert.ok(results.errmessages[0].includes('Test Error Uncaught'));
           } catch (e) {
             testErr = e;
           }
