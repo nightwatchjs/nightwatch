@@ -37,8 +37,8 @@
     "selenium-webdriver": "^4.3.1",
     "semver": "7.3.5",
     "stacktrace-parser": "^0.1.10",
-    "uuid": "^8.3.2",
-    "strip-ansi": "6.0.1"
+    "strip-ansi": "6.0.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^8.2.1",
