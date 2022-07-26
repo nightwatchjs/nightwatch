@@ -3,8 +3,23 @@
  */
 const Nightwatch = require('../lib/index.js');
 const {Logger, shouldReplaceStack, alwaysDisplayError} = require('../lib/utils');
+const path = require('path');
 
 try {
+  const projectTsFile = path.join(process.cwd(), 'nightwatch', 'tsconfig.json');
+  let projectTsExists = false;
+  try {
+    require(projectTsFile);
+    projectTsExists = true;
+
+    require('ts-node').register({
+      esm: false,
+      project: projectTsFile
+    });
+  } catch (err) {
+    // eslint-disable-line
+  }
+
   Nightwatch.cli(function(argv) {
     argv._source = argv['_'].slice(0);
 

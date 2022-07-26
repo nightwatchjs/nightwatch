@@ -4,9 +4,10 @@ const MockServer = require('../../lib/mockserver.js');
 
 const {settings} = common;
 const {runTests} = common.require('index.js');
-const {readFilePromise, readDirPromise, rmFolder} = require('../../lib/utils.js');
+const {readFilePromise, readDirPromise} = require('../../lib/utils.js');
 const mkpath = require('mkpath');
 const rimraf = require('rimraf');
+const assert = require('assert');
 
 describe('testRunnerHTMLOutput', function() {
   const outputPath = 'output';
@@ -70,6 +71,48 @@ describe('testRunnerHTMLOutput', function() {
         return Promise.all([readDirPromise(`${outputPath}${path.sep}nightwatch-html-report${path.sep}js`), 
           readDirPromise(`${outputPath}${path.sep}nightwatch-html-report${path.sep}css`), 
           readDirPromise(`${outputPath}${path.sep}nightwatch-html-report${path.sep}images`)]);
+      });
+     
+  });
+
+  it('test to convert raw html to string', function () {
+
+    const testsPath = [
+      path.join(__dirname, '../../sampletests/withfailures')
+    ];
+
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/screenshot',
+      method: 'GET',
+      response: JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0,
+        value: '<faketag>fakedata'
+      })
+    }, true);
+
+
+    return runTests({source: testsPath, reporter: 'html'}, settings({
+      output_folder: outputPath,
+      globals: {
+        waitForConditionPollInterval: 20,
+        waitForConditionTimeout: 50,
+        retryAssertionTimeout: 50,
+        reporter: function () {
+        }
+      },
+      screenshots: {
+        enabled: true,
+        on_failure: true,
+        on_error: true,
+        path: ''
+      }
+    }))
+      .then(_ => {
+        return readFilePromise(`${outputPath}${path.sep}nightwatch-html-report${path.sep}index.html`);
+      }).
+      then(_ => {
+        assert.ok(_.toString().includes('&lt;faketag&gt;fakedata'));
       });
      
   });

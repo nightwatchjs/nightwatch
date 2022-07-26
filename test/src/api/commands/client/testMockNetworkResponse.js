@@ -18,7 +18,6 @@ describe('.mockNetworkResponse()', function () {
   });
 
   it('browser.mockNetworkResponse(urlToIntercept, {status, headers, body}) with url match', function (done) {
-
     MockServer.addMock({
       url: '/session',
       response: {
@@ -94,6 +93,85 @@ describe('.mockNetworkResponse()', function () {
         assert.deepEqual(expected.cdpCommands, ['Fetch.fulfillRequest', 'Fetch.enable', 'Network.setCacheDisabled']);
       });
   
+      client.start(done);
+    });
+  });
+
+  it('browser.mockNetworkResponse() with relative url to launch_url', function (done) {
+    MockServer.addMock({
+      url: '/session',
+      response: {
+        value: {
+          sessionId: '13521-10219-202',
+          capabilities: {
+            browserName: 'chrome',
+            browserVersion: '92.0'
+          }
+        }
+      },
+      method: 'POST',
+      statusCode: 201
+    }, true);
+
+    Nightwatch.initW3CClient({
+      desiredCapabilities: {
+        browserName: 'chrome',
+        'goog:chromeOptions': {}
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false,
+      launch_url: 'http://localhost:3000'
+    }).then(client => {
+      const expected = {
+        cdpCommands: []
+      };
+
+      // Parameters of actual request made by browser
+      const cdpFetchRequestPauseEvent = JSON.stringify({
+        method: 'Fetch.requestPaused',
+        params: {
+          requestId: '123',
+          request: {
+            url: 'http://localhost:3000/test_api'
+          }
+        }
+      });
+
+      cdp.resetConnection();
+      client.transport.driver.createCDPConnection = function() {
+        return Promise.resolve({
+          _wsConnection: {
+            on: (event, callback) => {
+              expected['wsEvent'] = event;
+              callback(cdpFetchRequestPauseEvent);
+            }
+          },
+          execute: function(command, params) {
+            expected.cdpCommands.push(command);
+            if (command === 'Fetch.fulfillRequest') {
+              expected['requestId'] = params.requestId;
+              expected['responseCode'] = params.responseCode;
+              expected['responseHeaders'] = params.responseHeaders;
+              expected['responseBody'] = params.body;
+            }
+          }
+        });
+      };
+
+      const response = {
+        status: 200,
+        body: 'Hey there!'
+      };
+      client.api.mockNetworkResponse('/test_api', response, function () {
+        // Assert final response with response passed
+        assert.strictEqual(expected.responseCode, response.status);
+        assert.deepEqual(expected.responseHeaders, []);
+        assert.strictEqual(expected.responseBody, Buffer.from(response.body, 'utf-8').toString('base64'));
+        assert.strictEqual(expected.requestId, JSON.parse(cdpFetchRequestPauseEvent).params.requestId);
+        assert.strictEqual(expected.wsEvent, 'message');
+        assert.deepEqual(expected.cdpCommands, ['Fetch.fulfillRequest', 'Fetch.enable', 'Network.setCacheDisabled']);
+      });
+
       client.start(done);
     });
   });
@@ -340,7 +418,7 @@ describe('.mockNetworkResponse()', function () {
       };
       client.api.mockNetworkResponse('https://www.google.com', response, function(result){
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'MockNetworkResponse is only supported in Chrome and Edge drivers');
+        assert.strictEqual(result.error, 'The command .mockNetworkResponse() is only supported in Chrome and Edge drivers');
       });
       client.start(done);
     });

@@ -67,7 +67,6 @@ describe('testRunnerJsonOutput', function() {
         assert.strictEqual(Object.keys(data.report.completed)[0], 'simpleDemoTest');
         assert.strictEqual(data.name, 'sample');
         assert.strictEqual(Array.isArray(data.httpOutput), true);
-        assert.strictEqual(data.httpOutput[0].length, 3);
 
         assert.strictEqual(data.report.modulePath.endsWith(path.join(
           'test', 'sampletests', 'withsubfolders', 'simple', 'sample.js'

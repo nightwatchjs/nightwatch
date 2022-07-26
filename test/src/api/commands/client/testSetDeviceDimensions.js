@@ -176,7 +176,7 @@ describe('.setDeviceDimensions()', function () {
     }).then(client => {
       client.api.setDeviceDimensions({width: 400, height: 600, deviceScaleFactor: 50}, function(result){
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'SetDeviceDimensions is only supported in Chrome and Edge drivers');
+        assert.strictEqual(result.error, 'The command .setDeviceDimensions() is only supported in Chrome and Edge drivers');
       });
       client.start(done);
     });

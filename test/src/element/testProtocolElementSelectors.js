@@ -192,7 +192,7 @@ describe('test protocol element selectors', function() {
       .elements('xpath', {selector: '.nock', locateStrategy: 'css selector'}, function callback(result) {
         assert.strictEqual(result.value[0].ELEMENT, '0');
       })
-      .elements('xpath', {selector: 'nock', locateStrategy: 'tag name'}, function callback(result) {
+      .elements('xpath', {selector: 'nock', locateStrategy: 'css selector'}, function callback(result) {
         assert.strictEqual(result.value[0].ELEMENT, '0');
       })
       .elements('css selector', {selector: '.nock', locateStrategy: null}, function callback(result) {

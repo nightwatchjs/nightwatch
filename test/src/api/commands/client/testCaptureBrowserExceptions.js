@@ -4,7 +4,7 @@ const MockServer = require('../../../../lib/mockserver.js');
 const Nightwatch = require('../../../../lib/nightwatch.js');
 const cdp = require('../../../../../lib/transport/selenium-webdriver/cdp.js');
 
-describe('.catchJsExceptions()', function () {
+describe('.captureBrowserExceptions()', function () {
   beforeEach(function (done) {
     this.server = MockServer.init();
 
@@ -17,7 +17,7 @@ describe('.catchJsExceptions()', function () {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('browser.catchJsExceptions(callback)', function (done) {
+  it('browser.captureBrowserExceptions(callback)', function (done) {
 
     MockServer.addMock({
       url: '/session',
@@ -57,7 +57,7 @@ describe('.catchJsExceptions()', function () {
 
       //eslint-disable-next-line
       const userCallback = (event) => {console.log(event)};
-      client.api.catchJsExceptions(userCallback, function () {
+      client.api.captureBrowserExceptions(userCallback, function () {
         assert.strictEqual(expectedCdpConnection, undefined);  // cdpConnection is mocked
         assert.strictEqual(expectedUserCallback, userCallback);
       });
@@ -91,16 +91,16 @@ describe('.catchJsExceptions()', function () {
       output: process.env.VERBOSE === '1',
       silent: false
     }).then(client => {
-      client.api.catchJsExceptions(undefined, function (result){
+      client.api.captureBrowserExceptions(undefined, function (result){
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'Callback is missing from .catchJsExceptions command.');
+        assert.strictEqual(result.error, 'Callback is missing from .captureBrowserExceptions() command.');
       });
 
       client.start(done);
     });
   });
 
-  it('browser.catchJsExceptions - driver not supported', function(done){
+  it('browser.captureBrowserExceptions - driver not supported', function(done){
     Nightwatch.initW3CClient({
       desiredCapabilities: {
         browserName: 'firefox'
@@ -111,9 +111,9 @@ describe('.catchJsExceptions()', function () {
       //eslint-disable-next-line
       const userCallback = (event) => {console.log(event)};
 
-      client.api.catchJsExceptions(userCallback, function(result){
+      client.api.captureBrowserExceptions(userCallback, function(result){
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'CatchJsExceptions is only supported in Chrome and Edge drivers');
+        assert.strictEqual(result.error, 'The command .captureBrowserExceptions() is only supported in Chrome and Edge drivers');
       });
       client.start(done);
     });

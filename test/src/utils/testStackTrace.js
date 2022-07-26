@@ -60,7 +60,7 @@ describe('test stackTrace parse', function() {
 `;
 
     const result = beautifyStackTrace(error);
-    assert.strictEqual(result, expected);
+    assert.strictEqual(result.replace(/\s/g, ''), expected.replace(/\s/g, ''));
   });
 
   it('beautifyStackTrace - Unknown API method', function() {
@@ -91,7 +91,7 @@ describe('test stackTrace parse', function() {
 `;
 
     const result = Utils.beautifyStackTrace(error);
-    assert.strictEqual(result, expected);
+    assert.strictEqual(result.replace(/\s/g, ''), expected.replace(/\s/g, ''));
   });
 
 });

@@ -4,7 +4,7 @@ const MockServer = require('../../../../lib/mockserver.js');
 const Nightwatch = require('../../../../lib/nightwatch.js');
 const cdp = require('../../../../../lib/transport/selenium-webdriver/cdp.js');
 
-describe('.startCapturingLogs()', function () {
+describe('.captureNetworkRequests()', function () {
   beforeEach(function (done) {
     this.server = MockServer.init();
 
@@ -17,7 +17,7 @@ describe('.startCapturingLogs()', function () {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('browser.startCapturingLogs()', function (done) {
+  it('browser.captureNetworkRequests()', function (done) {
 
     MockServer.addMock({
       url: '/session',
@@ -42,26 +42,44 @@ describe('.startCapturingLogs()', function () {
       output: process.env.VERBOSE === '1',
       silent: false
     }).then(client => {
+      const expected = {};
 
-      let expectedCdpConnection;
-      let expectedUserCallback;
+      const cdpNetworkEvent = JSON.stringify({
+        method: 'Network.requestWillBeSent',
+        params: {
+          request: {
+            url: 'https://www.google.com',
+            method: 'GET',
+            headers: []
+          }
+        }
+      });
 
       cdp.resetConnection();
       client.transport.driver.createCDPConnection = function() {
-        return Promise.resolve();
-      };
-      client.transport.driver.onLogEvent = (cdpConnection, userCallback) => {
-        expectedCdpConnection = cdpConnection;
-        expectedUserCallback = userCallback;
+        return Promise.resolve({
+          _wsConnection: {
+            on: (event, callback) => {
+              expected['wsEvent'] = event;
+              callback(cdpNetworkEvent);
+            }
+          },
+          execute: function(command, params) {
+            expected['cdpCommand'] = command;
+            expected['cdpParams'] = params;
+          }
+        });
       };
 
-      //eslint-disable-next-line
-      const userCallback = (event) => {console.log(event)};
-      client.api.startCapturingLogs(userCallback, function () {
-        assert.strictEqual(expectedCdpConnection, undefined);  // cdpConnection is mocked
-        assert.strictEqual(expectedUserCallback, userCallback);
+      const userCallback = (requestParams) => {
+        expected['requestParams'] = requestParams;
+      };
+      client.api.captureNetworkRequests(userCallback, function () {
+        assert.deepEqual(expected.cdpCommand, 'Network.enable');
+        assert.deepEqual(expected.cdpParams, {});
+        assert.strictEqual(expected.wsEvent, 'message');
+        assert.deepEqual(expected.requestParams, JSON.parse(cdpNetworkEvent).params);
       });
-
       client.start(done);
     });
   });
@@ -91,16 +109,16 @@ describe('.startCapturingLogs()', function () {
       output: process.env.VERBOSE === '1',
       silent: false
     }).then(client => {
-      client.api.startCapturingLogs(undefined, function (result){
+      client.api.captureNetworkRequests(undefined, function (result){
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'Callback is missing from .startCapturingLogs command.');
+        assert.strictEqual(result.error, 'Callback is missing from .captureNetworkRequests() command.');
       });
 
       client.start(done);
     });
   });
 
-  it('browser.startCapturingLogs - driver not supported', function(done){
+  it('browser.captureNetworkRequests - driver not supported', function(done) {
     Nightwatch.initW3CClient({
       desiredCapabilities: {
         browserName: 'firefox'
@@ -108,12 +126,11 @@ describe('.startCapturingLogs()', function () {
       output: process.env.VERBOSE === '1',
       silent: false
     }).then(client => {
-      //eslint-disable-next-line
-      const userCallback = (event) => {console.log(event)};
-
-      client.api.startCapturingLogs(userCallback, function(result){
+      // eslint-disable-next-line
+      const userCallback = (requestParams) => {console.log(requestParams)}
+      client.api.captureNetworkRequests(userCallback, function(result){
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'StartCapturingLogs is only supported in Chrome and Edge drivers');
+        assert.strictEqual(result.error, 'The command .captureNetworkRequests() is only supported in Chrome and Edge drivers');
       });
       client.start(done);
     });
