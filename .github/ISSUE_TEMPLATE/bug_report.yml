@@ -120,7 +120,7 @@ body:
     attributes:
       label: "Nightwatch.js Version"
       description: "The version of Nightwatch you use."
-      placeholder: "2.1.7"
+      placeholder: "2.3.0"
     validations:
       required: true
   - type: "input"
@@ -143,24 +143,18 @@ body:
       label: "Yarn Version"
       description: "The version of Yarn you use."
       placeholder: "1.0.1"
-  - type: "checkboxes"
+  - type: "input"
     id: "browser"
     attributes:
       label: "Browser"
       description: "The browser(s) this issue occurred with."
-      options:
-        - label: "Google Chrome"
-        - label: "Firefox"
-        - label: "Safari"
-  - type: "checkboxes"
+      placeholder: "Firefox 102.0.1"
+  - type: "input"
     id: "operating-system"
     attributes:
       label: "Operating System"
       description: "The operating system(s) this issue occurred with."
-      options:
-        - label: "macOS"
-        - label: "Windows"
-        - label: "Linux"
+      placeholder: "MacOs Monterey 12.5"
   - type: "textarea"
     id: "additional-information"
     attributes:
