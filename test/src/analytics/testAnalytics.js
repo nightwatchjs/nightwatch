@@ -22,7 +22,7 @@ describe('test analytics utility', function() {
     analytics.updateSettings(settings);
     analytics.event('test', {log: 'log'});
 
-    await analytics.flush().then((res) => {
+    await analytics.__flush().then((res) => {
       assert.notEqual(res, 'foo');
     }).catch((err) => {
       assert.strictEqual(err, undefined);
