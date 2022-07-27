@@ -152,8 +152,5 @@ describe('testRunnerHTMLOutput', function() {
       }).
       then(_ => {
       });
-     
   });
-
-
 });
