@@ -116,4 +116,44 @@ describe('testRunnerHTMLOutput', function() {
       });
      
   });
+  
+  it('test html report folder', function () {
+
+    const testsPath = [
+      path.join(__dirname, '../../sampletests/withfailures')
+    ];
+
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/screenshot',
+      method: 'GET',
+      response: JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0,
+        value: '<faketag>fakedata'
+      })
+    }, true);
+
+
+    return runTests({source: testsPath, reporter: 'html'}, settings({
+      output_folder: outputPath,
+      globals: {
+        waitForConditionPollInterval: 20,
+        waitForConditionTimeout: 50,
+        retryAssertionTimeout: 50,
+        reporter: function () {
+        }
+      },
+      html_reporter: {
+        retain_report: true
+      }
+    }))
+      .then(_ => {
+        return readFilePromise(`${outputPath}${path.sep}*${path.sep}nightwatch-html-report${path.sep}index.html`);
+      }).
+      then(_ => {
+      });
+     
+  });
+
+
 });
