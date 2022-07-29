@@ -117,7 +117,7 @@ describe('testRunnerHTMLOutput', function() {
      
   });
   
-  it('test html report folder', function () {
+  it('test html report folder with a folder format function', function () {
 
     const testsPath = [
       path.join(__dirname, '../../sampletests/withfailures')
@@ -143,8 +143,10 @@ describe('testRunnerHTMLOutput', function() {
         reporter: function () {
         }
       },
-      html_reporter: {
-        retain_report: true
+      reporter_options: {
+        folder_format: function() {
+          return Date.now().toString();
+        }
       }
     }))
       .then(_ => {
