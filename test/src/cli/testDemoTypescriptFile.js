@@ -1,8 +1,8 @@
 const path = require('path');
-const MockServer = require('../../../lib/mockserver.js');
-const common = require('../../../common.js');
+const MockServer = require('../../lib/mockserver.js');
+const common = require('../../common.js');
 const NightwatchClient = common.require('index.js');
-const {loadTSNode} = require('../../../../lib/utils');
+const {loadTSNode} = require('../../../lib/utils');
 
 describe('Typescript demos', function () {
   beforeEach(function (done) {
@@ -20,9 +20,9 @@ describe('Typescript demos', function () {
 
   it('run basic typescript tests', function () {
     this.timeout(3000);
-    const testsPath = path.join(__dirname, '../../../apidemos/typescript/demo.ts');
+    const testsPath = path.join(__dirname, '../../typescript-tests/demo.ts');
 
-    const projectTsFile = path.join(__dirname, '../../../apidemos/typescript/tsconfig.json');
+    const projectTsFile = path.join(__dirname, '../../typescript-tests/tsconfig.json');
     loadTSNode(projectTsFile);
 
     const globals = {
