@@ -2,25 +2,11 @@
  * Module dependencies
  */
 const Nightwatch = require('../lib/index.js');
-const {Logger, shouldReplaceStack, alwaysDisplayError} = require('../lib/utils');
-const path = require('path');
+const {Logger, shouldReplaceStack, alwaysDisplayError, loadTSNode} = require('../lib/utils');
 
 try {
-  const projectTsFile = path.join(process.cwd(), 'nightwatch', 'tsconfig.json');
-  let projectTsExists = false;
-  try {
-    require(projectTsFile);
-    projectTsExists = true;
-
-    require('ts-node').register({
-      esm: false,
-      project: projectTsFile
-    });
-  } catch (err) {
-    // eslint-disable-line
-  }
-
-  Nightwatch.cli(function(argv) {
+  Nightwatch.cli(function (argv) {
+    loadTSNode();
     argv._source = argv['_'].slice(0);
 
     const runner = Nightwatch.CliRunner(argv);
