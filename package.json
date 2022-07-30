@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "@cucumber/cucumber": "^8.2.1",
+    "@types/nightwatch": "^2.3.0",
     "@types/node": "^16.7.1",
     "coveralls": "^3.1.1",
     "eslint": "^8.9.0",
