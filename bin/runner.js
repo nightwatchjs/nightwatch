@@ -1,12 +1,15 @@
 /**
  * Module dependencies
  */
+const path = require('path');
 const Nightwatch = require('../lib/index.js');
 const {Logger, shouldReplaceStack, alwaysDisplayError, loadTSNode} = require('../lib/utils');
 
 try {
   Nightwatch.cli(function (argv) {
-    loadTSNode();
+    const projectTsFile = path.join(process.cwd(), 'tsconfig.json');
+
+    loadTSNode(projectTsFile);
     argv._source = argv['_'].slice(0);
 
     const runner = Nightwatch.CliRunner(argv);

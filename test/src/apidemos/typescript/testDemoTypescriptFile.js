@@ -20,12 +20,11 @@ describe('Typescript demos', function () {
 
   it('run basic typescript tests', function () {
     this.timeout(3000);
-    process.cwd = function() {
-      return '/Users/vaibhavsingh/Dev/nightwatch/test/apidemos/typescript';
-    };
-
     const testsPath = path.join(__dirname, '../../../apidemos/typescript/demo.ts');
-    loadTSNode();
+
+    const projectTsFile = path.join(__dirname, '../../../apidemos/typescript/tsconfig.json');
+    loadTSNode(projectTsFile);
+
     const globals = {
       waitForConditionPollInterval: 50,
 
