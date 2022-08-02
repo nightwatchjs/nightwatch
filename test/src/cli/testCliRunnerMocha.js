@@ -180,6 +180,10 @@ describe('test CLI Runner Mocha', function() {
       reporter: 'mochawesome'
     };
 
+    if (isCi) {
+      mochaOptions.color = false;
+    }
+
     mockery.registerMock('mochawesome', {});
 
     mockery.registerMock('./withmochaReportOptions.json', {
