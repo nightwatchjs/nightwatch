@@ -1,15 +1,22 @@
 /**
  * Module dependencies
  */
-const path = require('path');
 const Nightwatch = require('../lib/index.js');
-const {Logger, shouldReplaceStack, alwaysDisplayError, loadTSNode} = require('../lib/utils');
+const {
+  Logger,
+  shouldReplaceStack,
+  alwaysDisplayError,
+  loadTSNode,
+  findTSConfigFile
+} = require('../lib/utils');
 
 try {
   Nightwatch.cli(function (argv) {
-    const projectTsFile = path.join(process.cwd(), 'tsconfig.json');
+    const projectTsFilePath = findTSConfigFile();
+    if (projectTsFilePath !== '') {
+      loadTSNode(projectTsFilePath);
+    }
 
-    loadTSNode(projectTsFile);
     argv._source = argv['_'].slice(0);
 
     const runner = Nightwatch.CliRunner(argv);
@@ -28,7 +35,7 @@ try {
         if (!err.displayed || alwaysDisplayError(err) && !err.displayed) {
           Logger.error(err);
         }
-      
+
         runner.processListener.setExitCode(10).exit();
       });
   });

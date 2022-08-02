@@ -22,7 +22,7 @@ describe('Typescript demos', function () {
     this.timeout(3000);
     const testsPath = path.join(__dirname, '../../typescript-tests/demo.ts');
 
-    const projectTsFile = path.join(__dirname, '../../typescript-tests/tsconfig.json');
+    const projectTsFile = path.join(__dirname, '../../typescript-tests/tsconfig.nightwatch.json');
     loadTSNode(projectTsFile);
 
     const globals = {
