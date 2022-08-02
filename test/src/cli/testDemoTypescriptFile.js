@@ -19,7 +19,7 @@ describe('Typescript demos', function () {
   });
 
   it('run basic typescript tests', function () {
-    this.timeout(3000);
+    this.timeout(5000);
     const testsPath = path.join(__dirname, '../../typescript-tests/demo.ts');
 
     const projectTsFile = path.join(__dirname, '../../typescript-tests/tsconfig.nightwatch.json');
