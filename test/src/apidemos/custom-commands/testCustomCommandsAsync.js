@@ -38,8 +38,8 @@ describe('custom commands with findElements es6 async', function() {
     };
 
     return NightwatchClient.runTests(testsPath, settings({
-      output: true,
-      silent: false,
+      output: false,
+      silent: true,
       selenium_host: null,
       custom_commands_path: [path.join(__dirname, '../../../extra/commands/es6async')],
       globals
@@ -68,8 +68,8 @@ describe('custom commands with findElements es6 async', function() {
     };
 
     return NightwatchClient.runTests(testsPath, settings({
-      output: true,
-      silent: false,
+      output: false,
+      silent: true,
       selenium_host: null,
       custom_commands_path: [path.join(__dirname, '../../../extra/commands/es6async')],
       globals
