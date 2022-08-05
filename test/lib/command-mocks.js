@@ -204,6 +204,16 @@ module.exports = {
     return this;
   },
 
+  w3cVisible(value = true) {
+    MockServer.addMock({
+      url: '/session/13521-10219-202/execute/sync',
+      method: 'POST',
+      response: JSON.stringify({
+        value
+      })
+    }, true);
+  }, 
+
   findElements({using = 'css selector', value = '#container', response = null, times = 0}) {
     const mockOpts = {
       url: '/session/13521-10219-202/elements',
