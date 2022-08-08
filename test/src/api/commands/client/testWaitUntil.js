@@ -107,7 +107,7 @@ describe('.waitUntil()', function () {
       let tries = 0;
       let startTime = new Date().valueOf();
       let timeDiff;
-      const maxTimeout = 300;
+      const maxTimeout = 100;
       const client = this.client.api;
       let result;
 
@@ -116,7 +116,7 @@ describe('.waitUntil()', function () {
         tries++;
 
         return false;
-      }, maxTimeout, 150, function(response) {
+      }, maxTimeout, 50, function(response) {
         timeDiff = new Date().valueOf() - startTime;
         result = response;
       });
@@ -134,11 +134,71 @@ describe('.waitUntil()', function () {
       });
     });
 
+    it('client.waitUntil() function failure with custom timeout, interval, message, and callback', function (done) {
+      let tries = 0;
+      let startTime = new Date().valueOf();
+      let timeDiff;
+      const maxTimeout = 100;
+      const client = this.client.api;
+      let result;
+
+      this.client.api.waitUntil(function () {
+        assert.deepStrictEqual(this.options, client.options);
+        tries++;
+
+        return false;
+      }, maxTimeout, 50, 'custom error message', function(response) {
+        timeDiff = new Date().valueOf() - startTime;
+        result = response;
+      });
+
+      this.client.start(err => {
+        try {
+          assert.ok(timeDiff <= maxTimeout+100, `Expected lower than ${maxTimeout}, but got ${timeDiff}`);
+          assert.strictEqual(result.status, -1);
+          assert.ok(err instanceof Error);
+          const messageParts = err.message.split('\n');
+          assert.strictEqual(messageParts[0], 'Error while running "waitUntil" command: [TimeoutError] custom error message');
+          assert.ok(messageParts[1].startsWith('Wait timed out after'));
+
+          done();
+        } catch (err) {
+          done(err);
+        }
+      });
+    });
+
+    it('client.waitUntil() function failure with custom timeout, interval, message', function (done) {
+      let tries = 0;
+      const maxTimeout = 100;
+      const client = this.client.api;
+
+      this.client.api.waitUntil(function () {
+        assert.deepStrictEqual(this.options, client.options);
+        tries++;
+
+        return false;
+      }, maxTimeout, 50, 'custom error message');
+
+      this.client.start(err => {
+        try {
+          assert.ok(err instanceof Error);
+          const messageParts = err.message.split('\n');
+          assert.strictEqual(messageParts[0], 'Error while running "waitUntil" command: [TimeoutError] custom error message');
+          assert.ok(messageParts[1].startsWith('Wait timed out after'));
+
+          done();
+        } catch (err) {
+          done(err);
+        }
+      });
+    });
+
     it('client.waitUntil() function failure with custom timeout and default interval', function (done) {
       let tries = 0;
       let startTime = new Date().valueOf();
       let timeDiff;
-      const maxTimeout = 300;
+      const maxTimeout = 100;
       const client = this.client.api;
       let result;
 
@@ -157,7 +217,7 @@ describe('.waitUntil()', function () {
           assert.ok(err instanceof Error);
           assert.ok(timeDiff <= maxTimeout+100, `Expected lower than ${maxTimeout}, but got ${timeDiff}`);
           assert.strictEqual(result.status, -1);
-          assert.strictEqual(tries, 7);
+          assert.strictEqual(tries, 3);
           done();
         } catch (err) {
           done(err);
