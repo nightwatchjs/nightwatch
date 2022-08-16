@@ -56,6 +56,12 @@ describe('Test CLI Runner', function() {
       }
     });
 
+    mockery.registerMock('./reporter_options.json', {
+      reporter_options: {
+        output_folder: 'output'
+      }
+    });
+
     mockery.registerMock('./empty.json', {
       src_folders: 'tests'
     });
@@ -399,6 +405,35 @@ describe('Test CLI Runner', function() {
     assert.strictEqual(runner.settings.output_folder, false);
   });
 
+  it('testSetOutputFolder using reporterOptions', function(done) {
+    mockery.registerMock('fs', {
+      statSync: function(module) {
+        if (module === './settings.json' || module === './nightwatch.conf.js') {
+          throw new Error('Does not exist');
+        }
+
+        return {
+          isFile: function() {
+            return true;
+          }
+        };
+      },
+      constants,
+      rmdirSync
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+    const runner = new CliRunner({
+      config: './reporter_options.json',
+      env: 'default'
+    }).setup();
+
+    assert.strictEqual(runner.test_settings.output_folder, 'output');
+
+    done();
+  });
+  
+
   it('testReadSettingsDeprecated', function(done) {
     mockery.registerMock('fs', {
       statSync: function(module) {
@@ -435,6 +470,8 @@ describe('Test CLI Runner', function() {
 
     done();
   });
+
+ 
 
   it('testCustomSettingsFileAndEnvironment', function() {
     mockery.registerMock('fs', {
