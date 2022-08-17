@@ -75,6 +75,6 @@ describe('testRunWithUncaughtErrors', function() {
       } catch (e) {
         done(e);
       }
-    }, 500);
+    }, 1500);
   });
 });
