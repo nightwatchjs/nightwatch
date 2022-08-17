@@ -387,4 +387,49 @@ describe('test Request With Credentials', function () {
       });
     }, /Error: Unknown browser:/);
   });
+
+  it('Test create session with browsername null - mobile support', async function () {
+
+    nock('http://localhost:4723')
+      .post('/wd/hub/session')
+      .reply(201, {
+        value: {
+          capabilities: {
+            platformName: 'iOS',
+            platformVersion: '15.5',
+            deviceName: 'iPhone 13',
+            name: 'sample test goes here'
+          },
+          sessionId: '1352110219202'
+        }
+      });
+
+    const client = Nightwatch.createClient({
+      webdriver: {
+        start_process: false
+      },
+      selenium: {
+        start_process: false,
+        host: 'localhost',
+        port: '4723'
+      },
+      desiredCapabilities: {
+        browserName: null,
+        platformName: 'iOS',
+        platformVersion: '15.5',
+        deviceName: 'iPhone 13'
+      }
+    });
+
+    const result = await client.createSession();
+    assert.deepStrictEqual(result, {
+      capabilities: {
+        platformName: 'iOS',
+        platformVersion: '15.5',
+        deviceName: 'iPhone 13',
+        name: 'sample test goes here'
+      },
+      sessionId: '1352110219202'
+    });
+  });
 });
