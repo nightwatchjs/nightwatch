@@ -10,7 +10,7 @@ describe('GeckoDriver Transport Tests', function () {
   beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
 
-    const {constants, rmdirSync, readFileSync, writeFileSync} = require('fs');
+    const {constants, rmdirSync} = require('fs');
 
     delete require.cache['fs'];
 
@@ -19,9 +19,7 @@ describe('GeckoDriver Transport Tests', function () {
         return true;
       },
       constants,
-      rmdirSync,
-      readFileSync,
-      writeFileSync
+      rmdirSync
     });
 
   });
