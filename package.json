@@ -80,7 +80,6 @@
   },
   "man": "",
   "scripts": {
-    "demo": "node testAnalytics.js",
     "eslint": "eslint index.js lib bin api examples cucumber-js test --quiet",
     "mocha-coverage": "nyc --reporter=html mocha test/src/ --recursive",
     "test": "mocha test/src/ --recursive",
