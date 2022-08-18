@@ -1,4 +1,5 @@
 const fs = require('fs').promises;
+const http = require('http');
 
 const Nocks = require('../../lib/nocks.js');
 const analytics = require('../../../lib/analytics');
@@ -6,7 +7,6 @@ const Settings = require('../../../lib/settings/settings');
 const assert = require('assert');
 
 describe('test analytics utility', function() {
-  this.timeout(10000);
   before(function() {
     const settings = Settings.parse({
       usage_analytics: {
@@ -29,16 +29,16 @@ describe('test analytics utility', function() {
   });
 
   it('should throw error if event parameters contain objects or arrays', function() {
-    assert.throws(function() {
-      analytics.event('test', {
+    assert.rejects(async function() {
+      await analytics.event('test', {
         foo: {
           bar: 'bas'
         }
       });
     });
 
-    assert.throws(function() {
-      analytics.event('test', {
+    assert.rejects(async function() {
+      await analytics.event('test', {
         foo: [1, 2, 3]
       });
     });
@@ -75,19 +75,19 @@ describe('test analytics utility', function() {
   });
 
   it('should send analytics data to GA', async function() {
-    Nocks.analyticsCollector(analytics.__getGoogleAnalyticsPath()).active();
-    
-    analytics.event('test', {log: 'log'});
+    const analyticsNock = Nocks.analyticsCollector(analytics.__getGoogleAnalyticsPath());
+
+    await analytics.event('test', {log: 'log'});
 
     await analytics.__flush().then((res) => {
-      assert.notEqual(res, 'foo');
+      analyticsNock.done();
     }).catch((err) => {
       assert.strictEqual(err, undefined);
     });
   });
 
   it('should flush queue after around 5 events', async function() {
-    Nocks.analyticsCollector(analytics.__getGoogleAnalyticsPath()).active();
+    Nocks.analyticsCollector(analytics.__getGoogleAnalyticsPath());
 
     const flushBack = analytics.__flush;
     
@@ -96,12 +96,12 @@ describe('test analytics utility', function() {
       called = true;
     };
 
-    analytics.event('test', {log: 'log'});
-    analytics.event('test', {log: 'log'});
-    analytics.event('test', {log: 'log'});
-    analytics.event('test', {log: 'log'});
-    analytics.event('test', {log: 'log'});
-    analytics.event('test', {log: 'log'});
+    await analytics.event('test', {log: 'log'});
+    await analytics.event('test', {log: 'log'});
+    await analytics.event('test', {log: 'log'});
+    await analytics.event('test', {log: 'log'});
+    await analytics.event('test', {log: 'log'});
+    await analytics.event('test', {log: 'log'});
 
     assert.ok(called);
     analytics.__flush = flushBack;

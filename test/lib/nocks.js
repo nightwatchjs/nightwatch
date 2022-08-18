@@ -509,15 +509,13 @@ module.exports = {
   },
 
   analyticsCollector(GAPath) {
-    nock('http://localhost:13555')
+    return nock('https://localhost:13555')
       .post(GAPath)
       .reply(204, {
         status: 0,
         state: 'success',
         value: []
       });
-
-    return this;
   },
 
   cleanAll() {
