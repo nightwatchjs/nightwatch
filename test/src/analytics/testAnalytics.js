@@ -70,7 +70,6 @@ describe('test analytics utility', function() {
     assert.ok(logFileJson.params.foo === 'bar');
     assert.ok(logFileJson.params.event_time);
     assert.ok(logFileJson.params.env_os);
-    assert.ok(logFileJson.params.env_language);
     assert.ok(logFileJson.params.env_nw_version);
     assert.ok(logFileJson.params.env_node_version);
   });
