@@ -20,7 +20,8 @@ module.exports = {
       .perform(function() {
         if (failFirstTime) {
           failFirstTime = false;
-          client.assert.ok(false);
+
+          return client.assert.ok(false);
         }
       });
   }
