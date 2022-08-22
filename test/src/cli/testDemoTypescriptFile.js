@@ -2,7 +2,6 @@ const path = require('path');
 const MockServer = require('../../lib/mockserver.js');
 const common = require('../../common.js');
 const NightwatchClient = common.require('index.js');
-const {loadTSNode} = require('../../../lib/utils');
 
 describe('Typescript demos', function () {
   beforeEach(function (done) {
@@ -22,8 +21,9 @@ describe('Typescript demos', function () {
     this.timeout(5000);
     const testsPath = path.join(__dirname, '../../typescript-tests/demo.ts');
 
-    const projectTsFile = path.join(__dirname, '../../typescript-tests/tsconfig.nightwatch.json');
-    loadTSNode(projectTsFile);
+    process.cwd = function() {
+      return path.join(__dirname, '../../typescript-tests');
+    }; 
 
     const globals = {
       waitForConditionPollInterval: 50,
