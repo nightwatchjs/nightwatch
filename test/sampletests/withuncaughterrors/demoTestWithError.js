@@ -13,7 +13,7 @@ describe('test with uncaught error', function () {
 
     setTimeout(function () {
       throw new Error('Test Error Uncaught');
-    }, 25);
+    }, 100);
   });
 
 });

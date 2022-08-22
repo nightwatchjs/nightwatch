@@ -168,6 +168,59 @@ describe('test CLI Runner Mocha', function() {
       assert.deepStrictEqual(testFiles, ['test1.js', 'test2.js']);
     });
   });
+
+  it('testRunWithMochaReporterOptions', function() {
+    const testFiles = [];
+
+    const mochaOptions = {
+      timeout: 20000, 
+      reporterOptions: {
+        reportDir: 'html-dir'
+      },
+      reporter: 'mochawesome'
+    };
+
+    if (isCi) {
+      mochaOptions.color = false;
+    }
+
+    mockery.registerMock('mochawesome', {});
+
+    mockery.registerMock('./withmochaReportOptions.json', {
+      src_folders: ['tests'],
+      output_folder: false,
+      test_settings: {
+        'default': {
+          silent: true
+        }
+      },
+      reporter_options: {
+        reportDir: 'html-dir'
+      },
+      test_runner: {
+        type: 'mocha',
+        options: {
+          reporter: 'mochawesome'
+        }
+      }
+    });
+
+    createMockedMocha(function(options) {
+      assert.deepStrictEqual(options, mochaOptions);
+    }, testFiles);
+
+    const CliRunner = common.require('runner/cli/cli.js');
+    const runner = new CliRunner({
+      config: './withmochaReportOptions.json',
+      env: 'default',
+      reporter: 'junit'
+    }).setup();
+
+    return runner.runTests().then(function() {
+      assert.deepStrictEqual(testFiles, ['test1.js', 'test2.js']);
+    });
+  });
+
 });
 
 
