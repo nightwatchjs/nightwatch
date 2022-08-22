@@ -105,6 +105,8 @@ describe('test analytics utility', function() {
 
     assert.ok(called);
     analytics.__flush = flushBack;
+
+    await analytics.__flush();
   });
 
   it('should report only allowed exceptions', async function() {
