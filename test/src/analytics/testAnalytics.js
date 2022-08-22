@@ -106,4 +106,41 @@ describe('test analytics utility', function() {
     assert.ok(called);
     analytics.__flush = flushBack;
   });
+
+  it('should report only allowed exceptions', async function() {
+    const analyticsNock = Nocks.analyticsCollector(analytics.__getGoogleAnalyticsPath());
+    const err = new Error('test');
+    err.name ='UserGeneratedError';
+
+    await analytics.exception(err);
+
+    const logFile = analytics.__getLogFileLocation();
+    let logFileContent = await fs.readFile(logFile, 'utf8');
+    let logFileJson = JSON.parse(logFileContent);
+
+    assert.ok(logFileJson.params.errorName === 'CustomError');
+
+    await analytics.__flush().then((res) => {
+      analyticsNock.done();
+    }).catch((err) => {
+      assert.strictEqual(err, undefined);
+    });
+    
+
+    const analyticsNock2 = Nocks.analyticsCollector(analytics.__getGoogleAnalyticsPath());
+    err.name = 'SyntaxError';
+
+    await analytics.exception(err);
+    
+    logFileContent = await fs.readFile(logFile, 'utf8');
+    logFileJson = JSON.parse(logFileContent);
+    
+    assert.ok(logFileJson.params.errorName === 'SyntaxError');
+
+    await analytics.__flush().then((res) => {
+      analyticsNock2.done();
+    }).catch((err) => {
+      assert.strictEqual(err, undefined);
+    });
+  });
 });
