@@ -979,6 +979,39 @@ describe('Test CLI Runner', function() {
     assert.strictEqual(runner.argv.config, './nightwatch.conf.cjs');
   });
 
+  it('using Typescript config file', function () {
+    mockery.deregisterMock('package.json');
+    mockery.deregisterMock('fs');
+    mockery.registerMock('./nightwatch.conf.ts', {
+      src_folders: ['tests'],
+      test_settings: {
+        default: {
+          silent: true
+        }
+      }
+    });
+    mockery.registerMock('fs', {
+      statSync: function (module) {
+        if (module === './nightwatch.conf.ts') {
+          return {
+            isFile: function () {
+              return true;
+            }
+          };
+        }
+      },
+      constants,
+      rmdirSync
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+    const runner = new CliRunner({
+      config: './nightwatch.json'
+    }).setup();
+
+    assert.strictEqual(runner.argv.config, './nightwatch.conf.ts');
+  });
+
   it('using no package.json file', function() {
     mockery.deregisterMock('package.json');
     mockery.registerMock('package.json');
