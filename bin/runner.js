@@ -1,20 +1,29 @@
 /**
  * Module dependencies
  */
+const path = require('path');
 const Nightwatch = require('../lib/index.js');
 const {
   Logger,
   shouldReplaceStack,
   alwaysDisplayError,
   loadTSNode,
-  findTSConfigFile
+  findTSConfigFile,
+  fileExistsSync
 } = require('../lib/utils');
 
 try {
   Nightwatch.cli(function (argv) {
-    const projectTsFilePath = findTSConfigFile();
-    if (projectTsFilePath !== '') {
-      loadTSNode(projectTsFilePath);
+
+    const isTypescriptProject = fileExistsSync(path.join(process.cwd(), 'tsconfig.json'));
+    if (isTypescriptProject) {
+      const projectTsFilePath = findTSConfigFile();
+
+      if (projectTsFilePath !== '') {
+        loadTSNode(projectTsFilePath);
+      } else {
+        Logger.info('Now you can run TS tests directly using Nightwatch.\nFollow this document to learn more.');
+      }
     }
 
     argv._source = argv['_'].slice(0);
