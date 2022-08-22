@@ -86,7 +86,7 @@ describe('custom commands with findElements es6 async', function() {
     const globals = {
       waitForConditionPollInterval: 50,
       waitForConditionTimeout: 120,
-      retryAssertionTimeout: 1000,
+      retryAssertionTimeout: 1000
     };
 
     return NightwatchClient.runTests(testsPath, settings({

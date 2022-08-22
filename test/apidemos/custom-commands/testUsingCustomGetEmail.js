@@ -6,8 +6,8 @@ describe('custom execute getEmail', function() {
     
     assert.ok(result instanceof Object);
     assert.deepStrictEqual(result, {
-        status: -1,
-        error: 'Email not found'
+      status: -1,
+      error: 'Email not found'
     });
   });
 
