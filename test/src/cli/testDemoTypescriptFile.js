@@ -22,9 +22,6 @@ describe('Typescript demos', function () {
     const testsPath = path.join(__dirname, '../../typescript-tests/demo.ts');
     const originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../typescript-tests'));
-    // process.cwd = function() {
-    //   return path.join(__dirname, '../../typescript-tests');
-    // }; 
 
     const globals = {
       waitForConditionPollInterval: 50,
