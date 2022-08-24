@@ -2,6 +2,7 @@ describe('sample test with failures', function() {
   beforeEach(function (client) {
     client.globals.calls++;
   });
+
   it('demoTest', function (client) {
     client.url('http://localhost')
       .assert.elementPresent('#weblogin')
@@ -31,6 +32,7 @@ describe('sample test with failures', function() {
       .assert.elementPresent('#weblogin')
       .end();
   });
+
   afterEach(function (client) {
     client.globals.calls++;
   });
