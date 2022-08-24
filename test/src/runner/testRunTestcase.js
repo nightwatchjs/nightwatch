@@ -266,6 +266,24 @@ describe('testRunTestcase', function() {
     }));
   });
 
+  it('testRunner with skipped beforeEach afterEach hooks', function() {
+    const testsPath = path.join(__dirname, '../../sampletests/withdescribe/skipped/skipBeforeAfterEach.js');
+    const globals = {
+      calls: 0,
+      reporter(results, cb) {
+        assert.strictEqual(globals.calls, 4);
+        cb();
+      },
+      retryAssertionTimeout: 0
+    };
+
+    return runTests({
+      _source: [testsPath]
+    }, settings({
+      globals
+    }));
+  });
+
   it('testRunner with disabled testsuite - xdescribe', function() {
     const testsPath = path.join(__dirname, '../../sampletests/withdescribe/skipped/skipTestsuite.js');
     const globals = {
