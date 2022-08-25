@@ -33,10 +33,6 @@ module.exports = class GetEmailBody {
   }
 }
 
-const getEmail = async () => {
-  return await new Promise((resolve, reject) => {
-    reject(new Error('Email not found'));
-  }).catch(err => {
-    throw new Error(err.message);
-  });
-}
+const getEmail = () => new Promise((resolve, reject) => {
+  reject(new Error('Email not found'));
+});
