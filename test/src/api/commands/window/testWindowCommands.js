@@ -39,12 +39,23 @@ describe('window', function () {
       method: 'POST',
       response: JSON.stringify({
         sessionId: '1352110219202',
-        status: 0
+        status: 0,
+        value: {
+          width: 1000,
+          height: 1000,
+          x: 100,
+          y: 100
+        }
       })
     });
 
-    this.client.api.resizeWindow(100, 100, function(res) {
-      assert.strictEqual(res.value, null);
+    this.client.api.resizeWindow(1000, 1000, function(res) {
+      assert.deepStrictEqual(res.value, {
+        width: 1000,
+        height: 1000,
+        x: 100,
+        y: 100
+      });
     });
 
     this.client.start(done);
@@ -56,12 +67,23 @@ describe('window', function () {
       method: 'POST',
       response: JSON.stringify({
         sessionId: '1352110219202',
-        status: 0
+        status: 0,
+        value: {
+          width: 1000,
+          height: 1000,
+          x: 100,
+          y: 100
+        }
       })
     });
 
-    this.client.api.setWindowSize(100, 100, function(res) {
-      assert.strictEqual(res.value, null);
+    this.client.api.setWindowSize(1000, 1000, function(res) {
+      assert.deepStrictEqual(res.value, {
+        width: 1000,
+        height: 1000,
+        x: 100,
+        y: 100
+      });
     });
 
     this.client.start(done);
@@ -73,12 +95,23 @@ describe('window', function () {
       method: 'POST',
       response: JSON.stringify({
         sessionId: '1352110219202',
-        status: 0
+        status: 0,
+        value: {
+          width: 1000,
+          height: 1000,
+          x: 100,
+          y: 100
+        }
       })
     });
 
     this.client.api.setWindowPosition(100, 100, function(res) {
-      assert.strictEqual(res.value, null);
+      assert.deepStrictEqual(res.value, {
+        width: 1000,
+        height: 1000,
+        x: 100,
+        y: 100
+      });
     });
 
     this.client.start(done);
