@@ -10,6 +10,7 @@ describe('window', function () {
 
   after(function (done) {
     CommandGlobals.afterEach.call(this, done);
+    nock.cleanAll();
   });
 
   it('client.closeWindow()', function (done) {
