@@ -65,26 +65,26 @@ describe('window', function () {
 
   it('client.resizeWindow()', function (done) {
     nock('http://localhost:10195')
-    .post('/wd/hub/session/1352110219202/window/rect')
-    .reply(200, function (uri, requestBody) {
-      const reqObj = JSON.parse(requestBody);
+      .post('/wd/hub/session/1352110219202/window/rect')
+      .reply(200, function (uri, requestBody) {
+        const reqObj = JSON.parse(requestBody);
       
-      assert.deepStrictEqual(reqObj, {
-        width: 1000, 
-        height: 1000
-      });
+        assert.deepStrictEqual(reqObj, {
+          width: 1000, 
+          height: 1000
+        });
 
-      return {
-        sessionId: '1352110219202',
-        status: 0,
-        value: {
-          width: 1000,
-          height: 1000,
-          x: 100,
-          y: 100
-        }
-      };
-    });
+        return {
+          sessionId: '1352110219202',
+          status: 0,
+          value: {
+            width: 1000,
+            height: 1000,
+            x: 100,
+            y: 100
+          }
+        };
+      });
 
     this.client.api.resizeWindow(1000, 1000, function(res) {
       assert.strictEqual(res.status, 0);
@@ -96,26 +96,26 @@ describe('window', function () {
   
   it('client.setWindowSize()', function (done) {
     nock('http://localhost:10195')
-    .post('/wd/hub/session/1352110219202/window/rect')
-    .reply(200, function (uri, requestBody) {
-      const reqObj = JSON.parse(requestBody);
+      .post('/wd/hub/session/1352110219202/window/rect')
+      .reply(200, function (uri, requestBody) {
+        const reqObj = JSON.parse(requestBody);
       
-      assert.deepStrictEqual(reqObj, {
-        width: 1000, 
-        height: 1000
-      });
+        assert.deepStrictEqual(reqObj, {
+          width: 1000, 
+          height: 1000
+        });
 
-      return {
-        sessionId: '1352110219202',
-        status: 0,
-        value: {
-          width: 1000,
-          height: 1000,
-          x: 100,
-          y: 100
-        }
-      };
-    });
+        return {
+          sessionId: '1352110219202',
+          status: 0,
+          value: {
+            width: 1000,
+            height: 1000,
+            x: 100,
+            y: 100
+          }
+        };
+      });
 
     this.client.api.setWindowSize(1000, 1000, function(res) {
       assert.strictEqual(res.status, 0);
@@ -127,26 +127,26 @@ describe('window', function () {
 
   it('client.setWindowPosition()', function (done) {
     nock('http://localhost:10195')
-    .post('/wd/hub/session/1352110219202/window/rect')
-    .reply(200, function (uri, requestBody) {
-      const reqObj = JSON.parse(requestBody);
+      .post('/wd/hub/session/1352110219202/window/rect')
+      .reply(200, function (uri, requestBody) {
+        const reqObj = JSON.parse(requestBody);
       
-      assert.deepStrictEqual(reqObj, {
-        x: 100, 
-        y: 100
-      });
-
-      return {
-        sessionId: '1352110219202',
-        status: 0,
-        value: {
-          width: 1000,
-          height: 1000,
-          x: 100,
+        assert.deepStrictEqual(reqObj, {
+          x: 100, 
           y: 100
-        }
-      };
-    });
+        });
+
+        return {
+          sessionId: '1352110219202',
+          status: 0,
+          value: {
+            width: 1000,
+            height: 1000,
+            x: 100,
+            y: 100
+          }
+        };
+      });
 
     this.client.api.setWindowPosition(100, 100, function(res) {
       assert.strictEqual(res.status, 0);
