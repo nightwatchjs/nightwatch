@@ -474,9 +474,11 @@ module.exports = {
       .reply(200, {
         status: 0,
         state: 'success',
-        domain: 'cookie-domain',
-        name: name,
-        value: value
+        value : {
+          domain: 'cookie-domain',
+          name: name,
+          value: value
+        }
       });
 
     return this;
