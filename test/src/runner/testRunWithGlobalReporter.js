@@ -34,7 +34,10 @@ describe('testRunWithGlobalReporter', function() {
     return runTests(testsPath, settings({
       globals,
       globals_path: path.join(__dirname, '../../extra/external-globals.js'),
-      output_folder: false
+      output_folder: false,
+      test_workers: {
+        enabled: false
+      }
     }))
       .then(err => {
         assert.strictEqual(globals.reporterCount, 1);
@@ -53,7 +56,10 @@ describe('testRunWithGlobalReporter', function() {
           cb();
         }
       },
-      output_folder: false
+      output_folder: false,
+      test_workers: {
+        enabled: false
+      }
     }))
       .catch(err => (err))
       .then(_ => {
@@ -73,7 +79,10 @@ describe('testRunWithGlobalReporter', function() {
           reporterCount++;
         }
       },
-      output_folder: false
+      output_folder: false,
+      test_workers: {
+        enabled: false
+      }
     })).then(_ => {
       assert.strictEqual(reporterCount, 1);
     }).catch(err => {
@@ -94,7 +103,10 @@ describe('testRunWithGlobalReporter', function() {
           cb();
         }
       },
-      output_folder: false
+      output_folder: false,
+      test_workers: {
+        enabled: false
+      }
     })).then(_ => {
       assert.strictEqual(reporterCount, 1);
     }).catch(err => (err))

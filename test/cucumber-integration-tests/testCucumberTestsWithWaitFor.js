@@ -21,6 +21,7 @@ describe('Cucumber integration with .expect APIs', function() {
 
     return runTests({
       source,
+      parallel: false,
       tags: ['@fail'],
       verbose: false,
       config: path.join(__dirname, '../extra/cucumber-config-waitFor.js')

@@ -42,7 +42,10 @@ describe('custom commands with es6 async', function() {
       output: false,
       selenium_host: null,
       custom_commands_path: [path.join(__dirname, '../../../extra/commands/es6async')],
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 

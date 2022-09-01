@@ -33,7 +33,8 @@ describe('testRunWithExclude', function() {
 
   it('testRunWithExcludeFolder', function() {
     return runTests({
-      _source: ['./withexclude']
+      _source: ['./withexclude'],
+      parallel: false
     }, settings({
       globals: {
         reporter(results, cb) {
@@ -49,7 +50,7 @@ describe('testRunWithExclude', function() {
   });
 
   it('testRun with exclude folder name and multiple src_folders', function()  {
-    return runTests(settings({
+    return runTests({parallel: false}, settings({
       globals: {
         reporter(results, cb) {
           assert.ok(`excluded${path.sep}excluded-module` in results.modules);
@@ -65,7 +66,7 @@ describe('testRunWithExclude', function() {
   });
 
   it('testRun with exclude folder pattern and multiple src_folders', function()  {
-    return runTests(settings({
+    return runTests({parallel: false}, settings({
       globals: {
         reporter(results, cb) {
           assert.ok(`excluded${path.sep}excluded-module` in results.modules);
@@ -81,7 +82,7 @@ describe('testRunWithExclude', function() {
   });
 
   it('testRun with filter folder name and multiple src_folders', function()  {
-    return runTests(settings({
+    return runTests({parallel: false}, settings({
       globals: {
         reporter(results, cb) {
           assert.ok(!(`excluded${path.sep}excluded-module` in results.modules));
@@ -97,7 +98,7 @@ describe('testRunWithExclude', function() {
   });
 
   it('testRun with filter pattern and multiple src_folders', function()  {
-    return runTests(settings({
+    return runTests({parallel: false}, settings({
       globals: {
         reporter(results, cb) {
           assert.ok(!(`excluded${path.sep}excluded-module` in results.modules));
@@ -113,7 +114,7 @@ describe('testRunWithExclude', function() {
   });
 
   it('testRun with filter pattern relative and single src_folders', function()  {
-    return runTests(settings({
+    return runTests({parallel: false}, settings({
       globals: {
         reporter(results, cb) {
           assert.ok(!(`excluded${path.sep}excluded-module` in results.modules));
@@ -129,7 +130,7 @@ describe('testRunWithExclude', function() {
   });
 
   it('testRun with both filter and exclude patterns and single src_folder', function()  {
-    return runTests(settings({
+    return runTests({parallel: false}, settings({
       globals: {
         reporter(results, cb) {
           assert.ok(!(`excluded${path.sep}excluded-module` in results.modules));
@@ -147,7 +148,8 @@ describe('testRunWithExclude', function() {
 
   it('testRunWithExcludePattern', function()  {
     return runTests({
-      _source: ['./withexclude']
+      _source: ['./withexclude'],
+      parallel: false
     }, settings({
       globals: {
         reporter(results, cb) {
@@ -165,7 +167,8 @@ describe('testRunWithExclude', function() {
 
   it('testRunWithExcludeFile', function()  {
     return runTests({
-      _source: [path.join(__dirname, '../../sampletests/withexclude')]
+      _source: [path.join(__dirname, '../../sampletests/withexclude')],
+      parallel: false
     }, settings({
       globals: {
         reporter(results, cb) {
@@ -181,7 +184,7 @@ describe('testRunWithExclude', function() {
   });
 
   it('test running with multiple excludes will exclude all matches with single src folder', function()  {
-    return runTests(settings({
+    return runTests({parallel: false}, settings({
       globals: {
         reporter(results, cb) {
           assert.ok(!(`excluded${path.sep}excluded-module` in results.modules));
@@ -200,7 +203,7 @@ describe('testRunWithExclude', function() {
   });
 
   it('test running with multiple excludes will exclude all matches with multiple src folders', function()  {
-    return runTests(settings({
+    return runTests({parallel: false}, settings({
       globals: {
         reporter(results, cb) {
           assert.ok(!(`excluded${path.sep}excluded-module` in results.modules));

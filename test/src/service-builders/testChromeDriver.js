@@ -218,6 +218,8 @@ describe('ChromeDriver Transport Tests', function () {
           port: 9999,
           start_process: true
         }
+      }, {
+        parallel: false
       });
       mockery.disable();
     } catch (err) {
@@ -242,6 +244,8 @@ describe('ChromeDriver Transport Tests', function () {
         port: 9999,
         start_process: true
       }
+    }, {
+      parallel: false
     });
 
     assert.deepStrictEqual(session, {
@@ -291,6 +295,8 @@ describe('ChromeDriver Transport Tests', function () {
         port: 9999,
         start_process: true
       }
+    }, {
+      parallel: false
     });
 
     assert.deepStrictEqual(session, {
@@ -319,6 +325,8 @@ describe('ChromeDriver Transport Tests', function () {
         port: 9999,
         start_process: true
       }
+    }, {
+      parallel: false
     });
 
     assert.deepStrictEqual(session, {

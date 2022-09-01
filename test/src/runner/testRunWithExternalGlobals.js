@@ -35,7 +35,10 @@ describe('testRunWithExternalGlobals', function() {
       globals,
       globals_path: path.join(__dirname, '../../extra/external-globals.js'),
 
-      output_folder: false
+      output_folder: false,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 

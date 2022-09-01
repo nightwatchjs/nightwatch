@@ -242,6 +242,8 @@ describe('EdgeDriver Transport Tests', function () {
         start_process: true,
         server_path: '/path/to/edgedriver'
       }
+    }, {
+      parallel: false
     });
 
     assert.deepStrictEqual(session, {

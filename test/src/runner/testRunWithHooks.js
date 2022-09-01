@@ -105,7 +105,8 @@ describe('testRunWithHooks', function() {
 
       return runTests({
         source,
-        'fail-fast': true
+        'fail-fast': true,
+        parallel: false
       }, settings({
         globals
       })).catch(err => {
@@ -151,7 +152,8 @@ describe('testRunWithHooks', function() {
       };
 
       return runTests({
-        source
+        source,
+        parallel: false
       }, settings({
         globals
       }));
@@ -171,7 +173,10 @@ describe('testRunWithHooks', function() {
     let testsPath = path.join(__dirname, '../../sampletests/async');
 
     return runTests(testsPath, settings({
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 
@@ -195,7 +200,10 @@ describe('testRunWithHooks', function() {
 
     return runTests(testsPath, settings({
       seleniumPort: 10195,
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 
@@ -229,7 +237,10 @@ describe('testRunWithHooks', function() {
 
     return runTests(testsPath, settings({
       seleniumPort: 10195,
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 
@@ -248,7 +259,10 @@ describe('testRunWithHooks', function() {
 
     return runTests(testsPath, settings({
       seleniumPort: 10195,
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 
@@ -263,7 +277,8 @@ describe('testRunWithHooks', function() {
     };
 
     return runTests({
-      _source: [testsPath]
+      _source: [testsPath],
+      parallel: false
     }, settings({
       seleniumPort: 10195,
       globals
@@ -292,6 +307,7 @@ describe('testRunWithHooks', function() {
 
     return runTests({
       _source: [testsPath],
+      parallel: false,
       testcase: 'demoTestSyncOne'
     }, settings({
       seleniumPort: 10195,
@@ -315,7 +331,10 @@ describe('testRunWithHooks', function() {
 
     return runTests(testsPath, settings({
       custom_commands_path: path.join(__dirname, '../../extra/commands'),
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 
@@ -332,7 +351,10 @@ describe('testRunWithHooks', function() {
     };
 
     return runTests(testsPath, settings({
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 });

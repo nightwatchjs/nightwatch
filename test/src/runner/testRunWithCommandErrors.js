@@ -64,7 +64,8 @@ describe('testRunWithCommandErrors', function() {
       };
 
       return runTests({
-        _source: [testsPath]
+        _source: [testsPath],
+        parallel: false
       }, settings({
         webdriver: {
           timeout_options: {
@@ -113,7 +114,8 @@ describe('testRunWithCommandErrors', function() {
       };
 
       return runTests({
-        _source: [testsPath]
+        _source: [testsPath],
+        parallel: false
       }, settings({
         output: false,
         report_command_errors: true,
@@ -149,7 +151,8 @@ describe('testRunWithCommandErrors', function() {
       };
 
       return runTests({
-        _source: [testsPath]
+        _source: [testsPath],
+        parallel: false
       }, settings({
         webdriver: {
           timeout_options: {
@@ -190,7 +193,8 @@ describe('testRunWithCommandErrors', function() {
       };
 
       return runTests({
-        _source: [testsPath]
+        _source: [testsPath],
+        parallel: false
       }, settings({
         webdriver: {
           timeout_options: {
@@ -247,7 +251,8 @@ describe('testRunWithCommandErrors', function() {
       };
 
       return runTests({
-        _source: [testsPath]
+        _source: [testsPath],
+        parallel: false
       }, settings({
         webdriver: {
           timeout_options: {
@@ -293,7 +298,8 @@ describe('testRunWithCommandErrors', function() {
       };
 
       return runTests({
-        _source: [testsPath]
+        _source: [testsPath],
+        parallel: false
       }, settings({
         output: false,
         skip_testcases_on_fail: false,
@@ -331,7 +337,8 @@ describe('testRunWithCommandErrors', function() {
       };
 
       return runTests({
-        _source: [testsPath]
+        _source: [testsPath],
+        parallel: false
       }, settings({
         globals
       }));

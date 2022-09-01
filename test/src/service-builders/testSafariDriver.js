@@ -193,6 +193,9 @@ describe('SafariDriver Transport Tests', function () {
       webdriver: {
         port: 9999,
         start_process: true
+      },
+      test_workers: {
+        enabled: false
       }
     }, {
       onLogFile(filePath) {

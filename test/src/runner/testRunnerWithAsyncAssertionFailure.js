@@ -38,7 +38,10 @@ describe('test Runner with async and assertion failure', function() {
       globals,
       skip_testcases_on_fail: false,
       output: false,
-      silent: false
+      silent: false,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 });

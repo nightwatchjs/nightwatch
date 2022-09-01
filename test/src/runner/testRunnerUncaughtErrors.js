@@ -58,7 +58,10 @@ describe('testRunWithUncaughtErrors', function() {
     process.exit = function(code) {};
 
     runTests(testsPath, settings({
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
 
     setTimeout(function () {

@@ -70,6 +70,9 @@ describe('testRunnerJUnitOutput', function() {
         on_failure: true,
         on_error: true,
         path: ''
+      },
+      test_workers: {
+        enabled: false
       }
     }))
       .then(_ => {
@@ -107,6 +110,9 @@ describe('testRunnerJUnitOutput', function() {
         }
       },
       screenshots: {
+        enabled: false
+      },
+      test_workers: {
         enabled: false
       }
     }))
@@ -148,6 +154,9 @@ describe('testRunnerJUnitOutput', function() {
       },
       screenshots: {
         enabled: false
+      },
+      test_workers: {
+        enabled: false
       }
     }))
       .then(_ => {
@@ -188,6 +197,9 @@ describe('testRunnerJUnitOutput', function() {
       },
       screenshots: {
         enabled: false
+      },
+      test_workers: {
+        enabled: false
       }
     }))
       .then(_ => {
@@ -227,6 +239,9 @@ describe('testRunnerJUnitOutput', function() {
         }
       },
       screenshots: {
+        enabled: false
+      },
+      test_workers: {
         enabled: false
       }
     }))
@@ -272,6 +287,9 @@ describe('testRunnerJUnitOutput', function() {
       },
       output: false,
       screenshots: {
+        enabled: false
+      },
+      test_workers: {
         enabled: false
       }
     }))
@@ -334,7 +352,10 @@ describe('testRunnerJUnitOutput', function() {
     return runTests(testsPath, settings({
       output_folder: 'output',
       silent: true,
-      globals: {reporter: function() {}}
+      globals: {reporter: function() {}},
+      test_workers: {
+        enabled: false
+      }
     }))
       .then(_ => {
         return readDirPromise(testsPath[0]);

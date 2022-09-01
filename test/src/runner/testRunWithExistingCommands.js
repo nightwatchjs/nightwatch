@@ -21,7 +21,8 @@ describe('testRunWithExistingCommands', function () {
     };
 
     return runTests({
-      _source: [testsPath]
+      _source: [testsPath],
+      parallel: false
     }, settings({
       output: true,
       custom_commands_path: [path.join(__dirname, '../../extra/existing-custom-commands')],

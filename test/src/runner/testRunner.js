@@ -98,7 +98,10 @@ describe('testRunner', function() {
     };
 
     return runTests(testsPath, settings({
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 

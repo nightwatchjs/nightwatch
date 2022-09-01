@@ -123,6 +123,7 @@ describe('testReporter', function() {
     try {
       await runTests({
         source: testsPath,
+        parallel: false,
         reporter: ['html', 'junit']
       },
       settings({
@@ -151,7 +152,8 @@ describe('testReporter', function() {
 
     try {
       await runTests({
-        source: testsPath
+        source: testsPath,
+        parallel: false
       },
       settings({
         output_folder: 'output',

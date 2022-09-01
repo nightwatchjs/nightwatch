@@ -44,7 +44,10 @@ describe('cookie demos', function() {
       silent: false,
       persist_globals: true,
       globals,
-      output_folder: false
+      output_folder: false,
+      test_workers: {
+        enabled: false
+      }
     });
   });
 
@@ -80,7 +83,10 @@ describe('cookie demos', function() {
       silent: false,
       persist_globals: true,
       globals,
-      output_folder: false
+      output_folder: false,
+      test_workers: {
+        enabled: false
+      }
     });
   });
 });

@@ -67,7 +67,10 @@ describe('testRunWithGlobalHooks', function() {
     };
 
     return runTests(testsPath, settings({
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 
@@ -100,7 +103,10 @@ describe('testRunWithGlobalHooks', function() {
     let afterEachCount = 0;
 
     return runTests(testsPath, settings({
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 
@@ -133,7 +139,10 @@ describe('testRunWithGlobalHooks', function() {
     let afterEachCount = 0;
 
     return runTests(testsPath, settings({
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 
@@ -156,6 +165,9 @@ describe('testRunWithGlobalHooks', function() {
           assert.strictEqual(beforeEachCount, 4);
           cb();
         }
+      },
+      test_workers: {
+        enabled: false
       }
     }));
   });
@@ -165,6 +177,9 @@ describe('testRunWithGlobalHooks', function() {
 
     return runTests(testsPath, settings({
       output: false,
+      test_workers: {
+        enabled: false
+      },
       globals: {
         asyncHookTimeout: 200,
         beforeEach(client, done) {
@@ -202,6 +217,9 @@ describe('testRunWithGlobalHooks', function() {
           asyncHookTimeout: 100,
           before(done) {
           }
+        },
+        test_workers: {
+          enabled: false
         }
       }));
     } catch (err) {
@@ -227,6 +245,9 @@ describe('testRunWithGlobalHooks', function() {
           assert.strictEqual(results.lastError.message, 'global beforeEach error');
           cb();
         }
+      },
+      test_workers: {
+        enabled: false
       }
     }));
   });
@@ -276,7 +297,10 @@ describe('testRunWithGlobalHooks', function() {
 
     return runTests(testsPath, settings({
       output: false,
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 });

@@ -36,7 +36,10 @@ describe('ensure api demos', function() {
 
     return NightwatchClient.runTests(testsPath, settings({
       output: false,
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 
@@ -57,7 +60,10 @@ describe('ensure api demos', function() {
 
     return NightwatchClient.runTests(testsPath, settings({
       output: false,
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 
@@ -80,7 +86,10 @@ describe('ensure api demos', function() {
     return NightwatchClient.runTests(testsPath, settings({
       skip_testcases_on_fail: false,
       output: false,
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 

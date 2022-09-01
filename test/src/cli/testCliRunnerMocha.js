@@ -68,7 +68,10 @@ describe('test CLI Runner Mocha', function() {
           silent: true
         }
       },
-      test_runner: 'mocha'
+      test_runner: 'mocha',
+      test_workers: {
+        enabled: false
+      }
     });
 
     createMockedMocha(function(options) {
@@ -79,7 +82,10 @@ describe('test CLI Runner Mocha', function() {
     let runner = new CliRunner({
       config: './withmocha.json',
       env: 'default',
-      reporter: 'junit'
+      reporter: 'junit',
+      test_workers: {
+        enabled: false
+      }
     }).setup();
 
     return runner.runTests().then(function() {
@@ -105,7 +111,10 @@ describe('test CLI Runner Mocha', function() {
           test_runner: 'mocha'
         }
       },
-      test_runner: 'default'
+      test_runner: 'default',
+      test_workers: {
+        enabled: false
+      }
     });
 
     createMockedMocha(function(options) {
@@ -150,6 +159,9 @@ describe('test CLI Runner Mocha', function() {
         options: {
           ui: 'tdd'
         }
+      },
+      test_workers: {
+        enabled: false
       }
     });
 
@@ -202,6 +214,9 @@ describe('test CLI Runner Mocha', function() {
         options: {
           reporter: 'mochawesome'
         }
+      },
+      test_workers: {
+        enabled: false
       }
     });
 

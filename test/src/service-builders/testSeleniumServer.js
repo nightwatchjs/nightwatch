@@ -240,6 +240,9 @@ describe('SeleniumServer Transport Tests', function () {
       selenium: {
         port: 9999,
         start_process: true
+      },
+      test_workers: {
+        enabled: false
       }
     }, {
       onLogFile(filePath) {
@@ -347,6 +350,9 @@ describe('SeleniumServer Transport Tests', function () {
         cli_args: {
           '--allow-cors': true
         }
+      },
+      test_workers: {
+        enabled: false
       }
     }, {
       selenium4: true,

@@ -57,7 +57,10 @@ describe('relative locators demo', function() {
     return NightwatchClient.runTests(testsPath, settings({
       output: false,
       skip_testcases_on_fail: false,
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 

@@ -40,6 +40,9 @@ describe('test Mocha Runner async', function() {
         }
       },
       output: false,
+      test_workers: {
+        enabled: false
+      },
       silent: false
     })).catch(err => {
       return err;

@@ -40,6 +40,7 @@ describe('Cucumber integration - with extras', function() {
 
     return runTests({
       source,
+      parallel: false,
       tags: ['@pass'],
       verbose: false,
       config: path.join(__dirname, '../extra/cucumber-config-noautostart.js'),

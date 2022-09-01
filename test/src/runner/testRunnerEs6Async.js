@@ -64,7 +64,10 @@ describe('testRunner ES6 Async', function () {
     return runTests(testsPath, settings({
       skip_testcases_on_fail: false,
       output: false,
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 
@@ -117,7 +120,10 @@ describe('testRunner ES6 Async', function () {
     return runTests(testsPath, settings({
       skip_testcases_on_fail: false,
       output: false,
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 
@@ -134,7 +140,10 @@ describe('testRunner ES6 Async', function () {
     };
 
     return runTests(testsPath, settings({
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 
@@ -252,7 +261,10 @@ describe('testRunner ES6 Async', function () {
       output: false,
       page_objects_path: [path.join(__dirname, '../../extra/pageobjects/pages')],
       skip_testcases_on_fail: false,
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 
@@ -269,7 +281,10 @@ describe('testRunner ES6 Async', function () {
     };
 
     return runTests(testsPath, settings({
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 
@@ -297,7 +312,10 @@ describe('testRunner ES6 Async', function () {
     };
 
     return runTests(testsPath, settings({
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 });

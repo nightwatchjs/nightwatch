@@ -41,7 +41,10 @@ describe('firefox api demos', function () {
       silent: true,
       persist_globals: true,
       globals,
-      output_folder: false
+      output_folder: false,
+      test_workers: {
+        enabled: false
+      }
     });
   });
 });

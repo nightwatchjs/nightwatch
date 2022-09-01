@@ -49,7 +49,10 @@ describe('testRunTestcase', function() {
     return runTests(testsPath, settings({
       globals,
       skip_testcases_on_fail: false,
-      output: false
+      output: false,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 
@@ -70,7 +73,10 @@ describe('testRunTestcase', function() {
 
     return runTests(testsPath, settings({
       output: false,
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 
@@ -87,6 +93,7 @@ describe('testRunTestcase', function() {
 
     return runTests({
       _source: [testsPath],
+      parallel: false,
       testcase: 'demoTestSyncOne'
     }, settings({
       globals
@@ -105,6 +112,7 @@ describe('testRunTestcase', function() {
 
     return runTests({
       _source: [testsPath],
+      parallel: false,
       testcase: 'Unknown'
     }, settings({
       globals
@@ -141,7 +149,10 @@ describe('testRunTestcase', function() {
     };
 
     return runTests(testsPath, settings({
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 
@@ -157,7 +168,10 @@ describe('testRunTestcase', function() {
     };
 
     return runTests(testsPath, settings({
-      globals
+      globals,
+      test_workers: {
+        enabled: false
+      }
     }));
   });
 
@@ -178,6 +192,7 @@ describe('testRunTestcase', function() {
 
     return runTests({
       retries: 1,
+      parallel: false,
       _source: [testsPath]
     }, settings({
       globals
@@ -201,6 +216,7 @@ describe('testRunTestcase', function() {
 
     return runTests({
       retries: 1,
+      parallel: false,
       _source: [testsPath]
     }, settings({
       globals
@@ -223,7 +239,8 @@ describe('testRunTestcase', function() {
     };
 
     return runTests({
-      _source: [testsPath]
+      _source: [testsPath],
+      parallel: false
     }, settings({
       globals
     }));
@@ -242,7 +259,8 @@ describe('testRunTestcase', function() {
 
     return runTests({
       retries: 2,
-      _source: [testsPath]
+      _source: [testsPath],
+      parallel: false
     }, settings({
       globals
     }));
@@ -260,7 +278,8 @@ describe('testRunTestcase', function() {
     };
 
     return runTests({
-      _source: [testsPath]
+      _source: [testsPath],
+      parallel: false
     }, settings({
       globals
     }));
@@ -279,7 +298,8 @@ describe('testRunTestcase', function() {
     };
 
     return runTests({
-      _source: [testsPath]
+      _source: [testsPath],
+      parallel: false
     }, settings({
       globals
     }));
@@ -303,7 +323,8 @@ describe('testRunTestcase', function() {
 
     return runTests({
       retries: 1,
-      _source: [testsPath]
+      _source: [testsPath],
+      parallel: false
     }, settings({
       skip_testcases_on_fail: false,
       globals
@@ -315,7 +336,8 @@ describe('testRunTestcase', function() {
 
     return runTests({
       retries: 1,
-      _source: [testsPath]
+      _source: [testsPath],
+      parallel: false
     }, settings({
       skip_testcases_on_fail: false
     })).catch((err) => {
