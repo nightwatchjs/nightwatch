@@ -60,7 +60,7 @@
   },
   "peerDependencies": {
     "@cucumber/cucumber": "*",
-    "chromedriver": "*",
+    "chromedriver": "^105.0.0",
     "geckodriver": "*"
   },
   "peerDependenciesMeta": {
