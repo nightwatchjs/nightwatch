@@ -55,8 +55,7 @@ describe('Test CLI Runner in Parallel', function () {
 
     return NightwatchClient.runTests({
       env: 'default',
-      config: path.join(__dirname, '../../../extra/withgeckodriver-concurrent.json'),
-      parallel: false
+      config: path.join(__dirname, '../../../extra/withgeckodriver-concurrent.json')
     }, {
       silent: false,
       output: false,
