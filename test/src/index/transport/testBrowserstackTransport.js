@@ -65,7 +65,7 @@ describe('BrowserstackTransport', function () {
     delete process.env['KEY'];
   });
   
-  it('test create Transport for Browserstack', function(done) {
+  it('test create Transport for Browserstack', async function() {
     const client = NightwatchClient.client({
       webdriver: {
         host: 'hub-cloud.browserstack.com',
@@ -79,6 +79,19 @@ describe('BrowserstackTransport', function () {
       }
     });
 
+    nock('https://hub-cloud.browserstack.com')
+      .post('/wd/hub/session')
+      .reply(201, function (uri, requestBody) {
+        const reqObj = JSON.parse(requestBody);
+
+        return {
+          value: {
+            sessionId: '1352110219202',
+            capabilities: reqObj.desiredCapabilities
+          }
+        };
+      });
+    
     nock('https://api.browserstack.com')
       .get('/automate/builds.json')
       .reply(200, [
@@ -106,30 +119,23 @@ describe('BrowserstackTransport', function () {
     assert.strictEqual(transport.username, 'test-access-user');
     assert.strictEqual(transport.accessKey, 'test-access-key');
 
-    client.emit('nightwatch:session.create', {
-      sessionId: '1234567'
-    });
-    setTimeout(async function() {
-      assert.strictEqual(transport.buildId, '123-567-89');
+    let result = await transport.createSession({argv: undefined, moduleKey: ''});
+    result.sessionId = '1234567';
+    client.emit('nightwatch:session.create', result);
 
-      try {
-        let result;
-        nock('https://api.browserstack.com')
-          .put('/automate/sessions/1234567.json', {
-            status: 'passed',
-            reason: ''
-          })
-          .reply(200, {});
+      
+    nock('https://api.browserstack.com')
+      .put('/automate/sessions/1234567.json', {
+        status: 'passed',
+        reason: ''
+      })
+      .reply(200, {});
 
-        result = await transport.testSuiteFinished(false);
-        assert.strictEqual(result, true);
-        assert.strictEqual(transport.sessionId, null);
+    result = await transport.testSuiteFinished(false);
+    assert.strictEqual(result, true);
+    assert.strictEqual(transport.sessionId, null);
 
-        done();
-      } catch (e) {
-        done(e);
-      }
-    }, 100);
+    assert.strictEqual(transport.buildId, '123-567-89');
 
   });
 
@@ -195,7 +201,7 @@ describe('BrowserstackTransport', function () {
 
   });
 
-  it('test create Transport for Browserstack - App automate', function(done) {
+  it('test create Transport for Browserstack - App automate', async function() {
     const client = NightwatchClient.client({
       webdriver: {
         host: 'hub-cloud.browserstack.com',
@@ -210,6 +216,20 @@ describe('BrowserstackTransport', function () {
         deviceName: 'iPhone 12'
       }
     });
+
+    nock('https://hub-cloud.browserstack.com')
+      .post('/wd/hub/session')
+      .reply(201, function (uri, requestBody) {
+        const reqObj = JSON.parse(requestBody);
+
+        return {
+          value: {
+            sessionId: '1352110219202',
+            capabilities: reqObj.desiredCapabilities
+          }
+        };
+      });
+    
     nock('https://api.browserstack.com')
       .get('/app-automate/builds.json')
       .reply(200, [{
@@ -224,6 +244,7 @@ describe('BrowserstackTransport', function () {
         }
       }
       ]);
+    
 
     assert.ok(client.transport instanceof Browserstack);
     assert.strictEqual(client.settings.webdriver.host, 'hub-cloud.browserstack.com');
@@ -233,29 +254,21 @@ describe('BrowserstackTransport', function () {
 
     const {transport} = client;
 
-    client.emit('nightwatch:session.create', {
-      sessionId: '1234567'
-    });
-    setTimeout(async function() {
-      assert.strictEqual(transport.buildId, '123-567-89');
-      
-      try {
-        let result;
-        nock('https://api.browserstack.com')
-          .put('/app-automate/sessions/1234567.json', {
-            status: 'passed',
-            reason: ''
-          })
-          .reply(200, {});
+    let result = await transport.createSession({argv: undefined, moduleKey: ''});
+    result.sessionId = '1234567';
+    client.emit('nightwatch:session.create', result);
 
-        result = await transport.testSuiteFinished(false);
-        assert.strictEqual(result, true);
-        assert.strictEqual(transport.sessionId, null);
+    nock('https://api.browserstack.com')
+      .put('/app-automate/sessions/1234567.json', {
+        status: 'passed',
+        reason: ''
+      })
+      .reply(200, {});
 
-        done();
-      } catch (e) {
-        done(e);
-      }
-    }, 100);
+    result = await transport.testSuiteFinished(false);
+    assert.strictEqual(result, true);
+    assert.strictEqual(transport.sessionId, null);
+    assert.strictEqual(transport.buildId, '123-567-89');
+
   });
 });
