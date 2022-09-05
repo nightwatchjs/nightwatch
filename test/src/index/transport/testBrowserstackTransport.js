@@ -64,32 +64,6 @@ describe('BrowserstackTransport', function () {
     delete process.env['USER'];
     delete process.env['KEY'];
   });
-
-  it('test create Transport for Browserstack - empty buildName', function() {
-    process.env['USER'] = 'test-access-user';
-    process.env['KEY'] = 'test-access-key';
-
-    const client = NightwatchClient.client({
-      webdriver: {
-        host: 'hub-cloud.browserstack.com',
-        port: 443
-      },
-      desiredCapabilities: {
-        'browserstack.user': '${USER}',
-        'browserstack.key': '${KEY}'
-      }
-    });
-
-    const {transport} = client;
-    assert.ok(transport instanceof SeleniumRemote);
-    assert.strictEqual(transport.username, 'test-access-user');
-    assert.strictEqual(transport.accessKey, 'test-access-key');
-    assert.strictEqual(transport.build, 'nightwatch-test-build');
-
-    delete process.env['USER'];
-    delete process.env['KEY'];
-
-  });
   
   it('test create Transport for Browserstack', function(done) {
     const client = NightwatchClient.client({
