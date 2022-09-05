@@ -147,4 +147,37 @@ describe('test stackTrace parse', function() {
 [0;90m      at processTicksAndRejections (node:internal/process/task_queues:96:5)[0m
 `);
   });
+
+  it('beautifyStackTrace - Unknown API method', function() {
+    const errorFilePath = path.join(__dirname, '../../sampletests/withcustomcommands/sampleWithFailures.js');
+    const lineNumber  = 4;
+
+    const error = new TypeError('Unknown method');
+    error.stack = `Error: Unknown api method "elementPresen".
+      at DescribeInstance.<anonymous> (${errorFilePath}:${lineNumber}:21)
+      at Context.call (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/context.js:430:35)
+      at TestCase.run (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/testcase.js:58:31)
+      at Runnable.__runFn (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:669:80)
+      at Runnable.run (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/runnable.js:126:21)
+      at TestSuite.createRunnable (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:776:33)
+      at TestSuite.handleRunnable (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:781:33)
+      at /Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:669:21
+      at processTicksAndRejections (node:internal/process/task_queues:96:5)`;
+
+    const delimiter = (new Array(errorFilePath.length + 3).join('–'));      
+    const expected = ` ${errorFilePath}:
+ ${delimiter}
+  2 |   before(client) {
+  3 |     client.globals.increment++;
+  4 |   }, 
+  5 | 
+  6 |   demoTestAsync(client) {
+ ${delimiter}
+`;
+
+    const modulePath = '/Projects/nightwatch/custom-commands/google.js';
+
+    const result = Utils.beautifyStackTrace(error, false, modulePath);
+    assert.strictEqual(result.replace(/\s/g, ''), expected.replace(/\s/g, ''));
+  });
 });
