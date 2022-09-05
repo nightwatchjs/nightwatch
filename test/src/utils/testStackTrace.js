@@ -6,7 +6,7 @@ const Utils = common.require('utils');
 const beautifyStackTrace = common.require('utils/beautifyStackTrace.js');
 const colors = common.require('utils/colors.js');
 const {Logger} = common.require('utils');
-const os = require('os');
+
 
 describe('test stackTrace parse', function() {
   before(() => colors.disable());
@@ -98,7 +98,7 @@ describe('test stackTrace parse', function() {
 
   it('should format error log properly', function() {
     // Skip test for windows
-    if (os.platform === 'win32') {
+    if (process.platform === 'win32') {
       assert.ok(true);
           
       return;
