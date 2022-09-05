@@ -6,6 +6,7 @@ const Utils = common.require('utils');
 const beautifyStackTrace = common.require('utils/beautifyStackTrace.js');
 const colors = common.require('utils/colors.js');
 const {Logger} = common.require('utils');
+const homedir = require('os').homedir();
 
 describe('test stackTrace parse', function() {
   before(() => colors.disable());
@@ -120,7 +121,7 @@ describe('test stackTrace parse', function() {
     [0;31mUnknown method[0m
 [0;33m
     Error location:[0m
-    /Users/binayakghosh/projects/nightwatch/test/sampletests/unknown-method/UnknownMethod.js:
+    ${homedir}/projects/nightwatch/test/sampletests/unknown-method/UnknownMethod.js:
     ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
      2 |   it('failure stack trace', function() {
      3 |    
@@ -130,7 +131,7 @@ describe('test stackTrace parse', function() {
     ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 [0;33m    Stack Trace :[0m
-[0;90m    at DescribeInstance.<anonymous> (/Users/binayakghosh/projects/nightwatch/test/sampletests/unknown-method/UnknownMethod.js:4:21)[0m
+[0;90m    at DescribeInstance.<anonymous> (${homedir}/projects/nightwatch/test/sampletests/unknown-method/UnknownMethod.js:4:21)[0m
 [0;90m      at Context.call (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/context.js:430:35)[0m
 [0;90m      at TestCase.run (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/testcase.js:58:31)[0m
 [0;90m      at Runnable.__runFn (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:669:80)[0m
