@@ -97,13 +97,7 @@ describe('test stackTrace parse', function() {
   });
 
   it('should format error log properly', function() {
-    // Skip test for windows
-    if (process.platform === 'win32') {
-      assert.ok(true);
-          
-      return;
-    }
-    
+
     colors.enable();
     const errorFilePath = path.join(__dirname, '../../sampletests/unknown-method/UnknownMethod.js');
     const lineNumber  = 4;
@@ -122,14 +116,13 @@ describe('test stackTrace parse', function() {
     
     const errorMessage = Logger.getErrorContent(error);
     assert.ok(!errorMessage.includes('\t'));
-    const baseDir = path.resolve(__dirname, '../../../');
 
     assert.strictEqual(errorMessage, ` [1;31m→ TypeError[0m
 
     [0;31mUnknown method[0m
 [0;33m
     Error location:[0m
-    ${baseDir}/test/sampletests/unknown-method/UnknownMethod.js:
+    ${errorFilePath}:
     ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
      2 |   it('failure stack trace', function() {
      3 |    
@@ -139,7 +132,7 @@ describe('test stackTrace parse', function() {
     ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 [0;33m    Stack Trace :[0m
-[0;90m    at DescribeInstance.<anonymous> (${baseDir}/test/sampletests/unknown-method/UnknownMethod.js:4:21)[0m
+[0;90m    at DescribeInstance.<anonymous> (${errorFilePath}:${lineNumber}:21)[0m
 [0;90m      at Context.call (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/context.js:430:35)[0m
 [0;90m      at TestCase.run (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/testcase.js:58:31)[0m
 [0;90m      at Runnable.__runFn (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:669:80)[0m
