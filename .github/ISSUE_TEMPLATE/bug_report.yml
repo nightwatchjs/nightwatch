@@ -5,7 +5,7 @@ body:
     attributes:
       value: |
         Thanks in advance for your contribution. Before submitting a new issue, try searching for a similar one here: https://github.com/nightwatchjs/nightwatch/search?type=Issues.
-  - type: "input"
+  - type: "textarea"
     id: "description"
     attributes:
       label: "Description of the bug/issue"
@@ -34,7 +34,6 @@ body:
 
         Please add the test and other info inline, not as attachments or screenshots.
       placeholder: |
-        ```js
         // Please add the sample test here
 
         module.exports = {
@@ -45,14 +44,15 @@ body:
               .end();
           }
         }
-        ```
-  - type: input
+      render: node
+  - type: textarea
     id: "run-with-command"
     attributes:
       label: "Command to run"
       description: "Include the command used to run the test."
       placeholder: |
         nightwatch test/sampleTest.js --your-other-arguments-here
+      render: bash
   - type: textarea
     id: "verbose-output"
     attributes:
@@ -61,7 +61,6 @@ body:
         "Extended nightwatch command logging during the session. 
         Please use `nightwatch --verbose` and paste the output here"
       placeholder: |
-        ```sh
         [Sample Test] Test Suite
         ────────────────────────────────────────────────────────
         ⠋ Starting ChromeDriver on port 9515...
@@ -78,26 +77,13 @@ body:
                 'goog:chromeOptions': { w3c: true, args: [] }
               }
             }
-        ```
+      render: fundamental
   - type: textarea
     id: "configuration"
     attributes:
       label: "Nightwatch Configuration"
       description: "Add your nightwatch.json or nightwatch.conf.js here; Make sure to leave out any sensitive details."
       placeholder: |
-        //
-        // Refer to the online docs for more details:
-        // https://nightwatchjs.org/gettingstarted/configuration/
-        //
-        //  _   _  _         _      _                     _          _
-        // | \ | |(_)       | |    | |                   | |        | |
-        // |  \| | _   __ _ | |__  | |_ __      __  __ _ | |_   ___ | |__
-        // | . ` || | / _` || '_ \ | __|\ \ /\ / / / _` || __| / __|| '_ \
-        // | |\  || || (_| || | | || |_  \ V  V / | (_| || |_ | (__ | | | |
-        // \_| \_/|_| \__, ||_| |_| \__|  \_/\_/   \__,_| \__| \___||_| |_|
-        //             __/ |
-        //            |___/
-        //
         module.exports = {
           src_folders: [],
           page_objects_path: [],
@@ -108,8 +94,7 @@ body:
           webdriver: {},
           test_settings: {}
         }
-    validations:
-      required: true
+      render: node
   - type: "markdown"
     attributes:
       value: |
@@ -121,16 +106,6 @@ body:
       label: "Nightwatch.js Version"
       description: "The version of Nightwatch you use."
       placeholder: "2.3.0"
-    validations:
-      required: true
-  - type: "input"
-    id: "npm-version"
-    attributes:
-      label: "NPM Version"
-      description: "The version of NPM you use."
-      placeholder: "8.12.1"
-    validations:
-      required: true
   - type: "input"
     id: "node-version"
     attributes:
@@ -138,17 +113,11 @@ body:
       description: "The version of Node you use."
       placeholder: "14.0.0"
   - type: "input"
-    id: "yarn-version"
-    attributes:
-      label: "Yarn Version"
-      description: "The version of Yarn you use."
-      placeholder: "1.0.1"
-  - type: "input"
     id: "browser"
     attributes:
       label: "Browser"
       description: "The browser(s) this issue occurred with."
-      placeholder: "Firefox 102.0.1"
+      placeholder: "Firefox 102.0.1; Chrome 104.0.0"
   - type: "input"
     id: "operating-system"
     attributes:
