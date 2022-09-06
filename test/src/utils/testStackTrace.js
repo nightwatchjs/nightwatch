@@ -97,8 +97,6 @@ describe('test stackTrace parse', function() {
   });
 
   it('should format error log properly', function() {
-    // eslint-disable-next-line no-console
-    console.log(process.platform);
     // Skip for windows
     if (process.platform === 'win32') {
       return;
