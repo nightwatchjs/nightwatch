@@ -18,17 +18,20 @@ describe('BrowserstackTransport', function () {
   });
 
   it('test create Transport for Browserstack - empty credentials', function() {
-    assert.throws(function() {
-      NightwatchClient.client({
+    assert.rejects(async function() {
+      const client = NightwatchClient.client({
         webdriver: {
           host: 'hub-cloud.browserstack.com',
           port: 443
         }
       });
+      
+      await client.transport.createSession({argv: undefined, moduleKey: ''});
+      
     }, /BrowserStack access key is not set\. Verify that "browserstack\.key" capability is set correctly or set BROWSERSTACK_KEY environment variable \(\.env files are supported\)\./);
 
-    assert.throws(function() {
-      NightwatchClient.client({
+    assert.rejects(async function() {
+      const client = NightwatchClient.client({
         webdriver: {
           host: 'hub-cloud.browserstack.com',
           port: 443
@@ -37,11 +40,14 @@ describe('BrowserstackTransport', function () {
           'browserstack.key': 'test-access-key'
         }
       });
+
+      await client.transport.createSession({argv: undefined, moduleKey: ''});
+
     }, /BrowserStack username is not set\. Verify that "browserstack\.user" capability is set correctly or set BROWSERSTACK_USER environment variable \(\.env files are supported\)\./);
 
   });
 
-  it('test create Transport for Browserstack - env variable credentials', function() {
+  it('test create Transport for Browserstack - env variable credentials', async function() {
     process.env['USER'] = 'test-access-user';
     process.env['KEY'] = 'test-access-key';
 
@@ -56,7 +62,40 @@ describe('BrowserstackTransport', function () {
       }
     });
 
+    nock('https://hub-cloud.browserstack.com')
+      .post('/wd/hub/session')
+      .reply(201, function (uri, requestBody) {
+        const reqObj = JSON.parse(requestBody);
+
+        return {
+          value: {
+            sessionId: '1352110219202',
+            capabilities: reqObj.desiredCapabilities
+          }
+        };
+      });
+  
+    nock('https://api.browserstack.com')
+      .get('/automate/builds.json')
+      .reply(200, [
+        {
+          automation_build: {
+            name: 'nightwatch-test-build',
+            hashed_id: '123-567-89'
+          }
+        },
+        {
+          automation_build: {
+            name: 'test-build'
+          }
+        }
+      ]);
+
     const {transport} = client;
+    const result = await transport.createSession({argv: undefined, moduleKey: ''});
+    result.sessionId = '1234567';
+    client.emit('nightwatch:session.create', result);
+
     assert.ok(transport instanceof SeleniumRemote);
     assert.strictEqual(transport.username, 'test-access-user');
     assert.strictEqual(transport.accessKey, 'test-access-key');
@@ -111,18 +150,18 @@ describe('BrowserstackTransport', function () {
     assert.ok(client.transport instanceof Browserstack);
     assert.strictEqual(client.settings.webdriver.host, 'hub-cloud.browserstack.com');
     assert.strictEqual(client.settings.webdriver.default_path_prefix, '/wd/hub');
-    assert.strictEqual(client.settings.webdriver.start_process, false);
     assert.strictEqual(client.settings.webdriver.ssl, true);
 
     const {transport} = client;
     assert.ok(transport instanceof SeleniumRemote);
-    assert.strictEqual(transport.username, 'test-access-user');
-    assert.strictEqual(transport.accessKey, 'test-access-key');
 
     let result = await transport.createSession({argv: undefined, moduleKey: ''});
     result.sessionId = '1234567';
     client.emit('nightwatch:session.create', result);
 
+    assert.strictEqual(transport.username, 'test-access-user');
+    assert.strictEqual(transport.accessKey, 'test-access-key');
+    assert.strictEqual(client.settings.webdriver.start_process, false);
       
     nock('https://api.browserstack.com')
       .put('/automate/sessions/1234567.json', {
@@ -139,7 +178,7 @@ describe('BrowserstackTransport', function () {
 
   });
 
-  it('test create Transport for Browserstack with failures', function(done) {
+  it('test create Transport for Browserstack with failures', async function() {
     const client = NightwatchClient.client({
       output: false,
       silent: false,
@@ -154,6 +193,19 @@ describe('BrowserstackTransport', function () {
         browserName: 'chrome'
       }
     });
+
+    nock('https://hub-cloud.browserstack.com')
+      .post('/wd/hub/session')
+      .reply(201, function (uri, requestBody) {
+        const reqObj = JSON.parse(requestBody);
+
+        return {
+          value: {
+            sessionId: '1352110219202',
+            capabilities: reqObj.desiredCapabilities
+          }
+        };
+      });
 
     nock('https://api.browserstack.com')
       .get('/automate/builds.json')
@@ -172,31 +224,27 @@ describe('BrowserstackTransport', function () {
       ]);
 
     const {transport} = client;
-    client.emit('nightwatch:session.create', {
-      sessionId: '1234567'
-    });
+    let result = await transport.createSession({argv: undefined, moduleKey: ''});
+    result.sessionId = '1234567';
+    client.emit('nightwatch:session.create', result);
+
     setTimeout(async function() {
-      try {
-        let result;
-        nock('https://api.browserstack.com')
-          .put('/automate/sessions/1234567.json', {
-            status: 'failed',
-            reason: 'NightwatchAssertError: Timed out while waiting for element <#james> to be present for 5000 milliseconds. - expected "visible" but got: "not found" (5400ms)'
-          })
-          .reply(200, {});
 
-        const error = new Error('Timed out while waiting for element <#james> to be present for 5000 milliseconds. - expected "visible" but got: "not found" (5400ms)');
-        error.name = 'NightwatchAssertError';
+      nock('https://api.browserstack.com')
+        .put('/automate/sessions/1234567.json', {
+          status: 'failed',
+          reason: 'NightwatchAssertError: Timed out while waiting for element <#james> to be present for 5000 milliseconds. - expected "visible" but got: "not found" (5400ms)'
+        })
+        .reply(200, {});
 
-        result = await transport.testSuiteFinished(error);
+      const error = new Error('Timed out while waiting for element <#james> to be present for 5000 milliseconds. - expected "visible" but got: "not found" (5400ms)');
+      error.name = 'NightwatchAssertError';
 
-        assert.strictEqual(result, true);
-        assert.strictEqual(transport.sessionId, null);
+      result = await transport.testSuiteFinished(error);
 
-        done();
-      } catch (e) {
-        done(e);
-      }
+      assert.strictEqual(result, true);
+      assert.strictEqual(transport.sessionId, null);
+
     }, 100);
 
   });
