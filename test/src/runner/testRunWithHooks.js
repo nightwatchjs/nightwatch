@@ -6,7 +6,7 @@ const MockServer = require('../../lib/mockserver.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
 
-describe('testRunWithHooks', function() {
+describe.only('testRunWithHooks', function() {
   before(function(done) {
     this.server = MockServer.init();
 
@@ -263,8 +263,7 @@ describe('testRunWithHooks', function() {
     };
 
     return runTests({
-      _source: [testsPath],
-      parallel: false
+      _source: [testsPath]
     }, settings({
       seleniumPort: 10195,
       globals
@@ -293,7 +292,6 @@ describe('testRunWithHooks', function() {
 
     return runTests({
       _source: [testsPath],
-      parallel: false,
       testcase: 'demoTestSyncOne'
     }, settings({
       seleniumPort: 10195,
