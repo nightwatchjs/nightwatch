@@ -75,4 +75,26 @@ describe('custom commands with findElements es6 async', function() {
       globals
     }));
   });
+
+  it('custom assert getEmail', function() {
+    const testsPath = path.join(__dirname, '../../../apidemos/custom-commands/testUsingCustomGetEmail.js');
+    
+    Mocks.createNewW3CSession({
+      testName: 'custom execute getEmail'
+    });
+
+    const globals = {
+      waitForConditionPollInterval: 50,
+      waitForConditionTimeout: 120,
+      retryAssertionTimeout: 1000
+    };
+
+    return NightwatchClient.runTests(testsPath, settings({
+      output: false,
+      silent: true,
+      selenium_host: null,
+      custom_commands_path: [path.join(__dirname, '../../../extra/commands/es6async')],
+      globals
+    }));
+  });
 });
