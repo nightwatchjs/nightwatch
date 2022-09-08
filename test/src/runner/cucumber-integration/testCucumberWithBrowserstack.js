@@ -71,8 +71,7 @@ xdescribe('Cucumber  Browserstack integration', function() {
       tags: ['@pass'],
       verbose: false,
       config: path.join(__dirname, '../../../extra/cucumber-config.js'),
-      env: 'browserstack',
-      parallel: false
+      env: 'browserstack'
     }, {}).then(failures => {
       assert.strictEqual(failures, false, 'Cucumber has test failures. Run with verbose to investigate.');
     });
@@ -92,8 +91,7 @@ xdescribe('Cucumber  Browserstack integration', function() {
       env: 'browserstack',
       tags: ['@fail'],
       verbose: false,
-      config: path.join(__dirname, '../../../extra/cucumber-config.js'),
-      parallel: false
+      config: path.join(__dirname, '../../../extra/cucumber-config.js')
     }, {}).then(failures => {
       assert.strictEqual(failures, true, 'Cucumber tests should have failed. Run with verbose to investigate.');
     });

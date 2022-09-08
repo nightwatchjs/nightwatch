@@ -38,10 +38,7 @@ describe('find elements with page commands', function() {
       output: false,
       skip_testcases_on_fail: false,
       page_objects_path: [path.join(__dirname, '../../../extra/pageobjects/pages')],
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     }));
   });
 

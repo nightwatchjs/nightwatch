@@ -41,10 +41,7 @@ describe('testRunWithMultipleSources', function() {
     };
 
     return runTests(testsPath, settings({
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     }));
   });
 
@@ -67,10 +64,7 @@ describe('testRunWithMultipleSources', function() {
     };
 
     return runTests(testsPath, settings({
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     }));
   });
 
@@ -89,7 +83,7 @@ describe('testRunWithMultipleSources', function() {
       }
     };
 
-    return runTests({parallel: false}, settings({
+    return runTests(settings({
       src_folders: testsPath,
       globals
     }));
@@ -125,12 +119,9 @@ describe('testRunWithMultipleSources', function() {
       }
     };
 
-    return Client.runTests({parallel: false}, settings({
+    return Client.runTests(settings({
       src_folders: testsPath,
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     })).then(_ => {
       mockery.deregisterAll();
       mockery.disable();

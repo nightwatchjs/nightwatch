@@ -65,9 +65,6 @@ describe('testRunnerScreenshotsOutput', function () {
         on_failure: true,
         on_error: true,
         path: screenshotFilePath
-      },
-      test_workers: {
-        enabled: false
       }
     }))
       .then(_ => {
@@ -113,9 +110,6 @@ describe('testRunnerScreenshotsOutput', function () {
         on_failure: true,
         on_error: true,
         path: screenshotFilePath
-      },
-      test_workers: {
-        enabled: false
       }
     }))
       .then(_ => {
@@ -164,9 +158,6 @@ describe('testRunnerScreenshotsOutput', function () {
         on_failure: true,
         on_error: true,
         path: screenshotFilePath
-      },
-      test_workers: {
-        enabled: false
       }
     }))
       .then(_ => {
@@ -199,9 +190,6 @@ describe('testRunnerScreenshotsOutput', function () {
         on_failure: true,
         on_error: true,
         path: screenshotFilePath
-      },
-      test_workers: {
-        enabled: false
       }
     }))
       .then(_ => {
@@ -234,9 +222,6 @@ describe('testRunnerScreenshotsOutput', function () {
         on_failure: false,
         on_error: true,
         path: screenshotFilePath
-      },
-      test_workers: {
-        enabled: false
       }
     }))
       .then(_ => {

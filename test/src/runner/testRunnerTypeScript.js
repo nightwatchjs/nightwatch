@@ -54,10 +54,7 @@ describe('testRunnerTypeScript', function() {
 
     return runTests(testsPath, settings({
       custom_commands_path: path.join(__dirname, '../../extra/commands'),
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     }));
   });
 });

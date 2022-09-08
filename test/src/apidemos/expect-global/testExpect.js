@@ -39,10 +39,7 @@ describe('expect(element.<command>) - passed', function() {
     return NightwatchClient.runTests(testsPath, settings({
       output: false,
       skip_testcases_on_fail: false,
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     }));
   });
 
@@ -82,10 +79,7 @@ describe('expect(element.<command>) - passed', function() {
       silent: false,
       persist_globals: true,
       globals,
-      output_folder: false,
-      test_workers: {
-        enabled: false
-      }
+      output_folder: false
     });
   });
 

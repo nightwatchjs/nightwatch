@@ -29,8 +29,7 @@ describe('testRunWithVerify', function() {
 
   it('using verify in tests', function() {
     return runTests({
-      _source: ['./withverify'],
-      parallel: false
+      _source: ['./withverify']
     }, settings({
       globals: {
         waitForConditionPollInterval: 20,

@@ -91,9 +91,6 @@ describe('testRunBrowserstackTransport', function() {
           assert.ok(nockDone, 'Failed mock requests');
           assert.strictEqual(Object.keys(results.modules).length, 1);
         }
-      },
-      test_workers: {
-        enabled: false
       }
     }));
   });

@@ -85,8 +85,7 @@ describe('testRunTestsuiteWithSuiteRetries', function() {
 
     return runTests({
       suiteRetries: 1,
-      _source: [testsPath],
-      parallel: false
+      _source: [testsPath]
     }, settings({
       globals
     }));
@@ -110,8 +109,7 @@ describe('testRunTestsuiteWithSuiteRetries', function() {
     };
 
     return runTests({
-      _source: [testsPath],
-      parallel: false
+      _source: [testsPath]
     }, settings({
       globals
     }));
@@ -132,8 +130,7 @@ describe('testRunTestsuiteWithSuiteRetries', function() {
 
     return runTests({
       suiteRetries: 2,
-      _source: [testsPath],
-      parallel: false
+      _source: [testsPath]
     }, settings({
       globals
     }));
@@ -153,8 +150,7 @@ describe('testRunTestsuiteWithSuiteRetries', function() {
 
     return runTests({
       suiteRetries: 1,
-      _source: [testsPath],
-      parallel: false
+      _source: [testsPath]
     }, settings({
       globals,
       skip_testcases_on_fail: false
@@ -215,8 +211,7 @@ describe('testRunTestsuiteWithSuiteRetries', function() {
 
     return runTests({
       suiteRetries: 1,
-      _source: [testsPath],
-      parallel: false
+      _source: [testsPath]
     }, settings({
       globals
     }));

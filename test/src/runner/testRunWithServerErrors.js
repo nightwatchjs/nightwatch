@@ -65,8 +65,7 @@ describe('testRunWithServerErrors', function() {
     };
 
     return runTests({
-      _source: [testsPath],
-      parallel: false
+      _source: [testsPath]
     }, settings({
       output: false,
       skip_testcases_on_fail: false,

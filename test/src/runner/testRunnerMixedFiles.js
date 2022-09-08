@@ -57,10 +57,7 @@ describe('testRunnerMixedFiles', function() {
       custom_commands_path: path.join(__dirname, '../../extra/commands'),
       globals,
       output: false,
-      disable_typescript: false,
-      test_workers: {
-        enabled: false
-      }
+      disable_typescript: false
     }));
   });
 
@@ -85,10 +82,7 @@ describe('testRunnerMixedFiles', function() {
 
     return runTests(testsPath, settings({
       custom_commands_path: path.join(__dirname, '../../extra/commands'),
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     }));
   });
 
@@ -113,10 +107,7 @@ describe('testRunnerMixedFiles', function() {
     return runTests(testsPath, settings({
       custom_commands_path: path.join(__dirname, '../../extra/commands'),
       globals,
-      disable_typescript: true,
-      test_workers: {
-        enabled: false
-      }
+      disable_typescript: true
     }));
   }); 
 });

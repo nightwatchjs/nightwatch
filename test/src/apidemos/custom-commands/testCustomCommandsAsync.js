@@ -42,10 +42,7 @@ describe('custom commands with findElements es6 async', function() {
       silent: true,
       selenium_host: null,
       custom_commands_path: [path.join(__dirname, '../../../extra/commands/es6async')],
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     }));
   });
 
@@ -75,11 +72,7 @@ describe('custom commands with findElements es6 async', function() {
       silent: true,
       selenium_host: null,
       custom_commands_path: [path.join(__dirname, '../../../extra/commands/es6async')],
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     }));
   });
-
 });

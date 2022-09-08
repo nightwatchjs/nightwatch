@@ -48,7 +48,7 @@ describe('testRunnerHTMLOutput', function() {
     }, true);
 
 
-    return runTests({source: testsPath, parallel: false, reporter: 'html'}, settings({
+    return runTests({source: testsPath, reporter: 'html'}, settings({
       output_folder: outputPath,
       globals: {
         waitForConditionPollInterval: 20,
@@ -92,7 +92,7 @@ describe('testRunnerHTMLOutput', function() {
     }, true);
 
 
-    return runTests({source: testsPath, parallel: false, reporter: 'html'}, settings({
+    return runTests({source: testsPath, reporter: 'html'}, settings({
       output_folder: outputPath,
       globals: {
         waitForConditionPollInterval: 20,
@@ -134,7 +134,7 @@ describe('testRunnerHTMLOutput', function() {
     }, true);
 
 
-    return runTests({source: testsPath, parallel: false, reporter: 'html'}, settings({
+    return runTests({source: testsPath, reporter: 'html'}, settings({
       output_folder: outputPath,
       globals: {
         waitForConditionPollInterval: 20,

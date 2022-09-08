@@ -37,7 +37,7 @@ describe('testRunnerJsonOutput', function() {
       path.join(__dirname, '../../sampletests/withsubfolders')
     ];
 
-    return runTests({source: testsPath, parallel: false, reporter: 'json'}, settings({
+    return runTests({source: testsPath, reporter: 'json'}, settings({
       output_folder: 'output',
       silent: true,
       globals: {reporter: function() {}}

@@ -22,8 +22,7 @@ describe('Cucumber integration', function() {
       source,
       tags: ['@pass'],
       verbose: false,
-      config: path.join(__dirname, '../../../extra/cucumber-config.js'),
-      parallel: false
+      config: path.join(__dirname, '../../../extra/cucumber-config.js')
     }, {}).then(failures => {
       assert.strictEqual(failures, false, 'Cucumber has test failures. Run with verbose to investigate.');
     });
@@ -36,8 +35,7 @@ describe('Cucumber integration', function() {
       source,
       tags: ['@fail'],
       verbose: false,
-      config: path.join(__dirname, '../../../extra/cucumber-config.js'),
-      parallel: false
+      config: path.join(__dirname, '../../../extra/cucumber-config.js')
     }, {}).then(failures => {
       assert.strictEqual(failures, true, 'Cucumber tests should have failed. Run with verbose to investigate.');
     });

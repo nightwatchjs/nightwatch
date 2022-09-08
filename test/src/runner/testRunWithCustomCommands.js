@@ -47,8 +47,7 @@ describe('testRunWithCustomCommands', function() {
     };
 
     return runTests({
-      _source: [testsPath],
-      parallel: false
+      _source: [testsPath]
     }, settings({
       custom_commands_path: [path.join(__dirname, '../../extra/commands')],
       globals
@@ -73,8 +72,7 @@ describe('testRunWithCustomCommands', function() {
     };
 
     return runTests({
-      _source: [testsPath],
-      parallel: false
+      _source: [testsPath]
     }, settings({
       custom_commands_path: [path.join(__dirname, '../../extra/commands/es6async')],
       output: false,
@@ -120,8 +118,7 @@ describe('testRunWithCustomCommands', function() {
     };
 
     return runTests({
-      _source: [testsPath],
-      parallel: false
+      _source: [testsPath]
     }, settings({
       custom_commands_path: [path.join(__dirname, '../../extra/commands/es6async')],
       output: false,
@@ -170,8 +167,7 @@ describe('testRunWithCustomCommands', function() {
     };
 
     return runTests({
-      _source: [testsPath],
-      parallel: false
+      _source: [testsPath]
     }, settings({
       custom_commands_path: [path.join(__dirname, '../../extra/commands')],
       globals
@@ -253,8 +249,7 @@ describe('testRunWithCustomCommands', function() {
     };
 
     return runTests({
-      _source: [testsPath],
-      parallel: false
+      _source: [testsPath]
     }, settings({
       custom_commands_path: [path.join(__dirname, '../../extra/commands/*.js')],
       globals

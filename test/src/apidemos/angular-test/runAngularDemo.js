@@ -39,10 +39,7 @@ describe('angular demo tests', function() {
       },
       selenium_host: null,
       output: false,
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     }));
   });
 
@@ -67,10 +64,7 @@ describe('angular demo tests', function() {
       },
       selenium_host: null,
       output: false,
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     }));
   });
 
@@ -94,10 +88,7 @@ describe('angular demo tests', function() {
       },
       selenium_host: null,
       output: false,
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     }));
   });
 
@@ -157,10 +148,7 @@ describe('angular demo tests', function() {
       },
       selenium_host: null,
       output: false,
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     }));
   });
 
@@ -233,10 +221,7 @@ describe('angular demo tests', function() {
       },
       selenium_host: null,
       output: false,
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     }));
   });
 });

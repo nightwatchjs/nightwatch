@@ -81,10 +81,7 @@ describe('testRunnerSessionCreate', function() {
       },
       globals,
       output: false,
-      output_folder: false,
-      test_workers: {
-        enabled: false
-      }
+      output_folder: false
     }));
   });
 
@@ -135,7 +132,6 @@ describe('testRunnerSessionCreate', function() {
 
     return runTests({
       source: testsPath,
-      parallel: false,
       'fail-fast': true
     }, settings({
       selenium_host: null,
@@ -200,8 +196,7 @@ describe('testRunnerSessionCreate', function() {
     };
 
     return runTests({
-      source: testsPath,
-      parallel: false
+      source: testsPath
     }, settings({
       selenium_host: null,
       webdriver: {
@@ -247,10 +242,7 @@ describe('testRunnerSessionCreate', function() {
         port: 9999
       },
       output: false,
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     })).catch(err => {
       assert.ok(err instanceof Error);
       if (err.code === 'ERR_ASSERTION') {
@@ -289,10 +281,7 @@ describe('testRunnerSessionCreate', function() {
         host: 'localhost',
         port: 4444
       },
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     })).catch(err => {
       assert.ok(err instanceof Error);
       if (err.code === 'ERR_ASSERTION') {
@@ -331,10 +320,7 @@ describe('testRunnerSessionCreate', function() {
         host: 'localhost',
         port: 4444
       },
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     })).catch(err => {
       assert.ok(err instanceof Error);
       if (err.code === 'ERR_ASSERTION') {

@@ -48,10 +48,7 @@ describe('testRunWithTags', function() {
           assert.ok('demoTest' in results.modules[`withdescribe${path.sep}failures${path.sep}sampleSkipTestcases`].completed);
         }
       },
-      tag_filter: ['login'],
-      test_workers: {
-        enabled: false
-      }
+      tag_filter: ['login']
     }));
   });
 
@@ -62,10 +59,7 @@ describe('testRunWithTags', function() {
       globals: {
       },
       filter: 'syncnames/*',
-      tag_filter: ['login'],
-      test_workers: {
-        enabled: false
-      }
+      tag_filter: ['login']
     }))
       .catch(err => {
         assert.ok(err instanceof Error);
@@ -84,10 +78,7 @@ describe('testRunWithTags', function() {
         }
       },
       filter: 'tags/*',
-      tag_filter: ['login'],
-      test_workers: {
-        enabled: false
-      }
+      tag_filter: ['login']
     }));
   });
 
@@ -96,8 +87,7 @@ describe('testRunWithTags', function() {
 
     return runTests({
       _source: [testsPath],
-      skiptags: ['logout'],
-      parallel: false
+      skiptags: ['logout']
     }, settings({
       globals: {
         reporter(results) {
@@ -114,8 +104,7 @@ describe('testRunWithTags', function() {
 
     return runTests({
       _source: [testsPath],
-      skiptags: ['logout', 'login'],
-      parallel: false
+      skiptags: ['logout', 'login']
     }, settings({
       globals: {
         reporter(results) {
@@ -137,8 +126,7 @@ describe('testRunWithTags', function() {
 
     return runTests({
       _source: [testsPath],
-      skiptags: ['other'],
-      parallel: false
+      skiptags: ['other']
     }, settings({
       output: false,
       disable_typescript: true,
@@ -157,8 +145,7 @@ describe('testRunWithTags', function() {
 
     return runTests({
       _source: [testsPath],
-      skiptags: ['login'],
-      parallel: false
+      skiptags: ['login']
     }, settings({
       globals: {},
       output: false,

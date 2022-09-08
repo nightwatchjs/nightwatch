@@ -39,10 +39,7 @@ describe('test Mocha Runner integration', function() {
         }
       },
       output: false,
-      silent: false,
-      test_workers: {
-        enabled: false
-      }
+      silent: false
     })).catch(err => {
       error = err;
     }).then((err) => {

@@ -105,8 +105,7 @@ describe('testRunWithHooks', function() {
 
       return runTests({
         source,
-        'fail-fast': true,
-        parallel: false
+        'fail-fast': true
       }, settings({
         globals
       })).catch(err => {
@@ -152,8 +151,7 @@ describe('testRunWithHooks', function() {
       };
 
       return runTests({
-        source,
-        parallel: false
+        source
       }, settings({
         globals
       }));
@@ -173,10 +171,7 @@ describe('testRunWithHooks', function() {
     let testsPath = path.join(__dirname, '../../sampletests/async');
 
     return runTests(testsPath, settings({
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     }));
   });
 
@@ -200,10 +195,7 @@ describe('testRunWithHooks', function() {
 
     return runTests(testsPath, settings({
       seleniumPort: 10195,
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     }));
   });
 
@@ -237,10 +229,7 @@ describe('testRunWithHooks', function() {
 
     return runTests(testsPath, settings({
       seleniumPort: 10195,
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     }));
   });
 
@@ -259,10 +248,7 @@ describe('testRunWithHooks', function() {
 
     return runTests(testsPath, settings({
       seleniumPort: 10195,
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     }));
   });
 
@@ -331,10 +317,7 @@ describe('testRunWithHooks', function() {
 
     return runTests(testsPath, settings({
       custom_commands_path: path.join(__dirname, '../../extra/commands'),
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     }));
   });
 
@@ -351,10 +334,7 @@ describe('testRunWithHooks', function() {
     };
 
     return runTests(testsPath, settings({
-      globals,
-      test_workers: {
-        enabled: false
-      }
+      globals
     }));
   });
 });

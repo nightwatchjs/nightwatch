@@ -46,8 +46,7 @@ describe('testRunTestSuite', function () {
     };
 
     return runTests({
-      'fail-fast': true,
-      parallel: false
+      'fail-fast': true
     }, settings({
       output: false,
       src_folders,
@@ -75,7 +74,6 @@ describe('testRunTestSuite', function () {
     };
 
     return runTests({
-      parallel: false
     }, settings({
       output: false,
       enable_fail_fast: true,
@@ -134,8 +132,7 @@ describe('testRunTestSuite', function () {
     let testsPath = path.join(__dirname, '../../sampletests/syncnames');
 
     return runTests({
-      _source: [testsPath],
-      parallel: false
+      _source: [testsPath]
     }, settings({
       sync_test_names: true,
       globals
@@ -160,7 +157,7 @@ describe('testRunTestSuite', function () {
       }
     };
 
-    return runTests({parallel: false}, settings({
+    return runTests(settings({
       globals,
       start_session: true,
       src_folders: srcFolders
@@ -173,7 +170,7 @@ describe('testRunTestSuite', function () {
       path.join(__dirname, '../../sampletests/srcfolders')
     ];
 
-    return runTests({parallel: false}, settings({
+    return runTests(settings({
       globals: {
         reporter(results, cb) {
           if (results.lastError) {
@@ -198,7 +195,7 @@ describe('testRunTestSuite', function () {
       path.join(__dirname, '../../sampletests/withdescribe/basic')
     ];
 
-    return runTests({parallel: false}, settings({
+    return runTests(settings({
       globals: {
         reporter(results, cb) {
           if (results.lastError) {
@@ -226,7 +223,7 @@ describe('testRunTestSuite', function () {
       path.join(__dirname, '../../sampletests/withdescribe/basic/sampleWithOnly.js')
     ];
 
-    return runTests({parallel: false}, settings({
+    return runTests(settings({
       globals: {
         reporter(results, cb) {
           if (results.lastError) {
@@ -256,8 +253,7 @@ describe('testRunTestSuite', function () {
     };
 
     return runTests({
-      _source: [testsPath],
-      parallel: false
+      _source: [testsPath]
     }, settings({
       globals,
       output: false,

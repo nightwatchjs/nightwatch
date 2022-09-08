@@ -27,9 +27,6 @@ describe('testRunnerUnitTests', function() {
             throw results.lastError;
           }
         }
-      },
-      test_workers: {
-        enabled: false
       }
     });
   });
@@ -50,9 +47,6 @@ describe('testRunnerUnitTests', function() {
 
           assert.strictEqual(settings.globals.calls, 2);
         }
-      },
-      test_workers: {
-        enabled: false
       }
     };
 
@@ -75,9 +69,6 @@ describe('testRunnerUnitTests', function() {
 
           assert.strictEqual(settings.globals.calls, 2);
         }
-      },
-      test_workers: {
-        enabled: false
       }
     };
 
@@ -95,9 +86,6 @@ describe('testRunnerUnitTests', function() {
           assert.ok(results.lastError instanceof Error);
           assert.ok(results.lastError.message.includes('There is already a .client property defined in'));
         }
-      },
-      test_workers: {
-        enabled: false
       }
     };
 
@@ -140,9 +128,6 @@ describe('testRunnerUnitTests', function() {
           assert.strictEqual(assertions[0].message, 'Expected values to be strictly equal:\n\n1 !== 0\n - expected "0" but got: "1"');
           assert.ok(assertions[0].stackTrace.startsWith, 'AssertionError [ERR_ASSERTION]: 1 == 0 - expected "0" but got: "1"');
         }
-      },
-      test_workers: {
-        enabled: false
       }
     })
       .then(runner => {
@@ -169,9 +154,6 @@ describe('testRunnerUnitTests', function() {
         calls: 0,
         unitTestsTimeout: 10,
         reporter() {}
-      },
-      test_workers: {
-        enabled: false
       }
     });
 

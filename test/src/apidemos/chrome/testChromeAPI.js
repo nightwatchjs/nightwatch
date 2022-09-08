@@ -57,10 +57,7 @@ describe('chrome api demos', function () {
       silent: true,
       persist_globals: true,
       globals,
-      output_folder: false,
-      test_workers: {
-        enabled: false
-      }
+      output_folder: false
     });
   });
 });
