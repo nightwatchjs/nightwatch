@@ -6,7 +6,7 @@ const MockServer = require('../../lib/mockserver.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
 
-describe.only('testRunWithHooks', function() {
+describe('testRunWithHooks', function() {
   before(function(done) {
     this.server = MockServer.init();
 
