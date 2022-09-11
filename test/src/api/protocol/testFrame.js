@@ -19,10 +19,10 @@ describe('client.frame', function() {
   it('testFramePost', function () {
     return Globals.protocolTest({
       assertion: function(frameId) {
-        assert.strictEqual(frameId, 'testFrame');
+        assert.strictEqual(frameId, 0);
       },
       commandName: 'frame',
-      args: ['testFrame']
+      args: [0]
     });
   });
 
