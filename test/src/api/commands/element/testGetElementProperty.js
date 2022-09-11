@@ -28,5 +28,4 @@ describe('getElementProperty', function() {
 
     this.client.start(done);
   });
-  
 });
