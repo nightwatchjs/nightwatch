@@ -7,18 +7,17 @@ module.exports = {
 
   demoTest2: function (client) {
     client.url('http://localhost')
-      .elements('css selector', '#weblogin', function (result) {
+      .elements('css selector', '#weblogin', async function (result) {
         client.globals.test.ok(result.value);
 
-        let assertion = client.expect(result.value).to.have.length(1);
-        client.globals.test.deepEqual(assertion.__flags.get('object'), [{ELEMENT: '0'}]);
 
-        try {
-          client.expect(result.value).to.have.length(2);
-        } catch (ex) {
-          client.globals.test.equal(ex.actual, 1);
-          client.globals.test.equal(ex.expected, 2);
-        }
+        let assertion = client.expect(result.value).to.have.length(1);
+        let value = await assertion.__flags.get('object');
+
+        client.globals.test.deepEqual(value, [{ELEMENT: '0'}]);
+
+        await client.expect(result.value).to.have.length(2);
+
       })
       .end();
   }
