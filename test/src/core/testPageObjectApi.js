@@ -7,7 +7,8 @@ describe('test PageObjectApi', function () {
   beforeEach(function (done) {
     Nocks.enable().cleanAll().createSession();
     Nightwatch.init({
-      page_objects_path: path.join(__dirname, '../../extra/pageobjects/pages')
+      page_objects_path: path.join(__dirname, '../../extra/pageobjects/pages'),
+      plugins: [path.join(__dirname, '../../extra/plugin')]
     }, function () {
       done();
     });
@@ -95,6 +96,16 @@ describe('test PageObjectApi', function () {
     assert.ok('waitForElementPresent' in page);
     assert.ok('end' in page);
     assert.ok(!('switchToWindow' in page));
+  });
+
+  it('testPageObjectPluginLoaded', function() {
+
+    const page = this.client.api.page.simplePageObj();
+
+    assert.ok('customCommand' in page);
+    assert.ok('customAssertion' in page.assert);
+    assert.strictEqual(typeof page.customCommand, 'function');
+    assert.strictEqual(typeof page.assert.customAssertion, 'function');
   });
 });
 
