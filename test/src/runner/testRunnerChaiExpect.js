@@ -42,8 +42,14 @@ describe('testRunnerChaiExpect', function() {
 
     return Globals.startTestRunner(testsPath, settings)
       .then(runner => {
+        assert.ok(runner.results.lastError instanceof Error);
+
+        const ex = runner.results.lastError;
+
+        assert.ok(ex.message.startsWith('expected [ { ELEMENT: \'0\' } ] to have a length of 2 but got 1'));
+
         assert.strictEqual(runner.results.modules.sampleWithChai.tests, 2);
-        assert.strictEqual(runner.results.modules.sampleWithChai.failures, 0);
+        assert.strictEqual(runner.results.modules.sampleWithChai.failures, 1);
       });
   });
 });
