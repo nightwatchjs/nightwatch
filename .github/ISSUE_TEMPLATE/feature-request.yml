@@ -16,7 +16,7 @@ body:
   - type: "textarea"
     id: "proposed-solution"
     attributes:
-      label: "Ideas for a solution"
+      label: "Suggested solution"
       description: |
         Please provide code snippets, gists, or links to the ideal
         design or API.
