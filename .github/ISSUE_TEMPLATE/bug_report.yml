@@ -112,7 +112,7 @@ body:
     id: "node-version"
     attributes:
       label: "Node Version"
-      description: "The version of Node you use."
+      description: "The version of Node you are using."
       placeholder: "14.0.0"
   - type: "input"
     id: "browser"
