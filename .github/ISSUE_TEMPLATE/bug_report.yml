@@ -104,7 +104,7 @@ body:
     id: "nightwatch-version"
     attributes:
       label: "Nightwatch.js Version"
-      description: "The version of Nightwatch you use. `npx nightwatch --version`"
+      description: "The version of Nightwatch you are using. Run: nightwatch --version"
       placeholder: "2.3.0"
     validations:
       required: true
