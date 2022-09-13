@@ -59,7 +59,7 @@ body:
       label: "Verbose Output"
       description: |
         "Extended nightwatch command logging during the session. 
-        Please use `nightwatch --verbose` and paste the output here"
+        Please use nightwatch --verbose and paste the output here"
       placeholder: |
         [Sample Test] Test Suite
         ────────────────────────────────────────────────────────
