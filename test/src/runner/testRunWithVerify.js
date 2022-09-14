@@ -29,7 +29,7 @@ describe('testRunWithVerify', function() {
 
   it('using verify in tests', function() {
     return runTests({
-      _source: ['./withverify']
+      _source: ['./withverify/verifySampleFailures.js']
     }, settings({
       globals: {
         waitForConditionPollInterval: 20,
@@ -47,5 +47,24 @@ describe('testRunWithVerify', function() {
     }));
   });
 
+  it('using verify in tests', function() {
+    return runTests({
+      _source: ['./withverify/verifyWithinPerform.js']
+    }, settings({
+      globals: {
+        waitForConditionPollInterval: 20,
+        waitForConditionTimeout: 50,
+        retryAssertionTimeout: 50,
+        reporter(results, cb) {
+          assert.ok('verifyWithinPerform' in results.modules);
+          assert.strictEqual(results.passed, 0);
+          assert.strictEqual(results.failed, 2);
+          assert.strictEqual(results.assertions, 2);
+
+          cb();
+        }
+      }
+    }));
+  });
 
 });
