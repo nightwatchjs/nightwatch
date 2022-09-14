@@ -117,7 +117,7 @@ module.exports = {
     }
   }) {
     MockServer.addMock({
-      url: '/session/13521-10219-202/elements',
+      url: '/wd/hub/session/13521-10219-202/elements',
       method: 'POST',
       postdata: JSON.stringify({using, value}),
 
