@@ -506,6 +506,16 @@ module.exports = {
     return this;
   },
 
+  analyticsCollector(GAPath) {
+    return nock('https://localhost:13555')
+      .post(GAPath)
+      .reply(204, {
+        status: 0,
+        state: 'success',
+        value: []
+      });
+  },
+
   cleanAll() {
     nock.cleanAll();
 
