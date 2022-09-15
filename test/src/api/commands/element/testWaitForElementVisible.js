@@ -21,7 +21,6 @@ describe('waitForElementVisible', function () {
     CommandGlobals.afterEach.call(this, done);
   });
 
-
   it('client.waitForElementVisible() failure', function (done) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/execute/sync',
