@@ -2,8 +2,24 @@ const path = require('path');
 const MockServer = require('../../lib/mockserver.js');
 const common = require('../../common.js');
 const NightwatchClient = common.require('index.js');
+const Utils = common.require('utils');
 
 describe('Typescript demos', function () {
+  const oldLoadTSNode = Utils.loadTSNode;
+  let tsNode;
+
+  before(function(done) {
+    Utils.loadTSNode = function(projectTsFile) {
+      
+      tsNode = require('ts-node').register({
+        esm: false,
+        project: projectTsFile
+      });
+      
+    };
+    done();
+  });
+
   beforeEach(function (done) {
     this.server = MockServer.init();
     this.server.on('listening', () => {
@@ -15,6 +31,12 @@ describe('Typescript demos', function () {
     this.server.close(function () {
       done();
     });
+  });
+
+  after(function(done) {
+    tsNode.enabled(false);
+    Utils.loadTSNode = oldLoadTSNode;
+    done();
   });
 
   it('run basic typescript tests', function () {
