@@ -493,6 +493,9 @@ describe('test programmatic apis', function () {
       rmdirSync,
       lstatSync,
       readdirSync,
+      readFileSync() {
+        return true;
+      },
       writeFile(filePath, output, cb) {
         cb(null);
       }

@@ -14,29 +14,16 @@ body:
     validations:
       required: true
   - type: "textarea"
-    id: "justification"
-    attributes:
-      label: "Problem Statement/Justification"
-      description: |
-        Please provide valid reason(s) why this should be added to Nightwatch
-
-        If this feature is related to a problem you've noticed, mention it as
-        well.
-    validations:
-      required: true
-  - type: "textarea"
     id: "proposed-solution"
     attributes:
-      label: "Proposed Solution or API"
+      label: "Suggested solution"
       description: |
         Please provide code snippets, gists, or links to the ideal
         design or API.
-    validations:
-      required: true
   - type: "textarea"
     id: "alternatives"
     attributes:
-      label: "Alternatives"
+      label: "Alternatives / Workarounds"
       description: |
         What alternative solutions have you considered before making this
         request?

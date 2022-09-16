@@ -107,17 +107,21 @@ module.exports = {
     }, true);
   },
 
-  element({using = 'css selector', value = '#container'}) {
+  element({ 
+    using = 'css selector', 
+    value = '#container',
+    response = {
+      value: [{
+        'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
+      }]
+    }
+  }) {
     MockServer.addMock({
       url: '/wd/hub/session/13521-10219-202/elements',
       method: 'POST',
       postdata: JSON.stringify({using, value}),
 
-      response: JSON.stringify({
-        value: [{
-          'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
-        }]
-      })
+      response: JSON.stringify(response)
     }, true);
   },
 
@@ -289,6 +293,32 @@ module.exports = {
       postdata: JSON.stringify({
         text,
         value: text.split('')
+      }),
+      response: response || {
+        value: null
+      },
+      statusCode
+    }, times === 0);
+
+    return this;
+  },
+
+  frame({
+    sessionId = '13521-10219-202',
+    elementId = '5cc459b8-36a8-3042-8b4a-258883ea642b',
+    text,
+    times = 0,
+    response = null,
+    statusCode = 200
+  } = {}) {
+    MockServer.addMock({
+      url: `/session/${sessionId}/frame`,
+      method: 'POST',
+      postdata: JSON.stringify({
+        id: {
+          'element-6066-11e4-a52e-4f735466cecf': elementId,
+          ELEMENT: elementId
+        }
       }),
       response: response || {
         value: null
