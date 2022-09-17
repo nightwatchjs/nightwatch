@@ -5,7 +5,7 @@ const NightwatchClient = common.require('index.js');
 const SeleniumRemote = common.require('transport/selenium-webdriver/selenium.js');
 const Browserstack = common.require('transport/selenium-webdriver/browserstack.js');
 
-describe('BrowserstackTransport', function () {
+xdescribe('BrowserstackTransport', function () {
   beforeEach(function() {
     try {
       nock.activate();
