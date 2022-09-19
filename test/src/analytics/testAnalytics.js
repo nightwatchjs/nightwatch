@@ -1,13 +1,14 @@
-const fs = require('fs').promises;
-const http = require('http');
-
-const Nocks = require('../../lib/nocks.js');
-const analytics = require('../../../lib/analytics');
-const Settings = require('../../../lib/settings/settings');
 const assert = require('assert');
+const fs = require('fs').promises;
+const Nocks = require('../../lib/nocks.js');
+const common = require('../../common.js');
+const {Logger} = common.require('utils');
+const analytics = common.require('utils/analytics.js');
+const Settings = common.require('settings/settings.js');
 
 describe('test analytics utility', function() {
   before(function() {
+    Logger.disable();
     const settings = Settings.parse({
       usage_analytics: {
         enabled: true,
