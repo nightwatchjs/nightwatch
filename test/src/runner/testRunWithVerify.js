@@ -27,7 +27,7 @@ describe('testRunWithVerify', function() {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('using verify in tests', function() {
+  it('using verify in tests with simple failures', function() {
     return runTests({
       _source: ['./withverify/verifySampleFailures.js']
     }, settings({
@@ -47,7 +47,7 @@ describe('testRunWithVerify', function() {
     }));
   });
 
-  it('using verify in tests', function() {
+  it('using verify within perform in tests', function() {
     return runTests({
       _source: ['./withverify/verifyWithinPerform.js']
     }, settings({
