@@ -58,6 +58,7 @@ describe('ChromeDriver Transport Tests', function () {
   };
 
   const mockDriver = {
+    session_: Promise.resolve(),
     async getSession() {
       return sessionData;
     },
