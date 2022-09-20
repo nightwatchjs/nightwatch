@@ -180,7 +180,7 @@ describe('test Utils', function() {
   });
 
   it('test printVersionInfo', function() {
-    const semVarRegex = /([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?/;
+    const semVerRegex = /([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?/;
 
     const oldConsole = console;
     const logArgs = [];
@@ -196,7 +196,7 @@ describe('test Utils', function() {
     assert.match(logString, /Nightwatch:/);
     assert.match(logString, /version:/);
     assert.match(logString, /changelog: https:\/\/github.com\/nightwatchjs\/nightwatch\/releases\/tag\//);
-    assert.match(logString, semVarRegex);
+    assert.match(logString, semVerRegex);
 
     // eslint-disable-next-line no-global-assign
     console = oldConsole;
