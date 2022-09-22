@@ -42,7 +42,7 @@ describe('Typescript demos', function () {
   it('run basic typescript tests', function () {
     this.timeout(5000);
     const testsPath = path.join(__dirname, '../../typescript-tests/demo.ts');
-    const originalCwd = process.cwd();
+
     process.chdir(path.join(__dirname, '../../typescript-tests'));
 
     const globals = {
@@ -67,8 +67,6 @@ describe('Typescript demos', function () {
       persist_globals: true,
       globals,
       output_folder: false
-    }).then(() => {
-      process.chdir(originalCwd);
     });
   });
 });
