@@ -395,7 +395,7 @@ describe('testRunnerSessionCreate', function() {
    
 
     const globals = {
-      reuse_browser_session: true,
+      reuseBrowserSession: true,
       reporter(results) {
         const sep = path.sep;
         assert.strictEqual(results.errors, 0);
