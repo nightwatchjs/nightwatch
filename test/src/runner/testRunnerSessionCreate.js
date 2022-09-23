@@ -374,4 +374,47 @@ describe('testRunnerSessionCreate', function() {
       output_folder: false
     })); 
   });
+
+  it('test runner with reusing browser sessions - using globals', function() {
+    const testsPath = [
+      path.join(__dirname, '../../sampletests/reusebrowser')];
+
+    MockServer.addMock({
+      url: '/session',
+      statusCode: 200,
+      postdata: JSON.stringify({
+        desiredCapabilities: {browserName: 'firefox', name: 'first-test'},
+        capabilities: {alwaysMatch: {browserName: 'firefox'}}
+      }),
+      response: JSON.stringify({
+        status: 0,
+        sessionId: '1352110219202'
+      })
+    }, true);
+
+   
+
+    const globals = {
+      reuse_browser_session: true,
+      reporter(results) {
+        const sep = path.sep;
+        assert.strictEqual(results.errors, 0);
+        assert.strictEqual(Object.keys(results.modules).length, 2);
+        assert.ok(Object.keys(results.modules).includes('firstTest'));
+        assert.ok(Object.keys(results.modules).includes('secondTest'));
+      }
+    };
+
+    return runTests({
+      source: testsPath
+    }, settings({
+      selenium_host: null,
+      webdriver: {
+        host: 'localhost'
+      },
+      globals,
+      output: false,
+      output_folder: false
+    })); 
+  });
 });
