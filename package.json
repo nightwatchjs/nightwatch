@@ -18,6 +18,7 @@
     "boxen": "5.1.2",
     "chai-nightwatch": "0.5.3",
     "ci-info": "3.3.0",
+    "cli-table3": "^0.6.3",
     "didyoumean": "1.2.2",
     "dotenv": "10.0.0",
     "ejs": "3.1.8",
