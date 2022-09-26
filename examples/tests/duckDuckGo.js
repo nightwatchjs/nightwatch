@@ -1,4 +1,7 @@
 describe('duckduckgo example', function() {
+
+  this.tags = ['end-to-end'];
+
   it('Search Nightwatch.js and check results', function(browser) {
     browser
       .navigateTo('https://duckduckgo.com')

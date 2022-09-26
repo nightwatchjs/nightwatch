@@ -17,7 +17,10 @@ describe('EdgeDriver Transport Tests', function () {
         return true;
       },
       constants,
-      rmdirSync
+      rmdirSync,
+      readFileSync() {
+        return true;
+      }
     });
 
   });

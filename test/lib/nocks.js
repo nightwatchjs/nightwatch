@@ -474,13 +474,11 @@ module.exports = {
       .reply(200, {
         status: 0,
         state: 'success',
-        value: [
-          {
-            domain: 'cookie-domain',
-            name: name,
-            value: value
-          }
-        ]
+        value : {
+          domain: 'cookie-domain',
+          name: name,
+          value: value
+        }
       });
 
     return this;
@@ -506,6 +504,16 @@ module.exports = {
       });
 
     return this;
+  },
+
+  analyticsCollector(GAPath) {
+    return nock('https://localhost:13555')
+      .post(GAPath)
+      .reply(204, {
+        status: 0,
+        state: 'success',
+        value: []
+      });
   },
 
   cleanAll() {

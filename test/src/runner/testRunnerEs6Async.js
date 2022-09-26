@@ -300,4 +300,25 @@ describe('testRunner ES6 Async', function () {
       globals
     }));
   });
+
+  it('test runner async with element incorrect args', function() {
+    const testsPath = path.join(__dirname, '../../sampletests/es6await/incorrect-element-args');
+
+    const globals = {
+      waitForConditionPollInterval: 50,
+      waitForConditionTimeout: 100,
+      retryAssertionTimeout: 150,
+
+      reporter(results) {
+        assert.strictEqual(results.errors, 1);
+        assert.ok(results.lastError instanceof Error);
+        assert.strictEqual(results.lastError.message, 'Error while running "getElementProperty" command: getElementProperty method expects 2 (or 3 if using implicit "css selector" strategy) arguments - 1 given.');
+        assert.strictEqual(results.lastError.rejectPromise, true);
+      }
+    };
+
+    return runTests(testsPath, settings({
+      globals
+    }));
+  });
 });
