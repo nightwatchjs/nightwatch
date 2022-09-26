@@ -237,8 +237,8 @@ describe('test Parallel Execution', function() {
 
     runner.setup();
 
-    assert.strictEqual(runner.isConcurrencyEnabled([runner.argv._source]), false);
-
+    // run in parallel mode even if single source file is provided
+    assert.strictEqual(runner.isConcurrencyEnabled([runner.argv._source]), true);
   });
 
   it('test parallel execution with workers and single source folder', function() {
