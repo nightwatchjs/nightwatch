@@ -4,3 +4,8 @@ Feature: Sample Feature
 Scenario: Sample test with failures
     Given I navigate to localhost
     Then I wait for badElement to be present
+
+@fail2
+Scenario: Sample test with failures
+    Given I navigate to localhost
+    Then I wait for badElement to be present and continue
