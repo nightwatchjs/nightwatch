@@ -1,6 +1,7 @@
 const assert = require('assert');
 const MockServer  = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
+const nock = require('nock');
 
 describe('window', function () {
   before(function (done) {
@@ -9,6 +10,7 @@ describe('window', function () {
 
   after(function (done) {
     CommandGlobals.afterEach.call(this, done);
+    nock.cleanAll();
   });
 
   it('client.closeWindow()', function (done) {
@@ -33,73 +35,122 @@ describe('window', function () {
     this.client.start(done);
   });
 
-  it('client.resizeWindow()', function (done) {
+  it('client.getWindowSize()', function (done) {
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/window/current/size',
-      method: 'POST',
-      response: JSON.stringify({
-        sessionId: '1352110219202',
-        status: 0
-      })
-    });
-
-    MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/window/current/size',
+      url: '/wd/hub/session/1352110219202/window/rect',
       method: 'GET',
       response: JSON.stringify({
         sessionId: '1352110219202',
         status: 0,
         value: {
-          height: 100,
-          width: 100
-        }
-      })
-    });
-
-    MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/window/current/position',
-      method: 'GET',
-      response: JSON.stringify({
-        sessionId: '1352110219202',
-        status: 0,
-        value: {
+          width: 1000,
+          height: 1000,
           x: 100,
           y: 100
         }
       })
     });
 
-    this.client.api.resizeWindow(100, 100, function(res) {
+    this.client.api.getWindowSize(function(res) {
+      assert.ok(res instanceof Object);
+      assert.deepStrictEqual(res, {
+        width: 1000,
+        height: 1000,
+        x: 100,
+        y: 100
+      })
+    });
+
+    this.client.start(done);
+  });
+
+  it('client.resizeWindow()', function (done) {
+    nock('http://localhost:10195')
+      .post('/wd/hub/session/1352110219202/window/rect')
+      .reply(200, function (uri, requestBody) {
+        const reqObj = JSON.parse(requestBody);
+      
+        assert.deepStrictEqual(reqObj, {
+          width: 1000, 
+          height: 1000
+        });
+
+        return {
+          sessionId: '1352110219202',
+          status: 0,
+          value: {
+            width: 1000,
+            height: 1000,
+            x: 100,
+            y: 100
+          }
+        };
+      });
+
+    this.client.api.resizeWindow(1000, 1000, function(res) {
+      assert.strictEqual(res.status, 0);
+      assert.strictEqual(res.value, null);
+    });
+  
+    this.client.start(done);
+  });
+  
+  it('client.setWindowSize()', function (done) {
+    nock('http://localhost:10195')
+      .post('/wd/hub/session/1352110219202/window/rect')
+      .reply(200, function (uri, requestBody) {
+        const reqObj = JSON.parse(requestBody);
+      
+        assert.deepStrictEqual(reqObj, {
+          width: 1000, 
+          height: 1000
+        });
+
+        return {
+          sessionId: '1352110219202',
+          status: 0,
+          value: {
+            width: 1000,
+            height: 1000,
+            x: 100,
+            y: 100
+          }
+        };
+      });
+
+    this.client.api.setWindowSize(1000, 1000, function(res) {
+      assert.strictEqual(res.status, 0);
       assert.strictEqual(res.value, null);
     });
 
     this.client.start(done);
   });
 
-  it('client.setWindowSize()', function (done) {
-    MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/window/current/size',
-      method: 'POST',
-      response: JSON.stringify({
-        sessionId: '1352110219202',
-        status: 0
-      })
-    });
+  it('client.setWindowPosition()', function (done) {
+    nock('http://localhost:10195')
+      .post('/wd/hub/session/1352110219202/window/rect')
+      .reply(200, function (uri, requestBody) {
+        const reqObj = JSON.parse(requestBody);
+      
+        assert.deepStrictEqual(reqObj, {
+          x: 100, 
+          y: 100
+        });
 
-    MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/window/current/size',
-      method: 'GET',
-      response: JSON.stringify({
-        sessionId: '1352110219202',
-        status: 0,
-        value: {
-          height: 100,
-          width: 100
-        }
-      })
-    });
+        return {
+          sessionId: '1352110219202',
+          status: 0,
+          value: {
+            width: 1000,
+            height: 1000,
+            x: 100,
+            y: 100
+          }
+        };
+      });
 
-    this.client.api.setWindowSize(100, 100, function(res) {
+    this.client.api.setWindowPosition(100, 100, function(res) {
+      assert.strictEqual(res.status, 0);
       assert.strictEqual(res.value, null);
     });
 

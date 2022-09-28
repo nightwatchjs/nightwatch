@@ -183,6 +183,30 @@ describe('test Utils', function() {
     assert.strictEqual(Utils.SafeJSON.stringify(proxyObj), '"[Error]"');
   });
 
+  it('test printVersionInfo', function() {
+    const semVerRegex = /([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?/;
+
+    const oldConsole = console;
+    const logArgs = [];
+
+    // eslint-disable-next-line no-console
+    console.log = function(args) {
+      logArgs.push(args);
+    };
+
+    Utils.printVersionInfo();
+    const logString = logArgs.join('\n');
+    
+    assert.match(logString, /Nightwatch:/);
+    assert.match(logString, /version:/);
+    assert.match(logString, /changelog: https:\/\/github.com\/nightwatchjs\/nightwatch\/releases\/tag\//);
+    assert.match(logString, semVerRegex);
+
+    // eslint-disable-next-line no-global-assign
+    console = oldConsole;
+  });
+
+
   describe('test findTSConfigFile', function () {
     const {constants, rmdirSync} = require('fs');
 
