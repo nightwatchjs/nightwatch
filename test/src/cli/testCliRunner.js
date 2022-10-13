@@ -510,6 +510,9 @@ describe('Test CLI Runner', function() {
     let statSyncCalled = false;
     
     mockery.registerMock('fs', {
+      existsSync() {
+        return false;
+      },
       statSync: function(file) {
         if (file === 'demoTest') {
           statSyncCalled = true;
@@ -572,6 +575,9 @@ describe('Test CLI Runner', function() {
     let statSyncCalled = false;
 
     mockery.registerMock('fs', {
+      existsSync() {
+        return false;
+      },
       statSync: function(file) {
         if (file === ABSOLUTE_PATH) {
           statSyncCalled = true;
@@ -632,6 +638,9 @@ describe('Test CLI Runner', function() {
     let statSyncCalled = false;
 
     mockery.registerMock('fs', {
+      existsSync() {
+        return false
+      },
       stat(file, cb) {
         if (file === TEST_SRC_PATH || file === './custom.js') {
           return cb(null, {
@@ -684,6 +693,9 @@ describe('Test CLI Runner', function() {
 
   it('testGetTestSourceGroup', function() {
     mockery.registerMock('fs', {
+      existsSync() {
+        return false;
+      },
       statSync: function(module) {
         switch (module) {
           case './custom.json':
