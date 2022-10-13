@@ -1,8 +1,4 @@
-module.exports = {
-  before(client) {
-    client.globals.calls++;
-  },
-  
+module.exports = {  
   demoTest(client) {
     client.url('http://localhost')
       .verify.equal(0, 1, 'custom message')
@@ -13,11 +9,6 @@ module.exports = {
 
       })
       .end();
-  },
-  
-  after(client, callback) {
-    client.globals.calls++;
-    callback();
   }
 };
   
