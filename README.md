@@ -91,8 +91,6 @@ and then open the generated _coverage/index.html_ file in your browser.
 ## 🦉 About Nightwatch
 Nightwatch was initially built by [@pineviewlabs](https://github.com/pineviewlabs/) - an independent software consultancy based in Oslo, Norway, with help from [contributors](https://github.com/nightwatchjs/nightwatch/graphs/contributors). In mid 2021, Nightwatch has become a part of the [@BrowserStack](https://github.com/browserstack) family and it is being developed further at the BrowserStack Open-source Program Office. Read more on [our blog](https://nightwatchjs.org/blog/nightwatch-has-joined-the-browserstack-family.html).
 
-We are thankful for everyone who supported Nightwatch on the [OpenCollective](https://opencollective.com/) platform.
-
 ## Licence
 [MIT](https://github.com/nightwatchjs/nightwatch/blob/main/LICENSE.md)
 
