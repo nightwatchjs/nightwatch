@@ -31,7 +31,7 @@ describe('Component Testing -- React basic component mount tests', function() {
     });
   });
 
-  it('run a single React component test with missing component', function() {
+  xit('run a single React component test with missing component', function() {
     this.timeout(10000);
 
     const testsPath = path.join(__dirname, '../../sample-component-tests/react/tests/formTest--notFound.js');
@@ -61,7 +61,7 @@ describe('Component Testing -- React basic component mount tests', function() {
       config: path.join(__dirname, '../../sample-component-tests/react/nightwatch.conf.js')
     }, {
       globals,
-      output: false,
+      output: true,
       silent: true,
       disable_colors: false,
       '@nightwatch/react': {

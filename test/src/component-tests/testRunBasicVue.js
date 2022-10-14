@@ -4,7 +4,7 @@ const common = require('../../common.js');
 const {runTests} = common.require('index.js');
 
 describe('Component Testing -- Vue basic component mount tests', function() {
-  it('run a single Vue component test with missing component', function() {
+  xit('run a single Vue component test with missing component', function() {
     this.timeout(100000);
 
     const testsPath = path.join(__dirname, '../../sample-component-tests/vue/tests/formTest--notFound.js');
