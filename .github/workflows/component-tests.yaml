@@ -21,6 +21,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
+      - run: npm i @nightwatch/react @nightwatch/vue @testing-library/dom vite-plugin-nightwatch vue react react-dom
       - run: npm run component-tests
 
   windows:
