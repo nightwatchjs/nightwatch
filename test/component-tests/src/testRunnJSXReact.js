@@ -6,7 +6,7 @@ const isCI = require('is-ci');
 
 describe('Component Testing -- React JSX component tests', function() {
   it('run a single component test without proper config', async function() {
-    const testsPath = path.join(__dirname, '../../sample-component-tests/react/tests/Form.spec--_with-$hooks.jsx');
+    const testsPath = path.join(__dirname, '../samples/react/tests/Form.spec--_with-$hooks.jsx');
     const globals = {};
 
     let error;
@@ -14,10 +14,10 @@ describe('Component Testing -- React JSX component tests', function() {
       await runTests({
         source: testsPath,
         headless: true,
-        config: path.join(__dirname, '../../sample-component-tests/nightwatch.conf-noplugins.js')
+        config: path.join(__dirname, '../samples/nightwatch.conf-noplugins.js')
       }, {
         globals,
-        output: true,
+        output: false,
         silent: false,
         disable_colors: false
       });
@@ -36,7 +36,7 @@ describe('Component Testing -- React JSX component tests', function() {
     this.retries(2);
     this.timeout(100000);
 
-    const testsPath = path.join(__dirname, '../../sample-component-tests/react/tests/Form.spec--_with-$hooks.jsx');
+    const testsPath = path.join(__dirname, '../samples/react/tests/Form.spec--_with-$hooks.jsx');
     const globals = {
       waitForConditionPollInterval: 50,
       waitForConditionTimeout: 100,
@@ -54,7 +54,7 @@ describe('Component Testing -- React JSX component tests', function() {
       headless: true,
       debug: false,
       devtools: false,
-      config: path.join(__dirname, '../../sample-component-tests/react/nightwatch.conf.js')
+      config: path.join(__dirname, '../samples/react/nightwatch.conf.js')
     }, {
       globals,
       output: false,

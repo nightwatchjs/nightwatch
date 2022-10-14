@@ -7,7 +7,7 @@ describe('Component Testing -- Vue basic component mount tests', function() {
   xit('run a single Vue component test with missing component', function() {
     this.timeout(100000);
 
-    const testsPath = path.join(__dirname, '../../sample-component-tests/vue/tests/formTest--notFound.js');
+    const testsPath = path.join(__dirname, '../samples/vue/tests/formTest--notFound.js');
 
     const globals = {
       waitForConditionPollInterval: 50,
@@ -33,7 +33,7 @@ describe('Component Testing -- Vue basic component mount tests', function() {
       headless: true,
       devtools: false,
       debug: false,
-      config: path.join(__dirname, '../../sample-component-tests/vue/nightwatch.conf.js')
+      config: path.join(__dirname, '../samples/vue/nightwatch.conf.js')
     }, {
       globals,
       output: false,
@@ -49,7 +49,7 @@ describe('Component Testing -- Vue basic component mount tests', function() {
   it('run a single vue component test', function() {
     this.timeout(100000);
 
-    const testsPath = path.join(__dirname, '../../sample-component-tests/vue/tests/formTest.js');
+    const testsPath = path.join(__dirname, '../samples/vue/tests/formTest.js');
 
     const globals = {
       waitForConditionPollInterval: 50,
@@ -68,7 +68,7 @@ describe('Component Testing -- Vue basic component mount tests', function() {
       headless: true,
       debug: false,
       devtools: false,
-      config: path.join(__dirname, '../../sample-component-tests/vue/nightwatch.conf.js')
+      config: path.join(__dirname, '../samples/vue/nightwatch.conf.js')
     }, {
       globals,
       output: false,

@@ -5,7 +5,7 @@ const {runTests} = common.require('index.js');
 
 describe('Component Testing -- React basic component mount tests', function() {
   it('run a single component test without proper config', function() {
-    const testsPath = path.join(__dirname, '../../sample-component-tests/react/tests/formTest.js');
+    const testsPath = path.join(__dirname, '../samples/react/tests/formTest.js');
 
     const globals = {
       waitForConditionPollInterval: 50,
@@ -22,7 +22,7 @@ describe('Component Testing -- React basic component mount tests', function() {
     return runTests({
       source: testsPath,
       headless: true,
-      config: path.join(__dirname, '../../sample-component-tests/nightwatch.conf-noplugins.js')
+      config: path.join(__dirname, '../samples/nightwatch.conf-noplugins.js')
     }, {
       globals,
       output: false,
@@ -34,7 +34,7 @@ describe('Component Testing -- React basic component mount tests', function() {
   xit('run a single React component test with missing component', function() {
     this.timeout(10000);
 
-    const testsPath = path.join(__dirname, '../../sample-component-tests/react/tests/formTest--notFound.js');
+    const testsPath = path.join(__dirname, '../samples/react/tests/formTest--notFound.js');
 
     const globals = {
       waitForConditionPollInterval: 50,
@@ -58,10 +58,10 @@ describe('Component Testing -- React basic component mount tests', function() {
     return runTests({
       source: testsPath,
       headless: true,
-      config: path.join(__dirname, '../../sample-component-tests/react/nightwatch.conf.js')
+      config: path.join(__dirname, '../samples/react/nightwatch.conf.js')
     }, {
       globals,
-      output: true,
+      output: false,
       silent: true,
       disable_colors: false,
       '@nightwatch/react': {
@@ -74,7 +74,7 @@ describe('Component Testing -- React basic component mount tests', function() {
   it('run a single React component test', function() {
     this.timeout(100000);
 
-    const testsPath = path.join(__dirname, '../../sample-component-tests/react/tests/formTest.js');
+    const testsPath = path.join(__dirname, '../samples/react/tests/formTest.js');
 
     const globals = {
       waitForConditionPollInterval: 50,
@@ -93,7 +93,7 @@ describe('Component Testing -- React basic component mount tests', function() {
       headless: true,
       debug: false,
       devtools: true,
-      config: path.join(__dirname, '../../sample-component-tests/react/nightwatch.conf.js')
+      config: path.join(__dirname, '../samples/react/nightwatch.conf.js')
     }, {
       globals,
       output: false,
