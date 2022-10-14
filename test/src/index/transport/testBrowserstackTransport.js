@@ -178,7 +178,7 @@ xdescribe('BrowserstackTransport', function () {
 
   });
 
-  it('test create Transport for Browserstack with failures', async function() {
+  xit('test create Transport for Browserstack with failures', async function() {
     const client = NightwatchClient.client({
       output: false,
       silent: false,
@@ -228,25 +228,29 @@ xdescribe('BrowserstackTransport', function () {
     result.sessionId = '1234567';
     client.emit('nightwatch:session.create', result);
 
-    setTimeout(async function() {
-
-      nock('https://api.browserstack.com')
-        .put('/automate/sessions/1234567.json', {
-          status: 'failed',
-          reason: 'NightwatchAssertError: Timed out while waiting for element <#james> to be present for 5000 milliseconds. - expected "visible" but got: "not found" (5400ms)'
-        })
-        .reply(200, {});
-
-      const error = new Error('Timed out while waiting for element <#james> to be present for 5000 milliseconds. - expected "visible" but got: "not found" (5400ms)');
-      error.name = 'NightwatchAssertError';
-
-      result = await transport.testSuiteFinished(error);
-
-      assert.strictEqual(result, true);
-      assert.strictEqual(transport.sessionId, null);
-
-    }, 100);
-
+    return new Promise((resolve, reject) => {
+      setTimeout(async function() {
+        try {
+          nock('https://api.browserstack.com')
+            .put('/automate/sessions/1234567.json', {
+              status: 'failed',
+              reason: 'NightwatchAssertError: Timed out while waiting for element <#james> to be present for 5000 milliseconds. - expected "visible" but got: "not found" (5400ms)'
+            })
+            .reply(200, {});
+    
+          const error = new Error('Timed out while waiting for element <#james> to be present for 5000 milliseconds. - expected "visible" but got: "not found" (5400ms)');
+          error.name = 'NightwatchAssertError';
+    
+          result = await transport.testSuiteFinished(error);
+    
+          assert.strictEqual(result, true);
+          assert.strictEqual(transport.sessionId, null);
+          resolve();
+        } catch (err) {
+          reject(err);
+        }
+      }, 100);
+    });
   });
 
   it('test create Transport for Browserstack - App automate', async function() {
