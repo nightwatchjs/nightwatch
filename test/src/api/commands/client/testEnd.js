@@ -24,6 +24,22 @@ describe('.end()', function() {
       this.client.start(done);
     });
 
+    it('browser.end(true) - forceEnd by default true', function (done) { 
+      this.client.api.end(true, result => {
+        assert.strictEqual(result.status, 0);
+        assert.strictEqual(this.client.sessionId, null);
+      });
+      this.client.start(done);
+    });
+
+    it('browser.end(false) - do not end sesion', function(done) {
+      this.client.api.end(false, result=> {
+        assert.strictEqual(result, null);
+        assert.strictEqual(this.client.sessionId, '1352110219202');
+      });
+      this.client.start(done);
+    });
+
     it('browser.end() - no session id', function (done) {
       this.client.api.end();
       this.client.api.end(function callback(result) {
@@ -86,6 +102,21 @@ describe('.end()', function() {
         client.start(done);
       }).catch(err => done(err));
     });
+
+
+    it('browser.end() - reuse browser session', function (done) {
+
+      Nightwatch.initClient({globals: {reuseBrowserSession: true}})
+        .then(client => {
+          client.api.end(function callback(result) {
+            assert.strictEqual(result, null);
+            assert.strictEqual(client.sessionId, '1352110219202');
+          });
+
+          client.start(done);
+        }).catch(err => done(err));
+    });
+
 
     it('browser.end() - failures and screenshots disabled', function (done) {
       MockServer.addMock({
