@@ -17,6 +17,7 @@ module.exports = {
   after(client, callback) {
     setTimeout(function() {
       client.globals.calls++;
+      client.end();
       callback();
     }, 10);
   }
