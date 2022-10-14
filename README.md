@@ -64,8 +64,6 @@ You can follow the instructions given at the end of the setup to run your first 
 
 ---
 
-```
-
 ## Nightwatch unit tests
 The tests for Nightwatch are written using [Mocha](http://mochajs.org/).
 
