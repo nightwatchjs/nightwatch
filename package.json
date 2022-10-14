@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "@cucumber/cucumber": "^8.2.1",
+    "@types/nightwatch": "^2.3.4",
     "@types/node": "^16.7.1",
     "chromedriver": "^106.0.1",
     "coveralls": "^3.1.1",
