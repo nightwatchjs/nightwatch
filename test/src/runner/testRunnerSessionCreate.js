@@ -349,6 +349,16 @@ describe('testRunnerSessionCreate', function() {
       })
     }, true);
 
+    MockServer.addMock({
+      url: '/session/1352110219202',
+      method: 'DELETE',
+      statusCode: 200,
+      response: JSON.stringify({
+        status: 0
+      })
+    }, true);
+
+
    
 
     const globals = {
@@ -391,6 +401,16 @@ describe('testRunnerSessionCreate', function() {
         sessionId: '1352110219202'
       })
     }, true);
+
+    MockServer.addMock({
+      url: '/session/1352110219202',
+      method: 'DELETE',
+      statusCode: 200,
+      response: JSON.stringify({
+        status: 0
+      })
+    }, true);
+
 
    
 
