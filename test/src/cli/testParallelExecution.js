@@ -1,4 +1,3 @@
-const util = require('util');
 const EventEmitter = require('events');
 const mockery = require('mockery');
 const path = require('path');
@@ -308,6 +307,28 @@ describe('test Parallel Execution', function() {
       assert.ok(allArgs[0].join(' ').includes('--test-worker --parallel-mode'));
       assert.ok(allArgs[1].join(' ').includes('--test-worker --parallel-mode'));
     });
+  });
+
+  it('test Concurrency.getChildProcessArgs with --env=chrome,firefox', function() {
+    const argv = process.argv.slice(0);
+    process.argv = ['node', 'runner.js', '--env=chrome,firefox', '--headless'];
+
+    const Concurrency = common.require('runner/concurrency');
+    const args = Concurrency.getChildProcessArgs();
+
+    process.argv = argv;
+    assert.deepStrictEqual(args, ['--headless']);
+  });
+
+  it('test Concurrency.getChildProcessArgs with --env chrome,firefox', function() {
+    const argv = process.argv.slice(0);
+    process.argv = ['node', 'runner.js', '--env', 'chrome,firefox', '--headless'];
+
+    const Concurrency = common.require('runner/concurrency');
+    const args = Concurrency.getChildProcessArgs();
+
+    process.argv = argv;
+    assert.deepStrictEqual(args, ['--headless']);
   });
 
   it('test parallel execution to ensure preservation of all process.execArgv', function() {
