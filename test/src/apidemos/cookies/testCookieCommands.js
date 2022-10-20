@@ -41,7 +41,7 @@ describe('cookie demos', function() {
         port: 10195,
         start_process: false
       },
-      output: true,
+      output: false,
       skip_testcases_on_fail: false,
       silent: false,
       persist_globals: true,

@@ -4,14 +4,18 @@ describe('Cookie api demo tests', function() {
 
   before(async (browser) => {
     await browser.url('http://localhost');
-    browser.globals.calls++;
-    console.log('BROWSER URL')
+
+    return new Promise(resolve => {
+      setTimeout(function () {
+        browser.globals.calls++;
+        resolve();
+      }, 200);
+    });
   });
 
   after(async (browser) => {
     await browser.end();
     browser.globals.calls++;
-    console.log('BROWSER END')
   });
 
   test('browser.getCookie(<name>)', async (browser) => {
