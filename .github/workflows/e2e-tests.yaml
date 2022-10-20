@@ -1,0 +1,33 @@
+name: component-tests
+
+on:
+  push:
+    branches: [ main]
+  pull_request:
+    branches: [ main]
+
+jobs:
+  linux:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Checkout todo-vue
+        uses: actions/checkout@v3
+        with:
+          repository: nightwatchjs-community/todo-vue
+          path: todo-vue
+      - run: cd toto-vue && npm ci && npm run dev &
+      - run: npm ci
+      - run: node ./bin/nightwatch test/e2e
+      - run: node ./bin/nightwatch test/e2e -e chrome
+      - run: node ./bin/nightwatch test/e2e -e chrome,firefox
+      - run: node ./bin/nightwatch test/e2e --env=chrome,firefox
