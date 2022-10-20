@@ -1,4 +1,4 @@
-name: component-tests
+name: e2e-tests
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
           path: todo-vue
       - run: cd toto-vue && npm ci && npm run dev &
       - run: npm ci
-      - run: node ./bin/nightwatch test/e2e
-      - run: node ./bin/nightwatch test/e2e -e chrome
-      - run: node ./bin/nightwatch test/e2e -e chrome,firefox
-      - run: node ./bin/nightwatch test/e2e --env=chrome,firefox
+      - run: node ./bin/nightwatch test/e2e --config test/e2e.conf.js
+      - run: node ./bin/nightwatch test/e2e -e chrome --config test/e2e.conf.js
+      - run: node ./bin/nightwatch test/e2e -e chrome,firefox --config test/e2e.conf.js
+      - run: node ./bin/nightwatch test/e2e --env=chrome,firefox --config test/e2e.conf.js
