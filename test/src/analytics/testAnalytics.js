@@ -3,8 +3,14 @@ const fs = require('fs').promises;
 const Nocks = require('../../lib/nocks.js');
 const common = require('../../common.js');
 const {Logger} = common.require('utils');
-const analytics = common.require('utils/analytics.js');
+let analytics = common.require('utils/analytics.js');
 const Settings = common.require('settings/settings.js');
+
+function requireUncached(module) {
+  delete require.cache[require.resolve(module)];
+
+  return require(module);
+}
 
 describe('test analytics utility', function() {
   before(function() {
@@ -104,6 +110,36 @@ describe('test analytics utility', function() {
     await analytics.event('test', {log: 'log'});
     await analytics.event('test', {log: 'log'});
 
+    assert.ok(called);
+    analytics.__flush = flushBack;
+
+    await analytics.__flush();
+  });
+
+  it('should flush queue after around 5 start up', async function() {
+    Nocks.analyticsCollector(analytics.__getGoogleAnalyticsPath());
+
+    const settings = Settings.parse({
+      usage_analytics: {
+        enabled: true,
+        serverUrl: 'http://localhost:13555'
+      }
+    });
+    
+    let flushBack = analytics.__flush;
+    var called = false;
+
+    for (let i = 0; i < 7; i++) {
+      analytics = requireUncached('../../../lib/utils/analytics.js');
+    
+      flushBack = analytics.__flush;
+      analytics.__flush = function() {
+        called = true;
+      };
+      analytics.updateSettings(settings);
+      await analytics.event('test', {log: 'log'});
+    }
+    
     assert.ok(called);
     analytics.__flush = flushBack;
 
