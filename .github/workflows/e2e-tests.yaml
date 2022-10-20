@@ -25,9 +25,10 @@ jobs:
         with:
           repository: nightwatchjs-community/todo-vue
           path: todo-vue
+      - run: sudo apt-get install xvfb
       - run: cd toto-vue && npm ci && npm run dev &
       - run: npm ci
-      - run: node ./bin/nightwatch test/e2e --config test/e2e.conf.js
-      - run: node ./bin/nightwatch test/e2e -e chrome --config test/e2e.conf.js
-      - run: node ./bin/nightwatch test/e2e -e chrome,firefox --config test/e2e.conf.js
-      - run: node ./bin/nightwatch test/e2e --env=chrome,firefox --config test/e2e.conf.js
+      - run: xvfb-run --auto-servernum node ./bin/nightwatch test/e2e --config test/e2e.conf.js
+      - run: xvfb-run --auto-servernum node ./bin/nightwatch test/e2e -e chrome --config test/e2e.conf.js
+      - run: xvfb-run --auto-servernum node ./bin/nightwatch test/e2e -e chrome,firefox --config test/e2e.conf.js
+      - run: xvfb-run --auto-servernum node ./bin/nightwatch test/e2e --env=chrome,firefox --config test/e2e.conf.js
