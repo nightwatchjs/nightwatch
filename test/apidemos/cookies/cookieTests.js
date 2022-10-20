@@ -2,10 +2,20 @@ const assert = require('assert');
 
 describe('Cookie api demo tests', function() {
 
-  before((browser) => browser.url('http://localhost'));
-  after((browser) => browser.end());
+  before(async (browser) => {
+    await browser.url('http://localhost');
+    browser.globals.calls++;
+    console.log('BROWSER URL')
+  });
+
+  after(async (browser) => {
+    await browser.end();
+    browser.globals.calls++;
+    console.log('BROWSER END')
+  });
 
   test('browser.getCookie(<name>)', async (browser) => {
+    await browser.assert.strictEqual(browser.globals.calls, 1);
     await browser.assert.urlContains('//localhost');
 
     const test_cookie = await browser.getCookie('test_cookie');
