@@ -25,11 +25,13 @@ describe('cookie demos', function() {
 
     const globals = {
       waitForConditionPollInterval: 50,
-
+      calls: 0,
       reporter(results) {
         if (results.lastError) {
           throw results.lastError;
         }
+
+        assert.strictEqual(globals.calls, 2);
       }
     };
 
@@ -39,7 +41,7 @@ describe('cookie demos', function() {
         port: 10195,
         start_process: false
       },
-      output: false,
+      output: true,
       skip_testcases_on_fail: false,
       silent: false,
       persist_globals: true,
