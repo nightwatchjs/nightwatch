@@ -19,6 +19,7 @@ try {
 
         throw err;
       })
+      .then(() => runner.startTunnel())
       .then(() => runner.runTests())
       .catch((err) => {
         if (!err.displayed || (alwaysDisplayError(err) && !err.displayed)) {
@@ -26,7 +27,8 @@ try {
         }
 
         runner.processListener.setExitCode(10).exit();
-      });
+      })
+      .finally(() => runner.stopTunnel());
   });
 } catch (err) {
   const {message} = err;
