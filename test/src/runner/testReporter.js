@@ -217,7 +217,7 @@ describe('testReporter', function() {
     }
 
     assert.strictEqual(possibleError, null);
-    assert.strictEqual(htmlFile, 'output/nightwatch-html-report/index.html');
+    assert.strictEqual(htmlFile, `output${path.sep}nightwatch-html-report${path.sep}index.html`);
 
   });
 });
