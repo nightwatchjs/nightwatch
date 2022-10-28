@@ -1,4 +1,4 @@
-const expect = require('chai').expect;
+const expect = require('@nightwatch/chai').expect;
 const path = require('path');
 const common = require('../../common.js');
 const TagsMatcher = common.require('runner/matchers/tags.js');

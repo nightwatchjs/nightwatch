@@ -437,9 +437,8 @@ describe('test Request With Credentials', function () {
     nock('https://hub.browserstack.com')
       .post('/wd/hub/session')
       .reply(201, function (uri, requestBody) {
-        const reqObj = JSON.parse(requestBody);
 
-        assert.deepEqual(reqObj, {
+        assert.deepEqual(requestBody, {
           'desiredCapabilities': {
             'browserName': 'chrome',
             'bstack:options': {
@@ -480,7 +479,7 @@ describe('test Request With Credentials', function () {
         return {
           value: {
             sessionId: '1352110219202',
-            capabilities: reqObj.desiredCapabilities
+            capabilities: requestBody.desiredCapabilities
           }
         };
       });
@@ -568,9 +567,7 @@ describe('test Request With Credentials', function () {
     nock('https://hub.browserstack.com')
       .post('/wd/hub/session')
       .reply(201, function (uri, requestBody) {
-        const reqObj = JSON.parse(requestBody);
-
-        assert.deepEqual(reqObj, {
+        assert.deepEqual(requestBody, {
           'desiredCapabilities': {
             'browserName': null,
             'bstack:options': {
@@ -606,7 +603,7 @@ describe('test Request With Credentials', function () {
         return {
           value: {
             sessionId: '1352110219202',
-            capabilities: reqObj.desiredCapabilities
+            capabilities: requestBody.desiredCapabilities
           }
         };
       });
@@ -692,9 +689,8 @@ describe('test Request With Credentials', function () {
     nock('https://hub.browserstack.com')
       .post('/wd/hub/session')
       .reply(201, function (uri, requestBody) {
-        const reqObj = JSON.parse(requestBody);
 
-        assert.deepEqual(reqObj, {
+        assert.deepEqual(requestBody, {
           'desiredCapabilities': {
             'browserName': 'firefox',
             'bstack:options': {
@@ -727,7 +723,7 @@ describe('test Request With Credentials', function () {
         return {
           value: {
             sessionId: '1352110219202',
-            capabilities: reqObj.desiredCapabilities
+            capabilities: requestBody.desiredCapabilities
           }
         };
       });
@@ -804,9 +800,8 @@ describe('test Request With Credentials', function () {
     nock('https://hub.browserstack.com')
       .post('/wd/hub/session')
       .reply(201, function (uri, requestBody) {
-        const reqObj = JSON.parse(requestBody);
 
-        assert.deepEqual(reqObj, {
+        assert.deepEqual(requestBody, {
           'desiredCapabilities': {
             'browserName': 'chrome',
             'bstack:options': {
@@ -847,7 +842,7 @@ describe('test Request With Credentials', function () {
         return {
           value: {
             sessionId: '1352110219202',
-            capabilities: reqObj.desiredCapabilities
+            capabilities: requestBody.desiredCapabilities
           }
         };
       });
