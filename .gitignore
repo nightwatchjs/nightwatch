@@ -27,3 +27,4 @@ screenshot.png
 /logs
 html-report/
 test-results.xml
+chromedriver-mobile/
