@@ -41,7 +41,7 @@ describe('test Parallel Execution', function() {
       }
     });
 
-    const {platform, constants, homedir, release} = require('os');
+    const {platform, constants, homedir, release, type, tmpdir} = require('os');
     mockery.registerMock('os', {
       cpus: function() {
         return [0, 1];
@@ -49,7 +49,9 @@ describe('test Parallel Execution', function() {
       platform,
       constants,
       homedir,
-      release
+      release,
+      type,
+      tmpdir
     });
   });
 
