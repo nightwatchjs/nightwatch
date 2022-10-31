@@ -34,7 +34,9 @@ describe('Typescript demos', function () {
   });
 
   after(function(done) {
-    tsNode.enabled(false);
+    if (tsNode) {
+      tsNode.enabled(false);
+    }
     Utils.loadTSNode = oldLoadTSNode;
     done();
   });
@@ -68,6 +70,8 @@ describe('Typescript demos', function () {
       globals,
       output_folder: false
     }).then(() => {
+      process.chdir(originalCwd);
+    }).catch(() => {
       process.chdir(originalCwd);
     });
   });
