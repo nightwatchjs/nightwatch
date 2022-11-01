@@ -144,6 +144,23 @@ describe('Test CLI Runner', function() {
       }
     });
 
+    mockery.registerMock('./local.json', {
+      src_folders: ['tests'],
+      tunnel: {
+        type: 'browserstack',
+        options: {
+          key: 'browserstack_key',
+          localIdentifier: '123'
+        }
+      },
+      test_settings: {
+        'default': {
+          output: false,
+          disable_colors: true
+        }
+      }
+    })
+
     mockery.registerMock('./custom.json', {
       src_folders: ['tests'],
       selenium: {
@@ -965,6 +982,29 @@ describe('Test CLI Runner', function() {
       assert.strictEqual(err.message, 'cannot read external global file using "./extra/globals-err.js"');
     }
   });
+
+  it('testLocalStart', async () => {
+    mockery.registerMock('browserstack-local', {
+      Local: class {
+        start(_, cb) {
+          cb();
+        }
+        stop(cb) {
+          cb();
+        }
+      }
+    })
+    const CliRunner = common.require('runner/cli/cli.js');
+    const runner = await new CliRunner({
+      config: './local.json'
+    }).setupAsync();
+    assert.equal(runner.localTunnel.key, 'browserstack_key');
+    assert.notEqual(runner.localTunnel.local, undefined);
+    await runner.startTunnel();
+    assert.notEqual(runner.test_settings.local_setup, undefined);
+    assert.equal(runner.test_settings.local_setup.localIdentifier, '123');
+    await runner.stopTunnel();
+  })
 
   it('using ES module config file', function() {
     mockery.deregisterMock('package.json');

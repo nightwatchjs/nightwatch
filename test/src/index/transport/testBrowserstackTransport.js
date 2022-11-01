@@ -323,4 +323,27 @@ xdescribe('BrowserstackTransport', function () {
     assert.strictEqual(transport.buildId, '123-567-89');
 
   });
+
+  it('test local in bstack:options', function() {
+    const client = NightwatchClient.client({
+      webdriver: {
+        host: 'hub-cloud.browserstack.com',
+        port: 443,
+        start_process: false
+      },
+      desiredCapabilities: {
+        'browserstack.user': 'test-acess-user',
+        'browserstack.key': 'test-acess-key',
+        platformName: 'ios',
+        platfromVersion: '12',
+        deviceName: 'iPhone 12'
+      },
+      local_setup: {
+        localIdentifier: '123'
+      }
+    });
+    client.transport.adaptSettings();
+    assert.equal(client.settings.desiredCapabilities['bstack:options'].local, true);
+    assert.equal(client.settings.desiredCapabilities['bstack:options'].localIdentifier, '123');
+  });
 });
