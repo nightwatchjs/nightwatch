@@ -4,14 +4,15 @@ const NightwatchClient = common.require('index.js');
 
 
 describe('Mobile Component Testing', function () {
-  it('test baseUrl',  function(){
+  it('test baseUrl for Andoid Emulator',  function(){
     const client = NightwatchClient.client({
       baseUrl: 'http://localhost:3000',
       webdriver: {
         start_process: true
       },
       desiredCapabilities: {
-        avd: 'nightwatch-android-11'
+        avd: 'nightwatch-android-11',
+        real_mobile: false
       }
     });
 
