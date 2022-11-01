@@ -26,7 +26,7 @@ try {
         }
 
         runner.processListener.setExitCode(10).exit();
-      })
+      });
   });
 } catch (err) {
   const {message} = err;
