@@ -19,7 +19,6 @@ try {
 
         throw err;
       })
-      .then(() => runner.launchMobileEmulator())
       .then(() => runner.runTests())
       .catch((err) => {
         if (!err.displayed || (alwaysDisplayError(err) && !err.displayed)) {
@@ -28,8 +27,6 @@ try {
 
         runner.processListener.setExitCode(10).exit();
       })
-      // TODO : use childprocess to kill the emulator's subprocess
-      .then(() => process.exit(56));
   });
 } catch (err) {
   const {message} = err;
