@@ -75,6 +75,30 @@ mocks:
   statusCode: 201
   method: POST
 
+- url: '/session'
+  postdata:
+    desiredCapabilities:
+      browserName: safari
+      platformName: iOS
+      safari:useSimulator: true
+      safari.options: {}
+    capabilities:
+      alwaysMatch:
+        browserName: safari
+        platformName: iOS
+        safari:useSimulator: true
+  response:
+    value:
+      sessionId: '13521-10219-202'
+      capabilities:
+        browserName: safari
+        platformName: iOS
+        safari:useSimulator: true
+        safari:platformVersion: 15.6.1
+  responseHeaders: {}
+  statusCode: 201
+  method: POST
+
 - url: '/wd/hub/session/1352110219202/element'
   postdata:
     using: 'css selector'
