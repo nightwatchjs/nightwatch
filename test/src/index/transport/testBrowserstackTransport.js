@@ -338,7 +338,7 @@ xdescribe('BrowserstackTransport', function () {
         platfromVersion: '12',
         deviceName: 'iPhone 12'
       },
-      local_setup: {
+      browserstackLocal: {
         localIdentifier: '123'
       }
     });

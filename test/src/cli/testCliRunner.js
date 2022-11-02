@@ -999,10 +999,10 @@ describe('Test CLI Runner', function() {
       config: './local.json'
     }).setupAsync();
     assert.equal(runner.localTunnel.key, 'browserstack_key');
-    assert.notEqual(runner.localTunnel.local, undefined);
+    assert.notEqual(runner.localTunnel.localTunnel, undefined);
     await runner.startTunnel();
-    assert.notEqual(runner.test_settings.local_setup, undefined);
-    assert.equal(runner.test_settings.local_setup.localIdentifier, '123');
+    assert.notEqual(runner.test_settings.browserstackLocal, undefined);
+    assert.equal(runner.test_settings.browserstackLocal.localIdentifier, '123');
     await runner.stopTunnel();
   })
 
