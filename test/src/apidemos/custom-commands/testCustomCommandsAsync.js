@@ -97,5 +97,4 @@ describe('custom commands with findElements es6 async', function() {
       globals
     }));
   });
-
 });

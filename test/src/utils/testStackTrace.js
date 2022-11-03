@@ -5,6 +5,8 @@ const common = require('../../common.js');
 const Utils = common.require('utils');
 const beautifyStackTrace = common.require('utils/beautifyStackTrace.js');
 const colors = common.require('utils/colors.js');
+const {Logger} = common.require('utils');
+
 
 describe('test stackTrace parse', function() {
   before(() => colors.disable());
@@ -94,4 +96,55 @@ describe('test stackTrace parse', function() {
     assert.strictEqual(result.replace(/\s/g, ''), expected.replace(/\s/g, ''));
   });
 
+  it('should format error log properly', function() {
+    // Skip for windows
+    if (process.platform === 'win32') {
+      return;
+    }
+
+    colors.enable();
+    const errorFilePath = path.join(__dirname, '../../sampletests/unknown-method/UnknownMethod.js');
+    const lineNumber  = 4;
+
+    const error = new TypeError('Unknown method');
+    error.stack = `Error: Unknown api method "elementPresen".
+      at DescribeInstance.<anonymous> (${errorFilePath}:${lineNumber}:21)
+      at Context.call (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/context.js:430:35)
+      at TestCase.run (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/testcase.js:58:31)
+      at Runnable.__runFn (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:669:80)
+      at Runnable.run (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/runnable.js:126:21)
+      at TestSuite.createRunnable (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:776:33)
+      at TestSuite.handleRunnable (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:781:33)
+      at /Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:669:21
+      at processTicksAndRejections (node:internal/process/task_queues:96:5)`;
+    
+    const errorMessage = Logger.getErrorContent(error);
+    assert.ok(!errorMessage.includes('\t'));
+
+    assert.strictEqual(errorMessage, ` [1;31m→ TypeError[0m
+
+    [0;31mUnknown method[0m
+[0;33m
+    Error location:[0m
+    ${errorFilePath}:
+    ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+     2 |   it('failure stack trace', function() {
+     3 |    
+    [0;37m[41m 4 |     browser.url('http://localhost') [0m
+     5 |       .assert.elementPresen('#badElement'); // mispelled API method
+     6 |   });
+    ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+[0;33m    Stack Trace :[0m
+[0;90m    at DescribeInstance.<anonymous> (${errorFilePath}:${lineNumber}:21)[0m
+[0;90m      at Context.call (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/context.js:430:35)[0m
+[0;90m      at TestCase.run (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/testcase.js:58:31)[0m
+[0;90m      at Runnable.__runFn (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:669:80)[0m
+[0;90m      at Runnable.run (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/runnable.js:126:21)[0m
+[0;90m      at TestSuite.createRunnable (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:776:33)[0m
+[0;90m      at TestSuite.handleRunnable (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:781:33)[0m
+[0;90m      at /Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:669:21[0m
+[0;90m      at processTicksAndRejections (node:internal/process/task_queues:96:5)[0m
+`);
+  });
 });
