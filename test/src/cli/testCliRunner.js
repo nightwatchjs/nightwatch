@@ -1042,7 +1042,7 @@ describe('Test CLI Runner', function() {
       test_settings: {
         'default': {
           output: false,
-          silent: false,
+          silent: false
         },
 
         'real.ios': {
@@ -1075,7 +1075,7 @@ describe('Test CLI Runner', function() {
       test_settings: {
         'default': {
           output: false,
-          silent: false,
+          silent: false
         },
 
         'real.ios': {
@@ -1093,7 +1093,7 @@ describe('Test CLI Runner', function() {
 
     const runner = new CliRunner({
       config: './ios_config.json',
-      env: 'real.ios',
+      env: 'real.ios'
     }).setup();
 
     assert.strictEqual(runner.argv.env, 'real.ios');
@@ -1108,7 +1108,7 @@ describe('Test CLI Runner', function() {
       test_settings: {
         'default': {
           output: false,
-          silent: false,
+          silent: false
         },
 
         'simulator.ios': {
@@ -1143,7 +1143,7 @@ describe('Test CLI Runner', function() {
       test_settings: {
         'default': {
           output: false,
-          silent: false,
+          silent: false
         },
 
         'android.chrome': {
@@ -1153,8 +1153,8 @@ describe('Test CLI Runner', function() {
             browserName: 'chrome',
             'goog:chromeOptions': {
               androidPackage: 'com.android.chrome'
-            },
-          },
+            }
+          }
         }
       }
     });
@@ -1179,7 +1179,7 @@ describe('Test CLI Runner', function() {
       test_settings: {
         'default': {
           output: false,
-          silent: false,
+          silent: false
         },
 
         'android.firefox': {
@@ -1189,8 +1189,8 @@ describe('Test CLI Runner', function() {
             browserName: 'firefox',
             'moz:firefoxOptions': {
               androidPackage: 'org.mozilla.firefox'
-            },
-          },
+            }
+          }
         }
       }
     });
@@ -1214,7 +1214,7 @@ describe('Test CLI Runner', function() {
       test_settings: {
         'default': {
           output: false,
-          silent: false,
+          silent: false
         },
 
         'android.chrome': {
@@ -1225,8 +1225,8 @@ describe('Test CLI Runner', function() {
             'goog:chromeOptions': {
               androidPackage: 'com.android.chrome',
               androidDeviceSerial: 'ZD2222W62Y'
-            },
-          },
+            }
+          }
         }
       }
     });
@@ -1252,7 +1252,7 @@ describe('Test CLI Runner', function() {
       test_settings: {
         'default': {
           output: false,
-          silent: false,
+          silent: false
         },
 
         'android.firefox': {
@@ -1263,8 +1263,8 @@ describe('Test CLI Runner', function() {
             'moz:firefoxOptions': {
               androidPackage: 'org.mozilla.firefox',
               androidDeviceSerial: 'ZD2222W62Y'
-            },
-          },
+            }
+          }
         }
       }
     });
