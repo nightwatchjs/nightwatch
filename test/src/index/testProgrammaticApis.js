@@ -478,7 +478,7 @@ describe('test programmatic apis', function () {
     CliRunner.prototype.loadConfig = loadConfig;
   });
 
-  it('test createClient() programmatic API defaults parallel and local server', async function() {
+  xit('test createClient() programmatic API defaults parallel and local server', async function() {
     const server_path = './bin/geckodriver';
     const {constants, rmdirSync, readdirSync, lstatSync} = require('fs');
     delete require.cache['fs'];
