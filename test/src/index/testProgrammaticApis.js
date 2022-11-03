@@ -487,7 +487,7 @@ describe('test programmatic apis', function () {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
     mockery.registerMock('fs', {
       existsSync(exe) {
-        return true;
+        return !exe.includes('nightwatch-axe-verbose');
       },
       constants,
       rmdirSync,

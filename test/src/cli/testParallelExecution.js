@@ -1,4 +1,3 @@
-const util = require('util');
 const EventEmitter = require('events');
 const mockery = require('mockery');
 const path = require('path');
@@ -184,12 +183,12 @@ describe('test Parallel Execution', function() {
     });
   });
 
-  it('test parallel execution with parallel=count arg', function() {
+  it('test parallel execution with workers=count arg', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let runner = new CliRunner({
       reporter: 'junit',
       config: path.join(__dirname, '../../extra/parallelism-count.json'),
-      parallel: 2
+      workers: 2
     });
 
     runner.setup();
@@ -239,8 +238,8 @@ describe('test Parallel Execution', function() {
 
     runner.setup();
 
-    assert.strictEqual(runner.isConcurrencyEnabled([runner.argv._source]), false);
-
+    // run in parallel mode even if single source file is provided
+    assert.strictEqual(runner.isConcurrencyEnabled([runner.argv._source]), true);
   });
 
   it('test parallel execution with workers and single source folder', function() {
@@ -308,6 +307,28 @@ describe('test Parallel Execution', function() {
       assert.ok(allArgs[0].join(' ').includes('--test-worker --parallel-mode'));
       assert.ok(allArgs[1].join(' ').includes('--test-worker --parallel-mode'));
     });
+  });
+
+  it('test Concurrency.getChildProcessArgs with --env=chrome,firefox', function() {
+    const argv = process.argv.slice(0);
+    process.argv = ['node', 'runner.js', '--env=chrome,firefox', '--headless'];
+
+    const Concurrency = common.require('runner/concurrency');
+    const args = Concurrency.getChildProcessArgs();
+
+    process.argv = argv;
+    assert.deepStrictEqual(args, ['--headless']);
+  });
+
+  it('test Concurrency.getChildProcessArgs with --env chrome,firefox', function() {
+    const argv = process.argv.slice(0);
+    process.argv = ['node', 'runner.js', '--env', 'chrome,firefox', '--headless'];
+
+    const Concurrency = common.require('runner/concurrency');
+    const args = Concurrency.getChildProcessArgs();
+
+    process.argv = argv;
+    assert.deepStrictEqual(args, ['--headless']);
   });
 
   it('test parallel execution to ensure preservation of all process.execArgv', function() {
