@@ -478,7 +478,7 @@ describe('test programmatic apis', function () {
     CliRunner.prototype.loadConfig = loadConfig;
   });
 
-  xit('test createClient() programmatic API defaults parallel and local server', async function() {
+  it('test createClient() programmatic API defaults parallel and local server', async function() {
     const server_path = './bin/geckodriver';
     const {constants, rmdirSync, readdirSync, lstatSync} = require('fs');
     delete require.cache['fs'];
@@ -501,16 +501,18 @@ describe('test programmatic apis', function () {
       }
     });
 
-    mockery.registerMock('../io/exec', function(exe, opts) {
-      serverPort = getPortFromArg(opts.args);
+    mockery.registerMock('../io/exec', {
+      exec: function (exe, opts) {
+        serverPort = getPortFromArg(opts.args);
 
-      return {
-        result() {
-          return Promise.resolve({
-            code: '0'
-          });
-        }
-      };
+        return {
+          result() {
+            return Promise.resolve({
+              code: '0'
+            });
+          }
+        };
+      }
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
