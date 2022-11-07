@@ -29,7 +29,6 @@ describe('test HttpRequest', function() {
         },
         state: null
       });
-
     nock('http://localhost:4444')
       .delete('/wd/hub/session')
       .reply(200, {
@@ -66,6 +65,7 @@ describe('test HttpRequest', function() {
     const options = {
       path: '/session',
       method: 'POST',
+      host: 'localhost',
       port: 4444,
       data: {
         desiredCapabilities: {
@@ -85,7 +85,7 @@ describe('test HttpRequest', function() {
 
     const opts = request.reqOptions;
     assert.strictEqual(opts.path, '/wd/hub/session');
-    assert.strictEqual(opts.hostname, 'localhost');
+    assert.strictEqual(opts.host, 'localhost');
     assert.strictEqual(opts.port, 4444);
     assert.strictEqual(opts.method, 'POST');
     assert.strictEqual(opts.headers['content-type'], 'application/json; charset=utf-8');
