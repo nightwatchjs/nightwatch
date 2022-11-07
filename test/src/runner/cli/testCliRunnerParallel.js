@@ -82,4 +82,80 @@ describe('Test CLI Runner in Parallel', function () {
     assert.strictEqual(Utils.singleSourceFile(runner.argv), true);
     assert.strictEqual(runner.isTestWorkersEnabled(), false);
   });
+
+  it('mobile config setup on with worker threads - disabled parallelsim ', function() {
+    class RunnerBaseMock extends RunnerBase {
+      static readTestSource(settings, argv) {
+        assert.strictEqual(settings.testWorkersEnabled, true);
+
+        return [
+          'test_file_1.js',
+          'test_file_2.js'
+        ];
+      }
+    }
+    mockery.registerMock('../runner.js', RunnerBaseMock);
+    mockery.registerMock(path.join(process.cwd(), 'ios_config.json'), {
+      test_settings: {
+        desiredCapabilities: {
+          browserName: 'firefox'
+        },
+        'simulator.ios': {
+          desiredCapabilities: {
+            browserName: 'safari',
+            platformName: 'iOS',
+            'safari:useSimulator': true,
+            'safari:deviceName': 'iPhone 13',
+            'safari:platformVersion': '15.0'
+          }
+        }
+      }
+    });
+    const runner = NightwatchClient.CliRunner({
+      config: 'ios_config.json',
+      env: 'simulator.ios',
+      workers: 4
+    }).setup();
+    assert.strictEqual(runner.isTestWorkersEnabled(), false);
+    assert.strictEqual(runner.parallelMode(), false);
+  });
+
+  it('mobile config setup on with multiple envs - enable parallelsim ', function() {
+    class RunnerBaseMock extends RunnerBase {
+      static readTestSource(settings, argv) {
+        assert.strictEqual(settings.testWorkersEnabled, true);
+
+        return [
+          'test_file_1.js',
+          'test_file_2.js'
+        ];
+      }
+    }
+    mockery.registerMock('../runner.js', RunnerBaseMock);
+    mockery.registerMock(path.join(process.cwd(), 'android_config.json'), {
+      test_settings: {
+        'default': {
+          desiredCapabilities: {
+            browserName: 'firefox'
+          }
+        },
+        'android.chrome': {
+          desiredCapabilities: {
+            avd: 'nightwatch-android-11',
+            browserName: 'chrome',
+            'goog:chromeOptions': {
+              androidPackage: 'com.android.chrome'
+            }
+          }
+        }
+      }
+    });
+    const runner = NightwatchClient.CliRunner({
+      config: 'android_config.json',
+      env: 'android.chrome,default'
+    }).setup();
+    assert.strictEqual(runner.isTestWorkersEnabled(), false);
+    assert.strictEqual(runner.parallelMode(), true);
+  });
+
 });
