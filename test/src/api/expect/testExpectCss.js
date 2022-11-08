@@ -282,16 +282,16 @@ describe('expect.css', function() {
   });
 
   it('to have css property equal and waitFor [FAILED] - property not set', function() {
-    this.client.api.globals.waitForConditionPollInterval = 50;
+    this.client.api.globals.waitForConditionPollInterval = 100;
     Nocks.elementFound().cssProperty('', 3);
 
-    let expect = this.client.api.expect.element('#weblogin').to.have.css('display').equal('block').before(120);
+    let expect = this.client.api.expect.element('#weblogin').to.have.css('display').equal('block').before(250);
 
     return this.client.start(function() {
-      assert.strictEqual(expect.assertion.waitForMs, 120);
+      assert.strictEqual(expect.assertion.waitForMs, 250);
       assert.strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.retries > 1);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have css property "display" equal to: "block" in 120ms'));
+      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have css property "display" equal to: "block" in 250ms'));
     });
   });
 
