@@ -46,10 +46,8 @@
     "@cucumber/cucumber": "^8.2.1",
     "@types/nightwatch": "^2.3.12",
     "@types/node": "^18.11.7",
-    "chromedriver": "^107.0.1",
     "coveralls": "^3.1.1",
     "eslint": "^8.9.0",
-    "geckodriver": "^3.2.0",
     "is-ci": "^3.0.1",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.21",
@@ -113,7 +111,7 @@
     }
   },
   "engines": {
-    "node": ">= 14.20.0"
+    "node": ">= 12.0.0"
   },
   "keywords": [
     "nightwatch",
