@@ -432,7 +432,7 @@ describe('expect.attribute', function() {
     this.client.api.globals.waitForConditionTimeout = 100;
     Nocks.elementFound();
 
-    const expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').equal('hp vasq').before(120);
+    const expect = this.client.api.expect.element('#weblogin').to.have.attribute('class').equal('hp vasq').before(100);
     Nocks.attributeValue(null)
       .attributeValue(null)
       .attributeValue(null)
@@ -440,10 +440,10 @@ describe('expect.attribute', function() {
 
     return this.client.start(function(err) {
       assert.ok(err instanceof Error);
-      assert.strictEqual(expect.assertion.waitForMs, 120);
+      assert.strictEqual(expect.assertion.waitForMs, 100);
       assert.strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.retries > 1);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have attribute "class" equal to: "hp vasq" in 120ms - attribute was not found'));
+      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have attribute "class" equal to: "hp vasq" in 100ms - attribute was not found'));
     });
   });
 

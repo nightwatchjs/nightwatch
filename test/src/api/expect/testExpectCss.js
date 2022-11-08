@@ -296,19 +296,19 @@ describe('expect.css', function() {
   });
 
   it('to have css property equal and waitFor [FAILED] - property not equal', function() {
-    this.client.api.globals.waitForConditionPollInterval = 10;
+    this.client.api.globals.waitForConditionPollInterval = 50;
     Nocks.elementFound().cssProperty('xx', 3);
 
-    let expect = this.client.api.expect.element('#weblogin').to.have.css('display').equal('block').before(20);
+    let expect = this.client.api.expect.element('#weblogin').to.have.css('display').equal('block').before(100);
 
     return this.client.start(function() {
-      assert.strictEqual(expect.assertion.waitForMs, 20);
+      assert.strictEqual(expect.assertion.waitForMs, 100);
       assert.strictEqual(expect.assertion.passed, false);
       assert.ok(expect.assertion.retries >= 1);
-      assert.ok(expect.assertion.elapsedTime >= 20);
+      assert.ok(expect.assertion.elapsedTime >= 100);
       assert.strictEqual(expect.assertion.expected, 'equal to \'block\'');
       assert.strictEqual(expect.assertion.actual, 'xx');
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have css property "display" equal to: "block" in 20ms'));
+      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have css property "display" equal to: "block" in 100ms'));
     });
   });
 
