@@ -301,8 +301,8 @@ describe('expect.visible', function () {
     });
 
     it('to be visible - session not created error', function () {
-      this.client.api.globals.waitForConditionTimeout = 150;
-      this.client.api.globals.waitForConditionPollInterval = 50;
+      this.client.api.globals.waitForConditionTimeout = 250;
+      this.client.api.globals.waitForConditionPollInterval = 100;
 
       Nocks
         .elementFound()
@@ -345,7 +345,7 @@ describe('expect.visible', function () {
     });
 
     it('to be visible - invalid json response', function() {
-      this.client.api.globals.waitForConditionTimeout = 200;
+      this.client.api.globals.waitForConditionTimeout = 250;
       this.client.api.globals.waitForConditionPollInterval = 50;
 
       Nocks
