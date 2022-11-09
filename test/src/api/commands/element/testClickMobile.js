@@ -35,23 +35,11 @@ describe('.click()', function() {
         'safari:useSimulator': true
       }
     }).then((client) => {
-      let firstResult;
-      let secondResult;
-
-      client.api.useXpath().click('//weblogin', function(result) {
-        firstResult = result;
-      });
-  
       client.api.click('css selector', '#weblogin', function(result) {
-        secondResult = result;
+        assert.strictEqual(result.status, 0);
       });
   
-      client.start(() => {
-        assert.strictEqual(firstResult.status, 0);
-        assert.strictEqual(secondResult.status, 0);
-
-        done();
-      });
+      client.start(done);
     });
   });
 });
