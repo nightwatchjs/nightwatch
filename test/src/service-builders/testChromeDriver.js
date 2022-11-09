@@ -23,10 +23,6 @@ describe('ChromeDriver Transport Tests', function () {
       }
     });
 
-    mockery.registerMock('@nightwatch/mobile-helper', {
-      getPlatformName: () => {},
-      getBinaryLocation: () => {}
-    });
   });
 
   afterEach(function(){
