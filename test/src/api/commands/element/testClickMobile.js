@@ -22,7 +22,7 @@ describe('.click()', function() {
         platformName: 'iOS',
         'safari:useSimulator': true
       }
-    }, {deviceId: '00008030-00024C2C3453402E'});
+    });
     
     MockServer.addMock({
       url: '/session/13521-10219-202/execute/sync',
