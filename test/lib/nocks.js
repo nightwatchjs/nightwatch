@@ -20,6 +20,23 @@ module.exports = {
     return this;
   },
 
+  createW3cSession() {
+    nock('http://localhost:10195')
+      .post('/session')
+      .reply(201, {
+        value: {
+          sessionId: '13521-10219-202',
+          capabilities: {
+            acceptInsecureCerts: false,
+            browserName: 'firefox',
+            browserVersion: '65.0.1'
+          }
+        }
+      });
+
+    return this;
+  },
+  
   createSession() {
     nock('http://localhost:10195')
       .post('/wd/hub/session')
@@ -36,6 +53,14 @@ module.exports = {
     return this;
   },
 
+  deleteW3cSession() {
+    nock('http://localhost:10195')
+      .delete('/session/13521-10219-202')
+      .reply(200);
+
+    return this;
+  },
+
   deleteSession() {
     nock('/wd/hub/session/1352110219202')
       .delete()
@@ -48,6 +73,14 @@ module.exports = {
     return this;
   },
 
+  urlW3c() {
+    nock('http://localhost:10195')
+      .post('/sesion/13521-10219-202/url')
+      .reply(200, {value: null});
+
+    return this;
+  },
+  
   url() {
     nock('http://localhost:10195')
       .post('/wd/hub/session/1352110219202/url', {url: 'http://localhost'})
@@ -66,6 +99,16 @@ module.exports = {
         status: 0,
         state: 'success',
         value
+      });
+
+    return this;
+  },
+
+  elementFoundW3c() {
+    nock('http://localhost:10195')
+      .post('/session/13521-10219-202/elements')
+      .reply(200, {
+        value: [{'element-6066-11e4-a52e-4f735466cecf': ' 5cc459b8-36a8-3042-8b4a-258883ea642b'}]
       });
 
     return this;
