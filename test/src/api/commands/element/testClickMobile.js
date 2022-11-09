@@ -13,17 +13,7 @@ describe('.click()', function() {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('client.click() with xpath on iOS', async function() {
-    const client = await Nightwatch.initW3CClient({
-      silent: false,
-      output: false,
-      desiredCapabilities: {
-        browserName: 'safari',
-        platformName: 'iOS',
-        'safari:useSimulator': true
-      }
-    });
-    
+  it('client.click() with xpath on iOS', function(done) {
     MockServer.addMock({
       url: '/session/13521-10219-202/execute/sync',
       postdata: {
@@ -35,20 +25,33 @@ describe('.click()', function() {
         status: 0
       })
     });
+
+    Nightwatch.initW3CClient({
+      silent: false,
+      output: false,
+      desiredCapabilities: {
+        browserName: 'safari',
+        platformName: 'iOS',
+        'safari:useSimulator': true
+      }
+    }).then((client) => {
+      let firstResult;
+      let secondResult;
+
+      client.api.useXpath().click('//weblogin', function(result) {
+        firstResult = result;
+      });
   
-    let firstResult; let secondResult;
+      client.api.click('css selector', '#weblogin', function(result) {
+        secondResult = result;
+      });
+  
+      client.start(() => {
+        assert.strictEqual(firstResult.status, 0);
+        assert.strictEqual(secondResult.status, 0);
 
-    await client.api.useXpath().click('//weblogin', function(result) {
-      firstResult = result;
+        done();
+      });
     });
-
-    await client.api.click('css selector', '#weblogin', function(result) {
-      secondResult = result;
-    });
-
-    await client.start();
-
-    assert.strictEqual(firstResult.status, 0);
-    assert.strictEqual(secondResult.status, 0);
   });
 });
