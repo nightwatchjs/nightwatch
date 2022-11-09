@@ -15,6 +15,23 @@ describe('.click()', function() {
 
   it('client.click() with xpath on iOS', function(done) {
     MockServer.addMock({
+      url: '/session',
+      response: {
+        value: {
+          sessionId: '13521-10219-202',
+          capabilities: {
+            browserName: 'safari',
+            platformName: 'iOS',
+            'safari:useSimulator': true,
+            'safari:platformVersion': '15.6.1'
+          }
+        }
+      },
+      method: 'POST',
+      statusCode: 201
+    }, true);
+
+    MockServer.addMock({
       url: '/session/13521-10219-202/execute/sync',
       postdata: {
         'script': 'arguments[0].click();',
