@@ -8,6 +8,10 @@ const path = require('path');
 describe('SafariDriver Transport Tests', function () {
   beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
+    mockery.registerMock('@nightwatch/mobile-helper', {
+      getPlatformName: () => {},
+      getBinaryLocation: () => {}
+    });
   });
 
   afterEach(function(){

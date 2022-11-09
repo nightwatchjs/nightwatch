@@ -501,6 +501,11 @@ describe('test programmatic apis', function () {
       }
     });
 
+    mockery.registerMock('@nightwatch/mobile-helper', {
+      getPlatformName: () => {},
+      getBinaryLocation: () => {}
+    });
+
     mockery.registerMock('../io/exec', function(exe, opts) {
       serverPort = getPortFromArg(opts.args);
 
