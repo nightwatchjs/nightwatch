@@ -1,5 +1,4 @@
 describe('Async perform Actions API demo tests', function() { 
-
   test('browser.perform( async fn )', async browser => {
     const result = await browser.perform(async function() {
       const webelement = await element('#weblogin').findElement();
@@ -7,8 +6,5 @@ describe('Async perform Actions API demo tests', function() {
 
       return actions.click(webelement);
     });
-
   });
-
-
 });
