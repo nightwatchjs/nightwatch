@@ -19,7 +19,7 @@ describe('test NightwatchIndex', function () {
   });
 
   it('Test initialization', function (done) {
-    let client = Nightwatch.createClient({
+    const client = Nightwatch.createClient({
       silent: false,
       output: false
     });
@@ -38,8 +38,7 @@ describe('test NightwatchIndex', function () {
       url: '/wd/hub/session',
 
       postdata: {
-        desiredCapabilities: {browserName: 'chrome', 'goog:chromeOptions': {}},
-        capabilities: {alwaysMatch: {browserName: 'chrome', 'goog:chromeOptions': {}}}
+        capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'chrome', 'goog:chromeOptions': {}}}
       },
 
       responseHeaders: {
@@ -63,7 +62,7 @@ describe('test NightwatchIndex', function () {
       method: 'GET'
     }, true);
 
-    let client = Nightwatch.createClient({
+    const client = Nightwatch.createClient({
       desiredCapabilities: {
         browserName: 'chrome'
       },
@@ -141,7 +140,7 @@ describe('test NightwatchIndex', function () {
       method: 'POST'
     }, true);
 
-    let client = Nightwatch.createClient({
+    const client = Nightwatch.createClient({
       selenium: {
         start_process: false,
         host: null
@@ -182,10 +181,13 @@ describe('test NightwatchIndex', function () {
       method: 'POST'
     }, true);
 
-    let client = Nightwatch.createClient({
+    const client = Nightwatch.createClient({
       desiredCapabilities: {
         browserName: 'firefox',
-        platform: 'TEST'
+        platform: 'TEST',
+        'nightwatch:options': {
+          name: 'selenium-test'
+        }
       },
       selenium_host: 'localhost',
       selenium_port: 10195,
@@ -214,7 +216,7 @@ describe('test NightwatchIndex', function () {
       method: 'POST'
     }, true);
 
-    let client = Nightwatch.createClient({
+    const client = Nightwatch.createClient({
       desiredCapabilities: {
         browserName: 'safari'
       },

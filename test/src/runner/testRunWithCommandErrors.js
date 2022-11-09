@@ -165,6 +165,47 @@ describe('testRunWithCommandErrors', function() {
       }));
     });
 
+    it('testRunner with socket hang up error and report_network_errors on', function() {
+      MockServer.addMock({
+        url: '/wd/hub/session/1352110219202/frame/parent',
+        socketDelay: 200,
+        response: ''
+      }, null, true);
+
+      let testsPath = path.join(__dirname, '../../sampletests/withcommanderrors');
+      let globals = {
+        retryAssertionTimeout: 90,
+        abortOnElementLocateError: true,
+        waitForConditionTimeout: 90,
+        waitForConditionPollInterval: 90,
+        reporter(results, cb) {
+          assert.strictEqual(results.errmessages.length, 1);
+          assert.ok(results.errmessages[0].includes('Error while running .frameParent(): Error: ECONNRESET socket hang up'));
+          assert.strictEqual(results.passed, 1);
+          assert.strictEqual(results.failed, 0);
+          assert.strictEqual(results.assertions, 1);
+          assert.strictEqual(results.errors, 1);
+          assert.strictEqual(results.skipped, 0);
+          cb();
+        }
+      };
+
+      return runTests({
+        _source: [testsPath]
+      }, settings({
+        webdriver: {
+          timeout_options: {
+            timeout: 50
+          }
+        },
+        output: false,
+        report_network_errors: true,
+        skip_testcases_on_fail: false,
+        disable_error_log: 0,
+        globals
+      }));
+    });
+
     it('testRunner with socket hang up error and report errors disabled', function() {
       MockServer.addMock({
         url: '/wd/hub/session/1352110219202/frame/parent',
@@ -200,6 +241,7 @@ describe('testRunWithCommandErrors', function() {
         },
         output: false,
         report_command_errors: false,
+        report_network_errors: false,
         skip_testcases_on_fail: false,
         disable_error_log: 0,
         globals
@@ -256,6 +298,7 @@ describe('testRunWithCommandErrors', function() {
           }
         },
         report_command_errors: false,
+        report_network_errors: false,
         globals
       }));
     });
