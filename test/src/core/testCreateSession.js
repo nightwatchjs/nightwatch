@@ -433,45 +433,27 @@ describe('test Request With Credentials', function () {
     });
   });
 
-  it('Test create session with browserstack', async function() {
+  it('Test create session with browserstack', async function () {
     nock('https://hub.browserstack.com')
       .post('/wd/hub/session')
       .reply(201, function (uri, requestBody) {
         const reqObj = JSON.parse(requestBody);
 
         assert.deepEqual(reqObj, {
-          'desiredCapabilities': {
-            'browserName': 'chrome',
-            'bstack:options': {
-              'local': 'false',
-              'userName': 'test_user',
-              'accessKey': 'test_key',
-              'os': 'OS X',
-              'osVersion': 'Monterey',
-              'buildName': 'Nightwatch Programmatic Api Demo'
-            },
-            'build': 'Nightwatch Programmatic Api Demo',
-            'chromeOptions': {
-              'w3c': false
-            },
-            'goog:chromeOptions': {
-              'w3c': false
-            },
-            'name': 'Try 1'
-          },
-          'capabilities': {
-            'alwaysMatch': {
-              'browserName': 'chrome',
+          capabilities: {
+            firstMatch: [{}],
+            alwaysMatch: {
+              browserName: 'chrome',
               'bstack:options': {
-                'local': 'false',
-                'userName': 'test_user',
-                'accessKey': 'test_key',
-                'os': 'OS X',
-                'osVersion': 'Monterey',
-                'buildName': 'Nightwatch Programmatic Api Demo'
+                local: 'false',
+                userName: 'test_user',
+                accessKey: 'test_key',
+                os: 'OS X',
+                osVersion: 'Monterey',
+                buildName: 'Nightwatch Programmatic Api Demo'
               },
               'goog:chromeOptions': {
-                'w3c': false
+                w3c: false
               }
             }
           }
@@ -480,15 +462,14 @@ describe('test Request With Credentials', function () {
         return {
           value: {
             sessionId: '1352110219202',
-            capabilities: reqObj.desiredCapabilities
+            capabilities: reqObj.capabilities
           }
         };
       });
 
-
     nock('https://api.browserstack.com')
       .get('/automate/builds.json')
-      .reply(200,  [
+      .reply(200, [
         {
           automation_build: {
             name: 'WIN_CHROME_PROD_SANITY_LIVE_1831',
@@ -506,9 +487,9 @@ describe('test Request With Credentials', function () {
             hashed_id: '8dd73aad3365429dec0ec12cf64c0c475a22dasdk',
             build_tag: null
           }
-        } 
+        }
       ]);
-    
+
     const client = Nightwatch.createClient({
       webdriver: {
         start_process: false
@@ -540,64 +521,46 @@ describe('test Request With Credentials', function () {
     });
 
     const result = await client.createSession();
-    assert.deepStrictEqual(result, {
+    assert.deepEqual(result, {
       sessionId: '1352110219202',
       capabilities: {
-        'browserName': 'chrome',
-        'bstack:options': {
-          'local': 'false',
-          'userName': 'test_user',
-          'accessKey': 'test_key',
-          'os': 'OS X',
-          'osVersion': 'Monterey',
-          'buildName': 'Nightwatch Programmatic Api Demo'
-        },
-        'build': 'Nightwatch Programmatic Api Demo',
-        'chromeOptions': {
-          'w3c': false
-        },
-        'goog:chromeOptions': {
-          'w3c': false
-        },
-        'name': 'Try 1'
+        firstMatch: [{}],
+        alwaysMatch: {
+          browserName: 'chrome',
+          'bstack:options': {
+            local: 'false',
+            userName: 'test_user',
+            accessKey: 'test_key',
+            os: 'OS X',
+            osVersion: 'Monterey',
+            buildName: 'Nightwatch Programmatic Api Demo'
+          },
+          'goog:chromeOptions': {
+            w3c: false
+          }
+        }
       }
     });
   });
 
-  it('Test create session with browserstack and browserName set to null', async function() {
+  it('Test create session with browserstack and browserName set to null', async function () {
     nock('https://hub.browserstack.com')
       .post('/wd/hub/session')
       .reply(201, function (uri, requestBody) {
         const reqObj = JSON.parse(requestBody);
 
         assert.deepEqual(reqObj, {
-          'desiredCapabilities': {
-            'browserName': null,
-            'bstack:options': {
-              'local': 'false',
-              'userName': 'test_user',
-              'accessKey': 'test_key',
-              'osVersion': '14',
-              'deviceName': 'iPhone 12',
-              'realMobile': 'true',
-              'buildName': 'Nightwatch Programmatic Api Demo'
-            },
-            'chromeOptions': {
-              'w3c': false
-            },
-            'name': 'Try 1',
-            'build': 'Nightwatch Programmatic Api Demo'
-          },
-          'capabilities': {
-            'alwaysMatch': {
+          capabilities: {
+            firstMatch: [{}],
+            alwaysMatch: {
               'bstack:options': {
-                'local': 'false',
-                'userName': 'test_user',
-                'accessKey': 'test_key',
-                'osVersion': '14',
-                'deviceName': 'iPhone 12',
-                'realMobile': 'true',
-                'buildName': 'Nightwatch Programmatic Api Demo'
+                local: 'false',
+                userName: 'test_user',
+                accessKey: 'test_key',
+                osVersion: '14',
+                deviceName: 'iPhone 12',
+                realMobile: 'true',
+                buildName: 'Nightwatch Programmatic Api Demo'
               }
             }
           }
@@ -606,15 +569,14 @@ describe('test Request With Credentials', function () {
         return {
           value: {
             sessionId: '1352110219202',
-            capabilities: reqObj.desiredCapabilities
+            capabilities: reqObj.capabilities
           }
         };
       });
 
-
     nock('https://api.browserstack.com')
       .get('/automate/builds.json')
-      .reply(200,  [
+      .reply(200, [
         {
           automation_build: {
             name: 'WIN_CHROME_PROD_SANITY_LIVE_1831',
@@ -632,9 +594,9 @@ describe('test Request With Credentials', function () {
             hashed_id: '8dd73aad3365429dec0ec12cf64c0c475a22dasdk',
             build_tag: null
           }
-        } 
+        }
       ]);
-    
+
     const client = Nightwatch.createClient({
       webdriver: {
         start_process: false
@@ -670,55 +632,40 @@ describe('test Request With Credentials', function () {
     assert.deepStrictEqual(result, {
       sessionId: '1352110219202',
       capabilities: {
-        'bstack:options': {
-          'local': 'false',
-          'userName': 'test_user',
-          'accessKey': 'test_key',
-          'osVersion': '14',
-          'deviceName': 'iPhone 12',
-          'realMobile': 'true',
-          'buildName': 'Nightwatch Programmatic Api Demo'
-        },
-        'chromeOptions': {
-          'w3c': false
-        },
-        'name': 'Try 1',
-        'build': 'Nightwatch Programmatic Api Demo'
+        firstMatch: [{}],
+        alwaysMatch: {
+          'bstack:options': {
+            local: 'false',
+            userName: 'test_user',
+            accessKey: 'test_key',
+            osVersion: '14',
+            deviceName: 'iPhone 12',
+            realMobile: 'true',
+            buildName: 'Nightwatch Programmatic Api Demo'
+          }
+        }
       }
     });
   });
 
-  it('Test create session with browserstack and when buildName is not set', async function() {
+  it('Test create session with browserstack and when buildName is not set', async function () {
     nock('https://hub.browserstack.com')
       .post('/wd/hub/session')
       .reply(201, function (uri, requestBody) {
         const reqObj = JSON.parse(requestBody);
 
         assert.deepEqual(reqObj, {
-          'desiredCapabilities': {
-            'browserName': 'firefox',
-            'bstack:options': {
-              'local': 'false',
-              'userName': 'test_user',
-              'accessKey': 'test_key',
-              'os': 'OS X',
-              'osVersion': 'Monterey',
-              'buildName': 'nightwatch-test-build'
-            },
-            'chromeOptions': {
-              'w3c': false
-            }
-          },
-          'capabilities': {
-            'alwaysMatch': {
-              'browserName': 'firefox',
+          capabilities: {
+            firstMatch: [{}],
+            alwaysMatch: {
+              browserName: 'firefox',
               'bstack:options': {
-                'local': 'false',
-                'userName': 'test_user',
-                'accessKey': 'test_key',
-                'os': 'OS X',
-                'osVersion': 'Monterey',
-                'buildName': 'nightwatch-test-build'
+                local: 'false',
+                userName: 'test_user',
+                accessKey: 'test_key',
+                os: 'OS X',
+                osVersion: 'Monterey',
+                buildName: 'nightwatch-test-build'
               }
             }
           }
@@ -727,15 +674,14 @@ describe('test Request With Credentials', function () {
         return {
           value: {
             sessionId: '1352110219202',
-            capabilities: reqObj.desiredCapabilities
+            capabilities: reqObj.capabilities
           }
         };
       });
 
-
     nock('https://api.browserstack.com')
       .get('/automate/builds.json')
-      .reply(200,  [
+      .reply(200, [
         {
           automation_build: {
             name: 'WIN_CHROME_PROD_SANITY_LIVE_1831',
@@ -753,9 +699,9 @@ describe('test Request With Credentials', function () {
             hashed_id: '8dd73aad3365429dec0ec12cf64c0c475a22dasdk',
             build_tag: null
           }
-        } 
+        }
       ]);
-    
+
     const client = Nightwatch.createClient({
       webdriver: {
         start_process: false
@@ -784,62 +730,42 @@ describe('test Request With Credentials', function () {
     assert.deepStrictEqual(result, {
       sessionId: '1352110219202',
       capabilities: {
-        'browserName': 'firefox',
-        'bstack:options': {
-          'local': 'false',
-          'userName': 'test_user',
-          'accessKey': 'test_key',
-          'os': 'OS X',
-          'osVersion': 'Monterey',
-          'buildName': 'nightwatch-test-build'
-        },
-        'chromeOptions': {
-          'w3c': false
+        firstMatch: [{}],
+        alwaysMatch: {
+          browserName: 'firefox',
+          'bstack:options': {
+            local: 'false',
+            userName: 'test_user',
+            accessKey: 'test_key',
+            os: 'OS X',
+            osVersion: 'Monterey',
+            buildName: 'nightwatch-test-build'
+          }
         }
       }
     });
   });
 
-  it('Test create session with browserstack and update buildName', async function() {
+  it('Test create session with browserstack and update buildName', async function () {
     nock('https://hub.browserstack.com')
       .post('/wd/hub/session')
       .reply(201, function (uri, requestBody) {
         const reqObj = JSON.parse(requestBody);
 
         assert.deepEqual(reqObj, {
-          'desiredCapabilities': {
-            'browserName': 'chrome',
-            'bstack:options': {
-              'local': 'false',
-              'userName': 'test_user',
-              'accessKey': 'test_key',
-              'os': 'OS X',
-              'osVersion': 'Monterey',
-              'buildName': 'Nightwatch Programmatic Api Demo'
-            },
-            'buildName': 'Nightwatch Programmatic Api Demo',
-            'chromeOptions': {
-              'w3c': false
-            },
-            'goog:chromeOptions': {
-              'w3c': false
-            },
-            'name': 'Try 1'
-          },
-          'capabilities': {
-            'alwaysMatch': {
-              'browserName': 'chrome',
+          capabilities: {
+            firstMatch: [{}],
+            alwaysMatch: {
+              browserName: 'chrome',
               'bstack:options': {
-                'local': 'false',
-                'userName': 'test_user',
-                'accessKey': 'test_key',
-                'os': 'OS X',
-                'osVersion': 'Monterey',
-                'buildName': 'Nightwatch Programmatic Api Demo'
+                local: 'false',
+                userName: 'test_user',
+                accessKey: 'test_key',
+                os: 'OS X',
+                osVersion: 'Monterey',
+                buildName: 'Nightwatch Programmatic Api Demo'
               },
-              'goog:chromeOptions': {
-                'w3c': false
-              }
+              'goog:chromeOptions': {w3c: false}
             }
           }
         });
@@ -847,15 +773,14 @@ describe('test Request With Credentials', function () {
         return {
           value: {
             sessionId: '1352110219202',
-            capabilities: reqObj.desiredCapabilities
+            capabilities: reqObj.capabilities
           }
         };
       });
 
-
     nock('https://api.browserstack.com')
       .get('/automate/builds.json')
-      .reply(200,  [
+      .reply(200, [
         {
           automation_build: {
             name: 'WIN_CHROME_PROD_SANITY_LIVE_1831',
@@ -873,9 +798,9 @@ describe('test Request With Credentials', function () {
             hashed_id: '8dd73aad3365429dec0ec12cf64c0c475a22dasdk',
             build_tag: null
           }
-        } 
+        }
       ]);
-    
+
     const client = Nightwatch.createClient({
       webdriver: {
         start_process: false
@@ -910,23 +835,19 @@ describe('test Request With Credentials', function () {
     assert.deepStrictEqual(result, {
       sessionId: '1352110219202',
       capabilities: {
-        'browserName': 'chrome',
-        'bstack:options': {
-          'local': 'false',
-          'userName': 'test_user',
-          'accessKey': 'test_key',
-          'os': 'OS X',
-          'osVersion': 'Monterey',
-          'buildName': 'Nightwatch Programmatic Api Demo'
-        },
-        'buildName': 'Nightwatch Programmatic Api Demo',
-        'chromeOptions': {
-          'w3c': false
-        },
-        'goog:chromeOptions': {
-          'w3c': false
-        },
-        'name': 'Try 1'
+        firstMatch: [{}],
+        alwaysMatch: {
+          browserName: 'chrome',
+          'bstack:options': {
+            local: 'false',
+            userName: 'test_user',
+            accessKey: 'test_key',
+            os: 'OS X',
+            osVersion: 'Monterey',
+            buildName: 'Nightwatch Programmatic Api Demo'
+          },
+          'goog:chromeOptions': {w3c: false}
+        }
       }
     });
   });
