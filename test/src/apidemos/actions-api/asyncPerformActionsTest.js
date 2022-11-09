@@ -6,14 +6,14 @@ const nocks = require('../../../lib/nocks.js');
 const {settings} = common;
 const NightwatchClient = common.require('index.js');
 
-describe('actions api tests', function() {
+describe('actions api tests - async perform', function() {
 
   after(function(){
     nock.restore();
     nock.cleanAll();
   });
 
-  it('run basic test with actions', function() {
+  it('run basic test with actions and async perform callback', function() {
     let actionsPerformed = false;
     const testsPath = path.join(__dirname, '../../../apidemos/actions-api/asyncActionsApi.js');
 
