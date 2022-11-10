@@ -157,6 +157,30 @@ describe('testRunTestsuiteWithSuiteRetries', function() {
     }));
   });
 
+  it('testRunner with suiteRetries and enable_fail_fast=true', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/withfailures');
+    let globals = {
+      calls: 0,
+      retryAssertionTimeout: 0,
+      reporter(results, cb) {
+        assert.strictEqual(globals.calls, 12);
+        cb();
+      }
+    };
+
+    return runTests({
+    }, settings({
+      suiteRetries: 2,
+      _source: [testsPath],
+      enable_fail_fast: true,
+      globals
+    })).catch(err => {
+      return err;
+    }).then(err => {
+      assert.ok(err instanceof Error);
+    });
+  });
+
   it('testRunner with suiteRetries and locate strategy change', function() {
     let testsPath = path.join(__dirname, '../../sampletests/suiteretries/locate-strategy');
     let globals = {
