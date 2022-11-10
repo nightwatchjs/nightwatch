@@ -523,18 +523,18 @@ describe('expect.value', function () {
     });
 
     it('to have value equal and waitFor [FAILED] - value not found', function () {
-      this.client.api.globals.waitForConditionPollInterval = 50;
+      this.client.api.globals.waitForConditionPollInterval = 100;
       Nocks.elementFound();
 
-      let expect = this.client.api.expect.element('#weblogin').to.have.value.equal('hp vasq').before(110);
+      let expect = this.client.api.expect.element('#weblogin').to.have.value.equal('hp vasq').before(250);
 
       Nocks.elementFound().value('xx', 4);
 
       return this.client.start(function () {
-        strictEqual(expect.assertion.waitForMs, 110);
+        strictEqual(expect.assertion.waitForMs, 250);
         strictEqual(expect.assertion.passed, false);
         assert.ok(expect.assertion.retries > 1);
-        assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value equal to: "hp vasq" in 110ms'));
+        assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to have value equal to: "hp vasq" in 250ms'));
       });
     });
   });
