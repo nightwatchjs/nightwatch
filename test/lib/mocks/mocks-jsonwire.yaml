@@ -3,10 +3,8 @@ mocks:
 # Default JSON Wire session request with Selenium
 - url: '/wd/hub/session'
   postdata:
-    desiredCapabilities:
-      browserName: firefox
-      name: 'testSuite'
     capabilities:
+      firstMatch: [{}]
       alwaysMatch:
         browserName: firefox
   response:
@@ -15,7 +13,6 @@ mocks:
     value:
       browserName: firefox
       browserVersion: TEST_firefox
-      platformVersion: TEST
     state:
   responseHeaders: {}
   statusCode: 201
@@ -24,10 +21,8 @@ mocks:
 
 - url: '/wd/hub/session'
   postdata:
-    desiredCapabilities:
-      browserName: firefox
-      name: ''
     capabilities:
+      firstMatch: [{}]
       alwaysMatch:
         browserName: firefox
   response:
