@@ -97,12 +97,7 @@ describe('angular demo tests', function() {
     Mocks
       .createNewW3CSession({
         postdata: {
-          desiredCapabilities: {
-            browserName: 'chrome',
-            name: 'angularjs homepage todo list - with element global and stale element error',
-            'goog:chromeOptions': {}
-          },
-          capabilities: {alwaysMatch: {browserName: 'chrome', 'goog:chromeOptions': {}}}
+          capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'chrome', 'goog:chromeOptions': {}}}
         }
       })
       .findElements({
@@ -170,12 +165,7 @@ describe('angular demo tests', function() {
     Mocks
       .createNewW3CSession({
         postdata: {
-          desiredCapabilities: {
-            browserName: 'chrome',
-            name: 'angularjs homepage todo list - with element global and stale element error',
-            'goog:chromeOptions': {}
-          },
-          capabilities: {alwaysMatch: {browserName: 'chrome', 'goog:chromeOptions': {}}}
+          capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'chrome', 'goog:chromeOptions': {}}}
         }
       })
       .findElements({
@@ -243,12 +233,7 @@ const setupMocks = function({testSuiteName} = {}) {
   Mocks
     .createNewW3CSession({
       postdata: {
-        desiredCapabilities: {
-          browserName: 'chrome',
-          name: testSuiteName,
-          'goog:chromeOptions': {}
-        },
-        capabilities: {alwaysMatch: {browserName: 'chrome', 'goog:chromeOptions': {}}}
+        capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'chrome', 'goog:chromeOptions': {}}}
       }
     })
     .navigateTo({url: 'http://localhost'})

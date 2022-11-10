@@ -1,7 +1,7 @@
 {
   "name": "nightwatch",
   "description": "Easy to use Node.js based end-to-end testing solution for web applications using the W3C WebDriver API.",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "author": "Andrei Rusu",
   "homepage": "https://nightwatchjs.org",
   "main": "./lib/index.js",
@@ -37,7 +37,7 @@
     "nightwatch-axe-verbose": "2.0.3",
     "open": "8.4.0",
     "ora": "5.4.1",
-    "selenium-webdriver": "4.3.1",
+    "selenium-webdriver": "4.5.0",
     "semver": "7.3.5",
     "stacktrace-parser": "0.1.10",
     "strip-ansi": "6.0.1",
@@ -45,12 +45,10 @@
   },
   "devDependencies": {
     "@cucumber/cucumber": "^8.2.1",
-    "@types/nightwatch": "^2.3.4",
-    "@types/node": "^16.7.1",
-    "chromedriver": "^106.0.1",
+    "@types/nightwatch": "^2.3.12",
+    "@types/node": "^18.11.7",
     "coveralls": "^3.1.1",
     "eslint": "^8.9.0",
-    "geckodriver": "^3.0.2",
     "is-ci": "^3.0.1",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.21",
@@ -59,13 +57,13 @@
     "mochawesome-merge": "^4.2.1",
     "mochawesome-report-generator": "^6.2.0",
     "mockery": "~2.1.0",
-    "nock": "^10.0.6",
+    "nock": "^13.2.9",
     "nyc": "^15.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rimraf": "^3.0.2",
-    "ts-node": "^10.2.1",
-    "typescript": "^4.3.5"
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.4"
   },
   "peerDependencies": {
     "@cucumber/cucumber": "*",
@@ -114,7 +112,7 @@
     }
   },
   "engines": {
-    "node": ">= 10.0.0"
+    "node": ">= 12.0.0"
   },
   "keywords": [
     "nightwatch",

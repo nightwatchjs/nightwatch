@@ -24,13 +24,19 @@ describe('testReporter', function() {
       if (err) {
         return done(err);
       }
+      mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
       done();
     });
   });
 
-  // afterEach(function(done) {
-  //   rimraf('output', done);
-  // });
+
+  afterEach(function(done) {
+    mockery.deregisterAll();
+    mockery.resetCache();
+    mockery.disable();
+    rimraf('output', done);
+  });
+
 
   after(function(done) {
     this.server.close(function() {
@@ -94,7 +100,6 @@ describe('testReporter', function() {
   });
 
   it('test with valid reporter from NPM', function() {
-    mockery.enable({useCleanCache: true, warnOnUnregistered: false});
     mockery.registerMock('nightwatch_reporter', {
       async write(results, options) {
 
@@ -173,5 +178,46 @@ describe('testReporter', function() {
     }
 
     assert.strictEqual(possibleError, null);
+  });
+
+  it('test run tests with default reporters - open the html report', async function () {
+    let htmlFile;
+
+    mockery.registerMock('open', function(filename) {
+      htmlFile = filename;
+
+      return Promise.resolve();
+    });
+
+    let possibleError = null;
+    const testsPath = [path.join(__dirname, '../../sampletests/simple/test/sample.js')];
+
+    try {
+      await runTests({
+        source: testsPath,
+        open: true
+      },
+      settings({
+        output_folder: 'output',
+        globals: {
+          waitForConditionPollInterval: 20,
+          waitForConditionTimeout: 50,
+          retryAssertionTimeout: 50,
+          reporter: function () {}
+        },
+        silent: true,
+        output: false
+      }));
+
+      await readFilePromise(`output${path.sep}FIREFOX_TEST_firefox__sample.xml`);
+      await readFilePromise(`output${path.sep}FIREFOX_TEST_firefox__sample.json`);
+      await readDirPromise(`output${path.sep}nightwatch-html-report`);
+    } catch (error) {
+      possibleError = error;
+    }
+
+    assert.strictEqual(possibleError, null);
+    assert.strictEqual(htmlFile, `output${path.sep}nightwatch-html-report${path.sep}index.html`);
+
   });
 });

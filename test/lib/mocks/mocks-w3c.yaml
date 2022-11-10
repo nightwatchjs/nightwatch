@@ -6,9 +6,9 @@ mocks:
 - url: '/session'
   postdata:
     capabilities:
-      browserName: firefox
-    desiredCapabilities:
-      browserName: firefox
+      firstMatch: [{}]
+      alwaysMatch:
+        browserName: firefox
   response:
     value:
       sessionId: &webdriverSessionId '13521-10219-202'
@@ -31,9 +31,8 @@ mocks:
 
 - url: '/session'
   postdata:
-    desiredCapabilities:
-      browserName: firefox
     capabilities:
+      firstMatch: [{}]
       alwaysMatch:
         browserName: firefox
   response:
@@ -59,10 +58,9 @@ mocks:
 - url: '/session'
   postdata:
     capabilities:
+      firstMatch: [{}]
       alwaysMatch:
         browserName: firefox
-    desiredCapabilities:
-      browserName: firefox
   response:
     value:
       sessionId: '13521-10219-202'

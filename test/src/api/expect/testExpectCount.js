@@ -147,21 +147,21 @@ describe('expect.elements count', function() {
     });
 
     it('count to equal and waitFor [FAILED] - count not equal', function() {
-      this.client.api.globals.waitForConditionPollInterval = 20;
+      this.client.api.globals.waitForConditionPollInterval = 100;
 
       Nocks.elementsFound('.classname');
       Nocks.elementsFound('.classname');
       Nocks.elementsFound('.classname');
 
-      let expect = this.client.api.expect.elements('.classname').count.to.equal(888).before(25);
+      let expect = this.client.api.expect.elements('.classname').count.to.equal(888).before(105);
 
       return this.client.start(function() {
-        assert.strictEqual(expect.assertion.waitForMs, 25);
+        assert.strictEqual(expect.assertion.waitForMs, 105);
         assert.strictEqual(expect.assertion.passed, false);
         assert.ok(expect.assertion.retries >= 1);
-        assert.ok(expect.assertion.elapsedTime >= 25);
+        assert.ok(expect.assertion.elapsedTime >= 105);
         assert.strictEqual(expect.assertion.expected, 'equal \'888\'');
-        assert.ok(expect.assertion.message.startsWith('Expected elements <.classname> count to equal: "888" in 25ms'), expect.assertion.message);
+        assert.ok(expect.assertion.message.startsWith('Expected elements <.classname> count to equal: "888" in 105ms'), expect.assertion.message);
       });
     });
 
