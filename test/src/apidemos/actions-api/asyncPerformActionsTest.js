@@ -47,7 +47,12 @@ describe('actions api tests - async perform', function() {
     };
 
     return NightwatchClient.runTests(testsPath, settings({
-      selenium_host: null,
+      selenium: null,
+      webdriver: {
+        host: 'localhost',
+        start_process: false,
+        port: 10195
+      },
       output: true,
       globals
     }));
