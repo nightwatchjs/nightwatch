@@ -8,9 +8,16 @@ const NightwatchClient = common.require('index.js');
 
 describe('actions api tests - async perform', function() {
 
+  before(function () {
+    nocks.cleanAll();
+    try {
+      nocks.enable();
+    } catch (e) {
+    }
+
+  });
   after(function(){
-    nock.restore();
-    nock.cleanAll();
+    nocks.disable();
   });
 
   it('run basic test with actions and async perform callback', function() {
@@ -47,13 +54,8 @@ describe('actions api tests - async perform', function() {
     };
 
     return NightwatchClient.runTests(testsPath, settings({
-      selenium: null,
-      webdriver: {
-        host: 'localhost',
-        start_process: false,
-        port: 10195
-      },
-      output: true,
+      selenium_host: null,
+      output: false,
       globals
     }));
   });
