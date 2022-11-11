@@ -288,7 +288,7 @@ describe('test Settings', function () {
   });
 });
 
-it('recursive extends in test_settings', function () {
+xit('recursive extends in test_settings', function () {
 
   const baseSettings = {
     test_settings: {
