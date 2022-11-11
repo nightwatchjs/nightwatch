@@ -18,8 +18,8 @@ describe('test page object element selectors with locateStrategy from nightwatch
     done();
   });
 
-  it('page object allows shorthand selector for xpath when "use_xpath=true"', function (done) {
-    Nightwatch.init({
+  it('page object allows shorthand selector for xpath when "use_xpath=true"', async function () {
+    await Nightwatch.init({
       page_objects_path: [path.join(__dirname, '../../extra/pageobjects/pages')],
       custom_commands_path: [path.join(__dirname, '../../extra/commands')],
       custom_assertions_path: [path.join(__dirname, '../../extra/assertions')],
@@ -31,17 +31,25 @@ describe('test page object element selectors with locateStrategy from nightwatch
       }
     });
 
-    let page = Nightwatch.api().page.simplePageObjDefaultXpath();
+    const page = Nightwatch.api().page.simplePageObjDefaultXpath();
     assert.strictEqual(page.elements.xpathElement.locateStrategy, 'xpath');
     assert.strictEqual(page.elements.xpathElement2.locateStrategy, 'xpath');
     assert.strictEqual(page.elements.cssSelectorElement.locateStrategy, 'css selector');
     assert.strictEqual(page.section.signUp.locateStrategy, 'xpath');
     assert.strictEqual(page.section.signUp.elements.start.locateStrategy, 'css selector');
-    Nightwatch.start(done);
+
+    return new Promise((resolve, reject) => {
+      Nightwatch.start(function(err) {
+        if (err) {
+          return reject(err);
+        }
+        resolve();
+      });
+    });
   });
 
-  it('page object defaults to css selector for shorthand when "use_xpath=false"', function (done) {
-    Nightwatch.init({
+  it('page object defaults to css selector for shorthand when "use_xpath=false"', async function () {
+    await Nightwatch.init({
       page_objects_path: [path.join(__dirname, '../../extra/pageobjects/pages')],
       custom_commands_path: [path.join(__dirname, '../../extra/commands')],
       custom_assertions_path: [path.join(__dirname, '../../extra/assertions')],
@@ -53,13 +61,21 @@ describe('test page object element selectors with locateStrategy from nightwatch
       }
     });
 
-    let page = Nightwatch.api().page.simplePageObjDefaultXpath();
+    const page = Nightwatch.api().page.simplePageObjDefaultXpath();
     assert.strictEqual(page.elements.xpathElement.locateStrategy, 'css selector');
     assert.strictEqual(page.elements.xpathElement2.locateStrategy, 'css selector');
     assert.strictEqual(page.elements.cssSelectorElement.locateStrategy, 'css selector');
     assert.strictEqual(page.section.signUp.locateStrategy, 'css selector');
     assert.strictEqual(page.section.signUp.elements.start.locateStrategy, 'css selector');
-    Nightwatch.start(done);
+
+    return new Promise((resolve, reject) => {
+      Nightwatch.start(function(err) {
+        if (err) {
+          return reject(err);
+        }
+        resolve();
+      });
+    });
   });
 
   describe('elements', function () {

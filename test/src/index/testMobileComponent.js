@@ -4,7 +4,7 @@ const NightwatchClient = common.require('index.js');
 
 
 describe('Mobile Component Testing in Android Emulator', function () {
-  it('test baseUrl - localhost',  function(){
+  it('test baseUrl - localhost', function() {
     const client = NightwatchClient.client({
       baseUrl: 'http://localhost:3000',
       webdriver: {

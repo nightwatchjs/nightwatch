@@ -369,6 +369,7 @@ describe('test programmatic apis', function () {
     const client = Nightwatch.createClient({
       timeout: 500,
       useAsync: false,
+      output: false,
       silent: false,
       headless: true,
       output_folder: 'output',
