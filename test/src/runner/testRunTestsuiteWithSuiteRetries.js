@@ -168,8 +168,7 @@ describe('testRunTestsuiteWithSuiteRetries', function() {
       }
     };
 
-    return runTests({
-    }, settings({
+    return runTests({}, settings({
       suiteRetries: 2,
       _source: [testsPath],
       enable_fail_fast: true,
