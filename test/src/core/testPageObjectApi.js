@@ -13,6 +13,7 @@ describe('test PageObjectApi', function () {
       done();
     });
     this.client = Nightwatch.client();
+    //this.client.initialize().then(() => done());
   });
 
   afterEach(function () {

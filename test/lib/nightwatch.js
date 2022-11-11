@@ -79,22 +79,28 @@ module.exports = new function () {
     return Nightwatch.client();
   };
 
-  this.init = function(options, callback = function() {}) {
+  this.init = async function(options, callback = function() {}) {
     _client = this.createClient(options);
-    extendClient(_client);
 
-    _client.once('nightwatch:session.create', function(id) {
-      callback();
-    }).once('nightwatch:session.error', function(err) {
-      callback(err);
-      process.exit(1);
+    return _client.initialize().then(() => {
+      extendClient(_client);
+
+      _client.once('nightwatch:session.create', function(id) {
+        callback();
+      }).once('nightwatch:session.error', function(err) {
+        callback(err);
+        process.exit(1);
+      });
+
+      _client.startSession();
     });
 
-    _client.startSession();
   };
 
-  this.initAsync = function(options, reporter) {
+  this.initAsync = async function(options, reporter) {
     _client = this.createClient(options, reporter);
+    await _client.initialize();
+
     _client.start = function() {
       return this.queue.run().then(err => {
         if (err instanceof Error) {
@@ -128,8 +134,9 @@ module.exports = new function () {
     return this.initClient(settings);
   };
 
-  this.initClient = function(options, reporter) {
-    let client = this.createClient(options, reporter);
+  this.initClient = async function(options, reporter) {
+    const client = this.createClient(options, reporter);
+    await client.initialize();
 
     extendClient(client);
 

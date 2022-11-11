@@ -864,7 +864,7 @@ describe('Test CLI Runner', function() {
     assert.strictEqual(runner.test_settings.irrelevantProperty, null);
   });
 
-  it('testParseTestSettingsIncorrect', function() {
+  it('testParseTestSettingsIncorrect', async function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
         if (module === './incorrect.json') {
@@ -881,12 +881,17 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    assert.throws(function() {
-      new CliRunner({
+    let error;
+    try {
+      await new CliRunner({
         config: './incorrect.json',
         env: 'incorrect'
-      }).setup();
-    }, /Invalid testing environment specified: incorrect\./);
+      }).setupAsync();
+    } catch (err) {
+      error = err;
+    }
+
+    assert.ok(error.message.includes('Invalid testing environment specified: incorrect.'));
   });
 
   it('testReadExternalGlobals', function() {

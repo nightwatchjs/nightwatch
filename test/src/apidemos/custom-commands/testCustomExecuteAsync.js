@@ -46,5 +46,4 @@ describe('custom commands with es6 async', function() {
     }));
   });
 
-
 });
