@@ -3,7 +3,7 @@ const path = require('path');
 const MockServer = require('../../lib/mockserver.js');
 const Nightwatch = require('../../lib/nightwatch.js');
 
-describe('test PageObject Commands', function () {
+describe('test PageObject Custom Commands', function () {
   before(function (done) {
     this.server = MockServer.init();
 

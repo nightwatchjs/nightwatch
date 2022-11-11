@@ -1041,4 +1041,251 @@ describe('Test CLI Runner', function() {
     const config = runner.getLocalConfigFileName();
     assert.strictEqual(config, './nightwatch.conf.js');
   });
+
+  it('ios config setup on real device - deviceId passed in args', function() {
+    mockery.registerMock('./ios_config.json', {
+      test_settings: {
+        'default': {
+          output: false,
+          silent: false
+        },
+
+        'real.ios': {
+          desiredCapabilities: {
+            browserName: 'safari',
+            platformName: 'iOS',
+            'safari:useSimulator': false
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+
+    const runner = new CliRunner({
+      config: './ios_config.json',
+      env: 'real.ios',
+      deviceId: '00008030-00024C2C3453402E'
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'real.ios');
+    assert.strictEqual(runner.test_settings.desiredCapabilities['safari:useSimulator'], false);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'safari');
+    assert.strictEqual(runner.test_settings.desiredCapabilities.platformName, 'iOS');
+    assert.strictEqual(runner.test_settings.desiredCapabilities['safari:deviceUDID'], '00008030-00024C2C3453402E');
+  });
+
+  it('ios config setup on real device - deviceId already configured', function() {
+    mockery.registerMock('./ios_config.json', {
+      test_settings: {
+        'default': {
+          output: false,
+          silent: false
+        },
+
+        'real.ios': {
+          desiredCapabilities: {
+            browserName: 'safari',
+            platformName: 'iOS',
+            'safari:useSimulator': false,
+            'safari:deviceUDID': '00008030-00024C2C3453402E'
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+
+    const runner = new CliRunner({
+      config: './ios_config.json',
+      env: 'real.ios'
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'real.ios');
+    assert.strictEqual(runner.test_settings.desiredCapabilities['safari:useSimulator'], false);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'safari');
+    assert.strictEqual(runner.test_settings.desiredCapabilities.platformName, 'iOS');
+    assert.strictEqual(runner.test_settings.desiredCapabilities['safari:deviceUDID'], '00008030-00024C2C3453402E');
+  });
+
+  it('ios config setup on simulator', function() {
+    mockery.registerMock('./ios_config.json', {
+      test_settings: {
+        'default': {
+          output: false,
+          silent: false
+        },
+
+        'simulator.ios': {
+          desiredCapabilities: {
+            browserName: 'safari',
+            platformName: 'iOS',
+            'safari:useSimulator': true,
+            'safari:deviceName': 'iPhone 13',
+            'safari:platformVersion': '15.0'
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+
+    const runner = new CliRunner({
+      config: './ios_config.json',
+      env: 'simulator.ios'
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'simulator.ios');
+    assert.strictEqual(runner.test_settings.desiredCapabilities['safari:useSimulator'], true);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'safari');
+    assert.strictEqual(runner.test_settings.desiredCapabilities.platformName, 'iOS');
+    assert.strictEqual(runner.test_settings.desiredCapabilities['safari:deviceName'], 'iPhone 13');
+    assert.strictEqual(runner.test_settings.desiredCapabilities['safari:platformVersion'], '15.0');
+  });
+
+  it('android config setup on emulator - for chrome', function() {
+    mockery.registerMock('./android_config.json', {
+      test_settings: {
+        'default': {
+          output: false,
+          silent: false
+        },
+
+        'android.chrome': {
+          real_mobile: false,
+          desiredCapabilities: {
+            avd: 'nightwatch-android-11',
+            browserName: 'chrome',
+            'goog:chromeOptions': {
+              androidPackage: 'com.android.chrome'
+            }
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+
+    const runner = new CliRunner({
+      config: './android_config.json',
+      env: 'android.chrome'
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'android.chrome');
+    assert.strictEqual(runner.test_settings.real_mobile, false);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.avd, 'nightwatch-android-11');
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'chrome');
+    assert.ok('goog:chromeOptions' in runner.test_settings.desiredCapabilities);
+    assert.strictEqual(runner.test_settings.desiredCapabilities['goog:chromeOptions'].androidPackage, 'com.android.chrome');
+  });
+
+  it('android config setup on emulator - for firefox', function() {
+    mockery.registerMock('./android_config.json', {
+      test_settings: {
+        'default': {
+          output: false,
+          silent: false
+        },
+
+        'android.firefox': {
+          real_mobile: false,
+          desiredCapabilities: {
+            avd: 'nightwatch-android-11',
+            browserName: 'firefox',
+            'moz:firefoxOptions': {
+              androidPackage: 'org.mozilla.firefox'
+            }
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+
+    const runner = new CliRunner({
+      config: './android_config.json',
+      env: 'android.firefox'
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'android.firefox');
+    assert.strictEqual(runner.test_settings.real_mobile, false);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'firefox');
+    assert.ok('moz:firefoxOptions' in runner.test_settings.desiredCapabilities);
+    assert.strictEqual(runner.test_settings.desiredCapabilities['moz:firefoxOptions'].androidPackage, 'org.mozilla.firefox');
+  });
+
+  it('android config setup on real device - for chrome', function() {
+    mockery.registerMock('./android_config.json', {
+      test_settings: {
+        'default': {
+          output: false,
+          silent: false
+        },
+
+        'android.chrome': {
+          real_mobile: true,
+          desiredCapabilities: {
+            avd: 'nightwatch-android-11',
+            browserName: 'chrome',
+            'goog:chromeOptions': {
+              androidPackage: 'com.android.chrome',
+              androidDeviceSerial: 'ZD2222W62Y'
+            }
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+
+    const runner = new CliRunner({
+      config: './android_config.json',
+      env: 'android.chrome'
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'android.chrome');
+    assert.strictEqual(runner.test_settings.real_mobile, true);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.avd, 'nightwatch-android-11');
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'chrome');
+    assert.ok('goog:chromeOptions' in runner.test_settings.desiredCapabilities);
+    assert.strictEqual(runner.test_settings.desiredCapabilities['goog:chromeOptions'].androidPackage, 'com.android.chrome');
+    assert.strictEqual(runner.test_settings.desiredCapabilities['goog:chromeOptions'].androidDeviceSerial, 'ZD2222W62Y');
+  });
+
+  it('android config setup on real device - for firefox', function() {
+    mockery.registerMock('./android_config.json', {
+      test_settings: {
+        'default': {
+          output: false,
+          silent: false
+        },
+
+        'android.firefox': {
+          real_mobile: true,
+          desiredCapabilities: {
+            avd: 'nightwatch-android-11',
+            browserName: 'firefox',
+            'moz:firefoxOptions': {
+              androidPackage: 'org.mozilla.firefox',
+              androidDeviceSerial: 'ZD2222W62Y'
+            }
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+
+    const runner = new CliRunner({
+      config: './android_config.json',
+      env: 'android.firefox'
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'android.firefox');
+    assert.strictEqual(runner.test_settings.real_mobile, true);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'firefox');
+    assert.ok('moz:firefoxOptions' in runner.test_settings.desiredCapabilities);
+    assert.strictEqual(runner.test_settings.desiredCapabilities['moz:firefoxOptions'].androidPackage, 'org.mozilla.firefox');
+    assert.strictEqual(runner.test_settings.desiredCapabilities['moz:firefoxOptions'].androidDeviceSerial, 'ZD2222W62Y');
+  });
 });

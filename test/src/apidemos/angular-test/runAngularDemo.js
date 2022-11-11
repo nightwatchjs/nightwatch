@@ -109,6 +109,15 @@ describe('angular demo tests', function() {
           ]
         }
       })
+      .findElements({
+        value: '[ng-model="todoList.todoText"]', response: {
+          value: [
+            {
+              'element-6066-11e4-a52e-4f735466cecf': '1666be97-5c43-4064-b145-bd5676a9a361'
+            }
+          ]
+        }
+      })
       .setElementValue({
         elementId: '1666be97-5c43-4064-b145-bd5676a9a361',
         text: 'what is nightwatch?'
@@ -125,6 +134,10 @@ describe('angular demo tests', function() {
           }
         },
         statusCode: 404
+      })
+      .setElementValue({
+        elementId: '1666be97-5c43-4064-b145-bd5676a9a361',
+        text: 'what is nightwatch?'
       });
 
     const globals = {
@@ -224,6 +237,7 @@ const setupMocks = function({testSuiteName} = {}) {
       }
     })
     .navigateTo({url: 'http://localhost'})
+    .navigateTo({url: 'https://angularjs.org'})
     .findElements({
       value: '[ng-model="todoList.todoText"]', response: {
         value: [
@@ -293,6 +307,9 @@ const setupMocks = function({testSuiteName} = {}) {
     })
     .clickElement({
       elementId: '3ee091d4-0cce-4481-aabb-f5bef32a7bd9'
+    })
+    .clickElement({
+      elementId: '3ee091d4-0cce-4481-aabb-f5bef32a7bd0'
     })
     .findElements({
       value: '*[module=todoApp] li .done-true', response: {

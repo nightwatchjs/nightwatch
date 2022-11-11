@@ -46,6 +46,18 @@ describe('testRunner ES6 Async', function () {
       })
     }, true);
 
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/elements',
+      postdata: '{"using":"css selector","value":"#badelement"}',
+
+      method: 'POST',
+      response: JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0,
+        value: null
+      })
+    }, false, true);
+
     let globals = {
       waitForConditionPollInterval: 150,
       waitForConditionTimeout: 100,

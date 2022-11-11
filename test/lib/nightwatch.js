@@ -118,7 +118,7 @@ module.exports = new function () {
     });
   };
 
-  this.initW3CClient = function(opts = {}) {
+  this.initW3CClient = function(opts = {}, argv={}) {
     const settings = Object.assign({
       selenium: {
         version2: false,
@@ -131,11 +131,11 @@ module.exports = new function () {
       }
     }, opts);
 
-    return this.initClient(settings);
+    return this.initClient(settings, null, argv);
   };
 
-  this.initClient = async function(options, reporter) {
-    const client = this.createClient(options, reporter);
+  this.initClient = async function(options, reporter, argv) {
+    const client = this.createClient(options, reporter, argv);
     await client.initialize();
 
     extendClient(client);

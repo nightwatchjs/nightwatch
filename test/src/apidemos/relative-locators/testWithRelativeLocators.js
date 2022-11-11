@@ -42,6 +42,15 @@ describe('relative locators demo', function() {
     Mocks.tagName('afe6842f-7d0c-4108-9f68-ac5709855960', 'input');
     Mocks.clearElement('afe6842f-7d0c-4108-9f68-ac5709855960');
 
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/element/afe6842f-7d0c-4108-9f68-ac5709855960/value',
+      method: 'POST',
+      postdata: {text: 'password', value: ['p', 'a', 's', 's', 'w', 'o', 'r', 'd']},
+      response: {
+        sessionId: '1352110219202',
+        status: 0
+      }
+    });
     const globals = {
       waitForConditionPollInterval: 50,
       waitForConditionTimeout: 120,
