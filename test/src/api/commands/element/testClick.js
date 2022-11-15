@@ -210,7 +210,7 @@ describe('.click()', function() {
     }, {verbose: true}).then(client => {
       MockServer.addMock({
         'url': '/wd/hub/session/13521-10219-202/elements',
-        'postdata': {"using":"css selector","value":"#webdriver"},
+        'postdata': {'using':'css selector','value':'#webdriver'},
         'response': {
           value: [{
             'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
