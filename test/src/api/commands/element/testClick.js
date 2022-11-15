@@ -188,4 +188,50 @@ describe('.click()', function() {
       client.start(done);
     });
   });
+
+  it('client.click() - for native app', function(done) {
+    Nightwatch.initW3CClient({
+      output: false,
+      silent: false,
+      selenium: {
+        start_process: false,
+        port: 10195,
+        host: 'localhost'
+      },
+      desiredCapabilities: {
+        'appium:automationName': 'XCUITest',
+        browserName: null,
+        'appium:app': '../samples/Wikipedia.app',
+        'appium:appPackage': 'org.wikimedia.wikipedia',
+        platformName: 'iOS',
+        'appium:deviceName': 'iPhone 13',
+        'appium:platformVersion': '15.5'
+      }
+    }, {verbose: true}).then(client => {
+      MockServer.addMock({
+        'url': '/wd/hub/session/13521-10219-202/elements',
+        'postdata': {"using":"css selector","value":"#webdriver"},
+        'response': {
+          value: [{
+            'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
+          }],
+          status: 0
+        }
+      });
+
+      MockServer.addMock({
+        url: '/wd/hub/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/click',
+        response: {value: null}
+      }, true);
+
+      assert.strictEqual(client.api.browserName, null);
+      assert.strictEqual(client.api.platformName, 'iOS');
+
+      client.api.click('#webdriver', function(result) {
+        assert.strictEqual(result.value, null);
+      });
+
+      client.start(done);
+    });
+  });
 });
