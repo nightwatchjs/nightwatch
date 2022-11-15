@@ -207,7 +207,7 @@ describe('.click()', function() {
         'appium:deviceName': 'iPhone 13',
         'appium:platformVersion': '15.5'
       }
-    }, {verbose: true}).then(client => {
+    }).then(client => {
       MockServer.addMock({
         'url': '/wd/hub/session/13521-10219-202/elements',
         'postdata': {'using':'css selector','value':'#webdriver'},
