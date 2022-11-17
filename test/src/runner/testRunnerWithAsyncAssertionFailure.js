@@ -8,7 +8,7 @@ const {runTests} = common.require('index.js');
 
 describe('test Runner with async and assertion failure', function() {
   const originalExit = process.exit;
-  this.timeout(10000);
+  this.timeout(15000);
 
   beforeEach(function(done) {
     this.server = MockServer.init();
@@ -25,7 +25,7 @@ describe('test Runner with async and assertion failure', function() {
     Globals.afterEach.call(this, done);
   });
 
-  it('test run mocha samples with async and failures', function() {
+  it('test run mocha samples with async and assertion failures', function() {
     const globals = {
       test_calls: 0,
       retryAssertionTimeout: 0,
