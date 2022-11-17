@@ -39,4 +39,24 @@ describe('context commands', function() {
       args: [text]
     });
   });
+
+  it('testGetContexts', function() {
+    return Globals.protocolTest({
+      assertion: function(opts) {
+        assert.strictEqual(opts.path, '/session/1352110219202/contexts');
+      },
+      commandName: 'getContexts',
+      args: []
+    });
+  });
+
+  it('testGetContext', function() {
+    return Globals.protocolTest({
+      assertion: function(opts) {
+        assert.strictEqual(opts.path, '/session/1352110219202/context');
+      },
+      commandName: 'getContext',
+      args: []
+    });
+  });
 });
