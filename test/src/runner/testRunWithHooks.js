@@ -300,6 +300,60 @@ describe('testRunWithHooks', function() {
     }));
   });
 
+  it('testRunner with command inside before', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/before-after/commandInsideBeforeAfter.js');
+    let globals = {
+      calls: 0,
+      reporter(results) {
+        assert.ok(results.lastError instanceof Error);
+
+        assert.strictEqual(globals.calls, 6);
+        let result = results.modules.commandInsideBeforeAfter.completed;
+        // assert.ok('demoTestSyncOne' in result);
+        assert.ok(!('beforeEach' in result));
+        assert.ok(!('before' in result));
+        assert.ok(!('afterEach' in result));
+        assert.ok(!('after' in result));
+      }
+    };
+
+
+    return runTests({
+      _source: [testsPath]
+    }, settings({
+      seleniumPort: 10195,
+      globals,
+      output_folder: false
+    }));
+  });
+
+  it('testRunner with command inside before with 0 parameters', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/before-after/commandInsideBeforeWithNoParams.js');
+    let globals = {
+      calls: 0,
+      reporter(results) {
+        assert.ok(results.lastError instanceof Error);
+
+        assert.strictEqual(globals.calls, 6);
+        let result = results.modules.commandInsideBeforeWithNoParams.completed;
+        // assert.ok('demoTestSyncOne' in result);
+        assert.ok(!('beforeEach' in result));
+        assert.ok(!('before' in result));
+        assert.ok(!('afterEach' in result));
+        assert.ok(!('after' in result));
+      }
+    };
+
+
+    return runTests({
+      _source: [testsPath]
+    }, settings({
+      seleniumPort: 10195,
+      globals,
+      output_folder: false
+    }));
+  });
+
   it('testRunWithAsyncHooks', function() {
     let testsPath = path.join(__dirname, '../../sampletests/withasynchooks');
     let globals = {
