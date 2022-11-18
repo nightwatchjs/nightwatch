@@ -309,8 +309,7 @@ describe('testRunner ES6 Async', function () {
     };
 
     return runTests(testsPath, settings({
-      globals,
-      skip_testcases_on_fail: false
+      globals
     }));
   });
 
