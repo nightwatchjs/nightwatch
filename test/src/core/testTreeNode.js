@@ -2,7 +2,7 @@ const assert = require('assert');
 const EventEmitter = require('events');
 const TreeNode = require('../../../lib/core/treenode');
 
-describe.only('test Queue', function () {
+describe('test Queue', function () {
   it('Test commands treeNode - clear error events in handleCommandResult', function () {
     const treeNode =this.__rootNode__ = new TreeNode({
       name: '__root__',
