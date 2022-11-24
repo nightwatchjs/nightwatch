@@ -156,6 +156,7 @@ describe('testReporter', function() {
 
     try {
       await runTests({
+
         source: testsPath
       },
       settings({
@@ -218,6 +219,47 @@ describe('testReporter', function() {
 
     assert.strictEqual(possibleError, null);
     assert.strictEqual(htmlFile, `output${path.sep}nightwatch-html-report${path.sep}index.html`);
+
+  });
+
+  it('Check reporter output for varaious properties', async function () {
+    let possibleError = null;
+    const testsPath = [path.join(__dirname, '../../sampletests/simple/test/sample.js')];
+
+    try {
+      await runTests({
+        source: testsPath
+      },
+      settings({
+        output_folder: 'output',
+        globals: {
+          waitForConditionPollInterval: 20,
+          waitForConditionTimeout: 50,
+          retryAssertionTimeout: 50,
+          reporter: function (results) {
+            const module = results.modules['sample'];
+            // check for module properties
+            assert.ok(Object.keys(module).includes('driverCapabilities'));
+            assert.ok(Object.keys(module).includes('sessionId'));
+            assert.ok(Object.keys(module).includes('projectName'));
+            assert.ok(Object.keys(module).includes('buildName'));
+            assert.ok(Object.keys(module).includes('startTimestamp'));
+            assert.ok(Object.keys(module).includes('endTimestamp'));
+            // check for individual test properties
+            const test = module.completed['demoTest'];
+            assert.ok(Object.keys(test).includes('status'));
+            assert.ok(Object.keys(test).includes('startTimestamp'));
+            assert.ok(Object.keys(test).includes('endTimestamp'));
+          }
+        },
+        silent: true,
+        output: false
+      }));
+
+    } catch (error) {
+      possibleError = error;
+    }
+    assert.strictEqual(possibleError, null);
 
   });
 });
