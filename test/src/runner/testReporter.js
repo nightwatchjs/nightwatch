@@ -239,7 +239,7 @@ describe('testReporter', function() {
           reporter: function (results) {
             const module = results.modules['sample'];
             // check for module properties
-            assert.ok(Object.keys(module).includes('driverCapabilities'));
+            assert.ok(Object.keys(module).includes('sessionCapabilities'));
             assert.ok(Object.keys(module).includes('sessionId'));
             assert.ok(Object.keys(module).includes('projectName'));
             assert.ok(Object.keys(module).includes('buildName'));
