@@ -250,6 +250,7 @@ describe('testReporter', function() {
             assert.ok(Object.keys(test).includes('status'));
             assert.ok(Object.keys(test).includes('startTimestamp'));
             assert.ok(Object.keys(test).includes('endTimestamp'));
+            assert.strictEqual(test.status, 'pass');
           }
         },
         silent: true,
