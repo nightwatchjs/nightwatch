@@ -62,9 +62,9 @@ describe('testRunnerJsonOutput', function() {
         assert.strictEqual(data.report.failedCount, 0);
         assert.strictEqual(data.report.errorsCount, 0);
         assert.strictEqual(data.report.passedCount, 1);
-        assert.strictEqual(data.report.tests, 1);
+        assert.strictEqual(data.report.tests, 5);
         assert.strictEqual(data.report.errmessages.length, 0);
-        assert.strictEqual(Object.keys(data.report.completed)[0], 'simpleDemoTest');
+        assert.deepStrictEqual(Object.keys(data.report.completed), ['global_beforeEach_hook', 'before_hook', 'simpleDemoTest', 'after_hook', 'global_afterEach_hook']);
         assert.strictEqual(data.name, 'sample');
         assert.strictEqual(Array.isArray(data.httpOutput), true);
 

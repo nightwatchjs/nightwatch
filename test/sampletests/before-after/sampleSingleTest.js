@@ -3,7 +3,7 @@ const assert = require('assert');
 describe('samepleSingleTest', function() {
   before(function(client, callback) {
     let testName = client.currentTest.name;
-    assert.strictEqual(testName, '');
+    assert.strictEqual(testName, 'before_hook');
     client.globals.calls++;
     client.globals.singleTestCalled = true;
     callback();
@@ -33,7 +33,7 @@ describe('samepleSingleTest', function() {
   after(function(client, callback) {
     var testName = client.currentTest.name;
 
-    assert.strictEqual(testName, 'demoTest');
+    assert.strictEqual(testName, 'after_hook');
     client.globals.calls++;
     callback();
   });
