@@ -4,7 +4,7 @@ const TreeNode = require('../../../lib/core/treenode');
 
 describe('test Queue', function () {
   it('Test commands treeNode - clear error events in handleCommandResult', function () {
-    const treeNode =this.__rootNode__ = new TreeNode({
+    const treeNode = new TreeNode({
       name: '__root__',
       parent: null
     });
