@@ -231,7 +231,7 @@ describe('testRunWithGlobalHooks', function() {
     }));
   });
 
-  it.only('test currentTest in global beforeEach/afterEach', function() {
+  it('test currentTest in global beforeEach/afterEach', function() {
     let testsPath = path.join(__dirname, '../../sampletests/withfailures');
     let globals = {
       calls: 0,
