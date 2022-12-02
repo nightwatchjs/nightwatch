@@ -9,7 +9,7 @@ module.exports = {
 
   before: function(client, callback) {
     var testName = client.currentTest.name;
-    assert.deepStrictEqual(testName, 'before_hook');
+    assert.deepStrictEqual(testName, '');
     callback();
   },
 
@@ -37,7 +37,7 @@ module.exports = {
 
   after: function(client, callback) {
     var testName = client.currentTest.name;
-    assert.deepStrictEqual(testName, 'after_hook');
+    assert.deepStrictEqual(testName, 'demoTest');
     callback();
   }
 };

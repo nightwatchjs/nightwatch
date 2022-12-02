@@ -48,7 +48,7 @@ describe('testRunnerChaiExpect', function() {
 
         assert.ok(ex.message.startsWith('expected [ { ELEMENT: \'0\' } ] to have a length of 2 but got 1'));
 
-        assert.strictEqual(runner.results.modules.sampleWithChai.tests, 4);
+        assert.strictEqual(runner.results.modules.sampleWithChai.tests, 2);
         assert.strictEqual(runner.results.modules.sampleWithChai.failures, 1);
       });
   });

@@ -180,7 +180,7 @@ describe('testRunWithGlobalHooks', function() {
             'sampleWithBeforeAndAfterNoCallback',
             'syncBeforeAndAfter'
           ]);
-          assert.strictEqual(results.modules.sampleSingleTest.errmessages.length, 1);
+          assert.strictEqual(results.modules.sampleSingleTest.errmessages.length, 2);
           assert.strictEqual(results.modules.sampleWithBeforeAndAfter.errmessages.length, 1);
           assert.strictEqual(results.modules.syncBeforeAndAfter.errmessages.length, 1);
           assert.ok(results.modules.sampleSingleTest.errmessages[0].includes('Error while running "perform" command:'));
@@ -231,8 +231,7 @@ describe('testRunWithGlobalHooks', function() {
     }));
   });
 
-  // Skip for now
-  xit('test currentTest in global beforeEach/afterEach', function() {
+  it.only('test currentTest in global beforeEach/afterEach', function() {
     let testsPath = path.join(__dirname, '../../sampletests/withfailures');
     let globals = {
       calls: 0,
@@ -247,9 +246,9 @@ describe('testRunWithGlobalHooks', function() {
         assert.strictEqual(testTimestamp.getFullYear(), currentTimestamp.getFullYear());
         assert.strictEqual(testTimestamp.getMonth(), currentTimestamp.getMonth());
         assert.strictEqual(testTimestamp.getDate(), currentTimestamp.getDate());
-        assert.deepStrictEqual(client.currentTest.results, {errors: 0, failed: 0, passed: 0, assertions: [], tests: 0});
+        assert.deepStrictEqual(client.currentTest.results, {errors: 0, failed: 0, passed: 0, assertions: [], commands: [], tests: 0});
         assert.strictEqual(client.currentTest.module, 'sample');
-        assert.strictEqual(client.currentTest.name, 'global_beforeEach_hook');
+        assert.strictEqual(client.currentTest.name, '');
         globals.calls++;
         done();
       },

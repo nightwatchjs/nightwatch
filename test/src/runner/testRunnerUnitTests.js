@@ -113,7 +113,7 @@ describe('testRunnerUnitTests', function() {
           assert.ok(results.modules['unittest-failure'].lastError instanceof Error);
           assert.strictEqual(results.modules['unittest-failure'].lastError.name, 'AssertionError');
           assert.strictEqual(results.modules['unittest-failure'].assertionsCount, 1);
-          assert.strictEqual(results.modules['unittest-failure'].testsCount, 5);
+          assert.strictEqual(results.modules['unittest-failure'].testsCount, 1);
           assert.strictEqual(results.modules['unittest-failure'].failedCount, 1);
           assert.strictEqual(results.modules['unittest-failure'].errorsCount, 0);
           assert.strictEqual(results.modules['unittest-failure'].passedCount, 0);

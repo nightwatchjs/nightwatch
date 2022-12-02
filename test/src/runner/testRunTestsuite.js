@@ -231,7 +231,7 @@ describe('testRunTestSuite', function () {
           }
 
           const testcases = results.modules.sampleWithOnly.completed;
-          assert.deepStrictEqual(Object.keys(testcases), ['global_beforeEach_hook', 'before_hook', 'demoTest two', 'after_hook', 'global_afterEach_hook']);
+          assert.deepStrictEqual(Object.keys(testcases), ['demoTest two']);
           cb();
         }
       },

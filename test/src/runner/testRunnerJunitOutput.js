@@ -103,7 +103,7 @@ describe('testRunnerJUnitOutput', function() {
           assert.strictEqual(results.modules.sampleWithError.assertionsCount, 0);
           assert.strictEqual(results.modules.sampleWithError.errors, 1);
           assert.strictEqual(results.modules.sampleWithError.failedCount, 0);
-          assert.strictEqual(results.modules.sampleWithError.testsCount, 5);
+          assert.strictEqual(results.modules.sampleWithError.testsCount, 1);
         }
       },
       screenshots: {
@@ -326,7 +326,7 @@ describe('testRunnerJUnitOutput', function() {
       });
   });
 
-  xit('testRunWithJUnitOutput', function() {
+  it('testRunWithJUnitOutput', function() {
     let testsPath = [
       path.join(__dirname, '../../sampletests/withsubfolders')
     ];
