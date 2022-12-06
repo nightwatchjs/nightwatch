@@ -26,6 +26,7 @@ describe('testRunWithGlobalHooks', function() {
   });
 
   afterEach(function() {
+    process.env.__NIGHTWATCH_PARALLEL_MODE = null;
     Object.keys(require.cache).filter(i => i.includes('/sampletests')).forEach(function(module) {
       delete require.cache[module];
     });
@@ -59,8 +60,8 @@ describe('testRunWithGlobalHooks', function() {
           status_poll_interval: 200,
           url: 'http://localhost:10195'
         });
-        assert.strictEqual(beforeEachCount, 4);
-        assert.strictEqual(afterEachCount, 4);
+        assert.strictEqual(beforeEachCount, 6);
+        assert.strictEqual(afterEachCount, 6);
         assert.strictEqual(globals.calls, 19);
         cb();
       }
@@ -90,8 +91,8 @@ describe('testRunWithGlobalHooks', function() {
         }, 15);
       },
       reporter(results, cb) {
-        assert.strictEqual(beforeEachCount, 4);
-        assert.strictEqual(afterEachCount, 4);
+        assert.strictEqual(beforeEachCount, 6);
+        assert.strictEqual(afterEachCount, 6);
         assert.strictEqual(globals.calls, 19);
         cb();
       }
@@ -123,8 +124,8 @@ describe('testRunWithGlobalHooks', function() {
       },
       reporter(results, cb) {
         assert.strictEqual(globals.calls, 19);
-        assert.strictEqual(beforeEachCount, 4);
-        assert.strictEqual(afterEachCount, 4);
+        assert.strictEqual(beforeEachCount, 6);
+        assert.strictEqual(afterEachCount, 6);
         cb();
       }
     };
@@ -152,8 +153,8 @@ describe('testRunWithGlobalHooks', function() {
         },
         reporter(results, cb) {
           assert.ok(results.lastError instanceof Error);
-          assert.strictEqual(results.failed, 4);
-          assert.strictEqual(beforeEachCount, 4);
+          assert.strictEqual(results.failed, 6);
+          assert.strictEqual(beforeEachCount, 6);
           cb();
         }
       }
@@ -177,6 +178,8 @@ describe('testRunWithGlobalHooks', function() {
           assert.deepStrictEqual(Object.keys(results.modules), [
             'sampleSingleTest',
             'sampleWithBeforeAndAfter',
+            'sampleWithBeforeAndAfterChildProcess',
+            'sampleWithBeforeAndAfterChildProcessNoCallback',
             'sampleWithBeforeAndAfterNoCallback',
             'syncBeforeAndAfter'
           ]);
@@ -279,4 +282,60 @@ describe('testRunWithGlobalHooks', function() {
       globals
     }));
   });
+
+  it('test global child process hooks',  function() {
+    let testsPath = path.join(__dirname, '../../sampletests/before-after');
+    process.env.__NIGHTWATCH_PARALLEL_MODE = '1';
+    let globals = {
+      calls: 0,
+      beforeChildProcess() {
+        globals.calls++;
+      },
+      afterChildProcess() {
+        globals.calls++;
+      },
+      reporter(results, cb) {
+        assert.strictEqual(globals.calls, 20);
+        cb();
+      }
+    };
+
+    return runTests(testsPath, settings({
+      output: false,
+      globals
+    })
+    );
+  });
+
+  it('test global async child process hooks',  function() {
+    let testsPath = path.join(__dirname, '../../sampletests/before-after');
+    process.env.__NIGHTWATCH_PARALLEL_MODE = '1';
+    let globals = {
+      calls: 0,
+      beforeChildProcess(_, done) {
+        setTimeout(function() {
+          globals.calls++;
+          done();
+        }, 10);
+      },
+      afterChildProcess(_, done) {
+        console.log('after child process')
+        setTimeout(function() {
+          globals.calls++;
+          done();
+        }, 15);
+      },
+      reporter(_, cb) {
+        console.log(globals.calls, 'calls reporter')
+        assert.strictEqual(globals.calls, 20);
+        cb();
+      }
+    };
+
+    return runTests(testsPath, settings({
+      output: false,
+      globals
+    }));
+  });
+ 
 });

@@ -104,7 +104,7 @@ describe('test Parallel Execution', function() {
     assert.ok(runner.test_settings.test_workers);
 
     return runner.runTests().then(_ => {
-      assert.strictEqual(allArgs.length, 4);
+      assert.strictEqual(allArgs.length, 6);
       assert.strictEqual(runner.concurrency.globalExitCode, 0);
     });
   });
@@ -148,7 +148,7 @@ describe('test Parallel Execution', function() {
     });
 
     return runner.runTests().then(_ => {
-      assert.strictEqual(allArgs.length, 4);
+      assert.strictEqual(allArgs.length, 6);
     });
   });
 
@@ -179,7 +179,7 @@ describe('test Parallel Execution', function() {
     });
 
     return runner.runTests().then(_ => {
-      assert.strictEqual(allArgs.length, 4);
+      assert.strictEqual(allArgs.length, 6);
     });
   });
 
@@ -300,7 +300,7 @@ describe('test Parallel Execution', function() {
     return runner.runTests().then(_ => {
       assert.ok(runner.parallelMode());
       assert.strictEqual(runner.concurrency.globalExitCode, 0);
-      assert.strictEqual(allArgs.length, 4);
+      assert.strictEqual(allArgs.length, 6);
       assert.strictEqual(runner.seleniumService.initCalled, true);
       assert.strictEqual(runner.seleniumService.stopped, true);
       assert.strictEqual(runner.seleniumService.outfilename, '');
