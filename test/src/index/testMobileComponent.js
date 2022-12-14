@@ -34,7 +34,7 @@ describe('Mobile Component Testing in Android Emulator', function () {
     assert.strictEqual(client.api.baseUrl, 'http://10.0.2.2:3000');
   });
 
-  it('test baseUrl - undefined',  function(){
+  it('test baseUrl - not defined',  function(){
     const client = NightwatchClient.client({
       webdriver: {
         start_process: true
