@@ -319,14 +319,12 @@ describe('testRunWithGlobalHooks', function() {
         }, 10);
       },
       afterChildProcess(_, done) {
-        console.log('after child process')
         setTimeout(function() {
           globals.calls++;
           done();
         }, 15);
       },
       reporter(_, cb) {
-        console.log(globals.calls, 'calls reporter')
         assert.strictEqual(globals.calls, 20);
         cb();
       }
