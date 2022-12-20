@@ -246,7 +246,7 @@ describe('testRunWithGlobalHooks', function() {
         assert.strictEqual(testTimestamp.getFullYear(), currentTimestamp.getFullYear());
         assert.strictEqual(testTimestamp.getMonth(), currentTimestamp.getMonth());
         assert.strictEqual(testTimestamp.getDate(), currentTimestamp.getDate());
-        assert.deepStrictEqual(client.currentTest.results, {errors: 0, failed: 0, passed: 0, assertions: [], tests: 0});
+        assert.deepStrictEqual(client.currentTest.results, {errors: 0, failed: 0, passed: 0, assertions: [], commands: [], tests: 0});
         assert.strictEqual(client.currentTest.module, 'sample');
         assert.strictEqual(client.currentTest.name, '');
         globals.calls++;
