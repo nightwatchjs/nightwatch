@@ -263,4 +263,64 @@ describe('testReporter', function() {
     assert.strictEqual(possibleError, null);
 
   });
+
+  it('Check reporter output for commands', async function () {
+    let possibleError = null;
+    const testsPath = [path.join(__dirname, '../../sampletests/simple/test/sample.js')];
+
+    try {
+      await runTests({
+        source: testsPath
+      },
+      settings({
+        output_folder: 'output',
+        globals: {
+          waitForConditionPollInterval: 20,
+          waitForConditionTimeout: 50,
+          retryAssertionTimeout: 50,
+          reporter: function (results) {
+            const module = results.modules['sample'];
+
+            assert.ok(Object.keys(module).includes('completedSections'));
+
+            const completedSections = module['completedSections'];
+
+            // check for module properties
+            assert.ok(Object.keys(completedSections).includes('__after_hook'));
+            assert.ok(Object.keys(completedSections).includes('__before_hook'));
+            assert.ok(Object.keys(completedSections).includes('__global_afterEach_hook'));
+            assert.ok(Object.keys(completedSections).includes('__global_beforeEach_hook'));
+            assert.ok(Object.keys(completedSections).includes('demoTest'));
+            
+            assert.strictEqual(completedSections['__after_hook']['commands'].length, 1);
+            assert.strictEqual(completedSections['__after_hook']['commands'][0].name, 'end');
+
+            // check for individual test properties
+            const test = completedSections['demoTest'];
+            assert.ok(Object.keys(test).includes('status'));
+            assert.ok(Object.keys(test).includes('commands'));
+            assert.strictEqual(test.commands.length, 3);
+            assert.strictEqual(test.commands[0].name, 'assert.equal');
+            assert.strictEqual(test.commands[1].name, 'url');
+            assert.strictEqual(test.commands[2].name, 'assert.elementPresent');
+
+            const command = test.commands[1];
+            assert.ok(Object.keys(command).includes('startTime'));
+            assert.ok(Object.keys(command).includes('endTime'));
+            assert.ok(Object.keys(command).includes('elapsedTime'));
+            assert.ok(Object.keys(command).includes('result'));
+            assert.deepEqual(command.args, ['http://localhost']);
+            assert.strictEqual(command.status, 'pass');
+          }
+        },
+        silent: true,
+        output: false
+      }));
+
+    } catch (error) {
+      possibleError = error;
+    }
+    assert.strictEqual(possibleError, null);
+
+  });
 });
