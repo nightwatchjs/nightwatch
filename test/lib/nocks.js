@@ -104,6 +104,18 @@ module.exports = {
     return this;
   },
 
+  getPageSource(value = '<html><body><p>404 not found</p></body></html>') {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/source')
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value
+      });
+
+    return this;
+  },
+
   elementFoundW3c() {
     nock('http://localhost:10195')
       .post('/session/13521-10219-202/elements')
