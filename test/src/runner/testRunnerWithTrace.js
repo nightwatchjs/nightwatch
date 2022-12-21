@@ -8,7 +8,7 @@ const rimraf = require('rimraf');
 const {settings} = common;
 const {runTests} = common.require('index.js');
 
-describe('testRunnerWithTrace', function () {
+describe.only('testRunnerWithTrace', function () {
   const snapshotFilePath = 'snapshots';
   const moduleName = 'sample';
 
@@ -62,10 +62,14 @@ describe('testRunnerWithTrace', function () {
         waitForConditionTimeout: 5,
         retryAssertionTimeout: 1,
         reporter: function (results) {
-          const snapshot = results.modulesWithEnv.default.sample.completedSections.click_on_web_login.commands[1].domSnapshot;
+          const snapshot1 = results.modulesWithEnv.default.sample.completedSections.click_on_web_login.commands[0].domSnapshot;
+          const snapshot2 = results.modulesWithEnv.default.sample.completedSections.click_on_web_login.commands[1].domSnapshot;
 
-          assert.ok(snapshot.snapshotFilePath.includes('snapshots/sample/click'));
-          assert.strictEqual(snapshot.snapshotUrl, 'https://nightwatchjs.org');
+          assert.strictEqual(snapshot1.snapshotFilePath, 'snapshots/sample/navigateTo');
+          assert.strictEqual(snapshot1.snapshotUrl, 'https://nightwatchjs.org');
+
+          assert.ok(snapshot2.snapshotFilePath.includes('snapshots/sample/click'));
+          assert.strictEqual(snapshot2.snapshotUrl, 'https://nightwatchjs.org');
         },
         abortOnAssertionFailure: false
       },
