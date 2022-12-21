@@ -97,6 +97,31 @@ mocks:
   statusCode: 201
   method: POST
 
+- url: '/wd/hub/session'
+  postdata:
+    capabilities:
+      firstMatch: [{}]
+      alwaysMatch:
+        appium:automationName: "XCUITest"
+        appium:app: "../samples/Wikipedia.app"
+        appium:appPackage: "org.wikimedia.wikipedia"
+        platformName: "iOS"
+        appium:deviceName: "iPhone 13"
+        appium:platformVersion: "15.5"
+  response:
+    value:
+      sessionId: '13521-10219-202'
+      capabilities:
+        appium:automationName: "XCUITest"
+        appium:app: "../samples/Wikipedia.app"
+        appium:appPackage: "org.wikimedia.wikipedia"
+        platformName: "iOS"
+        appium:deviceName: "iPhone 13"
+        appium:platformVersion: "15.5"
+  responseHeaders: {}
+  statusCode: 201
+  method: POST
+
 - url: '/wd/hub/session/1352110219202/element'
   postdata:
     using: 'css selector'
