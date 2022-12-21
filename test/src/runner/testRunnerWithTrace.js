@@ -8,7 +8,7 @@ const rimraf = require('rimraf');
 const {settings} = common;
 const {runTests} = common.require('index.js');
 
-describe.only('testRunnerWithTrace', function () {
+describe('testRunnerWithTrace', function () {
   const snapshotFilePath = 'snapshots';
   const moduleName = 'sample';
 
