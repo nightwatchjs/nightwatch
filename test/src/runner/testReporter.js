@@ -238,7 +238,7 @@ describe('testReporter', function() {
           retryAssertionTimeout: 50,
           reporter: function (results) {
             // check for results properties
-            assert.ok(Object.keys(results).includes('time'));
+            assert.ok(Object.keys(results).includes('elapsedTime'));
             assert.ok(Object.keys(results).includes('startTimestamp'));
             assert.ok(Object.keys(results).includes('endTimestamp'));
 
