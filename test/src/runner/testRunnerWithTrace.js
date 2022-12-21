@@ -65,10 +65,10 @@ describe('testRunnerWithTrace', function () {
           const snapshot1 = results.modulesWithEnv.default.sample.completedSections.click_on_web_login.commands[0].domSnapshot;
           const snapshot2 = results.modulesWithEnv.default.sample.completedSections.click_on_web_login.commands[1].domSnapshot;
 
-          assert.strictEqual(snapshot1.snapshotFilePath, 'snapshots/sample/navigateTo');
+          assert.strictEqual(snapshot1.snapshotFilePath.includes(`snapshots${path.sep}sample${path.sep}navigateTo`));
           assert.strictEqual(snapshot1.snapshotUrl, 'https://nightwatchjs.org');
 
-          assert.ok(snapshot2.snapshotFilePath.includes('snapshots/sample/click'));
+          assert.ok(snapshot2.snapshotFilePath.includes(`snapshots${path.sep}sample${path.sep}click`));
           assert.strictEqual(snapshot2.snapshotUrl, 'https://nightwatchjs.org');
         },
         abortOnAssertionFailure: false
