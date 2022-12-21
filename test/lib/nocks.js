@@ -138,6 +138,17 @@ module.exports = {
     return this;
   },
 
+  click() {
+    nock('http://localhost:10195')
+      .post('/wd/hub/session/1352110219202/element/0/click')
+      .reply(200, {
+        status: 0,
+        state: 'success'
+      });
+
+    return this;
+  },
+
   elementStateError({error, times, code = 400, url = '/wd/hub/session/1352110219202/execute/sync', method = 'post', reply}) {
     const mock = nock('http://localhost:10195')[method](url);
 
