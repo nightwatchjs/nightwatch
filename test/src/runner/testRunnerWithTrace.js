@@ -8,7 +8,7 @@ const rimraf = require('rimraf');
 const {settings} = common;
 const {runTests} = common.require('index.js');
 
-describe('testRunnerWithTrace', function () {
+describe.only('testRunnerWithTrace', function () {
   const snapshotFilePath = 'snapshots';
   const moduleName = 'sample';
 
@@ -65,7 +65,7 @@ describe('testRunnerWithTrace', function () {
           const snapshot1 = results.modulesWithEnv.default.sample.completedSections.click_on_web_login.commands[0].domSnapshot;
           const snapshot2 = results.modulesWithEnv.default.sample.completedSections.click_on_web_login.commands[1].domSnapshot;
 
-          assert.strictEqual(snapshot1.snapshotFilePath.includes(`snapshots${path.sep}sample${path.sep}navigateTo`));
+          assert.ok(snapshot1.snapshotFilePath.includes(`snapshots${path.sep}sample${path.sep}navigateTo`));
           assert.strictEqual(snapshot1.snapshotUrl, 'https://nightwatchjs.org');
 
           assert.ok(snapshot2.snapshotFilePath.includes(`snapshots${path.sep}sample${path.sep}click`));
