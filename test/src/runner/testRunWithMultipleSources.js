@@ -55,7 +55,7 @@ describe('testRunWithMultipleSources', function() {
       calls: 0,
       reporter(results) {
         assert.strictEqual(globals.calls, 21);
-        assert.strictEqual(Object.keys(results.modules).length, 7);
+        assert.strictEqual(Object.keys(results.modules).length, 5);
         assert.ok('sample' in results.modules);
         assert.ok('sampleSingleTest' in results.modules);
         assert.ok('sampleWithBeforeAndAfter' in results.modules);

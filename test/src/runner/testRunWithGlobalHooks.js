@@ -60,8 +60,8 @@ describe('testRunWithGlobalHooks', function() {
           status_poll_interval: 200,
           url: 'http://localhost:10195'
         });
-        assert.strictEqual(beforeEachCount, 6);
-        assert.strictEqual(afterEachCount, 6);
+        assert.strictEqual(beforeEachCount, 4);
+        assert.strictEqual(afterEachCount, 4);
         assert.strictEqual(globals.calls, 19);
         cb();
       }
@@ -91,8 +91,8 @@ describe('testRunWithGlobalHooks', function() {
         }, 15);
       },
       reporter(results, cb) {
-        assert.strictEqual(beforeEachCount, 6);
-        assert.strictEqual(afterEachCount, 6);
+        assert.strictEqual(beforeEachCount, 4);
+        assert.strictEqual(afterEachCount, 4);
         assert.strictEqual(globals.calls, 19);
         cb();
       }
@@ -124,8 +124,8 @@ describe('testRunWithGlobalHooks', function() {
       },
       reporter(results, cb) {
         assert.strictEqual(globals.calls, 19);
-        assert.strictEqual(beforeEachCount, 6);
-        assert.strictEqual(afterEachCount, 6);
+        assert.strictEqual(beforeEachCount, 4);
+        assert.strictEqual(afterEachCount, 4);
         cb();
       }
     };
@@ -153,8 +153,8 @@ describe('testRunWithGlobalHooks', function() {
         },
         reporter(results, cb) {
           assert.ok(results.lastError instanceof Error);
-          assert.strictEqual(results.failed, 6);
-          assert.strictEqual(beforeEachCount, 6);
+          assert.strictEqual(results.failed, 4);
+          assert.strictEqual(beforeEachCount, 4);
           cb();
         }
       }
@@ -178,8 +178,6 @@ describe('testRunWithGlobalHooks', function() {
           assert.deepStrictEqual(Object.keys(results.modules), [
             'sampleSingleTest',
             'sampleWithBeforeAndAfter',
-            'sampleWithBeforeAndAfterChildProcess',
-            'sampleWithBeforeAndAfterChildProcessNoCallback',
             'sampleWithBeforeAndAfterNoCallback',
             'syncBeforeAndAfter'
           ]);
