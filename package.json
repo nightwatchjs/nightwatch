@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@nightwatch/chai": "5.0.2",
+    "@nightwatch/html-reporter-template": "0.0.2",
     "ansi-to-html": "0.7.2",
     "assertion-error": "1.1.0",
     "boxen": "5.1.2",
@@ -29,6 +30,7 @@
     "lodash.defaultsdeep": "4.6.1",
     "lodash.escape": "4.0.1",
     "lodash.merge": "4.6.2",
+    "lodash.pick": "4.4.0",
     "minimatch": "3.1.2",
     "minimist": "1.2.6",
     "mkpath": "1.0.0",
