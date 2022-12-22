@@ -66,11 +66,6 @@ describe('testRunnerHTMLOutput', function() {
     }))
       .then(_ => {
         return readFilePromise(`${outputPath}${path.sep}nightwatch-html-report${path.sep}index.html`);
-      }).
-      then(_ => {
-        return Promise.all([readDirPromise(`${outputPath}${path.sep}nightwatch-html-report${path.sep}js`), 
-          readDirPromise(`${outputPath}${path.sep}nightwatch-html-report${path.sep}css`), 
-          readDirPromise(`${outputPath}${path.sep}nightwatch-html-report${path.sep}images`)]);
       });
      
   });
@@ -98,7 +93,9 @@ describe('testRunnerHTMLOutput', function() {
         waitForConditionPollInterval: 20,
         waitForConditionTimeout: 50,
         retryAssertionTimeout: 50,
-        reporter: function () {
+        reporter: function (result) {
+          const failedTest = result.modulesWithEnv.default.sample.completedSections.demoTest.commands[2];
+          assert.ok(failedTest.screenshot && failedTest.screenshot.includes(`sample${path.sep}demoTest`));
         }
       },
       screenshots: {
@@ -112,11 +109,10 @@ describe('testRunnerHTMLOutput', function() {
         return readFilePromise(`${outputPath}${path.sep}nightwatch-html-report${path.sep}index.html`);
       }).
       then(_ => {
-        assert.ok(_.toString().includes('&lt;faketag&gt;fakedata'));
       });
-     
+
   });
-  
+
   it('test html report folder with a folder format function', function () {
 
     const testsPath = [
