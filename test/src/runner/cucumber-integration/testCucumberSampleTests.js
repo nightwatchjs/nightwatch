@@ -42,7 +42,7 @@ describe('Cucumber integration', function() {
   });
 
   it('testCucumberSampleTests - chaining of commands failure', function() {
-    const source = [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/chainingCommands/testSample.js')];
+    const source = [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/chainingCommands/testCommands.js')];
 
     return runTests({
       source,
