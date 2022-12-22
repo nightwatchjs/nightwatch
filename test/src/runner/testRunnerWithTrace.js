@@ -37,6 +37,7 @@ describe('testRunnerWithTrace', function () {
   });
 
   it('takes snapshot for each traceable command', function () {
+    this.timeout(5000);
     let testsPath = [
       path.join(__dirname, '../../sampletests/trace/sample.js')
     ];
@@ -117,8 +118,8 @@ describe('testRunnerWithTrace', function () {
           const snapshot1 = results.modulesWithEnv.default.sample.completedSections.click_on_web_login.commands[0].domSnapshot;
           const snapshot2 = results.modulesWithEnv.default.sample.completedSections.click_on_web_login.commands[1].domSnapshot;
 
-          assert.equal(snapshot1.error, 'failed to get pageSource');
-          assert.strictEqual(snapshot2.error, 'failed to get pageSource');
+          assert.equal(snapshot1.error, 'failed to fetch pageSource');
+          assert.strictEqual(snapshot2.error, 'failed to fetch pageSource');
         },
         abortOnAssertionFailure: false
       },
