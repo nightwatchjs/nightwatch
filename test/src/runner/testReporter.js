@@ -237,6 +237,11 @@ describe('testReporter', function() {
           waitForConditionTimeout: 50,
           retryAssertionTimeout: 50,
           reporter: function (results) {
+            // check for results properties
+            assert.ok(Object.keys(results).includes('elapsedTime'));
+            assert.ok(Object.keys(results).includes('startTimestamp'));
+            assert.ok(Object.keys(results).includes('endTimestamp'));
+
             const module = results.modules['sample'];
             // check for module properties
             assert.ok(Object.keys(module).includes('sessionCapabilities'));
@@ -245,6 +250,7 @@ describe('testReporter', function() {
             assert.ok(Object.keys(module).includes('buildName'));
             assert.ok(Object.keys(module).includes('startTimestamp'));
             assert.ok(Object.keys(module).includes('endTimestamp'));
+            assert.ok(Object.keys(module).includes('host'));
             // check for individual test properties
             const test = module.completed['demoTest'];
             assert.ok(Object.keys(test).includes('status'));
