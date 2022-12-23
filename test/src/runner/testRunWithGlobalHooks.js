@@ -26,6 +26,7 @@ describe('testRunWithGlobalHooks', function() {
   });
 
   afterEach(function() {
+    process.env.__NIGHTWATCH_PARALLEL_MODE = null;
     Object.keys(require.cache).filter(i => i.includes('/sampletests')).forEach(function(module) {
       delete require.cache[module];
     });
@@ -279,4 +280,58 @@ describe('testRunWithGlobalHooks', function() {
       globals
     }));
   });
+
+  it('test global child process hooks',  function() {
+    let testsPath = path.join(__dirname, '../../sampletests/before-after');
+    process.env.__NIGHTWATCH_PARALLEL_MODE = '1';
+    let globals = {
+      calls: 0,
+      beforeChildProcess() {
+        globals.calls++;
+      },
+      afterChildProcess() {
+        globals.calls++;
+      },
+      reporter(results, cb) {
+        assert.strictEqual(globals.calls, 20);
+        cb();
+      }
+    };
+
+    return runTests(testsPath, settings({
+      output: false,
+      globals
+    })
+    );
+  });
+
+  it('test global async child process hooks',  function() {
+    let testsPath = path.join(__dirname, '../../sampletests/before-after');
+    process.env.__NIGHTWATCH_PARALLEL_MODE = '1';
+    let globals = {
+      calls: 0,
+      beforeChildProcess(_, done) {
+        setTimeout(function() {
+          globals.calls++;
+          done();
+        }, 10);
+      },
+      afterChildProcess(_, done) {
+        setTimeout(function() {
+          globals.calls++;
+          done();
+        }, 15);
+      },
+      reporter(_, cb) {
+        assert.strictEqual(globals.calls, 20);
+        cb();
+      }
+    };
+
+    return runTests(testsPath, settings({
+      output: false,
+      globals
+    }));
+  });
+ 
 });
