@@ -108,7 +108,7 @@ describe('AppiumServer Transport Tests', function () {
     mockery.registerMock('selenium-webdriver', {
       ...SeleniumWebdriver,
       WebDriver: MockWebDriver
-    });;
+    });
   }
 
 
@@ -207,8 +207,6 @@ describe('AppiumServer Transport Tests', function () {
         serverUrl = url;
       }
     });
-
-    mockExecutor();
 
     mockWebDriver({
       onSessionOpts(opts) {
