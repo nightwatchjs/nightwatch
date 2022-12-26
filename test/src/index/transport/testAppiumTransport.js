@@ -60,4 +60,31 @@ describe('AppiumTransport', function () {
     assert.strictEqual(client.settings.webdriver.start_process, true);
     assert.strictEqual(client.transport.desiredCapabilities.browserName, 'firefox');
   });
+
+  it('test create Transport for Appium without use_appium and with browserName=null',  function(){
+    const client = NightwatchClient.client({
+      webdriver: {
+        start_process: false
+      },
+      selenium: {
+        start_process: true,
+        host: 'localhost',
+        port: 9999,
+        default_path_prefix: '',
+        '[_started]': true
+      },
+      output: true,
+      silent: false,
+      desiredCapabilities: {
+        browserName: null
+      }
+    });
+
+    assert.ok(client.transport instanceof Appium);
+    assert.strictEqual(client.settings.webdriver.host, 'localhost');
+    assert.strictEqual(client.settings.webdriver.port, 9999);
+    assert.strictEqual(client.settings.webdriver.default_path_prefix, '');
+    assert.strictEqual(client.settings.webdriver.start_process, false);
+    assert.strictEqual(client.transport.desiredCapabilities.browserName, null);
+  });
 });
