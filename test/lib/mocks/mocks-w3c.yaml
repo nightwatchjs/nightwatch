@@ -103,7 +103,6 @@ mocks:
       firstMatch: [{}]
       alwaysMatch:
         appium:automationName: "XCUITest"
-        appium:app: "../samples/Wikipedia.app"
         appium:appPackage: "org.wikimedia.wikipedia"
         platformName: "iOS"
         appium:deviceName: "iPhone 13"
@@ -113,7 +112,6 @@ mocks:
       sessionId: '13521-10219-202'
       capabilities:
         appium:automationName: "XCUITest"
-        appium:app: "../samples/Wikipedia.app"
         appium:appPackage: "org.wikimedia.wikipedia"
         platformName: "iOS"
         appium:deviceName: "iPhone 13"
