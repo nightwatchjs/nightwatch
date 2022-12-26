@@ -195,7 +195,7 @@ describe('.click()', function() {
       silent: false,
       selenium: {
         start_process: false,
-        isAppium: true,
+        use_appium: true,
         port: 10195,
         host: 'localhost'
       },

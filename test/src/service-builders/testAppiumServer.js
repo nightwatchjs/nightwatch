@@ -243,7 +243,7 @@ describe('AppiumServer Transport Tests', function () {
       },
       selenium: {
         port: 9999,
-        isAppium: true,
+        use_appium: true,
         start_process: true,
         // server_path is only set automatically when server is started from cli.js
         server_path: '/path/to/appium/main.js'
@@ -286,7 +286,7 @@ describe('AppiumServer Transport Tests', function () {
       },
       selenium: {
         start_process: true,
-        isAppium: true,
+        use_appium: true,
         server_path: 'appium',
         cli_args: [
           '--allow-insecure=chromedriver_autodownload'
@@ -323,7 +323,7 @@ describe('AppiumServer Transport Tests', function () {
         host: 'somewhere',
         port: '4725',
         start_process: false,
-        isAppium: true
+        use_appium: true
       }
     });
 

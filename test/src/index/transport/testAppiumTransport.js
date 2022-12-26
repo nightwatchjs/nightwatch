@@ -9,7 +9,7 @@ describe('AppiumTransport', function () {
     const client = NightwatchClient.client({
       selenium: {
         start_process: false,
-        isAppium: true,
+        use_appium: true,
         host: 'remote.host',
         port: 443
       },
@@ -39,7 +39,7 @@ describe('AppiumTransport', function () {
     const client = NightwatchClient.client({
       selenium: {
         start_process: true,
-        isAppium: true
+        use_appium: true
       },
       webdriver: {
         start_process: false

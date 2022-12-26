@@ -71,7 +71,7 @@ describe('Test mobile options in Nightwatch/Appium client', function () {
   it('have isIOS() for native testing on iOS', function () {
     const client = Nightwatch.createClient({
       selenium: {
-        isAppium: true
+        use_appium: true
       },
       desiredCapabilities: {
         browserName: null,
@@ -91,7 +91,7 @@ describe('Test mobile options in Nightwatch/Appium client', function () {
   it('have isAndroid() for native testing on Android', function () {
     const client = Nightwatch.createClient({
       selenium: {
-        isAppium: true
+        use_appium: true
       },
       desiredCapabilities: {
         browserName: '',
@@ -110,7 +110,7 @@ describe('Test mobile options in Nightwatch/Appium client', function () {
   it('have isAndroid() for web testing on Android using Appium', function () {
     const client = Nightwatch.createClient({
       selenium: {
-        isAppium: true
+        use_appium: true
       },
       desiredCapabilities: {
         browserName: 'Chrome',

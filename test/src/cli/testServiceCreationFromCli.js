@@ -4,7 +4,7 @@ const assert = require('assert');
 const origPath = require('path');
 
 describe('Service creation from cli.js', function() {
-  this.timeout(5000);
+  this.timeout(10000);
 
   beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
@@ -67,7 +67,7 @@ describe('Service creation from cli.js', function() {
       output_folder: false,
       selenium: {
         start_process: true,
-        isAppium: true
+        use_appium: true
       },
       test_settings: {
         'default': {
@@ -131,7 +131,7 @@ describe('Service creation from cli.js', function() {
       output_folder: false,
       selenium: {
         start_process: true,
-        isAppium: true,
+        use_appium: true,
         server_path: 'appium'
       },
       test_settings: {
@@ -189,7 +189,7 @@ describe('Service creation from cli.js', function() {
       output_folder: false,
       selenium: {
         start_process: false,
-        isAppium: true,
+        use_appium: true,
         host: 'localhost'
       },
       test_settings: {
@@ -221,7 +221,7 @@ describe('Service creation from cli.js', function() {
     });
   });
 
-  it('test selenium server startup if isAppium not used', function() {
+  it('test selenium server startup if use_appium not used', function() {
     mockery.registerMock('./appium_config.json', {
       src_folders: ['test/sampletests/before-after'],
       output_folder: false,
