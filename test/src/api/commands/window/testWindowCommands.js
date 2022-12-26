@@ -5,12 +5,19 @@ const nock = require('nock');
 
 describe('window', function () {
   before(function (done) {
+    try {
+      nock.activate();
+    } catch(e){
+      //ignore
+    }
+
     CommandGlobals.beforeEach.call(this, done);
   });
 
   after(function (done) {
-    CommandGlobals.afterEach.call(this, done);
     nock.cleanAll();
+    nock.restore();
+    CommandGlobals.afterEach.call(this, done);
   });
 
   it('client.closeWindow()', function (done) {

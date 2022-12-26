@@ -104,6 +104,18 @@ module.exports = {
     return this;
   },
 
+  getPageSource(value = '<html><body><p>404 not found</p></body></html>') {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/source')
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value
+      });
+
+    return this;
+  },
+
   elementFoundW3c() {
     nock('http://localhost:10195')
       .post('/session/13521-10219-202/elements')
@@ -121,6 +133,17 @@ module.exports = {
         status: 0,
         state: 'success',
         value: [{'element-6066-11e4-a52e-4f735466cecf': '0'}]
+      });
+
+    return this;
+  },
+
+  click() {
+    nock('http://localhost:10195')
+      .post('/wd/hub/session/1352110219202/element/0/click')
+      .reply(200, {
+        status: 0,
+        state: 'success'
       });
 
     return this;

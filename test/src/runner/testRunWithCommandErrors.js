@@ -72,7 +72,7 @@ describe('testRunWithCommandErrors', function() {
             retry_attempts: 2
           }
         },
-        output: false,
+        output: true,
         report_command_errors: true,
         skip_testcases_on_fail: false,
         disable_error_log: 0,
