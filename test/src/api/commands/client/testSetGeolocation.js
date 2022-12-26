@@ -216,4 +216,150 @@ describe('.setGeolocation()', function () {
     });
   });
 
+  it('should mock geolocation for Appium', function (done) {
+    MockServer.addMock({
+      url: '/wd/hub/session',
+      response: {
+        value: {
+          sessionId: '13521-10219-202',
+          capabilities: {
+            browserName: null
+          }
+        }
+      },
+      method: 'POST',
+      statusCode: 201
+    }, true);
+
+    MockServer.addMock({
+      url: '/wd/hub/session/13521-10219-202/location',
+      response: {
+        value: 'mocking successful'
+      },
+      method: 'POST',
+      statusCode: 200
+    });
+
+    Nightwatch.initW3CClient({
+      selenium: {
+        start_process: false
+      },
+      desiredCapabilities: {
+        browserName: null,
+        platformName: 'android'
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
+    }).then(client => {
+      client.api.setGeolocation({latitude: 35.689487, longitude: 139.691706, altitude: 5}, function (result) {
+        assert.strictEqual(result.status, 0);
+        assert.strictEqual(result.value, 'mocking successful');
+      });
+
+      client.api.setGeolocation({latitude: 35.689487, longitude: 139.691706}, function (result) {
+        assert.strictEqual(result.status, 0);
+        assert.strictEqual(result.value, 'mocking successful');
+      });
+
+      client.start(done);
+    });
+  });
+
+  it('should throw error for Appium with incorrect options passed', function (done) {
+    MockServer.addMock({
+      url: '/wd/hub/session',
+      response: {
+        value: {
+          sessionId: '13521-10219-202',
+          capabilities: {
+            browserName: null
+          }
+        }
+      },
+      method: 'POST',
+      statusCode: 201
+    }, true);
+
+    MockServer.addMock({
+      url: '/wd/hub/session/13521-10219-202/location',
+      response: {
+        value: 'mocking successful'
+      },
+      method: 'POST',
+      statusCode: 200
+    });
+
+    Nightwatch.initW3CClient({
+      selenium: {
+        start_process: false
+      },
+      desiredCapabilities: {
+        browserName: null,
+        platformName: 'android'
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
+    }).then(client => {
+      client.api.setGeolocation({latitude: 35.689487});
+
+      client.start(function(err) {
+        try {
+          assert.ok(err instanceof Error);
+          assert.strictEqual(err.message.includes('Please provide both latitude and longitude while using setGeolocation.'), true);
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+    });
+  });
+
+  it('should throw error for Appium with no options passed', function (done) {
+    MockServer.addMock({
+      url: '/wd/hub/session',
+      response: {
+        value: {
+          sessionId: '13521-10219-202',
+          capabilities: {
+            browserName: null
+          }
+        }
+      },
+      method: 'POST',
+      statusCode: 201
+    }, true);
+
+    MockServer.addMock({
+      url: '/wd/hub/session/13521-10219-202/location',
+      response: {
+        value: 'mocking successful'
+      },
+      method: 'POST',
+      statusCode: 200
+    });
+
+    Nightwatch.initW3CClient({
+      selenium: {
+        start_process: false
+      },
+      desiredCapabilities: {
+        browserName: null,
+        platformName: 'android'
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
+    }).then(client => {
+      client.api.setGeolocation();
+
+      client.start(function(err) {
+        try {
+          assert.ok(err instanceof Error);
+          assert.strictEqual(err.message.includes('Please provide both latitude and longitude while using setGeolocation.'), true);
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+    });
+  });
 });
