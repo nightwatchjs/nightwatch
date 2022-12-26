@@ -1,3 +1,4 @@
+const path = require('path');
 const assert = require('assert');
 const MockServer  = require('../../../../lib/mockserver.js');
 const Nightwatch = require('../../../../lib/nightwatch.js');
@@ -81,9 +82,9 @@ describe('.end()', function() {
           isError: true
         });
 
-        assert.ok(fileNameFailed.startsWith('xxTestSuite/xxTestCase_FAILED_'));
+        assert.ok(fileNameFailed.startsWith(`xxTestSuite${path.sep}xxTestCase_FAILED_`));
         assert.ok(fileNameFailed.endsWith('.png'));
-        assert.ok(fileNameError.startsWith('xxTestSuite/xxTestCase_ERROR_'));
+        assert.ok(fileNameError.startsWith(`xxTestSuite${path.sep}xxTestCase_ERROR_`));
         assert.ok(fileNameError.endsWith('.png'));
 
         client.api.currentTest = {
@@ -221,9 +222,9 @@ describe('.end()', function() {
           isError: true
         });
 
-        assert.ok(fileNameFailed.startsWith('xxTestSuite/xxTestCase_FAILED_'));
+        assert.ok(fileNameFailed.startsWith(`xxTestSuite${path.sep}xxTestCase_FAILED_`));
         assert.ok(fileNameFailed.endsWith('.png'));
-        assert.ok(fileNameError.startsWith('xxTestSuite/xxTestCase_ERROR_'));
+        assert.ok(fileNameError.startsWith(`xxTestSuite${path.sep}xxTestCase_ERROR_`));
         assert.ok(fileNameError.endsWith('.png'));
 
         client.api.currentTest = {

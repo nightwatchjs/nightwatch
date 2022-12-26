@@ -385,7 +385,7 @@ module.exports = {
     url = '/wd/hub/session'
   }) {
     const browserName = 'chrome';
-    const headlessOpt = headless ? 'headless' : '';
+    const headlessOpt = headless ? 'headless=chrome' : '';
     const options = {
       ['goog:chromeOptions']: {}
     };
