@@ -45,4 +45,21 @@ describe('test Queue', function () {
     assert.equal(mockCommandLoader.listenerCount('error'), 0);
     assert.equal(mockCommandLoader.listenerCount('complete'), 0);  
   });
+
+  it('test handleError - set abortOnFailure to false in debug mode', function () {
+    const treeNode = new TreeNode({
+      name: '__root__',
+      parent: null
+    });
+    const Debuggability = require('../../../lib/utils/debuggability');
+
+    Debuggability.debugMode = true;
+    let error = new Error('Error while executing command in debug mode');
+    error.abortOnFailure = true;
+
+    error = treeNode.handleError(error);
+    assert.strictEqual(error.abortOnFailure, false);
+
+    Debuggability.debugMode = false;
+  });
 });
