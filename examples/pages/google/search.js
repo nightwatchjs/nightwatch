@@ -21,7 +21,7 @@ module.exports = {
     consentModal: {
       selector: consentModal,
       elements: {
-        customizeButton: 'div.VDity button:nth-child(1)'
+        rejectAllButton: '.GzLjMd button:nth-child(1)'
       }
     }
   },

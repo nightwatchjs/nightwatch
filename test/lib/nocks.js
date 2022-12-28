@@ -366,7 +366,7 @@ module.exports = {
 
   value(value, times) {
     var mock = nock('http://localhost:10195')
-      .get('/wd/hub/session/1352110219202/element/0/attribute/value');
+      .get('/wd/hub/session/1352110219202/element/0/property/value');
 
     if (times) {
       mock.times(times);

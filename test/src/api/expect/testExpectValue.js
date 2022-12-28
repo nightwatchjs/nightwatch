@@ -82,7 +82,7 @@ describe('expect.value', function () {
         .elementFound()
         .elementStateError({
           error: 'stale element reference',
-          url: '/wd/hub/session/1352110219202/element/0/attribute/value',
+          url: '/wd/hub/session/1352110219202/element/0/property/value',
           method: 'get'
         })
         .elementNotFound()
