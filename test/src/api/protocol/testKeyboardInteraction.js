@@ -72,6 +72,18 @@ describe('Keyboard interaction commands', function() {
     });
   });
 
+  it('test pressKeyCode - with no options', function() {
+    return Globals.protocolTest({
+      commandName: 'pressKeyCode',
+      args: []
+    }).catch(err => {
+      return err;
+    }).then((result) => {
+      assert.ok(result instanceof Error);
+      assert.strictEqual(result.message.includes('The first argument to pressKeyCode is mandatory and must be a number.'), true);
+    });
+  });
+
   it('test longPressKeyCode - with just keycode', function() {
     return Globals.protocolTest({
       assertion: function(opts) {
@@ -112,6 +124,18 @@ describe('Keyboard interaction commands', function() {
       },
       commandName: 'longPressKeyCode',
       args: [15, () => {}, 14]
+    });
+  });
+
+  it('test longPressKeyCode - with no options', function() {
+    return Globals.protocolTest({
+      commandName: 'longPressKeyCode',
+      args: []
+    }).catch(err => {
+      return err;
+    }).then((result) => {
+      assert.ok(result instanceof Error);
+      assert.strictEqual(result.message.includes('The first argument to longPressKeyCode is mandatory and must be a number.'), true);
     });
   });
 });
