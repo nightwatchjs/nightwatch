@@ -37,9 +37,10 @@ describe('testRunWithVerify', function() {
         retryAssertionTimeout: 50,
         reporter(results, cb) {
           assert.ok('verifySampleFailures' in results.modules);
-          assert.strictEqual(results.passed, 1);
+          assert.strictEqual(results.passed, 2);
           assert.strictEqual(results.failed, 2);
-          assert.strictEqual(results.assertions, 3);
+          assert.strictEqual(results.assertions, 4);
+          assert.strictEqual(results.skipped, 0);
 
           cb();
         }
