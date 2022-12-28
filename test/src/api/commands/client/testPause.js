@@ -20,6 +20,16 @@ describe('.pause()', function() {
     this.client.start(done);
   });
 
+  it('browser.pause(0) pauses atleast 0ms and not more than 2000ms', function(done) {
+    const startTime = new Date();
+    this.client.api.pause(0, function() {
+      const timeElapsed = new Date() - startTime;
+      assert.ok(timeElapsed >= 0);
+    });
+
+    this.client.start(done);
+  });
+
   it('browser.pause(200) pauses for atleast 200ms and not more than 2000ms', function(done) {
     const startTime = new Date();
     this.client.api.pause(200, function() {
