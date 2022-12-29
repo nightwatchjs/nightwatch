@@ -238,7 +238,7 @@ describe('AppiumServer Transport Tests', function () {
         browserName: '',
         'appium:options': {
           app: './sample.apk',
-          chromedriverExecutable: './chromedriver'
+          chromedriverExecutable: 'chromedriver-mobile/chromedriver'
         }
       },
       selenium: {
@@ -264,8 +264,8 @@ describe('AppiumServer Transport Tests', function () {
     assert.deepStrictEqual(buildOptions.args, ['/path/to/appium/main.js', '--port', 9999]);
     assert.deepStrictEqual(buildOptions.stdio, ['pipe', undefined, undefined]);
     assert.strictEqual(sessionOptions.browserName, '');
-    assert.strictEqual(sessionOptions['appium:app'], path.join(process.cwd(), 'sample.apk'));
-    assert.strictEqual(sessionOptions['appium:chromedriverExecutable'], path.join(process.cwd(), 'chromedriver'));
+    assert.strictEqual(sessionOptions['appium:app'], './sample.apk');
+    assert.strictEqual(sessionOptions['appium:chromedriverExecutable'], 'chromedriver-mobile/chromedriver');
     assert.strictEqual('appium:options' in sessionOptions, false);
     assert.ok(logFilePath.endsWith('testModuleKey_appium-server.log'));
   });
