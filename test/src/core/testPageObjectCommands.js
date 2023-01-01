@@ -32,12 +32,21 @@ describe('test PageObject Commands', function () {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element/0/value',
       method: 'POST',
-      postdata: '{"value":["1"]}',
+      postdata: '{"text":"1", "value":["1"]}',
       response: JSON.stringify({
         sessionId: '1352110219202',
         status: 0
       })
     }, true);
+
+    MockServer.addMock({
+      'url': '/wd/hub/session/1352110219202/element/0/clear',
+      postdata: {},
+      'response': {
+        sessionId: '1352110219202',
+        status: 0
+      }
+    });
 
     let page = this.client.api.page.simplePageObj();
     page.setValue('@loginCss', '1', function callback(result) {
@@ -215,6 +224,88 @@ describe('test PageObject Commands', function () {
       } catch (err) {
         done(err);
       }
+    });
+
+    this.client.start();
+  });
+
+  it('testPageObject navigate() with url param', function (done) {
+    let page = this.client.api.page.simplePageObj();
+    let urlsArr = [];
+    page.api.url = function (url) {
+      urlsArr.push(url);
+    };
+
+    page.navigate('http://local');
+
+    page.api.perform(function () {
+      page.url = function () {
+        return 'http://nightwatchjs.org';
+      };
+    });
+
+    page.api.perform(function () {
+      page.navigate();
+    });
+
+    page.api.perform(function () {
+      try {
+        assert.deepStrictEqual(urlsArr, ['http://local', 'http://nightwatchjs.org']);
+        done();
+      } catch (err) {
+        done(err);
+      }
+    });
+
+    this.client.start();
+  });
+
+  it('testPageObject navigate() with url param and callback', function (done) {
+    let page = this.client.api.page.simplePageObj();
+    let urlsArr = [];
+    page.api.url = function (url, callback) {
+      urlsArr.push(url);
+      callback();
+    };
+    let called = false;
+    page.navigate('http://local', function() {
+      called = true;
+    });
+
+    page.api.perform(function () {
+      try {
+        assert.strictEqual(called, true);
+        done();
+      } catch (err) {
+        done(err);
+      }
+    });
+
+    this.client.start();
+  });
+
+
+  it('testPageObject navigate with url as a function using api object', function (done) {
+    MockServer.addMock({
+      'url': '/wd/hub/session/1352110219202/url',
+      postdata: {'url': 'https://nightwatchjs.org'},
+      'response': JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0
+      })
+    }, true);
+
+    const page = this.client.api.page.simplePageObj();
+    page.api.launch_url = 'https://nightwatchjs.org';
+    
+    page.url = function (url) {
+      return this.api.launch_url;
+    };
+
+    page.navigate(function (result) {
+      //check if callback function is called
+      assert.strictEqual(result.status, 0);
+      done();
     });
 
     this.client.start();

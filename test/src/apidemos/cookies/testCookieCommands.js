@@ -25,11 +25,13 @@ describe('cookie demos', function() {
 
     const globals = {
       waitForConditionPollInterval: 50,
-
+      calls: 0,
       reporter(results) {
         if (results.lastError) {
           throw results.lastError;
         }
+
+        assert.strictEqual(globals.calls, 2);
       }
     };
 
@@ -70,7 +72,8 @@ describe('cookie demos', function() {
       webdriver: {
         start_process: false,
         timeout_options: {
-          timeout: 50
+          timeout: 50,
+          retry_attempts: 0
         }
       },
       output: false,

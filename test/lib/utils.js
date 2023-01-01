@@ -1,4 +1,6 @@
 var Nightwatch = require('./nightwatch.js');
+const fs = require('fs');
+const glob = require('glob');
 
 module.exports = {
 
@@ -34,5 +36,38 @@ module.exports = {
 
     var origRun = queueRunnerPatched.origRun = queue.run;
     queue.run = queueRunnerPatched;
+  },
+
+  getLineBreak: function() {
+    return process.platform === 'win32' ? '\r\n' : '\n';
+  },
+
+  readFilePromise(pattern) {
+    return new Promise(function(resolve, reject) {
+      glob(pattern, (error, matches)=> {
+        if (error) {
+          return reject(error);
+        }
+        fs.readFile(matches[0], function(err, result) {
+          if (err) {
+            return reject(err);
+          }
+          
+          return resolve(result);
+        });
+      });
+    });
+  },
+
+  readDirPromise(dirName) {
+    return new Promise(function(resolve, reject) {
+      fs.readdir(dirName, function(err, result) {
+        if (err) {
+          return reject(err);
+        }
+
+        resolve(result);
+      });
+    });
   }
 };

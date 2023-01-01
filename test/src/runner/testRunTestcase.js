@@ -32,8 +32,8 @@ describe('testRunTestcase', function() {
   });
 
   it('testRunner with skip_testcases_on_fail=false', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withfailures');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/withfailures');
+    const globals = {
       calls: 0,
       retryAssertionTimeout: 0,
       reporter(results, cb) {
@@ -54,8 +54,8 @@ describe('testRunTestcase', function() {
   });
 
   it('testRunner with skip_testcases_on_fail=true (default)', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withfailures');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/withfailures');
+    const globals = {
       calls: 0,
       reporter(results, cb) {
         assert.strictEqual(globals.calls, 4);
@@ -75,7 +75,7 @@ describe('testRunTestcase', function() {
   });
 
   it('testRunner with --testcase argument', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after/syncBeforeAndAfter.js');
+    const testsPath = path.join(__dirname, '../../sampletests/before-after/syncBeforeAndAfter.js');
     const globals = {
       reporter(results, cb) {
         assert.strictEqual(Object.keys(results.modules).length, 1);
@@ -94,7 +94,7 @@ describe('testRunTestcase', function() {
   });
 
   it('testRunner with invalid --testcase argument', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after/syncBeforeAndAfter.js');
+    const testsPath = path.join(__dirname, '../../sampletests/before-after/syncBeforeAndAfter.js');
     const globals = {
       reporter(results, cb) {
         assert.strictEqual(Object.keys(results.modules).length, 0);
@@ -118,7 +118,7 @@ describe('testRunTestcase', function() {
   });
 
   it('testRunCurrentTestName', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after/sampleSingleTest.js');
+    const testsPath = path.join(__dirname, '../../sampletests/before-after/sampleSingleTest.js');
 
     const globals = {
       beforeEach(client, cb) {
@@ -146,8 +146,8 @@ describe('testRunTestcase', function() {
   });
 
   it('currentTest in afterEach hook', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withaftereach/sampleSingleTest.js');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/withaftereach/sampleSingleTest.js');
+    const globals = {
       reporter(results, cb) {
         if (results.lastError instanceof Error) {
           throw results.lastError;
@@ -162,15 +162,15 @@ describe('testRunTestcase', function() {
   });
 
   it('testRunner with retries', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withfailures');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/withfailures');
+    const globals = {
       calls: 0,
       reporter(results, cb) {
         assert.strictEqual(globals.calls, 6);
         assert.strictEqual(results.passed, 1);
         assert.strictEqual(results.failed, 1);
         assert.strictEqual(results.errors, 0);
-        assert.strictEqual(results.skipped, 0);
+        assert.strictEqual(results.skipped, 1);
         cb();
       },
       retryAssertionTimeout: 0
@@ -185,15 +185,15 @@ describe('testRunTestcase', function() {
   });
 
   it('testRunner with retries and describe', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withdescribe/failures/sampleTest.js');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/withdescribe/failures/sampleTest.js');
+    const globals = {
       calls: 0,
       reporter(results, cb) {
         assert.strictEqual(globals.calls, 6);
         assert.strictEqual(results.passed, 1);
         assert.strictEqual(results.failed, 1);
         assert.strictEqual(results.errors, 0);
-        assert.strictEqual(results.skipped, 0);
+        assert.strictEqual(results.skipped, 1);
         cb();
       },
       retryAssertionTimeout: 0
@@ -208,15 +208,15 @@ describe('testRunTestcase', function() {
   });
 
   it('testRunner with retries and describe with attribute', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withdescribe/failures/sampleTestWithAttribute.js');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/withdescribe/failures/sampleTestWithAttribute.js');
+    const globals = {
       calls: 0,
       reporter(results, cb) {
         assert.strictEqual(globals.calls, 6);
         assert.strictEqual(results.passed, 1);
         assert.strictEqual(results.failed, 1);
         assert.strictEqual(results.errors, 0);
-        assert.strictEqual(results.skipped, 0);
+        assert.strictEqual(results.skipped, 1);
         cb();
       },
       retryAssertionTimeout: 0
@@ -230,8 +230,8 @@ describe('testRunTestcase', function() {
   });
 
   it('testRunner with retries and describe with attribute and argument', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withdescribe/failures/sampleTestWithAttribute.js');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/withdescribe/failures/sampleTestWithAttribute.js');
+    const globals = {
       calls: 0,
       reporter(results, cb) {
         assert.strictEqual(globals.calls, 6);
@@ -249,8 +249,8 @@ describe('testRunTestcase', function() {
   });
 
   it('testRunner with skipped testcases', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withdescribe/skipped/skipTestcase.js');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/withdescribe/skipped/skipTestcase.js');
+    const globals = {
       calls: 0,
       reporter(results, cb) {
         assert.strictEqual(globals.calls, 2);
@@ -266,9 +266,27 @@ describe('testRunTestcase', function() {
     }));
   });
 
+  it('testRunner with skipped beforeEach afterEach hooks', function() {
+    const testsPath = path.join(__dirname, '../../sampletests/withdescribe/skipped/skipBeforeAfterEach.js');
+    const globals = {
+      calls: 0,
+      reporter(results, cb) {
+        assert.strictEqual(globals.calls, 4);
+        cb();
+      },
+      retryAssertionTimeout: 0
+    };
+
+    return runTests({
+      _source: [testsPath]
+    }, settings({
+      globals
+    }));
+  });
+
   it('testRunner with disabled testsuite - xdescribe', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withdescribe/skipped/skipTestsuite.js');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/withdescribe/skipped/skipTestsuite.js');
+    const globals = {
       calls: 0,
       reporter(results, cb) {
         assert.strictEqual(globals.calls, 0);
@@ -288,8 +306,8 @@ describe('testRunTestcase', function() {
   it('testRunner with retries and skip_testcases_on_fail=false', function() {
     this.timeout(100000);
 
-    let testsPath = path.join(__dirname, '../../sampletests/withfailures');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/withfailures');
+    const globals = {
       calls: 0,
       reporter(results, cb) {
         assert.strictEqual(globals.calls, 10);
@@ -308,6 +326,20 @@ describe('testRunTestcase', function() {
       skip_testcases_on_fail: false,
       globals
     }));
+  });
+
+  it('testRunner throwing error with unknown require', function() {
+    const testsPath = path.join(__dirname, '../../sampletests/withuknownRequire/sample.js');
+
+    return runTests({
+      retries: 1,
+      _source: [testsPath]
+    }, settings({
+      skip_testcases_on_fail: false
+    })).catch((err) => {
+      assert.strictEqual(err.displayed, true);
+      assert.match(err.message, /Cannot find module 'utilWhichDoesnotexist.js'/);
+    });
   });
 
 });

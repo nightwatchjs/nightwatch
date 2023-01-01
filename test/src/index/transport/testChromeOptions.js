@@ -34,6 +34,23 @@ describe('Test chrome options', function () {
     assert.strictEqual(client.api.browserName, 'chrome');
   });
 
+  it('chromeOptions detach driver option', function () {
+    const client = Nightwatch.createClient({
+      desiredCapabilities: {
+        browserName: 'chrome',
+        chromeOptions: {
+          detach: true
+        }
+      }
+    });
+    const options = client.transport.createSessionOptions();
+
+    assert.strictEqual(options instanceof ChromeOptions, true);
+    assert.strictEqual(options.options_.detach, true);
+    assert.strictEqual(client.api.isChrome(), true);
+    assert.strictEqual(client.api.browserName, 'chrome');
+  });
+
   it('Chrome Binary Path option', function(){
     const client = Nightwatch.createClient({
       webdriver: {
@@ -91,7 +108,7 @@ describe('Test chrome options', function () {
     const options = client.transport.createSessionOptions({headless: true});
 
     assert.strictEqual(options instanceof ChromeOptions, true);
-    assert.deepStrictEqual(options.options_.args, ['headless']);
+    assert.deepStrictEqual(options.options_.args, ['headless=chrome']);
   });
 
   it('devtools cli arg', function(){
@@ -137,6 +154,22 @@ describe('Test chrome options', function () {
 
     assert.strictEqual(options instanceof ChromeOptions, true);
     assert.deepStrictEqual(options.options_.args, ['--auto-open-devtools-for-tabs']);
+  });
+
+  it('devtools cli arg with already defined setting (using chromeOptions)', function(){
+    const client = Nightwatch.createClient({
+      desiredCapabilities: {
+        browserName: 'chrome',
+        chromeOptions: {
+          args: ['auto-open-devtools-for-tabs']
+        }
+      }
+    });
+
+    const options = client.transport.createSessionOptions({devtools: true});
+
+    assert.strictEqual(options instanceof ChromeOptions, true);
+    assert.deepStrictEqual(options.options_.args, ['auto-open-devtools-for-tabs']);
   });
 
   it('window size option', function(){

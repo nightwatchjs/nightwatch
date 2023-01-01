@@ -43,7 +43,7 @@ describe('testRunTestsuiteWithSuiteRetries', function() {
         assert.strictEqual(results.passed, 1);
         assert.strictEqual(results.failed, 1);
         assert.strictEqual(results.errors, 0);
-        assert.strictEqual(results.skipped, 0);
+        assert.strictEqual(results.skipped, 1);
         cb();
       }
     };
@@ -78,7 +78,7 @@ describe('testRunTestsuiteWithSuiteRetries', function() {
         assert.strictEqual(results.passed, 1);
         assert.strictEqual(results.failed, 1);
         assert.strictEqual(results.errors, 0);
-        assert.strictEqual(results.skipped, 0);
+        assert.strictEqual(results.skipped, 1);
         cb();
       }
     };
@@ -103,7 +103,7 @@ describe('testRunTestsuiteWithSuiteRetries', function() {
         assert.strictEqual(results.passed, 1);
         assert.strictEqual(results.failed, 1);
         assert.strictEqual(results.errors, 0);
-        assert.strictEqual(results.skipped, 0);
+        assert.strictEqual(results.skipped, 1);
         cb();
       }
     };
@@ -155,6 +155,29 @@ describe('testRunTestsuiteWithSuiteRetries', function() {
       globals,
       skip_testcases_on_fail: false
     }));
+  });
+
+  it('testRunner with suiteRetries and enable_fail_fast=true', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/withfailures');
+    let globals = {
+      calls: 0,
+      retryAssertionTimeout: 0,
+      reporter(results, cb) {
+        assert.strictEqual(globals.calls, 12);
+        cb();
+      }
+    };
+
+    return runTests({}, settings({
+      suiteRetries: 2,
+      _source: [testsPath],
+      enable_fail_fast: true,
+      globals
+    })).catch(err => {
+      return err;
+    }).then(err => {
+      assert.ok(err instanceof Error);
+    });
   });
 
   it('testRunner with suiteRetries and locate strategy change', function() {

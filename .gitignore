@@ -2,7 +2,8 @@
 .DS_Store
 *.idea
 *.vscode
-/*.log
+*.log
+*.env
 /nightwatch.json
 /nightwatch.conf.js
 node_modules
@@ -23,4 +24,7 @@ output
 screenshot.png
 /sample
 /screens
-
+/logs
+html-report/
+test-results.xml
+chromedriver-mobile/

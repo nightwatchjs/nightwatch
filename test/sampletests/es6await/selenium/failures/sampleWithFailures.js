@@ -27,7 +27,7 @@ describe('sampleWithFailures', function() {
     await client.url('http://localhost');
     await client.verify.elementPresent({
       selector: '#badElement',
-      timeout: 15,
+      timeout: 25,
       retryInterval: 15
     })
       .verify.elementPresent('#weblogin');

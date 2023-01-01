@@ -1,6 +1,7 @@
 const assert = require('assert');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 
+
 describe('setAttribute', function() {
   before(function(done) {
     CommandGlobals.beforeEach.call(this, done);
@@ -12,8 +13,9 @@ describe('setAttribute', function() {
 
   it('client.setAttribute()', function(done) {
     let commandArgs;
+    
     // eslint-disable-next-line
-    const fn = function(e,a,v){try {if(e&&typeof e.setAttribute=='function'){e.setAttribute(a,v)} return true} catch(err){return {error:err.message,message:err.name+': '+err.message}}};
+    const fn = function(e,a,v){try{if(e&&typeof e.setAttribute=='function'){e.setAttribute(a,v);}return true;}catch(err){return{error:err.message,message:err.name+': '+err.message};}};
     const script = 'var passedArgs = Array.prototype.slice.call(arguments,0); ' +
       'return (' + fn.toString() + ').apply(window, passedArgs);';
 

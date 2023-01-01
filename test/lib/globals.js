@@ -74,9 +74,10 @@ class Globals {
     }
   }
 
-  protocolBefore(opts = {}, done) {
-    this.client = Nightwatch.createClient(opts);
-    this.wdClient = Nightwatch.createClient({
+  async protocolBefore(opts = {}, done) {
+    this.client = await Nightwatch.createClient(opts).initialize();
+
+    this.wdClient = await Nightwatch.createClient({
       selenium: {
         version2: false,
         start_process: false
@@ -84,7 +85,7 @@ class Globals {
       webdriver: {
         start_process: true
       }
-    });
+    }).initialize();
 
     this.client.sessionId = this.client.api.sessionId = '1352110219202';
     this.wdClient.sessionId = this.wdClient.api.sessionId = '1352110219202';
@@ -221,7 +222,7 @@ function addSettings(settings) {
   }, settings);
 }
 
-module.exports.assertion = function(assertionName, api, {
+module.exports.assertion = async function(assertionName, api, {
   args = [],
   commandResult = {},
   assertArgs = false,
@@ -234,12 +235,12 @@ module.exports.assertion = function(assertionName, api, {
   assertion = function() {},
   settings = {}
 }) {
+  const instance = new Globals();
+  const options = addSettings(settings);
+  await instance.protocolBefore(options);
+
   return new Promise((resolve, reject) => {
     // initialize
-    const instance = new Globals();
-    const options = addSettings(settings);
-    instance.protocolBefore(options);
-
     const onFinish = function(err) {
       instance.protocolAfter(() => {
         if (err) {

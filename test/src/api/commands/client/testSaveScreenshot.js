@@ -5,6 +5,14 @@ const CommandGlobals = require('../../../../lib/globals/commands.js');
 const {Screenshots} = common.require('utils');
 
 describe('.saveScreenshot()', function() {
+  before(function() {
+    this.writeScreenshotToFile = Screenshots.writeScreenshotToFile;
+  });
+
+  after(function() {
+    Screenshots.writeScreenshotToFile = this.writeScreenshotToFile;
+  });
+
   describe('with backwards compat mode', function() {
     before(function(done) {
       CommandGlobals.beforeEach.call(this, done, {
@@ -26,14 +34,15 @@ describe('.saveScreenshot()', function() {
           status: 0,
           value: base64Image
         })
-      });
+      }, true);
 
       this.client.api.options.log_screenshot_data = false;
 
-      Screenshots.writeScreenshotToFile = function(fileName, data, cb) {
+      Screenshots.writeScreenshotToFile = async function(fileName, data, cb) {
         assert.strictEqual(fileName, 'screenshot.png');
         assert.strictEqual(data, base64Image);
-        cb();
+        
+        return fileName;
       };
 
       this.client.api.saveScreenshot('screenshot.png', function(result) {
@@ -64,14 +73,15 @@ describe('.saveScreenshot()', function() {
           status: 0,
           value: base64Image
         })
-      });
+      }, true);
 
       this.client.api.options.log_screenshot_data = false;
 
-      Screenshots.writeScreenshotToFile = function(fileName, data, cb) {
+      Screenshots.writeScreenshotToFile = async function(fileName, data, cb) {
         assert.strictEqual(fileName, 'screenshot.png');
         assert.strictEqual(data, base64Image);
-        cb();
+
+        return fileName;
       };
 
       this.client.api.saveScreenshot('screenshot.png', function(result) {

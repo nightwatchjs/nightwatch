@@ -3,6 +3,7 @@ const mockery = require('mockery');
 const assert = require('assert');
 const CI_Info = require('ci-info');
 const isCi = CI_Info.isCI;
+const path = require('path');
 
 describe('test CLI Runner Mocha', function() {
   beforeEach(function() {
@@ -24,7 +25,8 @@ describe('test CLI Runner Mocha', function() {
     mockery.registerMock('path', {
       resolve: function(a) {
         return a;
-      }
+      },
+      join: path.join
     });
 
     mockery.registerMock('./folder-walk.js', class Walk {
@@ -53,7 +55,7 @@ describe('test CLI Runner Mocha', function() {
   });
 
   it('testRunWithMochaDefaults', function() {
-    let testFiles = [];
+    const testFiles = [];
 
     const defaultOptions = {timeout: 20000, reporterOptions: {}};
     if (isCi) {
@@ -76,9 +78,10 @@ describe('test CLI Runner Mocha', function() {
     }, testFiles);
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    const runner = new CliRunner({
       config: './withmocha.json',
-      env: 'default'
+      env: 'default',
+      reporter: 'junit'
     }).setup();
 
     return runner.runTests().then(function() {
@@ -87,7 +90,7 @@ describe('test CLI Runner Mocha', function() {
   });
 
   it('testRunWithMochaPerEnvironment', function() {
-    let testFiles = [];
+    const testFiles = [];
     const defaultOptions = {timeout: 20000, reporterOptions: {}};
     if (isCi) {
       defaultOptions.color = false;
@@ -112,9 +115,10 @@ describe('test CLI Runner Mocha', function() {
     }, testFiles);
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    const runner = new CliRunner({
       config: './withmocha.json',
-      env: 'mochatests'
+      env: 'mochatests',
+      reporter: 'junit'
     }).setup();
 
     return runner.runTests().then(function() {
@@ -123,7 +127,7 @@ describe('test CLI Runner Mocha', function() {
   });
 
   it('testRunWithMochaCustomOpts', function() {
-    let testFiles = [];
+    const testFiles = [];
 
     const defaultOptions = {
       ui: 'tdd',
@@ -156,15 +160,69 @@ describe('test CLI Runner Mocha', function() {
     }, testFiles);
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    const runner = new CliRunner({
       config: './withmocha.json',
-      env: 'default'
+      env: 'default',
+      reporter: 'junit'
     }).setup();
 
     return runner.runTests().then(function() {
       assert.deepStrictEqual(testFiles, ['test1.js', 'test2.js']);
     });
   });
+
+  it('testRunWithMochaReporterOptions', function() {
+    const testFiles = [];
+
+    const mochaOptions = {
+      timeout: 20000, 
+      reporterOptions: {
+        reportDir: 'html-dir'
+      },
+      reporter: 'mochawesome'
+    };
+
+    if (isCi) {
+      mochaOptions.color = false;
+    }
+
+    mockery.registerMock('mochawesome', {});
+
+    mockery.registerMock('./withmochaReportOptions.json', {
+      src_folders: ['tests'],
+      output_folder: false,
+      test_settings: {
+        'default': {
+          silent: true
+        }
+      },
+      reporter_options: {
+        reportDir: 'html-dir'
+      },
+      test_runner: {
+        type: 'mocha',
+        options: {
+          reporter: 'mochawesome'
+        }
+      }
+    });
+
+    createMockedMocha(function(options) {
+      assert.deepStrictEqual(options, mochaOptions);
+    }, testFiles);
+
+    const CliRunner = common.require('runner/cli/cli.js');
+    const runner = new CliRunner({
+      config: './withmochaReportOptions.json',
+      env: 'default',
+      reporter: 'junit'
+    }).setup();
+
+    return runner.runTests().then(function() {
+      assert.deepStrictEqual(testFiles, ['test1.js', 'test2.js']);
+    });
+  });
+
 });
 
 

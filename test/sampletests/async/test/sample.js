@@ -1,4 +1,8 @@
 module.exports = {
+  '@desiredCapabilities': {
+    name: 'test-Async'
+  },
+
   before(client, callback) {
     setTimeout(function() {
       client.globals.calls++;

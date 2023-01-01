@@ -1,0 +1,36 @@
+name: "Feature Request"
+description: "Request a feature or enhancement for Nightwatch"
+labels: ["enhancement"]
+body:
+  - type: "markdown"
+    attributes:
+      value: |
+        Thanks in advance for your contribution. Before requesting a new feature, try searching for a similar issue here: https://github.com/nightwatchjs/nightwatch/search?type=Issues.
+  - type: "textarea"
+    id: "description"
+    attributes:
+      label: "Description"
+      description: "Please describe your request in one or two sentences."
+    validations:
+      required: true
+  - type: "textarea"
+    id: "proposed-solution"
+    attributes:
+      label: "Suggested solution"
+      description: |
+        Please provide code snippets, gists, or links to the ideal
+        design or API.
+  - type: "textarea"
+    id: "alternatives"
+    attributes:
+      label: "Alternatives / Workarounds"
+      description: |
+        What alternative solutions have you considered before making this
+        request?
+  - type: "textarea"
+    id: "additional-information"
+    attributes:
+      label: "Additional Information"
+      description: |
+        What resources (links, screenshots, etc.) do you have to assist this
+        effort?

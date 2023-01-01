@@ -38,12 +38,63 @@ describe('custom commands with findElements es6 async', function() {
     };
 
     return NightwatchClient.runTests(testsPath, settings({
-      output: true,
+      output: false,
+      silent: true,
       selenium_host: null,
       custom_commands_path: [path.join(__dirname, '../../../extra/commands/es6async')],
       globals
     }));
   });
 
+  it('custom assert visible es6 async', function() {
+    const testsPath = path.join(__dirname, '../../../apidemos/custom-commands/testUsingAsyncCustomAssert.js');
+    
+    Mocks.createNewW3CSession({
+      testName: 'custom command using assert'
+    });
 
+    Mocks.w3cVisible(true);
+
+    const globals = {
+      waitForConditionPollInterval: 50,
+      waitForConditionTimeout: 120,
+      retryAssertionTimeout: 1000,
+
+      reporter(results) {
+        if (results.lastError) {
+          throw results.lastError;
+        }
+      }
+    };
+
+    return NightwatchClient.runTests(testsPath, settings({
+      output: false,
+      silent: true,
+      selenium_host: null,
+      custom_commands_path: [path.join(__dirname, '../../../extra/commands/es6async')],
+      globals
+    }));
+  });
+
+  it('custom assert getEmail', function() {
+    const testsPath = path.join(__dirname, '../../../apidemos/custom-commands/testUsingCustomGetEmail.js');
+    
+    Mocks.createNewW3CSession({
+      testName: 'custom execute getEmail'
+    });
+
+    const globals = {
+      waitForConditionPollInterval: 50,
+      waitForConditionTimeout: 120,
+      retryAssertionTimeout: 1000
+    };
+
+    return NightwatchClient.runTests(testsPath, settings({
+      output: false,
+      silent: true,
+      selenium_host: null,
+      custom_commands_path: [path.join(__dirname, '../../../extra/commands/es6async')],
+      globals
+    }));
+  });
 });

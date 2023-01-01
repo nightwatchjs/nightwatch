@@ -26,6 +26,7 @@ describe('testRunWithGlobalHooks', function() {
   });
 
   afterEach(function() {
+    process.env.__NIGHTWATCH_PARALLEL_MODE = null;
     Object.keys(require.cache).filter(i => i.includes('/sampletests')).forEach(function(module) {
       delete require.cache[module];
     });
@@ -38,13 +39,15 @@ describe('testRunWithGlobalHooks', function() {
 
     let globals = {
       calls: 0,
-      beforeEach: function globalBeforeEach() {
+
+      beforeEach() {
         beforeEachCount++;
       },
       afterEach() {
         afterEachCount++;
       },
       reporter(results, cb) {
+
         assert.strictEqual(globals.singleTestCalled, true);
         assert.deepStrictEqual(globals.settings.selenium, {
           check_process_delay: 500,
@@ -244,7 +247,7 @@ describe('testRunWithGlobalHooks', function() {
         assert.strictEqual(testTimestamp.getFullYear(), currentTimestamp.getFullYear());
         assert.strictEqual(testTimestamp.getMonth(), currentTimestamp.getMonth());
         assert.strictEqual(testTimestamp.getDate(), currentTimestamp.getDate());
-        assert.deepStrictEqual(client.currentTest.results, {errors: 0, failed: 0, passed: 0, assertions: [], tests: 0});
+        assert.deepStrictEqual(client.currentTest.results, {errors: 0, failed: 0, passed: 0, assertions: [], commands: [], tests: 0});
         assert.strictEqual(client.currentTest.module, 'sample');
         assert.strictEqual(client.currentTest.name, '');
         globals.calls++;
@@ -277,4 +280,58 @@ describe('testRunWithGlobalHooks', function() {
       globals
     }));
   });
+
+  it('test global child process hooks',  function() {
+    let testsPath = path.join(__dirname, '../../sampletests/before-after');
+    process.env.__NIGHTWATCH_PARALLEL_MODE = '1';
+    let globals = {
+      calls: 0,
+      beforeChildProcess() {
+        globals.calls++;
+      },
+      afterChildProcess() {
+        globals.calls++;
+      },
+      reporter(results, cb) {
+        assert.strictEqual(globals.calls, 20);
+        cb();
+      }
+    };
+
+    return runTests(testsPath, settings({
+      output: false,
+      globals
+    })
+    );
+  });
+
+  it('test global async child process hooks',  function() {
+    let testsPath = path.join(__dirname, '../../sampletests/before-after');
+    process.env.__NIGHTWATCH_PARALLEL_MODE = '1';
+    let globals = {
+      calls: 0,
+      beforeChildProcess(_, done) {
+        setTimeout(function() {
+          globals.calls++;
+          done();
+        }, 10);
+      },
+      afterChildProcess(_, done) {
+        setTimeout(function() {
+          globals.calls++;
+          done();
+        }, 15);
+      },
+      reporter(_, cb) {
+        assert.strictEqual(globals.calls, 20);
+        cb();
+      }
+    };
+
+    return runTests(testsPath, settings({
+      output: false,
+      globals
+    }));
+  });
+ 
 });

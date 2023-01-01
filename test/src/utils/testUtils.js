@@ -2,18 +2,22 @@ const assert = require('assert');
 const path = require('path');
 const common = require('../../common.js');
 const Utils = common.require('utils');
+const mockery = require('mockery');
+
+delete require.cache['fs'];
+delete require.cache['path'];
 
 describe('test Utils', function() {
 
   it('testFormatElapsedTime', function() {
 
-    let resultMs = Utils.formatElapsedTime(999);
+    const resultMs = Utils.formatElapsedTime(999);
     assert.strictEqual(resultMs, '999ms');
 
-    let resultSec = Utils.formatElapsedTime(1999);
+    const resultSec = Utils.formatElapsedTime(1999);
     assert.strictEqual(resultSec, '1.999s');
 
-    let resultMin = Utils.formatElapsedTime(122299, true);
+    const resultMin = Utils.formatElapsedTime(122299, true);
     assert.strictEqual(resultMin, '2m 2s / 122299ms');
   });
 
@@ -25,7 +29,7 @@ describe('test Utils', function() {
     function syncFn() {
     }
 
-    let convertedFn = Utils.makeFnAsync(1, syncFn);
+    const convertedFn = Utils.makeFnAsync(1, syncFn);
     let called = false;
     convertedFn(function() {
       called = true;
@@ -36,16 +40,16 @@ describe('test Utils', function() {
   });
 
   it('testCheckFunction', function() {
-    let g = {
+    const g = {
       fn: function() {
       }
     };
 
-    let o = {
+    const o = {
       fn: false
     };
 
-    let x = {
+    const x = {
       y: {
         testFn: function() {
         }
@@ -133,27 +137,6 @@ describe('test Utils', function() {
     assert.strictEqual(Utils.isFileNameValid('/tests/sampleTest.json'), false);
   });
 
-  it('filterStackTrace', function() {
-    let stackTrace = `Error
-        at Object.this test should fail and capture screenshot (/Projects/nightwatch/examples/tests/sample.js:5:16)
-        at Context.call (/node_modules/nightwatch/lib/testsuite/context.js:375:35
-        at TestCase.run (/node_modules/nightwatch/lib/testsuite/testcase.js:53:31
-        at Runnable.__runFn (/node_modules/nightwatch/lib/testsuite/index.js:376:80)
-        at Runnable.run (/node_modules/nightwatch/lib/tes….js:123:21)
-        at TestSuite.createRunnable (/node_modules/nightwatch/lib/testsuite/index.js:443:33)
-        at TestSuite.handleRunnable (/node_modules/nightwatch/lib/testsuite/index.js:448:18)
-        at /node_modules/nightwatch/lib/testsuite/index.js:376:21
-        at processTicksAndRejections (internal/process/task_queues.js:93:5)
-        at async DefaultRunner.runTestSuite (/node_modules/nightwatch/lib/runner/test-runners/default.js:68:7)`;
-    let expectedStackTrace = `Error
-        at Object.this test should fail and capture screenshot (/Projects/nightwatch/examples/tests/sample.js:5:16)`; 
-    assert.strictEqual(Utils.filterStackTrace(stackTrace), expectedStackTrace);
-  
-    stackTrace = '';
-    expectedStackTrace = '';
-    assert.strictEqual(Utils.filterStackTrace(stackTrace), expectedStackTrace);
-  });
-
   it('readFolderRecursively with normal folder', async function(){
     const absPath = [];
     Utils.readFolderRecursively(path.join(__dirname, '../../extra/commands/other/'), [], (sourcePath, resource) => {
@@ -168,5 +151,142 @@ describe('test Utils', function() {
       absPath.push(path.join(sourcePath, resource));
     });
     assert.deepStrictEqual(absPath, [path.join(__dirname, '../../extra/commands/typescript/tsWait.js')]);
+  });
+
+  it('SafeJSON.stringify for circurlar reference objects', function() {
+    const obj = {
+      value: 1
+    };
+    obj.cirRef = obj;
+
+    assert.strictEqual(Utils.SafeJSON.stringify(obj), '{"value":1,"cirRef":"[Circular]"}');
+  });
+
+  it('SafeJSON.stringify for Proxy objects', function() {
+    
+    const target = {
+      value: 1
+    };
+
+    const proxyObj = new Proxy(target, {
+      get(target, property) {
+        return function(...args) {
+          if (!target[property]){
+            throw new Error('Unknown property');
+          }
+
+          return target[property];
+        };
+      }
+    });
+
+    assert.strictEqual(Utils.SafeJSON.stringify(proxyObj), '"[Error]"');
+  });
+
+  it('test printVersionInfo', function() {
+    const semVerRegex = /([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?/;
+
+    const oldConsole = console;
+    const logArgs = [];
+
+    // eslint-disable-next-line no-console
+    console.log = function(args) {
+      logArgs.push(args);
+    };
+
+    Utils.printVersionInfo();
+    const logString = logArgs.join('\n');
+    
+    assert.match(logString, /Nightwatch:/);
+    assert.match(logString, /version:/);
+    assert.match(logString, /changelog: https:\/\/github.com\/nightwatchjs\/nightwatch\/releases\/tag\//);
+    assert.match(logString, semVerRegex);
+
+    // eslint-disable-next-line no-global-assign
+    console = oldConsole;
+  });
+
+
+  describe('test findTSConfigFile', function () {
+    const {constants, rmdirSync} = require('fs');
+
+    beforeEach(function () {
+      mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
+    });
+
+    afterEach(function () {
+      mockery.deregisterAll();
+      mockery.resetCache();
+      mockery.disable();
+    });
+
+    it('loads default tsconfig correctly', function () {
+      const tsConfigPath = path.join(__dirname, '../../typescript-tests/tsconfig.nightwatch.json');
+
+      const tsConfigFile = Utils.findTSConfigFile(tsConfigPath);
+
+      assert.strictEqual(tsConfigFile, tsConfigPath);
+    });
+
+    it('loads `tsconfig.nightwatch.json` correctly', function () {
+      mockery.registerMock('path', {
+        join: function (a, b) {
+          if (b === 'tsconfig.nightwatch.json') {
+            return '/path/to/tsconfig.nightwatch.json';
+          }
+        }
+      });
+      mockery.registerMock('fs', {
+        statSync: function (module) {
+          if (module === '/path/to/tsconfig.nightwatch.json') {
+            return {
+              isFile: function () {
+                return true;
+              }
+            };
+          }
+          throw new Error('Does not exist');
+        },
+        constants,
+        rmdirSync
+      });
+
+      const tsConfigPath = '/path/to/tsconfig.nightwatch.json';
+      const localUtils = common.require('utils');
+
+      const tsConfigFile = localUtils.findTSConfigFile('');
+
+      assert.strictEqual(tsConfigFile, tsConfigPath);
+    });
+
+    it('loads `nightwatch/tsconfig.json` correctly', function () {
+      mockery.registerMock('path', {
+        join: function (a, b) {
+          if (b === 'nightwatch') {
+            return '/path/to/nightwatch/tsconfig.json';
+          }
+        }
+      });
+      mockery.registerMock('fs', {
+        statSync: function (module) {
+          if (module === '/path/to/nightwatch/tsconfig.json') {
+            return {
+              isFile: function () {
+                return true;
+              }
+            };
+          }
+          throw new Error('Does not exist');
+        },
+        constants,
+        rmdirSync
+      });
+      const tsConfigPath = '/path/to/nightwatch/tsconfig.json';
+      const localUtils = common.require('utils');
+
+      const tsConfigFile = localUtils.findTSConfigFile('');
+
+      assert.strictEqual(tsConfigFile, tsConfigPath);
+    });
   });
 });

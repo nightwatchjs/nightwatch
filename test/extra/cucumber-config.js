@@ -23,9 +23,20 @@ module.exports = {
   test_runner: {
     type: 'cucumber',
     options: {
-      feature_path: path.join(__dirname, '../cucumbertests/sample.feature')
+      feature_path: path.join(__dirname, '../cucumber-integration-tests/sample_cucumber_tests/integration/sample.feature')
     }
   },
-  output: false,
-  silent: false
-}
+  test_settings: {
+    browserstack: {
+      selenium: {
+        host: 'hub-cloud.browserstack.com',
+        port: 443
+      },
+      desiredCapabilities: {
+        'browserstack.user': 'test-access-user',
+        'browserstack.key': 'test-access-key',
+        browserName: 'chrome'
+      }
+    }
+  }
+};

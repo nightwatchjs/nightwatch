@@ -34,7 +34,10 @@ describe('Test CLI Runner Generate', function() {
       platform: function() {
         return 'win';
       },
-      constants: os.constants
+      constants: os.constants,
+      homedir: os.homedir,
+      release: os.release,
+      cpus: os.cpus
     });
 
     mockery.registerMock('fs', {
@@ -107,13 +110,13 @@ describe('Test CLI Runner Generate', function() {
         assert.deepStrictEqual(configData.test_settings.browserstack, {
           desiredCapabilities: {
             'bstack:options': {
-              userName: '${BROWSERSTACK_USER}',
-              accessKey: '${BROWSERSTACK_KEY}'
+              userName: '${BROWSERSTACK_USERNAME}',
+              accessKey: '${BROWSERSTACK_ACCESS_KEY}'
             }
           },
 
           selenium: {
-            host: 'hub-cloud.browserstack.com',
+            host: 'hub.browserstack.com',
             port: 443
           },
 
@@ -167,6 +170,56 @@ describe('Test CLI Runner Generate', function() {
           }
         });
 
+        assert.deepStrictEqual(configData.test_settings.saucelabs, {
+          desiredCapabilities: {
+            'sauce:options': {
+              username: '${SAUCE_USERNAME}',
+              accessKey: '${SAUCE_ACCESS_KEY}',
+              screenResolution: '1280x1024'
+              // https://docs.saucelabs.com/dev/cli/sauce-connect-proxy/#--region
+              // region: 'us-west-1'
+              // https://docs.saucelabs.com/dev/test-configuration-options/#tunnelidentifier
+              // parentTunnel: ''
+              // tunnelIdentifier: ''
+            }
+          },
+
+          selenium: {
+            host: 'ondemand.saucelabs.com',
+            port: 443
+          },
+
+          disable_error_log: false,
+          webdriver: {
+            start_process: false
+          }
+        });
+
+        assert.deepStrictEqual(configData.test_settings['saucelabs.chrome'], {
+          extends: 'saucelabs',
+          desiredCapabilities: {
+            browserName: 'chrome',
+            browserVersion: 'latest',
+            javascriptEnabled: true,
+            acceptSslCerts: true,
+            timeZone: 'London',
+            chromeOptions: {
+              w3c: true
+            }
+          }
+        });
+
+        assert.deepStrictEqual(configData.test_settings['saucelabs.firefox'], {
+          extends: 'saucelabs',
+          desiredCapabilities: {
+            browserName: 'firefox',
+            browserVersion: 'latest',
+            javascriptEnabled: true,
+            acceptSslCerts: true,
+            timeZone: 'London'
+          }
+        });
+
         assert.deepStrictEqual(configData.test_settings['cucumber-js'], {
           src_folders: ['examples/cucumber-js/features/step_definitions'],
           test_runner: {
@@ -181,11 +234,14 @@ describe('Test CLI Runner Generate', function() {
           selenium: {
             start_process: true,
             port: 4444,
+            command: 'standalone',
             server_path: '',
             cli_args: {
-              'webdriver.gecko.driver': '',
-              'webdriver.chrome.driver': ''
             }
+          },
+          webdriver: {
+            start_process: false,
+            default_path_prefix: '/wd/hub'
           }
         });
       },
@@ -200,26 +256,26 @@ describe('Test CLI Runner Generate', function() {
     }).setup();
 
     assert.strictEqual(ieRunner.argv.config, path.join(process.cwd(), 'nightwatch.conf.js'));
-    assert.deepStrictEqual(ieRunner.test_settings.desiredCapabilities, {
-      browserName: 'internet explorer',
-      browserVersion: '11.0',
-      'bstack:options': {
-        userName: '${BROWSERSTACK_USER}',
-        accessKey: '${BROWSERSTACK_KEY}'
-      }
-    });
 
     const chromeLocalRunner = new CliRunner({
       config: './nightwatch.json',
       env: 'browserstack.local_chrome'
     }).setup();
 
+    assert.deepStrictEqual(ieRunner.test_settings.desiredCapabilities, {
+      browserName: 'internet explorer',
+      browserVersion: '11.0',
+      'bstack:options': {
+        userName: '${BROWSERSTACK_USERNAME}',
+        accessKey: '${BROWSERSTACK_ACCESS_KEY}'
+      }
+    });
     assert.deepStrictEqual(chromeLocalRunner.test_settings.desiredCapabilities, {
       browserName: 'chrome',
       'browserstack.local': true,
       'bstack:options': {
-        userName: '${BROWSERSTACK_USER}',
-        accessKey: '${BROWSERSTACK_KEY}'
+        userName: '${BROWSERSTACK_USERNAME}',
+        accessKey: '${BROWSERSTACK_ACCESS_KEY}'
       }
     });
   });

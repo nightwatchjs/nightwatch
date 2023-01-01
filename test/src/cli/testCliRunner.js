@@ -23,7 +23,7 @@ describe('Test CLI Runner', function() {
       }
     });
 
-    let config = {
+    const config = {
       src_folders: ['tests'],
       test_settings: {
         'default': {
@@ -32,7 +32,7 @@ describe('Test CLI Runner', function() {
       }
     };
 
-    let promiseConfig = Promise.resolve({
+    const promiseConfig = Promise.resolve({
       src_folders: ['promiseTests'],
       test_settings: {
         default: {
@@ -53,6 +53,12 @@ describe('Test CLI Runner', function() {
         'default': {
           silent: true
         }
+      }
+    });
+
+    mockery.registerMock('./reporter_options.json', {
+      reporter_options: {
+        output_folder: 'output'
       }
     });
 
@@ -289,6 +295,14 @@ describe('Test CLI Runner', function() {
           throw new Error('Does not exist');
         }
 
+        if (module === './nightwatch.conf.ts'){
+          return {
+            isFile: function() {
+              return false;
+            }
+          };
+        }
+
         return {
           isFile: function() {
             return true;
@@ -304,7 +318,7 @@ describe('Test CLI Runner', function() {
     registerNoSettingsJsonMock();
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    const runner = new CliRunner({
       config: './nightwatch.json'
     }).setup();
 
@@ -348,7 +362,7 @@ describe('Test CLI Runner', function() {
   it('should override settings with CLI arguments', function() {
     registerNoSettingsJsonMock();
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    const runner = new CliRunner({
       config: './nightwatch.json',
       verbose: 'yes',
       output: 'test-output-folder',
@@ -356,9 +370,13 @@ describe('Test CLI Runner', function() {
       tag: 'danger',
       filter: 'test-filename-filter',
       skipgroup: 'test-skip-group',
-      timeout: 11
+      timeout: 11,
+      devtools: true,
+      debug: true
     }).setup();
 
+    assert.strictEqual(runner.argv.devtools, true);
+    assert.strictEqual(runner.argv.debug, true);
     assert.strictEqual(runner.test_settings.silent, false);
     assert.strictEqual(runner.test_settings.tag_filter, 'danger');
     assert.strictEqual(runner.test_settings.skiptags, 'home,arctic');
@@ -387,13 +405,42 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    const runner = new CliRunner({
       config: './output_disabled.json',
       env: 'default'
     }).setup();
 
     assert.strictEqual(runner.settings.output_folder, false);
   });
+
+  it('testSetOutputFolder using reporterOptions', function(done) {
+    mockery.registerMock('fs', {
+      statSync: function(module) {
+        if (module === './settings.json' || module === './nightwatch.conf.js') {
+          throw new Error('Does not exist');
+        }
+
+        return {
+          isFile: function() {
+            return true;
+          }
+        };
+      },
+      constants,
+      rmdirSync
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+    const runner = new CliRunner({
+      config: './reporter_options.json',
+      env: 'default'
+    }).setup();
+
+    assert.strictEqual(runner.test_settings.output_folder, 'output');
+
+    done();
+  });
+  
 
   it('testReadSettingsDeprecated', function(done) {
     mockery.registerMock('fs', {
@@ -412,7 +459,7 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    const runner = new CliRunner({
       config: './settings.json',
       env: 'default',
       output: 'output',
@@ -432,6 +479,8 @@ describe('Test CLI Runner', function() {
     done();
   });
 
+ 
+
   it('testCustomSettingsFileAndEnvironment', function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
@@ -449,7 +498,7 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    const runner = new CliRunner({
       config: './custom.json',
       env: 'extra'
     }).setup();
@@ -469,6 +518,9 @@ describe('Test CLI Runner', function() {
     let statSyncCalled = false;
     
     mockery.registerMock('fs', {
+      existsSync() {
+        return false;
+      },
       statSync: function(file) {
         if (file === 'demoTest') {
           statSyncCalled = true;
@@ -509,7 +561,7 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    const runner = new CliRunner({
       config: './custom.json',
       env: 'default',
       test: 'demoTest'
@@ -526,11 +578,14 @@ describe('Test CLI Runner', function() {
   });
 
   it('testGetTestSourceSingleWithAbsolutePath', function() {
-    let ABSOLUTE_PATH = '/path/to/test';
-    let ABSOLUTE_SRC_PATH = ABSOLUTE_PATH + '.js';
+    const ABSOLUTE_PATH = '/path/to/test';
+    const ABSOLUTE_SRC_PATH = ABSOLUTE_PATH + '.js';
     let statSyncCalled = false;
 
     mockery.registerMock('fs', {
+      existsSync() {
+        return false;
+      },
       statSync: function(file) {
         if (file === ABSOLUTE_PATH) {
           statSyncCalled = true;
@@ -567,7 +622,7 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    const runner = new CliRunner({
       config: './custom.json',
       env: 'default',
       test: ABSOLUTE_PATH
@@ -586,11 +641,14 @@ describe('Test CLI Runner', function() {
   });
 
   it('testGetTestSourceSingleWithRelativePath', function() {
-    let RELATIVE_PATH = '../path/to/test';
-    let TEST_SRC_PATH = process.cwd() + '/path/to/test.js';
+    const RELATIVE_PATH = '../path/to/test';
+    const TEST_SRC_PATH = process.cwd() + '/path/to/test.js';
     let statSyncCalled = false;
 
     mockery.registerMock('fs', {
+      existsSync() {
+        return false
+      },
       stat(file, cb) {
         if (file === TEST_SRC_PATH || file === './custom.js') {
           return cb(null, {
@@ -626,7 +684,7 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    const runner = new CliRunner({
       config: './custom.json',
       env: 'default',
       test: RELATIVE_PATH
@@ -643,6 +701,9 @@ describe('Test CLI Runner', function() {
 
   it('testGetTestSourceGroup', function() {
     mockery.registerMock('fs', {
+      existsSync() {
+        return false;
+      },
       statSync: function(module) {
         switch (module) {
           case './custom.json':
@@ -666,7 +727,7 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    const runner = new CliRunner({
       config: './custom.json',
       env: 'default',
       group: 'demoGroup'
@@ -677,7 +738,7 @@ describe('Test CLI Runner', function() {
     const walker = Runner.getTestSource(runner.test_settings, runner.argv);
     assert.deepStrictEqual(walker.testSource, ['tests/demoGroup']);
 
-    let otherRunner = new CliRunner({
+    const otherRunner = new CliRunner({
       config: './custom.json',
       env: 'default',
       group: 'tests/demoGroup'
@@ -686,7 +747,7 @@ describe('Test CLI Runner', function() {
     const walker2 = Runner.getTestSource(otherRunner.test_settings, otherRunner.argv);
     assert.deepStrictEqual(walker2.testSource, ['tests/demoGroup']);
 
-    let simpleRunner = new CliRunner({
+    const simpleRunner = new CliRunner({
       config: './custom.json',
       env: 'default'
     }).setup();
@@ -694,7 +755,7 @@ describe('Test CLI Runner', function() {
     const walker3 = Runner.getTestSource(simpleRunner.test_settings, simpleRunner.argv);
     assert.deepStrictEqual(walker3.testSource, ['tests']);
 
-    let invalidGroupRunner = new CliRunner({
+    const invalidGroupRunner = new CliRunner({
       config: './custom.json',
       env: 'default',
       group: 'group_doesnotexist'
@@ -703,7 +764,7 @@ describe('Test CLI Runner', function() {
     const walker4 = Runner.getTestSource(invalidGroupRunner.test_settings, invalidGroupRunner.argv);
     assert.deepStrictEqual(walker4.testSource, ['tests/group_doesnotexist']);
 
-    let invalidGroupInMultiSrcRunner = new CliRunner({
+    const invalidGroupInMultiSrcRunner = new CliRunner({
       config: './multi_test_paths.json',
       env: 'default',
       group: 'group_doesnotexist'
@@ -745,7 +806,7 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    const runner = new CliRunner({
       config: './custom.json',
       env: 'default',
       group: 'demoGroup1,demoGroup2'
@@ -756,7 +817,7 @@ describe('Test CLI Runner', function() {
     const walker = Runner.getTestSource(runner.test_settings, runner.argv);
     assert.deepStrictEqual(walker.testSource, ['tests/demoGroup1', 'tests/demoGroup2']);
 
-    let invalidGroupRunner = new CliRunner({
+    const invalidGroupRunner = new CliRunner({
       config: './custom.json',
       env: 'default',
       group: 'demoGroup1,demoGroup2,group_doesnotexist'
@@ -765,7 +826,7 @@ describe('Test CLI Runner', function() {
     const walker2 = Runner.getTestSource(invalidGroupRunner.test_settings, invalidGroupRunner.argv);
     assert.deepStrictEqual(walker2.testSource, ['tests/demoGroup1', 'tests/demoGroup2', 'tests/group_doesnotexist']);
 
-    let stripMissingInMultiRunner = new CliRunner({
+    const stripMissingInMultiRunner = new CliRunner({
       config: './multi_test_paths.json',
       env: 'default',
       group: 'demoGroup1,demoGroup2,group_doesnotexist'
@@ -793,7 +854,7 @@ describe('Test CLI Runner', function() {
 
     const CliRunner = common.require('runner/cli/cli.js');
 
-    let runner = new CliRunner({
+    const runner = new CliRunner({
       config: './null.json',
       env: 'default'
     });
@@ -803,7 +864,7 @@ describe('Test CLI Runner', function() {
     assert.strictEqual(runner.test_settings.irrelevantProperty, null);
   });
 
-  it('testParseTestSettingsIncorrect', function() {
+  it('testParseTestSettingsIncorrect', async function() {
     mockery.registerMock('fs', {
       statSync: function(module) {
         if (module === './incorrect.json') {
@@ -820,12 +881,17 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    assert.throws(function() {
-      new CliRunner({
+    let error;
+    try {
+      await new CliRunner({
         config: './incorrect.json',
         env: 'incorrect'
-      }).setup();
-    }, /Invalid testing environment specified: incorrect\./);
+      }).setupAsync();
+    } catch (err) {
+      error = err;
+    }
+
+    assert.ok(error.message.includes('Invalid testing environment specified: incorrect.'));
   });
 
   it('testReadExternalGlobals', function() {
@@ -845,7 +911,7 @@ describe('Test CLI Runner', function() {
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    const runner = new CliRunner({
       config: './custom.json',
       env: 'extra'
     }).setup({
@@ -923,10 +989,303 @@ describe('Test CLI Runner', function() {
     registerNoSettingsJsonMock();
 
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    const runner = new CliRunner({
       config: './nightwatch.json'
     }).setup();
 
     assert.strictEqual(runner.argv.config, './nightwatch.conf.cjs');
+  });
+
+  it('using Typescript config file', function () {
+    mockery.deregisterMock('package.json');
+    mockery.deregisterMock('fs');
+    mockery.registerMock('./nightwatch.conf.ts', {
+      src_folders: ['tests'],
+      test_settings: {
+        default: {
+          silent: true
+        }
+      }
+    });
+    mockery.registerMock('fs', {
+      statSync: function (module) {
+        if (module === './nightwatch.conf.ts') {
+          return {
+            isFile: function () {
+              return true;
+            }
+          };
+        }
+      },
+      constants,
+      rmdirSync
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+    const runner = new CliRunner({
+      config: './nightwatch.json'
+    }).setup();
+
+    assert.strictEqual(runner.argv.config, './nightwatch.conf.ts');
+  });
+
+  it('using no package.json file', function() {
+    mockery.deregisterMock('package.json');
+    mockery.registerMock('package.json');
+
+    registerNoSettingsJsonMock();
+
+    const CliRunner = common.require('runner/cli/cli.js');
+    const runner = new CliRunner({});
+
+    const config = runner.getLocalConfigFileName();
+    assert.strictEqual(config, './nightwatch.conf.js');
+  });
+
+  it('ios config setup on real device - deviceId passed in args', function() {
+    mockery.registerMock('./ios_config.json', {
+      test_settings: {
+        'default': {
+          output: false,
+          silent: false
+        },
+
+        'real.ios': {
+          desiredCapabilities: {
+            browserName: 'safari',
+            platformName: 'iOS',
+            'safari:useSimulator': false
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+
+    const runner = new CliRunner({
+      config: './ios_config.json',
+      env: 'real.ios',
+      deviceId: '00008030-00024C2C3453402E'
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'real.ios');
+    assert.strictEqual(runner.test_settings.desiredCapabilities['safari:useSimulator'], false);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'safari');
+    assert.strictEqual(runner.test_settings.desiredCapabilities.platformName, 'iOS');
+    assert.strictEqual(runner.test_settings.desiredCapabilities['safari:deviceUDID'], '00008030-00024C2C3453402E');
+  });
+
+  it('ios config setup on real device - deviceId already configured', function() {
+    mockery.registerMock('./ios_config.json', {
+      test_settings: {
+        'default': {
+          output: false,
+          silent: false
+        },
+
+        'real.ios': {
+          desiredCapabilities: {
+            browserName: 'safari',
+            platformName: 'iOS',
+            'safari:useSimulator': false,
+            'safari:deviceUDID': '00008030-00024C2C3453402E'
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+
+    const runner = new CliRunner({
+      config: './ios_config.json',
+      env: 'real.ios'
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'real.ios');
+    assert.strictEqual(runner.test_settings.desiredCapabilities['safari:useSimulator'], false);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'safari');
+    assert.strictEqual(runner.test_settings.desiredCapabilities.platformName, 'iOS');
+    assert.strictEqual(runner.test_settings.desiredCapabilities['safari:deviceUDID'], '00008030-00024C2C3453402E');
+  });
+
+  it('ios config setup on simulator', function() {
+    mockery.registerMock('./ios_config.json', {
+      test_settings: {
+        'default': {
+          output: false,
+          silent: false
+        },
+
+        'simulator.ios': {
+          desiredCapabilities: {
+            browserName: 'safari',
+            platformName: 'iOS',
+            'safari:useSimulator': true,
+            'safari:deviceName': 'iPhone 13',
+            'safari:platformVersion': '15.0'
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+
+    const runner = new CliRunner({
+      config: './ios_config.json',
+      env: 'simulator.ios'
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'simulator.ios');
+    assert.strictEqual(runner.test_settings.desiredCapabilities['safari:useSimulator'], true);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'safari');
+    assert.strictEqual(runner.test_settings.desiredCapabilities.platformName, 'iOS');
+    assert.strictEqual(runner.test_settings.desiredCapabilities['safari:deviceName'], 'iPhone 13');
+    assert.strictEqual(runner.test_settings.desiredCapabilities['safari:platformVersion'], '15.0');
+  });
+
+  it('android config setup on emulator - for chrome', function() {
+    mockery.registerMock('./android_config.json', {
+      test_settings: {
+        'default': {
+          output: false,
+          silent: false
+        },
+
+        'android.chrome': {
+          real_mobile: false,
+          desiredCapabilities: {
+            avd: 'nightwatch-android-11',
+            browserName: 'chrome',
+            'goog:chromeOptions': {
+              androidPackage: 'com.android.chrome'
+            }
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+
+    const runner = new CliRunner({
+      config: './android_config.json',
+      env: 'android.chrome'
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'android.chrome');
+    assert.strictEqual(runner.test_settings.real_mobile, false);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.avd, 'nightwatch-android-11');
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'chrome');
+    assert.ok('goog:chromeOptions' in runner.test_settings.desiredCapabilities);
+    assert.strictEqual(runner.test_settings.desiredCapabilities['goog:chromeOptions'].androidPackage, 'com.android.chrome');
+  });
+
+  it('android config setup on emulator - for firefox', function() {
+    mockery.registerMock('./android_config.json', {
+      test_settings: {
+        'default': {
+          output: false,
+          silent: false
+        },
+
+        'android.firefox': {
+          real_mobile: false,
+          desiredCapabilities: {
+            avd: 'nightwatch-android-11',
+            browserName: 'firefox',
+            'moz:firefoxOptions': {
+              androidPackage: 'org.mozilla.firefox'
+            }
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+
+    const runner = new CliRunner({
+      config: './android_config.json',
+      env: 'android.firefox'
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'android.firefox');
+    assert.strictEqual(runner.test_settings.real_mobile, false);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'firefox');
+    assert.ok('moz:firefoxOptions' in runner.test_settings.desiredCapabilities);
+    assert.strictEqual(runner.test_settings.desiredCapabilities['moz:firefoxOptions'].androidPackage, 'org.mozilla.firefox');
+  });
+
+  it('android config setup on real device - for chrome', function() {
+    mockery.registerMock('./android_config.json', {
+      test_settings: {
+        'default': {
+          output: false,
+          silent: false
+        },
+
+        'android.chrome': {
+          real_mobile: true,
+          desiredCapabilities: {
+            avd: 'nightwatch-android-11',
+            browserName: 'chrome',
+            'goog:chromeOptions': {
+              androidPackage: 'com.android.chrome',
+              androidDeviceSerial: 'ZD2222W62Y'
+            }
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+
+    const runner = new CliRunner({
+      config: './android_config.json',
+      env: 'android.chrome'
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'android.chrome');
+    assert.strictEqual(runner.test_settings.real_mobile, true);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.avd, 'nightwatch-android-11');
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'chrome');
+    assert.ok('goog:chromeOptions' in runner.test_settings.desiredCapabilities);
+    assert.strictEqual(runner.test_settings.desiredCapabilities['goog:chromeOptions'].androidPackage, 'com.android.chrome');
+    assert.strictEqual(runner.test_settings.desiredCapabilities['goog:chromeOptions'].androidDeviceSerial, 'ZD2222W62Y');
+  });
+
+  it('android config setup on real device - for firefox', function() {
+    mockery.registerMock('./android_config.json', {
+      test_settings: {
+        'default': {
+          output: false,
+          silent: false
+        },
+
+        'android.firefox': {
+          real_mobile: true,
+          desiredCapabilities: {
+            avd: 'nightwatch-android-11',
+            browserName: 'firefox',
+            'moz:firefoxOptions': {
+              androidPackage: 'org.mozilla.firefox',
+              androidDeviceSerial: 'ZD2222W62Y'
+            }
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+
+    const runner = new CliRunner({
+      config: './android_config.json',
+      env: 'android.firefox'
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'android.firefox');
+    assert.strictEqual(runner.test_settings.real_mobile, true);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'firefox');
+    assert.ok('moz:firefoxOptions' in runner.test_settings.desiredCapabilities);
+    assert.strictEqual(runner.test_settings.desiredCapabilities['moz:firefoxOptions'].androidPackage, 'org.mozilla.firefox');
+    assert.strictEqual(runner.test_settings.desiredCapabilities['moz:firefoxOptions'].androidDeviceSerial, 'ZD2222W62Y');
   });
 });

@@ -124,7 +124,7 @@ describe('.navigateTo()', function() {
 
     it('browser.navigateTo();', function (done) {
       this.client.api.baseUrl = 'http://localhost';
-      this.client.api.navigateTo('/url', result => {
+      this.client.api.navigateTo('/test_url', result => {
         assert.strictEqual(result.status, 0);
       });
 

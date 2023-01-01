@@ -1,5 +1,7 @@
 describe('duckduckgo example', function() {
 
+  this.tags = ['end-to-end'];
+
   it('Search Nightwatch.js and check results', function(browser) {
     browser
       .navigateTo('https://duckduckgo.com')
@@ -7,6 +9,6 @@ describe('duckduckgo example', function() {
       .sendKeys('#search_form_input_homepage', ['Nightwatch.js'])
       .click('#search_button_homepage')
       .assert.visible('.results--main')
-      .assert.containsText('.results--main', 'Nightwatch.js');
+      .assert.textContains('.results--main', 'Nightwatch.js');
   }); 
 });

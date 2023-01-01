@@ -10,7 +10,7 @@ describe('basicSampleTest', function() {
       assert.deepStrictEqual(result, {value: [{ELEMENT: '0'}], status: 0, returned: 1, passed: true});
     });
 
-    assert.deepStrictEqual(assertResult, {value: [{ELEMENT: '0'}], status: 0, returned: 1, passed: true});
+    assert.deepStrictEqual(assertResult, [{ELEMENT: '0'}]);
 
     await browser.end();
   });

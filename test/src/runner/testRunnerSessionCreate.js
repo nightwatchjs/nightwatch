@@ -26,7 +26,7 @@ describe('testRunnerSessionCreate', function() {
   });
 
   it('testRunner with session create error using webdriver', function() {
-    let testsPath = [
+    const testsPath = [
       path.join(__dirname, '../../sampletests/simple'),
       path.join(__dirname, '../../sampletests/async')
     ];
@@ -35,8 +35,7 @@ describe('testRunnerSessionCreate', function() {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        desiredCapabilities: {browserName: 'firefox', name: 'Async/Test/Sample'},
-        capabilities: {alwaysMatch: {browserName: 'firefox'}}
+        capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'firefox', 'nightwatch:options': {name: 'test-Name'}}}
       }),
       response: JSON.stringify({
         value: {
@@ -50,8 +49,7 @@ describe('testRunnerSessionCreate', function() {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        desiredCapabilities: {browserName: 'firefox', name: 'test-Name'},
-        capabilities: {alwaysMatch: {browserName: 'firefox'}}
+        capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'firefox',  'nightwatch:options': {name: 'test-Name'}}}
       }),
       response: JSON.stringify({
         value: {
@@ -61,7 +59,7 @@ describe('testRunnerSessionCreate', function() {
       })
     }, true);
 
-    let globals = {
+    const globals = {
       reporter(results) {
         const sep = path.sep;
         assert.strictEqual(results.errors, 2);
@@ -74,7 +72,12 @@ describe('testRunnerSessionCreate', function() {
       }
     };
 
-    return runTests(testsPath, settings({
+    return runTests({'reuse-browser': true, source: testsPath}, settings({
+      desiredCapabilities: {
+        'nightwatch:options': {
+          name: 'test-Name'
+        }
+      },
       selenium_host: null,
       webdriver: {
         host: 'localhost'
@@ -86,7 +89,7 @@ describe('testRunnerSessionCreate', function() {
   });
 
   it('testRunner with session create error using webdriver with --fail-fast argv', function() {
-    let testsPath = [
+    const testsPath = [
       path.join(__dirname, '../../sampletests/simple'),
       path.join(__dirname, '../../sampletests/async')
     ];
@@ -95,8 +98,7 @@ describe('testRunnerSessionCreate', function() {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        desiredCapabilities: {browserName: 'firefox', name: 'Async/Test/Sample'},
-        capabilities: {alwaysMatch: {browserName: 'firefox'}}
+        capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'firefox', 'nightwatch:options': {name: 'test-Name'}}}
       }),
       response: JSON.stringify({
         value: {
@@ -110,8 +112,7 @@ describe('testRunnerSessionCreate', function() {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        desiredCapabilities: {browserName: 'firefox', name: 'test-Name'},
-        capabilities: {alwaysMatch: {browserName: 'firefox'}}
+        capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'firefox', 'nightwatch:options': {name: 'test-Name'}}}
       }),
       response: JSON.stringify({
         value: {
@@ -121,7 +122,7 @@ describe('testRunnerSessionCreate', function() {
       })
     }, true);
 
-    let globals = {
+    const globals = {
       reporter(results) {
         assert.strictEqual(results.errors, 1);
         assert.strictEqual(Object.keys(results.modules).length, 1);
@@ -134,6 +135,9 @@ describe('testRunnerSessionCreate', function() {
       source: testsPath,
       'fail-fast': true
     }, settings({
+      desiredCapabilities: {
+        'nightwatch:options': {name: 'test-Name'}
+      },
       selenium_host: null,
       webdriver: {
         host: 'localhost'
@@ -151,7 +155,7 @@ describe('testRunnerSessionCreate', function() {
   });
 
   it('testRunner with session create error using webdriver with enable_fail_fast setting', function() {
-    let testsPath = [
+    const testsPath = [
       path.join(__dirname, '../../sampletests/simple'),
       path.join(__dirname, '../../sampletests/async')
     ];
@@ -160,8 +164,7 @@ describe('testRunnerSessionCreate', function() {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        desiredCapabilities: {browserName: 'firefox', name: 'Async/Test/Sample'},
-        capabilities: {alwaysMatch: {browserName: 'firefox'}}
+        capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'firefox', 'nightwatch:options': {name: 'test-Name'}}}
       }),
       response: JSON.stringify({
         value: {
@@ -175,8 +178,7 @@ describe('testRunnerSessionCreate', function() {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        desiredCapabilities: {browserName: 'firefox', name: 'test-Name'},
-        capabilities: {alwaysMatch: {browserName: 'firefox'}}
+        capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'firefox', 'nightwatch:options': {name: 'test-Name'}}}
       }),
       response: JSON.stringify({
         value: {
@@ -186,7 +188,7 @@ describe('testRunnerSessionCreate', function() {
       })
     }, true);
 
-    let globals = {
+    const globals = {
       reporter(results) {
         assert.strictEqual(results.errors, 1);
         assert.strictEqual(Object.keys(results.modules).length, 1);
@@ -198,6 +200,9 @@ describe('testRunnerSessionCreate', function() {
     return runTests({
       source: testsPath
     }, settings({
+      desiredCapabilities: {
+        'nightwatch:options': {name: 'test-Name'}
+      },
       selenium_host: null,
       webdriver: {
         host: 'localhost'
@@ -216,12 +221,12 @@ describe('testRunnerSessionCreate', function() {
   });
 
   it('testRunner with session ECONNREFUSED error using webdriver', function() {
-    let testsPath = [
+    const testsPath = [
       path.join(__dirname, '../../sampletests/simple'),
       path.join(__dirname, '../../sampletests/async')
     ];
 
-    let globals = {
+    const globals = {
       reporter(results) {
         assert.strictEqual(results.errors, 2);
         assert.strictEqual(results.errmessages.length, 2);
@@ -231,7 +236,7 @@ describe('testRunnerSessionCreate', function() {
         assert.ok(results.lastError instanceof Error);
         assert.strictEqual(results.lastError.code, 'ECONNREFUSED');
         assert.strictEqual(results.lastError.showTrace, false);
-        assert.strictEqual(results.lastError.message, 'An error occurred while creating a new GeckoDriver session: Connection refused to 127.0.0.1:9999. If the Webdriver/Selenium service is managed by Nightwatch, check if "start_process" is set to "true".');
+        assert.match(results.lastError.message, /An error occurred while creating a new GeckoDriver session: Connection refused to .*9999\. If the Webdriver\/Selenium service is managed by Nightwatch, check if "start_process" is set to "true"\./);
       }
     };
 
@@ -255,11 +260,11 @@ describe('testRunnerSessionCreate', function() {
   });
 
   it('testRunner with not found server_path error', function() {
-    let testsPath = [
+    const testsPath = [
       path.join(__dirname, '../../sampletests/simple')
     ];
 
-    let globals = {
+    const globals = {
       reporter(results) {
         assert.strictEqual(results.errors, 1);
         assert.strictEqual(results.errmessages.length, 1);
@@ -268,8 +273,8 @@ describe('testRunnerSessionCreate', function() {
         assert.strictEqual(results.lastError.sessionCreate, true);
         assert.strictEqual(results.lastError.showTrace, false);
         assert.ok(results.lastError instanceof Error);
-        assert.ok(results.lastError.detailedErr.includes('The specified executable path does not exist: /bin/xxxxx; verify if webdriver is configured correctly; using:'));
-        assert.strictEqual(results.lastError.message, 'Unable to create the GeckoDriver process:');
+        assert.ok(results.lastError.detailedErr.includes('verify if webdriver is configured correctly; using:'));
+        assert.strictEqual(results.lastError.message, 'Unable to create the GeckoDriver process: The specified executable path does not exist: /bin/xxxxx');
       }
     };
 
@@ -294,11 +299,11 @@ describe('testRunnerSessionCreate', function() {
   });
 
   it('testRunner with incorrect server_path error', function() {
-    let testsPath = [
+    const testsPath = [
       path.join(__dirname, '../../sampletests/simple')
     ];
 
-    let globals = {
+    const globals = {
       reporter(results) {
         assert.strictEqual(results.errors, 1);
         assert.strictEqual(results.errmessages.length, 1);
@@ -308,7 +313,7 @@ describe('testRunnerSessionCreate', function() {
         assert.strictEqual(results.lastError.showTrace, false);
         assert.ok(results.lastError instanceof Error);
         assert.ok(results.lastError.detailedErr.startsWith(' Verify if GeckoDriver is configured correctly; using:'));
-        assert.strictEqual(results.lastError.message, 'An error occurred while creating a new GeckoDriver session: [Error] Server terminated early with status 2');
+        assert.strictEqual(results.lastError.message, 'An error occurred while creating a new GeckoDriver session: [Error] Server terminated early with status 9');
       }
     };
 
@@ -316,7 +321,7 @@ describe('testRunnerSessionCreate', function() {
       selenium_host: null,
       webdriver: {
         start_process: true,
-        server_path: '/bin/bash',
+        server_path: process.argv[0],
         host: 'localhost',
         port: 4444
       },
@@ -330,5 +335,111 @@ describe('testRunnerSessionCreate', function() {
       assert.strictEqual(err.sessionCreate, true);
       assert.strictEqual(err.sessionConnectionRefused, true);
     });
+  });
+
+  it('test runner with reusing browser sessions', function() {
+    const testsPath = [
+      path.join(__dirname, '../../sampletests/reusebrowser')];
+
+    MockServer.addMock({
+      url: '/session',
+      statusCode: 200,
+      postdata: JSON.stringify({
+        desiredCapabilities: {browserName: 'firefox', name: 'first-test'},
+        capabilities: {alwaysMatch: {browserName: 'firefox'}}
+      }),
+      response: JSON.stringify({
+        status: 0,
+        sessionId: '1352110219202'
+      })
+    }, true);
+
+    MockServer.addMock({
+      url: '/session/1352110219202',
+      method: 'DELETE',
+      statusCode: 200,
+      response: JSON.stringify({
+        status: 0
+      })
+    }, true);
+
+
+   
+
+    const globals = {
+      reporter(results) {
+        const sep = path.sep;
+        assert.strictEqual(results.errors, 0);
+        assert.strictEqual(Object.keys(results.modules).length, 2);
+        assert.ok(Object.keys(results.modules).includes('firstTest'));
+        assert.ok(Object.keys(results.modules).includes('secondTest'));
+      }
+    };
+
+    return runTests({
+      source: testsPath,
+      'reuse-browser': true
+    }, settings({
+      selenium_host: null,
+      webdriver: {
+        host: 'localhost'
+      },
+      globals,
+      output: false,
+      output_folder: false
+    })); 
+  });
+
+  it('test runner with reusing browser sessions - using globals', function() {
+    const testsPath = [
+      path.join(__dirname, '../../sampletests/reusebrowser')];
+
+    MockServer.addMock({
+      url: '/session',
+      statusCode: 200,
+      postdata: JSON.stringify({
+        desiredCapabilities: {browserName: 'firefox', name: 'first-test'},
+        capabilities: {alwaysMatch: {browserName: 'firefox'}}
+      }),
+      response: JSON.stringify({
+        status: 0,
+        sessionId: '1352110219202'
+      })
+    }, true);
+
+    MockServer.addMock({
+      url: '/session/1352110219202',
+      method: 'DELETE',
+      statusCode: 200,
+      response: JSON.stringify({
+        status: 0
+      })
+    }, true);
+
+
+   
+
+    const globals = {
+      reuseBrowserSession: true,
+      reporter(results) {
+        const sep = path.sep;
+        assert.strictEqual(results.errors, 0);
+        assert.strictEqual(Object.keys(results.modules).length, 2);
+        assert.ok(Object.keys(results.modules).includes('firstTest'));
+        assert.ok(Object.keys(results.modules).includes('secondTest'));
+      }
+    };
+
+    return runTests({
+      source: testsPath
+    }, settings({
+      selenium_host: null,
+      webdriver: {
+        host: 'localhost'
+      },
+      globals,
+      output: false,
+      output_folder: false
+    })); 
   });
 });

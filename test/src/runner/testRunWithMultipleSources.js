@@ -77,8 +77,8 @@ describe('testRunWithMultipleSources', function() {
     let globals = {
       calls: 0,
       reporter(results) {
-        assert.ok('async/test/sample' in results.modules);
-        assert.ok('simple/test/sample' in results.modules);
+        assert.ok(`async${path.sep}test${path.sep}sample` in results.modules);
+        assert.ok(`simple${path.sep}test${path.sep}sample` in results.modules);
         assert.strictEqual(Object.keys(results.modules).length, 2);
       }
     };
@@ -112,9 +112,9 @@ describe('testRunWithMultipleSources', function() {
     let globals = {
       calls: 0,
       reporter(results) {
-        assert.ok('test/sample' in results.modules);
-        assert.ok('unittests/sample' in results.modules);
-        assert.ok('unittests/sampleAnnotation' in results.modules);
+        assert.ok(`test${path.sep}sample` in results.modules);
+        assert.ok(`unittests${path.sep}sample` in results.modules);
+        assert.ok(`unittests${path.sep}sampleAnnotation` in results.modules);
         assert.strictEqual(Object.keys(results.modules).length, 3);
       }
     };

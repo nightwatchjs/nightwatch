@@ -20,6 +20,23 @@ module.exports = {
     return this;
   },
 
+  createW3cSession() {
+    nock('http://localhost:10195')
+      .post('/session')
+      .reply(201, {
+        value: {
+          sessionId: '13521-10219-202',
+          capabilities: {
+            acceptInsecureCerts: false,
+            browserName: 'firefox',
+            browserVersion: '65.0.1'
+          }
+        }
+      });
+
+    return this;
+  },
+  
   createSession() {
     nock('http://localhost:10195')
       .post('/wd/hub/session')
@@ -36,6 +53,14 @@ module.exports = {
     return this;
   },
 
+  deleteW3cSession() {
+    nock('http://localhost:10195')
+      .delete('/session/13521-10219-202')
+      .reply(200);
+
+    return this;
+  },
+
   deleteSession() {
     nock('/wd/hub/session/1352110219202')
       .delete()
@@ -48,6 +73,14 @@ module.exports = {
     return this;
   },
 
+  urlW3c() {
+    nock('http://localhost:10195')
+      .post('/sesion/13521-10219-202/url')
+      .reply(200, {value: null});
+
+    return this;
+  },
+  
   url() {
     nock('http://localhost:10195')
       .post('/wd/hub/session/1352110219202/url', {url: 'http://localhost'})
@@ -71,19 +104,52 @@ module.exports = {
     return this;
   },
 
+  getPageSource(value = '<html><body><p>404 not found</p></body></html>') {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/source')
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value
+      });
+
+    return this;
+  },
+
+  elementFoundW3c() {
+    nock('http://localhost:10195')
+      .post('/session/13521-10219-202/elements')
+      .reply(200, {
+        value: [{'element-6066-11e4-a52e-4f735466cecf': ' 5cc459b8-36a8-3042-8b4a-258883ea642b'}]
+      });
+
+    return this;
+  },
+
   elementFound() {
     nock('http://localhost:10195')
       .post('/wd/hub/session/1352110219202/elements', {'using': 'css selector', 'value': '#weblogin'})
       .reply(200, {
         status: 0,
         state: 'success',
-        value: [{ELEMENT: '0'}]
+        value: [{'element-6066-11e4-a52e-4f735466cecf': '0'}]
       });
 
     return this;
   },
 
-  elementStateError({error, times, code = 400, url = '/wd/hub/session/1352110219202/element/0/displayed', method = 'get', reply}) {
+  click() {
+    nock('http://localhost:10195')
+      .post('/wd/hub/session/1352110219202/element/0/click')
+      .reply(200, {
+        status: 0,
+        state: 'success'
+      });
+
+    return this;
+  },
+
+  elementStateError({error, times, code = 400, url = '/wd/hub/session/1352110219202/execute/sync', method = 'post', reply}) {
     const mock = nock('http://localhost:10195')[method](url);
 
     if (times) {
@@ -119,7 +185,7 @@ module.exports = {
       .reply(200, {
         status: 0,
         state: 'success',
-        value: [{ELEMENT: '0'}]
+        value: [{'element-6066-11e4-a52e-4f735466cecf': '0'}]
       });
 
     return this;
@@ -128,6 +194,19 @@ module.exports = {
   attributeValue(value) {
     nock('http://localhost:10195')
       .get('/wd/hub/session/1352110219202/element/0/attribute/class')
+      .reply(200, {
+        status: 0,
+        sessionId: '1352110219202',
+        value: value,
+        state: 'success'
+      });
+
+    return this;
+  },
+
+  attributeValueSync(value) {
+    nock('http://localhost:10195')
+      .post('/wd/hub/session/1352110219202/execute/sync')
       .reply(200, {
         status: 0,
         sessionId: '1352110219202',
@@ -256,7 +335,7 @@ module.exports = {
 
   visible() {
     nock('http://localhost:10195')
-      .get('/wd/hub/session/1352110219202/element/0/displayed')
+      .post('/wd/hub/session/1352110219202/execute/sync')
       .reply(200, {
         status: 0,
         sessionId: '1352110219202',
@@ -269,7 +348,7 @@ module.exports = {
 
   notVisible(times) {
     var mock = nock('http://localhost:10195')
-      .get('/wd/hub/session/1352110219202/element/0/displayed');
+      .post('/wd/hub/session/1352110219202/execute/sync');
 
     if (times) {
       mock.times(times);
@@ -287,7 +366,7 @@ module.exports = {
 
   value(value, times) {
     var mock = nock('http://localhost:10195')
-      .get('/wd/hub/session/1352110219202/element/0/attribute/value');
+      .get('/wd/hub/session/1352110219202/element/0/property/value');
 
     if (times) {
       mock.times(times);
@@ -348,11 +427,11 @@ module.exports = {
 
   active() {
     nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/element/active')
+      .get('/wd/hub/session/1352110219202/element/active')
       .reply(200, {
         status: 0,
         state: 'success',
-        value: {ELEMENT: '0'}
+        value: {'element-6066-11e4-a52e-4f735466cecf': '0'}
       });
 
     return this;
@@ -360,11 +439,11 @@ module.exports = {
 
   notActive() {
     nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/element/active')
+      .get('/wd/hub/session/1352110219202/element/active')
       .reply(200, {
         status: 0,
         state: 'success',
-        value: {ELEMENT: 'other'}
+        value: {'element-6066-11e4-a52e-4f735466cecf': 'other'}
       });
 
     return this;
@@ -433,10 +512,10 @@ module.exports = {
         status: 0,
         state: 'success',
         value: [
-          {ELEMENT: '0'},
-          {ELEMENT: '1'},
-          {ELEMENT: '2'},
-          {ELEMENT: '3'}
+          {'element-6066-11e4-a52e-4f735466cecf': '0'},
+          {'element-6066-11e4-a52e-4f735466cecf': '1'},
+          {'element-6066-11e4-a52e-4f735466cecf': '2'},
+          {'element-6066-11e4-a52e-4f735466cecf': '3'}
         ]
       });
 
@@ -457,17 +536,15 @@ module.exports = {
 
   cookie(name, value) {
     nock('http://localhost:10195')
-      .get('/wd/hub/session/1352110219202/cookie')
+      .get(`/wd/hub/session/1352110219202/cookie/${name}`)
       .reply(200, {
         status: 0,
         state: 'success',
-        value: [
-          {
-            domain: 'cookie-domain',
-            name: name,
-            value: value
-          }
-        ]
+        value : {
+          domain: 'cookie-domain',
+          name: name,
+          value: value
+        }
       });
 
     return this;
@@ -493,6 +570,16 @@ module.exports = {
       });
 
     return this;
+  },
+
+  analyticsCollector(GAPath) {
+    return nock('https://localhost:13555')
+      .post(GAPath)
+      .reply(204, {
+        status: 0,
+        state: 'success',
+        value: []
+      });
   },
 
   cleanAll() {

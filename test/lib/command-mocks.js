@@ -12,6 +12,7 @@ module.exports = {
   stop(done) {
     if (!server) {
       done();
+
       return;
     }
 
@@ -106,17 +107,21 @@ module.exports = {
     }, true);
   },
 
-  element({using = 'css selector', value = '#container'}) {
+  element({ 
+    using = 'css selector', 
+    value = '#container',
+    response = {
+      value: [{
+        'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
+      }]
+    }
+  }) {
     MockServer.addMock({
       url: '/wd/hub/session/13521-10219-202/elements',
       method: 'POST',
       postdata: JSON.stringify({using, value}),
 
-      response: JSON.stringify({
-        value: [{
-          'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
-        }]
-      })
+      response: JSON.stringify(response)
     }, true);
   },
 
@@ -169,10 +174,31 @@ module.exports = {
     });
   },
 
+  clearElement(elementId = '0') {
+    MockServer.addMock({
+      url: `/wd/hub/session/1352110219202/element/${elementId}/clear`,
+      method: 'POST',
+      response: JSON.stringify({
+        value: null
+      })
+    });
+  },
+
+  executeSync(response, {times = 0} = {}) {
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/execute/sync',
+      method: 'POST',
+      response: JSON.stringify(response),
+      times
+    });
+
+    return this;
+  },
+
   visible(elementId = '0', value = true, {times = 0} = {}) {
     MockServer.addMock({
-      url: `/wd/hub/session/1352110219202/element/${elementId}/displayed`,
-      method: 'GET',
+      url: '/wd/hub/session/1352110219202/execute/sync',
+      method: 'POST',
       response: JSON.stringify({
         value
       }),
@@ -181,6 +207,16 @@ module.exports = {
 
     return this;
   },
+
+  w3cVisible(value = true) {
+    MockServer.addMock({
+      url: '/session/13521-10219-202/execute/sync',
+      method: 'POST',
+      response: JSON.stringify({
+        value
+      })
+    }, true);
+  }, 
 
   findElements({using = 'css selector', value = '#container', response = null, times = 0}) {
     const mockOpts = {
@@ -233,6 +269,16 @@ module.exports = {
     return this;
   },
 
+  elementProperty(elementId, property, response) {
+    MockServer.addMock({
+      url: `/wd/hub/session/1352110219202/element/${elementId}/property/${property}`,
+      method: 'GET',
+      response: JSON.stringify(response)
+    });
+
+    return this;
+  },
+
   setElementValue({
     sessionId = '13521-10219-202',
     elementId,
@@ -247,6 +293,32 @@ module.exports = {
       postdata: JSON.stringify({
         text,
         value: text.split('')
+      }),
+      response: response || {
+        value: null
+      },
+      statusCode
+    }, times === 0);
+
+    return this;
+  },
+
+  frame({
+    sessionId = '13521-10219-202',
+    elementId = '5cc459b8-36a8-3042-8b4a-258883ea642b',
+    text,
+    times = 0,
+    response = null,
+    statusCode = 200
+  } = {}) {
+    MockServer.addMock({
+      url: `/session/${sessionId}/frame`,
+      method: 'POST',
+      postdata: JSON.stringify({
+        id: {
+          'element-6066-11e4-a52e-4f735466cecf': elementId,
+          ELEMENT: elementId
+        }
       }),
       response: response || {
         value: null
@@ -277,8 +349,7 @@ module.exports = {
       statusCode: 201,
       method: 'POST',
       postdata: JSON.stringify({
-        desiredCapabilities: {browserName, ...options},
-        capabilities: {alwaysMatch: {browserName, ...options}}
+        capabilities: {firstMatch: [{}], alwaysMatch: {browserName, ...options}}
       }),
 
       response: JSON.stringify({
@@ -314,7 +385,7 @@ module.exports = {
     url = '/wd/hub/session'
   }) {
     const browserName = 'chrome';
-    const headlessOpt = headless ? 'headless' : '';
+    const headlessOpt = headless ? 'headless=chrome' : '';
     const options = {
       ['goog:chromeOptions']: {}
     };
@@ -328,8 +399,7 @@ module.exports = {
       statusCode: 201,
       method: 'POST',
       postdata: JSON.stringify({
-        desiredCapabilities: {browserName, ...options},
-        capabilities: {alwaysMatch: {browserName, ...options}}
+        capabilities: {firstMatch: [{}], alwaysMatch: {browserName, ...options}}
       }),
 
       response: JSON.stringify({
@@ -370,8 +440,7 @@ module.exports = {
       statusCode: 201,
       method: 'POST',
       postdata: JSON.stringify(postdata || {
-        desiredCapabilities: {browserName, name: testName},
-        capabilities: {alwaysMatch: {browserName}}
+        capabilities: {firstMatch: [{}], alwaysMatch: {browserName}}
       }),
 
       response: JSON.stringify({
@@ -416,4 +485,3 @@ module.exports = {
     return this;
   }
 };
-

@@ -19,7 +19,7 @@ describe('test NightwatchIndex', function () {
   });
 
   it('Test initialization', function (done) {
-    let client = Nightwatch.createClient({
+    const client = Nightwatch.createClient({
       silent: false,
       output: false
     });
@@ -38,8 +38,7 @@ describe('test NightwatchIndex', function () {
       url: '/wd/hub/session',
 
       postdata: {
-        desiredCapabilities: {browserName: 'chrome', 'goog:chromeOptions': {}},
-        capabilities: {alwaysMatch: {browserName: 'chrome', 'goog:chromeOptions': {}}}
+        capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'chrome', 'goog:chromeOptions': {}}}
       },
 
       responseHeaders: {
@@ -63,7 +62,7 @@ describe('test NightwatchIndex', function () {
       method: 'GET'
     }, true);
 
-    let client = Nightwatch.createClient({
+    const client = Nightwatch.createClient({
       desiredCapabilities: {
         browserName: 'chrome'
       },
@@ -73,6 +72,49 @@ describe('test NightwatchIndex', function () {
 
     client.on('nightwatch:session.create', function (data) {
       assert.strictEqual(data.sessionId, '1352110219202');
+      assert.strictEqual(client.api.capabilities.browserName, 'chrome');
+      done();
+    });
+
+    client.startSession().catch(err => {
+      done(err);
+    });
+  });
+
+  it('testChromeSessionWithRelativeRedirectUrl', function (done) {
+    MockServer.addMock({
+      url: '/wd/hub/session',
+      responseHeaders: {
+        location: '/wd/hub/session/1352110219203'
+      },
+      statusCode: 302,
+      method: 'POST'
+    }, true);
+
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219203',
+      response: JSON.stringify({
+        status: 0,
+        sessionId: '1352110219203',
+        value: {browserName: 'chrome'}
+      }),
+      responseHeaders: {
+        statusCode: 201
+      },
+      method: 'GET'
+    }, true);
+
+
+    const client = Nightwatch.createClient({
+      desiredCapabilities: {
+        browserName: 'chrome'
+      },
+      silent: false,
+      output: false
+    });
+
+    client.on('nightwatch:session.create', function (data) {
+      assert.strictEqual(data.sessionId, '1352110219203');
       assert.strictEqual(client.api.capabilities.browserName, 'chrome');
       done();
     });
@@ -98,7 +140,7 @@ describe('test NightwatchIndex', function () {
       method: 'POST'
     }, true);
 
-    let client = Nightwatch.createClient({
+    const client = Nightwatch.createClient({
       selenium: {
         start_process: false,
         host: null
@@ -139,10 +181,13 @@ describe('test NightwatchIndex', function () {
       method: 'POST'
     }, true);
 
-    let client = Nightwatch.createClient({
+    const client = Nightwatch.createClient({
       desiredCapabilities: {
         browserName: 'firefox',
-        platform: 'TEST'
+        platform: 'TEST',
+        'nightwatch:options': {
+          name: 'selenium-test'
+        }
       },
       selenium_host: 'localhost',
       selenium_port: 10195,
@@ -171,7 +216,7 @@ describe('test NightwatchIndex', function () {
       method: 'POST'
     }, true);
 
-    let client = Nightwatch.createClient({
+    const client = Nightwatch.createClient({
       desiredCapabilities: {
         browserName: 'safari'
       },
@@ -211,7 +256,7 @@ describe('test NightwatchIndex', function () {
       assert.deepStrictEqual(argv, {
         config: path.resolve('./test/extra/nightwatch.json'),
         verbose: true,
-        reporter: 'junit',
+        reporter: ['junit', 'json', 'html'],
         source: 'test.js',
         _source: ['test.js']
       });

@@ -16,7 +16,7 @@ describe('Cucumber integration', function() {
   });
 
   it('testCucumberSampleTests', function() {
-    const source = [path.join(__dirname, '../../../cucumbertests/testSample.js')];
+    const source = [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')];
 
     return runTests({
       source,
@@ -29,7 +29,7 @@ describe('Cucumber integration', function() {
   });
 
   it('testCucumberSampleTests with failures', function() {
-    const source = [path.join(__dirname, '../../../cucumbertests/testWithFailures.js')];
+    const source = [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testWithFailures.js')];
 
     return runTests({
       source,
@@ -38,6 +38,19 @@ describe('Cucumber integration', function() {
       config: path.join(__dirname, '../../../extra/cucumber-config.js')
     }, {}).then(failures => {
       assert.strictEqual(failures, true, 'Cucumber tests should have failed. Run with verbose to investigate.');
+    });
+  });
+
+  it('testCucumberSampleTests - chaining of commands failure', function() {
+    const source = [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/chainingCommands/testCommands.js')];
+
+    return runTests({
+      source,
+      tags: ['@fail'],
+      verbose: false,
+      config: path.join(__dirname, '../../../extra/cucumber-config.js')
+    }, {}).then(failures => {
+      assert.strictEqual(failures, true, 'Cucumber has test failures. Run with verbose to investigate.');
     });
   });
 

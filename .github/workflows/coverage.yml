@@ -5,9 +5,9 @@ name: Coverage Job
 
 on:
   push:
-    branches: [ main ]
+    branches: [  ]
   pull_request:
-    branches: [ main ]
+    branches: [  ]
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:

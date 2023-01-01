@@ -1,24 +1,24 @@
 const assert = require('assert');
-const MockServer  = require('../../../../lib/mockserver.js');
+const MockServer = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 
-describe('waitForElementVisible', function() {
-  beforeEach(function(done) {
+describe('waitForElementVisible', function () {
+  beforeEach(function (done) {
     CommandGlobals.beforeEach.call(this, done, {
       output: false
     });
   });
 
-  afterEach(function(done) {
+  afterEach(function (done) {
     CommandGlobals.afterEach.call(this, done);
   });
 
   let commandInstance;
 
-  it('client.waitForElementVisible() failure', function(done) {
+  it('client.waitForElementVisible() failure', function (done) {
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/element/0/displayed',
-      method: 'GET',
+      url: '/wd/hub/session/1352110219202/execute/sync',
+      method: 'POST',
       response: JSON.stringify({
         sessionId: '1352110219202',
         status: 0,
@@ -42,7 +42,7 @@ describe('waitForElementVisible', function() {
       assert.strictEqual(result.value, false);
     });
 
-    this.client.start(function(err) {
+    this.client.start(function (err) {
       if (err && err.name !== 'NightwatchAssertError') {
         done(err);
       } else {
@@ -53,8 +53,8 @@ describe('waitForElementVisible', function() {
 
   it('client.waitForElementVisible() fail with global timeout default', function () {
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/element/0/displayed',
-      method: 'GET',
+      url: '/wd/hub/session/1352110219202/execute/sync',
+      method: 'POST',
       response: JSON.stringify({
         sessionId: '1352110219202',
         status: 0,
@@ -71,7 +71,7 @@ describe('waitForElementVisible', function() {
       assert.strictEqual(result.status, 0);
     });
 
-    return this.client.start(function(err) {
+    return this.client.start(function (err) {
       if (!err) {
         throw new Error('Expected error but got none');
       }
@@ -89,8 +89,8 @@ describe('waitForElementVisible', function() {
 
   it('client.waitForElementVisible() fail with global timeout default and custom message', function () {
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/element/0/displayed',
-      method: 'GET',
+      url: '/wd/hub/session/1352110219202/execute/sync',
+      method: 'POST',
       response: JSON.stringify({
         sessionId: '1352110219202',
         status: 0,
@@ -105,7 +105,7 @@ describe('waitForElementVisible', function() {
       assert.strictEqual(instance.message, 'Test message <#weblogin> and a global 15 ms.');
     }, 'Test message <%s> and a global %d ms.');
 
-    return this.client.start(function(err) {
+    return this.client.start(function (err) {
       if (!err) {
         throw new Error('Expected error but got none');
       }
@@ -122,8 +122,8 @@ describe('waitForElementVisible', function() {
 
   it('client.waitForElementVisible() fail with global timeout default and custom message with only time placeholder', function () {
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/element/0/displayed',
-      method: 'GET',
+      url: '/wd/hub/session/1352110219202/execute/sync',
+      method: 'POST',
       response: JSON.stringify({
         sessionId: '1352110219202',
         status: 0,
@@ -138,7 +138,7 @@ describe('waitForElementVisible', function() {
       assert.strictEqual(instance.message, 'Test message with a global 15 ms.');
     }, 'Test message with a global %d ms.');
 
-    return this.client.start(function(err) {
+    return this.client.start(function (err) {
       if (!err) {
         throw new Error('Expected error but got none');
       }
@@ -162,12 +162,12 @@ describe('waitForElementVisible', function() {
         response: JSON.stringify({
           status: 0,
           state: 'success',
-          value: [{ELEMENT: '99'}]
+          value: [{'element-6066-11e4-a52e-4f735466cecf': '99'}]
         })
       })
       .addMock({
-        url: '/wd/hub/session/1352110219202/element/99/displayed',
-        method: 'GET',
+        url: '/wd/hub/session/1352110219202/execute/sync',
+        method: 'POST',
         response: JSON.stringify({
           sessionId: '1352110219202',
           state: 'stale element reference',
@@ -175,8 +175,8 @@ describe('waitForElementVisible', function() {
         })
       }, true)
       .addMock({
-        url: '/wd/hub/session/1352110219202/element/99/displayed',
-        method: 'GET',
+        url: '/wd/hub/session/1352110219202/execute/sync',
+        method: 'POST',
         response: JSON.stringify({
           state: 'success',
           status: 0,
@@ -189,7 +189,7 @@ describe('waitForElementVisible', function() {
       assert.strictEqual(result.value, true);
     });
 
-    return this.client.start(function(err) {
+    return this.client.start(function (err) {
       MockServer.removeMock({
         url: '/wd/hub/session/1352110219202/elements',
         method: 'POST'
@@ -210,7 +210,7 @@ describe('waitForElementVisible', function() {
       result = res;
     });
 
-    return this.client.start(function(e) {
+    return this.client.start(function (e) {
       assert.strictEqual(result.value, null);
       assert.strictEqual(result.status, -1);
       assert.strictEqual(e.message, `Timed out while waiting for element <.weblogin> to be present for 11 milliseconds. - expected "visible" but got: "not found" (${commandInstance.elapsedTime}ms)`);
@@ -219,8 +219,8 @@ describe('waitForElementVisible', function() {
 
   it('client.waitForElementVisible() success after retry', function () {
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/element/0/displayed',
-      method: 'GET',
+      url: '/wd/hub/session/1352110219202/execute/sync',
+      method: 'POST',
       response: JSON.stringify({
         sessionId: '1352110219202',
         status: 0,
@@ -229,8 +229,8 @@ describe('waitForElementVisible', function() {
     }, true);
 
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/element/0/displayed',
-      method: 'GET',
+      url: '/wd/hub/session/1352110219202/execute/sync',
+      method: 'POST',
       response: JSON.stringify({
         sessionId: '1352110219202',
         status: 0,
@@ -247,7 +247,7 @@ describe('waitForElementVisible', function() {
       commandResult = result;
     });
 
-    return this.client.start(function(err) {
+    return this.client.start(function (err) {
       assert.strictEqual(commandResult.value, true);
       assert.strictEqual(commandInstance.executor.retries, 1);
       assert.strictEqual(err, undefined);
@@ -259,7 +259,7 @@ describe('waitForElementVisible', function() {
 
     this.client.api.waitForElementVisible('foo');
 
-    return this.client.start(function(err) {
+    return this.client.start(function (err) {
       assert.ok(err instanceof Error);
       assert.ok(err.message.includes('waitForElement expects second parameter to have a global default (waitForConditionTimeout) to be specified if not passed as the second parameter'));
     });
@@ -277,12 +277,12 @@ describe('waitForElementVisible', function() {
         response: JSON.stringify({
           status: 0,
           state: 'success',
-          value: [{ELEMENT: '99'}]
+          value: [{'element-6066-11e4-a52e-4f735466cecf': '99'}]
         })
       }, true)
       .addMock({
-        url: '/wd/hub/session/1352110219202/element/99/displayed',
-        method: 'GET',
+        url: '/wd/hub/session/1352110219202/execute/sync',
+        method: 'POST',
         response: JSON.stringify({
           state: 'success',
           status: 0,
@@ -295,7 +295,7 @@ describe('waitForElementVisible', function() {
       assert.strictEqual(result.value, true);
     });
 
-    return this.client.start(function(err) {
+    return this.client.start(function (err) {
       if (err) {
         throw err;
       }
@@ -314,12 +314,12 @@ describe('waitForElementVisible', function() {
         response: JSON.stringify({
           status: 0,
           state: 'success',
-          value: [{ELEMENT: '99'}]
+          value: [{'element-6066-11e4-a52e-4f735466cecf': '99'}]
         })
       }, true)
       .addMock({
-        url: '/wd/hub/session/1352110219202/element/99/displayed',
-        method: 'GET',
+        url: '/wd/hub/session/1352110219202/execute/sync',
+        method: 'POST',
         response: JSON.stringify({
           state: 'success',
           status: 0,
@@ -329,7 +329,7 @@ describe('waitForElementVisible', function() {
 
     this.client.api.waitForElementVisible('#web-login', 'Test message');
 
-    return this.client.start(function(err) {
+    return this.client.start(function (err) {
       if (err) {
         throw err;
       }

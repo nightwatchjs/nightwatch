@@ -1,12 +1,15 @@
 const searchCommands = {
   submit() {
     this.waitForElementVisible('@submitButton', 1000)
-      .click('@submitButton')
-      .api.pause(1000);
+      .click('@submitButton');
+    
+    this.pause(1000);
 
     return this; // Return page object for chaining
   }
 };
+
+const consentModal = '[aria-modal="true"]';
 
 module.exports = {
   url: 'https://google.no',
@@ -16,14 +19,16 @@ module.exports = {
 
   sections: {
     consentModal: {
-      selector: '[aria-modal="true"][title="Before you continue to Google Search"]',
+      selector: consentModal,
       elements: {
-        customizeButton: 'div.VDity button:nth-child(1)'
+        rejectAllButton: '.GzLjMd button:nth-child(1)'
       }
     }
   },
 
   elements: {
+    consentModal,
+
     searchBar: {
       selector: 'input[name=q]'
     },

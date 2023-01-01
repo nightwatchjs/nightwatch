@@ -1,3 +1,4 @@
+const path = require('path');
 const assert = require('assert');
 const MockServer  = require('../../../../lib/mockserver.js');
 const Nightwatch = require('../../../../lib/nightwatch.js');
@@ -21,6 +22,22 @@ describe('.end()', function() {
         assert.strictEqual(this.client.api.sessionId, null);
       });
 
+      this.client.start(done);
+    });
+
+    it('browser.end(true) - forceEnd by default true', function (done) { 
+      this.client.api.end(true, result => {
+        assert.strictEqual(result.status, 0);
+        assert.strictEqual(this.client.sessionId, null);
+      });
+      this.client.start(done);
+    });
+
+    it('browser.end(false) - do not end sesion', function(done) {
+      this.client.api.end(false, result=> {
+        assert.strictEqual(result, null);
+        assert.strictEqual(this.client.sessionId, '1352110219202');
+      });
       this.client.start(done);
     });
 
@@ -65,9 +82,9 @@ describe('.end()', function() {
           isError: true
         });
 
-        assert.ok(fileNameFailed.startsWith('xxTestSuite/xxTestCase_FAILED_'));
+        assert.ok(fileNameFailed.startsWith(`xxTestSuite${path.sep}xxTestCase_FAILED_`));
         assert.ok(fileNameFailed.endsWith('.png'));
-        assert.ok(fileNameError.startsWith('xxTestSuite/xxTestCase_ERROR_'));
+        assert.ok(fileNameError.startsWith(`xxTestSuite${path.sep}xxTestCase_ERROR_`));
         assert.ok(fileNameError.endsWith('.png'));
 
         client.api.currentTest = {
@@ -86,6 +103,21 @@ describe('.end()', function() {
         client.start(done);
       }).catch(err => done(err));
     });
+
+
+    it('browser.end() - reuse browser session', function (done) {
+
+      Nightwatch.initClient({globals: {reuseBrowserSession: true}})
+        .then(client => {
+          client.api.end(function callback(result) {
+            assert.strictEqual(result, null);
+            assert.strictEqual(client.sessionId, '1352110219202');
+          });
+
+          client.start(done);
+        }).catch(err => done(err));
+    });
+
 
     it('browser.end() - failures and screenshots disabled', function (done) {
       MockServer.addMock({
@@ -190,9 +222,9 @@ describe('.end()', function() {
           isError: true
         });
 
-        assert.ok(fileNameFailed.startsWith('xxTestSuite/xxTestCase_FAILED_'));
+        assert.ok(fileNameFailed.startsWith(`xxTestSuite${path.sep}xxTestCase_FAILED_`));
         assert.ok(fileNameFailed.endsWith('.png'));
-        assert.ok(fileNameError.startsWith('xxTestSuite/xxTestCase_ERROR_'));
+        assert.ok(fileNameError.startsWith(`xxTestSuite${path.sep}xxTestCase_ERROR_`));
         assert.ok(fileNameError.endsWith('.png'));
 
         client.api.currentTest = {
