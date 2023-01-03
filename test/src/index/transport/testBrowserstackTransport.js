@@ -3,7 +3,7 @@ const nock = require('nock');
 const common = require('../../../common.js');
 const NightwatchClient = common.require('index.js');
 const SeleniumRemote = common.require('transport/selenium-webdriver/selenium.js');
-const Browserstack = common.require('transport/selenium-webdriver/browserstack.js');
+const Browserstack = common.require('transport/selenium-webdriver/browserstack/browserstack.js');
 
 xdescribe('BrowserstackTransport', function () {
   beforeEach(function() {
