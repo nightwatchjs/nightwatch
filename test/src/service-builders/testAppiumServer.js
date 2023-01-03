@@ -336,9 +336,11 @@ describe('AppiumServer Transport Tests', function () {
     assert.ok(!buildOptions);
     // session assertions
     assert.strictEqual(serverUrl, 'http://somewhere:4725');
-    assert.strictEqual(sessionOptions.browserName, 'firefox');
-    assert.strictEqual(sessionOptions['appium:automationName'], 'UiAutomator2');
-    assert.strictEqual(sessionOptions.platformName, 'android');
-    assert.strictEqual('appium:options' in sessionOptions, false);
+    // sessionOptions is a FirefoxOptions instance
+    assert.strictEqual(sessionOptions.browserName, undefined);
+    assert.strictEqual(sessionOptions.getBrowserName(), 'firefox');
+    assert.strictEqual(sessionOptions.getPlatform(), 'android');
+    assert.strictEqual(sessionOptions.get('appium:automationName'), 'UiAutomator2');
+    assert.strictEqual(sessionOptions.has('appium:options'), false);
   });
 });
