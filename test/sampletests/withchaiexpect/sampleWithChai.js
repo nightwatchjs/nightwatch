@@ -5,6 +5,14 @@ module.exports = {
     client.end();
   },
 
+  demoTest1: function (client) {
+    client.url('http://localhost');
+
+    expect(element('#weblogin')).to.be.present;
+
+    client.end();
+  },
+
   demoTest2: function (client) {
     client.url('http://localhost')
       .elements('css selector', '#weblogin', async function (result) {
