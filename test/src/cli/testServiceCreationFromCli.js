@@ -204,8 +204,8 @@ describe('Service creation from cli.js', function() {
     });
   
     let appiumServerStarted = false;
-    mockery.registerMock('../../transport/selenium-webdriver/appium.js', class AppiumServer {
-      static startServer() {
+    mockery.registerMock('./selenium-webdriver/appium.js', class AppiumServer {
+      static createService() {
         appiumServerStarted = true;
       }
     });
@@ -240,8 +240,8 @@ describe('Service creation from cli.js', function() {
     });
   
     let seleniumServerStarted = false;
-    mockery.registerMock('../../transport/selenium-webdriver/selenium.js', class SeleniumServer {
-      static startServer() {
+    mockery.registerMock('./selenium-webdriver/selenium.js', class SeleniumServer {
+      static createService() {
         seleniumServerStarted = true;
 
         return {
