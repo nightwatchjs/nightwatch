@@ -36,7 +36,7 @@
     "minimist": "1.2.6",
     "mkpath": "1.0.0",
     "mocha": "9.2.2",
-    "nightwatch-axe-verbose": "2.0.3",
+    "nightwatch-axe-verbose": "^2.1.0",
     "open": "8.4.0",
     "ora": "5.4.1",
     "selenium-webdriver": "4.6.1",
