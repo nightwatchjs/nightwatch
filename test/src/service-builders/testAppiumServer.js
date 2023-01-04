@@ -141,7 +141,7 @@ describe('AppiumServer Transport Tests', function () {
     });
   }
 
-  async function AppiumServerTestSetup(useSettings, {onLogFile = fn} = {}) {
+  async function AppiumServerTestSetup(useSettings, {argv = {}, onLogFile = fn} = {}) {
     const BaseService = common.require('transport/selenium-webdriver/service-builders/base-service.js');
     class MockBaseService extends BaseService {
       constructor(settings) {
@@ -219,7 +219,7 @@ describe('AppiumServer Transport Tests', function () {
     const client = NightwatchClient.client(settings, null, {});
     const {transport} = client;
 
-    const session = await transport.createSession({argv: {}, moduleKey: 'testModuleKey'});
+    const session = await transport.createSession({argv, moduleKey: 'testModuleKey'});
 
     return {
       session,
@@ -236,9 +236,10 @@ describe('AppiumServer Transport Tests', function () {
     const {session, command, serverPort, buildOptions, sessionOptions} = await AppiumServerTestSetup({
       desiredCapabilities: {
         browserName: '',
+        platformName: 'ios',
         'appium:options': {
-          app: './sample.apk',
-          chromedriverExecutable: 'chromedriver-mobile/chromedriver'
+          automationName: 'XCUITest',
+          app: 'samples/sample.app'
         }
       },
       selenium: {
@@ -249,6 +250,9 @@ describe('AppiumServer Transport Tests', function () {
         server_path: '/path/to/appium/main.js'
       }
     }, {
+      argv: {
+        deviceId: '00008030-00024C2C3453402E'
+      },
       onLogFile(filePath) {
         logFilePath = filePath;
       }
@@ -264,8 +268,10 @@ describe('AppiumServer Transport Tests', function () {
     assert.deepStrictEqual(buildOptions.args, ['/path/to/appium/main.js', '--port', 9999]);
     assert.deepStrictEqual(buildOptions.stdio, ['pipe', undefined, undefined]);
     assert.strictEqual(sessionOptions.browserName, '');
-    assert.strictEqual(sessionOptions['appium:app'], './sample.apk');
-    assert.strictEqual(sessionOptions['appium:chromedriverExecutable'], 'chromedriver-mobile/chromedriver');
+    assert.strictEqual(sessionOptions.platformName, 'ios');
+    assert.strictEqual(sessionOptions['appium:automationName'], 'XCUITest');
+    assert.strictEqual(sessionOptions['appium:app'], 'samples/sample.app');
+    assert.strictEqual(sessionOptions['appium:udid'], '00008030-00024C2C3453402E');
     assert.strictEqual('appium:options' in sessionOptions, false);
     assert.ok(logFilePath.endsWith('testModuleKey_appium-server.log'));
   });
@@ -280,7 +286,7 @@ describe('AppiumServer Transport Tests', function () {
       desiredCapabilities: {
         browserName: null,
         'appium:options': {
-          app: 'sample.apk',
+          app: './sample.apk',
           chromedriverExecutable: ''
         }
       },
@@ -294,6 +300,9 @@ describe('AppiumServer Transport Tests', function () {
         default_path_prefix: ''
       }
     }, {
+      argv: {
+        deviceId: 'ZD2222W62Y'
+      },
       onLogFile(filePath) {
         logFilePath = filePath;
       }
@@ -305,8 +314,9 @@ describe('AppiumServer Transport Tests', function () {
     assert.deepStrictEqual(buildOptions.args, ['--allow-insecure=chromedriver_autodownload']);
     assert.deepStrictEqual(buildOptions.stdio, ['pipe', undefined, undefined]);
     assert.strictEqual(sessionOptions.browserName, null);
-    assert.strictEqual(sessionOptions['appium:app'], 'sample.apk');
+    assert.strictEqual(sessionOptions['appium:app'], './sample.apk');
     assert.strictEqual(sessionOptions['appium:chromedriverExecutable'], '/path/to/chromedriver');
+    assert.strictEqual(sessionOptions['appium:udid'], 'ZD2222W62Y');
     assert.strictEqual('appium:options' in sessionOptions, false);
     assert.ok(logFilePath.endsWith('testModuleKey_appium-server.log'));
   });
