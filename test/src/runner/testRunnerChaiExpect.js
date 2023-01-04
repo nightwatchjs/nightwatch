@@ -3,7 +3,7 @@ const assert = require('assert');
 const common = require('../../common.js');
 const MockServer = require('../../lib/mockserver.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
-const Globals = require("../../lib/globals");
+const Globals = require('../../lib/globals');
 
 describe('testRunnerChaiExpect', function() {
   before(function(done) {
