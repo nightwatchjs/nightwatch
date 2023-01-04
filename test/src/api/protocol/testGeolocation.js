@@ -11,7 +11,7 @@ describe('Geolocation commands', function() {
       assertion: function(opts) {
         assert.strictEqual(opts.path, '/session/1352110219202/location');
       },
-      commandName: 'getGeolocation',
+      commandName: 'appium.getGeolocation',
       args: []
     });
   });

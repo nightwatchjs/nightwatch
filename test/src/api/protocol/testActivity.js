@@ -23,14 +23,14 @@ describe('Android activity commands', function() {
           appWaitActivity: 'org.wikipedia.onboarding.InitialOnboardingActivity'
         });
       },
-      commandName: 'startActivity',
+      commandName: 'appium.startActivity',
       args: [opts]
     });
   });
 
   it('testStartActivity with no options', function() {
     return Globals.protocolTest({
-      commandName: 'startActivity',
+      commandName: 'appium.startActivity',
       args: []
     }).catch(err => {
       return err;
@@ -45,7 +45,7 @@ describe('Android activity commands', function() {
       assertion: function(opts) {
         assert.strictEqual(opts.path, '/session/1352110219202/appium/device/current_activity');
       },
-      commandName: 'getCurrentActivity',
+      commandName: 'appium.getCurrentActivity',
       args: []
     });
   });
@@ -55,7 +55,7 @@ describe('Android activity commands', function() {
       assertion: function(opts) {
         assert.strictEqual(opts.path, '/session/1352110219202/appium/device/current_package');
       },
-      commandName: 'getCurrentPackage',
+      commandName: 'appium.getCurrentPackage',
       args: []
     });
   });

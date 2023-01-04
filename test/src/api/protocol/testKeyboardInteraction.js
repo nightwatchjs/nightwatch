@@ -2,6 +2,8 @@ const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
 describe('Keyboard interaction commands', function() {
+  // this.timeout(150000);
+
   before(function() {
     Globals.protocolBefore();
   });
@@ -13,7 +15,7 @@ describe('Keyboard interaction commands', function() {
         assert.strictEqual(opts.path, '/session/1352110219202/appium/device/hide_keyboard');
         assert.deepStrictEqual(opts.data, {});
       },
-      commandName: 'hideKeyboard',
+      commandName: 'appium.hideKeyboard',
       args: []
     });
   });
@@ -23,7 +25,7 @@ describe('Keyboard interaction commands', function() {
       assertion: function(opts) {
         assert.strictEqual(opts.path, '/session/1352110219202/appium/device/is_keyboard_shown');
       },
-      commandName: 'isKeyboardShown',
+      commandName: 'appium.isKeyboardShown',
       args: []
     });
   });
@@ -37,7 +39,7 @@ describe('Keyboard interaction commands', function() {
           keycode: 15
         });
       },
-      commandName: 'pressKeyCode',
+      commandName: 'appium.pressKeyCode',
       args: [15]
     });
   });
@@ -53,7 +55,7 @@ describe('Keyboard interaction commands', function() {
           flags: 13
         });
       },
-      commandName: 'pressKeyCode',
+      commandName: 'appium.pressKeyCode',
       args: [15, 14, 13]
     });
   });
@@ -67,14 +69,14 @@ describe('Keyboard interaction commands', function() {
           keycode: 15
         });
       },
-      commandName: 'pressKeyCode',
+      commandName: 'appium.pressKeyCode',
       args: [15, () => {}, 14]
     });
   });
 
   it('test pressKeyCode - with no options', function() {
     return Globals.protocolTest({
-      commandName: 'pressKeyCode',
+      commandName: 'appium.pressKeyCode',
       args: []
     }).catch(err => {
       return err;
@@ -93,7 +95,7 @@ describe('Keyboard interaction commands', function() {
           keycode: 15
         });
       },
-      commandName: 'longPressKeyCode',
+      commandName: 'appium.longPressKeyCode',
       args: [15]
     });
   });
@@ -108,7 +110,7 @@ describe('Keyboard interaction commands', function() {
           metastate: 14
         });
       },
-      commandName: 'longPressKeyCode',
+      commandName: 'appium.longPressKeyCode',
       args: [15, 14]
     });
   });
@@ -122,14 +124,14 @@ describe('Keyboard interaction commands', function() {
           keycode: 15
         });
       },
-      commandName: 'longPressKeyCode',
+      commandName: 'appium.longPressKeyCode',
       args: [15, () => {}, 14]
     });
   });
 
   it('test longPressKeyCode - with no options', function() {
     return Globals.protocolTest({
-      commandName: 'longPressKeyCode',
+      commandName: 'appium.longPressKeyCode',
       args: []
     }).catch(err => {
       return err;
