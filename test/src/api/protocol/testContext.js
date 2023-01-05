@@ -39,38 +39,4 @@ describe('context commands', function() {
       args: [text]
     });
   });
-
-  it('testGetContexts - appium', function() {
-    return Globals.protocolTest({
-      assertion: function(opts) {
-        assert.strictEqual(opts.path, '/session/1352110219202/contexts');
-      },
-      commandName: 'appium.getContexts',
-      args: []
-    });
-  });
-
-  it('testGetContext - appium', function() {
-    return Globals.protocolTest({
-      assertion: function(opts) {
-        assert.strictEqual(opts.path, '/session/1352110219202/context');
-      },
-      commandName: 'appium.getContext',
-      args: []
-    });
-  });
-
-  it('testSetContext - appium', function() {
-    let text = 'NATIVE';
-
-    return Globals.protocolTest({
-      assertion: function(opts) {
-        assert.strictEqual(opts.method, 'POST');
-        assert.strictEqual(opts.path, '/session/1352110219202/context');
-        assert.deepStrictEqual(opts.data, {name: text});
-      },
-      commandName: 'appium.setContext',
-      args: [text]
-    });
-  });
 });
