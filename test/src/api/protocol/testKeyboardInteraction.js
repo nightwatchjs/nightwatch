@@ -2,8 +2,6 @@ const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
 describe('Keyboard interaction commands', function() {
-  // this.timeout(150000);
-
   before(function() {
     Globals.protocolBefore();
   });
