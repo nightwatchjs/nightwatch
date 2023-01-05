@@ -1,4 +1,5 @@
 describe('Sample test with traceable commands', function() {
+
   before(browser => {
     browser
       .navigateTo('http://localhost');
