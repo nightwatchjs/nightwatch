@@ -77,22 +77,6 @@ describe('AppiumServer Transport Tests', function () {
     mockery.registerMock('./httpclient.js', httpClient);
   }
 
-  function mockExecutor(results) {
-    const {Executor, HttpClient} = require('selenium-webdriver/http');
-    class MockExecutor extends Executor {
-      async execute(command) {
-        return Promise.resolve(results);
-      }
-    }
-
-    deleteFromRequireCache('node_modules/selenium-webdriver/http');
-
-    mockery.registerMock('selenium-webdriver/http', {
-      Executor: MockExecutor,
-      HttpClient
-    });
-  }
-
   function mockWebDriver({onSessionOpts = fn}) {
     const SeleniumWebdriver = require('selenium-webdriver');
     class MockWebDriver extends SeleniumWebdriver.WebDriver {
