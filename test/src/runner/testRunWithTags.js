@@ -31,6 +31,24 @@ describe('testRunWithTags', function() {
     });
   });
 
+  it('testRunner with tags', function() {
+    const testsPath = path.join(__dirname, '../../sampletests');
+
+    return runTests({
+      _source: [testsPath],
+      tag: ['browser']
+    }, settings({
+      output: false,
+      disable_typescript: true,
+      globals: {
+        reporter(results) {
+          assert.strictEqual(Object.keys(results.modules).length, 1);
+          assert.ok('demoTagTest' in results.modules[`tagswithbrowserobject${path.sep}sample`].completed);
+        }
+      }
+    }));
+  });
+
   it('testRunWithTags', function() {
     let testsPath = path.join(__dirname, '../../sampletests');
 
