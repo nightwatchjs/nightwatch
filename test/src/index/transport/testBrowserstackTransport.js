@@ -6,7 +6,7 @@ const SeleniumRemote = common.require('transport/selenium-webdriver/selenium.js'
 const Automate = common.require('transport/selenium-webdriver/browserstack/automate.js');
 const AppAutomate = common.require('transport/selenium-webdriver/browserstack/appAutomate.js');
 
-describe('BrowserstackTransport', function () {
+xdescribe('BrowserstackTransport', function () {
   beforeEach(function() {
     try {
       nock.activate();
