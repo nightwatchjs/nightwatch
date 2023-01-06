@@ -43,4 +43,41 @@ describe('orientation commands', function() {
       return true;
     }).then(result => assert.strictEqual(result, true));
   });
+
+  it('testGetOrientation - appium', function () {
+    return Globals.protocolTest({
+      assertion: function(opts) {
+        strictEqual(opts.method, 'GET');
+        strictEqual(opts.path, '/session/1352110219202/orientation');
+      },
+      commandName: 'appium.getOrientation',
+      args: []
+    });
+  });
+
+  it('testSetOrientation - appium', function () {
+    return Globals.protocolTest({
+      assertion: function(opts) {
+        strictEqual(opts.method, 'POST');
+        strictEqual(opts.path, '/session/1352110219202/orientation');
+        assert.deepStrictEqual(opts.data, {orientation: 'LANDSCAPE'});
+      },
+      commandName: 'appium.setOrientation',
+      args: ['LANDSCAPE']
+    });
+  });
+
+  it('testSetOrientationInvalid - appium', function () {
+    return Globals.protocolTest({
+      assertion: function(opts) {
+
+      },
+      commandName: 'appium.setOrientation',
+      args: ['TEST']
+    }).catch(err => {
+      strictEqual(err.message, 'Error while running "setOrientation" command: Invalid screen orientation value specified. Accepted values are: LANDSCAPE, PORTRAIT');
+
+      return true;
+    }).then(result => assert.strictEqual(result, true));
+  });
 });

@@ -215,5 +215,4 @@ describe('.setGeolocation()', function () {
       client.start(done);
     });
   });
-
 });
