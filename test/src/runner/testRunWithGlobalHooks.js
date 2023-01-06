@@ -52,7 +52,7 @@ describe('testRunWithGlobalHooks', function() {
         assert.deepStrictEqual(globals.settings.selenium, {
           check_process_delay: 500,
           cli_args: {},
-          log_path: '',
+          log_path: './logs',
           max_status_poll_tries: 15,
           port: 10195,
           server_path: null,
