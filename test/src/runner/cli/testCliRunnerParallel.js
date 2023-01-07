@@ -83,7 +83,7 @@ describe('Test CLI Runner in Parallel', function () {
     assert.strictEqual(runner.isTestWorkersEnabled(), false);
   });
 
-  it('mobile config setup on with worker threads - disabled parallelsim ', function() {
+  it('mobile config setup on with worker threads - disabled parallelism ', function() {
     class RunnerBaseMock extends RunnerBase {
       static readTestSource(settings, argv) {
         assert.strictEqual(settings.testWorkersEnabled, true);
@@ -120,7 +120,7 @@ describe('Test CLI Runner in Parallel', function () {
     assert.strictEqual(runner.parallelMode(), false);
   });
 
-  it('mobile config setup on with multiple envs - enable parallelsim ', function() {
+  it('mobile config setup on with multiple envs - enable parallelism ', function() {
     class RunnerBaseMock extends RunnerBase {
       static readTestSource(settings, argv) {
         assert.strictEqual(settings.testWorkersEnabled, true);
