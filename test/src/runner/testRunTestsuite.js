@@ -260,4 +260,24 @@ describe('testRunTestSuite', function () {
       skip_testcases_on_fail: true
     }));
   });
+
+  it('testRunner with parallel mode and single test source', function () {
+    let testsPath = path.join(__dirname, '../../sampletests/withdescribe/failures/sampleSkipTestcases.js');
+    let globals = {
+      calls: 0,
+      retryAssertionTimeout: 0,
+      reporter(results, cb) {
+        assert.strictEqual(this.settings.testWorkersEnabled, false);
+        cb();
+      }
+    };
+
+    return runTests({
+      _source: [testsPath]
+    }, settings({
+      globals,
+      output: false,
+      test_workers: true,
+    }));
+  });
 });
