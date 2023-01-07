@@ -24,25 +24,27 @@ Nightwatch is an integrated testing framework powered by Node.js and using the [
 
 #### [What's New](https://nightwatchjs.org/guide/getting-started/whats-new-v2.html) | [Release Notes](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.0.0) | [Discussions](https://github.com/nightwatchjs/nightwatch/discussions)
 
-We're delighted to announce that [Nightwatch v2](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.3.2) is now available in the public NPM channel. Read the [what's new](https://nightwatchjs.org/guide/getting-started/whats-new-v2.html) docs page for an overview of the new features, improvements, and important changes.
-
-Install with: 
-```sh
-npm i nightwatch
-```
+[Nightwatch v2](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.0.0) is now available in the public NPM channel. Read the [what's new](https://nightwatchjs.org/guide/getting-started/whats-new-v2.html) docs page for an overview of the new features, improvements, and important changes.
 
 ## ⚙️ Get started in 60 seconds
-![nightwatch-cli-gif](https://user-images.githubusercontent.com/39924567/174841680-59664ff6-da2d-44a3-a1df-52d22c69b1e2.gif)
 
 #### 1. Install Nightwatch from NPM
 
-```sh
-# from your existing project's root dir
-$ npm init nightwatch
+From your existing project's root dir:
 
-# if you want to initialize a new project
-$ npm init nightwatch path/to/new/project
+```sh
+npm init nightwatch@latest
 ```
+
+or, if you want to initialize a new project:
+
+
+```sh
+npm init nightwatch@latest ./path/to/new/project
+```
+
+
+![nightwatch-cli-gif](https://user-images.githubusercontent.com/39924567/174841680-59664ff6-da2d-44a3-a1df-52d22c69b1e2.gif)
 
 #### 2. Answer a few questions about your preferred setup:
 
