@@ -61,7 +61,6 @@ body:
         "Extended nightwatch command logging during the session. 
         Please use nightwatch --verbose and paste the output here"
       placeholder: |
-        <details>
         [Sample Test] Test Suite
         ────────────────────────────────────────────────────────
         ⠋ Starting ChromeDriver on port 9515...
@@ -78,7 +77,6 @@ body:
                 'goog:chromeOptions': { w3c: true, args: [] }
               }
             }
-        </details>      
       render: fundamental
   - type: textarea
     id: "configuration"
