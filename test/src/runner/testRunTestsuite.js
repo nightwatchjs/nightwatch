@@ -277,7 +277,7 @@ describe('testRunTestSuite', function () {
     }, settings({
       globals,
       output: false,
-      test_workers: true,
+      test_workers: true
     }));
   });
 });
