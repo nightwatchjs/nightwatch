@@ -36,9 +36,9 @@ describe('Test mobile options in Nightwatch/Appium client', function () {
       desiredCapabilities: {
         browserName: 'Chrome',
         javascriptEnabled: true,
-        platformName: 'Android',
-        platformVersion: '13.0',
-        deviceName: 'Google Pixel'
+        'goog:chromeOptions': {
+          androidPackage: 'com.android.chrome'
+        }
       }
     });
 
@@ -94,7 +94,7 @@ describe('Test mobile options in Nightwatch/Appium client', function () {
         use_appium: true
       },
       desiredCapabilities: {
-        browserName: '',
+        browserName: null,
         platformName: 'Android'
       }
     });
