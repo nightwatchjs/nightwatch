@@ -280,4 +280,26 @@ describe('testRunTestSuite', function () {
       test_workers: true
     }));
   });
+
+  it('test worker mode and single test source', function () {
+    let testsPath = path.join(__dirname, '../../sampletests/withdescribe/failures/sampleSkipTestcases.js');
+    let globals = {
+      calls: 0,
+      retryAssertionTimeout: 0,
+      reporter(results, cb) {
+        assert.strictEqual(this.settings.testWorkersEnabled, true);
+        cb();
+      }
+    };
+
+    return runTests({
+      _source: [testsPath],
+      'test-worker': true
+    }, settings({
+      globals,
+      output: false,
+      test_workers: true
+    }));
+  });
+
 });
