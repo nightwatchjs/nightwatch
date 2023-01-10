@@ -1,6 +1,7 @@
 const assert = require('assert');
 const EventEmitter = require('events');
 const TreeNode = require('../../../lib/core/treenode');
+const common = require('../../common.js');
 
 describe('test Queue', function () {
   it('Test commands treeNode - clear error events in handleCommandResult', function () {
@@ -51,7 +52,7 @@ describe('test Queue', function () {
       name: '__root__',
       parent: null
     });
-    const Debuggability = require('../../../lib/utils/debuggability');
+    const Debuggability = common.require('utils/debuggability');
 
     Debuggability.debugMode = true;
     let error = new Error('Error while executing command in debug mode');
