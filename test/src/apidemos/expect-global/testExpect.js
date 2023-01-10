@@ -83,5 +83,27 @@ describe('expect(element.<command>) - passed', function() {
     });
   });
 
+  it('expect(element.command()) - do not abort on failure', function() {
+    const testsPath = path.join(__dirname, '../../../apidemos/expect-global/expect-withfailures.js');
+    Mocks.elementProperty('0', 'className', {value: ['container', 'div', 'input']});
+    Mocks.elementSelected();
+    const globals = {
+      waitForConditionPollInterval: 50,
+      waitForConditionTimeout: 120,
+      retryAssertionTimeout: 1000,
+      abortOnAssertionFailure: false,
+
+      reporter(results) {
+        assert.equal(results.passed, 1);
+        assert.equal(results.failed, 1);
+      }
+    };
+
+    return NightwatchClient.runTests(testsPath, settings({
+      output: false,
+      skip_testcases_on_fail: false,
+      globals
+    }));
+  });
   
 });
