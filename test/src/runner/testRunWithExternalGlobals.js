@@ -39,5 +39,16 @@ describe('testRunWithExternalGlobals', function() {
     }));
   });
 
+  it('testRun with async external globals', function() {
+    let testsPath = path.join(__dirname, '../../sampletests/before-after/sampleSingleTest.js');
+    const globals = {
+      reporterCount: 0
+    };
 
+    return runTests(testsPath, settings({
+      globals,
+      globals_path: path.join(__dirname, '../../extra/external-globals-async.js'),
+      output_folder: false
+    }));
+  });
 });
