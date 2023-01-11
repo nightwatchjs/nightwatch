@@ -31,7 +31,8 @@ describe('test Runner with async and assertion failure', function() {
       retryAssertionTimeout: 0,
       reporter(results) {
         assert.strictEqual(globals.test_calls, 16);
-      }
+      },
+      abortOnAssertionFailure: false
     };
 
     return runTests(path.join(__dirname, '../../sampletests/asyncwithfailures/'), settings({
