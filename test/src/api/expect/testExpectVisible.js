@@ -80,6 +80,24 @@ describe('expect.visible', function () {
       });
     });
 
+    it('to be visible [PASSED] -- appium', function () {
+      Nocks.appiumElementFound().appiumElementVisible();
+
+      // Make appium client
+      this.client.api.options.selenium.use_appium = true;
+
+      let expect = this.client.api.expect.element({selector: 'com.app:id/web-login', locateStrategy: 'id'}).to.be.visible;
+
+      return this.client.start(function () {
+        strictEqual(expect.assertion.selector, 'com.app:id/web-login');
+        strictEqual(expect.assertion.negate, false);
+        strictEqual(expect.assertion.passed, true);
+        strictEqual(expect.assertion.resultValue, true);
+        strictEqual(expect.assertion.message, `Expected element <com.app:id/web-login> to be visible (${expect.assertion.elapsedTime}ms)`);
+        strictEqual(expect.assertion.messageParts.length, 1);
+      });
+    });
+
     it('to be visible with waitFor [PASSED]', function () {
       Nocks.elementFound().visible();
 

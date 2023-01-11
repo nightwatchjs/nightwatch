@@ -336,4 +336,44 @@ describe('waitForElementVisible', function () {
     });
   });
 
+  it('client.waitForElementVisible() success with appium client', function () {
+    MockServer
+      .addMock({
+        url: '/wd/hub/session/1352110219202/elements',
+        postdata: {
+          using: 'css selector',
+          value: '*[id="com\\.app\\:id\\/web-login"]'
+        },
+        method: 'POST',
+        response: JSON.stringify({
+          status: 0,
+          state: 'success',
+          value: [{'element-6066-11e4-a52e-4f735466cecf': '99'}]
+        })
+      }, undefined, true)
+      .addMock({
+        url: '/wd/hub/session/1352110219202/element/99/displayed',
+        method: 'GET',
+        response: JSON.stringify({
+          value: true
+        })
+      }, undefined, true);
+
+    // Make appium client
+    this.client.api.options.selenium.use_appium = true;
+
+    this.client.api.waitForElementVisible('id', 'com.app:id/web-login', function callback(result, instance) {
+      assert.strictEqual(instance.elementId, '99');
+      assert.strictEqual(result.value, true);
+    }).waitForElementVisible({selector: 'com.app:id/web-login', locateStrategy: 'id'}, function callback(result, instance) {
+      assert.strictEqual(instance.elementId, '99');
+      assert.strictEqual(result.value, true);
+    });
+
+    return this.client.start(function (err) {
+      if (err) {
+        throw err;
+      }
+    });
+  });
 });

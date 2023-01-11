@@ -138,6 +138,18 @@ module.exports = {
     return this;
   },
 
+  appiumElementFound() {
+    nock('http://localhost:10195')
+      .post('/wd/hub/session/1352110219202/elements', {'using': 'css selector', 'value': '*[id="com\\.app\\:id\\/web-login"]'})
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value: [{'element-6066-11e4-a52e-4f735466cecf': '0'}]
+      });
+
+    return this;
+  },
+
   click() {
     nock('http://localhost:10195')
       .post('/wd/hub/session/1352110219202/element/0/click')
@@ -360,6 +372,19 @@ module.exports = {
   visible() {
     nock('http://localhost:10195')
       .post('/wd/hub/session/1352110219202/execute/sync')
+      .reply(200, {
+        status: 0,
+        sessionId: '1352110219202',
+        value: true,
+        state: 'success'
+      });
+
+    return this;
+  },
+
+  appiumElementVisible() {
+    nock('http://localhost:10195')
+      .get('/wd/hub/session/1352110219202/element/0/displayed')
       .reply(200, {
         status: 0,
         sessionId: '1352110219202',
