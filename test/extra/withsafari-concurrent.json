@@ -18,6 +18,22 @@
       "webdriver": {
         "start_process": true
       }
+    },
+    "chrome" : {
+      "desiredCapabilities" : {
+        "browserName" : "chrome"
+      },
+      "webdriver": {
+        "start_process": true
+      }
+    },
+    "firefox" : {
+      "desiredCapabilities" : {
+        "browserName" : "firefox"
+      },
+      "webdriver": {
+        "start_process": true
+      }
     }
   }
 }
