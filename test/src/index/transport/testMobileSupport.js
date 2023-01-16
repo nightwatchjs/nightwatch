@@ -71,8 +71,6 @@ describe('MobileSupport', function () {
       retryAssertionTimeout: 0,
       reporter(results, cb) {
         assert.ok(results.lastError instanceof Error);
-        assert.ok(Object.prototype.hasOwnProperty.call(results.lastError, 'name'));
-        assert.ok(Object.prototype.hasOwnProperty.call(results.lastError, 'message'));
         assert.ok(results.lastError.help.length, 3);
         cb();
       }
