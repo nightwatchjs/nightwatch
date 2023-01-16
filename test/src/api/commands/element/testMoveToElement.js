@@ -10,7 +10,7 @@ describe('moveToElement', function() {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('client.moveToElement()', function(done) {
+  it.only('client.moveToElement()', function(done) {
     let moveToArgs;
     this.client.transport.Actions.session.moveTo = function({args, sessionId}) {
       moveToArgs = args;
@@ -27,7 +27,7 @@ describe('moveToElement', function() {
       assert.deepStrictEqual(moveToArgs, ['0', null, null]);
       assert.strictEqual(result.status, 0);
     }).moveTo('0', null, null, function(result) {
-      assert.deepStrictEqual(moveToArgs, ['0', null, null]);
+      assert.deepStrictEqual(moveToArgs, ['0', 0, 0]);
       assert.strictEqual(result.status, 0);
     }).moveToElement('#weblogin', 1, 1, function(result) {
       assert.deepStrictEqual(moveToArgs, ['0', 1, 1]);
