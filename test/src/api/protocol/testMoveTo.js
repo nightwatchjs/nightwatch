@@ -1,7 +1,7 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
-describe.only('browser commands', function() {
+describe('browser commands', function() {
   let args;
   before(function() {
     Globals.protocolBefore.call(this);
