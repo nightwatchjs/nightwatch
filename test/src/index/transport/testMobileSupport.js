@@ -29,7 +29,7 @@ describe('MobileSupport', function () {
     });
   });
 
-  it('error classes for mobile-web support', function () {
+  it('error classes for mobile-web support - RealIosDeviceIdError', function () {
     let src_folders = [
       path.join(__dirname, '../../../sampletests/withsubfolders')
     ];
@@ -58,5 +58,49 @@ describe('MobileSupport', function () {
       assert.strictEqual(err.message, 'Real Device ID is neither configured nor passed');
       assert.strictEqual(err.help.length, 4)
     })
+  });
+
+
+  it('error classes for mobile-web support - IosSessionNotCreatedError', function () {
+    let src_folders = [
+      path.join(__dirname, '../../../sampletests/withfailures'),
+      path.join(__dirname, '../../../sampletests/withsubfolders')
+    ];
+
+    let globals = {
+      calls: 0,
+      retryAssertionTimeout: 0,
+      reporter(results, cb) {
+        assert.strictEqual(results.lastError.constructor.name, 'IosSessionNotCreatedError');
+        assert.ok(results.lastError instanceof Error);
+        assert.ok(results.lastError.hasOwnProperty('name'));
+        assert.ok(results.lastError.hasOwnProperty('message'));
+        assert.ok(results.lastError.help.length, 3);
+        cb();
+      }
+    };
+
+    return runTests({
+    }, settings({
+      output: false,
+      src_folders,
+      globals,
+      desiredCapabilities: {
+        browserName: 'safari',
+        platformName: 'iOS',
+        'safari:deviceUDID': '00008030-00024C2C3453402E',
+        alwaysMatch: {
+          acceptInsecureCerts: false
+        }
+      },
+    
+      webdriver: {
+        start_process: true,
+        server_path: '',
+        cli_args: [
+          // --verbose
+        ]
+      },
+    }))
   });
 });
