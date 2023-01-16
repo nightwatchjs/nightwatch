@@ -11,8 +11,10 @@ module.exports = {
 
   webdriver: {
     start_process: false
-  },
+  }, 
 
+  custom_commands_path: [path.join(__dirname, './commands')],
+  
   globals: {
     test_calls: 0,
     waitForConditionTimeout: 20,
