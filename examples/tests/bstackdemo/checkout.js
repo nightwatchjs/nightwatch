@@ -1,7 +1,7 @@
-describe('Bstack Demo', function () {
+describe('Checkout Test', function () {
   before((browser) => browser.navigateTo('https://www.bstackdemo.com/'));
 
-  it('Demo test bstackdemo.com', function (browser) {
+  it('checkout products on bstackdemo.com', function (browser) {
     browser
       .waitForElementVisible('body')
       .assert.titleContains('StackDemo')
