@@ -15,7 +15,7 @@ describe('MobileSupport', function () {
     this.server = MockServer.init();
 
     this.server.on('listening', () => {
-      done();
+      done()
     });
   });
 
