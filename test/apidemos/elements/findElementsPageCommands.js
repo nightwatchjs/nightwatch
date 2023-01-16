@@ -16,8 +16,7 @@ describe('demo tests with find elements in page commands', function () {
   });
 
   it('find elements with async/await', async function() {
-    const elements = await pageObject
-      .navigate()
+    const elements = await pageObject.navigate()
       .waitForElementPresent('@loginAsString')
       .customFindElementsES6('@loginAsString');
 

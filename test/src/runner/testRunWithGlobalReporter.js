@@ -99,4 +99,26 @@ describe('testRunWithGlobalReporter', function() {
       assert.strictEqual(reporterCount, 1);
     }).catch(err => (err))
   });
+
+
+  it('test plugin global reporter', function() {
+    const testsPath = path.join(__dirname, '../../sampletests/before-after');
+    const pluginPath = path.join(__dirname, '../../extra/plugin');
+    const globals = {
+      reporterCount: 0,
+      reporter(results, done) {
+        this.reporterCount++;
+        done();
+      }
+    };
+
+    return runTests(testsPath, settings({
+      plugins: [pluginPath],
+      globals,
+      output_folder: false
+    }))
+      .then(err => {
+        assert.strictEqual(globals.reporterCount, 2);
+      });
+  });
 });

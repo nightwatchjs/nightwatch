@@ -58,6 +58,7 @@ describe('ChromeDriver Transport Tests', function () {
   };
 
   const mockDriver = {
+    session_: Promise.resolve(),
     async getSession() {
       return sessionData;
     },
@@ -306,6 +307,7 @@ describe('ChromeDriver Transport Tests', function () {
   });
 
   it('test chrome logging is present in creating session with chrome driver on mac', async () => {
+    const platform = process.platform;
     Object.defineProperty(process, 'platform', {
       value: 'darwin'
     });
@@ -331,5 +333,9 @@ describe('ChromeDriver Transport Tests', function () {
     assert.strictEqual(serverPath, '/path/to/chromedriver');
     assert.strictEqual(serverPort, 9999);
     assert.deepStrictEqual(buildArgs, ['--verbose', '--enable-chrome-logs']);
+
+    Object.defineProperty(process, 'platform', {
+      value: platform
+    });
   });
 });

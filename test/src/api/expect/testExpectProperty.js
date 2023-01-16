@@ -71,8 +71,8 @@ describe('expect.property', function() {
 
     const expect = this.client.api.expect.element({
       selector: '#weblogin',
-      timeout: 30,
-      retryInterval: 20,
+      timeout: 150,
+      retryInterval: 100,
       abortOnFailure: false
     }).to.have.property('className').equals('qq');
 

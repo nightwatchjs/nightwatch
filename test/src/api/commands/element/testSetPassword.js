@@ -26,6 +26,15 @@ describe('setPassword', function() {
       }
     });
 
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/element/0/clear',
+      method: 'POST',
+      response: {
+        sessionId: '1352110219202',
+        status: 0
+      }
+    });
+
     this.client.api
       .setPassword('css selector', '#weblogin', 'password', function callback(result) {
         assert.strictEqual(result.status, 0);

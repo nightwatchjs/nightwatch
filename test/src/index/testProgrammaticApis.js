@@ -369,6 +369,7 @@ describe('test programmatic apis', function () {
     const client = Nightwatch.createClient({
       timeout: 500,
       useAsync: false,
+      output: false,
       silent: false,
       headless: true,
       output_folder: 'output',
@@ -487,7 +488,7 @@ describe('test programmatic apis', function () {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
     mockery.registerMock('fs', {
       existsSync(exe) {
-        return true;
+        return !exe.includes('nightwatch-axe-verbose');
       },
       constants,
       rmdirSync,
@@ -501,16 +502,18 @@ describe('test programmatic apis', function () {
       }
     });
 
-    mockery.registerMock('../io/exec', function(exe, opts) {
-      serverPort = getPortFromArg(opts.args);
+    mockery.registerMock('../io/exec', {
+      exec: function (exe, opts) {
+        serverPort = getPortFromArg(opts.args);
 
-      return {
-        result() {
-          return Promise.resolve({
-            code: '0'
-          });
-        }
-      };
+        return {
+          result() {
+            return Promise.resolve({
+              code: '0'
+            });
+          }
+        };
+      }
     });
 
     const CliRunner = common.require('runner/cli/cli.js');

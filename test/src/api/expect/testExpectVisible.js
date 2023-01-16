@@ -301,8 +301,8 @@ describe('expect.visible', function () {
     });
 
     it('to be visible - session not created error', function () {
-      this.client.api.globals.waitForConditionTimeout = 50;
-      this.client.api.globals.waitForConditionPollInterval = 20;
+      this.client.api.globals.waitForConditionTimeout = 250;
+      this.client.api.globals.waitForConditionPollInterval = 100;
 
       Nocks
         .elementFound()
@@ -323,8 +323,8 @@ describe('expect.visible', function () {
     });
 
     it('to be visible - unknown error', function () {
-      this.client.api.globals.waitForConditionTimeout = 50;
-      this.client.api.globals.waitForConditionPollInterval = 20;
+      this.client.api.globals.waitForConditionTimeout = 200;
+      this.client.api.globals.waitForConditionPollInterval = 50;
 
       Nocks
         .elementFound()
@@ -345,8 +345,8 @@ describe('expect.visible', function () {
     });
 
     it('to be visible - invalid json response', function() {
-      this.client.api.globals.waitForConditionTimeout = 100;
-      this.client.api.globals.waitForConditionPollInterval = 20;
+      this.client.api.globals.waitForConditionTimeout = 250;
+      this.client.api.globals.waitForConditionPollInterval = 50;
 
       Nocks
         .elementFound()
@@ -382,15 +382,15 @@ describe('expect.visible', function () {
     });
 
     it('to not be visible with waitFor [PASSED] - element not visible on retry', function () {
-      this.client.api.globals.waitForConditionPollInterval = 10;
+      this.client.api.globals.waitForConditionPollInterval = 100;
 
       Nocks.elementFound().visible().notVisible().notVisible();
 
-      let expect = this.client.api.expect.element('#weblogin').to.not.be.visible.before(30);
+      let expect = this.client.api.expect.element('#weblogin').to.not.be.visible.before(130);
 
       return this.client.start(function () {
-        strictEqual(expect.assertion.waitForMs, 30);
-        strictEqual(expect.assertion.message.indexOf('Expected element <#weblogin> to not be visible in 30ms'), 0);
+        strictEqual(expect.assertion.waitForMs, 130);
+        strictEqual(expect.assertion.message.indexOf('Expected element <#weblogin> to not be visible in 130ms'), 0);
         strictEqual(expect.assertion.passed, true, 'Assertion has passed');
       });
     });

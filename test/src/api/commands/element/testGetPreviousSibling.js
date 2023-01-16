@@ -56,7 +56,7 @@ describe('browser.getPreviousSibling', function () {
     });
 
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/execute',
+      url: '/wd/hub/session/1352110219202/execute/sync',
       method: 'POST',
       response: {
         status: 0,

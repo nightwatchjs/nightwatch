@@ -305,19 +305,19 @@ describe('expect.cookie', function () {
 
     it('to equal and waitFor [FAILED] - value not equal', function () {
       this.client.api.globals.waitForConditionTimeout = 10;
-      this.client.api.globals.waitForConditionPollInterval = 30;
+      this.client.api.globals.waitForConditionPollInterval = 250;
 
       Nocks.cookie('cookie-name', 'other');
       Nocks.cookie('cookie-name', 'other');
       Nocks.cookie('cookie-name', 'other');
 
-      let expect = this.client.api.expect.cookie('cookie-name').to.equal('cookie-value').before(30);
+      let expect = this.client.api.expect.cookie('cookie-name').to.equal('cookie-value').before(250);
 
       return this.client.start(function () {
-        strictEqual(expect.assertion.waitForMs, 30);
+        strictEqual(expect.assertion.waitForMs, 250);
         strictEqual(expect.assertion.passed, false);
         assert.ok(expect.assertion.retries >= 1);
-        strictEqual(expect.assertion.message, `Expected cookie "cookie-name" to equal: "cookie-value" in 30ms - expected "equal 'cookie-value'" but got: "other" (${expect.assertion.elapsedTime}ms)`);
+        strictEqual(expect.assertion.message, `Expected cookie "cookie-name" to equal: "cookie-value" in 250ms - expected "equal 'cookie-value'" but got: "other" (${expect.assertion.elapsedTime}ms)`);
       });
     });
 
