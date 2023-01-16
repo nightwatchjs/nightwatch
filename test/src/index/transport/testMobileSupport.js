@@ -100,7 +100,7 @@ describe('MobileSupport', function () {
         cli_args: [
           // --verbose
         ]
-      },
+      }
     }))
   });
 });
