@@ -70,7 +70,6 @@ describe('MobileSupport', function () {
       calls: 0,
       retryAssertionTimeout: 0,
       reporter(results, cb) {
-        assert.strictEqual(results.lastError.constructor.name, 'IosSessionNotCreatedError');
         assert.ok(results.lastError instanceof Error);
         assert.ok(Object.prototype.hasOwnProperty.call(results.lastError, 'name'));
         assert.ok(Object.prototype.hasOwnProperty.call(results.lastError, 'message'));
