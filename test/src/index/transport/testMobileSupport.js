@@ -57,7 +57,7 @@ describe('MobileSupport', function () {
     })
   });
 
-  it('error classes for mobile-web support - IosSessionNotCreatedError', function () {
+  it.only('error classes for mobile-web support - IosSessionNotCreatedError', function () {
     let src_folders = [
       path.join(__dirname, '../../../sampletests/withfailures'),
       path.join(__dirname, '../../../sampletests/withsubfolders')
@@ -67,6 +67,9 @@ describe('MobileSupport', function () {
       calls: 0,
       retryAssertionTimeout: 0,
       reporter(results, cb) {
+        console.log(results);
+
+        console.log('lasterror', results.lastError);
         assert.ok(results.lastError instanceof Error);
         assert.ok(results.lastError instanceof IosSessionNotCreatedError);
         assert.ok(Object.prototype.hasOwnProperty.call(results.lastError, 'name'));
