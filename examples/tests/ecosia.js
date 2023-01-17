@@ -7,23 +7,14 @@ describe('Ecosia.org Demo', function() {
 
   it('Demo test ecosia.org', function(browser) {
     browser
-      .navigateTo('https://www.ecosia.org/')
-      .moveTo()
-
-    browser
-    .navigateTo('https://www.google.com/')
-    .moveTo()
-});
-
-it('Demo test ecosia.org - 2', function(browser) {
-  browser
-    .navigateTo('https://www.ecosia.org/')
-    .moveTo()
-
-  browser
-  .navigateTo('https://www.google.com/')
-  .moveTo()
-});
+      .waitForElementVisible('body')
+      .assert.titleContains('Ecosia')
+      .assert.visible('input[type=search]')
+      .setValue('input[type=search]', 'nightwatch')
+      .assert.visible('button[type=submit]')
+      .click('button[type=submit]')
+      .assert.textContains('.layout__content', 'Nightwatch.js');
+  });
 
   after(browser => browser.end());
 });
