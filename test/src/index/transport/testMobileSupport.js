@@ -5,6 +5,7 @@ const CommandGlobals = require('../../../lib/globals/commands.js');
 const MockServer = require('../../../lib/mockserver.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
+const {IosSessionNotCreatedError} = common.require('utils/mobile.js');
 
 describe('MobileSupport', function () {
   beforeEach(function (done) {
@@ -21,10 +22,6 @@ describe('MobileSupport', function () {
 
   afterEach(function (done) {
     CommandGlobals.afterEach.call(this, function () {
-      Object.keys(require.cache).forEach(function (module) {
-        delete require.cache[module];
-      });
-
       done();
     });
   });
@@ -71,6 +68,9 @@ describe('MobileSupport', function () {
       retryAssertionTimeout: 0,
       reporter(results, cb) {
         assert.ok(results.lastError instanceof Error);
+        assert.ok(results.lastError instanceof IosSessionNotCreatedError);
+        assert.ok(Object.prototype.hasOwnProperty.call(results.lastError, 'name'));
+        assert.ok(Object.prototype.hasOwnProperty.call(results.lastError, 'message'));
         assert.ok(results.lastError.help.length, 3);
         cb();
       }
