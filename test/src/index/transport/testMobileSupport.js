@@ -6,9 +6,13 @@ const MockServer = require('../../../lib/mockserver.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
 const {IosSessionNotCreatedError} = common.require('utils/mobile.js');
+const Transport = common.require('transport/selenium-webdriver/index.js');
+const mockery = require('mockery');
 
 describe('MobileSupport', function () {
   beforeEach(function (done) {
+    mockery.enable({useCleanCache: true, warnOnUnregistered: false});
+
     process.removeAllListeners('exit');
     process.removeAllListeners('uncaughtException');
     process.removeAllListeners('unhandledRejection');
@@ -21,6 +25,10 @@ describe('MobileSupport', function () {
   });
 
   afterEach(function (done) {
+    mockery.deregisterAll();
+    mockery.resetCache();
+    mockery.disable();
+
     CommandGlobals.afterEach.call(this, function () {
       done();
     });
@@ -57,7 +65,16 @@ describe('MobileSupport', function () {
     })
   });
 
-  it.only('error classes for mobile-web support - IosSessionNotCreatedError', function () {
+  it('error classes for mobile-web support - IosSessionNotCreatedError', function () {
+    Transport.prototype.getDriver = function() {
+      const err = new Error('An error occurred while creating a new SafariDriver session');
+      err.name = 'SessionNotCreatedError';
+
+      throw err;
+    };
+
+    mockery.registerMock('./', Transport);
+
     let src_folders = [
       path.join(__dirname, '../../../sampletests/withfailures'),
       path.join(__dirname, '../../../sampletests/withsubfolders')
@@ -67,9 +84,6 @@ describe('MobileSupport', function () {
       calls: 0,
       retryAssertionTimeout: 0,
       reporter(results, cb) {
-        console.log(results);
-
-        console.log('lasterror', results.lastError);
         assert.ok(results.lastError instanceof Error);
         assert.ok(results.lastError instanceof IosSessionNotCreatedError);
         assert.ok(Object.prototype.hasOwnProperty.call(results.lastError, 'name'));
