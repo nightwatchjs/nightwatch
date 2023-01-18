@@ -6,11 +6,12 @@ const MockServer = require('../../../lib/mockserver.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
 const {IosSessionNotCreatedError} = common.require('utils/mobile.js');
-const Transport = common.require('transport/selenium-webdriver/index.js');
+const Transport = require('../../../../lib/transport/selenium-webdriver/safari.js');
 const mockery = require('mockery');
 
 describe('MobileSupport', function () {
   beforeEach(function (done) {
+    this.getDriverBackup = Transport.prototype.getDriver;
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
 
     process.removeAllListeners('exit');
@@ -25,6 +26,7 @@ describe('MobileSupport', function () {
   });
 
   afterEach(function (done) {
+    Transport.prototype.getDriver = this.getDriverBackup;
     mockery.deregisterAll();
     mockery.resetCache();
     mockery.disable();
@@ -73,7 +75,7 @@ describe('MobileSupport', function () {
       throw err;
     };
 
-    mockery.registerMock('./', Transport);
+    mockery.registerMock('./selenium-webdriver/safari.js', Transport);
 
     let src_folders = [
       path.join(__dirname, '../../../sampletests/withfailures'),
