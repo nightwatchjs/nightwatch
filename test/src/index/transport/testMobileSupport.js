@@ -12,6 +12,7 @@ const {IosSessionNotCreatedError} = common.require('utils/mobile.js');
 describe('MobileSupport', function () {
   beforeEach(function (done) {
     this.getDriverBackup = Transport.prototype.getDriver;
+    this.createDriverServiceBackup = Transport.prototype.createDriverService;
     process.removeAllListeners('exit');
     process.removeAllListeners('uncaughtException');
     process.removeAllListeners('unhandledRejection');
@@ -25,6 +26,7 @@ describe('MobileSupport', function () {
 
   afterEach(function (done) {
     Transport.prototype.getDriver = this.getDriverBackup;
+    Transport.prototype.createDriverService = this.createDriverServiceBackup;
 
     CommandGlobals.afterEach.call(this, function () {
       done();
@@ -68,6 +70,13 @@ describe('MobileSupport', function () {
       err.name = 'SessionNotCreatedError';
 
       throw err;
+    };
+
+    Transport.prototype.createDriverService = async function() { 
+      this.driverService = {
+        getOutputFilePath(){},
+        getSettingsFormatted(){}
+      };
     };
 
     let src_folders = [
