@@ -62,7 +62,7 @@ describe('MobileSupport', function () {
     })
   });
 
-  it('error classes for mobile-web support - IosSessionNotCreatedError', function () {
+  it.only('error classes for mobile-web support - IosSessionNotCreatedError', function () {
     Transport.prototype.getDriver = function() {
       const err = new Error('An error occurred while creating a new SafariDriver session');
       err.name = 'SessionNotCreatedError';
@@ -79,6 +79,11 @@ describe('MobileSupport', function () {
       calls: 0,
       retryAssertionTimeout: 0,
       reporter(results, cb) {
+        console.log(results);
+
+        console.log(results.lastError);
+
+
         assert.ok(results.lastError instanceof Error);
         assert.ok(results.lastError instanceof IosSessionNotCreatedError);
         assert.ok(Object.prototype.hasOwnProperty.call(results.lastError, 'name'));
