@@ -140,7 +140,7 @@ module.exports = {
 
   appiumElementFound() {
     nock('http://localhost:10195')
-      .post('/wd/hub/session/1352110219202/elements', {'using': 'css selector', 'value': '*[id="com\\.app\\:id\\/web-login"]'})
+      .post('/wd/hub/session/1352110219202/elements', {'using': 'id', 'value': 'com.app:id/web-login'})
       .reply(200, {
         status: 0,
         state: 'success',

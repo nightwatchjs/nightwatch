@@ -341,8 +341,8 @@ describe('waitForElementVisible', function () {
       .addMock({
         url: '/wd/hub/session/1352110219202/elements',
         postdata: {
-          using: 'css selector',
-          value: '*[id="com\\.app\\:id\\/web-login"]'
+          using: 'id',
+          value: 'com.app:id/web-login'
         },
         method: 'POST',
         response: JSON.stringify({
