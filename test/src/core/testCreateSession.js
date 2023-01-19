@@ -582,6 +582,8 @@ describe('test Request With Credentials', function () {
         }
       }
     });
+
+    assert.strictEqual(client.api.isAppiumClient(), false);
   });
 
   it('Test create session with browserstack and browserName set to null (App Automate)', async function () {
@@ -693,6 +695,9 @@ describe('test Request With Credentials', function () {
     });
   
     assert.strictEqual(client.transport.uploadedAppUrl, 'bs://878bdf21505f0004ce');
+
+    assert.strictEqual(client.settings.selenium.use_appium, undefined);
+    assert.strictEqual(client.api.isAppiumClient(), true);
   });
 
   it('Test create session with Browserstack App Automate using custom id', async function () {
