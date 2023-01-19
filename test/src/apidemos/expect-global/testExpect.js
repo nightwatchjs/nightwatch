@@ -48,7 +48,7 @@ describe('expect(element.<command>) - passed', function() {
     const testsPath = path.join(__dirname, '../../../apidemos/expect-global/expect.js');
     
     Mocks.elementNotSelected();
-    Mocks.elementProperty('0', 'className', {value: ['div-container']});
+    Mocks.elementProperty('0', 'className', {value: ['container']});
 
     const globals = {
       waitForConditionPollInterval: 50,
