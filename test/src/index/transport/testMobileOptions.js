@@ -26,6 +26,7 @@ describe('Test mobile options in Nightwatch/Appium client', function () {
     assert.strictEqual(client.api.isIOS(), true);
     assert.strictEqual(client.api.isAndroid(), false);
     assert.strictEqual(client.api.isMobile(), true);
+    assert.strictEqual(client.api.isAppiumClient(), false);
   });
 
   it('have isAndroid() for web testing on Android', function () {
@@ -48,6 +49,7 @@ describe('Test mobile options in Nightwatch/Appium client', function () {
     assert.strictEqual(client.api.isIOS(), false);
     assert.strictEqual(client.api.isAndroid(), true);
     assert.strictEqual(client.api.isMobile(), true);
+    assert.strictEqual(client.api.isAppiumClient(), false);
   });
 
   it('doesn\'t have isIOS(), isAndroid() and isMobile() for web testing on desktop', function () {
@@ -66,9 +68,10 @@ describe('Test mobile options in Nightwatch/Appium client', function () {
     assert.strictEqual(client.api.isIOS(), false);
     assert.strictEqual(client.api.isAndroid(), false);
     assert.strictEqual(client.api.isMobile(), false);
+    assert.strictEqual(client.api.isAppiumClient(), false);
   });
 
-  it('have isIOS() for native testing on iOS', function () {
+  it('have isIOS() and isAppiumClient() for native testing on iOS', function () {
     const client = Nightwatch.createClient({
       selenium: {
         use_appium: true
@@ -86,12 +89,13 @@ describe('Test mobile options in Nightwatch/Appium client', function () {
     assert.strictEqual(client.api.isIOS(), true);
     assert.strictEqual(client.api.isAndroid(), false);
     assert.strictEqual(client.api.isMobile(), true);
+    assert.strictEqual(client.api.isAppiumClient(), true);
   });
 
   it('have isAndroid() for native testing on Android', function () {
     const client = Nightwatch.createClient({
       selenium: {
-        use_appium: true
+        use_appium: false
       },
       desiredCapabilities: {
         browserName: null,
@@ -105,9 +109,11 @@ describe('Test mobile options in Nightwatch/Appium client', function () {
     assert.strictEqual(client.api.isIOS(), false);
     assert.strictEqual(client.api.isAndroid(), true);
     assert.strictEqual(client.api.isMobile(), true);
+    // backward compatibility with browserName: null
+    assert.strictEqual(client.api.isAppiumClient(), true);
   });
 
-  it('have isAndroid() for web testing on Android using Appium', function () {
+  it('have isAndroid() and isAppiumClient() for web testing on Android using Appium', function () {
     const client = Nightwatch.createClient({
       selenium: {
         use_appium: true
@@ -124,5 +130,6 @@ describe('Test mobile options in Nightwatch/Appium client', function () {
     assert.strictEqual(client.api.isIOS(), false);
     assert.strictEqual(client.api.isAndroid(), true);
     assert.strictEqual(client.api.isMobile(), true);
+    assert.strictEqual(client.api.isAppiumClient(), true);
   });
 });

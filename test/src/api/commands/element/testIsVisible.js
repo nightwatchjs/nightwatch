@@ -127,6 +127,8 @@ describe('isVisible', function () {
     // Make appium client
     this.client.api.options.selenium.use_appium = true;
 
+    assert.strictEqual(this.client.api.isAppiumClient(), true);
+
     this.client.api.isVisible('id', 'com.app:id/weblogin', function callback(result) {
       assert.strictEqual(result.value, false);
     }).isVisible({selector: 'com.app:id/weblogin', locateStrategy: 'id'}, function callback(result) {

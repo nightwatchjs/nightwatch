@@ -85,6 +85,7 @@ describe('expect.visible', function () {
 
       // Make appium client
       this.client.api.options.selenium.use_appium = true;
+      strictEqual(this.client.api.isAppiumClient(), true);
 
       let expect = this.client.api.expect.element({selector: 'com.app:id/web-login', locateStrategy: 'id'}).to.be.visible;
 

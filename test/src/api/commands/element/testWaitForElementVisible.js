@@ -362,6 +362,8 @@ describe('waitForElementVisible', function () {
     // Make appium client
     this.client.api.options.selenium.use_appium = true;
 
+    assert.strictEqual(this.client.api.isAppiumClient(), true);
+
     this.client.api.waitForElementVisible('id', 'com.app:id/web-login', function callback(result, instance) {
       assert.strictEqual(instance.elementId, '99');
       assert.strictEqual(result.value, true);
