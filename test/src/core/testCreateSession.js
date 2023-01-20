@@ -388,8 +388,7 @@ describe('test Request With Credentials', function () {
     }, /Error: Unknown browser:/);
   });
 
-  it('Test create session with browsername null - mobile support', async function () {
-
+  it('Test create session with browsername null - Appium support', async function () {
     nock('http://localhost:4723')
       .post('/wd/hub/session')
       .reply(201, {
@@ -427,6 +426,48 @@ describe('test Request With Credentials', function () {
         platformName: 'iOS',
         platformVersion: '15.5',
         deviceName: 'iPhone 13',
+        name: 'sample test goes here'
+      },
+      sessionId: '1352110219202'
+    });
+  });
+
+  it('Test create session with use_appium property - Appium support', async function () {
+    nock('http://somewhere:9999')
+      .post('/wd/hub/session')
+      .reply(201, {
+        value: {
+          capabilities: {
+            platformName: 'android',
+            platformVersion: '12.0',
+            name: 'sample test goes here'
+          },
+          sessionId: '1352110219202'
+        }
+      });
+
+    const client = Nightwatch.createClient({
+      webdriver: {
+        start_process: false
+      },
+      selenium: {
+        start_process: false,
+        use_appium: true,
+        host: 'somewhere',
+        port: 9999
+      },
+      desiredCapabilities: {
+        browserName: '',
+        platformName: 'android',
+        platformVersion: '12.0'
+      }
+    });
+
+    const result = await client.createSession();
+    assert.deepStrictEqual(result, {
+      capabilities: {
+        platformName: 'android',
+        platformVersion: '12.0',
         name: 'sample test goes here'
       },
       sessionId: '1352110219202'
@@ -573,7 +614,7 @@ describe('test Request With Credentials', function () {
       });
 
     nock('https://api.browserstack.com')
-      .get('/automate/builds.json')
+      .get('/app-automate/builds.json')
       .reply(200, [
         {
           automation_build: {

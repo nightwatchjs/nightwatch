@@ -195,13 +195,13 @@ describe('.click()', function() {
       silent: false,
       selenium: {
         start_process: false,
+        use_appium: true,
         port: 10195,
         host: 'localhost'
       },
       desiredCapabilities: {
         'appium:automationName': 'XCUITest',
         browserName: null,
-        'appium:app': '../samples/Wikipedia.app',
         'appium:appPackage': 'org.wikimedia.wikipedia',
         platformName: 'iOS',
         'appium:deviceName': 'iPhone 13',
