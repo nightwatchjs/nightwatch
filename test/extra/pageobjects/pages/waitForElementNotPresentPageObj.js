@@ -1,24 +1,24 @@
 module.exports = {
   commands: [{
     waitForElementNotPresentDemo(cb) {
-      this.click("@button")
+      this.click('@button')
       const dialog = this.section.dialog;
       dialog.selectValueDemo(cb)
     }
   }],
   elements: {
-    button: "#weblogin"
+    button: '#weblogin'
   },
   sections: {
     dialog: {
-      selector: "#weblogin",
+      selector: '#weblogin',
       elements: {
-        select: "#badElement",
+        select: '#badElement'
       },
       commands: [{
         selectValueDemo(cb) {
-          this.waitForElementNotPresent("@select", cb);
-        },
+          this.waitForElementNotPresent('@select', cb);
+        }
       }]
     }
   }

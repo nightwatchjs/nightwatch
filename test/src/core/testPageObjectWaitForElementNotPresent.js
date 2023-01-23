@@ -7,7 +7,7 @@ describe('test PageObject WaitForElementNotPresent', function () {
   beforeEach(function (done) {
     Nocks.enable().cleanAll().createSession();
     Nightwatch.init({
-      page_objects_path: path.join(__dirname, '../../extra/pageobjects/pages'),
+      page_objects_path: path.join(__dirname, '../../extra/pageobjects/pages')
     }, function () {
       done();
     });
@@ -31,4 +31,3 @@ describe('test PageObject WaitForElementNotPresent', function () {
     this.client.start()
   });
 });
-
