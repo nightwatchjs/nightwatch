@@ -63,6 +63,8 @@ describe('test HttpRequest', function() {
   });
 
   afterEach(function () {
+    mockery.deregisterAll();
+    mockery.resetCache();
     mockery.disable();
   });
 
@@ -415,11 +417,11 @@ describe('test HttpRequest', function() {
   });
 
   it('send POST request with multi-part form data', function(done) {
-    const appPath = path.resolve(__dirname, '../../extra/output/app.apk');
-    const appDir = path.dirname(appPath);
-
-    fs.mkdirSync(appDir, {recursive: true});
-    fs.writeFileSync(appPath, 'app-data');
+    mockery.registerMock('fs', {
+      readFileSync() {
+        return Buffer.from('app-data');
+      }
+    });
 
     const options = {
       method: 'POST',
@@ -428,7 +430,7 @@ describe('test HttpRequest', function() {
       port: 443,
       multiPartFormData: {
         file: {
-          filePath: appPath
+          filePath: 'some/path/app.apk'
         },
         custom_id: {
           data: 'some_app'
@@ -438,8 +440,6 @@ describe('test HttpRequest', function() {
 
     const request = new HttpRequest(options);
     request.on('success', function () {
-      fs.rmSync(appPath);
-
       done();
     }).send();
 
