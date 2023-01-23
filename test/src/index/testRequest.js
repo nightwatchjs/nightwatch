@@ -1,6 +1,8 @@
 const nock = require('nock');
 const assert = require('assert');
 const mockery = require('mockery');
+const fs = require('fs');
+const path = require('path');
 
 const common = require('../../common.js');
 const HttpRequest = common.require('http/request.js');
@@ -48,6 +50,13 @@ describe('test HttpRequest', function() {
       .reply(200, {
         status: 0,
         sessionId: '123456-789'
+      });
+
+    nock('https://api-cloud.browserstack.com')
+      .post('/app-automate/upload')
+      .reply(200, {
+        app_url: 'bs://878bdf21505f0004ce',
+        custom_id: 'some_app'
       });
 
     callback();
@@ -405,5 +414,52 @@ describe('test HttpRequest', function() {
     
   });
 
+  it('send POST request with multi-part form data', function(done) {
+    const appPath = path.resolve(__dirname, '../../extra/output/app.apk');
+    const appDir = path.dirname(appPath);
 
+    fs.mkdirSync(appDir, {recursive: true});
+    fs.writeFileSync(appPath, 'app-data');
+
+    const options = {
+      method: 'POST',
+      url: 'https://api-cloud.browserstack.com/app-automate/upload',
+      use_ssl: true,
+      port: 443,
+      multiPartFormData: {
+        file: {
+          filePath: appPath
+        },
+        custom_id: {
+          data: 'some_app'
+        }
+      }
+    };
+
+    const request = new HttpRequest(options);
+    request.on('success', function () {
+      done();
+    }).send();
+
+    const boundary = request.formBoundary;
+    const data = `\r\n--${boundary}\r\nContent-Disposition: form-data; name="file"; filename="app.apk"\r\n\r\napp-data` +
+      `\r\n--${boundary}\r\nContent-Disposition: form-data; name="custom_id"\r\n\r\nsome_app` +
+      `\r\n--${boundary}--`;
+    const bufferData = Buffer.from(data);
+
+    assert.deepStrictEqual(request.data, bufferData);
+    assert.strictEqual(request.contentLength, bufferData.length);
+    assert.strictEqual(request.use_ssl, true);
+
+    const opts = request.reqOptions;
+    assert.strictEqual(opts.path, '/app-automate/upload');
+    assert.strictEqual(opts.host, 'api-cloud.browserstack.com');
+    assert.strictEqual(opts.port, 443);
+    assert.strictEqual(opts.method, 'POST');
+    assert.strictEqual(opts.headers['content-type'], `multipart/form-data; boundary=${boundary}`);
+    assert.strictEqual(opts.headers['content-length'], bufferData.length);
+    assert.ok(opts.headers['User-Agent'].startsWith('nightwatch.js/'));
+
+    fs.rmSync(appPath);
+  });
 });
