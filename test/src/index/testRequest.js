@@ -438,6 +438,8 @@ describe('test HttpRequest', function() {
 
     const request = new HttpRequest(options);
     request.on('success', function () {
+      fs.rmSync(appPath);
+
       done();
     }).send();
 
@@ -459,7 +461,5 @@ describe('test HttpRequest', function() {
     assert.strictEqual(opts.headers['content-type'], `multipart/form-data; boundary=${boundary}`);
     assert.strictEqual(opts.headers['content-length'], bufferData.length);
     assert.ok(opts.headers['User-Agent'].startsWith('nightwatch.js/'));
-
-    fs.rmSync(appPath);
   });
 });
