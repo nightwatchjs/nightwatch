@@ -19,7 +19,7 @@ describe('test PageObject WaitForElementNotPresent', function () {
   });
 
   it('WaitForElementNotPresent with section', function(done) {
-    Nocks.elementFound().click().elementFound().childElementFound().elementFound().childElementNotFound()
+    Nocks.elementFound().click().elementFound().childElementsFound('#badElement').elementFound().childElementsNotFound()
 
     const page = this.client.api.page.waitForElementNotPresentPageObj();
 

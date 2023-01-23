@@ -179,7 +179,7 @@ module.exports = {
     return this;
   },
 
-  childElementNotFound(selector='#badElement') {
+  childElementsNotFound(selector='#badElement') {
     nock('http://localhost:10195')
       .post('/wd/hub/session/1352110219202/element/0/elements', {'using': 'css selector', 'value': selector})
       .reply(200, {
@@ -191,7 +191,7 @@ module.exports = {
     return this;
   },
 
-  childElementFound(selector='#badElement') {
+  childElementsFound(selector='#weblogin') {
     nock('http://localhost:10195')
       .post('/wd/hub/session/1352110219202/element/0/elements', {'using': 'css selector', 'value': selector})
       .reply(200, {
