@@ -48,7 +48,12 @@ describe('element base commands', function() {
   it('client.element() - unhandled error', async function() {
     const client = await Nightwatch.initClient({
       output: false,
-      silent: false
+      silent: false,
+      webdriver: {
+        timeout_options: {
+          retry_attempts: 0
+        }
+      }
     }, reporter);
 
     MockServer.addMock({

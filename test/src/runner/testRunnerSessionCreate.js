@@ -77,7 +77,10 @@ describe('testRunnerSessionCreate', function() {
     return runTests({'reuse-browser': true, source: testsPath}, settings({
       selenium_host: null,
       webdriver: {
-        host: 'localhost'
+        host: 'localhost',
+        timeout_options: {
+          retry_attempts: 0
+        }
       },
       globals,
       output: false,
@@ -136,7 +139,10 @@ describe('testRunnerSessionCreate', function() {
     }, settings({
       selenium_host: null,
       webdriver: {
-        host: 'localhost'
+        host: 'localhost',
+        timeout_options: {
+          retry_attempts: 0
+        }
       },
       globals,
       output: false,
@@ -200,7 +206,10 @@ describe('testRunnerSessionCreate', function() {
     }, settings({
       selenium_host: null,
       webdriver: {
-        host: 'localhost'
+        host: 'localhost',
+        timeout_options: {
+          retry_attempts: 0
+        }
       },
       globals,
       output: false,

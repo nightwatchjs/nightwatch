@@ -33,7 +33,10 @@ describe('getCookiesErrors', function() {
         report_command_errors: true,
         backwards_compatibility_mode: true,
         webdriver: {
-          start_process: false
+          start_process: false,
+          timeout_options: {
+            retry_attempts: 0
+          }
         },
         desiredCapabilities: {
           name: 'testSuite'
@@ -96,7 +99,10 @@ describe('getCookiesErrors', function() {
       const client = await Nightwatch.initClient({
         report_command_errors: true,
         webdriver: {
-          start_process: false
+          start_process: false,
+          timeout_options: {
+            retry_attempts: 0
+          }
         },
         desiredCapabilities: {
           name: 'testSuite'
