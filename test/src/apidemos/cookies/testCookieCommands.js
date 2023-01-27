@@ -25,11 +25,13 @@ describe('cookie demos', function() {
 
     const globals = {
       waitForConditionPollInterval: 50,
-
+      calls: 0,
       reporter(results) {
         if (results.lastError) {
           throw results.lastError;
         }
+
+        assert.strictEqual(globals.calls, 2);
       }
     };
 

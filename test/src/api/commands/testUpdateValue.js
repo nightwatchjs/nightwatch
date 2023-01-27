@@ -30,7 +30,7 @@ describe('updateValue', function() {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element/0/value',
       method: 'POST',
-      postdata: {value: ['p', 'a', 's', 's', 'w', 'o', 'r', 'd']},
+      postdata: {text: 'password', value: ['p', 'a', 's', 's', 'w', 'o', 'r', 'd']},
       response: {
         sessionId: '1352110219202',
         status: 0

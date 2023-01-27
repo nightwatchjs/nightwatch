@@ -32,12 +32,21 @@ describe('test PageObject Commands', function () {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element/0/value',
       method: 'POST',
-      postdata: '{"value":["1"]}',
+      postdata: '{"text":"1", "value":["1"]}',
       response: JSON.stringify({
         sessionId: '1352110219202',
         status: 0
       })
     }, true);
+
+    MockServer.addMock({
+      'url': '/wd/hub/session/1352110219202/element/0/clear',
+      postdata: {},
+      'response': {
+        sessionId: '1352110219202',
+        status: 0
+      }
+    });
 
     let page = this.client.api.page.simplePageObj();
     page.setValue('@loginCss', '1', function callback(result) {
@@ -277,6 +286,15 @@ describe('test PageObject Commands', function () {
 
 
   it('testPageObject navigate with url as a function using api object', function (done) {
+    MockServer.addMock({
+      'url': '/wd/hub/session/1352110219202/url',
+      postdata: {'url': 'https://nightwatchjs.org'},
+      'response': JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0
+      })
+    }, true);
+
     const page = this.client.api.page.simplePageObj();
     page.api.launch_url = 'https://nightwatchjs.org';
     

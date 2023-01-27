@@ -349,8 +349,7 @@ module.exports = {
       statusCode: 201,
       method: 'POST',
       postdata: JSON.stringify({
-        desiredCapabilities: {browserName, ...options},
-        capabilities: {alwaysMatch: {browserName, ...options}}
+        capabilities: {firstMatch: [{}], alwaysMatch: {browserName, ...options}}
       }),
 
       response: JSON.stringify({
@@ -386,7 +385,7 @@ module.exports = {
     url = '/wd/hub/session'
   }) {
     const browserName = 'chrome';
-    const headlessOpt = headless ? 'headless' : '';
+    const headlessOpt = headless ? 'headless=chrome' : '';
     const options = {
       ['goog:chromeOptions']: {}
     };
@@ -400,8 +399,7 @@ module.exports = {
       statusCode: 201,
       method: 'POST',
       postdata: JSON.stringify({
-        desiredCapabilities: {browserName, ...options},
-        capabilities: {alwaysMatch: {browserName, ...options}}
+        capabilities: {firstMatch: [{}], alwaysMatch: {browserName, ...options}}
       }),
 
       response: JSON.stringify({
@@ -442,8 +440,7 @@ module.exports = {
       statusCode: 201,
       method: 'POST',
       postdata: JSON.stringify(postdata || {
-        desiredCapabilities: {browserName, name: testName},
-        capabilities: {alwaysMatch: {browserName}}
+        capabilities: {firstMatch: [{}], alwaysMatch: {browserName}}
       }),
 
       response: JSON.stringify({
@@ -488,4 +485,3 @@ module.exports = {
     return this;
   }
 };
-

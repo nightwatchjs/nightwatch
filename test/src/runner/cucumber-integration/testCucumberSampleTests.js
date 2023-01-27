@@ -41,4 +41,31 @@ describe('Cucumber integration', function() {
     });
   });
 
+  it('testCucumberSampleTests - chaining of commands failure', function() {
+    const source = [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/chainingCommands/testCommands.js')];
+
+    return runTests({
+      source,
+      tags: ['@fail'],
+      verbose: false,
+      config: path.join(__dirname, '../../../extra/cucumber-config.js')
+    }, {}).then(failures => {
+      assert.strictEqual(failures, true, 'Cucumber has test failures. Run with verbose to investigate.');
+    });
+  });
+
+
+  it('testCucumberSampleTests - use custom commands failure', function() {
+    const source = [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/customCommands/testCucumberWithCustomWait.js')];
+
+    return runTests({
+      source,
+      tags: ['@fail'],
+      verbose: false,
+      config: path.join(__dirname, '../../../extra/cucumber-config.js')
+    }, {})
+      .then(failures => {
+        assert.strictEqual(failures, true, 'Cucumber has test failures. Run with verbose to investigate.');
+      });
+  });
 });

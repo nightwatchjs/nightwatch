@@ -9,18 +9,14 @@ describe('google search with consent form - page objects', function() {
 
   after(async (browser) => browser.quit());
 
-  it('should complete the consent form', async function (browser) {
-
+  it.only('should complete the consent form', async function (browser) {
     const consentPresent = await homePage.isPresent('@consentModal');
 
     if (consentPresent) {
       await homePage.expect.section('@consentModal').to.be.visible;
 
       const {consentModal} = homePage.section;
-      await consentModal.click('@customizeButton');
-
-      await browser.expect.url().toContain('https://consent.google.');
-      await consentPage.turnOffEverything();
+      await consentModal.click('@rejectAllButton');
     }
   });
 

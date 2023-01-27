@@ -1,6 +1,8 @@
 const assert = require('assert');
 
 module.exports = {
+  'default': {},
+
   async before() {
     this.isFungus = true;
   },

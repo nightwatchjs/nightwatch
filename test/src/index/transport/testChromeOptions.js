@@ -108,7 +108,7 @@ describe('Test chrome options', function () {
     const options = client.transport.createSessionOptions({headless: true});
 
     assert.strictEqual(options instanceof ChromeOptions, true);
-    assert.deepStrictEqual(options.options_.args, ['headless']);
+    assert.deepStrictEqual(options.options_.args, ['headless=chrome']);
   });
 
   it('devtools cli arg', function(){

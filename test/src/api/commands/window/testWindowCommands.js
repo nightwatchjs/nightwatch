@@ -5,12 +5,19 @@ const nock = require('nock');
 
 describe('window', function () {
   before(function (done) {
+    try {
+      nock.activate();
+    } catch(e){
+      //ignore
+    }
+
     CommandGlobals.beforeEach.call(this, done);
   });
 
   after(function (done) {
-    CommandGlobals.afterEach.call(this, done);
     nock.cleanAll();
+    nock.restore();
+    CommandGlobals.afterEach.call(this, done);
   });
 
   it('client.closeWindow()', function (done) {
@@ -58,7 +65,7 @@ describe('window', function () {
         height: 1000,
         x: 100,
         y: 100
-      })
+      });
     });
 
     this.client.start(done);
@@ -68,9 +75,8 @@ describe('window', function () {
     nock('http://localhost:10195')
       .post('/wd/hub/session/1352110219202/window/rect')
       .reply(200, function (uri, requestBody) {
-        const reqObj = JSON.parse(requestBody);
       
-        assert.deepStrictEqual(reqObj, {
+        assert.deepStrictEqual(requestBody, {
           width: 1000, 
           height: 1000
         });
@@ -99,9 +105,8 @@ describe('window', function () {
     nock('http://localhost:10195')
       .post('/wd/hub/session/1352110219202/window/rect')
       .reply(200, function (uri, requestBody) {
-        const reqObj = JSON.parse(requestBody);
       
-        assert.deepStrictEqual(reqObj, {
+        assert.deepStrictEqual(requestBody, {
           width: 1000, 
           height: 1000
         });
@@ -130,9 +135,8 @@ describe('window', function () {
     nock('http://localhost:10195')
       .post('/wd/hub/session/1352110219202/window/rect')
       .reply(200, function (uri, requestBody) {
-        const reqObj = JSON.parse(requestBody);
       
-        assert.deepStrictEqual(reqObj, {
+        assert.deepStrictEqual(requestBody, {
           x: 100, 
           y: 100
         });

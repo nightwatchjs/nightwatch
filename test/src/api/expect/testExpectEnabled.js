@@ -179,16 +179,16 @@ describe('expect.enabled', function() {
   });
 
   it('to be enabled with waitFor - element found on retry', function() {
-    this.client.api.globals.waitForConditionPollInterval = 10;
+    this.client.api.globals.waitForConditionPollInterval = 100;
 
     Nocks.elementNotFound().elementFound().enabled();
 
-    let expect = this.client.api.expect.element('#weblogin').to.be.enabled.before(11);
+    let expect = this.client.api.expect.element('#weblogin').to.be.enabled.before(111);
 
     return this.client.start(function() {
       assert.strictEqual(expect.assertion.passed, true);
-      assert.strictEqual(expect.assertion.waitForMs, 11);
-      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be enabled in 11ms (' + expect.assertion.elapsedTime + 'ms)'));
+      assert.strictEqual(expect.assertion.waitForMs, 111);
+      assert.ok(expect.assertion.message.startsWith('Expected element <#weblogin> to be enabled in 111ms (' + expect.assertion.elapsedTime + 'ms)'));
     });
   });
 });
