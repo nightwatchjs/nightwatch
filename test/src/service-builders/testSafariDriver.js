@@ -272,15 +272,8 @@ describe('SafariDriver Transport Tests', function () {
     MockServer.addMock({
       url: '/session',
       statusCode: 500,
-      postdata: JSON.stringify({ 
-        'desiredCapabilities': { 
-          'browserName': 'safari',
-          'name': 'test-Async',
-          'safari.options': { }
-        }, 
-        'capabilities': { 
-          'alwaysMatch': {'browserName': 'safari'} 
-        }
+      postdata: JSON.stringify({
+        'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'safari'}}
       }),
       response: JSON.stringify({
         value: {
@@ -321,7 +314,7 @@ describe('SafariDriver Transport Tests', function () {
   });
 
   it('session create should throw error after max retryAttempts', function() {
-    this.timeout(500000);
+    this.timeout(5000);
 
     let testsPath = [
       path.join(__dirname, '../../sampletests/async')
@@ -330,15 +323,8 @@ describe('SafariDriver Transport Tests', function () {
     MockServer.addMock({
       url: '/session',
       statusCode: 500,
-      postdata: JSON.stringify({ 
-        'desiredCapabilities': { 
-          'browserName': 'safari',
-          'name': 'test-Async',
-          'safari.options': { }
-        }, 
-        'capabilities': { 
-          'alwaysMatch': {'browserName': 'safari'} 
-        }
+      postdata: JSON.stringify({
+        'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'safari'}}
       }),
       response: JSON.stringify({
         value: {
@@ -352,15 +338,8 @@ describe('SafariDriver Transport Tests', function () {
     MockServer.addMock({
       url: '/session',
       statusCode: 200,
-      postdata: JSON.stringify({ 
-        'desiredCapabilities': { 
-          'browserName': 'safari',
-          'name': 'test-Async',
-          'safari.options': { }
-        }, 
-        'capabilities': { 
-          'alwaysMatch': {'browserName': 'safari'} 
-        }
+      postdata: JSON.stringify({
+        'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'safari'}}
       }),
       response: JSON.stringify({
         value: {
@@ -380,9 +359,6 @@ describe('SafariDriver Transport Tests', function () {
         assert.strictEqual(results.errors, 0);
         assert.strictEqual(Object.keys(results.modules).length, 1);
         assert.ok(Object.keys(results.modules).includes(`test${sep}sample`));
-        // assert.ok(results.lastError instanceof Error);
-
-        // assert.strictEqual(results.lastError.message, 'An error occurred while creating a new GeckoDriver session: [SessionNotCreatedError] Session is already started');
       }
     };
 
