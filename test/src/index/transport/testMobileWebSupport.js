@@ -188,6 +188,13 @@ describe.only('MobileSupport', function () {
       throw err;
     };
 
+    Transport.prototype.createDriverService = async function() { 
+      this.driverService = {
+        getOutputFilePath(){},
+        getSettingsFormatted(){}
+      };
+    };
+
     mockery.registerMock('./', Transport);
     mockery.registerMock('@nightwatch/mobile-helper', {
       getBinaryLocation(){}, getPlatformName(){}
