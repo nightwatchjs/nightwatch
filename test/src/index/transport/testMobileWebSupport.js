@@ -9,7 +9,7 @@ const Transport = require('../../../../lib/transport/selenium-webdriver/index.js
 const {IosSessionNotCreatedError, AndroidConnectionError} = common.require('utils/mobile.js');
 const mockery = require('mockery');
 
-describe.only('MobileSupport', function () {
+describe('MobileSupport', function () {
   before(function () {
     mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
   })
