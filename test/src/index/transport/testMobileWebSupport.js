@@ -167,7 +167,7 @@ describe.only('MobileSupport', function () {
     assert.ok(!runner.test_settings.desiredCapabilities['safari:useSimulator']);
   });
 
-  it.only('error classes for mobile-web support - AndroidConnectionError', function () {
+  it('error classes for mobile-web support - AndroidConnectionError', function () {
     this.timeout(10000);
     mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
 
@@ -208,7 +208,6 @@ describe.only('MobileSupport', function () {
       calls: 0,
       retryAssertionTimeout: 0,
       reporter(results, cb) {
-        console.log(results.lastError);
         assert.ok(results.lastError instanceof Error);
         assert.ok(results.lastError instanceof AndroidConnectionError);
         assert.ok(results.lastError.message.includes('no devices online'));
