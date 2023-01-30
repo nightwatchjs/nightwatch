@@ -3,11 +3,11 @@ const mockery = require('mockery');
 const path = require('path');
 const assert = require('assert');
 const common = require('../../common.js');
-const Nightwatch = require('../../lib/nightwatch.js');
 
 describe('test Parallel Execution', function() {
   const allArgs = [];
   const allOpts = [];
+  this.timeout(5000);
 
   beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
