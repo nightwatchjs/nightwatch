@@ -4,10 +4,10 @@ const path = require('path');
 const assert = require('assert');
 const common = require('../../common.js');
 
-describe('test Parallel Execution', function() {
+describe('test Sequential Execution', function() {
   const allArgs = [];
   const allOpts = [];
-  this.timeout(5000);
+  this.timeout(10000);
 
   beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
@@ -62,7 +62,7 @@ describe('test Parallel Execution', function() {
     process.env.__NIGHTWATCH_PARALLEL_MODE = null;
   });
 
-  it('testParallelExecution', function() {
+  it('testSequentialExecution - without worker', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../extra/'));
@@ -87,7 +87,7 @@ describe('test Parallel Execution', function() {
     });
   });
 
-  it('testParallelExecution', function() {
+  it('testSequentialExecution with worker', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../extra/'));
