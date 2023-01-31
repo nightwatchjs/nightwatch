@@ -262,7 +262,7 @@ describe('SafariDriver Transport Tests', function () {
     assert.strictEqual(serverPath, '/Applications/Safari Technology Preview.app/Contents/MacOS/safaridriver');
   });
 
-  it('session create should retry on internal server error (500)', function() {
+  it('session create should throw error after max retryAttempts', function() {
     this.timeout(5000);
 
     let testsPath = [
@@ -313,7 +313,7 @@ describe('SafariDriver Transport Tests', function () {
     }));
   });
 
-  it('session create should throw error after max retryAttempts', function() {
+  it('session create should retry on internal server error (500)', function() {
     this.timeout(5000);
 
     let testsPath = [
