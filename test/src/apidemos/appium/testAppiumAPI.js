@@ -31,17 +31,49 @@ describe('appium api demos', function () {
       }
     };
 
-    MockServer.addMock({
-      url: '/wd/hub/session',
-      method: 'POST',
-      response: JSON.stringify({
-        value: {
-          sessionId: '1352110219202',
-          version: 'TEST',
-          platform: 'TEST'
-        }
-      })
-    });
+    MockServer
+      .addMock({
+        url: '/wd/hub/session',
+        method: 'POST',
+        response: JSON.stringify({
+          value: {
+            sessionId: '13521-10219-202',
+            version: 'TEST',
+            platform: 'TEST'
+          }
+        })
+      }, true)
+      .addMock({
+        url: '/wd/hub/session/13521-10219-202/elements',
+        postdata: {
+          using: 'id',
+          value: 'com.app:id/search'
+        },
+        method: 'POST',
+        response: JSON.stringify({
+          status: 0,
+          state: 'success',
+          value: [{'element-6066-11e4-a52e-4f735466cecf': '0'}]
+        })
+      }, true, true)
+      .addMock({
+        url: '/wd/hub/session/13521-10219-202/element/0/click',
+        method: 'POST',
+        response: JSON.stringify({
+          value: null
+        })
+      }, true)
+      .addMock({
+        url: '/wd/hub/session/13521-10219-202/element/0/value',
+        method: 'POST',
+        postdata: JSON.stringify({
+          text: 'Nightwatch',
+          value: 'Nightwatch'.split('')
+        }),
+        response: JSON.stringify({
+          value: null
+        })
+      }, true);
 
     return NightwatchClient.runTests(testsPath, {
       selenium: {

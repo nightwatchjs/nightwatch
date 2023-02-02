@@ -20,14 +20,18 @@ describe('appium api demo', function () {
     'setContext'
   ];
 
-  it('test chrome available API commands', async function () {
+  it('test appium available API commands', async function () {
     // app variable is available globally
-    // eslint-disable-next-line
     assert.strictEqual(app !== undefined, true);
 
     availableAppiumCommands.forEach((command) => {
-      // eslint-disable-next-line
       assert.strictEqual(typeof app.appium[command], 'function');
     });
+  });
+
+  it('Search for Nightwatch', async function() {
+    app  // available globally
+      .click('id', 'com.app:id/search')
+      .sendKeys('id', 'com.app:id/search', 'Nightwatch');
   });
 });
