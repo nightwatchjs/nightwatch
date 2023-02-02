@@ -179,6 +179,30 @@ module.exports = {
     return this;
   },
 
+  childElementsNotFound(selector='#badElement') {
+    nock('http://localhost:10195')
+      .post('/wd/hub/session/1352110219202/element/0/elements', {'using': 'css selector', 'value': selector})
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value: []
+      });
+
+    return this;
+  },
+
+  childElementsFound(selector='#weblogin') {
+    nock('http://localhost:10195')
+      .post('/wd/hub/session/1352110219202/element/0/elements', {'using': 'css selector', 'value': selector})
+      .reply(200, {
+        status: 0,
+        state: 'success',
+        value: [{'element-6066-11e4-a52e-4f735466cecf': '0'}]
+      })
+
+    return this;
+  },
+
   elementFoundXpath() {
     nock('http://localhost:10195')
       .post('/wd/hub/session/1352110219202/elements', {'using': 'xpath', 'value': '//weblogin'})
