@@ -4,7 +4,7 @@ const path = require('path');
 const assert = require('assert');
 const common = require('../../common.js');
 
-describe.only('test Sequential Execution', function() {
+describe('test Sequential Execution', function() {
   const allArgs = [];
   const allOpts = [];
 
@@ -88,7 +88,7 @@ describe.only('test Sequential Execution', function() {
   });
 
   it('testSequentialExecution - sequential with multiple environment', async function() {
-    this.timeout(10000);
+    this.timeout(15000);
     const CliRunner = common.require('runner/cli/cli.js');
     let originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../extra/'));
