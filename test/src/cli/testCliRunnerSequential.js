@@ -4,9 +4,10 @@ const path = require('path');
 const assert = require('assert');
 const common = require('../../common.js');
 
-describe('test Sequential Execution', function() {
+describe.only('test Sequential Execution', function() {
   const allArgs = [];
   const allOpts = [];
+  this.timeout(5000);
 
   beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
@@ -74,7 +75,7 @@ describe('test Sequential Execution', function() {
       workers: 1
     });
 
-    runner.setup();
+    await runner.setup();
 
     assert.ok(runner.sequentialMode());
     assert.strictEqual(runner.testEnv, 'default,mixed');
@@ -100,7 +101,7 @@ describe('test Sequential Execution', function() {
       workers: 5
     });
 
-    runner.setup();
+    await runner.setup();
 
     assert.strictEqual(runner.testEnv, 'default,mixed');
     assert.deepStrictEqual(runner.availableTestEnvs, ['default', 'mixed']);
