@@ -61,7 +61,33 @@ describe.only('test Sequential Execution', function() {
     process.env.__NIGHTWATCH_PARALLEL_MODE = null;
   });
 
-  it('testSequentialExecution - sequential with multiple environment', function(done) {
+  it('testSequentialExecution with worker', async function() {
+    const CliRunner = common.require('runner/cli/cli.js');
+    let originalCwd = process.cwd();
+    process.chdir(path.join(__dirname, '../../extra/'));
+
+    let runner = new CliRunner({
+      config: './nightwatch.json',
+      env: 'default,mixed',
+      reporter: 'junit',
+      serial: true,
+      workers: 5
+    });
+
+    runner.setup();
+
+    assert.strictEqual(runner.testEnv, 'default,mixed');
+    assert.deepStrictEqual(runner.availableTestEnvs, ['default', 'mixed']);
+  
+    await runner.runTests();
+
+    assert.strictEqual(runner.sequentialMode(), false);
+    assert.strictEqual(runner.parallelMode(), true);
+    assert.deepEqual(runner.testEnvArray, ['default', 'mixed']);
+    process.chdir(originalCwd);
+  });
+
+  it('testSequentialExecution - sequential with multiple environment', async function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../extra/'));
@@ -79,39 +105,11 @@ describe.only('test Sequential Execution', function() {
     assert.ok(runner.sequentialMode());
     assert.strictEqual(runner.testEnv, 'default,mixed');
     assert.deepStrictEqual(runner.availableTestEnvs, ['default', 'mixed']);
-  
-    runner.runTests().then(() => {
-      assert.ok(runner.sequentialMode());
-      assert.deepEqual(runner.testEnvArray, ['default', 'mixed']);
-      process.chdir(originalCwd);
-      done();
-    });
-  });
 
-  it('testSequentialExecution with worker', function(done) {
-    const CliRunner = common.require('runner/cli/cli.js');
-    let originalCwd = process.cwd();
-    process.chdir(path.join(__dirname, '../../extra/'));
+    await runner.runTests();
 
-    let runner = new CliRunner({
-      config: './nightwatch.json',
-      env: 'default,mixed',
-      reporter: 'junit',
-      serial: true,
-      workers: 5
-    });
-
-    runner.setup();
-
-    assert.strictEqual(runner.testEnv, 'default,mixed');
-    assert.deepStrictEqual(runner.availableTestEnvs, ['default', 'mixed']);
-
-    runner.runTests().then(() => {
-      assert.strictEqual(runner.sequentialMode(), false);
-      assert.strictEqual(runner.parallelMode(), true);
-      assert.deepEqual(runner.testEnvArray, ['default', 'mixed']);
-      process.chdir(originalCwd);
-      done();
-    });
+    assert.ok(runner.sequentialMode());
+    assert.deepEqual(runner.testEnvArray, ['default', 'mixed']);
+    process.chdir(originalCwd);
   });
 });
