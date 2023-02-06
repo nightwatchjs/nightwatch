@@ -61,7 +61,7 @@ describe('test Sequential Execution', function() {
     process.env.__NIGHTWATCH_PARALLEL_MODE = null;
   });
 
-  it('testSequentialExecution - sequential with multiple environment', function() {
+  it('testSequentialExecution - sequential with multiple environment', async function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../extra/'));
@@ -80,14 +80,14 @@ describe('test Sequential Execution', function() {
     assert.strictEqual(runner.testEnv, 'default,mixed');
     assert.deepStrictEqual(runner.availableTestEnvs, ['default', 'mixed']);
 
-    return runner.runTests().then(_ => {
-      assert.ok(runner.sequentialMode());
-      assert.deepEqual(runner.testEnvArray, ['default', 'mixed']);
-      process.chdir(originalCwd);
-    });
+    await runner.runTests();
+
+    assert.ok(runner.sequentialMode());
+    assert.deepEqual(runner.testEnvArray, ['default', 'mixed']);
+    process.chdir(originalCwd);
   });
 
-  it('testSequentialExecution with worker', function() {
+  it('testSequentialExecution with worker', async function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../extra/'));
@@ -105,11 +105,11 @@ describe('test Sequential Execution', function() {
     assert.strictEqual(runner.testEnv, 'default,mixed');
     assert.deepStrictEqual(runner.availableTestEnvs, ['default', 'mixed']);
 
-    return runner.runTests().then(_ => {
-      assert.strictEqual(runner.sequentialMode(), false);
-      assert.strictEqual(runner.parallelMode(), true);
-      assert.deepEqual(runner.testEnvArray, ['default', 'mixed']);
-      process.chdir(originalCwd);
-    });
+    await runner.runTests();
+
+    assert.strictEqual(runner.sequentialMode(), false);
+    assert.strictEqual(runner.parallelMode(), true);
+    assert.deepEqual(runner.testEnvArray, ['default', 'mixed']);
+    process.chdir(originalCwd);
   });
 });
