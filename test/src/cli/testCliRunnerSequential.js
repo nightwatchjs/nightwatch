@@ -61,7 +61,7 @@ describe.only('test Sequential Execution', function() {
     process.env.__NIGHTWATCH_PARALLEL_MODE = null;
   });
 
-  it('testSequentialExecution - sequential with multiple environment', function() {
+  it('testSequentialExecution - sequential with multiple environment', function(done) {
     const CliRunner = common.require('runner/cli/cli.js');
     let originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../extra/'));
@@ -80,17 +80,15 @@ describe.only('test Sequential Execution', function() {
     assert.strictEqual(runner.testEnv, 'default,mixed');
     assert.deepStrictEqual(runner.availableTestEnvs, ['default', 'mixed']);
   
-    return new Promise(function (resolve) {
-      runner.runTests().then(() => {
+    runner.runTests().then(() => {
         assert.ok(runner.sequentialMode());
         assert.deepEqual(runner.testEnvArray, ['default', 'mixed']);
         process.chdir(originalCwd);
-        resolve();
-      }).catch(e => resolve(e));
-    });
+        done();
+      })
   });
 
-  it('testSequentialExecution with worker', function() {
+  it('testSequentialExecution with worker', function(done) {
     const CliRunner = common.require('runner/cli/cli.js');
     let originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../extra/'));
@@ -108,14 +106,12 @@ describe.only('test Sequential Execution', function() {
     assert.strictEqual(runner.testEnv, 'default,mixed');
     assert.deepStrictEqual(runner.availableTestEnvs, ['default', 'mixed']);
 
-    return new Promise(function (resolve) {
-      runner.runTests().then(() => {
-        assert.strictEqual(runner.sequentialMode(), false);
-        assert.strictEqual(runner.parallelMode(), true);
-        assert.deepEqual(runner.testEnvArray, ['default', 'mixed']);
-        process.chdir(originalCwd);
-        resolve();
-      }).catch(e => resolve(e));
+    runner.runTests().then(() => {
+      assert.strictEqual(runner.sequentialMode(), false);
+      assert.strictEqual(runner.parallelMode(), true);
+      assert.deepEqual(runner.testEnvArray, ['default', 'mixed']);
+      process.chdir(originalCwd);
+      done();
     });
   });
 });
