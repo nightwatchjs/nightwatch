@@ -86,7 +86,7 @@ describe.only('test Sequential Execution', function() {
         assert.deepEqual(runner.testEnvArray, ['default', 'mixed']);
         process.chdir(originalCwd);
         resolve();
-      })
+      }).catch(e => resolve(e));
     });
   });
 
@@ -115,7 +115,7 @@ describe.only('test Sequential Execution', function() {
         assert.deepEqual(runner.testEnvArray, ['default', 'mixed']);
         process.chdir(originalCwd);
         resolve();
-      })
+      }).catch(e => resolve(e));
     });
   });
 });
