@@ -61,7 +61,7 @@ describe.only('test Sequential Execution', function() {
     process.env.__NIGHTWATCH_PARALLEL_MODE = null;
   });
 
-  it('testSequentialExecution - sequential with multiple environment', async function() {
+  it('testSequentialExecution - sequential with multiple environment', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../extra/'));
@@ -86,13 +86,11 @@ describe.only('test Sequential Execution', function() {
         assert.deepEqual(runner.testEnvArray, ['default', 'mixed']);
         process.chdir(originalCwd);
         resolve();
-      }).catch((e) => {
-        resolve(e);
-      });
+      })
     });
   });
 
-  it('testSequentialExecution with worker', async function() {
+  it('testSequentialExecution with worker', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../extra/'));
@@ -105,7 +103,7 @@ describe.only('test Sequential Execution', function() {
       workers: 5
     });
 
-    await runner.setup();
+    runner.setup();
 
     assert.strictEqual(runner.testEnv, 'default,mixed');
     assert.deepStrictEqual(runner.availableTestEnvs, ['default', 'mixed']);
@@ -117,9 +115,7 @@ describe.only('test Sequential Execution', function() {
         assert.deepEqual(runner.testEnvArray, ['default', 'mixed']);
         process.chdir(originalCwd);
         resolve();
-      }).catch((e) => {
-        resolve(e);
-      });
+      })
     });
   });
 });
