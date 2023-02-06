@@ -18,7 +18,7 @@ describe('test PageObject WaitForElementNotPresent', function () {
     Nocks.deleteSession().disable();
   });
 
-  it('WaitForElementNotPresent with section', function(done) {
+  it('WaitForElementNotPresent with section', async function() {
     Nocks.elementFound().click().elementFound().childElementsFound('#badElement').elementFound().childElementsNotFound()
 
     const page = this.client.api.page.waitForElementNotPresentPageObj();
@@ -28,18 +28,7 @@ describe('test PageObject WaitForElementNotPresent', function () {
       res = result;
     })
   
-    this.client.start(function (err) {
-      if (err) {
-        done(err);
-        return;
-      }
-      
-      try {
-        assert.strictEqual(res.status, 0);
-        done();
-      } catch (err) {
-        done(err);
-      }
-    });
+    await this.client.start();
+    assert.equal(res.status, 0);
   });
 });
