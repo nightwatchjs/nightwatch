@@ -81,11 +81,11 @@ describe.only('test Sequential Execution', function() {
     assert.deepStrictEqual(runner.availableTestEnvs, ['default', 'mixed']);
   
     runner.runTests().then(() => {
-        assert.ok(runner.sequentialMode());
-        assert.deepEqual(runner.testEnvArray, ['default', 'mixed']);
-        process.chdir(originalCwd);
-        done();
-      })
+      assert.ok(runner.sequentialMode());
+      assert.deepEqual(runner.testEnvArray, ['default', 'mixed']);
+      process.chdir(originalCwd);
+      done();
+    });
   });
 
   it('testSequentialExecution with worker', function(done) {
