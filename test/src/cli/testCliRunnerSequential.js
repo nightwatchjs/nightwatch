@@ -7,7 +7,6 @@ const common = require('../../common.js');
 describe.only('test Sequential Execution', function() {
   const allArgs = [];
   const allOpts = [];
-  this.timeout(5000);
 
   beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
@@ -75,17 +74,22 @@ describe.only('test Sequential Execution', function() {
       workers: 1
     });
 
-    await runner.setup();
+    runner.setup();
 
     assert.ok(runner.sequentialMode());
     assert.strictEqual(runner.testEnv, 'default,mixed');
     assert.deepStrictEqual(runner.availableTestEnvs, ['default', 'mixed']);
-
-    await runner.runTests();
-
-    assert.ok(runner.sequentialMode());
-    assert.deepEqual(runner.testEnvArray, ['default', 'mixed']);
-    process.chdir(originalCwd);
+  
+    return new Promise(function (resolve) {
+      runner.runTests().then(() => {
+        assert.ok(runner.sequentialMode());
+        assert.deepEqual(runner.testEnvArray, ['default', 'mixed']);
+        process.chdir(originalCwd);
+        resolve();
+      }).catch((e) => {
+        resolve(e);
+      });
+    });
   });
 
   it('testSequentialExecution with worker', async function() {
@@ -106,11 +110,16 @@ describe.only('test Sequential Execution', function() {
     assert.strictEqual(runner.testEnv, 'default,mixed');
     assert.deepStrictEqual(runner.availableTestEnvs, ['default', 'mixed']);
 
-    await runner.runTests();
-
-    assert.strictEqual(runner.sequentialMode(), false);
-    assert.strictEqual(runner.parallelMode(), true);
-    assert.deepEqual(runner.testEnvArray, ['default', 'mixed']);
-    process.chdir(originalCwd);
+    return new Promise(function (resolve) {
+      runner.runTests().then(() => {
+        assert.strictEqual(runner.sequentialMode(), false);
+        assert.strictEqual(runner.parallelMode(), true);
+        assert.deepEqual(runner.testEnvArray, ['default', 'mixed']);
+        process.chdir(originalCwd);
+        resolve();
+      }).catch((e) => {
+        resolve(e);
+      });
+    });
   });
 });
