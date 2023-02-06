@@ -7,7 +7,6 @@ const common = require('../../common.js');
 describe('test Sequential Execution', function() {
   const allArgs = [];
   const allOpts = [];
-  this.timeout(10000);
 
   beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
@@ -62,7 +61,7 @@ describe('test Sequential Execution', function() {
     process.env.__NIGHTWATCH_PARALLEL_MODE = null;
   });
 
-  it('testSequentialExecution - without worker', function() {
+  it('testSequentialExecution - sequential with multiple environment', function() {
     const CliRunner = common.require('runner/cli/cli.js');
     let originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../extra/'));
@@ -71,7 +70,8 @@ describe('test Sequential Execution', function() {
       config: './nightwatch.json',
       env: 'default,mixed',
       reporter: 'junit',
-      serial: true
+      serial: true,
+      workers: 1
     });
 
     runner.setup();
