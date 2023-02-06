@@ -4,7 +4,7 @@ const path = require('path');
 const assert = require('assert');
 const common = require('../../common.js');
 
-describe('test Sequential Execution', function() {
+describe.only('test Sequential Execution', function() {
   const allArgs = [];
   const allOpts = [];
 
@@ -87,7 +87,8 @@ describe('test Sequential Execution', function() {
     process.chdir(originalCwd);
   });
 
-  it('testSequentialExecution - sequential with multiple environment', function() {
+  it('testSequentialExecution - sequential with multiple environment', async function() {
+    this.timeout(10000);
     const CliRunner = common.require('runner/cli/cli.js');
     let originalCwd = process.cwd();
     process.chdir(path.join(__dirname, '../../extra/'));
@@ -105,5 +106,11 @@ describe('test Sequential Execution', function() {
     assert.ok(runner.sequentialMode());
     assert.strictEqual(runner.testEnv, 'default,mixed');
     assert.deepStrictEqual(runner.availableTestEnvs, ['default', 'mixed']);
+
+    await runner.runTests();
+
+    assert.ok(runner.sequentialMode());
+    assert.deepEqual(runner.testEnvArray, ['default', 'mixed']);
+    process.chdir(originalCwd);
   });
 });
