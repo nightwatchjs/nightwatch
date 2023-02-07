@@ -385,7 +385,7 @@ module.exports = {
     url = '/wd/hub/session'
   }) {
     const browserName = 'chrome';
-    const headlessOpt = headless ? 'headless=chrome' : '';
+    const headlessOpt = headless ? 'headless=new' : '';
     const options = {
       ['goog:chromeOptions']: {}
     };
@@ -448,7 +448,7 @@ module.exports = {
           sessionId,
           capabilities: {
             acceptInsecureCerts: false,
-            browserName: 'firefox',
+            browserName,
             browserVersion: '65.0.1'
           }
         }
