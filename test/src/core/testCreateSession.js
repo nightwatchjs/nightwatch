@@ -823,6 +823,9 @@ describe('test Request With Credentials', function () {
     });
 
     assert.strictEqual(client.transport.uploadedAppUrl, undefined);
+
+    assert.strictEqual(client.settings.selenium.use_appium, undefined);
+    assert.strictEqual(client.api.isAppiumClient(), true);
   });
 
   it('Test create session with browserstack and when buildName is not set', async function () {
