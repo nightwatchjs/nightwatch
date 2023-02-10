@@ -448,7 +448,7 @@ module.exports = {
           sessionId,
           capabilities: {
             acceptInsecureCerts: false,
-            browserName: 'firefox',
+            browserName,
             browserVersion: '65.0.1'
           }
         }
