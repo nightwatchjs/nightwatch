@@ -25,7 +25,7 @@ module.exports = {
     return MockServer.initAsync(opts);
   },
 
-  cookiesFound() {
+  cookiesFound({times = 0} = {}) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/cookie',
       method: 'GET',
@@ -39,11 +39,12 @@ module.exports = {
           domain: 'example.org',
           secure: false
         }]
-      }
-    }, null, true);
+      },
+      times
+    }, times === 0);
   },
 
-  cookiesNotFound() {
+  cookiesNotFound({times = 0} = {}) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/cookie',
       method: 'GET',
@@ -51,17 +52,19 @@ module.exports = {
         sessionId: '1352110219202',
         status: 0,
         value: []
-      })
-    });
+      }),
+      times
+    }, times === 0);
   },
 
-  cookiesSocketDelay() {
+  cookiesSocketDelay({times = 0} = {}) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/cookie',
       method: 'GET',
       socketDelay: 200,
-      response: ''
-    }, true);
+      response: '',
+      times
+    }, times === 0);
   },
 
   deleteCookie() {
@@ -72,7 +75,19 @@ module.exports = {
         sessionId: '1352110219202',
         status: 0
       })
-    });
+    }, true);
+  },
+
+  deleteCookies() {
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/cookie',
+      method: 'DELETE',
+      response: JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0,
+        value: null
+      })
+    }, true);
   },
 
   addCookie() {
@@ -92,7 +107,7 @@ module.exports = {
       response: JSON.stringify({
         value: null
       })
-    });
+    }, true);
   },
 
   elementSelected(elementId = '0') {
