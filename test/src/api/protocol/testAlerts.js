@@ -73,4 +73,62 @@ describe('alert commands', function () {
     });
   });
 
+  it('test alerts.accept()', function (done) {
+    Globals.protocolTest({
+      commandName: 'alerts.accept'
+    }).then((result) => {
+      assert.strictEqual(result.value, null);
+      assert.strictEqual(result.status, 0);
+    }).catch(err => {
+      return err;
+    }).then(err => {
+      done(err);
+    });
+  });
+
+  it('test alerts.dismiss()', function (done) {
+    Globals.protocolTest({
+      commandName: 'alerts.dismiss'
+    }).then((result) => {
+      assert.strictEqual(result.value, null);
+      assert.strictEqual(result.status, 0);
+    }).catch(err => {
+      return err;
+    }).then(err => {
+      done(err);
+    });
+  });
+
+  it('test alerts.getText()', function (done) {
+    Globals.protocolTest({
+      assertion: function (text) {
+        try {
+          assert.strictEqual(text, 'alert text');
+          done();
+        } catch (err) {
+          done(err);
+        }
+      },
+      commandName: 'alerts.getText'
+    });
+  });
+
+  it('test alerts.setText()', function (done) {
+    const text = 'prompt text to set';
+
+    Globals.protocolTest({
+      assertion: function (value) {
+        assert.strictEqual(value, text);
+      },
+      commandName: 'setAlertText',
+      args: [text]
+    }).then((result) => {
+      assert.strictEqual(result.value, null);
+      assert.strictEqual(result.status, 0);
+    }).catch(err => {
+      return err;
+    }).then(err => {
+      done(err);
+    });
+  });
 });

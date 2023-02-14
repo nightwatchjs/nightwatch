@@ -14,7 +14,6 @@ describe('.registerBasicAuth()', function () {
   });
 
   it('browser.registerBasicAuth()', function (done) {
-
     MockServer.addMock({
       url: '/session',
       response: {
@@ -35,23 +34,31 @@ describe('.registerBasicAuth()', function () {
         browserName: 'chrome',
         'goog:chromeOptions': {}
       }
-    }).then(client=>{
-
+    }).then(client => {
       let expectedUsername;
       let expectedPassword;
 
       cdp.resetConnection();
-      client.transport.driver.createCDPConnection =  function() {
-        return  Promise.resolve();
+      client.transport.driver.createCDPConnection = function() {
+        return Promise.resolve();
       };
-      client.transport.driver.register =  (username, password) =>{
+      client.transport.driver.register = (username, password) =>{
         expectedUsername = username;
         expectedPassword = password;
       };
+
+      // old api
       client.api.registerBasicAuth('nightwatch', 'BarnOwl', function (){
         assert.strictEqual(expectedUsername, 'nightwatch');
         assert.strictEqual(expectedPassword, 'BarnOwl');
       });
+
+      // new api
+      client.api.alerts.registerBasicAuth('nightwatch', 'BarnOwl', function (){
+        assert.strictEqual(expectedUsername, 'nightwatch');
+        assert.strictEqual(expectedPassword, 'BarnOwl');
+      });
+
       client.start(done);
     });
   });
@@ -62,10 +69,18 @@ describe('.registerBasicAuth()', function () {
         browserName: 'firefox'
       }
     }).then(client => {
+      // old api
       client.api.registerBasicAuth('admin', 'admin', function(result){
         assert.strictEqual(result.status, -1);
         assert.strictEqual(result.error, 'RegisterBasicAuth is not supported while using this driver');
       });
+
+      // new api
+      client.api.alerts.registerBasicAuth('admin', 'admin', function(result){
+        assert.strictEqual(result.status, -1);
+        assert.strictEqual(result.error, 'RegisterBasicAuth is not supported while using this driver');
+      });
+
       client.start(done);
     });
   });
