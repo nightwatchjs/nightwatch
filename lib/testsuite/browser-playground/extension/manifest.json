@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Nightwatch Selector Playground",
+  "description": "Nightwatch Selector Playground that allows you to tests command directly from the browser",
+  "permissions": ["tabs"],
+  
+  "version": "1.0",
+  "devtools_page": "playground.html",
+  "icons": {
+    "16": "assets/icon16.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["style.css"]
+    }
+  ]
+}

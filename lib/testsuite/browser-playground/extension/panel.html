@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h2>Selector Playground</h2>
+    <input type="checkbox" id="exploreMode">
+    <label for="ExploreMode">Explore Mode</label> 
+
+    <div>
+      <h3>Selector History</h3>
+      <table id="selectorTable">
+          <thead>
+            <tr>
+              <th>Selector</th>
+              <th>Timestamp</th>
+              <th class="table-row">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+      </table>
+    </div>
+
+    <div>
+      <h3>Try Nightwatch Commands</h3>
+      <div style="display: flex;">
+        <textarea type="text" id="nightwatchCommand">browser.title()</textarea>
+        <button id="tryNightwatchCommand">Try</button>
+      </div>
+      <h3>Results</h3>
+      <textarea id="commandResult" name="w3review" rows="4"></textarea>
+      <div>
+        <h3>Commands History</h3>
+        <table id="commandTable">
+            <thead>
+              <tr>
+                <th>Command</th>
+                <th>Timestamp</th>
+                <th class="table-row">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+      </div>
+    </div>
+    <script src="panel.js"></script>
+  </body>
+</html>
