@@ -3,7 +3,12 @@ table, th, td {
   }
   
 html {
-    width: 500px;
+    width: 100%;
+}
+
+body {
+    display: block;
+    margin: 0px;
 }
   
 #nightwatchCommand {
@@ -53,4 +58,66 @@ html {
 
 #commandResult {
     width: 100%;
+}
+
+
+.ffnIrR {
+    height: 60px;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 0px 20px;
+    background: hsl(0deg 0% 11%);
+    color: hsl(0deg 0% 100%);
+}
+
+.FfSeE {
+    flex: 1 1 0%;
+    display: flex;
+    -webkit-box-align: baseline;
+    align-items: baseline;
+}
+
+.cbPDWF {
+    flex: 1 1 4%;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.ixXqFA {
+    display: flex;
+    padding: 4px 20px;
+    background: hsl(0deg 0% 11%);
+    color: var(--color-dark-background-text);
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.koEQfU {
+    display: flex;
+    gap: 12px;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.cutLUr {
+    user-select: none;
+    width: 0px;
+    height: calc(1.25rem);
+    border-right: 1px solid hsl(0deg 0% 47%);
+}
+
+.iTGgWw {
+    margin-left: 40px;
+}
+
+.dbHQiq {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    color: hsl(0deg 0% 95%);
 }
