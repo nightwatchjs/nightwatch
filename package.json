@@ -15,6 +15,7 @@
     "@nightwatch/chai": "5.0.2",
     "@nightwatch/html-reporter-template": "0.1.4",
     "ansi-to-html": "0.7.2",
+    "archiver": "^5.3.1",
     "assertion-error": "1.1.0",
     "boxen": "5.1.2",
     "chai-nightwatch": "0.5.3",
