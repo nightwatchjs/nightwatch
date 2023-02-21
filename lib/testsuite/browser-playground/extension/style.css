@@ -2,7 +2,7 @@
     background-color:  #ACCEF7;
 }
 
-#nw-tooltip{
+#nw-tooltip {
     background-color: #555959;
     color: #fff;
     text-align: center;
@@ -13,4 +13,5 @@
     top: 0;
     left: 0;
     display: flex;
+    max-width: 100%;
 }
