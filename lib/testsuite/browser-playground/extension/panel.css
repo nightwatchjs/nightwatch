@@ -46,7 +46,8 @@ header {
 }
 
 #selectorTable {
-    display: block;
+    display: flex;
+    flex-direction: column;
     background: #F9F9F9;
     border: 1px solid #B58364;
     width: 100%;
@@ -60,7 +61,7 @@ th {
     background: rgba(244, 237, 232, 0.4);
 }
 #selectorTable td, #selectorTable th{
-    border: 1px solid #ddd;
+    border: 1px solid #B58364;
     padding: 8px;
 
     font-family: 'Source Sans Pro';
@@ -119,6 +120,18 @@ input[type="text"], textarea {
 thead, tr, tbody {
     width: 100%;
 }
+thead, tr, td {
+    display: flex;
+}
+td {
+    display: flex;
+    gap: 4px;
+}
+
+tbody {
+    display: flex;
+    flex-direction: column;
+}
 
 footer {
     display: flex;
@@ -140,17 +153,20 @@ footer {
     color: #FFFFFF;
 }   
 
-#tryNightwatchCommand {
+.button-default {
     box-sizing: border-box;
     justify-content: center;
     align-items: center;
-    padding: 8px;
-    width: 92px;
+    padding: 4px;
 
     background: #68B300;
     border: 1px solid #68B300;
     border-radius: 4px;
     color: #FFFFFF;
+}
+
+#tryNightwatchCommand {
+    width: 92px;;
 }
 
 .exploreMode {
