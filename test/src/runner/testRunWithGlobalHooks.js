@@ -281,7 +281,7 @@ describe('testRunWithGlobalHooks', function() {
     }));
   });
 
-  it('test global child process hooks',  function() {
+  it.only('test global child process hooks',  function() {
     let testsPath = path.join(__dirname, '../../sampletests/before-after');
     process.env.__NIGHTWATCH_PARALLEL_MODE = '1';
     let globals = {

@@ -5,6 +5,7 @@ const path = require('path');
 const assert = require('assert');
 const common = require('../../common.js');
 
+
 describe('test Parallel Execution Exit Code', function() {
   const allArgs = [];
   const allOpts = [];
@@ -14,32 +15,16 @@ describe('test Parallel Execution Exit Code', function() {
     let index = 0;
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
     mockery.registerMock('package.json', {});
-    mockery.registerMock('child_process', {
-      spawn: function(path, args, opts) {
-        allArgs.push(args);
-        allOpts.push(opts);
+    mockery.registerMock('./worker-process.js', class WorkerProcess extends events {
+      constructor(args, settings, maxWorkerCount) {
+        super();
+        this.tasks = [];
+        this.index = 0;
+      }
 
-        function Stdout() {
-        }
-
-        function Stderr() {
-        }
-
-        util.inherits(Stdout, events.EventEmitter);
-        util.inherits(Stderr, events.EventEmitter);
-
-        let Child = function() {
-          this.stdout = new Stdout();
-          this.stderr = new Stderr();
-          setTimeout(function() {
-            this.emit('close');
-            this.emit('exit', index === 0 ? 1 : 0);
-          }.bind(this), 11);
-        };
-
-        util.inherits(Child, events.EventEmitter);
-
-        return new Child();
+      addTask({argv}) {
+        this.tasks.push(Promise.reject());
+        Promise.resolve();
       }
     });
 

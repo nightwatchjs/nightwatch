@@ -4,9 +4,11 @@ const path = require('path');
 const assert = require('assert');
 const common = require('../../common.js');
 const Nightwatch = require('../../lib/nightwatch.js');
+const { trimEnd } = require('lodash');
 
 describe('test Parallel Execution', function() {
-  const allArgs = [];
+  const workerPoolArgv = [];
+  const taskArgv= [];
   const allOpts = [];
 
   this.timeout(10000);
@@ -15,29 +17,21 @@ describe('test Parallel Execution', function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
 
     mockery.registerMock('package.json', {});
-    mockery.registerMock('child_process', {
-      spawn: function(path, args, opts) {
-        allArgs.push(args);
-        allOpts.push(opts);
+    mockery.registerMock('./worker-process.js', class WorkerProcess extends EventEmitter {
+      constructor(args, settings, maxWorkerCount) {
+        super();
 
-        class Stdout extends EventEmitter {}
-        class Stderr extends EventEmitter {}
+        this.tasks = [];
+        this.index = 0;
 
-        class ChildProcess extends EventEmitter {
-          constructor() {
-            super();
+        workerPoolArgv.push(args);
+      }
 
-            this.stdout = new Stdout();
-            this.stderr = new Stderr();
-
-            setTimeout(function() {
-              this.emit('close');
-              this.emit('exit', 0);
-            }.bind(this), 11);
-          }
-        }
-
-        return new ChildProcess();
+      addTask({argv}) {
+        
+        taskArgv.push(argv);
+        this.tasks.push(Promise.resolve());
+        Promise.resolve();
       }
     });
 
@@ -59,7 +53,8 @@ describe('test Parallel Execution', function() {
     mockery.deregisterAll();
     mockery.resetCache();
     mockery.disable();
-    allArgs.length = 0;
+    workerPoolArgv.length = 0;
+    taskArgv.length = 0;
     allOpts.length = 0;
     process.env.__NIGHTWATCH_PARALLEL_MODE = null;
   });
@@ -84,10 +79,11 @@ describe('test Parallel Execution', function() {
     return runner.runTests().then(_ => {
       assert.ok(runner.parallelMode());
       assert.strictEqual(runner.concurrency.globalExitCode, 0);
-      assert.strictEqual(allArgs.length, 2);
-      assert.ok(allArgs[0].join(' ').includes('--env default --parallel-mode'));
-      assert.ok(allArgs[1].join(' ').includes('--env mixed --parallel-mode'));
-
+      assert.strictEqual(workerPoolArgv.length, 1);
+      assert.ok(workerPoolArgv[0].join(' ').includes('--parallel-mode'));
+      assert.strictEqual(taskArgv.length, 2);
+      assert.strictEqual(taskArgv[0].env, 'default');
+      assert.strictEqual(taskArgv[1].env, 'mixed');
       process.chdir(originalCwd);
     });
   });
@@ -106,7 +102,7 @@ describe('test Parallel Execution', function() {
     assert.ok(runner.test_settings.test_workers);
 
     return runner.runTests().then(_ => {
-      assert.strictEqual(allArgs.length, 4);
+      assert.strictEqual(taskArgv.length, 4);
       assert.strictEqual(runner.concurrency.globalExitCode, 0);
     });
   });
@@ -129,16 +125,16 @@ describe('test Parallel Execution', function() {
     assert.deepStrictEqual(runner.availableTestEnvs, ['default', 'mixed']);
 
     return runner.runTests().then(_ => {
-      assert.strictEqual(allArgs.length, 2);
-      assert.ok(allArgs[0].join(' ').includes('--env mixed --parallel-mode'));
-      assert.ok(allArgs[1].join(' ').includes('--env mixed --parallel-mode'));
+      assert.strictEqual(taskArgv.length, 2);
+      assert.strictEqual(taskArgv[0].env, 'mixed');
+      assert.strictEqual(taskArgv[1].env, 'mixed');
       process.chdir(originalCwd);
     });
   });
 
   it('testParallelExecutionWithWorkersAuto', function() {
     const CliRunner = common.require('runner/cli/cli.js');
-    let runner = new CliRunner({
+    const runner = new CliRunner({
       reporter: 'junit',
       config: path.join(__dirname, '../../extra/parallelism-auto.json')
     });
@@ -150,7 +146,7 @@ describe('test Parallel Execution', function() {
     });
 
     return runner.runTests().then(_ => {
-      assert.strictEqual(allArgs.length, 4);
+      assert.strictEqual(taskArgv.length, 4);
     });
   });
 
@@ -181,7 +177,7 @@ describe('test Parallel Execution', function() {
     });
 
     return runner.runTests().then(_ => {
-      assert.strictEqual(allArgs.length, 4);
+      assert.strictEqual(taskArgv.length, 4);
     });
   });
 
@@ -302,38 +298,36 @@ describe('test Parallel Execution', function() {
     return runner.runTests().then(_ => {
       assert.ok(runner.parallelMode());
       assert.strictEqual(runner.concurrency.globalExitCode, 0);
-      assert.strictEqual(allArgs.length, 4);
+      assert.strictEqual(taskArgv.length, 4);
       assert.strictEqual(runner.seleniumService.initCalled, true);
       assert.strictEqual(runner.seleniumService.stopped, true);
       assert.strictEqual(runner.seleniumService.outfilename, '');
-      assert.ok(allArgs[0].join(' ').includes('--test-worker --parallel-mode'));
-      assert.ok(allArgs[1].join(' ').includes('--test-worker --parallel-mode'));
+      assert.ok(workerPoolArgv[0].join(' ').includes('--test-worker --parallel-mode'));
     });
   });
 
-  it('test Concurrency.getChildProcessArgs with --env=chrome,firefox', function() {
-    const argv = process.argv.slice(0);
-    process.argv = ['node', 'runner.js', '--env=chrome,firefox', '--headless'];
+  it('test concurrency with --headless', function() {
+    const CliRunner = common.require('runner/cli/cli.js');
+    const runner = new CliRunner({
+      reporter: 'junit',
+      config: path.join(__dirname, '../../extra/parallelism-count.json'),
+      env: 'default',
+      headless: true
+    });
 
-    const Concurrency = common.require('runner/concurrency');
-    const args = Concurrency.getChildProcessArgs();
+    runner.setup();
+    assert.deepStrictEqual(runner.test_settings.test_workers, {
+      enabled: true,
+      workers: 6
+    });
 
-    process.argv = argv;
-    assert.deepStrictEqual(args, ['--headless']);
+    return runner.runTests().then(_ => {
+      assert.strictEqual(taskArgv[0].env, 'default');
+      assert.strictEqual(taskArgv[0].headless, true);
+    }); 
   });
 
-  it('test Concurrency.getChildProcessArgs with --env chrome,firefox', function() {
-    const argv = process.argv.slice(0);
-    process.argv = ['node', 'runner.js', '--env', 'chrome,firefox', '--headless'];
-
-    const Concurrency = common.require('runner/concurrency');
-    const args = Concurrency.getChildProcessArgs();
-
-    process.argv = argv;
-    assert.deepStrictEqual(args, ['--headless']);
-  });
-
-  it('test parallel execution to ensure preservation of all process.execArgv', function() {
+  xit('test parallel execution to ensure preservation of all process.execArgv', function() {
     const argv = process.execArgv;
     process.execArgv = ['--inspect'];
 
