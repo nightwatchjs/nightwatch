@@ -5,6 +5,10 @@
     gap: 12px;
     min-width: 400px;
 }
+
+body {
+    margin: 0px;
+}
 header {
     display: flex;
     flex-direction: row;
@@ -19,6 +23,8 @@ header {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .container1 {
@@ -30,7 +36,7 @@ header {
 .heading {
     font-family: 'Source Sans Pro';
     font-style: normal;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 24px;
     line-height: 36px;
     color: #FFFFFF;
@@ -39,7 +45,7 @@ header {
 .heading1 {
     font-family: 'Source Sans Pro';
     font-style: normal;
-    font-weight: 400;
+    font-weight: 600;
     font-size: 20px;
     line-height: 32px;
     color: #1B1B1B;
@@ -48,8 +54,8 @@ header {
 #selectorTable {
     display: flex;
     flex-direction: column;
-    background: #F9F9F9;
-    border: 1px solid #B58364;
+    background: hsl(0,0%,98%);
+    border: 1px solid hsl(0,0%,87%);
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
@@ -61,7 +67,7 @@ th {
     background: rgba(244, 237, 232, 0.4);
 }
 #selectorTable td, #selectorTable th{
-    border: 1px solid #B58364;
+    border: 1px solid hsl(0,0%,87%);
     padding: 8px;
 
     font-family: 'Source Sans Pro';
@@ -105,6 +111,10 @@ input[type="text"], textarea {
     line-height: 20px;
 }
 
+#commandResult {
+    height: 72px;
+}
+
 #commandTable {
     resize: none;
     height: 100px;
@@ -120,11 +130,10 @@ input[type="text"], textarea {
 thead, tr, tbody {
     width: 100%;
 }
-thead, tr, td {
+thead, tr, td, th {
     display: flex;
 }
-td {
-    display: flex;
+td, th {
     gap: 4px;
 }
 
@@ -150,24 +159,31 @@ footer {
     font-weight: 400;
     font-size: 16px;
     line-height: 20px;
-    color: #FFFFFF;
+    color: #1B1B1B;
 }   
+
+footer .heading2 {
+    color: #FFFFFF;
+    font-size: 14px;
+}
 
 .button-default {
     box-sizing: border-box;
     justify-content: center;
     align-items: center;
     padding: 4px;
+    height: 32px;
 
-    background: #68B300;
-    border: 1px solid #68B300;
+    background: hsla(0,55%,94%,0.5);
+    border: 1px solid hsl(23,35%,55%);
     border-radius: 4px;
-    color: #FFFFFF;
+    color: #1B1B1B;
+    cursor: pointer;
 }
 
 #tryNightwatchCommand {
     width: 92px;
-    cursor: pointer;
+    height: auto;
 }
 
 .exploreMode {
@@ -181,8 +197,8 @@ footer {
 
     width: 170px;
     height: 40px;
-    background: #68B300;
-    border: 1px solid #68B300;
+    background: hsla(0,55%,94%,0.5);
+    border: 1px solid hsl(23,35%,55%);
     border-radius: 4px;
-    color: #FFFFFF;
+    color: #1B1B1B;
 }
