@@ -166,7 +166,8 @@ footer {
 }
 
 #tryNightwatchCommand {
-    width: 92px;;
+    width: 92px;
+    cursor: pointer;
 }
 
 .exploreMode {
