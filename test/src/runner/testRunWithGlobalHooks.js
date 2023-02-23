@@ -296,9 +296,8 @@ describe('testRunWithGlobalHooks', function() {
       postMessage: function(){}
     };
 
-
     const  testsPath = path.join(__dirname, '../../sampletests/before-after');
-  
+    
     const globals = {
       calls: 0,
       beforeChildProcess() {

@@ -5,7 +5,6 @@ const path = require('path');
 const assert = require('assert');
 const common = require('../../common.js');
 
-
 describe('test Parallel Execution Exit Code', function() {
   const allArgs = [];
   const allOpts = [];
