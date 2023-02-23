@@ -5,11 +5,11 @@ const common = require('../../../common.js');
 const NightwatchClient = common.require('index.js');
 
 describe('Test CLI Runner in Parallel', function () {
-  const ChildProcess = common.require('runner/concurrency/child-process.js');
+  const WorkerProcess = common.require('runner/concurrency/worker-process.js');
   const RunnerBase = common.require('runner/runner.js');
 
   const filtered = Object.keys(require.cache).filter(item => (
-    item.endsWith('runner/runner.js') || item.endsWith('runner/concurrency/child-process.js')
+    item.endsWith('runner/runner.js') || item.endsWith('runner/concurrency/worker-process.js')
   ));
 
   if (filtered && filtered.length > 0) {
@@ -40,17 +40,15 @@ describe('Test CLI Runner in Parallel', function () {
       }
     }
 
-    class ChildProcessMock extends ChildProcess {
-      run(colors, type) {
+    class WorkerProcessMock extends WorkerProcess {
+      addTask({colors}) {
         assert.strictEqual(colors.length, 4);
-        assert.strictEqual(type, 'workers');
-        assert.deepStrictEqual(Object.keys(this._events), ['message']);
 
         return Promise.resolve(0);
       }
     }
 
-    mockery.registerMock('./child-process.js', ChildProcessMock);
+    mockery.registerMock('./worker-process.js', WorkerProcessMock);
     mockery.registerMock('../runner.js', RunnerBaseMock);
 
     return NightwatchClient.runTests({
