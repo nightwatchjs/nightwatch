@@ -4,7 +4,6 @@ const path = require('path');
 const assert = require('assert');
 const common = require('../../common.js');
 const Nightwatch = require('../../lib/nightwatch.js');
-const { trimEnd } = require('lodash');
 
 describe('test Parallel Execution', function() {
   const workerPoolArgv = [];
