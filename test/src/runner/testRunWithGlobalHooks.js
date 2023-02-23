@@ -5,11 +5,11 @@ const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
+const mockery  = require('mockery');
 
 describe('testRunWithGlobalHooks', function() {
   before(function(done) {
     this.server = MockServer.init();
-
     this.server.on('listening', () => {
       done();
     });
@@ -20,13 +20,16 @@ describe('testRunWithGlobalHooks', function() {
   });
 
   beforeEach(function() {
+    mockery.enable({useCleanCache: true, warnOnUnregistered: false});
     process.removeAllListeners('exit');
     process.removeAllListeners('uncaughtException');
     process.removeAllListeners('unhandledRejection');
   });
 
   afterEach(function() {
-    process.env.__NIGHTWATCH_PARALLEL_MODE = null;
+    mockery.deregisterAll();
+    mockery.resetCache();
+    mockery.disable();
     Object.keys(require.cache).filter(i => i.includes('/sampletests')).forEach(function(module) {
       delete require.cache[module];
     });
@@ -281,10 +284,22 @@ describe('testRunWithGlobalHooks', function() {
     }));
   });
 
-  it.only('test global child process hooks',  function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after');
-    process.env.__NIGHTWATCH_PARALLEL_MODE = '1';
-    let globals = {
+  it('test global child process hooks',  function() {
+    mockery.registerMock('./worker-process.js', class WorkerProcess {
+      static get isWorkerThread() {
+        return true;
+      }
+    });
+    
+    const processPort = process.port;
+    process.port = {
+      postMessage: function(){}
+    };
+
+
+    const  testsPath = path.join(__dirname, '../../sampletests/before-after');
+  
+    const globals = {
       calls: 0,
       beforeChildProcess() {
         globals.calls++;
@@ -294,6 +309,7 @@ describe('testRunWithGlobalHooks', function() {
       },
       reporter(results, cb) {
         assert.strictEqual(globals.calls, 20);
+        process.port = processPort;
         cb();
       }
     };
@@ -306,9 +322,18 @@ describe('testRunWithGlobalHooks', function() {
   });
 
   it('test global async child process hooks',  function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after');
-    process.env.__NIGHTWATCH_PARALLEL_MODE = '1';
-    let globals = {
+    mockery.registerMock('./worker-process.js', class WorkerProcess {
+      static get isWorkerThread() {
+        return true;
+      }
+    });
+    const processPort = process.port;
+    process.port = {
+      postMessage: function(){}
+    };
+
+    const testsPath = path.join(__dirname, '../../sampletests/before-after');
+    const globals = {
       calls: 0,
       beforeChildProcess(_, done) {
         setTimeout(function() {
@@ -324,6 +349,7 @@ describe('testRunWithGlobalHooks', function() {
       },
       reporter(_, cb) {
         assert.strictEqual(globals.calls, 20);
+        process.port = processPort;
         cb();
       }
     };
