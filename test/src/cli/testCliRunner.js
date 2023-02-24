@@ -1308,7 +1308,7 @@ describe('Test CLI Runner', function() {
       });
       const NwClient = common.require('index.js');
       await NwClient.cli();
-      assert.deepStrictEqual('{"default":["/Users/vaibhavsingh/Dev/nightwatch/test/sampletests/simple/test/sample.js"]}', consoleData[0]);
+      assert.deepStrictEqual(`{"default":["${testsPath}"]}`, consoleData[0]);
       console.log = origConsoleLog;
     });
 
@@ -1331,7 +1331,7 @@ describe('Test CLI Runner', function() {
       });
       const NwClient = common.require('index.js');
       await NwClient.cli();
-      assert.deepStrictEqual('{"chrome":["/Users/vaibhavsingh/Dev/nightwatch/test/sampletests/simple/test/sample.js"]}', consoleData[0]);
+      assert.deepStrictEqual(`{"chrome":["${testsPath}"]}`, consoleData[0]);
       console.log = origConsoleLog;
     });
   });
