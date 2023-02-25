@@ -3,4 +3,3 @@ package.json
 *.json
 lib/utils/requireModule.js
 lib/reporter/reporters/html
-lib/testsuite/browser-playground/extension/
