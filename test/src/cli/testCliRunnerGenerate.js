@@ -16,42 +16,11 @@ describe('Test CLI Runner Generate', function() {
       }
     });
 
-    mockery.registerMock('nightwatch-selector-playground', class {
-      constructor() {
-        this.finishCallback = null;
-      }
-    
-      setClient(client) {
-        this.client = client;
-      }
-    
-      setDebuggability(Debuggability) {
-        this.Debuggability = Debuggability;
-      }
-    
-      addExtensionInChromeOption(crxBuffer) {
-        const chromeOptions = this.client.settings.desiredCapabilities['goog:chromeOptions'];
-        
-        this.client.settings.desiredCapabilities['goog:chromeOptions'] = {
-          ...chromeOptions,
-          extensions: [crxBuffer]
-        };
-      }
-    
-      initSocket(){
-        this._wss = 'websocket';
-      }
-    
-      async createExtension () {
-        const crxBuffer = await this.packExtension();
-        this.addExtensionInChromeOption(crxBuffer);
-      }
-    
-      async packExtension() {
-        return 'extension'
-      }
-    
-      closeSocket() {}
+    mockery.registerMock('nightwatch-selector-playground', 'crxFile');
+    mockery.registerMock('./playground-listener', class {
+      initSocket() {};
+
+      closeSocket() {};
     });
   });
 
