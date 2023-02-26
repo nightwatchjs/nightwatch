@@ -46,7 +46,9 @@ describe('Test CLI Runner', function() {
     mockery.registerMock('./nightwatch.conf.js', config);
     mockery.registerMock('./nightwatchPromise.conf.js', promiseConfig);
    
-    mockery.registerMock('nightwatch-selector-playground', 'crxFile');
+    mockery.registerMock('nightwatch-selector-playground', {
+      crxfile: 'mocked crxfile'
+    });
     mockery.registerMock('./playground-listener', class {
       initSocket() {};
 
@@ -1294,5 +1296,78 @@ describe('Test CLI Runner', function() {
     assert.ok('moz:firefoxOptions' in runner.test_settings.desiredCapabilities);
     assert.strictEqual(runner.test_settings.desiredCapabilities['moz:firefoxOptions'].androidPackage, 'org.mozilla.firefox');
     assert.strictEqual(runner.test_settings.desiredCapabilities['moz:firefoxOptions'].androidDeviceSerial, 'ZD2222W62Y');
+  });
+
+  it('Selcetor playground extension', function() {
+    mockery.registerMock('./playground.json', {
+      test_settings: {
+        'chrome': {
+          desiredCapabilities: {
+            browserName: 'chrome'
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+    const runner = new CliRunner({
+      config: './playground.json',
+      debug: true,
+      env: 'chrome'
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'chrome');
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'chrome');
+    assert.ok('goog:chromeOptions' in runner.test_settings.desiredCapabilities);
+    assert.ok('extensions' in runner.test_settings.desiredCapabilities['goog:chromeOptions']);
+    assert.deepStrictEqual(runner.test_settings.desiredCapabilities['goog:chromeOptions'].extensions, ['mocked crxfile']);
+  });
+
+  it('Selcetor playground extension - disabled in parallel mode', function() {
+    mockery.registerMock('./playground.json', {
+      test_settings: {
+        'chrome': {
+          desiredCapabilities: {
+            browserName: 'chrome'
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+    const runner = new CliRunner({
+      config: './playground.json',
+      debug: true,
+      env: 'chrome',
+      parallel: true
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'chrome');
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'chrome');
+    assert.strictEqual('goog:chromeOptions' in runner.test_settings.desiredCapabilities, false);
+  });
+
+  it('Selcetor playground extension - disabled for multiple workers', function() {
+    mockery.registerMock('./playground.json', {
+      test_settings: {
+        'chrome': {
+          desiredCapabilities: {
+            browserName: 'chrome'
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+    const runner = new CliRunner({
+      config: './playground.json',
+      debug: true,
+      env: 'chrome',
+      workers: 5
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'chrome');
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'chrome');
+    assert.strictEqual('goog:chromeOptions' in runner.test_settings.desiredCapabilities, false);
   });
 });
