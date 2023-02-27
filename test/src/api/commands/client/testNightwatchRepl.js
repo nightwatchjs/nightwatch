@@ -33,7 +33,7 @@ describe('startServer', function() {
     const NightwatchRepl = require('../../../../../lib/testsuite/repl.js');
     const repl = new NightwatchRepl();
 
-    const context = {browser: 'something'};
+    const context = {browser: 'something', app: 'other'};
     repl.startServer(context);
 
     assert.strictEqual(contextPassed, context);
