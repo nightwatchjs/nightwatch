@@ -1293,6 +1293,9 @@ describe('Test CLI Runner', function() {
     it('output list of files - default environment', async () => {
       const testsPath = [origPath.join(__dirname, origPath.join('..', '..', 'sampletests', 'simple', 'test', 'sample.js'))];
       const consoleData = [];
+      const listFileOutput = JSON.stringify({
+        default: testsPath
+      });
   
       const origConsoleLog = console.log;
   
@@ -1308,13 +1311,16 @@ describe('Test CLI Runner', function() {
       });
       const NwClient = common.require('index.js');
       await NwClient.cli();
-      assert.deepStrictEqual(`{"default":["${testsPath}"]}`, consoleData[0]);
+      assert.deepStrictEqual(listFileOutput, consoleData[0]);
       console.log = origConsoleLog;
     });
 
     it('output list of files - chrome environment', async () => {
       const testsPath = [origPath.join(__dirname, origPath.join('..', '..', 'sampletests', 'simple', 'test', 'sample.js'))];
       const consoleData = [];
+      const listFileOutput = JSON.stringify({
+        chrome: testsPath
+      });
   
       const origConsoleLog = console.log;
   
@@ -1331,7 +1337,7 @@ describe('Test CLI Runner', function() {
       });
       const NwClient = common.require('index.js');
       await NwClient.cli();
-      assert.deepStrictEqual(`{"chrome":["${testsPath}"]}`, consoleData[0]);
+      assert.deepStrictEqual(listFileOutput, consoleData[0]);
       console.log = origConsoleLog;
     });
   });
