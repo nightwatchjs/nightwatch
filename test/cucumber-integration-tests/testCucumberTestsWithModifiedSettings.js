@@ -47,7 +47,7 @@ describe('Cucumber integration - with modified settings in plugin', function() {
       verbose: false, 
       config: path.join(__dirname, '../extra/cucumber-config.js')
     }, {
-      plugins: pluginPath,
+      plugins: pluginPath
     })
       .then(failures => {
         assert.strictEqual(failures, false);
