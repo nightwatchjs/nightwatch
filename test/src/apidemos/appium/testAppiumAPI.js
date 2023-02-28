@@ -46,8 +46,8 @@ describe('appium api demos', function () {
       .addMock({
         url: '/wd/hub/session/13521-10219-202/elements',
         postdata: {
-          using: 'id',
-          value: 'com.app:id/search'
+          using: 'accessibility id',
+          value: 'Search Wikipedia'
         },
         method: 'POST',
         response: JSON.stringify({
@@ -57,6 +57,32 @@ describe('appium api demos', function () {
         })
       }, true, true)
       .addMock({
+        url: '/wd/hub/session/13521-10219-202/element',
+        postdata: {
+          using: 'class name',
+          value: 'android.widget.ImageButton'
+        },
+        method: 'POST',
+        response: JSON.stringify({
+          status: 0,
+          state: 'success',
+          value: {'element-6066-11e4-a52e-4f735466cecf': '1'}
+        })
+      }, true)
+      .addMock({
+        url: '/wd/hub/session/13521-10219-202/elements',
+        postdata: {
+          using: 'id',
+          value: 'com.app:id/search'
+        },
+        method: 'POST',
+        response: JSON.stringify({
+          status: 0,
+          state: 'success',
+          value: [{'element-6066-11e4-a52e-4f735466cecf': '2'}]
+        })
+      }, true)
+      .addMock({
         url: '/wd/hub/session/13521-10219-202/element/0/click',
         method: 'POST',
         response: JSON.stringify({
@@ -64,7 +90,7 @@ describe('appium api demos', function () {
         })
       }, true)
       .addMock({
-        url: '/wd/hub/session/13521-10219-202/element/0/value',
+        url: '/wd/hub/session/13521-10219-202/element/2/value',
         method: 'POST',
         postdata: JSON.stringify({
           text: 'Nightwatch',
