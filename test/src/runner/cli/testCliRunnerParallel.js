@@ -120,6 +120,46 @@ describe('Test CLI Runner in Parallel', function () {
     assert.strictEqual(runner.parallelMode(), false);
   });
 
+  it('disable parallelism when running tests on safari', function() {
+    class RunnerBaseMock extends RunnerBase {
+      static readTestSource(settings, argv) {
+        assert.strictEqual(settings.testWorkersEnabled, true);
+
+        return [
+          'test_file_1.js',
+          'test_file_2.js'
+        ];
+      }
+    }
+    mockery.registerMock('../runner.js', RunnerBaseMock);
+    const runner = NightwatchClient.CliRunner({
+      config: path.join(__dirname, '../../../extra/withsafari-concurrent.json'),
+      env: 'default'
+    }).setup();
+    assert.strictEqual(runner.isTestWorkersEnabled(), false);
+    assert.strictEqual(runner.parallelMode(), false);
+  });
+
+  it('disable parallelism when running tests on safari with --env chrome,safari', function() {
+    class RunnerBaseMock extends RunnerBase {
+      static readTestSource(settings, argv) {
+        assert.strictEqual(settings.testWorkersEnabled, true);
+
+        return [
+          'test_file_1.js',
+          'test_file_2.js'
+        ];
+      }
+    }
+    mockery.registerMock('../runner.js', RunnerBaseMock);
+    const runner = NightwatchClient.CliRunner({
+      config: path.join(__dirname, '../../../extra/withsafari-concurrent.json'),
+      env: ['default', 'chrome']
+    }).setup();
+    assert.strictEqual(runner.isTestWorkersEnabled(), false);
+    assert.strictEqual(runner.parallelMode(), false);
+  });
+
   it('mobile config setup on with multiple envs - enable parallelism ', function() {
     class RunnerBaseMock extends RunnerBase {
       static readTestSource(settings, argv) {
