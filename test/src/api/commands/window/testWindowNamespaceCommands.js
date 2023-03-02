@@ -31,7 +31,7 @@ describe('.window namespace commands', function () {
     this.client.start(done);
   });
 
-  it('test .window.new()/openNew()', function(done) {
+  it('test .window.open()/openNew()', function(done) {
     MockServer
       .addMock({
         url: '/session/13521-10219-202/window/new',
@@ -58,7 +58,7 @@ describe('.window namespace commands', function () {
       }, true, true);
 
     const api = this.client.api;
-    this.client.api.window.new(function callback(result) {
+    this.client.api.window.open(function callback(result) {
       assert.strictEqual(this, api);
       assert.strictEqual(result.status, 0);
       assert.strictEqual(result.value, null);
@@ -72,7 +72,7 @@ describe('.window namespace commands', function () {
     this.client.start(done);
   });
 
-  it('test .window.new() with type=window', function(done) {
+  it('test .window.open() with type=window', function(done) {
     MockServer
       .addMock({
         url: '/session/13521-10219-202/window/new',
@@ -99,7 +99,7 @@ describe('.window namespace commands', function () {
       }, true);
 
     const api = this.client.api;
-    this.client.api.window.new('window', function callback(result) {
+    this.client.api.window.open('window', function callback(result) {
       assert.strictEqual(this, api);
       assert.strictEqual(result.status, 0);
       assert.strictEqual(result.value, null);
