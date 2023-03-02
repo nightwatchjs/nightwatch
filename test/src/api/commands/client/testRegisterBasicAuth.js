@@ -42,19 +42,12 @@ describe('.registerBasicAuth()', function () {
       client.transport.driver.createCDPConnection = function() {
         return Promise.resolve();
       };
-      client.transport.driver.register = (username, password) =>{
+      client.transport.driver.register = (username, password) => {
         expectedUsername = username;
         expectedPassword = password;
       };
 
-      // old api
       client.api.registerBasicAuth('nightwatch', 'BarnOwl', function (){
-        assert.strictEqual(expectedUsername, 'nightwatch');
-        assert.strictEqual(expectedPassword, 'BarnOwl');
-      });
-
-      // new api
-      client.api.alerts.registerBasicAuth('nightwatch', 'BarnOwl', function (){
         assert.strictEqual(expectedUsername, 'nightwatch');
         assert.strictEqual(expectedPassword, 'BarnOwl');
       });
@@ -69,14 +62,7 @@ describe('.registerBasicAuth()', function () {
         browserName: 'firefox'
       }
     }).then(client => {
-      // old api
       client.api.registerBasicAuth('admin', 'admin', function(result){
-        assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'RegisterBasicAuth is not supported while using this driver');
-      });
-
-      // new api
-      client.api.alerts.registerBasicAuth('admin', 'admin', function(result){
         assert.strictEqual(result.status, -1);
         assert.strictEqual(result.error, 'RegisterBasicAuth is not supported while using this driver');
       });
