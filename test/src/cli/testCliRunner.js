@@ -46,7 +46,7 @@ describe('Test CLI Runner', function() {
     mockery.registerMock('./nightwatch.conf.js', config);
     mockery.registerMock('./nightwatchPromise.conf.js', promiseConfig);
    
-    mockery.registerMock('nightwatch-selector-playground', {
+    mockery.registerMock('@nightwatch/nightwatch-inspector', {
       crxfile: 'mocked crxfile'
     });
     mockery.registerMock('./playground-listener', class {
