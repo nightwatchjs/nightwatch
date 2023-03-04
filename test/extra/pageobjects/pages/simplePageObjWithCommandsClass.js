@@ -10,6 +10,8 @@ class PageCommands extends CommonCommands {
     assert.strictEqual(this.client.api.sessionId, '1352110219202');
     assert.ok(this.transportActions);
     assert.ok(this.driver);
+    assert.ok(this.section);
+    assert.ok(this.page);
     assert.ok(typeof this.httpRequest == 'function');
     assert.ok(typeof this.toString == 'function');
   }
@@ -43,5 +45,5 @@ module.exports = {
     }
   },
 
-  commands: PageCommands
+  commands: [PageCommands]
 };

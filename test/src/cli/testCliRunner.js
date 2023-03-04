@@ -656,7 +656,7 @@ describe('Test CLI Runner', function() {
 
     mockery.registerMock('fs', {
       existsSync() {
-        return false
+        return false;
       },
       stat(file, cb) {
         if (file === TEST_SRC_PATH || file === './custom.js') {
@@ -1369,5 +1369,58 @@ describe('Test CLI Runner', function() {
     assert.strictEqual(runner.argv.env, 'chrome');
     assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'chrome');
     assert.strictEqual('goog:chromeOptions' in runner.test_settings.desiredCapabilities, false);
+  });
+
+  describe('Test \'list-files\' flag', () => { 
+    it('output list of files - default environment', async () => {
+      const testsPath = [origPath.join(__dirname, origPath.join('..', '..', 'sampletests', 'simple', 'test', 'sample.js'))];
+      const consoleData = [];
+      const listFileOutput = JSON.stringify({
+        default: testsPath
+      });
+  
+      const origConsoleLog = console.log;
+  
+      console.log = function (data) {
+        consoleData.push(data);
+      };
+  
+      mockery.registerMock('./runner/cli/argv-setup.js', {
+        argv: {
+          _: testsPath,
+          'list-files': true
+        }
+      });
+      const NwClient = common.require('index.js');
+      await NwClient.cli();
+      assert.deepStrictEqual(listFileOutput, consoleData[0]);
+      console.log = origConsoleLog;
+    });
+
+    it('output list of files - chrome environment', async () => {
+      const testsPath = [origPath.join(__dirname, origPath.join('..', '..', 'sampletests', 'simple', 'test', 'sample.js'))];
+      const consoleData = [];
+      const listFileOutput = JSON.stringify({
+        chrome: testsPath
+      });
+  
+      const origConsoleLog = console.log;
+  
+      console.log = function (data) {
+        consoleData.push(data);
+      };
+  
+      mockery.registerMock('./runner/cli/argv-setup.js', {
+        argv: {
+          _: testsPath,
+          env: 'chrome',
+          'list-files': true
+        }
+      });
+      const NwClient = common.require('index.js');
+      await NwClient.cli();
+      assert.deepStrictEqual(listFileOutput, consoleData[0]);
+      console.log = origConsoleLog;
+    });
   });
 });

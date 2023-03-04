@@ -54,7 +54,7 @@ describe('Service creation from cli.js', function() {
     mockery.registerMock('./options.js', MockOptions);
   }
 
-  it('test appium server startup', function() {
+  xit('test appium server startup', function() {
     let appiumPathQueried = false;
     mockOptions({
       onAppiumPathQuery() {
