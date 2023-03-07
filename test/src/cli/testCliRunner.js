@@ -45,6 +45,7 @@ describe('Test CLI Runner', function() {
     mockery.registerMock('./nightwatch.json', config);
     mockery.registerMock('./nightwatch.conf.js', config);
     mockery.registerMock('./nightwatchPromise.conf.js', promiseConfig);
+
     mockery.registerMock('./output_disabled.json', {
       src_folders: ['tests'],
       output_folder: false,
@@ -1340,4 +1341,6 @@ describe('Test CLI Runner', function() {
       console.log = origConsoleLog;
     });
   });
+
+
 });

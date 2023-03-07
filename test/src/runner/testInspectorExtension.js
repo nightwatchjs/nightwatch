@@ -20,24 +20,7 @@ describe('testInspectorExtension', function () {
     this.server.on('listening', () => {
       done();
     });
-  });
 
-  afterEach(function (done) {
-    mockery.deregisterAll();
-    mockery.resetCache();
-    mockery.disable();
-
-    CommandGlobals.afterEach.call(this, function () {
-      Object.keys(require.cache).forEach(function (module) {
-        delete require.cache[module];
-      });
-
-      done();
-    });
-  });
-
-
-  function mockRequests() {
     MockServer.addMock({
       url: '/wd/hub/session',
       statusCode: 200,
@@ -64,7 +47,7 @@ describe('testInspectorExtension', function () {
           }
         }
       })
-    });
+    }, false);
   
     MockServer.addMock({
       url: '/wd/hub/session/13521-10219-202/elements',
@@ -75,7 +58,7 @@ describe('testInspectorExtension', function () {
           'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'
         }]
       }
-    });
+    }, false);
   
     MockServer.addMock({
       url: '/wd/hub/session/13521-10219-202/url',
@@ -86,7 +69,7 @@ describe('testInspectorExtension', function () {
       response: {
         value: null
       }
-    });
+    }, false);
   
     MockServer.addMock({
       url: '/wd/hub/session/13521-10219-202',
@@ -94,7 +77,7 @@ describe('testInspectorExtension', function () {
       response: {
         value: null
       }
-    });
+    }, false);
   
     mockery.registerMock('@nightwatch/nightwatch-inspector', {
       crxfile: 'mocked crxfile'
@@ -105,11 +88,23 @@ describe('testInspectorExtension', function () {
   
       closeSocket() {};
     });
-  }
+  });
+
+  afterEach(function (done) {
+    mockery.deregisterAll();
+    mockery.resetCache();
+    mockery.disable();
+
+    CommandGlobals.afterEach.call(this, function () {
+      Object.keys(require.cache).forEach(function (module) {
+        delete require.cache[module];
+      });
+
+      done();
+    });
+  });
 
   it('extension should attach in debug mode', function() {
-    mockRequests();
-
     const testsPath = path.join(__dirname, '../../sampletests/simple/test/sample.js');
 
     const globals = {
@@ -132,7 +127,7 @@ describe('testInspectorExtension', function () {
       debug: true
     }, settings({
       globals,
-      // output: false,
+      output: false,
       desiredCapabilities: {
         browserName: 'chrome'
       }
@@ -140,8 +135,6 @@ describe('testInspectorExtension', function () {
   })
 
   it('extension should not attach if debug mode is false', function() {
-    mockRequests();
-
     const testsPath = path.join(__dirname, '../../sampletests/simple/test/sample.js');
 
     const globals = {
