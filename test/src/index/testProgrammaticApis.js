@@ -22,7 +22,7 @@ describe('test programmatic apis', function () {
 
     MockServer.start(done);
     mockery.registerMock('@nightwatch/nightwatch-inspector', 'crxFile');
-    mockery.registerMock('./playground-listener', class {
+    mockery.registerMock('./websocket-server', class {
       initSocket() {};
 
       closeSocket() {};

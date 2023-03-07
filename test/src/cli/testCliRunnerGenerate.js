@@ -17,7 +17,7 @@ describe('Test CLI Runner Generate', function() {
     });
 
     mockery.registerMock('@nightwatch/nightwatch-inspector', 'crxFile');
-    mockery.registerMock('./playground-listener', class {
+    mockery.registerMock('./websocket-server', class {
       initSocket() {};
 
       closeSocket() {};

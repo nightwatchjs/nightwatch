@@ -49,7 +49,7 @@ describe('Test CLI Runner', function() {
     mockery.registerMock('@nightwatch/nightwatch-inspector', {
       crxfile: 'mocked crxfile'
     });
-    mockery.registerMock('./playground-listener', class {
+    mockery.registerMock('./websocket-server', class {
       initSocket() {};
 
       closeSocket() {};
