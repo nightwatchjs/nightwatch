@@ -40,6 +40,7 @@ Before(function({pickle}) {
     webdriver,
     persist_globals,
     config: this.parameters.config,
+    test_settings: this.parameters.settings,
     globals
   });
 

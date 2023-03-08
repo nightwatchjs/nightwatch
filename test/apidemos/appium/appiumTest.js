@@ -31,7 +31,9 @@ describe('appium api demo', function () {
 
   it('Search for Nightwatch', async function() {
     app  // available globally
-      .click('id', 'com.app:id/search')
+      .waitForElementPresent({selector: 'Search Wikipedia', locateStrategy: 'accessibility id'})
+      .click('accessibility id', 'Search Wikipedia')
+      .element('class name', 'android.widget.ImageButton')
       .sendKeys('id', 'com.app:id/search', 'Nightwatch');
   });
 });
