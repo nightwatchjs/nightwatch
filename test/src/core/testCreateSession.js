@@ -487,6 +487,7 @@ describe('test Request With Credentials', function () {
               browserName: 'chrome',
               'bstack:options': {
                 local: 'false',
+                sessionName: 'Try 1',
                 userName: 'test_user',
                 accessKey: 'test_key',
                 os: 'OS X',
@@ -570,6 +571,7 @@ describe('test Request With Credentials', function () {
           browserName: 'chrome',
           'bstack:options': {
             local: 'false',
+            sessionName: 'Try 1',
             userName: 'test_user',
             accessKey: 'test_key',
             os: 'OS X',
@@ -598,6 +600,7 @@ describe('test Request With Credentials', function () {
               'appium:app': 'bs://878bdf21505f0004ce',
               'bstack:options': {
                 local: 'false',
+                sessionName: 'Try 1',
                 userName: 'test_user',
                 accessKey: 'test_key',
                 osVersion: '14',
@@ -715,6 +718,7 @@ describe('test Request With Credentials', function () {
               'browserName': '',
               'bstack:options': {
                 local: 'false',
+                sessionName: 'Try 1',
                 userName: 'test_user',
                 accessKey: 'test_key',
                 realMobile: true,
@@ -937,6 +941,7 @@ describe('test Request With Credentials', function () {
               browserName: 'chrome',
               'bstack:options': {
                 local: 'false',
+                sessionName: 'Try 1',
                 userName: 'test_user',
                 accessKey: 'test_key',
                 os: 'OS X',
@@ -1018,6 +1023,7 @@ describe('test Request With Credentials', function () {
           browserName: 'chrome',
           'bstack:options': {
             local: 'false',
+            sessionName: 'Try 1',
             userName: 'test_user',
             accessKey: 'test_key',
             os: 'OS X',
