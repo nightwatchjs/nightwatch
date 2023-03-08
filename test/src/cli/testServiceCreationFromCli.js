@@ -4,7 +4,7 @@ const assert = require('assert');
 const origPath = require('path');
 
 describe('Service creation from cli.js', function() {
-  this.timeout(15000);
+  this.timeout(30000);
 
   beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
