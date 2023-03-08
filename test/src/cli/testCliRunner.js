@@ -45,6 +45,12 @@ describe('Test CLI Runner', function() {
     mockery.registerMock('./nightwatch.json', config);
     mockery.registerMock('./nightwatch.conf.js', config);
     mockery.registerMock('./nightwatchPromise.conf.js', promiseConfig);
+    mockery.registerMock('@nightwatch/nightwatch-inspector', 'crxFile');
+    mockery.registerMock('./websocket-server', class {
+      initSocket() {};
+
+      closeSocket() {};
+    });
 
     mockery.registerMock('./output_disabled.json', {
       src_folders: ['tests'],
