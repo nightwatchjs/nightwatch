@@ -447,7 +447,7 @@ describe('test Request With Credentials', function () {
           capabilities: {
             firstMatch: [{}],
             alwaysMatch: {
-              browserName: 'random',
+              browserName: 'acmeBrowser',
               platformName: 'android',
               'appium:platformVersion': '12.0'
             }
@@ -457,7 +457,7 @@ describe('test Request With Credentials', function () {
         return {
           value: {
             capabilities: {
-              browserName: 'random',
+              browserName: 'acmeBrowser',
               platformName: 'android',
               platformVersion: '12.0',
               name: 'sample test goes here'
@@ -478,7 +478,7 @@ describe('test Request With Credentials', function () {
         port: 9999
       },
       desiredCapabilities: {
-        browserName: 'random',
+        browserName: 'acmeBrowser',
         platformName: 'android',
         'appium:platformVersion': '12.0'
       }
@@ -487,7 +487,7 @@ describe('test Request With Credentials', function () {
     const result = await client.createSession();
     assert.deepStrictEqual(result, {
       capabilities: {
-        browserName: 'random',
+        browserName: 'acmeBrowser',
         platformName: 'android',
         platformVersion: '12.0',
         name: 'sample test goes here'
@@ -954,7 +954,7 @@ describe('test Request With Credentials', function () {
           capabilities: {
             firstMatch: [{}],
             alwaysMatch: {
-              browserName: 'random',
+              browserName: 'acmeBrowser',
               'bstack:options': {
                 local: 'false',
                 userName: 'test_user',
@@ -1014,7 +1014,7 @@ describe('test Request With Credentials', function () {
           os: 'OS X',
           osVersion: 'Monterey'
         },
-        browserName: 'random'
+        browserName: 'acmeBrowser'
       },
       parallel: false
     });
@@ -1030,7 +1030,7 @@ describe('test Request With Credentials', function () {
       capabilities: {
         firstMatch: [{}],
         alwaysMatch: {
-          browserName: 'random',
+          browserName: 'acmeBrowser',
           'bstack:options': {
             local: 'false',
             userName: 'test_user',
