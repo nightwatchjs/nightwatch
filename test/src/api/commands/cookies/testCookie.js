@@ -32,17 +32,18 @@ describe('get, set and delete cookie', function() {
     });
 
     it('client.cookies.get(<name>)', function(done) {
-      Mocks.cookiesFound({times: 2});
+      Mocks.cookieFound();
+      Mocks.cookieNotFound();
 
       const api = this.client.api;
       this.client.api.cookies.get('test_cookie', function callback(result) {
         assert.strictEqual(this, api);
-        assert.strictEqual(result.name, 'test_cookie');
-        assert.strictEqual(result.value, '123456');
+        assert.strictEqual(result.value.name, 'test_cookie');
+        assert.strictEqual(result.value.value, '123456');
       });
 
       this.client.api.cookies.get('other_cookie', function callback(result) {
-        assert.strictEqual(result, null);
+        assert.strictEqual(result.value, null);
       });
 
       this.client.start(done);
@@ -104,27 +105,18 @@ describe('get, set and delete cookie', function() {
     });
 
     it('client.cookies.get(<name>)', function(done) {
-      Mocks.cookiesFound({times: 2});
+      Mocks.cookieFound();
+      Mocks.cookieNotFound();
 
       const api = this.client.api;
       this.client.api.cookies.get('test_cookie', function callback(result) {
         assert.strictEqual(this, api);
-        assert.strictEqual(result.name, 'test_cookie');
-        assert.strictEqual(result.value, '123456');
+        assert.strictEqual(result.value.name, 'test_cookie');
+        assert.strictEqual(result.value.value, '123456');
       });
 
       this.client.api.cookies.get('other_cookie', function callback(result) {
-        assert.strictEqual(result, null);
-      });
-
-      this.client.start(done);
-    });
-
-    it('client.cookies.get(<name>) - empty result', function(done) {
-      Mocks.cookiesNotFound();
-
-      this.client.api.cookies.get('other_cookie', function callback(result) {
-        assert.strictEqual(result, null);
+        assert.strictEqual(result.value, null);
       });
 
       this.client.start(done);

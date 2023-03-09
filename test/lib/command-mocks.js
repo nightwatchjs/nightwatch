@@ -25,6 +25,42 @@ module.exports = {
     return MockServer.initAsync(opts);
   },
 
+  cookieFound(name = 'test_cookie', value = '123456', {times = 0} = {}) {
+    MockServer.addMock({
+      url: `/wd/hub/session/1352110219202/cookie/${name}`,
+      method: 'GET',
+      response: {
+        sessionId: '1352110219202',
+        status: 0,
+        value: {
+          name: name,
+          value: value,
+          path: '/',
+          domain: 'example.org',
+          secure: false
+        }
+      },
+      times
+    }, times === 0);
+  },
+
+  cookieNotFound(name = 'other_cookie', {times = 0} = {}) {
+    MockServer.addMock({
+      url: `/wd/hub/session/1352110219202/cookie/${name}`,
+      method: 'GET',
+      response: JSON.stringify({
+        sessionId: '1352110219202',
+        value: {
+          error: 'no such cookie',
+          message: 'no such cookie',
+          stacktrace: ''
+        }
+      }),
+      statusCode: 404,
+      times
+    }, times === 0);
+  },
+
   cookiesFound({times = 0} = {}) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/cookie',
