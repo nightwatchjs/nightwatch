@@ -122,6 +122,20 @@ describe('get, set and delete cookie', function() {
       this.client.start(done);
     });
 
+    it('client.cookies.get() without any argument', function(done) {
+      this.client.api.cookies.get();
+
+      this.client.start(function(err) {
+        try {
+          assert.ok(err instanceof Error);
+          assert.strictEqual(err.message.includes('First argument passed to .cookies.get() must be a string.'), true);
+          done();
+        } catch (err) {
+          done(err);
+        }
+      });
+    });
+
     it('client.cookies.delete(<name>)', function(done){
       Mocks.deleteCookie();
 
@@ -129,6 +143,20 @@ describe('get, set and delete cookie', function() {
         assert.strictEqual(result.status, 0);
       });
       this.client.start(done);
+    });
+
+    it('client.cookies.get() without any argument', function(done) {
+      this.client.api.cookies.delete();
+
+      this.client.start(function(err) {
+        try {
+          assert.ok(err instanceof Error);
+          assert.strictEqual(err.message.includes('First argument passed to .cookies.delete() must be a string.'), true);
+          done();
+        } catch (err) {
+          done(err);
+        }
+      });
     });
 
     it('client.cookies.set(<name>)', function(done) {
@@ -139,6 +167,19 @@ describe('get, set and delete cookie', function() {
       });
       this.client.start(done);
     });
-  });
 
+    it('client.cookies.set() without any argument', function(done) {
+      this.client.api.cookies.set();
+
+      this.client.start(function(err) {
+        try {
+          assert.ok(err instanceof Error);
+          assert.strictEqual(err.message.includes('First argument passed to .cookies.set() must be an object; received: undefined (undefined)'), true);
+          done();
+        } catch (err) {
+          done(err);
+        }
+      });
+    });
+  });
 });
