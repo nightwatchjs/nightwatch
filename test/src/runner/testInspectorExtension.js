@@ -20,34 +20,6 @@ describe('testInspectorExtension', function () {
     this.server.on('listening', () => {
       done();
     });
-
-    MockServer.addMock({
-      url: '/wd/hub/session',
-      statusCode: 200,
-      method: 'POST',
-      postdata: JSON.stringify({
-        capabilities: {
-          firstMatch: [{}],
-          alwaysMatch: {
-            browserName: 'chrome',
-            'goog:chromeOptions': {
-              extensions: ['mocked crxfile'],
-              args: ['--auto-open-devtools-for-tabs']
-            }
-          }
-        }
-      }),
-      response: JSON.stringify({
-        value: {
-          sessionId: '13521-10219-202',
-          capabilities: {
-            acceptInsecureCerts: false,
-            browserName: 'chrome',
-            browserVersion: '65.0.1'
-          }
-        }
-      })
-    }, false);
   
     MockServer.addMock({
       url: '/wd/hub/session/13521-10219-202/elements',
@@ -105,16 +77,49 @@ describe('testInspectorExtension', function () {
   });
 
   it('extension should attach in debug mode', function() {
+    MockServer.addMock({
+      url: '/wd/hub/session',
+      statusCode: 200,
+      method: 'POST',
+      postdata: JSON.stringify({
+        capabilities: {
+          firstMatch: [{}],
+          alwaysMatch: {
+            browserName: 'chrome',
+            'goog:chromeOptions': {
+              extensions: ['mocked crxfile'],
+              args: ['--auto-open-devtools-for-tabs']
+            }
+          }
+        }
+      }),
+      response: JSON.stringify({
+        value: {
+          sessionId: '13521-10219-202',
+          capabilities: {
+            acceptInsecureCerts: false,
+            browserName: 'chrome',
+            browserVersion: '65.0.1'
+          }
+        }
+      })
+    }, false);
+
     const testsPath = path.join(__dirname, '../../sampletests/simple/test/sample.js');
+    let desiredCapabilities;
 
     const globals = {
       calls: 0,
       retryAssertionTimeout: 0,
+      beforeEach: function(client, cb) {
+        desiredCapabilities = client.desiredCapabilities;
+        cb();
+      },
       reporter(results, cb) {
-        assert.strictEqual(this.settings.desiredCapabilities.browserName, 'chrome');
-        assert.ok('goog:chromeOptions' in this.settings.desiredCapabilities);
-        assert.deepStrictEqual(this.settings.desiredCapabilities['goog:chromeOptions'].extensions, ['mocked crxfile']);
-        assert.deepStrictEqual(this.settings.desiredCapabilities['goog:chromeOptions'].args, ['--auto-open-devtools-for-tabs']);
+        assert.strictEqual(desiredCapabilities.browserName, 'chrome');
+        assert.ok('goog:chromeOptions' in desiredCapabilities);
+        assert.deepStrictEqual(desiredCapabilities['goog:chromeOptions'].extensions, ['mocked crxfile']);
+        assert.deepStrictEqual(desiredCapabilities['goog:chromeOptions'].args, ['--auto-open-devtools-for-tabs']);
         assert.strictEqual(this.settings.parallel_mode, false);
         assert.strictEqual(results.passed, 2);
         assert.strictEqual(results.errors, 0);
@@ -135,14 +140,44 @@ describe('testInspectorExtension', function () {
   })
 
   it('extension should not attach if debug mode is false', function() {
+    MockServer.addMock({
+      url: '/wd/hub/session',
+      statusCode: 200,
+      method: 'POST',
+      postdata: JSON.stringify({
+        capabilities: {
+          firstMatch: [{}],
+          alwaysMatch: {
+            browserName: 'chrome',
+            'goog:chromeOptions': {}
+          }
+        }
+      }),
+      response: JSON.stringify({
+        value: {
+          sessionId: '13521-10219-202',
+          capabilities: {
+            acceptInsecureCerts: false,
+            browserName: 'chrome',
+            browserVersion: '65.0.1'
+          }
+        }
+      })
+    }, false);
+
     const testsPath = path.join(__dirname, '../../sampletests/simple/test/sample.js');
+    let desiredCapabilities;
 
     const globals = {
       calls: 0,
       retryAssertionTimeout: 0,
+      beforeEach: function(client, cb) {
+        desiredCapabilities = client.desiredCapabilities;
+        cb();
+      },
       reporter(results, cb) {
-        assert.strictEqual(this.settings.desiredCapabilities.browserName, 'chrome');
-        assert.strictEqual('goog:chromeOptions' in this.settings.desiredCapabilities, false);
+        assert.strictEqual(desiredCapabilities.browserName, 'chrome');
+        assert.strictEqual('goog:chromeOptions' in desiredCapabilities, false);
         assert.strictEqual(this.settings.parallel_mode, false);
         cb();
       }
