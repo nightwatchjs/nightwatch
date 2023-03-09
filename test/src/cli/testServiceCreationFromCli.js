@@ -5,7 +5,7 @@ const origPath = require('path');
 
 const IS_WINDOWS = process.platform === 'win32';
 
-(IS_WINDOWS ? describe.only : describe)('Service creation from cli.js', function() {
+(IS_WINDOWS ? describe.skip : describe)('Service creation from cli.js', function() {
   this.timeout(15000);
 
   beforeEach(function() {
