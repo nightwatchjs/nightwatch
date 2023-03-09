@@ -179,6 +179,8 @@ describe('testInspectorExtension', function () {
         assert.strictEqual(desiredCapabilities.browserName, 'chrome');
         assert.strictEqual('goog:chromeOptions' in desiredCapabilities, false);
         assert.strictEqual(this.settings.parallel_mode, false);
+        assert.strictEqual(results.passed, 2);
+        assert.strictEqual(results.errors, 0);
         cb();
       }
     };
