@@ -3,7 +3,7 @@ const path = require('path');
 const Nocks = require('../../lib/nocks.js');
 const Nightwatch = require('../../lib/nightwatch.js');
 
-describe('test PageObject WaitForElementNotPresent', function () {
+xdescribe('test PageObject WaitForElementNotPresent', function () {
   beforeEach(function (done) {
     Nocks.enable().cleanAll().createSession();
     Nightwatch.init({

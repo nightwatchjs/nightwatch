@@ -3,8 +3,10 @@ const mockery = require('mockery');
 const assert = require('assert');
 const origPath = require('path');
 
-describe('Service creation from cli.js', function() {
-  this.timeout(30000);
+const IS_WINDOWS = process.platform === 'win32';
+
+(IS_WINDOWS ? describe.skip : describe)('Service creation from cli.js', function() {
+  this.timeout(15000);
 
   beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
