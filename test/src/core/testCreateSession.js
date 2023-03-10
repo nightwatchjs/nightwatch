@@ -376,7 +376,7 @@ describe('test Request With Credentials', function () {
   });
 
   it('Test blank browserName', async function () {
-    try {
+    assert.throws(function() {
       const client = Nightwatch.createClient({
         selenium_port: 10195,
         silent: false,
@@ -386,13 +386,7 @@ describe('test Request With Credentials', function () {
           alwaysMatch: {}
         }
       });
-
-      await client.createSession();
-      
-      assert.fail('Error expected.');
-    } catch (err) {
-      assert.strictEqual(err.message.includes('[Error] Unknown browser: \'undefined\''), true);
-    }
+    }, /Error: Unknown browser:/);
   });
 
   it('Test create session with browsername null - Appium support', async function () {
