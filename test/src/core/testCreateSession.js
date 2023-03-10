@@ -433,18 +433,32 @@ describe('test Request With Credentials', function () {
     });
   });
 
-  it('Test create session with use_appium property - Appium support', async function () {
+  it('Test create session with use_appium property and random browser - Appium support', async function () {
     nock('http://somewhere:9999')
       .post('/wd/hub/session')
-      .reply(201, {
-        value: {
+      .reply(201, function (uri, requestBody) {
+        assert.deepEqual(requestBody, {
           capabilities: {
-            platformName: 'android',
-            platformVersion: '12.0',
-            name: 'sample test goes here'
-          },
-          sessionId: '1352110219202'
-        }
+            firstMatch: [{}],
+            alwaysMatch: {
+              browserName: 'acmeBrowser',
+              platformName: 'android',
+              'appium:platformVersion': '12.0'
+            }
+          }
+        });
+
+        return {
+          value: {
+            capabilities: {
+              browserName: 'acmeBrowser',
+              platformName: 'android',
+              platformVersion: '12.0',
+              name: 'sample test goes here'
+            },
+            sessionId: '1352110219202'
+          }
+        };
       });
 
     const client = Nightwatch.createClient({
@@ -458,15 +472,16 @@ describe('test Request With Credentials', function () {
         port: 9999
       },
       desiredCapabilities: {
-        browserName: '',
+        browserName: 'acmeBrowser',
         platformName: 'android',
-        platformVersion: '12.0'
+        'appium:platformVersion': '12.0'
       }
     });
 
     const result = await client.createSession();
     assert.deepStrictEqual(result, {
       capabilities: {
+        browserName: 'acmeBrowser',
         platformName: 'android',
         platformVersion: '12.0',
         name: 'sample test goes here'
@@ -929,16 +944,15 @@ describe('test Request With Credentials', function () {
     });
   });
 
-  it('Test create session with browserstack and update buildName', async function () {
+  it('Test create session with browserstack with random browser and update buildName', async function () {
     nock('https://hub.browserstack.com')
       .post('/wd/hub/session')
       .reply(201, function (uri, requestBody) {
-
         assert.deepEqual(requestBody, {
           capabilities: {
             firstMatch: [{}],
             alwaysMatch: {
-              browserName: 'chrome',
+              browserName: 'acmeBrowser',
               'bstack:options': {
                 local: 'false',
                 sessionName: 'Try 1',
@@ -947,8 +961,7 @@ describe('test Request With Credentials', function () {
                 os: 'OS X',
                 osVersion: 'Monterey',
                 buildName: 'Nightwatch Programmatic Api Demo'
-              },
-              'goog:chromeOptions': {w3c: false}
+              }
             }
           }
         });
@@ -1000,12 +1013,8 @@ describe('test Request With Credentials', function () {
           os: 'OS X',
           osVersion: 'Monterey'
         },
-        browserName: 'chrome',
-        chromeOptions: {
-          w3c: false
-        }
+        browserName: 'acmeBrowser'
       },
-
       parallel: false
     });
 
@@ -1020,7 +1029,7 @@ describe('test Request With Credentials', function () {
       capabilities: {
         firstMatch: [{}],
         alwaysMatch: {
-          browserName: 'chrome',
+          browserName: 'acmeBrowser',
           'bstack:options': {
             local: 'false',
             sessionName: 'Try 1',
@@ -1029,8 +1038,7 @@ describe('test Request With Credentials', function () {
             os: 'OS X',
             osVersion: 'Monterey',
             buildName: 'Nightwatch Programmatic Api Demo'
-          },
-          'goog:chromeOptions': {w3c: false}
+          }
         }
       }
     });
