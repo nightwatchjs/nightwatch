@@ -21,6 +21,12 @@ describe('test programmatic apis', function () {
     delete global.browser;
 
     MockServer.start(done);
+    mockery.registerMock('@nightwatch/nightwatch-inspector', 'crxFile');
+    mockery.registerMock('./websocket-server', class {
+      initSocket() {};
+
+      closeSocket() {};
+    });
   });
   afterEach((done) => {
     mockery.deregisterAll();
