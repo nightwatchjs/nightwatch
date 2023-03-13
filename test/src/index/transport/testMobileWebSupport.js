@@ -5,7 +5,7 @@ const CommandGlobals = require('../../../lib/globals/commands.js');
 const MockServer = require('../../../lib/mockserver.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
-const Transport = require('../../../../lib/transport/selenium-webdriver/index.js');
+const Transport = common.require('transport/selenium-webdriver/index.js');
 const {IosSessionNotCreatedError, AndroidConnectionError} = common.require('utils/mobile.js');
 const mockery = require('mockery');
 
