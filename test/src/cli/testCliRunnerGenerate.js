@@ -15,6 +15,13 @@ describe('Test CLI Runner Generate', function() {
         return './nightwatch.json';
       }
     });
+
+    mockery.registerMock('@nightwatch/nightwatch-inspector', 'crxFile');
+    mockery.registerMock('./websocket-server', class {
+      initSocket() {};
+
+      closeSocket() {};
+    });
   });
 
   afterEach(function() {
