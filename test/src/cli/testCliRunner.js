@@ -1152,8 +1152,8 @@ describe('Test CLI Runner', function() {
         },
 
         'android.chrome': {
-          real_mobile: false,
           desiredCapabilities: {
+            real_mobile: false,
             avd: 'nightwatch-android-11',
             browserName: 'chrome',
             'goog:chromeOptions': {
@@ -1172,7 +1172,7 @@ describe('Test CLI Runner', function() {
     }).setup();
 
     assert.strictEqual(runner.argv.env, 'android.chrome');
-    assert.strictEqual(runner.test_settings.real_mobile, false);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.real_mobile, false);
     assert.strictEqual(runner.test_settings.desiredCapabilities.avd, 'nightwatch-android-11');
     assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'chrome');
     assert.ok('goog:chromeOptions' in runner.test_settings.desiredCapabilities);
@@ -1188,8 +1188,8 @@ describe('Test CLI Runner', function() {
         },
 
         'android.firefox': {
-          real_mobile: false,
           desiredCapabilities: {
+            real_mobile: false,
             avd: 'nightwatch-android-11',
             browserName: 'firefox',
             'moz:firefoxOptions': {
@@ -1208,7 +1208,8 @@ describe('Test CLI Runner', function() {
     }).setup();
 
     assert.strictEqual(runner.argv.env, 'android.firefox');
-    assert.strictEqual(runner.test_settings.real_mobile, false);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.real_mobile, false);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.avd, 'nightwatch-android-11');
     assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'firefox');
     assert.ok('moz:firefoxOptions' in runner.test_settings.desiredCapabilities);
     assert.strictEqual(runner.test_settings.desiredCapabilities['moz:firefoxOptions'].androidPackage, 'org.mozilla.firefox');
@@ -1223,8 +1224,8 @@ describe('Test CLI Runner', function() {
         },
 
         'android.chrome': {
-          real_mobile: true,
           desiredCapabilities: {
+            real_mobile: true,
             avd: 'nightwatch-android-11',
             browserName: 'chrome',
             'goog:chromeOptions': {
@@ -1244,7 +1245,7 @@ describe('Test CLI Runner', function() {
     }).setup();
 
     assert.strictEqual(runner.argv.env, 'android.chrome');
-    assert.strictEqual(runner.test_settings.real_mobile, true);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.real_mobile, true);
     assert.strictEqual(runner.test_settings.desiredCapabilities.avd, 'nightwatch-android-11');
     assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'chrome');
     assert.ok('goog:chromeOptions' in runner.test_settings.desiredCapabilities);
@@ -1261,8 +1262,8 @@ describe('Test CLI Runner', function() {
         },
 
         'android.firefox': {
-          real_mobile: true,
           desiredCapabilities: {
+            real_mobile: true,
             avd: 'nightwatch-android-11',
             browserName: 'firefox',
             'moz:firefoxOptions': {
@@ -1282,7 +1283,8 @@ describe('Test CLI Runner', function() {
     }).setup();
 
     assert.strictEqual(runner.argv.env, 'android.firefox');
-    assert.strictEqual(runner.test_settings.real_mobile, true);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.real_mobile, true);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.avd, 'nightwatch-android-11');
     assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'firefox');
     assert.ok('moz:firefoxOptions' in runner.test_settings.desiredCapabilities);
     assert.strictEqual(runner.test_settings.desiredCapabilities['moz:firefoxOptions'].androidPackage, 'org.mozilla.firefox');
@@ -1298,8 +1300,8 @@ describe('Test CLI Runner', function() {
         },
 
         'android.chrome': {
-          real_mobile: true,
           desiredCapabilities: {
+            real_mobile: true,
             avd: 'nightwatch-android-11',
             browserName: 'chrome',
             'goog:chromeOptions': {
@@ -1319,7 +1321,7 @@ describe('Test CLI Runner', function() {
     }).setup();
 
     assert.strictEqual(runner.argv.env, 'android.chrome');
-    assert.strictEqual(runner.test_settings.real_mobile, true);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.real_mobile, true);
     assert.strictEqual(runner.test_settings.desiredCapabilities.avd, 'nightwatch-android-11');
     assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'chrome');
     assert.ok('goog:chromeOptions' in runner.test_settings.desiredCapabilities);
@@ -1336,8 +1338,8 @@ describe('Test CLI Runner', function() {
         },
 
         'android.firefox': {
-          real_mobile: true,
           desiredCapabilities: {
+            real_mobile: true,
             avd: 'nightwatch-android-11',
             browserName: 'firefox',
             'moz:firefoxOptions': {
@@ -1357,7 +1359,8 @@ describe('Test CLI Runner', function() {
     }).setup();
 
     assert.strictEqual(runner.argv.env, 'android.firefox');
-    assert.strictEqual(runner.test_settings.real_mobile, true);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.real_mobile, true);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.avd, 'nightwatch-android-11');
     assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'firefox');
     assert.ok('moz:firefoxOptions' in runner.test_settings.desiredCapabilities);
     assert.strictEqual(runner.test_settings.desiredCapabilities['moz:firefoxOptions'].androidPackage, 'org.mozilla.firefox');
