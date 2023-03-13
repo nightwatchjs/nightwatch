@@ -37,7 +37,7 @@ describe('custom command with namespaced alias', function () {
         assert.ok(results.lastError instanceof Error);
         assert.strictEqual(
           results.lastError.message,
-          'Error while running "sampleNamespace.customPauseWithNamespacedAlias" command: First argument should be a number.'
+          'Error while running "sampleNamespace.amazingPause" command: First argument should be a number.'
         );
       }
     };

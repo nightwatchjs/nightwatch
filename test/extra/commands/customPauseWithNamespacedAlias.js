@@ -1,6 +1,6 @@
 module.exports = class CustomPause {
   static get namespacedAliases() {
-    return ['sampleNamespace.customPause', 'fantasticNamespace.subNamespace.fantasticPause'];
+    return ['newPause', 'sampleNamespace.amazingPause', 'fantasticNamespace.subNamespace.fantasticPause'];
   }
 
   command(timeout) {
