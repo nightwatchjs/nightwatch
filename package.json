@@ -128,7 +128,17 @@
     "browserstack",
     "end-to-end",
     "automated-testing",
-    "e2e"
+    "e2e",
+    "component",
+    "integration",
+    "test",
+    "browser",
+    "mobile",
+    "runner",
+    "appium",
+    "cucumber",
+    "mocha",
+    "automation"
   ],
   "files": [
     "bin",
