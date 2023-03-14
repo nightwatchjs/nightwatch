@@ -329,4 +329,67 @@ describe('testReporter', function() {
     assert.strictEqual(possibleError, null);
 
   });
+
+  it('check reporter output with appended results', async function() {
+    let possibleError = null;
+    const testPath = [path.join(__dirname, '../../sampletests/appendtestresult/sampleWithAppendResults.js')];
+    const customCommands = [path.join(__dirname, '../../extra/commands')];
+
+    try {
+      await runTests({
+        source: testPath
+      }, settings({
+        custom_commands_path: customCommands,
+        globals: {
+          waitForConditionPollInterval: 20,
+          waitForConditionTimeout: 50,
+          retryAssertionTimeout: 50,
+          reporter: function (results) {
+            const module = results.modules['sampleWithAppendResults'];
+            
+            assert.ok(Object.keys(module).includes('completedSections'));
+            const completedSections = module['completedSections'];
+            assert.ok(Object.keys(completedSections).includes('demoTest'));
+
+            const test = completedSections['demoTest'];
+            assert.ok(Object.keys(test).includes('customReport'));
+            assert.deepStrictEqual(test.customReport, {success: true});
+          }
+        },
+        silent: true,
+        output: false
+      }));
+    } catch (err) {
+      possibleError = err;
+    }
+    assert.strictEqual(possibleError, null);
+  });
+
+  it('test with multiple reporters', function() {
+    mockery.registerMock('nightwatch_reporter', {
+      async write(_results, _options) {
+
+        return 'nightwatch_reporter_output';
+      }
+    });
+    mockery.registerMock('html_reporter', {
+      async write(_results, _options) {
+
+        return 'html_reporter_output';
+      }
+    });
+
+    const reporter = new Reporter('nightwatch_reporter,html_reporter', {
+      globals: {
+        reporter(_results, done) {
+          done();
+        }
+      },
+      output_folder: 'output'
+    });
+
+    return reporter.writeReportToFile().then(function(result) {
+      assert.deepStrictEqual(result, ['nightwatch_reporter_output', 'html_reporter_output']);
+    });
+  });
 });
