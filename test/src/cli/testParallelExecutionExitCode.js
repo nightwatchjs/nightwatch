@@ -42,6 +42,18 @@ describe('test Parallel Execution Exit Code', function() {
         return new Child();
       }
     });
+    mockery.registerMock('./worker-process.js', class WorkerProcess extends events {
+      constructor(args, settings, maxWorkerCount) {
+        super();
+        this.tasks = [];
+        this.index = 0;
+      }
+
+      addTask({argv}) {
+        this.tasks.push(Promise.reject());
+        Promise.resolve();
+      }
+    });
 
     const {platform, constants, homedir, release} = require('os');
     mockery.registerMock('os', {
@@ -70,7 +82,9 @@ describe('test Parallel Execution Exit Code', function() {
       config: path.join(__dirname, '../../extra/parallelism-count.json')
     });
 
-    runner.setup();
+    runner.setup({
+      use_child_process: true
+    });
 
     let setExitCode = runner.processListener.setExitCode;
     runner.processListener.setExitCode = function(code) {
@@ -88,7 +102,48 @@ describe('test Parallel Execution Exit Code', function() {
       env: 'env1,env2'
     });
 
-    runner.setup();
+    runner.setup({
+      use_child_process: true
+    });
+
+    let setExitCode = runner.processListener.setExitCode;
+    runner.processListener.setExitCode = function(code) {
+      runner.processListener.setExitCode = setExitCode;
+      assert.strictEqual(code, 1);
+    };
+
+    return runner.runTests();
+  });
+
+  it('test parallel execution with code non zero test workers - worker threads', function() {
+    const CliRunner = common.require('runner/cli/cli.js');
+    let runner = new CliRunner({
+      config: path.join(__dirname, '../../extra/parallelism-count.json')
+    });
+
+    runner.setup({
+      use_child_process: false
+    });
+
+    let setExitCode = runner.processListener.setExitCode;
+    runner.processListener.setExitCode = function(code) {
+      runner.processListener.setExitCode = setExitCode;
+      assert.strictEqual(code, 1);
+    };
+
+    return runner.runTests();
+  });
+
+  it('test parallel execution with code non zero envs - worker threads', function() {
+    const CliRunner = common.require('runner/cli/cli.js');
+    let runner = new CliRunner({
+      config: path.join(__dirname, '../../extra/parallelism-envs.json'),
+      env: 'env1,env2'
+    });
+
+    runner.setup({
+      use_child_proces: true
+    });
 
     let setExitCode = runner.processListener.setExitCode;
     runner.processListener.setExitCode = function(code) {

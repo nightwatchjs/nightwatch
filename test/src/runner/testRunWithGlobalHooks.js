@@ -5,11 +5,11 @@ const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
+const mockery  = require('mockery');
 
 describe('testRunWithGlobalHooks', function() {
   before(function(done) {
     this.server = MockServer.init();
-
     this.server.on('listening', () => {
       done();
     });
@@ -20,6 +20,7 @@ describe('testRunWithGlobalHooks', function() {
   });
 
   beforeEach(function() {
+    mockery.enable({useCleanCache: true, warnOnUnregistered: false});
     process.removeAllListeners('exit');
     process.removeAllListeners('uncaughtException');
     process.removeAllListeners('unhandledRejection');
@@ -27,17 +28,20 @@ describe('testRunWithGlobalHooks', function() {
 
   afterEach(function() {
     process.env.__NIGHTWATCH_PARALLEL_MODE = null;
+    mockery.deregisterAll();
+    mockery.resetCache();
+    mockery.disable();
     Object.keys(require.cache).filter(i => i.includes('/sampletests')).forEach(function(module) {
       delete require.cache[module];
     });
   });
 
   it('testRunner with globalBefore and after', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after');
+    const testsPath = path.join(__dirname, '../../sampletests/before-after');
     let beforeEachCount = 0;
     let afterEachCount = 0;
 
-    let globals = {
+    const globals = {
       calls: 0,
 
       beforeEach() {
@@ -75,8 +79,8 @@ describe('testRunWithGlobalHooks', function() {
   this.timeout(10000);
 
   it('testRunner with global async beforeEach and afterEach', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/before-after');
+    const globals = {
       calls: 0,
       beforeEach(cb) {
         setTimeout(function() {
@@ -106,8 +110,8 @@ describe('testRunWithGlobalHooks', function() {
   });
 
   it('testRunner with global async beforeEach and afterEach with api argument', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/before-after');
+    const globals = {
       calls: 0,
       beforeEach(client, done) {
         assert.deepStrictEqual(client.globals, this);
@@ -140,7 +144,7 @@ describe('testRunWithGlobalHooks', function() {
 
   it('test run with global async beforeEach and assert failure', function() {
     let beforeEachCount = 0;
-    let testsPath = path.join(__dirname, '../../sampletests/before-after');
+    const testsPath = path.join(__dirname, '../../sampletests/before-after');
 
     return runTests(testsPath, settings({
       globals: {
@@ -162,7 +166,7 @@ describe('testRunWithGlobalHooks', function() {
   });
 
   it('test run with global async beforeEach and exception', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after/');
+    const testsPath = path.join(__dirname, '../../sampletests/before-after/');
 
     return runTests(testsPath, settings({
       output: false,
@@ -193,7 +197,7 @@ describe('testRunWithGlobalHooks', function() {
   });
 
   it('test run with global async beforeEach and timeout error', async function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after');
+    const testsPath = path.join(__dirname, '../../sampletests/before-after');
 
     let expectedErr;
 
@@ -214,7 +218,7 @@ describe('testRunWithGlobalHooks', function() {
   });
 
   it('test run with global async beforeEach and done(err);', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after');
+    const testsPath = path.join(__dirname, '../../sampletests/before-after');
 
     return runTests(testsPath, settings({
       globals: {
@@ -233,8 +237,8 @@ describe('testRunWithGlobalHooks', function() {
   });
 
   it('test currentTest in global beforeEach/afterEach', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withfailures');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/withfailures');
+    const globals = {
       calls: 0,
       waitForConditionPollInterval: 5,
       waitForConditionTimeout: 5,
@@ -281,10 +285,10 @@ describe('testRunWithGlobalHooks', function() {
     }));
   });
 
-  it('test global child process hooks',  function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after');
+  it('test global child process hooks - child process',  function() {
+    const testsPath = path.join(__dirname, '../../sampletests/before-after');
     process.env.__NIGHTWATCH_PARALLEL_MODE = '1';
-    let globals = {
+    const globals = {
       calls: 0,
       beforeChildProcess() {
         globals.calls++;
@@ -300,15 +304,54 @@ describe('testRunWithGlobalHooks', function() {
 
     return runTests(testsPath, settings({
       output: false,
+      use_child_process: true,
       globals
     })
     );
   });
 
-  it('test global async child process hooks',  function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after');
+  it('test global child process hooks - worker threads',  function() {
+    mockery.registerMock('./worker-process.js', class WorkerProcess {
+      static get isWorkerThread() {
+        return true;
+      }
+    });
+    
+    const processPort = process.port;
+    process.port = {
+      postMessage: function(){}
+    };
+
+    const  testsPath = path.join(__dirname, '../../sampletests/before-after');
+    
+    const globals = {
+      calls: 0,
+      beforeChildProcess() {
+        globals.calls++;
+      },
+      afterChildProcess() {
+        globals.calls++;
+      },
+      reporter(results, cb) {
+        assert.strictEqual(globals.calls, 20);
+        process.port = processPort;
+        cb();
+      }
+    };
+
+    return runTests(testsPath, settings({
+      use_child_process: false,
+      output: false,
+      globals
+    })
+    );
+  });
+
+
+  it('test global async child process hooks - child process',  function() {
+    const testsPath = path.join(__dirname, '../../sampletests/before-after');
     process.env.__NIGHTWATCH_PARALLEL_MODE = '1';
-    let globals = {
+    const globals = {
       calls: 0,
       beforeChildProcess(_, done) {
         setTimeout(function() {
@@ -330,6 +373,47 @@ describe('testRunWithGlobalHooks', function() {
 
     return runTests(testsPath, settings({
       output: false,
+      use_child_process: true,
+      globals
+    }));
+  });
+
+  it('test global async child process hooks - worker thread',  function() {
+    mockery.registerMock('./worker-process.js', class WorkerProcess {
+      static get isWorkerThread() {
+        return true;
+      }
+    });
+    const processPort = process.port;
+    process.port = {
+      postMessage: function(){}
+    };
+
+    const testsPath = path.join(__dirname, '../../sampletests/before-after');
+    const globals = {
+      calls: 0,
+      beforeChildProcess(_, done) {
+        setTimeout(function() {
+          globals.calls++;
+          done();
+        }, 10);
+      },
+      afterChildProcess(_, done) {
+        setTimeout(function() {
+          globals.calls++;
+          done();
+        }, 15);
+      },
+      reporter(_, cb) {
+        assert.strictEqual(globals.calls, 20);
+        process.port = processPort;
+        cb();
+      }
+    };
+
+    return runTests(testsPath, settings({
+      output: false,
+      use_child_process: false,
       globals
     }));
   });

@@ -526,7 +526,7 @@ describe('test programmatic apis', function () {
     const Concurrency = common.require('runner/concurrency');
     const Nightwatch = common.require('index.js');
 
-    Concurrency.isChildProcess = function() {
+    Concurrency.isWorker = function() {
       return true;
     };
 
