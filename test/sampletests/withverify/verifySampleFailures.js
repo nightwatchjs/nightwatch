@@ -15,6 +15,7 @@ module.exports = {
   },
 
   after(client, callback) {
+    client.end();
     client.globals.calls++;
     callback();
   }
