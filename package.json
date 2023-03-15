@@ -44,7 +44,8 @@
     "stacktrace-parser": "0.1.10",
     "strip-ansi": "6.0.1",
     "untildify": "^4.0.0",
-    "uuid": "8.3.2"
+    "uuid": "8.3.2",
+    "sinon": "^15.0.2"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^8.2.1",
