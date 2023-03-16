@@ -97,6 +97,81 @@ describe('.mockNetworkResponse()', function () {
     });
   });
 
+  it('browser.mockNetworkResponse(urlToIntercept, {status, headers, body}) with multiple mocks', function (done) {
+    MockServer.addMock({
+      url: '/session',
+      response: {
+        value: {
+          sessionId: '13521-10219-202',
+          capabilities: {
+            browserName: 'chrome',
+            browserVersion: '92.0'
+          }
+        }
+      },
+      method: 'POST',
+      statusCode: 201
+    }, true);
+
+    Nightwatch.initW3CClient({
+      desiredCapabilities: {
+        browserName: 'chrome',
+        'goog:chromeOptions': {}
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
+    }).then(client => {
+      const cdpCommandsExecuted = [];
+      let timesEventListenerAdded = 0;
+
+      cdp.resetConnection();
+      client.transport.driver.createCDPConnection = function() {
+        return Promise.resolve({
+          _wsConnection: {
+            on: () => {
+              timesEventListenerAdded++;
+            }
+          },
+          execute: function(command) {
+            cdpCommandsExecuted.push(command);
+          }
+        });
+      };
+
+      client.api.mockNetworkResponse('https://www.google.com/', {
+        status: 200,
+        headers: {'Content-Type': 'UTF-8'},
+        body: 'Hey there!'
+      });
+      client.api.mockNetworkResponse('https://www.duckduckgo.com/', {
+        status: 200,
+        headers: {'Content-Type': 'UTF-8'},
+        body: 'Good bye!'
+      });
+  
+      client.start(function (err) {
+        if (err) {
+          done(err);
+
+          return;
+        }
+
+        try {
+          const mocks = cdp.networkMocks;
+          assert.deepStrictEqual(Object.keys(mocks), ['https://www.google.com/', 'https://www.duckduckgo.com/']);
+          assert.strictEqual(mocks['https://www.google.com/'].body, Buffer.from('Hey there!').toString('base64'));
+          assert.strictEqual(mocks['https://www.duckduckgo.com/'].body, Buffer.from('Good bye!').toString('base64'));
+
+          assert.strictEqual(timesEventListenerAdded, 1);
+          assert.deepStrictEqual(cdpCommandsExecuted, ['Fetch.enable', 'Network.setCacheDisabled', 'Fetch.enable', 'Network.setCacheDisabled']);
+          done();
+        } catch (err) {
+          done(err);
+        }
+      });
+    });
+  });
+
   it('browser.mockNetworkResponse() with relative url to launch_url', function (done) {
     MockServer.addMock({
       url: '/session',

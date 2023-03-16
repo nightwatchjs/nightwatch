@@ -7,9 +7,9 @@ const MockServer = require('../../../lib/mockserver.js');
 const CommandGlobals = require('../../../lib/globals/commands.js');
 
 describe('Selenium Server Transport', function () {
-  const fn = Concurrency.isChildProcess;
+  const fn = Concurrency.isWorker;
   before(function(done) {
-    Concurrency.isChildProcess = function() {
+    Concurrency.isWorker = function() {
       return true;
     }
 
@@ -21,7 +21,7 @@ describe('Selenium Server Transport', function () {
   });
 
   after(function(done) {
-    Concurrency.isChildProcess = fn;
+    Concurrency.isWorker = fn;
     CommandGlobals.afterEach.call(this, done);
   });
 

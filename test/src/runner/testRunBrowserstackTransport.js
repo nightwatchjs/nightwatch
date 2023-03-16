@@ -17,12 +17,16 @@ describe('testRunBrowserstackTransport', function() {
 
     nock('https://hub-cloud.browserstack.com')
       .post('/wd/hub/session')
-      .reply(201, {
-        status: 0,
-        sessionId: '1352110219202',
-        value: {
-          browserName: 'chrome'
-        }
+      .reply(201, (uri, requestBody) => {
+        assert.ok(requestBody.capabilities.alwaysMatch['bstack:options'].sessionName, 'session request should contain session Name');
+        
+        return {
+          status: 0,
+          sessionId: '1352110219202',
+          value: {
+            browserName: 'chrome'
+          }
+        };
       });
 
     nock('https://api.browserstack.com')
@@ -68,7 +72,7 @@ describe('testRunBrowserstackTransport', function() {
   });
 
   it('run with error', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withfailures/');
+    const testsPath = path.join(__dirname, '../../sampletests/withfailures/');
 
     return runTests(testsPath, settings({
       output: false,
@@ -79,8 +83,10 @@ describe('testRunBrowserstackTransport', function() {
         start_process: true
       },
       desiredCapabilities: {
-        'browserstack.user': 'test-access-user',
-        'browserstack.key': 'test-access-key',
+        'bstack:options': {
+          'userName': 'test-access-user',
+          'accessKey': 'test-access-key'
+        },
         browserName: 'chrome'
       },
       globals: {

@@ -1,7 +1,7 @@
 {
   "name": "nightwatch",
   "description": "Easy to use Node.js based end-to-end testing solution for web applications using the W3C WebDriver API.",
-  "version": "2.6.10",
+  "version": "3.0.0-alpha.2",
   "author": "Andrei Rusu",
   "homepage": "https://nightwatchjs.org",
   "main": "./lib/index.js",
@@ -14,6 +14,7 @@
   "dependencies": {
     "@nightwatch/chai": "5.0.2",
     "@nightwatch/html-reporter-template": "0.1.4",
+    "@nightwatch/nightwatch-inspector": "^1.0.1",
     "ansi-to-html": "0.7.2",
     "assertion-error": "1.1.0",
     "boxen": "5.1.2",
@@ -39,7 +40,8 @@
     "nightwatch-axe-verbose": "^2.1.0",
     "open": "8.4.0",
     "ora": "5.4.1",
-    "selenium-webdriver": "4.6.1",
+    "piscina": "^3.2.0",
+    "selenium-webdriver": "4.8.0",
     "semver": "7.3.5",
     "stacktrace-parser": "0.1.10",
     "strip-ansi": "6.0.1",
@@ -115,7 +117,7 @@
     }
   },
   "engines": {
-    "node": ">= 12.0.0"
+    "node": ">= 14.0.0"
   },
   "keywords": [
     "nightwatch",
@@ -126,7 +128,17 @@
     "browserstack",
     "end-to-end",
     "automated-testing",
-    "e2e"
+    "e2e",
+    "component",
+    "integration",
+    "test",
+    "browser",
+    "mobile",
+    "runner",
+    "appium",
+    "cucumber",
+    "mocha",
+    "automation"
   ],
   "files": [
     "bin",
