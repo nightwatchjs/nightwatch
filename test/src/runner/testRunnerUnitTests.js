@@ -75,6 +75,25 @@ describe('testRunnerUnitTests', function() {
     return runTests(testsPath, settings);
   });
 
+  it('testRunner unit tests with stubs and spy', function() {
+    const testsPath = path.join(__dirname, '../../sampletests/unittests-mocks/');
+
+    const settings = {
+      output_folder: false,
+      output: false,
+      persist_globals: true,
+      globals: {
+        reporter(results) {
+          if (results.lastError) {
+            throw results.lastError;
+          }
+        }
+      }
+    };
+
+    return runTests(testsPath, settings);
+  });
+
   it('testRunner unit tests with annotation and error thrown', function() {
     let testsPath = path.join(__dirname, '../../asynchookstests/unittest-error.js');
 
