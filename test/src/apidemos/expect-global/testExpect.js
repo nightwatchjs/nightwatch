@@ -6,7 +6,7 @@ const common = require('../../../common.js');
 const {settings} = common;
 const NightwatchClient = common.require('index.js');
 
-describe.only('expect(element.<command>) - passed', function() {
+describe('expect(element.<command>) - passed', function() {
   beforeEach(function(done) {
     this.server = MockServer.init();
     this.server.on('listening', () => {
@@ -93,7 +93,9 @@ describe.only('expect(element.<command>) - passed', function() {
         assert.ok(results.lastError instanceof Error);
         assert.strictEqual(results.failed, 1);
         assert.strictEqual(results.lastError.name, 'NightwatchAssertError');
-        assert.strictEqual(results.lastError.message, 'expected { a: 1, b: 4 } to deeply equal { b: 5 } - expected \x1B[0;32m"{ b: 5 }"\x1B[0m but got: \x1B[0;31m"{ a: 1, b: 4 }"\x1B[0m \x1B[0;90m(2ms)\x1B[0m');
+        /* eslint-disable no-control-regex */
+        const cleanErrorMessage = results.lastError.message.replace(/\x1b\[[0-9;]*m|\(.*?\)/g, '');
+        assert.strictEqual(cleanErrorMessage, 'expected { a: 1, b: 4 } to deeply equal { b: 5 } - expected "{ b: 5 }" but got: "{ a: 1, b: 4 }" ');
       }
     };
 
