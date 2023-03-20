@@ -83,5 +83,42 @@ describe('expect(element.<command>) - passed', function() {
     });
   });
 
-  
+  it('stringify deepEqual console output object', function() {
+    const testsPath = path.join(__dirname, '../../../apidemos/expect-global/deepEqual.js');
+
+    const globals = {
+      waitForConditionPollInterval: 50,
+
+      reporter(results) {
+        assert.ok(results.lastError instanceof Error);
+        assert.strictEqual(results.failed, 1);
+        assert.strictEqual(results.lastError.name, 'NightwatchAssertError');
+
+        const cleanErrorMessage = results.lastError.message.replace(/\u001b\[[0-9;]*m|\(.*?\)/g, '');
+        assert.strictEqual(cleanErrorMessage, 'expected { a: 1, b: 4 } to deeply equal { b: 5 } - expected "{ b: 5 }" but got: "{ a: 1, b: 4 }" ');
+      }
+    };
+
+    return NightwatchClient.runTests(testsPath, {
+      selenium: {
+        host: 'localhost',
+        port: 10195,
+        start_process: false
+      },
+      webdriver: {
+        start_process: false,
+        timeout_options: {
+          timeout: 50,
+          retry_attempts: 0
+        }
+      },
+      output: false,
+      report_command_errors: true,
+      skip_testcases_on_fail: false,
+      silent: false,
+      persist_globals: true,
+      globals,
+      output_folder: false
+    });
+  });
 });
