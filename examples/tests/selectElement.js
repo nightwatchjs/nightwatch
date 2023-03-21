@@ -2,7 +2,9 @@ const {Select} = require('selenium-webdriver');
 
 module.exports = {
   async demoTest(browser) {
-    const selectElement = element('select[name=selectomatic]');
+    const selectElement = browser.element('select[name=selectomatic]');
+
+    console.log(selectElement);
 
     await browser
       .url('https://www.selenium.dev/selenium/web/formPage.html')
