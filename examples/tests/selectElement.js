@@ -4,8 +4,6 @@ module.exports = {
   async demoTest(browser) {
     const selectElement = browser.element('select[name=selectomatic]');
 
-    console.log(selectElement);
-
     await browser
       .url('https://www.selenium.dev/selenium/web/formPage.html')
       .perform(async function() {

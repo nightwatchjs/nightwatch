@@ -8,14 +8,27 @@ describe('Shadow Root example test', function() {
       .navigateTo('https://mdn.github.io/web-components-examples/popup-info-box-web-component/')
       .waitForElementVisible('form');
 
-    const shadowRootEl = await browser.getShadowRoot('popup-info');
-    const infoElement = await shadowRootEl.find('.info');
+    // const shadowId = browser.element('popup-info').getId().map(val => {
+    //   return val + 'shadow';
+    // }).assert.contains('shadow');
+    // console.log('!!! shadowId', shadowId)
 
-    await expect(infoElement.property('innerHTML'))
+    //const els = browser.element.findAll('form');
+
+    //await expect(shadowId).to.be.a('string').and.to.include('shadow')
+
+    const shadowRootEl = browser.element('popup-info').getShadowRoot();
+    const infoElement = shadowRootEl.find('.info').property('innerHTML');
+
+    //console.log('!!! infoElement', infoElement.assert)
+
+    expect(infoElement)
       .to.be.a('string')
       .and.to.include('card validation code');
 
     const iconElement = await shadowRootEl.find('.icon');
+    console.log('!!! iconElement', iconElement)
+
     const firstElement = await browser.getFirstElementChild(iconElement);
 
     await expect.element(firstElement).to.be.an('img');
