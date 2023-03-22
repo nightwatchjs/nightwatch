@@ -1,21 +1,20 @@
 const assert = require('assert');
-const nock = require('nock');
-const Nocks = require('../../../../lib/nocks.js');
 const CommandGlobals = require('../../../../lib/globals/commands-w3c.js');
+const nock = require('nock');
 
 describe('accessibility commands', function () {
   before(function (done) {
-    Nocks.cleanAll();
     try {
-      Nocks.enable();
-    } catch (e) {
-      // ignore
+      nock.activate();
+    } catch (e){
+      //ignore
     }
     CommandGlobals.beforeEach.call(this, done);
   });
 
   after(function (done) {
-    Nocks.disable();
+    nock.cleanAll();
+    nock.restore();
     CommandGlobals.afterEach.call(this, done);
   });
 
