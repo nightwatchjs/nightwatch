@@ -24,8 +24,9 @@ module.exports = {
     client.end();
   },
 
-  afterEach: function(client) {
+  afterEach: function(client, cb) {
     client.globals.calls++;
+    client.end(cb);
   },
 
   after: function(client) {
