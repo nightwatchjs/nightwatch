@@ -21,8 +21,6 @@ describe('.findByText() commands', function () {
     const helpBtnWebElement = await helpBtnElement;
     assert.strictEqual(helpBtnWebElement instanceof WebElement, true);
     assert.strictEqual(await helpBtnWebElement.getId(), '1');
-
-    await this.client.start();
   });
 
   it('test .element().get()', async function() {
@@ -33,8 +31,6 @@ describe('.findByText() commands', function () {
     const helpBtnWebElement = await helpBtnElement;
     assert.strictEqual(helpBtnWebElement instanceof WebElement, true);
     assert.strictEqual(await helpBtnWebElement.getId(), '1');
-
-    await this.client.start();
   });
 
   it('test .element().findElement()', async function() {
@@ -45,8 +41,6 @@ describe('.findByText() commands', function () {
     const helpBtnWebElement = await helpBtnElement;
     assert.strictEqual(helpBtnWebElement instanceof WebElement, true);
     assert.strictEqual(await helpBtnWebElement.getId(), '1');
-
-    await this.client.start();
   });
 
   it('test .element().find(selectorObject)', async function() {
@@ -70,7 +64,15 @@ describe('.findByText() commands', function () {
     const helpBtnWebElement = await helpBtnElement;
     assert.strictEqual(helpBtnWebElement instanceof WebElement, true);
     assert.strictEqual(await helpBtnWebElement.getId(), '2');
+  });
 
-    await this.client.start();
+  it('test .element.find()', async function() {
+    const signupElement = this.client.api.element.find('#signupSection');
+    assert.strictEqual(signupElement instanceof Element, true);
+    assert.strictEqual(await signupElement.getId(), '0');
+
+    const signupWebElement = await signupElement;
+    assert.strictEqual(signupWebElement instanceof WebElement, true);
+    assert.strictEqual(await signupWebElement.getId(), '0');
   });
 });
