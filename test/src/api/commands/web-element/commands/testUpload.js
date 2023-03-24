@@ -4,7 +4,7 @@ const MockServer  = require('../../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../../lib/globals/commands-w3c.js');
 const Element = require('../../../../../../lib/element/index.js');
 
-describe('element().sendKeys() command', function () {
+describe('element().upload() command', function () {
   before(function (done) {
     CommandGlobals.beforeEach.call(this, done);
   });
@@ -13,13 +13,13 @@ describe('element().sendKeys() command', function () {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('test .element().sendKeys()', async function() {
+  it('test .element().upload()', async function() {
     MockServer
       .addMock({
         url: '/session/13521-10219-202/elements',
         postdata: {
           using: 'css selector',
-          value: 'input[name=q]'
+          value: '#choosefile'
         },
         method: 'POST',
         response: JSON.stringify({
@@ -30,9 +30,9 @@ describe('element().sendKeys() command', function () {
         url: '/session/13521-10219-202/element/9/value',
         method: 'POST',
         postdata: {
-          text: 'nightwatch',
+          text: '/file.js',
           value: [
-            'n', 'i', 'g', 'h', 't', 'w', 'a', 't', 'c', 'h'
+            '/', 'f', 'i', 'l', 'e', '.', 'j', 's'
           ]
         },
         response: JSON.stringify({
@@ -40,7 +40,7 @@ describe('element().sendKeys() command', function () {
         })
       }, true);
 
-    const resultPromise = this.client.api.element('input[name=q]').sendKeys('nightwatch');
+    const resultPromise = this.client.api.element('#choosefile').upload('/file.js');
     // neither an instance of Element or Promise, but an instance of ScopedWebElement.
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
@@ -51,13 +51,13 @@ describe('element().sendKeys() command', function () {
     assert.strictEqual(await result.getId(), '9');
   });
 
-  it('test .element().find().sendKeys()', async function() {
+  it('test .element().find().upload()', async function() {
     MockServer
       .addMock({
         url: '/session/13521-10219-202/element/0/elements',
         postdata: {
           using: 'css selector',
-          value: 'input[name=q]'
+          value: '#choosefile'
         },
         method: 'POST',
         response: JSON.stringify({
@@ -68,9 +68,9 @@ describe('element().sendKeys() command', function () {
         url: '/session/13521-10219-202/element/9/value',
         method: 'POST',
         postdata: {
-          text: 'nightwatch',
+          text: '/file.js',
           value: [
-            'n', 'i', 'g', 'h', 't', 'w', 'a', 't', 'c', 'h'
+            '/', 'f', 'i', 'l', 'e', '.', 'j', 's'
           ]
         },
         response: JSON.stringify({
@@ -78,7 +78,7 @@ describe('element().sendKeys() command', function () {
         })
       }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').find('input[name=q]').sendKeys('nightwatch');
+    const resultPromise = this.client.api.element('#signupSection').find('#choosefile').upload('/file.js');
     // neither an instance of Element or Promise, but an instance of ScopedWebElement.
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
@@ -89,13 +89,13 @@ describe('element().sendKeys() command', function () {
     assert.strictEqual(await result.getId(), '9');
   });
 
-  it('test .element.find().sendKeys()', async function() {
+  it('test .element.find().upload()', async function() {
     MockServer
       .addMock({
         url: '/session/13521-10219-202/element/0/elements',
         postdata: {
           using: 'css selector',
-          value: 'input[name=q]'
+          value: '#choosefile'
         },
         method: 'POST',
         response: JSON.stringify({
@@ -106,9 +106,9 @@ describe('element().sendKeys() command', function () {
         url: '/session/13521-10219-202/element/9/value',
         method: 'POST',
         postdata: {
-          text: 'nightwatch',
+          text: '/file.js',
           value: [
-            'n', 'i', 'g', 'h', 't', 'w', 'a', 't', 'c', 'h'
+            '/', 'f', 'i', 'l', 'e', '.', 'j', 's'
           ]
         },
         response: JSON.stringify({
@@ -116,7 +116,7 @@ describe('element().sendKeys() command', function () {
         })
       }, true);
 
-    const resultPromise = this.client.api.element.find('#signupSection').find('input[name=q]').sendKeys('nightwatch');
+    const resultPromise = this.client.api.element.find('#signupSection').find('#choosefile').upload('/file.js');
     // neither an instance of Element or Promise, but an instance of ScopedWebElement.
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
