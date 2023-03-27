@@ -57,7 +57,6 @@ describe('.findByAltText() commands', function () {
     }, true, true);
 
     const submitBtnElement = this.client.api.element('#signupSection').findByAltText('Email', {exact: false});
-    console.log(submitBtnElement);
     assert.strictEqual(submitBtnElement instanceof Element, true);
     assert.strictEqual(await submitBtnElement.getId(), '8');
     const submitBtnWebElement = await submitBtnElement;
