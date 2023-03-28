@@ -25,11 +25,16 @@ describe('element().getAriaRole() command', function () {
     const resultPromise = this.client.api.element('#signupSection').getAriaRole();
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
-    assert.strictEqual(resultPromise instanceof Promise, true);
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
 
     const result = await resultPromise;
     assert.strictEqual(result instanceof WebElement, false);
     assert.strictEqual(result, 'signupSection');
+
+    const resultValue = await resultPromise.value;
+    assert.strictEqual(resultValue, 'signupSection');
   });
 
   it('test .element().find().getAriaRole()', async function() {
@@ -44,11 +49,16 @@ describe('element().getAriaRole() command', function () {
     const resultPromise = this.client.api.element('#signupSection').find('#helpBtn').getAriaRole();
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
-    assert.strictEqual(resultPromise instanceof Promise, true);
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
 
     const result = await resultPromise;
     assert.strictEqual(result instanceof WebElement, false);
     assert.strictEqual(result, 'button');
+
+    const resultValue = await resultPromise.value;
+    assert.strictEqual(resultValue, 'button');
   });
 
   it('test .element.find().getAriaRole()', async function() {
@@ -63,10 +73,15 @@ describe('element().getAriaRole() command', function () {
     const resultPromise = this.client.api.element.find('#signupSection').getAriaRole();
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
-    assert.strictEqual(resultPromise instanceof Promise, true);
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
 
     const result = await resultPromise;
     assert.strictEqual(result instanceof WebElement, false);
     assert.strictEqual(result, 'signupSection');
+
+    const resultValue = await resultPromise.value;
+    assert.strictEqual(resultValue, 'signupSection');
   });
 });

@@ -25,11 +25,16 @@ describe('element().getProperty() command', function () {
     const resultPromise = this.client.api.element('#signupSection').getProperty('classList');
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
-    assert.strictEqual(resultPromise instanceof Promise, true);
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
 
     const result = await resultPromise;
     assert.strictEqual(result instanceof WebElement, false);
     assert.deepStrictEqual(result, ['.signup']);
+
+    const resultValue = await resultPromise.value;
+    assert.deepStrictEqual(resultValue, ['.signup']);
   });
 
   it('test .element().property()', async function() {
@@ -44,11 +49,16 @@ describe('element().getProperty() command', function () {
     const resultPromise = this.client.api.element('#signupSection').property('classList');
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
-    assert.strictEqual(resultPromise instanceof Promise, true);
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
 
     const result = await resultPromise;
     assert.strictEqual(result instanceof WebElement, false);
     assert.deepStrictEqual(result, ['.signup']);
+
+    const resultValue = await resultPromise.value;
+    assert.deepStrictEqual(resultValue, ['.signup']);
   });
 
   it('test .element().find().getProperty()', async function() {
@@ -63,11 +73,16 @@ describe('element().getProperty() command', function () {
     const resultPromise = this.client.api.element('#signupSection').find('#helpBtn').getProperty('classList');
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
-    assert.strictEqual(resultPromise instanceof Promise, true);
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
 
     const result = await resultPromise;
     assert.strictEqual(result instanceof WebElement, false);
     assert.deepStrictEqual(result, ['.btn']);
+
+    const resultValue = await resultPromise.value;
+    assert.deepStrictEqual(resultValue, ['.btn']);
   });
 
   it('test .element.find().getProperty()', async function() {
@@ -82,10 +97,15 @@ describe('element().getProperty() command', function () {
     const resultPromise = this.client.api.element.find('#signupSection').getProperty('classList');
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
-    assert.strictEqual(resultPromise instanceof Promise, true);
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
 
     const result = await resultPromise;
     assert.strictEqual(result instanceof WebElement, false);
     assert.deepStrictEqual(result, ['.signup']);
+
+    const resultValue = await resultPromise.value;
+    assert.deepStrictEqual(resultValue, ['.signup']);
   });
 });

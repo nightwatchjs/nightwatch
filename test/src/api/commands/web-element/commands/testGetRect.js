@@ -25,11 +25,16 @@ describe('element().getRect() command', function () {
     const resultPromise = this.client.api.element('#signupSection').getRect();
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
-    assert.strictEqual(resultPromise instanceof Promise, true);
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
 
     const result = await resultPromise;
     assert.strictEqual(result instanceof WebElement, false);
     assert.deepStrictEqual(result, {height: 34, width: 443, x: 356, y: 381.5});
+
+    const resultValue = await resultPromise.value;
+    assert.deepStrictEqual(resultValue, {height: 34, width: 443, x: 356, y: 381.5});
   });
 
   it('test .element().getSize()', async function() {
@@ -44,11 +49,16 @@ describe('element().getRect() command', function () {
     const resultPromise = this.client.api.element('#signupSection').getSize();
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
-    assert.strictEqual(resultPromise instanceof Promise, true);
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
 
     const result = await resultPromise;
     assert.strictEqual(result instanceof WebElement, false);
     assert.deepStrictEqual(result, {height: 34, width: 443, x: 356, y: 381.5});
+
+    const resultValue = await resultPromise.value;
+    assert.deepStrictEqual(resultValue, {height: 34, width: 443, x: 356, y: 381.5});
   });
 
   it('test .element().getLocation()', async function() {
@@ -63,11 +73,16 @@ describe('element().getRect() command', function () {
     const resultPromise = this.client.api.element('#signupSection').getLocation();
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
-    assert.strictEqual(resultPromise instanceof Promise, true);
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
 
     const result = await resultPromise;
     assert.strictEqual(result instanceof WebElement, false);
     assert.deepStrictEqual(result, {height: 34, width: 443, x: 356, y: 381.5});
+
+    const resultValue = await resultPromise.value;
+    assert.deepStrictEqual(resultValue, {height: 34, width: 443, x: 356, y: 381.5});
   });
 
   it('test .element().find().getRect()', async function() {
@@ -82,11 +97,16 @@ describe('element().getRect() command', function () {
     const resultPromise = this.client.api.element('#signupSection').find('#helpBtn').getRect();
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
-    assert.strictEqual(resultPromise instanceof Promise, true);
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
 
     const result = await resultPromise;
     assert.strictEqual(result instanceof WebElement, false);
     assert.deepStrictEqual(result, {height: 34, width: 443, x: 356, y: 381.5});
+
+    const resultValue = await resultPromise.value;
+    assert.deepStrictEqual(resultValue, {height: 34, width: 443, x: 356, y: 381.5});
   });
 
   it('test .element.find().getRect()', async function() {
@@ -101,10 +121,15 @@ describe('element().getRect() command', function () {
     const resultPromise = this.client.api.element.find('#signupSection').getRect();
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
-    assert.strictEqual(resultPromise instanceof Promise, true);
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
 
     const result = await resultPromise;
     assert.strictEqual(result instanceof WebElement, false);
     assert.deepStrictEqual(result, {height: 34, width: 443, x: 356, y: 381.5});
+
+    const resultValue = await resultPromise.value;
+    assert.deepStrictEqual(resultValue, {height: 34, width: 443, x: 356, y: 381.5});
   });
 });

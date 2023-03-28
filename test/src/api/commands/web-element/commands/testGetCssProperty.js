@@ -25,11 +25,17 @@ describe('element().getCssProperty() command', function () {
     const resultPromise = this.client.api.element('#signupSection').getCssProperty('height');
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
-    assert.strictEqual(resultPromise instanceof Promise, true);
+    
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+
 
     const result = await resultPromise;
     assert.strictEqual(result instanceof WebElement, false);
     assert.strictEqual(result, '150px');
+
+    const resultValue = await resultPromise.value;
+    assert.strictEqual(resultValue, '150px');
   });
 
   it('test .element().css()', async function() {
@@ -44,11 +50,16 @@ describe('element().getCssProperty() command', function () {
     const resultPromise = this.client.api.element('#signupSection').css('height');
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
-    assert.strictEqual(resultPromise instanceof Promise, true);
+    
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
 
     const result = await resultPromise;
     assert.strictEqual(result instanceof WebElement, false);
     assert.strictEqual(result, '150px');
+
+    const resultValue = await resultPromise.value;
+    assert.strictEqual(resultValue, '150px');
   });
 
   it('test .element().find().getCssProperty()', async function() {
@@ -63,11 +74,16 @@ describe('element().getCssProperty() command', function () {
     const resultPromise = this.client.api.element('#signupSection').find('#helpBtn').getCssProperty('height');
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
-    assert.strictEqual(resultPromise instanceof Promise, true);
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
 
     const result = await resultPromise;
     assert.strictEqual(result instanceof WebElement, false);
     assert.strictEqual(result, '34px');
+
+    const resultValue = await resultPromise.value;
+    assert.strictEqual(resultValue, '34px');
   });
 
   it('test .element.find().getCssProperty()', async function() {
@@ -82,10 +98,15 @@ describe('element().getCssProperty() command', function () {
     const resultPromise = this.client.api.element.find('#signupSection').getCssProperty('height');
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
-    assert.strictEqual(resultPromise instanceof Promise, true);
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
 
     const result = await resultPromise;
     assert.strictEqual(result instanceof WebElement, false);
     assert.strictEqual(result, '150px');
+
+    const resultValue = await resultPromise.value;
+    assert.strictEqual(resultValue, '150px');
   });
 });
