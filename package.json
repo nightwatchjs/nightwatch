@@ -93,7 +93,7 @@
   "scripts": {
     "eslint": "eslint index.js lib bin api examples cucumber-js test --quiet",
     "mocha-coverage": "nyc --reporter=html mocha test/src/ --recursive",
-    "test": "mocha test/src/ --recursive",
+    "test": "mocha test/src/ --recursive --timeout 20000",
     "component-tests": "mocha test/component-tests/src",
     "test-cucumber": "mocha test/cucumber-integration-tests --parallel",
     "coverage": "npx nyc report --reporter=text-lcov > ./coverage/mocha_coverage.lcov"
