@@ -22,8 +22,8 @@ describe('Shadow Root example test', function() {
     // const formCount = await browser.element.findAll('form').count();
     // expect(formCount).to.equal(1);
     //
-    const elInput = await browser.element.find('form').find('input');
-    console.log('!!! elInput', elInput);
+    // const elInput = await browser.element.find('form').find('input');
+    // console.log('!!! elInput', elInput);
     //expect(elInput).to.be.an('input');
 
 
@@ -33,8 +33,8 @@ describe('Shadow Root example test', function() {
     //
     // //await expect(shadowId).to.be.a('string').and.to.include('shadow')
     //
-    // const shadowRootEl = browser.element('popup-info').getShadowRoot();
-    // const infoElement = shadowRootEl.find('.info').property('innerHTML');
+    const shadowRootEl = await browser.element('popup-info').getShadowRoot();
+    const infoElement = shadowRootEl.find('.info').property('innerHTML');
     //
     // //console.log('!!! infoElement', infoElement.assert)
     //

@@ -4,29 +4,24 @@ describe('queries tests', function() {
     browser.navigateTo('http://localhost:13370');
   });
 
-  it.skip('getFirstElementChild', async function({element}) {
-    const firstChild = await element('#nested').getFirstElementChild();
-
-    browser.execute(function(el) {
-      console.log('firstChild', el);
-    }, [firstChild]);
-
-    const lastChild = await element('#nested').getLastElementChild();
-    browser.execute(function(el) {
-      console.log('lastChild', el);
-    }, [lastChild]);
-
-    const nextElementSibling = await element('#nested').getNextElementSibling();
-    browser.execute(function(el) {
-      console.log('nextElementSibling', el);
-    }, [nextElementSibling]);
-
-    const previousElementSibling = await element('#nested').getPreviusElementSibling();
-    browser.execute(function(el) {
-      console.log('previousElementSibling', el);
-    }, [previousElementSibling]).debug();
-
+  it('getFirstElementChild', async function({element}) {
+    const firstChild = await element.find('#nested').getFirstElementChild().inspectInDevTools('firstChild');
     await expect(firstChild).to.be.an('h3');
+
+    const lastChild = await element('#nested').getLastElementChild().inspectInDevTools('lastChild');
+    const nextElementSibling = await element('#nested').getNextElementSibling().inspectInDevTools('nextElementSibling');
+    const previousElementSibling = await element('#nested').inspectInDevTools('previousElementSibling');
+
+  });
+
+  it('assert.hasAttribute', async function({element}) {
+    await element.findAll('section').nth(1).find('button').assert.hasAttribute('role');
+  });
+
+  it('custom element assertion', async function({element}) {
+    await element.findAll('section').nth(1).find('button').assert.customScript(function(element, content) {
+      return element.innerHTML === content;
+    }, ['Unique Button Text'], 'Custom assertion message: button has correct text');
   });
 
   it('findByRole', async function({element}) {
@@ -35,6 +30,10 @@ describe('queries tests', function() {
 
     await browser.click(button);
     await expect(button).text.to.equal('Button Clicked');
+  });
+
+  it('findAll', async function({element}) {
+    await element.findAll('section').count().assert.equals(9);
   });
 
   it('Button click works', async function(browser) {
@@ -48,8 +47,7 @@ describe('queries tests', function() {
   });
 
   it('findByPlaceholderText', async function ({element, actions}) {
-
-    const input = await element.findByPlaceholderText('Placeholder Text');
+    const input = await element.findByPlaceholderText('Placeholder Text').assert.visible('Input is visible');
 
     await expect(input).property('value').not.to.equal('Hello Placeholder');
 
