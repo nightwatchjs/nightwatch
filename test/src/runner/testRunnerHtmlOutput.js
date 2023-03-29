@@ -50,18 +50,18 @@ describe('testRunnerHTMLOutput', function() {
 
     assert.strictEqual(Object.keys(environments).length, 2);
     assert.ok(metadata.date);
-    assert.strictEqual(stats.total, 4);
-    assert.strictEqual(stats.failed, 2);
-    assert.strictEqual(stats.passed, 2);
+    assert.strictEqual(stats.total, 6);
+    assert.strictEqual(stats.failed, 3);
+    assert.strictEqual(stats.passed, 3);
 
     const chromeEnv = environments['chrome'];
     const firefoxEnv = environments['firefox'];
 
     assert.ok(chromeEnv);
-    assert.strictEqual(chromeEnv.stats.passed, 1);
-    assert.strictEqual(chromeEnv.stats.failed, 1);
+    assert.strictEqual(chromeEnv.stats.passed, 2);
+    assert.strictEqual(chromeEnv.stats.failed, 2);
     assert.strictEqual(chromeEnv.stats.skipped, 0);
-    assert.strictEqual(chromeEnv.stats.time, 13738);
+    assert.strictEqual(chromeEnv.stats.time, 27476);
     assert.strictEqual(chromeEnv.metadata.platformName, 'mac os x');
     assert.strictEqual(chromeEnv.metadata.browserName, 'chrome');
     assert.strictEqual(chromeEnv.metadata.browserVersion, '108.0.5359.124');
@@ -81,7 +81,7 @@ describe('testRunnerHTMLOutput', function() {
     
     assert.strictEqual(stats.time, chromeEnv.stats.time + firefoxEnv.stats.time);
 
-    assert.strictEqual(Object.keys(chromeEnv.modules).length, 1);
+    assert.strictEqual(Object.keys(chromeEnv.modules).length, 2);
     assert.strictEqual(Object.keys(chromeEnv.modules['ecosia'].completedSections).length, 6);
     assert.strictEqual(chromeEnv.modules['ecosia'].seleniumLog, '/Users/binayakghosh/projects/nightwatch-copy/logs/ecosia_chromedriver.log');
 
