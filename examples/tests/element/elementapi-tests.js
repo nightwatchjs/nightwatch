@@ -11,7 +11,6 @@ describe('queries tests', function() {
     const lastChild = await element('#nested').getLastElementChild().inspectInDevTools('lastChild');
     const nextElementSibling = await element('#nested').getNextElementSibling().inspectInDevTools('nextElementSibling');
     const previousElementSibling = await element('#nested').inspectInDevTools('previousElementSibling');
-
   });
 
   it('assert.hasAttribute', async function({element}) {
