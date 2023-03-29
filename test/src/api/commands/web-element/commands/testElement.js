@@ -18,7 +18,7 @@ describe('.element() commands', function () {
     assert.strictEqual(await signupElement.getId(), '0');
     assert.strictEqual(typeof signupElement.find, 'function');
     assert.strictEqual(typeof signupElement.findByRole, 'function');
-    // assert.strictEqual(typeof signupElement.assert, 'object');
+    assert.strictEqual(typeof signupElement.assert, 'object');
 
     const signupWebElement = await signupElement;
     assert.strictEqual(signupWebElement instanceof WebElement, true);
