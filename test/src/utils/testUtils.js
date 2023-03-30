@@ -207,7 +207,7 @@ describe('test Utils', function() {
   });
 
   it('test getModuleKey', function() {
-    const srcFolderPath = path.join(__dirname);
+    const srcFolderPath = path.join(__dirname, '../../sampletests/before-after');
     const {statSync, readdirSync} = require('fs');
     const getSrcTestsPaths = (testPath)=>{
       let fullPaths = [];
@@ -221,11 +221,11 @@ describe('test Utils', function() {
 
       return fullPaths;
     };
-    const currentTestPath = path.join(__dirname, 'testUtils.js');
+    const currentTestPath = path.join(srcFolderPath, 'sampleSingleTest.js');
     const testFiles = getSrcTestsPaths(srcFolderPath);
     const fullPaths = testFiles.map(file=>({env: 'default', module: file}));
-    assert.equal(Utils.getModuleKey(currentTestPath, testFiles, fullPaths), 'testUtils.js');
-    assert.equal(Utils.getModuleKey(currentTestPath, ['test/src/utils', 'test/src/runner'], fullPaths), path.join('utils', 'testUtils.js'));
+    assert.equal(Utils.getModuleKey(currentTestPath, testFiles, fullPaths), 'sampleSingleTest.js');
+    assert.equal(Utils.getModuleKey(currentTestPath, ['test/sampletests/simple', 'test/sampletests/before-after'], fullPaths), path.join('before-after', 'sampleSingleTest.js'));
   });
 
 
