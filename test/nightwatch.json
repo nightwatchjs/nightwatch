@@ -9,7 +9,10 @@
   "test_settings": {
     "default" : {
       "filter" : "**/*.js",
-      "compatible_testcase_support" : true
+      "compatible_testcase_support" : true,
+      "globals": {
+        "asyncHookTimeout" : 15000
+      }
     }
   }
 }
