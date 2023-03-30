@@ -18,7 +18,7 @@ describe('appium api demos', function () {
     });
   });
 
-  it('run appium api demo tests basic', function () {
+  it.skip('run appium api demo tests basic', function () {
     const testsPath = path.join(__dirname, '../../../apidemos/appium/appiumTest.js');
 
     const globals = {

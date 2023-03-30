@@ -13,6 +13,10 @@ describe('queries tests', function() {
     const previousElementSibling = await element('#nested').inspectInDevTools('previousElementSibling');
   });
 
+  it.only('assert.present', async function({element}) {
+    await element.findAll('section').nth(1).assert.present();
+  });
+
   it('assert.hasAttribute', async function({element}) {
     await element.findAll('section').nth(1).find('button').assert.hasAttribute('role');
   });

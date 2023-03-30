@@ -22,6 +22,7 @@ describe('test protocol element selectors', function() {
       globals: {
         abortOnAssertionFailure: true
       },
+      backwards_compatibility_mode: true,
       output: false,
       silent: false
     });
