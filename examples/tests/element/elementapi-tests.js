@@ -13,7 +13,7 @@ describe('queries tests', function() {
     const previousElementSibling = await element('#nested').inspectInDevTools('previousElementSibling');
   });
 
-  it.only('assert.present', async function({element}) {
+  it('assert.present', async function({element}) {
     await element.findAll('section').nth(1).assert.present();
   });
 
