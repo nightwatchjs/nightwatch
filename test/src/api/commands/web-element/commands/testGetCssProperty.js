@@ -109,4 +109,29 @@ describe('element().getCssProperty() command', function () {
     const resultValue = await resultPromise.value;
     assert.strictEqual(resultValue, '150px');
   });
+
+  it('test .element().getCssProperty() assert', async function() {
+    MockServer.addMock({
+      url: '/session/13521-10219-202/element/0/css/height',
+      method: 'GET',
+      response: JSON.stringify({
+        value: '150px'
+      })
+    }, true);
+
+    const resultPromise = this.client.api.element('#signupSection').getCssProperty('height');
+    assert.strictEqual(resultPromise instanceof Element, false);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+    
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+
+    assert.strictEqual(await resultPromise.assert.equals('150px'), '150px');
+    assert.strictEqual(await resultPromise.assert.contains('150'), '150px');
+    assert.strictEqual(await resultPromise.assert.matches(/150[a-z]{2}/), '150px');
+
+    assert.strictEqual(await resultPromise.assert.not.equals('150x'), '150px');
+    assert.strictEqual(await resultPromise.assert.not.contains('150x'), '150px');
+    assert.strictEqual(await resultPromise.assert.not.matches(/150[a-z]{2}x/), '150px');
+  });
 });

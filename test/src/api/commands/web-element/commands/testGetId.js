@@ -59,4 +59,21 @@ describe('element().getId() command', function () {
     const resultValue = await resultPromise.value;
     assert.strictEqual(resultValue, '0');
   });
+
+  it('test .element().getId() assert', async function() {
+    const resultPromise = this.client.api.element('#signupSection').getId();
+    assert.strictEqual(resultPromise instanceof Element, false);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+
+    assert.strictEqual(await resultPromise.assert.equals('0'), '0');
+    assert.strictEqual(await resultPromise.assert.contains('0'), '0');
+    assert.strictEqual(await resultPromise.assert.matches(/[0-9]{1}/), '0');
+
+    assert.strictEqual(await resultPromise.assert.not.equals('1'), '0');
+    assert.strictEqual(await resultPromise.assert.not.contains('1'), '0');
+    assert.strictEqual(await resultPromise.assert.not.matches(/[0-1]{2}x/), '0');
+  });
 });

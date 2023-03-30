@@ -84,4 +84,29 @@ describe('element().getAriaRole() command', function () {
     const resultValue = await resultPromise.value;
     assert.strictEqual(resultValue, 'signupSection');
   });
+
+  it('test .element().getAriaRole() assert', async function() {
+    MockServer.addMock({
+      url: '/session/13521-10219-202/element/0/computedrole',
+      method: 'GET',
+      response: JSON.stringify({
+        value: 'signupSection'
+      })
+    }, true);
+
+    const resultPromise = this.client.api.element('#signupSection').getAriaRole();
+    assert.strictEqual(resultPromise instanceof Element, false);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+
+    assert.strictEqual(await resultPromise.assert.equals('signupSection'), 'signupSection');
+    assert.strictEqual(await resultPromise.assert.contains('signup'), 'signupSection');
+    assert.strictEqual(await resultPromise.assert.matches(/si[a-z]{2}upS[a-z]{6}/), 'signupSection');
+
+    assert.strictEqual(await resultPromise.assert.not.equals('Signupx'), 'signupSection');
+    assert.strictEqual(await resultPromise.assert.not.contains('Signupx'), 'signupSection');
+    assert.strictEqual(await resultPromise.assert.not.matches(/Si[a-z]{2}upx/), 'signupSection');
+  });
 });

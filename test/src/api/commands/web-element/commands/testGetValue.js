@@ -84,4 +84,29 @@ describe('element().getValue() command', function () {
     const resultValue = await resultPromise.value;
     assert.strictEqual(resultValue, '');
   });
+
+  it('test .element().getValue() assert', async function() {
+    MockServer.addMock({
+      url: '/session/13521-10219-202/element/0/property/value',
+      method: 'GET',
+      response: JSON.stringify({
+        value: 'Signup'
+      })
+    }, true);
+
+    const resultPromise = this.client.api.element('#signupSection').getValue();
+    assert.strictEqual(resultPromise instanceof Element, false);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+
+    assert.strictEqual(await resultPromise.assert.equals('Signup'), 'Signup');
+    assert.strictEqual(await resultPromise.assert.contains('Sign'), 'Signup');
+    assert.strictEqual(await resultPromise.assert.matches(/Si[a-z]{2}up/), 'Signup');
+
+    assert.strictEqual(await resultPromise.assert.not.equals('Signupx'), 'Signup');
+    assert.strictEqual(await resultPromise.assert.not.contains('Signupx'), 'Signup');
+    assert.strictEqual(await resultPromise.assert.not.matches(/Si[a-z]{2}upx/), 'Signup');
+  });
 });
