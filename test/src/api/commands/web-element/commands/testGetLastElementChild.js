@@ -32,9 +32,8 @@ describe('element().getLastElementChild() command', function () {
 
     // TODO: getLastElementChild() should return WebElement instead of JSON_WEB_OBJECT.
     const result = await resultPromise;
-    assert.strictEqual(result instanceof WebElement, false);
-    assert.strictEqual(result['element-6066-11e4-a52e-4f735466cecf'], '9');
-    assert.strictEqual(result.getId(), '9');
+    assert.strictEqual(result instanceof WebElement, true);
+    assert.strictEqual(await result.getId(), '9');
   });
 
   it('test .element().find().getLastElementChild()', async function() {
@@ -55,9 +54,8 @@ describe('element().getLastElementChild() command', function () {
     assert.strictEqual(typeof resultPromise.getValue, 'function');
 
     const result = await resultPromise;
-    assert.strictEqual(result instanceof WebElement, false);
-    assert.strictEqual(result['element-6066-11e4-a52e-4f735466cecf'], '10');
-    assert.strictEqual(result.getId(), '10');
+    assert.strictEqual(result instanceof WebElement, true);
+    assert.strictEqual(await result.getId(), '10');
   });
 
   it('test .element.find().getLastElementChild()', async function() {
@@ -78,8 +76,7 @@ describe('element().getLastElementChild() command', function () {
     assert.strictEqual(typeof resultPromise.getValue, 'function');
 
     const result = await resultPromise;
-    assert.strictEqual(result instanceof WebElement, false);
-    assert.strictEqual(result['element-6066-11e4-a52e-4f735466cecf'], '9');
-    assert.strictEqual(result.getId(), '9');
+    assert.strictEqual(result instanceof WebElement, true);
+    assert.strictEqual(await result.getId(), '9');
   });
 });
