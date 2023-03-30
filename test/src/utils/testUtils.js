@@ -207,7 +207,7 @@ describe('test Utils', function() {
   });
 
   it('test getModuleKey', function() {
-    const srcFolderPath = path.join(__dirname, '..');
+    const srcFolderPath = path.join(__dirname);
     const {statSync, readdirSync} = require('fs');
     const getSrcTestsPaths = (testPath)=>{
       let fullPaths = [];
