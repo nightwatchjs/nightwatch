@@ -6,10 +6,11 @@ const NightwatchClient = common.require('index.js');
 
 describe('Test CLI Runner in Parallel', function () {
   const ChildProcess = common.require('runner/concurrency/child-process.js');
+  const WorkerProcess = common.require('runner/concurrency/worker-process.js');
   const RunnerBase = common.require('runner/runner.js');
 
   const filtered = Object.keys(require.cache).filter(item => (
-    item.endsWith('runner/runner.js') || item.endsWith('runner/concurrency/child-process.js')
+    item.endsWith('runner/runner.js') || item.endsWith('runner/concurrency/child-process.js') || item.endsWith('runner/concurrency/worker-process.js')
   ));
 
   if (filtered && filtered.length > 0) {
@@ -28,7 +29,7 @@ describe('Test CLI Runner in Parallel', function () {
     mockery.disable();
   });
 
-  it('test run geckodriver with concurrency', function () {
+  it('test run geckodriver with concurrency - child process', function () {
     class RunnerBaseMock extends RunnerBase {
       static readTestSource(settings, argv) {
         assert.strictEqual(settings.testWorkersEnabled, true);
@@ -57,6 +58,41 @@ describe('Test CLI Runner in Parallel', function () {
       env: 'default',
       config: path.join(__dirname, '../../../extra/withgeckodriver-concurrent.json')
     }, {
+      use_child_process: true,
+      silent: false,
+      output: false,
+      output_folder: false
+    });
+  });
+  
+  it('test run geckodriver with concurrency - worker threads', function () {
+    class RunnerBaseMock extends RunnerBase {
+      static readTestSource(settings, argv) {
+        assert.strictEqual(settings.testWorkersEnabled, true);
+
+        return [
+          'test_file_1.js',
+          'test_file_2.js'
+        ];
+      }
+    }
+
+    class WorkerProcessMock extends WorkerProcess {
+      addTask({colors}) {
+        assert.strictEqual(colors.length, 4);
+
+        return Promise.resolve(0);
+      }
+    }
+
+    mockery.registerMock('./worker-process.js', WorkerProcessMock);
+    mockery.registerMock('../runner.js', RunnerBaseMock);
+
+    return NightwatchClient.runTests({
+      env: 'default',
+      config: path.join(__dirname, '../../../extra/withgeckodriver-concurrent.json')
+    }, {
+      use_child_process: false,
       silent: false,
       output: false,
       output_folder: false
