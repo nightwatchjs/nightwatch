@@ -174,3 +174,45 @@ mocks:
     value: 
     - element-6066-11e4-a52e-4f735466cecf: 5cc459b8-36a8-3042-8b4a-258883ea642b
     - element-6066-11e4-a52e-4f735466cecf: 3783b042-7001-0740-a2c0-afdaac732e9f
+
+- url: '/session/13521-10219-202/elements'
+  postdata:
+    using: 'css selector'
+    value: 'html'
+  response:
+    value:
+    - element-6066-11e4-a52e-4f735466cecf: '00'
+
+- url: '/session/13521-10219-202/element/00/elements'
+  postdata:
+    using: 'css selector'
+    value: '#signupSection'
+  response:
+    value:
+    - element-6066-11e4-a52e-4f735466cecf: '0'
+
+- url: '/session/13521-10219-202/elements'
+  postdata:
+    using: 'css selector'
+    value: '#signupSection'
+  response:
+    value:
+    - element-6066-11e4-a52e-4f735466cecf: '0'
+
+- url: '/session/13521-10219-202/element/0/elements'
+  postdata:
+    using: 'css selector'
+    value: '#helpBtn'
+  response:
+    value:
+    - element-6066-11e4-a52e-4f735466cecf: '1'
+
+- url: '/session/13521-10219-202/element/0/elements'
+  postdata:
+    using: 'css selector'
+    value: '.btn'
+  response:
+    value:
+    - element-6066-11e4-a52e-4f735466cecf: '1'
+    - element-6066-11e4-a52e-4f735466cecf: '2'
+    - element-6066-11e4-a52e-4f735466cecf: '3'
