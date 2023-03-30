@@ -14,14 +14,14 @@ describe('getAttribute', function() {
 
   it('client.getAttribute()', function(done) {
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/element/0/attribute/class',
-      method: 'GET',
+      url: '/wd/hub/session/1352110219202/execute/sync',
+      method: 'POST',
       response: JSON.stringify({
         sessionId: '1352110219202',
         status: 0,
         value: 'test_class'
       })
-    });
+    }, true, true);
 
     this.client.api.getAttribute('#weblogin', 'class', function callback(result) {
       assert.strictEqual(result.value, 'test_class');
