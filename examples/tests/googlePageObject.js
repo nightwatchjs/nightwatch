@@ -10,6 +10,11 @@ describe('google search with consent form - page objects', function() {
   after(async (browser) => browser.quit());
 
   it.only('should complete the consent form', async function (browser) {
+
+    // const consentForm = consentPage.section.consentForm;
+    // const submitButton = consentForm.element('@submitButton');
+
+    const oldElement = await browser.element('css selector', 'body');
     const consentPresent = await homePage.isPresent('@consentModal');
 
     if (consentPresent) {
