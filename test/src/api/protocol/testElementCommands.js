@@ -6,7 +6,7 @@ describe('element actions', function () {
   describe('.element() with backwards compat mode', function() {
     before(function (done) {
       Globals.protocolBefore({
-        //backwards_compatibility_mode: true
+        backwards_compatibility_mode: true
       }, done);
     });
 

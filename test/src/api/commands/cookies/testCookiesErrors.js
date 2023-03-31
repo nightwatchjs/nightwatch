@@ -3,6 +3,7 @@ const common = require('../../../../common.js');
 const SimplifiedReporter = common.require('reporter/simplified.js');
 const Nightwatch = require('../../../../lib/nightwatch.js');
 const MockServer  = require('../../../../lib/mockserver.js');
+const Mocks = require('../../../../lib/command-mocks.js');
 
 describe('getCookiesErrors', function() {
   class Reporter extends SimplifiedReporter {
@@ -58,9 +59,16 @@ describe('getCookiesErrors', function() {
           },
           status: 13
         }
-      }, true);
+      }, true, true);
 
       client.api.getCookies(function callback(result) {
+        assert.ok(result.error instanceof Error);
+        assert.strictEqual(result.status, -1);
+        assert.strictEqual(result.error.message, 'test message');
+        assert.strictEqual(result.error.name, 'WebDriverError');
+      });
+
+      client.api.cookies.getAll(function callback(result) {
         assert.ok(result.error instanceof Error);
         assert.strictEqual(result.status, -1);
         assert.strictEqual(result.error.message, 'test message');
@@ -77,7 +85,7 @@ describe('getCookiesErrors', function() {
         });
       });
 
-      assert.strictEqual(client.reporter.errors, 1);
+      assert.strictEqual(client.reporter.errors, 2);
     });
   });
 
@@ -121,9 +129,16 @@ describe('getCookiesErrors', function() {
           },
           status: 13
         }
-      }, true);
+      }, true, true);
 
       client.api.getCookies(function callback(result) {
+        assert.ok(result.error instanceof Error);
+        assert.strictEqual(result.status, -1);
+        assert.strictEqual(result.error.message, 'test message');
+        assert.strictEqual(result.error.name, 'WebDriverError');
+      });
+
+      client.api.cookies.getAll(function callback(result) {
         assert.ok(result.error instanceof Error);
         assert.strictEqual(result.status, -1);
         assert.strictEqual(result.error.message, 'test message');
@@ -139,7 +154,7 @@ describe('getCookiesErrors', function() {
           }
         });
       });
-      assert.strictEqual(client.reporter.errors, 1);
+      assert.strictEqual(client.reporter.errors, 2);
     });
 
     it('client.getCookies() - socket hang up error', async function() {
@@ -162,15 +177,17 @@ describe('getCookiesErrors', function() {
         output: false,
         silent: false
       }, reporter);
-
-      MockServer.addMock({
-        url: '/wd/hub/session/1352110219202/cookie',
-        method: 'GET',
-        socketDelay: 200,
-        response: ''
-      }, null, true);
+      
+      Mocks.cookiesSocketDelay({times: 6}); // 3 retry attempts per call
 
       client.api.getCookies(function callback(result) {
+        assert.ok(result.error instanceof Error);
+        assert.strictEqual(result.status, -1);
+        assert.strictEqual(result.error.message, 'ECONNRESET socket hang up');
+        assert.strictEqual(result.error.code, 'ECONNRESET');
+      });
+
+      client.api.cookies.getAll(function callback(result) {
         assert.ok(result.error instanceof Error);
         assert.strictEqual(result.status, -1);
         assert.strictEqual(result.error.message, 'ECONNRESET socket hang up');

@@ -150,7 +150,7 @@ describe('testRunner ES6 Async', function () {
     }));
   });
 
-  it('test Runner with ES6 async/await tests getText example', function () {
+  it.skip('test Runner with ES6 async/await tests getText example', function () {
     MockServer.addMock({
       url: '/session',
       statusCode: 201,

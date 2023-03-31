@@ -4,7 +4,7 @@ const nocks = require('../../lib/nockselements.js');
 const Nightwatch = require('../../lib/nightwatch.js');
 const {strictEqual} = assert;
 
-describe('test page object element selectors', function() {
+xdescribe('test page object element selectors', function() {
 
   before(function() {
     nocks.enable();

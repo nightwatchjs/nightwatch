@@ -75,7 +75,7 @@ describe('orientation commands', function() {
       commandName: 'appium.setOrientation',
       args: ['TEST']
     }).catch(err => {
-      strictEqual(err.message, 'Error while running "setOrientation" command: Invalid screen orientation value specified. Accepted values are: LANDSCAPE, PORTRAIT');
+      strictEqual(err.message, 'Error while running "appium.setOrientation" command: Invalid screen orientation value specified. Accepted values are: LANDSCAPE, PORTRAIT');
 
       return true;
     }).then(result => assert.strictEqual(result, true));

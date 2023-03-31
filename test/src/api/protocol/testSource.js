@@ -1,20 +1,9 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
-const MockServer = require('../../../lib/mockserver.js');
 
 describe('client.source', function() {
-  before(function(done) {
+  before(function() {
     Globals.protocolBefore();
-    this.server = MockServer.init();
-    this.server.on('listening', () => {
-      done();
-    });
-  });
-
-  after(function(done) {
-    this.server.close(function() {
-      done();
-    });
   });
 
   it('client.source() get command', function() {
@@ -24,6 +13,8 @@ describe('client.source', function() {
       },
       commandName: 'source',
       args: []
+    }).then((result) => {
+      assert.strictEqual(result, '<html><body></body></html>');
     });
   });
 

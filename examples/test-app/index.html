@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>nightwatch-testing-library</title>
+  <style>
+    blockquote {
+      margin: 0;
+      border-left: 4px solid grey;
+      padding-left: 10px;
+      color: grey;
+    }
+
+    section {
+      padding: 10px;
+    }
+  </style>
+
+</head>
+
+<body>
+  <section>
+    <h2>getByPlaceholderText</h2>
+    <input type="text" placeholder="Placeholder Text" />
+  </section>
+  <section>
+    <h2>getByText</h2>
+    <button role="button" onclick="this.innerText = 'Button Clicked'">Unique Button Text</button>
+    <div id="nested">
+      <h3>getByText within</h3>
+      <button onclick="this.innerText = 'Button Clicked'">Button Text</button>
+    </div>
+    <div id="nested2" data-testid="nested2">
+      <h3>getByText within</h3>
+      <button onclick="this.innerText = 'Button Clicked'">Button Text</button>
+      <span>text only in 2nd nested</span>
+      <span>another thing only in 2nd nested</span>
+    </div>
+  </section>
+  <section>
+    <h2>getByLabelText</h2>
+    <label for="input-labelled-by-id">Label For Input Labelled By Id</label>
+    <input type="text" placeholder="Input Labelled By Id" id="input-labelled-by-id" />
+  </section>
+  <section>
+    <h2>getByAltText</h2>
+    <img src="data:image/png;base64," alt="Image Alt Text" onclick="this.style.border = '5px solid red'" />
+  </section>
+  <section>
+    <h2>getByTestId</h2>
+    <img data-testid="image-with-random-alt-tag" src="data:image/png;base64,"
+      onclick="this.style.border = '5px solid red'" />
+  </section>
+  <section>
+    <h2>configure</h2>
+    <img data-automation-id="image-with-random-alt-tag" src="data:image/png;base64,"
+      onclick="this.style.border = '5px solid red'" />
+  </section>
+  <section>
+    <h2>configure standalone</h2>
+
+    <img data-other-test-id="other-id" src="data:image/png;base64," onclick="this.style.border = '5px solid red'" />
+  </section>
+  <section>
+    <h2>getAllByText</h2>
+    <button onclick="this.innerText = ''">Thales of Miletus</button>
+    <button onclick="this.innerText = ''">Anaximander of Miletus</button>
+  </section>
+  <section>
+    <h2>navigate</h2>
+    <a href="page2.html">Go to Page 2</a>
+  </section>
+
+  <script>
+    document
+      .querySelector('[data-testid="image-with-random-alt-tag"]')
+      .setAttribute("alt", "Image Random Alt Text " + Math.random());
+  </script>
+</body>
+
+</html>

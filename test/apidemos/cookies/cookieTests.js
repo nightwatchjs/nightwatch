@@ -48,4 +48,33 @@ describe('Cookie api demo tests', function() {
     ]);
   });
 
+  test('browser.cookies.get(<name>)', async (browser) => {
+    await browser.assert.strictEqual(browser.globals.calls, 1);
+    await browser.assert.urlContains('//localhost');
+
+    const test_cookie = await browser.cookies.get('test_cookie');
+    assert.deepStrictEqual(test_cookie, {
+      name: 'test_cookie',
+      value: '123456',
+      path: '/',
+      domain: 'example.org',
+      secure: false
+    });
+
+    const other_cookie = await browser.cookies.get('other_cookie');
+    assert.strictEqual(other_cookie, null);
+  });
+
+  test('browser.cookies.getAll()', async (browser) => {
+    const cookies = await browser.cookies.getAll();
+    assert.deepStrictEqual(cookies, [
+      {
+        name: 'test_cookie',
+        value: '123456',
+        path: '/',
+        domain: 'example.org',
+        secure: false
+      }
+    ]);
+  });
 });
