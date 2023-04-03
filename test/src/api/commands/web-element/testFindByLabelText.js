@@ -5,7 +5,6 @@ const CommandGlobals = require('../../../../lib/globals/commands-w3c.js');
 const Element = require('../../../../../lib/element/index.js');
 
 describe('.findByLabelText() commands', function () {
-  this.timeout(10000000);
   before(function (done) {
     CommandGlobals.beforeEach.call(this, done);
   });
@@ -20,7 +19,7 @@ describe('.findByLabelText() commands', function () {
         url: '/session/13521-10219-202/element/0/elements',
         postdata: {
           using: 'xpath',
-          value: '//label[text()="Email"]'
+          value: './/label[text()="Email"]'
         },
         method: 'POST',
         response: JSON.stringify({
@@ -65,7 +64,7 @@ describe('.findByLabelText() commands', function () {
         url: '/session/13521-10219-202/element/0/elements',
         postdata: {
           using: 'xpath',
-          value: '//label[contains(text(),"Email")]'
+          value: './/label[contains(text(),"Email")]'
         },
         method: 'POST',
         response: JSON.stringify({
@@ -111,7 +110,7 @@ describe('.findByLabelText() commands', function () {
         url: '/session/13521-10219-202/element/0/elements',
         postdata: {
           using: 'xpath',
-          value: '//label[text()="Email"]'
+          value: './/label[text()="Email"]'
         },
         method: 'POST',
         response: JSON.stringify({
@@ -163,7 +162,7 @@ describe('.findByLabelText() commands', function () {
         url: '/session/13521-10219-202/element/0/elements',
         postdata: {
           using: 'xpath',
-          value: '//label[text()="Email"]'
+          value: './/label[text()="Email"]'
         },
         method: 'POST',
         response: JSON.stringify({
@@ -209,7 +208,7 @@ describe('.findByLabelText() commands', function () {
         url: '/session/13521-10219-202/element/0/elements',
         postdata: {
           using: 'xpath',
-          value: '//label[text()="Email"]'
+          value: './/label[text()="Email"]'
         },
         method: 'POST',
         response: JSON.stringify({
@@ -221,7 +220,7 @@ describe('.findByLabelText() commands', function () {
         url: '/session/13521-10219-202/element/0/elements',
         postdata: {
           using: 'xpath',
-          value: '//label[*[text() = "Email"]]'
+          value: './/label[*[text() = "Email"]]'
         },
         method: 'POST',
         response: JSON.stringify({
@@ -259,7 +258,7 @@ describe('.findByLabelText() commands', function () {
         url: '/session/13521-10219-202/element/0/elements',
         postdata: {
           using: 'xpath',
-          value: '//label[text()="Email"]'
+          value: './/label[text()="Email"]'
         },
         method: 'POST',
         response: JSON.stringify({
@@ -271,7 +270,7 @@ describe('.findByLabelText() commands', function () {
         url: '/session/13521-10219-202/element/0/elements',
         postdata: {
           using: 'xpath',
-          value: '//label[*[text() = "Email"]]'
+          value: './/label[*[text() = "Email"]]'
         },
         method: 'POST',
         response: JSON.stringify({
