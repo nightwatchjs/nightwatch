@@ -50,7 +50,7 @@ describe('waitForElementNotPresent', function () {
     this.client.api.waitForElementNotPresent('#weblogin', 15, false, commandCallback);
 
     return this.client.start(function (err) {
-      strictEqual(commandResult.status, 0);
+      strictEqual(commandResult.status, -1);
       strictEqual(commandInstance.abortOnFailure, false);
       strictEqual(commandInstance.elementId, null);
     });
@@ -61,16 +61,30 @@ describe('waitForElementNotPresent', function () {
     this.client.api.waitForElementNotPresent('#weblogin', 15, 10, false, commandCallback);
 
     this.client.api.waitForElementNotPresent('#weblogin', 15, 10, false, function(result, instance) {
-      strictEqual(result.status, 0);
+      strictEqual(result.status, -1);
       strictEqual(instance.rescheduleInterval, 10);
       strictEqual(instance.ms, 15);
       strictEqual(instance.abortOnFailure, false);
     });
 
     return this.client.start(function (err) {
-      strictEqual(commandResult.status, 0);
+      strictEqual(commandResult.status, -1);
       strictEqual(commandInstance.ms, 15);
       strictEqual(commandInstance.rescheduleInterval, 10);
     });
+  });
+
+  it('client.waitForElementNotPresent() success result should have correct status', function (done) {
+    this.client.api.globals.waitForConditionPollInterval = 10;
+
+    this.client.api.waitForElementNotPresent('#badElement', 15, 10, false, function(result, instance) {
+      strictEqual(result.status, 0);
+      strictEqual(result.error, undefined);
+      strictEqual(instance.rescheduleInterval, 10);
+      strictEqual(instance.ms, 15);
+      strictEqual(instance.abortOnFailure, false);
+    });
+
+    this.client.start(done);
   });
 });
