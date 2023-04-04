@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@nightwatch/chai": "5.0.2",
-    "@nightwatch/html-reporter-template": "0.1.5",
+    "@nightwatch/html-reporter-template": "0.2.0",
     "@nightwatch/nightwatch-inspector": "^1.0.1",
     "ansi-to-html": "0.7.2",
     "aria-query": "^5.1.3",
