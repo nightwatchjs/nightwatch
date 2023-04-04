@@ -113,7 +113,8 @@ describe('testReporter', function() {
           done();
         }
       },
-      output_folder: 'output'
+      output_folder: 'output',
+      reporter_options: {}
     });
 
     return reporter.writeReportToFile().then(function(result) {
@@ -385,7 +386,8 @@ describe('testReporter', function() {
           done();
         }
       },
-      output_folder: 'output'
+      output_folder: 'output',
+      reporter_options: {}
     });
 
     return reporter.writeReportToFile().then(function(result) {
