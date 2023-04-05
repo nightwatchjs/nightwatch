@@ -5,11 +5,11 @@ const CommandGlobals = require('../../../../lib/globals/commands-w3c.js');
 const Element = require('../../../../../lib/element/index.js');
 
 describe('.findByLabelText() commands', function () {
-  before(function (done) {
+  beforeEach(function (done) {
     CommandGlobals.beforeEach.call(this, done);
   });
 
-  after(function (done) {
+  afterEach(function (done) {
     CommandGlobals.afterEach.call(this, done);
   });
 
@@ -34,7 +34,7 @@ describe('.findByLabelText() commands', function () {
         })
       }, true)
       .addMock({
-        url: '/session/13521-10219-202/element/0/elements',
+        url: '/session/13521-10219-202/elements',
         postdata: {
           using: 'css selector',
           value: 'input[id="email"]'
@@ -51,7 +51,8 @@ describe('.findByLabelText() commands', function () {
     assert.strictEqual(typeof resultPromise.find, 'function');
     assert.strictEqual(typeof resultPromise.getValue, 'function');
     assert.strictEqual(typeof resultPromise.assert, 'object');
-    assert.strictEqual(await resultPromise.getId(), '2');
+    const id = await resultPromise.getId();
+    assert.strictEqual(id, '2');
 
     const result = await resultPromise;
     assert.strictEqual(result instanceof WebElement, true);
@@ -79,7 +80,7 @@ describe('.findByLabelText() commands', function () {
         })
       }, true)
       .addMock({
-        url: '/session/13521-10219-202/element/0/elements',
+        url: '/session/13521-10219-202/elements',
         postdata: {
           using: 'css selector',
           value: 'input[id="email"]'
@@ -103,8 +104,7 @@ describe('.findByLabelText() commands', function () {
     assert.strictEqual(await result.getId(), '2');
   });
 
-  // FIXME: unstable test
-  xit('test .findByLabelText() (findByAriaLabelled)', async function() {
+  it('test .findByLabelText() (findByAriaLabelled)', async function() {
     MockServer
       .addMock({
         url: '/session/13521-10219-202/element/0/elements',
@@ -116,7 +116,7 @@ describe('.findByLabelText() commands', function () {
         response: JSON.stringify({
           value: [{'element-6066-11e4-a52e-4f735466cecf': '1'}]
         })
-      }, true, true)
+      }, true)
       .addMock({
         url: '/session/13521-10219-202/execute/sync',
         method: 'POST',
@@ -132,7 +132,7 @@ describe('.findByLabelText() commands', function () {
         })
       }, true)
       .addMock({
-        url: '/session/13521-10219-202/element/0/elements',
+        url: '/session/13521-10219-202/elements',
         postdata: {
           using: 'css selector',
           value: 'input[aria-labelledby="email-label"]'
@@ -167,9 +167,8 @@ describe('.findByLabelText() commands', function () {
         method: 'POST',
         response: JSON.stringify({
           value: [{'element-6066-11e4-a52e-4f735466cecf': '1'}]
-        }),
-        times: 3
-      })
+        })
+      }, true)
       .addMock({
         url: '/session/13521-10219-202/execute/sync',
         method: 'POST',
@@ -178,7 +177,7 @@ describe('.findByLabelText() commands', function () {
         })
       }, true, true)
       .addMock({
-        url: '/session/13521-10219-202/element/1/elements',
+        url: '/session/13521-10219-202/element/1/element',
         postdata: {
           using: 'css selector',
           value: 'input'
@@ -220,7 +219,7 @@ describe('.findByLabelText() commands', function () {
         url: '/session/13521-10219-202/element/0/elements',
         postdata: {
           using: 'xpath',
-          value: './/label[*[text() = "Email"]]'
+          value: './/label[*[text()="Email"]]'
         },
         method: 'POST',
         response: JSON.stringify({
@@ -228,7 +227,7 @@ describe('.findByLabelText() commands', function () {
         })
       }, true)
       .addMock({
-        url: '/session/13521-10219-202/element/1/elements',
+        url: '/session/13521-10219-202/element/1/element',
         postdata: {
           using: 'css selector',
           value: 'input'
@@ -239,14 +238,20 @@ describe('.findByLabelText() commands', function () {
         })
       }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').findByLabelText('Email');
+    const resultPromise = this.client.api.element('#signupSection').findByLabelText('Email', {
+      timeout: 200,
+      retryInterval: 100
+    });
+
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(resultPromise instanceof Promise, true);
     assert.strictEqual(typeof resultPromise.find, 'function');
     assert.strictEqual(typeof resultPromise.getValue, 'function');
     assert.strictEqual(typeof resultPromise.assert, 'object');
-    assert.strictEqual(await resultPromise.getId(), '2');
 
+    const id = await resultPromise.getId();
+    assert.strictEqual(id, '2');
+    //
     const result = await resultPromise;
     assert.strictEqual(result instanceof WebElement, true);
     assert.strictEqual(await result.getId(), '2');
@@ -270,13 +275,14 @@ describe('.findByLabelText() commands', function () {
         url: '/session/13521-10219-202/element/0/elements',
         postdata: {
           using: 'xpath',
-          value: './/label[*[text() = "Email"]]'
+          value: './/label[*[text()="Email"]]'
         },
         method: 'POST',
         response: JSON.stringify({
           value: []
-        })
-      }, true)
+        }),
+        times: 3
+      })
       .addMock({
         url: '/session/13521-10219-202/element/0/elements',
         postdata: {
@@ -289,7 +295,10 @@ describe('.findByLabelText() commands', function () {
         })
       }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').findByLabelText('Email');
+    const resultPromise = this.client.api.element('#signupSection').findByLabelText('Email', {
+      timeout: 200,
+      retryInterval: 100
+    });
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(resultPromise instanceof Promise, true);
     assert.strictEqual(typeof resultPromise.find, 'function');
