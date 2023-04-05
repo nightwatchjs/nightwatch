@@ -18,7 +18,7 @@ describe('.findByText() commands', function () {
       url: '/session/13521-10219-202/element/0/elements',
       postdata: {
         using: 'xpath',
-        value: '//*[text()="Submit"]'
+        value: './/*[text()="Submit"]'
       },
       method: 'POST',
       response: JSON.stringify({
@@ -48,7 +48,7 @@ describe('.findByText() commands', function () {
       url: '/session/13521-10219-202/element/0/elements',
       postdata: {
         using: 'xpath',
-        value: '//*[contains(text(),"Submit")]'
+        value: './/*[contains(text(),"Submit")]'
       },
       method: 'POST',
       response: JSON.stringify({
