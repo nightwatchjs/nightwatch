@@ -4,10 +4,10 @@ const MockServer = require('../../lib/mockserver.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
 const {readFilePromise} = require('../../lib/utils.js');
-const mkpath = require('mkpath');
 const rimraf = require('rimraf');
 const assert = require('assert');
 const HtmlReporter = common.require('reporter/reporters/html.js');
+const {mkpath} = common.require('utils');
 const reportObject = require('../../extra/reportObject');
 
 describe('testRunnerHTMLOutput', function() {
