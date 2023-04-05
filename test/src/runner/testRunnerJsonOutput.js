@@ -4,10 +4,10 @@ const assert = require('assert');
 const common = require('../../common.js');
 const MockServer = require('../../lib/mockserver.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
-const mkpath = require('mkpath');
 const rimraf = require('rimraf');
 const {settings} = common;
 const {runTests} = common.require('index.js');
+const {mkpath} = common.require('utils');
 
 describe('testRunnerJsonOutput', function() {
   before(function(done) {
