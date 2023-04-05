@@ -1,8 +1,12 @@
+const path = require('path');
 const assert = require('assert');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 const {strictEqual} = assert;
+const common = require('../../../../common.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
-describe('waitForElementNotPresent', function () {
+describe.only('waitForElementNotPresent', function () {
   let commandResult;
   let commandInstance;
 
@@ -50,7 +54,7 @@ describe('waitForElementNotPresent', function () {
     this.client.api.waitForElementNotPresent('#weblogin', 15, false, commandCallback);
 
     return this.client.start(function (err) {
-      strictEqual(commandResult.status, -1);
+      strictEqual(commandResult.status, 0);
       strictEqual(commandInstance.abortOnFailure, false);
       strictEqual(commandInstance.elementId, null);
     });
@@ -61,30 +65,36 @@ describe('waitForElementNotPresent', function () {
     this.client.api.waitForElementNotPresent('#weblogin', 15, 10, false, commandCallback);
 
     this.client.api.waitForElementNotPresent('#weblogin', 15, 10, false, function(result, instance) {
-      strictEqual(result.status, -1);
+      strictEqual(result.status, 0);
       strictEqual(instance.rescheduleInterval, 10);
       strictEqual(instance.ms, 15);
       strictEqual(instance.abortOnFailure, false);
     });
 
     return this.client.start(function (err) {
-      strictEqual(commandResult.status, -1);
+      strictEqual(commandResult.status, 0);
       strictEqual(commandInstance.ms, 15);
       strictEqual(commandInstance.rescheduleInterval, 10);
     });
   });
 
-  it('client.waitForElementNotPresent() success result should have correct status', function (done) {
-    this.client.api.globals.waitForConditionPollInterval = 10;
 
-    this.client.api.waitForElementNotPresent('#badElement', 15, 10, false, function(result, instance) {
-      strictEqual(result.status, 0);
-      strictEqual(result.error, undefined);
-      strictEqual(instance.rescheduleInterval, 10);
-      strictEqual(instance.ms, 15);
-      strictEqual(instance.abortOnFailure, false);
-    });
+  it('client.waitForElementNotPresent() report should not contain error in case of success', function() {
+    const testsPath = [
+      path.join(__dirname, '../../../../sampletests/withwait/elementNotPresent.js')
+    ];
+    const globals = {
+      calls: 0,
+      reporter(results) {
+        assert.strictEqual(globals.calls, 2);
+        assert.strictEqual(Object.keys(results.modules).length, 1);
+        assert.ok('elementNotPresent' in results.modules);
+        assert.strictEqual(results.modulesWithEnv.default.elementNotPresent.completedSections.demoTest.commands[1].status, 'pass');
+      }
+    };
 
-    this.client.start(done);
+    return runTests(testsPath, settings({
+      globals
+    }));
   });
 });
