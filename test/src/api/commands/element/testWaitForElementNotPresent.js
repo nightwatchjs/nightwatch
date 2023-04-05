@@ -6,7 +6,7 @@ const common = require('../../../../common.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
 
-describe.only('waitForElementNotPresent', function () {
+describe('waitForElementNotPresent', function () {
   let commandResult;
   let commandInstance;
 
