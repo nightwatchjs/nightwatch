@@ -32,7 +32,7 @@ describe('testRunnerHTMLOutput', function() {
     });
   });
 
-  it('test Html Reporter output', function () {
+  it.only('test Html Reporter output', function () {
     const options = {
       output_folder: outputPath
     };
@@ -92,10 +92,10 @@ describe('testRunnerHTMLOutput', function() {
     assert.strictEqual(demoTestPass.commands.length, 7);
     assert.strictEqual(demoTestPass.status, 'pass');
 
-    const demoTestFail = chromeEnv.modules['ecosia'].completedSections['Demo test ecosia.org fail'];
-    // assert.ok(demoTestFail);
-    // assert.strictEqual(demoTestFail.commands.length, 3);
-    // assert.strictEqual(demoTestFail.status, 'fail');
+    const demoTestFail = firefoxEnv.modules['chromeCDP_example'].completedSections['using CDP DOM Snapshot'];
+    assert.ok(demoTestFail);
+    assert.strictEqual(demoTestFail.commands.length, 4);
+    assert.strictEqual(demoTestFail.status, 'fail');
 
   });
 
