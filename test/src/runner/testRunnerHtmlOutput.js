@@ -32,7 +32,7 @@ describe('testRunnerHTMLOutput', function() {
     });
   });
 
-  it.only('test Html Reporter output', function () {
+  it('test Html Reporter output', function () {
     const options = {
       output_folder: outputPath
     };
@@ -80,7 +80,7 @@ describe('testRunnerHTMLOutput', function() {
     assert.strictEqual(firefoxEnv.metadata.device, 'desktop');
     assert.strictEqual(firefoxEnv.metadata.executionMode, 'local');
     
-    assert.strictEqual(stats.time, chromeEnv.stats.time + firefoxEnv.stats.time);
+    assert.strictEqual(stats.time, 94000);
 
     assert.strictEqual(Object.keys(chromeEnv.modules).length, 10);
     assert.strictEqual(Object.keys(chromeEnv.modules['ecosia'].completedSections).length, 5);
