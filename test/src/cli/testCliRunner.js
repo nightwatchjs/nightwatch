@@ -1358,7 +1358,7 @@ describe('Test CLI Runner', function() {
 
         chrome: {
           desiredCapabilities: {
-            browserName: 'chrome',
+            browserName: 'chrome'
           }
         }
       }
@@ -1388,7 +1388,7 @@ describe('Test CLI Runner', function() {
 
         chrome: {
           desiredCapabilities: {
-            browserName: 'chrome',
+            browserName: 'chrome'
           }
         }
       }
