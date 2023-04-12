@@ -1,12 +1,12 @@
 const assert = require('assert');
 const path = require('path');
 const mockery = require('mockery');
-const mkpath = require('mkpath');
 const rimraf = require('rimraf');
 
 const common = require('../../common.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
+const {mkpath} = common.require('utils');
 const {readFilePromise, readDirPromise} = require('../../lib/utils.js');
 
 const MockServer = require('../../lib/mockserver.js');
@@ -113,7 +113,8 @@ describe('testReporter', function() {
           done();
         }
       },
-      output_folder: 'output'
+      output_folder: 'output',
+      reporter_options: {}
     });
 
     return reporter.writeReportToFile().then(function(result) {
@@ -363,5 +364,34 @@ describe('testReporter', function() {
       possibleError = err;
     }
     assert.strictEqual(possibleError, null);
+  });
+
+  it('test with multiple reporters', function() {
+    mockery.registerMock('nightwatch_reporter', {
+      async write(_results, _options) {
+
+        return 'nightwatch_reporter_output';
+      }
+    });
+    mockery.registerMock('html_reporter', {
+      async write(_results, _options) {
+
+        return 'html_reporter_output';
+      }
+    });
+
+    const reporter = new Reporter('nightwatch_reporter,html_reporter', {
+      globals: {
+        reporter(_results, done) {
+          done();
+        }
+      },
+      output_folder: 'output',
+      reporter_options: {}
+    });
+
+    return reporter.writeReportToFile().then(function(result) {
+      assert.deepStrictEqual(result, ['nightwatch_reporter_output', 'html_reporter_output']);
+    });
   });
 });

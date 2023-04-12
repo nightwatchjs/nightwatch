@@ -46,6 +46,10 @@ module.exports = {
   url: 'http://google.com',
   commands: ConsentCommand,
 
+  elements: {
+    consentModal: 'form[action^="https://consent.google"]'
+  },
+
   sections: {
     customizeSearch: createSectionFor('Search customization'),
     youtubeHistory: createSectionFor('YouTube History'),

@@ -34,47 +34,6 @@ describe('window commands', function() {
     });
   });
 
-  it('testCloseWindow', function() {
-    return Globals.protocolTest({
-      assertion: function(opts) {
-        assert.strictEqual(opts.command, 'window');
-      },
-      commandName: 'window',
-      args: ['DELETE']
-    }).then((result) => {
-      assert.strictEqual(result, null);
-    });
-  });
-  
-  it('testSwitchWindow', function () {
-    return Globals.protocolTest({
-      assertion: function (opts) {
-        assert.strictEqual(opts.command, 'window');
-        assert.strictEqual(opts.name, 'other-window');
-      },
-      commandName: 'window',
-      args: ['POST', 'other-window']
-    }).then((result) => {
-      assert.strictEqual(result, null);
-    });
-  });
-
-  it('testWindowCommand', function() {
-    let protocol = this.protocol;
-
-    assert.throws(
-      function() {
-        protocol.window('POST');
-      }, 'POST method without a name param throws an error'
-    );
-
-    assert.throws(
-      function() {
-        protocol.window('GET');
-      }, 'GET method throws an error'
-    );
-  });
-
   it('test .minimizeWindow()', function() {
     return Globals.protocolTest({
       assertion: function(opts) {

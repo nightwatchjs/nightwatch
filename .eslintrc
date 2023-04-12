@@ -3,7 +3,7 @@
     "eslint:recommended"
   ],
   "parserOptions": {
-    "ecmaVersion": 2018,
+    "ecmaVersion": 2019,
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": false
@@ -114,6 +114,7 @@
     "by": "readonly",
     "expect": "readonly",
     "browser": "readonly",
+    "app": "readonly",
     "Key": "readonly"
   }
 }

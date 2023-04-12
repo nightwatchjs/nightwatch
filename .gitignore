@@ -1,5 +1,6 @@
 .project
 .DS_Store
+*.vim
 *.idea
 *.vscode
 *.log
@@ -28,3 +29,4 @@ screenshot.png
 html-report/
 test-results.xml
 chromedriver-mobile/
+*.sw[po]

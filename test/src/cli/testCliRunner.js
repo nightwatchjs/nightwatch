@@ -45,6 +45,12 @@ describe('Test CLI Runner', function() {
     mockery.registerMock('./nightwatch.json', config);
     mockery.registerMock('./nightwatch.conf.js', config);
     mockery.registerMock('./nightwatchPromise.conf.js', promiseConfig);
+    mockery.registerMock('@nightwatch/nightwatch-inspector', 'crxFile');
+    mockery.registerMock('./websocket-server', class {
+      initSocket() {};
+
+      closeSocket() {};
+    });
 
     mockery.registerMock('./output_disabled.json', {
       src_folders: ['tests'],
@@ -647,7 +653,7 @@ describe('Test CLI Runner', function() {
 
     mockery.registerMock('fs', {
       existsSync() {
-        return false
+        return false;
       },
       stat(file, cb) {
         if (file === TEST_SRC_PATH || file === './custom.js') {
@@ -1288,4 +1294,59 @@ describe('Test CLI Runner', function() {
     assert.strictEqual(runner.test_settings.desiredCapabilities['moz:firefoxOptions'].androidPackage, 'org.mozilla.firefox');
     assert.strictEqual(runner.test_settings.desiredCapabilities['moz:firefoxOptions'].androidDeviceSerial, 'ZD2222W62Y');
   });
+
+  describe('Test \'list-files\' flag', () => { 
+    it('output list of files - default environment', async () => {
+      const testsPath = [origPath.join(__dirname, origPath.join('..', '..', 'sampletests', 'simple', 'test', 'sample.js'))];
+      const consoleData = [];
+      const listFileOutput = JSON.stringify({
+        default: testsPath
+      });
+  
+      const origConsoleLog = console.log;
+  
+      console.log = function (data) {
+        consoleData.push(data);
+      };
+  
+      mockery.registerMock('./runner/cli/argv-setup.js', {
+        argv: {
+          _: testsPath,
+          'list-files': true
+        }
+      });
+      const NwClient = common.require('index.js');
+      await NwClient.cli();
+      assert.deepStrictEqual(listFileOutput, consoleData[0]);
+      console.log = origConsoleLog;
+    });
+
+    it('output list of files - chrome environment', async () => {
+      const testsPath = [origPath.join(__dirname, origPath.join('..', '..', 'sampletests', 'simple', 'test', 'sample.js'))];
+      const consoleData = [];
+      const listFileOutput = JSON.stringify({
+        chrome: testsPath
+      });
+  
+      const origConsoleLog = console.log;
+  
+      console.log = function (data) {
+        consoleData.push(data);
+      };
+  
+      mockery.registerMock('./runner/cli/argv-setup.js', {
+        argv: {
+          _: testsPath,
+          env: 'chrome',
+          'list-files': true
+        }
+      });
+      const NwClient = common.require('index.js');
+      await NwClient.cli();
+      assert.deepStrictEqual(listFileOutput, consoleData[0]);
+      console.log = origConsoleLog;
+    });
+  });
+
+
 });

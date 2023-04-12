@@ -25,7 +25,43 @@ module.exports = {
     return MockServer.initAsync(opts);
   },
 
-  cookiesFound() {
+  cookieFound(name = 'test_cookie', value = '123456', {times = 0} = {}) {
+    MockServer.addMock({
+      url: `/wd/hub/session/1352110219202/cookie/${name}`,
+      method: 'GET',
+      response: {
+        sessionId: '1352110219202',
+        status: 0,
+        value: {
+          name: name,
+          value: value,
+          path: '/',
+          domain: 'example.org',
+          secure: false
+        }
+      },
+      times
+    }, times === 0);
+  },
+
+  cookieNotFound(name = 'other_cookie', {times = 0} = {}) {
+    MockServer.addMock({
+      url: `/wd/hub/session/1352110219202/cookie/${name}`,
+      method: 'GET',
+      response: JSON.stringify({
+        sessionId: '1352110219202',
+        value: {
+          error: 'no such cookie',
+          message: 'no such cookie',
+          stacktrace: ''
+        }
+      }),
+      statusCode: 404,
+      times
+    }, times === 0);
+  },
+
+  cookiesFound({times = 0} = {}) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/cookie',
       method: 'GET',
@@ -39,11 +75,12 @@ module.exports = {
           domain: 'example.org',
           secure: false
         }]
-      }
-    }, null, true);
+      },
+      times
+    }, times === 0);
   },
 
-  cookiesNotFound() {
+  cookiesNotFound({times = 0} = {}) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/cookie',
       method: 'GET',
@@ -51,17 +88,19 @@ module.exports = {
         sessionId: '1352110219202',
         status: 0,
         value: []
-      })
-    });
+      }),
+      times
+    }, times === 0);
   },
 
-  cookiesSocketDelay() {
+  cookiesSocketDelay({times = 0} = {}) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/cookie',
       method: 'GET',
       socketDelay: 200,
-      response: ''
-    }, true);
+      response: '',
+      times
+    }, times === 0);
   },
 
   deleteCookie() {
@@ -72,7 +111,19 @@ module.exports = {
         sessionId: '1352110219202',
         status: 0
       })
-    });
+    }, true);
+  },
+
+  deleteCookies() {
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/cookie',
+      method: 'DELETE',
+      response: JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0,
+        value: null
+      })
+    }, true);
   },
 
   addCookie() {
@@ -92,7 +143,7 @@ module.exports = {
       response: JSON.stringify({
         value: null
       })
-    });
+    }, true);
   },
 
   elementSelected(elementId = '0') {
@@ -385,7 +436,7 @@ module.exports = {
     url = '/wd/hub/session'
   }) {
     const browserName = 'chrome';
-    const headlessOpt = headless ? 'headless=chrome' : '';
+    const headlessOpt = headless ? 'headless=new' : '';
     const options = {
       ['goog:chromeOptions']: {}
     };
@@ -448,7 +499,7 @@ module.exports = {
           sessionId,
           capabilities: {
             acceptInsecureCerts: false,
-            browserName: 'firefox',
+            browserName,
             browserVersion: '65.0.1'
           }
         }

@@ -21,7 +21,7 @@ describe('cookie demos', function() {
 
   it('run cookie api demo tests basic', function() {
     const testsPath = path.join(__dirname, '../../../apidemos/cookies/cookieTests.js');
-    Mocks.cookiesFound();
+    Mocks.cookiesFound({times: 6});
 
     const globals = {
       waitForConditionPollInterval: 50,
@@ -52,14 +52,14 @@ describe('cookie demos', function() {
 
   it('run cookie api demo tests with socket hang up error', function() {
     const testsPath = path.join(__dirname, '../../../apidemos/cookies/cookieTestsWithError.js');
-    Mocks.cookiesSocketDelay();
+    Mocks.cookiesSocketDelay({times: 2});
 
     const globals = {
       waitForConditionPollInterval: 50,
 
       reporter(results) {
         assert.ok(results.lastError instanceof Error);
-        assert.strictEqual(results.errors, 1);
+        assert.strictEqual(results.errors, 2);
       }
     };
 

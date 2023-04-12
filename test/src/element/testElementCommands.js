@@ -32,6 +32,7 @@ describe('element base commands', function() {
   //////////////////////////////////////////////////////////////////////////////////////
   it('client.element()', async function() {
     await Nightwatch.initAsync({
+      backwards_compatibility_mode: true,
       output: false,
       silent: false
     });
@@ -47,6 +48,7 @@ describe('element base commands', function() {
 
   it('client.element() - unhandled error', async function() {
     const client = await Nightwatch.initClient({
+      backwards_compatibility_mode: true,
       output: false,
       silent: false
     }, reporter);
@@ -89,6 +91,7 @@ describe('element base commands', function() {
 
   it('client.element() W3C Webdriver protocol', async function () {
     const client = await Nightwatch.initAsync({
+      backwards_compatibility_mode: true,
       output: false,
       silent: false,
       selenium: {
@@ -120,6 +123,7 @@ describe('element base commands', function() {
     }, true);
 
     await Nightwatch.initAsync({
+      backwards_compatibility_mode: true,
       output: false,
       silent: false,
       selenium: {
@@ -156,6 +160,7 @@ describe('element base commands', function() {
     }, true);
 
     await Nightwatch.initAsync({
+      backwards_compatibility_mode: true,
       output: false,
       silent: false,
       selenium: {
@@ -193,6 +198,7 @@ describe('element base commands', function() {
     }, true);
 
     await Nightwatch.initAsync({
+      backwards_compatibility_mode: true,
       output: false,
       silent: false,
       selenium: {

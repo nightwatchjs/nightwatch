@@ -21,6 +21,12 @@ describe('test programmatic apis', function () {
     delete global.browser;
 
     MockServer.start(done);
+    mockery.registerMock('@nightwatch/nightwatch-inspector', 'crxFile');
+    mockery.registerMock('./websocket-server', class {
+      initSocket() {};
+
+      closeSocket() {};
+    });
   });
   afterEach((done) => {
     mockery.deregisterAll();
@@ -520,7 +526,7 @@ describe('test programmatic apis', function () {
     const Concurrency = common.require('runner/concurrency');
     const Nightwatch = common.require('index.js');
 
-    Concurrency.isChildProcess = function() {
+    Concurrency.isWorker = function() {
       return true;
     };
 
