@@ -4,7 +4,9 @@ const CommandGlobals = require('../../../../lib/globals/commands.js');
 const {strictEqual} = assert;
 const common = require('../../../../common.js');
 const {settings} = common;
-const {runTests} = common.require('index.js');
+const NightwatchClient = common.require('index.js');
+const MockServer = require('../../../../lib/mockserver.js');
+
 
 describe('waitForElementNotPresent', function () {
   let commandResult;
@@ -79,10 +81,23 @@ describe('waitForElementNotPresent', function () {
   });
 
 
-  it('client.waitForElementNotPresent() report should not contain error in case of success', function() {
+  it('client.waitForElementNotPresent() report should not contain error in case of success', async function() {
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/elements',
+      method: 'POST',
+      postdata: {
+        using: 'css selector',
+        value: '#badElement'
+      },
+      response: JSON.stringify({
+        value: []
+      })
+    }, true, true);
+
     const testsPath = [
       path.join(__dirname, '../../../../sampletests/withwait/elementNotPresent.js')
     ];
+
     const globals = {
       calls: 0,
       reporter(results) {
@@ -93,8 +108,10 @@ describe('waitForElementNotPresent', function () {
       }
     };
 
-    return runTests(testsPath, settings({
+    await NightwatchClient.runTests(testsPath, settings({
       globals
     }));
+
+    return true;
   });
 });

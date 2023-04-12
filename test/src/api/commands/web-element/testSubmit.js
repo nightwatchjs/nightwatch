@@ -4,7 +4,8 @@ const MockServer  = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands-w3c.js');
 const Element = require('../../../../../lib/element/index.js');
 
-describe('element().submit() command', function () {
+// TODO: enable when https://github.com/SeleniumHQ/selenium/pull/11883 gets merged
+xdescribe('element().submit() command', function () {
   before(function (done) {
     CommandGlobals.beforeEach.call(this, done);
   });

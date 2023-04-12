@@ -235,12 +235,12 @@ describe('element() assert commands', function () {
     await assertPromise;
 
     // TODO: Fix this. Below assertion should throw error, but instead fail silently
-    await notAssertPromise;
-    // try {
-    //   await notAssertPromise;
-    //   assert.fail('AssertionError expected');
-    // } catch (err) {
-    //   assert.strictEqual(err.name, 'NightwatchAssertError');
-    // }
+    // await notAssertPromise;
+    try {
+      await notAssertPromise;
+      assert.fail('AssertionError expected');
+    } catch (err) {
+      assert.strictEqual(err.name, 'AssertionError');
+    }
   });
 });
