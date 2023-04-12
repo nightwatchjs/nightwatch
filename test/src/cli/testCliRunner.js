@@ -1348,5 +1348,64 @@ describe('Test CLI Runner', function() {
     });
   });
 
+  it('Nightwatch Inspector - By default Chrome in debug mode run serially', function() {
+    mockery.registerMock('./nightwatch_inspector.json', {
+      test_settings: {
+        'default': {
+          output: false,
+          silent: false
+        },
 
+        chrome: {
+          desiredCapabilities: {
+            browserName: 'chrome',
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+
+    const runner = new CliRunner({
+      config: './nightwatch_inspector.json',
+      env: 'chrome',
+      debug: true
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'chrome');
+    assert.strictEqual(runner.argv.serial, true);
+    assert.strictEqual(runner.test_settings.parallel_mode, false);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'chrome');
+  });
+
+  it('Nightwatch Inspector - parallel argument enables running Chrome in debug mode parallaly', function() {
+    mockery.registerMock('./nightwatch_inspector.json', {
+      test_settings: {
+        'default': {
+          output: false,
+          silent: false
+        },
+
+        chrome: {
+          desiredCapabilities: {
+            browserName: 'chrome',
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+
+    const runner = new CliRunner({
+      config: './nightwatch_inspector.json',
+      env: 'chrome',
+      debug: true,
+      parallel: true
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'chrome');
+    assert.strictEqual(runner.argv.serial, undefined);
+    assert.strictEqual(runner.argv.parallel, true);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'chrome');
+  });
 });
