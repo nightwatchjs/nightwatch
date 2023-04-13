@@ -112,4 +112,17 @@ describe('assert.hasAttribute', function () {
       }
     });
   });
+
+  it('hasAttribute assertion failed for wrong parameters', function () {
+    return assertionTest({
+      args: ['.test_element', ['data-test', 'dummy'], 'Test message'],
+      commandResult: {
+        value: 'data-track'
+      },
+      assertMessage: true
+    }).catch((err) => {
+      assert.ok(err instanceof Error);
+      assert.strictEqual(err.message, 'Error while running "assert.hasAttribute" command: Expected attribute must be a string');
+    });
+  });
 });
