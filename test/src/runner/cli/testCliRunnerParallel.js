@@ -80,6 +80,7 @@ describe('Test CLI Runner in Parallel', function () {
     class WorkerProcessMock extends WorkerProcess {
       addTask({colors}) {
         assert.strictEqual(colors.length, 4);
+        assert(Object.keys(this.piscina.options.env).length > 1, 'process.env should have more than one key');
 
         return Promise.resolve(0);
       }
