@@ -97,7 +97,7 @@ describe('Test CLI Runner in Parallel', function () {
     }, {
       use_child_process: false,
       silent: false,
-      output: true,
+      output: false,
       output_folder: false
     });
   });
