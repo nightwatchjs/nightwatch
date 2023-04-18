@@ -256,7 +256,7 @@ describe('test NightwatchIndex', function () {
       assert.deepStrictEqual(argv, {
         config: path.resolve('./test/extra/nightwatch.json'),
         verbose: true,
-        reporter: ['junit', 'json', 'html'],
+        reporter: ['junit', 'json', 'rerunJson', 'html'],
         source: 'test.js',
         _source: ['test.js']
       });
