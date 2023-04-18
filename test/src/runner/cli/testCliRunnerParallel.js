@@ -19,11 +19,11 @@ describe('Test CLI Runner in Parallel', function () {
     });
   }
 
-  before(function() {
+  beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
   });
 
-  after(function() {
+  afterEach(function() {
     mockery.deregisterAll();
     mockery.resetCache();
     mockery.disable();
@@ -66,6 +66,7 @@ describe('Test CLI Runner in Parallel', function () {
   });
   
   it('test run geckodriver with concurrency - worker threads', function () {
+    process.env.TEST_ENV = 'TEST';
     class RunnerBaseMock extends RunnerBase {
       static readTestSource(settings, argv) {
         assert.strictEqual(settings.testWorkersEnabled, true);
@@ -80,6 +81,7 @@ describe('Test CLI Runner in Parallel', function () {
     class WorkerProcessMock extends WorkerProcess {
       addTask({colors}) {
         assert.strictEqual(colors.length, 4);
+        assert.strictEqual(this.piscina.options.env.TEST_ENV, 'TEST');
         assert(Object.keys(this.piscina.options.env).length > 1, 'process.env should have more than one key');
 
         return Promise.resolve(0);
@@ -95,7 +97,7 @@ describe('Test CLI Runner in Parallel', function () {
     }, {
       use_child_process: false,
       silent: false,
-      output: false,
+      output: true,
       output_folder: false
     });
   });
