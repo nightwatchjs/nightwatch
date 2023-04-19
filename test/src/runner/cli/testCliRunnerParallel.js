@@ -84,6 +84,9 @@ describe('Test CLI Runner in Parallel', function () {
         assert.strictEqual(this.piscina.options.env.TEST_ENV, 'TEST');
         assert(Object.keys(this.piscina.options.env).length > 1, 'process.env should have more than one key');
 
+        // cleaning the env
+        process.env.TEST_ENV = undefined;
+
         return Promise.resolve(0);
       }
     }
