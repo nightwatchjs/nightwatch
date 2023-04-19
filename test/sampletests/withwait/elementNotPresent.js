@@ -6,6 +6,7 @@ module.exports = {
   demoTest(client) {
     client.url('http://localhost')
       .waitForElementNotPresent('#badElement')
+      .waitForElementNotPresent('#weblogin')
       .end();
   },
 

@@ -105,6 +105,7 @@ describe('waitForElementNotPresent', function () {
         assert.strictEqual(Object.keys(results.modules).length, 1);
         assert.ok('elementNotPresent' in results.modules);
         assert.strictEqual(results.modulesWithEnv.default.elementNotPresent.completedSections.demoTest.commands[1].status, 'pass');
+        assert.strictEqual(results.modulesWithEnv.default.elementNotPresent.completedSections.demoTest.commands[2].status, 'fail');
       }
     };
 
