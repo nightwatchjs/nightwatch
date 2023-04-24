@@ -23,6 +23,31 @@ describe('new element api with page objects', function() {
 
     MockServer
       .addMock({
+        url: '/session/13521-10219-202/elements',
+        postdata: {
+          using: 'xpath',
+          value: './/*[text()="Web Login"]'
+        },
+        method: 'POST',
+        response: JSON.stringify({
+          value: [
+            {'element-6066-11e4-a52e-4f735466cecf': '5cc459b8-36a8-3042-8b4a-258883ea642b'},
+            {'element-6066-11e4-a52e-4f735466cecf': '3783b042-7001-0740-a2c0-afdaac732e9f'}
+          ]
+        })
+      }, true)
+      .addMock({
+        url: '/session/13521-10219-202/element/0/elements',
+        postdata: {
+          using: 'xpath',
+          value: './/*[text()="Help"]'
+        },
+        method: 'POST',
+        response: JSON.stringify({
+          value: [{'element-6066-11e4-a52e-4f735466cecf': '2'}]
+        })
+      }, true)
+      .addMock({
         url: '/session/13521-10219-202/element/0/elements',
         postdata: {
           using: 'css selector',
@@ -35,7 +60,7 @@ describe('new element api with page objects', function() {
             {'element-6066-11e4-a52e-4f735466cecf': '3'}
           ]
         })
-      }, true)
+      }, true, true)
       .addMock({
         url: '/session/13521-10219-202/element/2/elements',
         postdata: {
@@ -50,7 +75,7 @@ describe('new element api with page objects', function() {
             {'element-6066-11e4-a52e-4f735466cecf': '6'}
           ]
         })
-      }, true);
+      }, true, true);
 
     const globals = {
       calls: 0,
