@@ -4,7 +4,7 @@ const MockServer  = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands-w3c.js');
 const Element = require('../../../../../lib/element/index.js');
 
-describe('element().update() command', function () {
+describe('element().setValue() command', function () {
   before(function (done) {
     CommandGlobals.beforeEach.call(this, done);
   });
@@ -13,7 +13,7 @@ describe('element().update() command', function () {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('test .element().update()', async function() {
+  it('test .element().setValue()', async function() {
     MockServer
       .addMock({
         url: '/session/13521-10219-202/elements',
@@ -48,7 +48,7 @@ describe('element().update() command', function () {
         })
       }, true);
 
-    const resultPromise = this.client.api.element('input[name=q]').update('nightwatch');
+    const resultPromise = this.client.api.element('input[name=q]').setValue('nightwatch');
     // neither an instance of Element or Promise, but an instance of ScopedWebElement.
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
@@ -59,7 +59,7 @@ describe('element().update() command', function () {
     assert.strictEqual(await result.getId(), '9');
   });
 
-  it('test .element().find().update()', async function() {
+  it('test .element().find().setValue()', async function() {
     MockServer
       .addMock({
         url: '/session/13521-10219-202/element/0/elements',
@@ -94,7 +94,7 @@ describe('element().update() command', function () {
         })
       }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').find('input[name=q]').update('night', 'watch');
+    const resultPromise = this.client.api.element('#signupSection').find('input[name=q]').setValue('night', 'watch');
     // neither an instance of Element or Promise, but an instance of ScopedWebElement.
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
@@ -105,7 +105,7 @@ describe('element().update() command', function () {
     assert.strictEqual(await result.getId(), '9');
   });
 
-  it('test .element.find().update()', async function() {
+  it('test .element.find().setValue()', async function() {
     MockServer
       .addMock({
         url: '/session/13521-10219-202/element/0/elements',
@@ -140,7 +140,7 @@ describe('element().update() command', function () {
         })
       }, true);
 
-    const resultPromise = this.client.api.element.find('#signupSection').find('input[name=q]').update(['night', 'watch']);
+    const resultPromise = this.client.api.element.find('#signupSection').find('input[name=q]').setValue(['night', 'watch']);
     // neither an instance of Element or Promise, but an instance of ScopedWebElement.
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
