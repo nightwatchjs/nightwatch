@@ -184,7 +184,7 @@ describe('.findByLabelText() commands', function () {
         },
         method: 'POST',
         response: JSON.stringify({
-          value: [{'element-6066-11e4-a52e-4f735466cecf': '2'}]
+          value: {'element-6066-11e4-a52e-4f735466cecf': '2'}
         })
       }, true);
 
@@ -234,7 +234,7 @@ describe('.findByLabelText() commands', function () {
         },
         method: 'POST',
         response: JSON.stringify({
-          value: [{'element-6066-11e4-a52e-4f735466cecf': '2'}]
+          value: {'element-6066-11e4-a52e-4f735466cecf': '2'}
         })
       }, true);
 
