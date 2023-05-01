@@ -294,12 +294,17 @@ describe('testReporter', function() {
 
             const completedSections = module['completedSections'];
 
-            // check for module properties
-            assert.ok(Object.keys(completedSections).includes('__after_hook'));
-            assert.ok(Object.keys(completedSections).includes('__before_hook'));
-            assert.ok(Object.keys(completedSections).includes('__global_afterEach_hook'));
-            assert.ok(Object.keys(completedSections).includes('__global_beforeEach_hook'));
-            assert.ok(Object.keys(completedSections).includes('demoTest'));
+            // check module properties all for hooks
+            const hooks = ['__after_hook', '__before_hook', '__global_afterEach_hook', '__global_beforeEach_hook', 'demoTest'];
+
+            hooks.forEach(hook => {
+              assert.ok(Object.keys(completedSections).includes(hook));
+
+              const sectionData = completedSections[hook];
+              assert.ok(Object.keys(sectionData).includes('startTimestamp'));
+              assert.ok(Object.keys(sectionData).includes('endTimestamp'));
+              assert.ok(Object.keys(sectionData).includes('httpOutput'));
+            });
             
             assert.strictEqual(completedSections['__after_hook']['commands'].length, 1);
             assert.strictEqual(completedSections['__after_hook']['commands'][0].name, 'end');
@@ -320,12 +325,6 @@ describe('testReporter', function() {
             assert.ok(Object.keys(command).includes('result'));
             assert.deepEqual(command.args, ['http://localhost']);
             assert.strictEqual(command.status, 'pass');
-
-            const hook = completedSections['demoTest'];
-            assert.ok(Object.keys(hook).includes('startTimestamp'));
-            assert.ok(Object.keys(hook).includes('endTimestamp'));
-            assert.ok(Object.keys(hook).includes('httpOutput'));
-            
           }
         },
         silent: true,
