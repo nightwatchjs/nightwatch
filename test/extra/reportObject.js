@@ -12,7 +12,7 @@ module.exports = {
       reportPrefix: 'FIREFOX_111.0.1__',
       assertionsCount: 1,
       lastError: null,
-      skipped: [
+      skippedAtRuntime: [
       ],
       time: '1.082',
       timeMs: 1082,
@@ -507,7 +507,7 @@ module.exports = {
         abortOnFailure: true,
         stack: '+ actual - expected\n\n  [\n+   \'abortOnFailure\'\n-   \'documents\',\n-   \'strings\'\n  ]\n    at Assertion.assert (/Users/vaibhavsingh/Dev/nightwatch/lib/api/_loaders/static.js:112:34)\n    at StaticAssert.assertFn (/Users/vaibhavsingh/Dev/nightwatch/lib/api/_loaders/static.js:146:17)\n    at Proxy.<anonymous> (/Users/vaibhavsingh/Dev/nightwatch/lib/api/index.js:157:30)\n    at DescribeInstance.<anonymous> (/Users/vaibhavsingh/Dev/nightwatch/examples/tests/chromeCDP_example.js:10:20)'
       },
-      skipped: [
+      skippedAtRuntime: [
       ],
       time: '4.669',
       timeMs: 4669,
@@ -919,7 +919,7 @@ module.exports = {
       reportPrefix: 'FIREFOX_111.0.1__',
       assertionsCount: 2,
       lastError: null,
-      skipped: [
+      skippedAtRuntime: [
       ],
       time: '1.908',
       timeMs: 1908,
@@ -1477,7 +1477,7 @@ module.exports = {
         waitFor: true,
         stack: 'Error\n    at DescribeInstance.<anonymous> (/Users/vaibhavsingh/Dev/nightwatch/examples/tests/duckDuckGo.js:8:8)\n    at Context.call (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/context.js:478:35)\n    at TestCase.run (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/testcase.js:58:31)\n    at Runnable.__runFn (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:759:80)\n    at Runnable.run (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/runnable.js:126:21)\n    at TestSuite.executeRunnable (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:912:49)\n    at TestSuite.handleRunnable (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:927:33)\n    at /Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:759:21\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DefaultRunner.runTestSuite (/Users/vaibhavsingh/Dev/nightwatch/lib/runner/test-runners/default.js:78:7)'
       },
-      skipped: [
+      skippedAtRuntime: [
       ],
       time: '5.777',
       timeMs: 5777,
@@ -2069,7 +2069,7 @@ module.exports = {
       reportPrefix: '',
       assertionsCount: 0,
       lastError: null,
-      skipped: [
+      skippedAtRuntime: [
         'should complete the consent form'
       ],
       time: 0,
@@ -2118,7 +2118,7 @@ module.exports = {
       reportPrefix: 'FIREFOX_111.0.1__',
       assertionsCount: 2,
       lastError: null,
-      skipped: [
+      skippedAtRuntime: [
       ],
       time: '10.68',
       timeMs: 10675,
@@ -2833,7 +2833,7 @@ module.exports = {
       reportPrefix: '',
       assertionsCount: 0,
       lastError: null,
-      skipped: [
+      skippedAtRuntime: [
         'retrieve the shadowRoot'
       ],
       time: 0,
@@ -2882,7 +2882,7 @@ module.exports = {
       reportPrefix: 'FIREFOX_111.0.1__',
       assertionsCount: 3,
       lastError: null,
-      skipped: [
+      skippedAtRuntime: [
       ],
       time: '1.251',
       timeMs: 1251,
@@ -3467,7 +3467,7 @@ module.exports = {
       reportPrefix: 'CHROME_111.0.5563.146__',
       assertionsCount: 5,
       lastError: null,
-      skipped: [
+      skippedAtRuntime: [
       ],
       time: '3.056',
       timeMs: 3056,
@@ -4166,7 +4166,7 @@ module.exports = {
       reportPrefix: 'CHROME_111.0.5563.146__',
       assertionsCount: 5,
       lastError: null,
-      skipped: [
+      skippedAtRuntime: [
       ],
       time: '0.2180',
       timeMs: 218,
@@ -4926,7 +4926,7 @@ module.exports = {
         reportPrefix: 'CHROME_111.0.5563.146__',
         assertionsCount: 1,
         lastError: null,
-        skipped: [
+        skippedAtRuntime: [
         ],
         time: '2.865',
         timeMs: 2865,
@@ -5417,7 +5417,7 @@ module.exports = {
         reportPrefix: 'CHROME_111.0.5563.146__',
         assertionsCount: 1,
         lastError: null,
-        skipped: [
+        skippedAtRuntime: [
         ],
         time: '4.659',
         timeMs: 4659,
@@ -5732,7 +5732,7 @@ module.exports = {
         reportPrefix: 'CHROME_111.0.5563.146__',
         assertionsCount: 2,
         lastError: null,
-        skipped: [
+        skippedAtRuntime: [
         ],
         time: '3.868',
         timeMs: 3868,
@@ -6292,7 +6292,7 @@ module.exports = {
           waitFor: true,
           stack: 'Error\n    at DescribeInstance.<anonymous> (/Users/vaibhavsingh/Dev/nightwatch/examples/tests/duckDuckGo.js:8:8)\n    at Context.call (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/context.js:478:35)\n    at TestCase.run (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/testcase.js:58:31)\n    at Runnable.__runFn (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:759:80)\n    at Runnable.run (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/runnable.js:126:21)\n    at TestSuite.executeRunnable (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:912:49)\n    at TestSuite.handleRunnable (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:927:33)\n    at /Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:759:21\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DefaultRunner.runTestSuite (/Users/vaibhavsingh/Dev/nightwatch/lib/runner/test-runners/default.js:78:7)'
         },
-        skipped: [
+        skippedAtRuntime: [
         ],
         time: '8.932',
         timeMs: 8932,
@@ -6883,7 +6883,7 @@ module.exports = {
         reportPrefix: 'CHROME_111.0.5563.146__',
         assertionsCount: 0,
         lastError: null,
-        skipped: [
+        skippedAtRuntime: [
         ],
         time: '5.086',
         timeMs: 5086,
@@ -7373,7 +7373,7 @@ module.exports = {
         reportPrefix: 'CHROME_111.0.5563.146__',
         assertionsCount: 2,
         lastError: null,
-        skipped: [
+        skippedAtRuntime: [
         ],
         time: '49.04',
         timeMs: 49044,
@@ -8050,7 +8050,7 @@ module.exports = {
         reportPrefix: 'CHROME_111.0.5563.146__',
         assertionsCount: 3,
         lastError: null,
-        skipped: [
+        skippedAtRuntime: [
         ],
         time: '1.116',
         timeMs: 1116,
@@ -8615,7 +8615,7 @@ module.exports = {
         reportPrefix: 'CHROME_111.0.5563.146__',
         assertionsCount: 3,
         lastError: null,
-        skipped: [
+        skippedAtRuntime: [
         ],
         time: '0.8370',
         timeMs: 837,
@@ -9202,7 +9202,7 @@ module.exports = {
         reportPrefix: 'CHROME_111.0.5563.146__',
         assertionsCount: 5,
         lastError: null,
-        skipped: [
+        skippedAtRuntime: [
         ],
         time: '0.2180',
         timeMs: 218,
@@ -9959,7 +9959,7 @@ module.exports = {
         reportPrefix: 'CHROME_111.0.5563.146__',
         assertionsCount: 5,
         lastError: null,
-        skipped: [
+        skippedAtRuntime: [
         ],
         time: '3.056',
         timeMs: 3056,
@@ -10660,7 +10660,7 @@ module.exports = {
         reportPrefix: 'FIREFOX_111.0.1__',
         assertionsCount: 2,
         lastError: null,
-        skipped: [
+        skippedAtRuntime: [
         ],
         time: '1.908',
         timeMs: 1908,
@@ -11217,7 +11217,7 @@ module.exports = {
           abortOnFailure: true,
           stack: '+ actual - expected\n\n  [\n+   \'abortOnFailure\'\n-   \'documents\',\n-   \'strings\'\n  ]\n    at Assertion.assert (/Users/vaibhavsingh/Dev/nightwatch/lib/api/_loaders/static.js:112:34)\n    at StaticAssert.assertFn (/Users/vaibhavsingh/Dev/nightwatch/lib/api/_loaders/static.js:146:17)\n    at Proxy.<anonymous> (/Users/vaibhavsingh/Dev/nightwatch/lib/api/index.js:157:30)\n    at DescribeInstance.<anonymous> (/Users/vaibhavsingh/Dev/nightwatch/examples/tests/chromeCDP_example.js:10:20)'
         },
-        skipped: [
+        skippedAtRuntime: [
         ],
         time: '4.669',
         timeMs: 4669,
@@ -11636,7 +11636,7 @@ module.exports = {
           waitFor: true,
           stack: 'Error\n    at DescribeInstance.<anonymous> (/Users/vaibhavsingh/Dev/nightwatch/examples/tests/duckDuckGo.js:8:8)\n    at Context.call (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/context.js:478:35)\n    at TestCase.run (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/testcase.js:58:31)\n    at Runnable.__runFn (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:759:80)\n    at Runnable.run (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/runnable.js:126:21)\n    at TestSuite.executeRunnable (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:912:49)\n    at TestSuite.handleRunnable (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:927:33)\n    at /Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:759:21\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DefaultRunner.runTestSuite (/Users/vaibhavsingh/Dev/nightwatch/lib/runner/test-runners/default.js:78:7)'
         },
-        skipped: [
+        skippedAtRuntime: [
         ],
         time: '5.777',
         timeMs: 5777,
@@ -12228,7 +12228,7 @@ module.exports = {
         reportPrefix: '',
         assertionsCount: 0,
         lastError: null,
-        skipped: [
+        skippedAtRuntime: [
           'should complete the consent form'
         ],
         time: 0,
@@ -12277,7 +12277,7 @@ module.exports = {
         reportPrefix: 'FIREFOX_111.0.1__',
         assertionsCount: 5,
         lastError: null,
-        skipped: [
+        skippedAtRuntime: [
         ],
         time: '3.401',
         timeMs: 3401,
@@ -12974,7 +12974,7 @@ module.exports = {
         reportPrefix: 'FIREFOX_111.0.1__',
         assertionsCount: 1,
         lastError: null,
-        skipped: [
+        skippedAtRuntime: [
         ],
         time: '1.082',
         timeMs: 1082,
@@ -13463,7 +13463,7 @@ module.exports = {
         reportPrefix: 'FIREFOX_111.0.1__',
         assertionsCount: 5,
         lastError: null,
-        skipped: [
+        skippedAtRuntime: [
         ],
         time: '0.09500',
         timeMs: 95,
@@ -14218,7 +14218,7 @@ module.exports = {
         reportPrefix: '',
         assertionsCount: 0,
         lastError: null,
-        skipped: [
+        skippedAtRuntime: [
           'retrieve the shadowRoot'
         ],
         time: 0,
@@ -14267,7 +14267,7 @@ module.exports = {
         reportPrefix: 'FIREFOX_111.0.1__',
         assertionsCount: 2,
         lastError: null,
-        skipped: [
+        skippedAtRuntime: [
         ],
         time: '10.68',
         timeMs: 10675,
@@ -14982,7 +14982,7 @@ module.exports = {
         reportPrefix: 'FIREFOX_111.0.1__',
         assertionsCount: 3,
         lastError: null,
-        skipped: [
+        skippedAtRuntime: [
         ],
         time: '1.251',
         timeMs: 1251,

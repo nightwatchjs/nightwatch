@@ -142,7 +142,7 @@ describe('testRunnerJUnitOutput', function() {
           assert.strictEqual(results.modules.sampleWithAssertionFailedInBefore.assertionsCount, 1);
           assert.strictEqual(results.modules.sampleWithAssertionFailedInBefore.errmessages.length, 1);
           assert.strictEqual(results.modules.sampleWithAssertionFailedInBefore.failedCount, 1);
-          assert.strictEqual(results.modules.sampleWithAssertionFailedInBefore.skipped.length, 0);
+          assert.strictEqual(results.modules.sampleWithAssertionFailedInBefore.skippedAtRuntime.length, 0);
           assert.strictEqual(results.modules.sampleWithAssertionFailedInBefore.completed['demo test async'].assertions.length, 0);
         }
       },
@@ -182,7 +182,7 @@ describe('testRunnerJUnitOutput', function() {
           assert.strictEqual(results.modules.sampleWithAssertionFailedInAfter.assertionsCount, 1);
           assert.strictEqual(results.modules.sampleWithAssertionFailedInAfter.errmessages.length, 1);
           assert.strictEqual(results.modules.sampleWithAssertionFailedInAfter.failedCount, 1);
-          assert.strictEqual(results.modules.sampleWithAssertionFailedInAfter.skipped.length, 0);
+          assert.strictEqual(results.modules.sampleWithAssertionFailedInAfter.skippedAtRuntime.length, 0);
           assert.strictEqual(results.modules.sampleWithAssertionFailedInAfter.completed.demoTestAsyncOne.assertions.length, 0);
         }
       },
@@ -222,7 +222,7 @@ describe('testRunnerJUnitOutput', function() {
           assert.strictEqual(results.modules.sampleWithFailureInTestcaseAndAfter.assertionsCount, 2);
           assert.strictEqual(results.modules.sampleWithFailureInTestcaseAndAfter.errmessages.length, 1);
           assert.strictEqual(results.modules.sampleWithFailureInTestcaseAndAfter.failedCount, 2);
-          assert.strictEqual(results.modules.sampleWithFailureInTestcaseAndAfter.skipped.length, 0);
+          assert.strictEqual(results.modules.sampleWithFailureInTestcaseAndAfter.skippedAtRuntime.length, 0);
           assert.strictEqual(results.modules.sampleWithFailureInTestcaseAndAfter.completed['demo test async'].assertions.length, 1);
         }
       },
@@ -263,7 +263,7 @@ describe('testRunnerJUnitOutput', function() {
           assert.strictEqual(results.modules.sampleWithErrorInTestcaseAndAfter.assertionsCount, 1);
           assert.strictEqual(results.modules.sampleWithErrorInTestcaseAndAfter.errmessages.length, 2);
           assert.strictEqual(results.modules.sampleWithErrorInTestcaseAndAfter.failedCount, 1);
-          assert.strictEqual(results.modules.sampleWithErrorInTestcaseAndAfter.skipped.length, 0);
+          assert.strictEqual(results.modules.sampleWithErrorInTestcaseAndAfter.skippedAtRuntime.length, 0);
           assert.strictEqual(results.modules.sampleWithErrorInTestcaseAndAfter.completed['demo test async'].assertions.length, 0);
           assert.strictEqual(results.modules.sampleWithErrorInTestcaseAndAfter.completed['demo test async'].errors, 1);
           assert.ok(results.modules.sampleWithErrorInTestcaseAndAfter.completed['demo test async'].lastError instanceof Error);
@@ -307,7 +307,7 @@ describe('testRunnerJUnitOutput', function() {
           assert.strictEqual(results.modules.sampleWithFailureInBeforeAndAfter.assertionsCount, 2);
           assert.strictEqual(results.modules.sampleWithFailureInBeforeAndAfter.errmessages.length, 2);
           assert.strictEqual(results.modules.sampleWithFailureInBeforeAndAfter.failedCount, 2);
-          assert.strictEqual(results.modules.sampleWithFailureInBeforeAndAfter.skipped.length, 0);
+          assert.strictEqual(results.modules.sampleWithFailureInBeforeAndAfter.skippedAtRuntime.length, 0);
         }
       },
       screenshots: {
