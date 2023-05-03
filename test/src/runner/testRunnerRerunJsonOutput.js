@@ -46,7 +46,7 @@ describe('testRunnerRerunJsonOutput', function() {
         return readDirPromise(testsPath[0]);
       })
       .then(list => {
-        const rerunJsonReportFile = path.resolve('output/rerunJsonReporter.json');
+        const rerunJsonReportFile = path.resolve('output/test_results.json');
         assert.ok(fileExistsSync(rerunJsonReportFile), 'The simple report file was not created.');
 
         return require(rerunJsonReportFile);
