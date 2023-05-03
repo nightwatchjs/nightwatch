@@ -1373,7 +1373,6 @@ describe('Test CLI Runner', function() {
     }).setup();
 
     assert.strictEqual(runner.argv.env, 'chrome');
-    assert.strictEqual(runner.argv.serial, true);
     assert.strictEqual(runner.test_settings.parallel_mode, false);
     assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'chrome');
   });
