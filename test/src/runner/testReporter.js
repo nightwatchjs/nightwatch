@@ -1,12 +1,12 @@
 const assert = require('assert');
 const path = require('path');
 const mockery = require('mockery');
-const mkpath = require('mkpath');
 const rimraf = require('rimraf');
 
 const common = require('../../common.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
+const {mkpath} = common.require('utils');
 const {readFilePromise, readDirPromise} = require('../../lib/utils.js');
 
 const MockServer = require('../../lib/mockserver.js');
@@ -113,7 +113,8 @@ describe('testReporter', function() {
           done();
         }
       },
-      output_folder: 'output'
+      output_folder: 'output',
+      reporter_options: {}
     });
 
     return reporter.writeReportToFile().then(function(result) {
@@ -385,7 +386,8 @@ describe('testReporter', function() {
           done();
         }
       },
-      output_folder: 'output'
+      output_folder: 'output',
+      reporter_options: {}
     });
 
     return reporter.writeReportToFile().then(function(result) {

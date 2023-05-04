@@ -18,7 +18,7 @@ describe('element().findAllByText() commands', function () {
       url: '/session/13521-10219-202/element/0/elements',
       postdata: {
         using: 'xpath',
-        value: '//*[text()="Email"]'
+        value: './/*[text()="Email"]'
       },
       method: 'POST',
       response: JSON.stringify({
@@ -64,7 +64,7 @@ describe('element().findAllByText() commands', function () {
       url: '/session/13521-10219-202/element/0/elements',
       postdata: {
         using: 'xpath',
-        value: '//*[contains(text(),"Email")]'
+        value: './/*[contains(text(),"Email")]'
       },
       method: 'POST',
       response: JSON.stringify({
@@ -97,7 +97,7 @@ describe('element().findAllByText() commands', function () {
       url: '/session/13521-10219-202/elements',
       postdata: {
         using: 'xpath',
-        value: '//*[text()="Email"]'
+        value: './/*[text()="Email"]'
       },
       method: 'POST',
       response: JSON.stringify({

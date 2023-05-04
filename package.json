@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@nightwatch/chai": "5.0.2",
-    "@nightwatch/html-reporter-template": "0.1.4",
+    "@nightwatch/html-reporter-template": "0.2.1",
     "@nightwatch/nightwatch-inspector": "^1.0.1",
     "ansi-to-html": "0.7.2",
     "aria-query": "^5.1.3",
@@ -38,7 +38,6 @@
     "lodash.pick": "4.4.0",
     "minimatch": "3.1.2",
     "minimist": "1.2.6",
-    "mkpath": "1.0.0",
     "mocha": "9.2.2",
     "nightwatch-axe-verbose": "^2.1.0",
     "open": "8.4.0",
