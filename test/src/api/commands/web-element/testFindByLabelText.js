@@ -5,7 +5,7 @@ const CommandGlobals = require('../../../../lib/globals/commands-w3c.js');
 const Element = require('../../../../../lib/element/index.js');
 
 describe('.findByLabelText() commands', function () {
-  before(function (done) {
+  beforeEach(function (done) {
     CommandGlobals.beforeEach.call(this, done);
   });
 
@@ -116,7 +116,7 @@ describe('.findByLabelText() commands', function () {
         response: JSON.stringify({
           value: [{'element-6066-11e4-a52e-4f735466cecf': '1'}]
         })
-      }, true, true)
+      }, true)
       .addMock({
         url: '/session/13521-10219-202/execute/sync',
         method: 'POST',
@@ -167,9 +167,8 @@ describe('.findByLabelText() commands', function () {
         method: 'POST',
         response: JSON.stringify({
           value: [{'element-6066-11e4-a52e-4f735466cecf': '1'}]
-        }),
-        times: 3
-      })
+        })
+      }, true)
       .addMock({
         url: '/session/13521-10219-202/execute/sync',
         method: 'POST',
@@ -185,7 +184,7 @@ describe('.findByLabelText() commands', function () {
         },
         method: 'POST',
         response: JSON.stringify({
-          value: [{'element-6066-11e4-a52e-4f735466cecf': '2'}]
+          value: {'element-6066-11e4-a52e-4f735466cecf': '2'}
         })
       }, true);
 
@@ -220,7 +219,7 @@ describe('.findByLabelText() commands', function () {
         url: '/session/13521-10219-202/element/0/elements',
         postdata: {
           using: 'xpath',
-          value: './/label[*[text() = "Email"]]'
+          value: './/label[*[text()="Email"]]'
         },
         method: 'POST',
         response: JSON.stringify({
@@ -235,7 +234,7 @@ describe('.findByLabelText() commands', function () {
         },
         method: 'POST',
         response: JSON.stringify({
-          value: [{'element-6066-11e4-a52e-4f735466cecf': '2'}]
+          value: {'element-6066-11e4-a52e-4f735466cecf': '2'}
         })
       }, true);
 
@@ -276,7 +275,7 @@ describe('.findByLabelText() commands', function () {
         url: '/session/13521-10219-202/element/0/elements',
         postdata: {
           using: 'xpath',
-          value: './/label[*[text() = "Email"]]'
+          value: './/label[*[text()="Email"]]'
         },
         method: 'POST',
         response: JSON.stringify({
