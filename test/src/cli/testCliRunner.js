@@ -1377,7 +1377,7 @@ describe('Test CLI Runner', function() {
     assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'chrome');
   });
 
-  it('Nightwatch Inspector - parallel argument enables running Chrome in debug mode parallaly', function() {
+  it('Nightwatch Inspector - parallel argument enables running Chrome in debug mode parallelly, function() {
     mockery.registerMock('./nightwatch_inspector.json', {
       test_settings: {
         'default': {
