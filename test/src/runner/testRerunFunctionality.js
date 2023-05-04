@@ -64,7 +64,7 @@ describe('testRerun', function () {
 
   it('Rerun with env varaible set and with setting env variable for json reporter', function () {
     process.env.NIGHTWATCH_RERUN_FAILED = 'true';
-    process.env.NIGHTWATCH_RERUN_FAILED_FILE = path.join(__dirname, '../../extra/rerunJsonReporter.json');
+    process.env.NIGHTWATCH_RERUN_REPORT_FILE = path.join(__dirname, '../../extra/rerunJsonReporter.json');
 
     return runTests({
     }, settings({
@@ -79,12 +79,12 @@ describe('testRerun', function () {
       assert.strictEqual(err, false);
 
       delete process.env.NIGHTWATCH_RERUN_FAILED;
-      delete process.env.NIGHTWATCH_RERUN_FAILED_FILE;
+      delete process.env.NIGHTWATCH_RERUN_REPORT_FILE;
     });
   });
 
   it('Rerun with cli flag and with setting env variable for json reporter', function () {
-    process.env.NIGHTWATCH_RERUN_FAILED_FILE = path.join(__dirname, '../../extra/rerunJsonReporter.json');
+    process.env.NIGHTWATCH_RERUN_REPORT_FILE = path.join(__dirname, '../../extra/rerunJsonReporter.json');
 
     return runTests({
       'rerun-failed': true
@@ -98,7 +98,7 @@ describe('testRerun', function () {
       }
     })).then(err => {
       assert.strictEqual(err, false);
-      delete process.env.NIGHTWATCH_RERUN_FAILED_FILE;
+      delete process.env.NIGHTWATCH_RERUN_REPORT_FILE;
     });
   });
 
