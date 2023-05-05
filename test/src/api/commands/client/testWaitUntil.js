@@ -252,5 +252,38 @@ describe('.waitUntil()', function () {
 
       this.client.start(done);
     });
+
+    it('client.waitUntil() function failure with custom waitForConditionPollInterval', function (done) {
+      let tries = 0;
+      let startTime = new Date().valueOf();
+      let timeDiff;
+      const maxTimeout = 100;
+      const client = this.client.api;
+      let result;
+
+      client.globals.waitForConditionPollInterval = 11;
+
+      this.client.api.waitUntil(function () {
+        assert.deepStrictEqual(this.options, client.options);
+        tries++;
+
+        return false;
+      }, maxTimeout, '200', 'custom error message', function(response) {
+        timeDiff = new Date().valueOf() - startTime;
+        result = response;
+      });
+
+      this.client.start(err => {
+        try {
+          assert.ok(err instanceof Error);
+          assert.ok(timeDiff <= maxTimeout+100, `Expected lower than ${maxTimeout}, but got ${timeDiff}`);
+          assert.strictEqual(result.status, -1);
+          assert.strictEqual(tries, 10);
+          done();
+        } catch (err) {
+          done(err);
+        }
+      });
+    });
   });
 });
