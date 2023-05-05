@@ -40,7 +40,7 @@ describe('testRerun', function () {
     }).then(err => {
       assert.ok(err instanceof Error);
       assert.strictEqual(err.message, 'Unable to find the Json reporter file to rerun failed tests');
-      assert.strictEqual(err.detailedErr, 'Configure the environment variable NIGHTWATCH_RERUN_FAILED_TEST with Json reporter file path');
+      assert.strictEqual(err.detailedErr, 'Configure the environment variable NIGHTWATCH_RERUN_REPORT_FILE with Json reporter file path');
     });
   });
 
@@ -56,7 +56,7 @@ describe('testRerun', function () {
     }).then(err => {
       assert.ok(err instanceof Error);
       assert.strictEqual(err.message, 'Unable to find the Json reporter file to rerun failed tests');
-      assert.strictEqual(err.detailedErr, 'Configure the environment variable NIGHTWATCH_RERUN_FAILED_TEST with Json reporter file path');
+      assert.strictEqual(err.detailedErr, 'Configure the environment variable NIGHTWATCH_RERUN_REPORT_FILE with Json reporter file path');
 
       delete process.env.NIGHTWATCH_RERUN_FAILED;
     });
