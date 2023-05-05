@@ -1,4 +1,4 @@
-import { Definition, NightwatchAPI, Awaitable } from './index';
+import {Definition, NightwatchAPI, Awaitable} from './index';
 
 export interface NightwatchExpectResult {
   value: null;

@@ -5,7 +5,7 @@ import {
   WebElementPromise
 } from 'selenium-webdriver';
 
-import { ElementProperties } from './page-object';
+import {ElementProperties} from './page-object';
 import {
   Element,
   Awaitable,

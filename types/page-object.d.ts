@@ -1,5 +1,5 @@
-import { MergeObjectsArray } from './utils';
-import { NightwatchCustomCommands } from './custom-command';
+import {MergeObjectsArray} from './utils';
+import {NightwatchCustomCommands} from './custom-command';
 import {
   ChromiumClientCommands,
   ElementCommands,
@@ -43,8 +43,8 @@ export interface SectionProperties {
    * }
    */
   elements?:
-    | { [name: string]: ElementProperties }
-    | { [name: string]: ElementProperties }[];
+  | { [name: string]: ElementProperties }
+  | { [name: string]: ElementProperties }[];
 
   /**
    * An object of named sections definitions defining the sections.
@@ -94,7 +94,7 @@ export type EnhancedSectionInstance<
   Commands = {},
   Props = {},
   Elements = {},
-  Sections = {}
+  Sections extends Record<string, PageObjectSection> = {}
 > = EnhancedPageObjectSections<Commands, Props, Elements, Sections> &
   Commands &
   ElementCommands &
@@ -142,18 +142,25 @@ export type EnhancedSectionInstance<
   > &
   Pick<Nightwatch, 'client' | 'api' | 'assert' | 'verify' | 'expect'>;
 
+interface PageObjectSection {
+  commands: Record<string, unknown>;
+  props: Record<string, unknown>;
+  elements: Record<string, unknown>;
+  sections: Record<string, PageObjectSection>;
+}
+
 export interface EnhancedPageObjectSections<
   Commands = {},
   Props = {},
   Elements = {},
-  Sections = {}
+  Sections extends Record<string, PageObjectSection> = {}
 > extends EnhancedPageObjectSharedFields<
-    {},
-    Commands,
-    Props,
-    Elements,
-    Sections
-  > {
+  {},
+  Commands,
+  Props,
+  Elements,
+  Sections
+> {
   /**
    * The element selector name
    *
@@ -168,7 +175,7 @@ interface EnhancedPageObjectSharedFields<
   Commands = {},
   Props = {},
   Elements = {},
-  Sections = {}
+  Sections extends Record<string, PageObjectSection> = {}
 > {
   /**
    * A map of Element objects
@@ -186,11 +193,11 @@ interface EnhancedPageObjectSharedFields<
    * (see [Enhanced Element Instances](https://github.com/nightwatchjs/nightwatch/wiki/Page-Object-API#enhanced-section-instances))
    */
   section: {
-    [key in keyof Sections]: EnhancedSectionInstance<
-      Required<MergeObjectsArray<Sections[key]['commands']>>,
-      Sections[key]['props'],
-      Sections[key]['elements'],
-      Sections[key]['sections']
+    [Key in keyof Sections]: EnhancedSectionInstance<
+      Required<MergeObjectsArray<Sections[Key]['commands']>>,
+      Sections[Key]['props'],
+      Sections[Key]['elements'],
+      Sections[Key]['sections']
     >;
   };
 
@@ -337,8 +344,8 @@ export interface PageObjectModel {
    * } satisfies PageObjectModel;
    */
   elements?:
-    | { [name: string]: ElementProperties }
-    | { [name: string]: ElementProperties }[];
+  | { [name: string]: ElementProperties }
+  | { [name: string]: ElementProperties }[];
 
   /**
    * An object or a function returning an object representing a container for user variables.
@@ -401,7 +408,7 @@ export type EnhancedPageObject<
   Commands = {},
   Props = {},
   Elements = {},
-  Sections = {}
+  Sections extends Record<string, PageObjectSection> = {}
 > = Nightwatch &
   SharedCommands &
   NightwatchCustomCommands &

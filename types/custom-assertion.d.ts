@@ -1,4 +1,4 @@
-import { NightwatchAPI, NightwatchClient } from './index';
+import {NightwatchAPI, NightwatchClient} from './index';
 
 interface NightwatchAssertionSuccessfulResult<T> {
   value?: T;

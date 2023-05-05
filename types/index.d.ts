@@ -17,8 +17,8 @@
 // TypeScript Version: 4.5
 // Nightwatch Version: 2.3.0
 
-import { Protocol } from 'devtools-protocol';
-import { expect as chaiExpect } from 'chai';
+import {Protocol} from 'devtools-protocol';
+import {expect as chaiExpect} from 'chai';
 import {
   By,
   Actions,
@@ -28,13 +28,12 @@ import {
 } from 'selenium-webdriver';
 
 import { Expect } from './expect';
+import { Assert } from './assertions';
 import { ElementFunction } from './web-element';
 import { NightwatchGlobals } from './globals';
+import { EnhancedPageObject } from './page-object';
 import { NightwatchCustomCommands } from './custom-command';
-import {
-  NightwatchAssertion,
-  NightwatchCustomAssertions
-} from './custom-assertion';
+import { NightwatchDesiredCapabilities, NightwatchOptions, NightwatchTestOptions } from './nightwatch-options';
 
 export * from './globals';
 export * from './expect';
@@ -60,231 +59,20 @@ export interface AppiumGeolocation {
   altitude?: number;
 }
 
-export interface ChromePerfLoggingPrefs {
-  /**
-   * Default: true. Whether or not to collect events from Network domain.
-   */
-  enableNetwork?: boolean | undefined;
-  /**
-   * Default: true. Whether or not to collect events from Page domain.
-   */
-  enablePage?: boolean | undefined;
-  /**
-   * A comma-separated string of Chrome tracing categories for which trace events should be collected.
-   * An unspecified or empty string disables tracing.
-   */
-  traceCategories?: string | undefined;
-  /**
-   * Default: 1000. The requested number of milliseconds between DevTools trace buffer usage events. For example, if 1000,
-   * then once per second, DevTools will report how full the trace buffer is. If a report indicates the buffer usage is 100%,
-   * a warning will be issued.
-   */
-  bufferUsageReportingInterval?: number | undefined;
-}
-
-export interface ChromeOptions {
-  /**
-   *     List of command-line arguments to use when starting Chrome. Arguments with an associated value should be separated by a '=' sign
-   * (e.g., ['start-maximized', 'user-data-dir=/tmp/temp_profile']).
-   */
-  args?: string[] | undefined;
-  /**
-   * Path to the Chrome executable to use (on Mac OS X, this should be the actual binary, not just the app. e.g.,
-   * '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')
-   */
-  binary?: string | undefined;
-  /**
-   * A list of Chrome extensions to install on startup. Each item in the list should be a base-64 encoded packed Chrome extension (.crx)
-   */
-  extensions?: string[] | undefined;
-  /**
-   * A dictionary with each entry consisting of the name of the preference and its value. These preferences are applied
-   * to the Local State file in the user data folder.
-   */
-  localState?: Record<string, string> | undefined;
-  /**
-   * A dictionary with each entry consisting of the name of the preference and its value. These preferences are only applied
-   * to the user profile in use.
-   */
-  prefs?: Record<string, string> | undefined;
-  /**
-   * Default: false. If false, Chrome will be quit when ChromeDriver is killed, regardless of whether the session is quit.
-   * If true, Chrome will only be quit if the session is quit (or closed). Note, if true, and the session is not quit,
-   * ChromeDriver cannot clean up the temporary user data directory that the running Chrome instance is using.
-   */
-  detach?: boolean | undefined;
-  /**
-   * An address of a Chrome debugger server to connect to, in the form of <hostname/ip:port>, e.g. '127.0.0.1:38947'
-   */
-  debuggerAddress?: string | undefined;
-  /**
-   * List of Chrome command line switches to exclude that ChromeDriver by default passes when starting Chrome.
-   * Do not prefix switches with --.
-   */
-  excludeSwitches?: string[] | undefined;
-  /**
-   * Directory to store Chrome minidumps . (Supported only on Linux.)
-   */
-  minidumpPath?: string | undefined;
-  /**
-   * A dictionary with either a value for “deviceName,” or values for “deviceMetrics” and “userAgent.” Refer to Mobile Emulation for more information.
-   */
-  mobileEmulation?: Record<string, string> | undefined;
-  /**
-   * An optional dictionary that specifies performance logging preferences. See below for more information.
-   */
-  perfLoggingPrefs?: ChromePerfLoggingPrefs | undefined;
-  /**
-   * A list of window types that will appear in the list of window handles. For access to <webview> elements, include "webview" in this list.
-   */
-  windowTypes?: string[] | undefined;
-}
-
-//  TODO: visit later
-export interface NightwatchDesiredCapabilities {
-  /**
-   * The name of the browser being used; examples: {chrome|firefox|safari|edge|internet explorer|android|iPhone|iPad|opera|brave}.
-   */
-  browserName?: string | null;
-
-  /**
-   * The browser version, or the empty string if unknown.
-   */
-  version?: string | undefined;
-
-  /**
-   * A key specifying which platform the browser should be running on. This value should be one of {WINDOWS|XP|VISTA|MAC|LINUX|UNIX|ANDROID}.
-   * When requesting a new session, the client may specify ANY to indicate any available platform may be used.
-   * For more information see [GridPlatforms (https://code.google.com/p/selenium/wiki/GridPlatforms)]
-   */
-  platform?: string | undefined;
-
-  /**
-   * Whether the session supports taking screenshots of the current page.
-   */
-  takesScreenShot?: boolean | undefined;
-
-  /**
-   * Whether the session can interact with modal popups, such as window.alert and window.confirm.
-   */
-  handlesAlerts?: boolean | undefined;
-
-  /**
-   * Whether the session supports CSS selectors when searching for elements.
-   */
-  cssSelectorsEnabled?: boolean | undefined;
-
-  /**
-   * Whether the session supports executing user supplied JavaScript in the context of the current page (only on HTMLUnitDriver).
-   */
-  javascriptEnabled?: boolean | undefined;
-
-  /**
-   * Whether the session can interact with database storage.
-   */
-  databaseEnabled?: boolean | undefined;
-
-  /**
-   * Whether the session can set and query the browser's location context.
-   */
-  locationContextEnabled?: boolean | undefined;
-
-  /**
-   * Whether the session can interact with the application cache.
-   */
-  applicationCacheEnabled?: boolean | undefined;
-
-  /**
-   * Whether the session can query for the browser's connectivity and disable it if desired.
-   */
-  browserConnectionEnabled?: boolean | undefined;
-
-  /**
-   * Whether the session supports interactions with storage objects (http://www.w3.org/TR/2009/WD-webstorage-20091029/).
-   */
-  webStorageEnabled?: boolean | undefined;
-
-  /**
-   * Whether the session should accept all SSL certs by default.
-   */
-  acceptSslCerts?: boolean | undefined;
-
-  /**
-   * Whether the session can rotate the current page's current layout between portrait and landscape orientations (only applies to mobile platforms).
-   */
-  rotatable?: boolean | undefined;
-
-  /**
-   * Whether the session is capable of generating native events when simulating user input.
-   */
-  nativeEvents?: boolean | undefined;
-
-  /**
-   * What the browser should do with an unhandled alert before throwing out the UnhandledAlertException. Possible values are "accept", "dismiss" and "ignore"
-   */
-  unexpectedAlertBehaviour?: string | undefined;
-
-  /**
-   * Allows the user to specify whether elements are scrolled into the viewport for interaction to align with the top (0) or bottom (1) of the viewport.
-   * The default value is to align with the top of the viewport. Supported in IE and Firefox (since 2.36)
-   */
-  elementScrollBehaviour?: number | undefined;
-
-  /**
-   * A JSON object describing the logging level of different components in the browser, the driver, or any intermediary WebDriver servers.
-   * Available values for most loggers are "OFF", "SEVERE", "WARNING", "INFO", "CONFIG", "FINE", "FINER", "FINEST", "ALL".
-   * This produces a JSON object looking something like: {"loggingPrefs": {"driver": "INFO", "server": "OFF", "browser": "FINE"}}.
-   */
-  loggingPrefs?:
-    | {
-        browser?: string | undefined;
-        driver?: string | undefined;
-        server?: string | undefined;
-      }
-    | undefined;
-  /**
-   * This is a list of all the Chrome-specific desired capabilities.
-   */
-  chromeOptions?: ChromeOptions | undefined;
-}
-
-export interface NightwatchScreenshotOptions {
-  enabled?: boolean | undefined;
-  filename_format: ({
-    testSuite,
-    testCase,
-    isError,
-    dateObject
-  }?: {
-    testSuite?: string;
-    testCase?: string;
-    isError?: boolean;
-    dateObject?: Date;
-  }) => string;
-  on_failure?: boolean | undefined;
-  on_error?: boolean | undefined;
-  path?: string | undefined;
-}
-
 export interface NightwatchTestRunner {
   type?: string | undefined;
   options?:
-    | {
-        ui?: string | undefined;
-        feature_path?: string | undefined;
-        auto_start_session?: boolean | undefined;
-        parallel?: number | undefined;
-        reporter?: string | undefined;
-        reporterOptions?: { [key: string]: any };
-      }
-    | undefined;
+  | {
+    ui?: string | undefined;
+    feature_path?: string | undefined;
+    auto_start_session?: boolean | undefined;
+    parallel?: number | undefined;
+    reporter?: string | undefined;
+    reporterOptions?: { [key: string]: any };
+  }
+  | undefined;
 }
 
-export interface NightwatchTestWorker {
-  enabled: boolean;
-  workers: string | number;
-  node_options?: string | string[] | undefined;
-}
 
 export interface TimeoutOptions {
   /**
@@ -297,20 +85,11 @@ export interface TimeoutOptions {
   retry_attempts: number;
 }
 
-
-
 export interface NightwatchTestSuite {
   name: string;
   module: string;
   group: string;
   results: any;
-}
-
-export interface NightwatchAssertionsError {
-  name: string;
-  message: string;
-  showDiff: boolean;
-  stack: string;
 }
 
 export interface NightwatchEnsureResult {
@@ -452,655 +231,6 @@ export interface Ensure {
   urlMatches(regex: RegExp): Awaitable<NightwatchAPI, NightwatchEnsureResult>;
 }
 
-export interface Assert<T, U = unknown>
-  extends NightwatchAssertion<T, U>,
-    NightwatchAssertions,
-    NightwatchNodeAssertions {}
-
-export interface NightwatchAssertions
-  extends NightwatchCommonAssertions,
-    NightwatchCustomAssertions {
-  /**
-   * Negates any of assertions following in the chain.
-   */
-  not: Omit<NightwatchAssertions, 'not'>;
-}
-
-export interface NightwatchAssertionsResult<T> {
-  value: T;
-  status: 0;
-  returned: 1;
-  passed: true;
-}
-
-export interface NightwatchCommonAssertions {
-  /**
-   * Checks if the given attribute of an element contains the expected value.
-   *
-   * ```
-   *    this.demoTest = function (client) {
-   *      browser.assert.attributeContains('#someElement', 'href', 'google.com');
-   *    };
-   * ```
-   */
-  attributeContains(
-    selector: Definition,
-    attribute: string,
-    expected: string,
-    message?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
-
-  /**
-   * Checks if the given attribute of an element has the expected value.
-   *
-   * ```
-   *    this.demoTest = function (client) {
-   *      browser.assert.attributeEquals('body', 'data-attr', 'some value');
-   *    };
-   * ```
-   */
-  attributeEquals(
-    selector: Definition,
-    attribute: string,
-    expected: string,
-    message?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
-
-  /**
-   * Check if an element's attribute value matches a regular expression.
-   *
-   * @example
-   *
-   * ```
-   *    this.demoTest = function (browser) {
-   *      browser.assert.attributeMatches('body', 'data-attr', '(value)');
-   *    };
-   * ```
-   *
-   */
-  attributeMatches(
-    selector: Definition,
-    attribute: string,
-    regex: string | RegExp,
-    msg?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
-
-  /**
-   * Checks if the specified css property of a given element has the expected value.
-   *
-   * ```
-   *    this.demoTest = function (client) {
-   *      browser.assert.cssProperty('#main', 'display', 'block');
-   *    };
-   * ```
-   */
-  cssProperty(
-    selector: Definition,
-    cssProperty: string,
-    expected: string | number,
-    msg?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string | number>>;
-
-  /**
-   * Checks if the specified DOM property of a given element has the expected value.
-   * For all the available DOM element properties, consult the [Element doc at MDN](https://developer.mozilla.org/en-US/docs/Web/API/element).
-   * Several properties can be specified (either as an array or command-separated list). Nightwatch will check each one for presence.
-   */
-  domPropertyContains(
-    selector: Definition,
-    domProperty: string,
-    expected: string | number,
-    msg?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<any>>;
-
-  /**
-   * Checks if the specified DOM property of a given element has the expected value.
-   * For all the available DOM element properties, consult the [Element doc at MDN](https://developer.mozilla.org/en-US/docs/Web/API/element).
-   * If the result value is JSON object or array, a deep equality comparison will be performed.
-   */
-  domPropertyEquals(
-    selector: Definition,
-    domProperty: string,
-    expected: string | number,
-    msg?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<any>>;
-
-  /**
-   * Check if specified DOM property value of a given element matches a regex.
-   * For all the available DOM element properties, consult the [Element doc at MDN](https://developer.mozilla.org/en-US/docs/Web/API/element).
-   */
-  domPropertyMatches(
-    selector: Definition,
-    domProperty: string,
-    expected: string | RegExp,
-    msg?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<any>>;
-
-  /**
-   * Checks if the number of elements specified by a selector is equal to a given value.
-   *
-   * @example
-   *
-   * this.demoTest = function (browser) {
-   *   browser.assert.elementsCount('div', 10);
-   *   browser.assert.not.elementsCount('div', 10);
-   * }
-   *
-   */
-  elementsCount(
-    selector: Definition,
-    count: number,
-    msg?: string
-  ): Awaitable<
-    NightwatchAPI,
-    NightwatchAssertionsResult<JSON_WEB_OBJECT[]> & {
-      WebdriverElementId: string;
-    }
-  >;
-
-  /**
-   * Checks if the given element exists in the DOM.
-   *
-   * ```
-   *    this.demoTest = function (client) {
-   *      browser.assert.elementPresent("#main");
-   *    };
-   * ```
-   */
-  elementPresent(
-    selector: Definition,
-    msg?: string
-  ): Awaitable<
-    NightwatchAPI,
-    NightwatchAssertionsResult<Array<Omit<JSON_WEB_OBJECT, 'getId'>>>
-  >;
-
-  /**
-   * Checks if the given element does not exists in the DOM.
-   *
-   * @example
-   * ```
-   *    this.demoTest = function (browser) {
-   *      browser.assert.elementNotPresent(".should_not_exist");
-   *    };
-   * ```
-   *
-   * @deprecated In favour of `assert.not.elementPresent()`.
-   */
-  elementNotPresent(
-    selector: Definition,
-    msg?: string
-  ): Awaitable<
-    NightwatchAPI,
-    NightwatchAssertionsResult<Array<Omit<JSON_WEB_OBJECT, 'getId'>>>
-  >;
-
-  /**
-   * Checks if the given element does not have the specified CSS class.
-   *
-   * ```
-   *    this.demoTest = function (browser) {
-   *      browser.assert.cssClassNotPresent('#main', 'container');
-   *    };
-   * ```
-   *
-   * @deprecated In favour of `assert.not.hasClass()`.
-   */
-  cssClassNotPresent(
-    selector: Definition,
-    className: string,
-    msg?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
-
-  /**
-   * Checks if the given element has the specified CSS class.
-   *
-   * ```
-   *    this.demoTest = function (client) {
-   *      browser.assert.cssClassPresent('#main', 'container');
-   *    };
-   * ```
-   *
-   * @deprecated In favour of `assert.hasClass()`.
-   */
-  cssClassPresent(
-    selector: Definition,
-    className: string,
-    message?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
-
-  /**
-   * Checks if the given element has the specified CSS class.
-   *
-   * @example
-   *
-   *
-   * ```
-   *    this.demoTest = function (browser) {
-   *      browser.assert.hasClass('#main', 'container');
-   *      browser.assert.hasClass('#main', ['visible', 'container']);
-   *      browser.assert.hasClass('#main', 'visible container');
-   *    };
-   * ```
-   *
-   */
-  hasClass(
-    selector: Definition,
-    className: string | string[],
-    msg?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
-
-  /**
-   * Checks if the given element contains the specified DOM attribute.
-   *
-   * Equivalent of: https://developer.mozilla.org/en-US/docs/Web/API/Element/hasAttribute
-   *
-   * @example
-   *
-   * ```
-   *    this.demoTest = function (browser) {
-   *      browser.assert.hasAttribute('#main', 'data-track');
-   *    };
-   * ```
-   *
-   */
-  hasAttribute(
-    selector: Definition,
-    expectedAttribute: string,
-    msg?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string[]>>;
-
-  /**
-   * Checks if the given element is enabled (as indicated by the 'disabled' attribute).
-   *
-   * @example
-   *  this.demoTest = function (browser) {
-   *    browser.assert.enabled('.should_be_enabled');
-   *    browser.assert.enabled({selector: '.should_be_enabled'});
-   *    browser.assert.enabled({selector: '.should_be_enabled', suppressNotFoundErrors: true});
-   *  };
-   */
-  enabled(
-    selector: Definition,
-    message?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<boolean>>;
-
-  /**
-   * Checks if the given element is selected.
-   *
-   * @example
-   *  this.demoTest = function (browser) {
-   *    browser.assert.selected('.should_be_selected');
-   *    browser.assert.selected({selector: '.should_be_selected'});
-   *    browser.assert.selected({selector: '.should_be_selected', suppressNotFoundErrors: true});
-   *  };
-   */
-  selected(
-    selector: Definition,
-    message?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<boolean>>;
-
-  /**
-   * Checks if the given element contains the specified text.
-   *
-   * ```
-   *    this.demoTest = function (client) {
-   *      browser.assert.containsText('#main', 'The Night Watch');
-   *    };
-   * ```
-   *
-   * @deprecated In favour of `assert.textContains()`.
-   */
-  containsText(
-    selector: Definition,
-    expectedText: string,
-    message?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
-
-  /**
-   * Checks if the given element contains the specified text.
-   *
-   * @example
-   * ```
-   *   this.demoTest = function (browser) {
-   *     browser.assert.textContains('#main', 'The Night Watch');
-   *   };
-   * ```
-   *
-   */
-  textContains(
-    selector: Definition,
-    expectedText: string,
-    msg?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
-
-  /**
-   * Check if an element's inner text equals the expected text.
-   *
-   * @example
-   *
-   * ```
-   *   this.demoTest = function (browser) {
-   *     browser.assert.textEquals('#main', 'The Night Watch');
-   *   };
-   * ```
-   *
-   */
-  textEquals(
-    selector: Definition,
-    expectedText: string,
-    msg?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
-
-  /**
-   * Check if an elements inner text matches a regular expression.
-   *
-   * @example
-   *
-   * ```
-   *   this.demoTest = function (browser) {
-   *     browser.assert.textMatches('#main', '^Nightwatch');
-   *   };
-   * ```
-   *
-   */
-  textMatches(
-    selector: Definition,
-    regex: string | RegExp,
-    msg?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
-
-  /**
-   * Checks if the page title equals the given value.
-   *
-   * ```
-   *    this.demoTest = function (client) {
-   *      browser.assert.title("Nightwatch.js");
-   *    };
-   * ```
-   *
-   * @deprecated In favour of `titleEquals()`.
-   */
-  title(
-    expected: string,
-    message?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
-
-  /**
-   * Checks if the page title equals the given value.
-   *
-   * ```
-   *    this.demoTest = function (client) {
-   *      browser.assert.title("Nightwatch.js");
-   *    };
-   * ```
-   */
-  titleContains(
-    expected: string,
-    message?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
-
-  /**
-   * Checks if the page title equals the given value.
-   * @since 2.0
-   * ```
-   *    this.demoTest = function (client) {
-   *      browser.assert.titleEquals("Nightwatch.js");
-   *    };
-   * ```
-   */
-  titleEquals(
-    expected: string,
-    message?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
-
-  /**
-   * Checks if the current title matches a regular expression.
-   *
-   * @example
-   *
-   * ```
-   *    this.demoTest = function (client) {
-   *      browser.assert.titleMatches('^Nightwatch');
-   *    };
-   * ```
-   *
-   */
-  titleMatches(
-    regex: string | RegExp,
-    msg?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
-
-  /**
-   * Checks if the current URL contains the given value.
-   *
-   * ```
-   *    this.demoTest = function (client) {
-   *      browser.assert.urlContains('google');
-   *    };
-   * ```
-   */
-  urlContains(
-    expectedText: string,
-    message?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
-
-  /**
-   * Checks if the current url equals the given value.
-   *
-   * ```
-   *    this.demoTest = function (client) {
-   *      browser.assert.urlEquals('https://www.google.com');
-   *    };
-   * ```
-   */
-  urlEquals(
-    expected: string,
-    message?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
-
-  /**
-   * Checks if the current url matches a regular expression.
-   *
-   * @example
-   * ```
-   *    this.demoTest = function (client) {
-   *      browser.assert.urlMatches('^https');
-   *    };
-   * ```
-   *
-   */
-  urlMatches(
-    regex: string | RegExp,
-    msg?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
-
-  /**
-   * Checks if the given form element's value equals the expected value.
-   *
-   * ```
-   *    this.demoTest = function (client) {
-   *      browser.assert.value("form.login input[type=text]", "username");
-   *    };
-   * ```
-   *
-   * @deprecated In favour of `assert.valueEquals()`.
-   */
-  value(
-    selector: Definition,
-    expectedText: string,
-    message?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
-
-  /**
-   * Checks if the given form element's value contains the expected value.
-   *
-   * ```
-   *    this.demoTest = function (client) {
-   *      browser.assert.valueContains("form.login input[type=text]", "username");
-   *    };
-   * ```
-   */
-  valueContains(
-    selector: Definition,
-    expectedText: string,
-    message?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
-
-  /**
-   * Checks if the given form element's value equals the expected value.
-   *
-   * The existing .assert.value() command.
-   *
-   * @example
-   * ```
-   *    this.demoTest = function (browser) {
-   *      browser.assert.valueEquals("form.login input[type=text]", "username");
-   *    };
-   * ```
-   *
-   */
-  valueEquals(
-    selector: Definition,
-    expected: string,
-    msg?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
-
-  /**
-   * Checks if the given element is not visible on the page.
-   *
-   * @example
-   * ```
-   *    this.demoTest = function (browser) {
-   *      browser.assert.hidden('.should_not_be_visible');
-   *    };
-   * ```
-   *
-   * @deprecated In favour of `assert.not.visible()`.
-   */
-  hidden(
-    selector: Definition,
-    msg?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<boolean>>;
-
-  /**
-   * Checks if the given element is visible on the page.
-   *
-   * ```
-   *    this.demoTest = function (client) {
-   *      browser.assert.visible(".should_be_visible");
-   *    };
-   * ```
-   */
-  visible(
-    selector: Definition,
-    message?: string
-  ): Awaitable<NightwatchAPI, NightwatchAssertionsResult<boolean>>;
-
-  NightwatchAssertionsError: NightwatchAssertionsError;
-}
-
-export interface NightwatchNodeAssertionsResult {
-  value: null;
-  returned: 1;
-}
-
-export interface NightwatchNodeAssertions {
-  // The following definitions are taken from @types/assert
-
-  fail(
-    message?: string | Error
-  ): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
-  fail(
-    actual: any,
-    expected: any,
-    message?: string | Error,
-    operator?: string
-  ): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
-
-  ok(
-    value: any,
-    message?: string | Error
-  ): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
-
-  equal(
-    actual: any,
-    expected: any,
-    message?: string | Error
-  ): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
-  notEqual(
-    actual: any,
-    expected: any,
-    message?: string | Error
-  ): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
-
-  deepEqual(
-    actual: any,
-    expected: any,
-    message?: string | Error
-  ): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
-  notDeepEqual(
-    actual: any,
-    expected: any,
-    message?: string | Error
-  ): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
-
-  strictEqual(
-    actual: any,
-    expected: any,
-    message?: string | Error
-  ): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
-  notStrictEqual(
-    actual: any,
-    expected: any,
-    message?: string | Error
-  ): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
-
-  deepStrictEqual(
-    actual: any,
-    expected: any,
-    message?: string | Error
-  ): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
-  notDeepStrictEqual(
-    actual: any,
-    expected: any,
-    message?: string | Error
-  ): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
-
-  throws(
-    block: () => any,
-    message?: string | Error
-  ): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
-  doesNotThrow(
-    block: () => any,
-    message?: string | Error
-  ): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
-
-  ifError(
-    value: any
-  ): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
-
-  rejects(
-    block: (() => Promise<any>) | Promise<any>,
-    message?: string | Error
-  ): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
-  doesNotReject(
-    block: (() => Promise<any>) | Promise<any>,
-    message?: string | Error
-  ): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
-
-  match(
-    value: string,
-    regExp: RegExp,
-    message?: string | Error
-  ): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
-  doesNotMatch(
-    value: string,
-    regExp: RegExp,
-    message?: string | Error
-  ): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
-}
-
 export interface ElementProperties {
   /**
    * the element selector name
@@ -1196,17 +326,17 @@ export interface NightwatchLogEntry {
    * Severity level
    */
   level:
-    | 'ALL'
-    | 'DEBUG'
-    | 'FINE'
-    | 'FINER'
-    | 'FINEST'
-    | 'INFO'
-    | 'OFF'
-    | 'SEVERE'
-    | 'WARNING'
-    | Level
-    | number;
+  | 'ALL'
+  | 'DEBUG'
+  | 'FINE'
+  | 'FINER'
+  | 'FINEST'
+  | 'INFO'
+  | 'OFF'
+  | 'SEVERE'
+  | 'WARNING'
+  | Level
+  | number;
 }
 
 export interface Level {
@@ -1369,9 +499,9 @@ export interface NightwatchApiCommands {
 
 export interface NightwatchAPI
   extends SharedCommands,
-    WebDriverProtocol,
-    NightwatchCustomCommands,
-    NightwatchApiCommands {
+  WebDriverProtocol,
+  NightwatchCustomCommands,
+  NightwatchApiCommands {
   baseUrl: string;
   assert: Assert;
   actions(options?: { async?: boolean; bridge?: boolean }): Actions;
@@ -1406,12 +536,12 @@ export interface NightwatchAPI
 }
 
 // tslint:disable-next-line:no-empty-interface
-export interface NightwatchCustomPageObjects {}
+export interface NightwatchCustomPageObjects { }
 
 export interface NightwatchBrowser
   extends NightwatchAPI,
-    NightwatchComponentTestingCommands,
-    NightwatchCustomCommands {}
+  NightwatchComponentTestingCommands,
+  NightwatchCustomCommands { }
 
 export interface NightwatchComponentTestingCommands {
   importScript(
@@ -1438,7 +568,7 @@ export interface NightwatchComponentTestingCommands {
 }
 
 // tslint:disable-next-line
-export interface NightwatchElement extends WebElement {}
+export interface NightwatchElement extends WebElement { }
 
 export type NightwatchTest = (browser?: NightwatchBrowser) => void;
 export interface NightwatchTestFunctions {
@@ -1734,19 +864,6 @@ declare global {
   const afterEach: NightwatchBddTestHook;
 }
 
-/**
- * Performs an assertion
- *
- */
-export type NightwatchAssert = (
-  passed: boolean,
-  receivedValue?: any,
-  expectedValue?: any,
-  message?: string,
-  abortOnFailure?: boolean,
-  originalStackTrace?: string
-) => void;
-
 export interface NightwatchClient extends Nightwatch {
   api: NightwatchAPI;
   locateStrategy: LocateStrategy;
@@ -1825,7 +942,7 @@ export interface Cookie {
   httpOnly?: boolean;
 }
 
-export interface SharedCommands extends ClientCommands, ElementCommands {}
+export interface SharedCommands extends ClientCommands, ElementCommands { }
 
 export interface WindowPosition {
   x: number;
@@ -1833,7 +950,7 @@ export interface WindowPosition {
 }
 
 // tslint:disable-next-line
-export interface NightwatchPosition extends WindowPosition {}
+export interface NightwatchPosition extends WindowPosition { }
 
 export interface WindowSize {
   height: number;
@@ -1841,7 +958,7 @@ export interface WindowSize {
 }
 
 // tslint:disable-next-line
-export interface NightwatchSize extends WindowSize {}
+export interface NightwatchSize extends WindowSize { }
 
 export type WindowSizeAndPosition = WindowPosition & WindowSize;
 
@@ -2689,10 +1806,10 @@ export interface ClientCommands extends ChromiumClientCommands {
       | ((this: NightwatchAPI) => undefined | Promise<any>)
       | ((this: NightwatchAPI, done: () => void) => void)
       | ((
-          this: NightwatchAPI,
-          client: NightwatchAPI,
-          done: () => void
-        ) => void),
+        this: NightwatchAPI,
+        client: NightwatchAPI,
+        done: () => void
+      ) => void),
     waitTimeMs?: number,
     retryInterval?: number,
     callback?: (
@@ -5478,18 +4595,18 @@ export interface AppiumCommands {
 
 export interface WebDriverProtocol
   extends WebDriverProtocolSessions,
-    WebDriverProtocolNavigation,
-    WebDriverProtocolCommandContexts,
-    WebDriverProtocolElements,
-    WebDriverProtocolElementState,
-    WebDriverProtocolElementInteraction,
-    WebDriverProtocolElementLocation,
-    WebDriverProtocolDocumentHandling,
-    WebDriverProtocolCookies,
-    WebDriverProtocolUserActions,
-    WebDriverProtocolUserPrompts,
-    WebDriverProtocolScreenCapture,
-    WebDriverProtocolMobileRelated {}
+  WebDriverProtocolNavigation,
+  WebDriverProtocolCommandContexts,
+  WebDriverProtocolElements,
+  WebDriverProtocolElementState,
+  WebDriverProtocolElementInteraction,
+  WebDriverProtocolElementLocation,
+  WebDriverProtocolDocumentHandling,
+  WebDriverProtocolCookies,
+  WebDriverProtocolUserActions,
+  WebDriverProtocolUserPrompts,
+  WebDriverProtocolScreenCapture,
+  WebDriverProtocolMobileRelated { }
 
 export interface WebDriverProtocolSessions {
   /**
