@@ -253,7 +253,7 @@ describe('.waitUntil()', function () {
       this.client.start(done);
     });
 
-    it.only('client.waitUntil() function failure with custom waitForConditionPollInterval', function (done) {
+    it('client.waitUntil() function failure with custom waitForConditionPollInterval', function (done) {
       let tries = 0;
       let startTime = new Date().valueOf();
       let timeDiff;
