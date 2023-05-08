@@ -10,11 +10,9 @@ interface NightwatchAssertionFailedResult<T> {
 }
 
 /**
- * Abstract assertion class that will subclass all defined assertions
- *
  * @see https://nightwatchjs.org/guide/extending-nightwatch/adding-custom-assertions.html
  */
-export interface NightwatchAssertion<T, U = unknown> {
+export interface NightwatchAssertion<T> {
   /**
    * If the custom commands operates with DOM elements, this options should be set
    */
@@ -58,13 +56,13 @@ export interface NightwatchAssertion<T, U = unknown> {
   /**
    * Called with the result object of the command to retrieve the value which is to be evaluated
    */
-  value?(result: NightwatchAssertionSuccessfulResult<U>): T;
+  value?(result: NightwatchAssertionSuccessfulResult<T>): T;
 
   /**
    * The command which is to be executed by the assertion runner; Nightwatch api is available as this.api
    */
   command(
-    callback: (result: NightwatchAssertionSuccessfulResult<U>) => void
+    callback: (result: NightwatchAssertionSuccessfulResult<T>) => void
   ): unknown;
 
   /**
@@ -102,7 +100,7 @@ export interface NightwatchAssertion<T, U = unknown> {
    * When defined, this method is called by the assertion runner with the command result, to determine if the
    * value can be retrieved successfully from the result object
    */
-  failure?(result: NightwatchAssertionFailedResult<U>): boolean;
+  failure?(result: NightwatchAssertionFailedResult<T>): boolean;
 
   /**
    * When defined, this method is called by the assertion runner with the command result to determine the actual
