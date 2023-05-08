@@ -13,6 +13,7 @@
     "type": "git",
     "url": "git+https://github.com/nightwatchjs/nightwatch.git"
   },
+  "types": "./lib/index.d.ts",
   "dependencies": {
     "@nightwatch/chai": "5.0.2",
     "@nightwatch/html-reporter-template": "0.2.1",
