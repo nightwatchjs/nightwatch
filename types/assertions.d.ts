@@ -167,7 +167,7 @@ export interface NightwatchCommonAssertions {
 		msg?: string
 	): Awaitable<
 		NightwatchAPI,
-		NightwatchAssertionsResult<Array<Omit<JSON_WEB_OBJECT, 'getId'>>>
+		NightwatchAssertionsResult<ElementResult[]>
 	>;
 
 	/**
