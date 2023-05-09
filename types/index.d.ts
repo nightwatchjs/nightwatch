@@ -499,6 +499,11 @@ export interface NightwatchApiCommands {
   isEdge(): boolean;
   isInternetExplorer(): boolean;
   isOpera(): boolean;
+
+  /**
+   * Whether or not Nightwatch is being used to connect to an Appium server.
+   */
+  isAppiumClient(): boolean;
 }
 
 export interface NightwatchAPI
@@ -6073,6 +6078,7 @@ export default _default;
 
 declare global {
   const browser: NightwatchBrowser;
+  const app: NightwatchAPI;
   const element: ElementFunction;
   const by: By;
   const By: By;
