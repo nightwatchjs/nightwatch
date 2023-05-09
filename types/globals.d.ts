@@ -1,4 +1,4 @@
-import { NightwatchBrowser } from './index';
+import { NightwatchAPI } from './index';
 
 /**
  * @see https://nightwatchjs.org/guide/concepts/test-globals.html#external-test-globals
@@ -173,7 +173,7 @@ export interface NightwatchGlobals {
    * }
    */
   beforeEach?(
-    browser: NightwatchBrowser,
+    browser: NightwatchAPI,
     done: (...args: unknown[]) => void
   ): void;
 
@@ -186,7 +186,7 @@ export interface NightwatchGlobals {
    * }
    */
   afterEach?(
-    browser: NightwatchBrowser,
+    browser: NightwatchAPI,
     done: (...args: unknown[]) => void
   ): void;
 
@@ -198,7 +198,7 @@ export interface NightwatchGlobals {
    *   return Promise.resolve();
    * }
    */
-  onBrowserNavigate?(browser: NightwatchBrowser): Promise<void>;
+  onBrowserNavigate?(browser: NightwatchAPI): Promise<void>;
 
   /**
    * Called right before the command .quit() is finished
@@ -208,5 +208,5 @@ export interface NightwatchGlobals {
    *   return Promise.resolve();
    * }
    */
-  onBrowserQuit?(browser: NightwatchBrowser): Promise<void>;
+  onBrowserQuit?(browser: NightwatchAPI): Promise<void>;
 }
