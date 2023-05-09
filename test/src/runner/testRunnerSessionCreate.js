@@ -3,8 +3,8 @@ const assert = require('assert');
 const common = require('../../common.js');
 const MockServer = require('../../lib/mockserver.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
-const { settings } = common;
-const { runTests } = common.require('index.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('testRunnerSessionCreate', function () {
   before(function (done) {
@@ -35,7 +35,7 @@ describe('testRunnerSessionCreate', function () {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        capabilities: { firstMatch: [{}], alwaysMatch: { browserName: 'firefox', 'nightwatch:options': { name: 'test-Name' } } }
+        capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'firefox', 'nightwatch:options': {name: 'test-Name'}}}
       }),
       response: JSON.stringify({
         value: {
@@ -49,7 +49,7 @@ describe('testRunnerSessionCreate', function () {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        capabilities: { firstMatch: [{}], alwaysMatch: { browserName: 'firefox', 'nightwatch:options': { name: 'test-Name' } } }
+        capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'firefox', 'nightwatch:options': {name: 'test-Name'}}}
       }),
       response: JSON.stringify({
         value: {
@@ -72,7 +72,7 @@ describe('testRunnerSessionCreate', function () {
       }
     };
 
-    return runTests({ 'reuse-browser': true, source: testsPath }, settings({
+    return runTests({'reuse-browser': true, source: testsPath}, settings({
       desiredCapabilities: {
         'nightwatch:options': {
           name: 'test-Name'
@@ -98,7 +98,7 @@ describe('testRunnerSessionCreate', function () {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        capabilities: { firstMatch: [{}], alwaysMatch: { browserName: 'firefox', 'nightwatch:options': { name: 'test-Name' } } }
+        capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'firefox', 'nightwatch:options': {name: 'test-Name'}}}
       }),
       response: JSON.stringify({
         value: {
@@ -112,7 +112,7 @@ describe('testRunnerSessionCreate', function () {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        capabilities: { firstMatch: [{}], alwaysMatch: { browserName: 'firefox', 'nightwatch:options': { name: 'test-Name' } } }
+        capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'firefox', 'nightwatch:options': {name: 'test-Name'}}}
       }),
       response: JSON.stringify({
         value: {
@@ -136,7 +136,7 @@ describe('testRunnerSessionCreate', function () {
       'fail-fast': true
     }, settings({
       desiredCapabilities: {
-        'nightwatch:options': { name: 'test-Name' }
+        'nightwatch:options': {name: 'test-Name'}
       },
       selenium_host: null,
       webdriver: {
@@ -164,7 +164,7 @@ describe('testRunnerSessionCreate', function () {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        capabilities: { firstMatch: [{}], alwaysMatch: { browserName: 'firefox', 'nightwatch:options': { name: 'test-Name' } } }
+        capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'firefox', 'nightwatch:options': {name: 'test-Name'}}}
       }),
       response: JSON.stringify({
         value: {
@@ -178,7 +178,7 @@ describe('testRunnerSessionCreate', function () {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        capabilities: { firstMatch: [{}], alwaysMatch: { browserName: 'firefox', 'nightwatch:options': { name: 'test-Name' } } }
+        capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'firefox', 'nightwatch:options': {name: 'test-Name'}}}
       }),
       response: JSON.stringify({
         value: {
@@ -201,7 +201,7 @@ describe('testRunnerSessionCreate', function () {
       source: testsPath
     }, settings({
       desiredCapabilities: {
-        'nightwatch:options': { name: 'test-Name' }
+        'nightwatch:options': {name: 'test-Name'}
       },
       selenium_host: null,
       webdriver: {
@@ -345,8 +345,8 @@ describe('testRunnerSessionCreate', function () {
       url: '/session',
       statusCode: 200,
       postdata: JSON.stringify({
-        desiredCapabilities: { browserName: 'firefox', name: 'first-test' },
-        capabilities: { alwaysMatch: { browserName: 'firefox' } }
+        desiredCapabilities: {browserName: 'firefox', name: 'first-test'},
+        capabilities: {alwaysMatch: {browserName: 'firefox'}}
       }),
       response: JSON.stringify({
         status: 0,
@@ -398,8 +398,8 @@ describe('testRunnerSessionCreate', function () {
       url: '/session',
       statusCode: 200,
       postdata: JSON.stringify({
-        desiredCapabilities: { browserName: 'firefox', name: 'first-test' },
-        capabilities: { alwaysMatch: { browserName: 'firefox' } }
+        desiredCapabilities: {browserName: 'firefox', name: 'first-test'},
+        capabilities: {alwaysMatch: {browserName: 'firefox'}}
       }),
       response: JSON.stringify({
         status: 0,
