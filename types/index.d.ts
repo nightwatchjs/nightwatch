@@ -15,7 +15,7 @@
 //                 Priyansh Garg <https://github.com/garg3133>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 4.5
-// Nightwatch Version: 2.3.0
+// Nightwatch Version: 3.0.0
 
 import {Protocol} from 'devtools-protocol';
 import {expect as chaiExpect} from 'chai';
@@ -38,6 +38,10 @@ import { NightwatchDesiredCapabilities, NightwatchOptions, NightwatchTestOptions
 export * from './globals';
 export * from './expect';
 export * from './web-element';
+export * from './custom-assertion';
+export * from './custom-command';
+export * from './page-object';
+export * from './nightwatch-options';
 
 export const ELEMENT_KEY = 'element-6066-11e4-a52e-4f735466cecf';
 
@@ -5985,9 +5989,12 @@ export interface WebDriverProtocolScreenCapture {
    * browser.screenshot(true);
    */
   screenshot(
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void,
+  ): Awaitable<this, string>;
+  screenshot(
     log_screenshot_data: boolean,
-    callback?: (screenshotEncoded: string) => void
-  ): this;
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void,
+  ): Awaitable<this, string>;
 }
 
 export interface WebDriverProtocolMobileRelated {
