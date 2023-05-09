@@ -72,9 +72,9 @@ export interface NightwatchCommonAssertions {
 	cssProperty(
 		selector: Definition,
 		cssProperty: string,
-		expected: string | number,
+		expected: string,
 		msg?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string | number>>;
+	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Checks if the specified DOM property of a given element has the expected value.
@@ -654,6 +654,7 @@ export interface NightwatchAssertionsResult<T> {
 
 export interface Assert extends NightwatchAssertions, NightwatchNodeAssertions { }
 
+// TODO: Check where the following type is being used.
 /**
  * Performs an assertion
  *
