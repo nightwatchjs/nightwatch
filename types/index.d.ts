@@ -4943,16 +4943,21 @@ export interface WebDriverProtocolNavigation {
 
 export interface WebDriverProtocolCommandContexts {
   /**
-   * Change focus to another window or close the current window. Shouldn't normally be used directly, instead `.switchWindow()` and `.closeWindow()` should be used.
+   * Change focus to another window or close the current window.
+   * Shouldn't normally be used directly, instead `.switchWindow()` and `.closeWindow()` should be used.
+   *
+   * @see https://nightwatchjs.org/api/window.html
+   *
+   * @deprecated Use `.switchWindow()` and `.closeWindow()` instead.
    */
   window(
-    method: string,
+    method: "post" | "delete" | "POST" | "DELETE",
     handleOrName?: string,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<void>
+      result: NightwatchCallbackResult<null>
     ) => void
-  ): this;
+  ): Awaitable<this, null>;
 
   /**
    * Retrieve the current window handle.
@@ -4962,7 +4967,9 @@ export interface WebDriverProtocolCommandContexts {
    *    browser.windowHandle(function(result) {
    *      console.log(result.value);
    *    });
-   * }
+   *  }
+   *
+   * @see https://nightwatchjs.org/api/windowHandle.html
    */
   windowHandle(
     callback?: (
@@ -4980,7 +4987,9 @@ export interface WebDriverProtocolCommandContexts {
    *      // An array of window handles.
    *      console.log(result.value);
    *    });
-   * }
+   *  }
+   *
+   * @see https://nightwatchjs.org/api/windowHandles.html
    */
   windowHandles(
     callback?: (
@@ -4997,15 +5006,17 @@ export interface WebDriverProtocolCommandContexts {
    *    browser.windowMaximize('current', function(result) {
    *      console.log(result);
    *    });
-   * }
+   *  }
+   *
+   * @see https://nightwatchjs.org/api/windowMaximize.html
    */
   windowMaximize(
     handleOrName?: string,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<void>
+      result: NightwatchCallbackResult<null>
     ) => void
-  ): this;
+  ): Awaitable<this, null>;
 
   /**
    * Change or get the position of the specified window. If the second argument is a function it will be used as a callback and
@@ -5025,7 +5036,9 @@ export interface WebDriverProtocolCommandContexts {
    *    browser.windowPosition('current', function(result) {
    *      console.log(result.value);
    *    });
-   * }
+   *  }
+   *
+   * @see https://nightwatchjs.org/api/windowPosition.html
    */
   windowPosition(
     windowHandle: string,
@@ -5033,16 +5046,16 @@ export interface WebDriverProtocolCommandContexts {
     offsetY: number,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<NightwatchPosition>
+      result: NightwatchCallbackResult<null>
     ) => void
-  ): this;
+  ): Awaitable<this, null>;
   windowPosition(
     windowHandle: string,
-    callback?: (
+    callback: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<NightwatchPosition>
+      result: NightwatchCallbackResult<WindowPosition>
     ) => void
-  ): this;
+  ): Awaitable<this, WindowPosition>;
 
   /**
    * Change or get the size of the specified window. If the second argument is a function it will be used as a callback and the call will perform a get request to retrieve the existing window size.
@@ -5060,7 +5073,9 @@ export interface WebDriverProtocolCommandContexts {
    *    browser.windowSize('current', 300, 300, function(result) {
    *      console.log(result.value);
    *    });
-   * }
+   *  }
+   *
+   * @see https://nightwatchjs.org/api/windowSize.html
    */
   windowSize(
     windowHandle: string,
@@ -5068,19 +5083,18 @@ export interface WebDriverProtocolCommandContexts {
     height: number,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<void>
+      result: NightwatchCallbackResult<null>
     ) => void
-  ): this;
+  ): Awaitable<this, null>;
   windowSize(
     windowHandle: string,
-    callback?: (
+    callback: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<{ width: number; height: number }>
+      result: NightwatchCallbackResult<WindowSizeAndPosition>
     ) => void
-  ): this;
+  ): Awaitable<this, WindowSizeAndPosition>;
 
   /**
-   *
    * Change or get the [window rect](https://w3c.github.io/webdriver/#dfn-window-rect).
    * This is defined as a dictionary of the `screenX`, `screenY`, `outerWidth` and `outerHeight` attributes of the window.
    *
@@ -5113,14 +5127,23 @@ export interface WebDriverProtocolCommandContexts {
    *      console.log('result value', resultValue);
    *   }
    * }
+   *
+   * @see https://nightwatchjs.org/api/windowRect.html
    */
   windowRect(
     options: { width?: number; height?: number; x?: number; y?: number },
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<void>
+      result: NightwatchCallbackResult<null>
     ) => void
-  ): this;
+  ): Awaitable<this, null>;
+  windowRect(
+    options: null,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<WindowSizeAndPosition>
+    ) => void,
+  ): Awaitable<this, WindowSizeAndPosition>;
 
   /**
    * Change focus to another frame on the page. If the frame id is missing or null, the server should switch to the page's default content.
@@ -5130,15 +5153,23 @@ export interface WebDriverProtocolCommandContexts {
    *    browser.frame('<ID>', function(result) {
    *      console.log(result);
    *    });
-   * }
+   *  }
+   *
+   * @see https://nightwatchjs.org/api/frame.html
    */
   frame(
-    frameId?: WebElement | string | number | null,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<void>
-    ) => void
-  ): this;
+      result: NightwatchCallbackResult<null>
+    ) => void,
+  ): Awaitable<this, null>;
+  frame(
+    frameId: WebElement | string | number | null,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void,
+  ): Awaitable<this, null>;
 
   /**
    * Change focus to the parent context. If the current context is the top level browsing context, the context remains unchanged.
@@ -5148,16 +5179,18 @@ export interface WebDriverProtocolCommandContexts {
    *    browser.frameParent(function(result) {
    *      console.log(result);
    *    });
-   * }
+   *  }
+   *
+   * @see https://nightwatchjs.org/api/frameParent.html
    *
    * @since v0.4.8
    */
   frameParent(
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<void>
+      result: NightwatchCallbackResult<null>
     ) => void
-  ): this;
+  ): Awaitable<this, null>;
 }
 
 export interface WebDriverProtocolElements {
