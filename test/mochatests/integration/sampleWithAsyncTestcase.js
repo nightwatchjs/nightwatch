@@ -7,7 +7,7 @@ describe('Mocha tests with async testcase', function() {
   this.suiteRetries(2);
 
   assert.deepStrictEqual(this.settings.desiredCapabilities, {browserName: 'firefox'});
-  assert.deepStrictEqual(this.argv.reporter, ['junit', 'json', 'html']);
+  assert.deepStrictEqual(this.argv.reporter, ['junit', 'json', 'rerunJson', 'html']);
   assert.strictEqual(this.mochaOptions.timeout, 5000);
   assert.strictEqual(this.waitForTimeout(), 1100);
   assert.strictEqual(this.waitForRetryInterval(), 100);
