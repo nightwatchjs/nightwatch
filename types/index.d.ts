@@ -4656,15 +4656,30 @@ export interface WebDriverProtocolSessions {
    *      console.log(result.value);
    *    });
    * }
+   *
+   * @see https://nightwatchjs.org/api/session.html#apimethod-container
    */
   session(
-    action?: string,
-    sessionId?: string,
     callback?: (
       this: NightwatchAPI,
       result: NightwatchCallbackResult<Record<string, any>>
     ) => void
-  ): this;
+  ): Awaitable<this, Record<string, any>>;
+  session(
+    actionOrSessionId: "get" | "post" | "delete" | "GET" | "POST" | "DELETE" | string,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<Record<string, any>>
+    ) => void,
+  ): Awaitable<this, Record<string, any>>;
+  session(
+    action: "get" | "post" | "delete" | "GET" | "POST" | "DELETE",
+    sessionId: string,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<Record<string, any>>
+    ) => void,
+  ): Awaitable<this, Record<string, any>>;
 
   /**
    * Returns a list of the currently active sessions.
@@ -4674,14 +4689,16 @@ export interface WebDriverProtocolSessions {
    *    browser.sessions(function(result) {
    *      console.log(result.value);
    *    });
-   * }
+   *  }
+   *
+   * @see https://nightwatchjs.org/api/sessions.html
    */
   sessions(
     callback?: (
       this: NightwatchAPI,
       result: NightwatchCallbackResult<Array<Record<string, any>>>
     ) => void
-  ): this;
+  ): Awaitable<this, Array<Record<string, any>>>;
 
   /**
    * Configure the amount of time that a particular type of operation can execute for before they are aborted and a |Timeout| error is returned to the client.
@@ -4691,22 +4708,24 @@ export interface WebDriverProtocolSessions {
    *    browser.timeouts('script', 10000, function(result) {
    *      console.log(result);
    *    });
-   * }
+   *  }
+   *
+   * @see https://nightwatchjs.org/api/timeouts.html
    */
   timeouts(
-    typeOfOperation: string,
+    typeOfOperation: 'script' | 'implicit' | 'pageLoad',
     ms: number,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<void>
-    ) => void
-  ): this;
+      result: NightwatchCallbackResult<null>
+    ) => void,
+  ): Awaitable<this, null>;
   timeouts(
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<void>
+      result: NightwatchCallbackResult<{script: number, implicit: number, pageLoad: number}>
     ) => void
-  ): this;
+  ): Awaitable<this, {script: number, implicit: number, pageLoad: number}>;
 
   /**
    * Set the amount of time, in milliseconds, that asynchronous scripts executed by `.executeAsync` are permitted to run before they are aborted and a |Timeout| error is returned to the client.
@@ -4716,15 +4735,17 @@ export interface WebDriverProtocolSessions {
    *    browser.timeoutsAsyncScript(10000, function(result) {
    *      console.log(result);
    *    });
-   * }
+   *  }
+   *
+   * @see https://nightwatchjs.org/api/timeoutsAsyncScript.html
    */
   timeoutsAsyncScript(
     ms: number,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<void>
+      result: NightwatchCallbackResult<null>
     ) => void
-  ): this;
+  ): Awaitable<this, null>;
 
   /**
    * Set the amount of time the driver should wait when searching for elements. If this command is never sent, the driver will default to an implicit wait of 0ms.
@@ -4734,28 +4755,29 @@ export interface WebDriverProtocolSessions {
    *    browser.timeoutsImplicitWait(10000, function(result) {
    *      console.log(result);
    *    });
-   * }
+   *  }
+   *
+   * @see https://nightwatchjs.org/api/timeoutsImplicitWait.html
    */
   timeoutsImplicitWait(
     ms: number,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<void>
+      result: NightwatchCallbackResult<null>
     ) => void
-  ): this;
+  ): Awaitable<this, null>;
 
   /**
    * Query the server's current status.
+   *
+   * @see https://nightwatchjs.org/api/status.html
    */
   status(
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<{
-        build: { version: string; revision: string; time: string };
-        status: { arch: string; name: string; version: string };
-      }>
+      result: NightwatchCallbackResult<NightwatchServerStatusResult>,
     ) => void
-  ): this;
+  ): Awaitable<this, NightwatchServerStatusResult>;
 
   /**
    * Gets the text of the log type specified. To find out the available log types, use `.getLogTypes()`.
@@ -4767,12 +4789,14 @@ export interface WebDriverProtocolSessions {
    *    browser.sessionLog('client', function(result) {
    *      console.log(result.value);
    *    });
-   * }
+   *  }
+   *
+   * @see https://nightwatchjs.org/api/sessionLog.html
    */
   sessionLog(
     typeString: string,
-    callback?: (this: NightwatchAPI, log: NightwatchLogEntry[]) => void
-  ): this;
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<NightwatchLogEntry[]>) => void
+  ): Awaitable<this, NightwatchLogEntry[]>;
 
   /**
    * Gets an array of strings for which log types are available. This methods returns the entire WebDriver response, if you are only interested in the logs array, use `.getLogTypes()` instead.
@@ -4782,16 +4806,16 @@ export interface WebDriverProtocolSessions {
    *    browser.sessionLogTypes(function(result) {
    *      console.log(result.value);
    *    });
-   * }
+   *  }
+   *
+   * @see https://nightwatchjs.org/api/sessionLogTypes.html
    */
   sessionLogTypes(
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<
-        Array<'client' | 'driver' | 'browser' | 'server'>
-      >
+      result: NightwatchCallbackResult<NightwatchLogTypes[]>
     ) => void
-  ): this;
+  ): Awaitable<this, NightwatchLogTypes[]>;
 
   /**
    * Command to set Chrome network emulation settings.
@@ -4805,16 +4829,21 @@ export interface WebDriverProtocolSessions {
    *      upload_throughput: 150 * 1024
    *    });
    *  };
+   *
+   * @see https://nightwatchjs.org/api/setNetworkConditions.html
    */
   setNetworkConditions(
     spec: {
-      [key: string]: any;
+      offline: boolean;
+      latency: number;
+      download_throughput: number;
+      upload_throughput: number;
     },
     callback?: (
       this: NightwatchAPI,
       result: NightwatchCallbackResult<null>
     ) => void
-  ): this;
+  ): Awaitable<this, null>;
 }
 
 export interface WebDriverProtocolNavigation {
@@ -4839,50 +4868,58 @@ export interface WebDriverProtocolNavigation {
    *     });
    *   }
    * }
+   *
+   * @see https://nightwatchjs.org/api/url.html
    */
   url(
-    url?: string,
     callback?: (
       this: NightwatchAPI,
       result: NightwatchCallbackResult<string>
     ) => void
-  ): this;
+  ): Awaitable<this, string>;
   url(
+    url: string,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<string>
+      result: NightwatchCallbackResult<null>
     ) => void
-  ): this;
+  ): Awaitable<this, null>;
 
   /**
    * Navigate backwards in the browser history, if possible.
+   *
+   * @see https://nightwatchjs.org/api/back.html
    */
   back(
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<void>
+      result: NightwatchCallbackResult<null>
     ) => void
-  ): this;
+  ): Awaitable<this, null>;
 
   /**
    * Navigate forwards in the browser history, if possible.
+   *
+   * @see https://nightwatchjs.org/api/forward.html
    */
   forward(
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<void>
+      result: NightwatchCallbackResult<null>
     ) => void
-  ): this;
+  ): Awaitable<this, null>;
 
   /**
    * Refresh the current page.
+   *
+   * @see https://nightwatchjs.org/api/refresh.html
    */
   refresh(
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<void>
+      result: NightwatchCallbackResult<null>
     ) => void
-  ): this;
+  ): Awaitable<this, null>;
 
   /**
    * Get the current page title.
@@ -4892,14 +4929,16 @@ export interface WebDriverProtocolNavigation {
    *    browser.title(function(result) {
    *      console.log(result.value);
    *    });
-   * }
+   *  }
+   *
+   * @see https://nightwatchjs.org/api/title.html
    */
   title(
     callback?: (
       this: NightwatchAPI,
       result: NightwatchCallbackResult<string>
     ) => void
-  ): this;
+  ): Awaitable<this, string>;
 }
 
 export interface WebDriverProtocolCommandContexts {
