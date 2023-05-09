@@ -1,5 +1,5 @@
 import {NightwatchCustomAssertions} from './custom-assertion';
-import {Awaitable, Definition, JSON_WEB_OBJECT, NightwatchAPI} from './index';
+import {Awaitable, Definition, ElementResult, JSON_WEB_OBJECT, NightwatchAPI} from './index';
 
 export interface NightwatchAssertionsError {
 	name: string;
