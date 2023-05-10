@@ -267,7 +267,27 @@ module.exports = {
         value
       })
     }, true);
-  }, 
+  },
+  
+  w3cSelected(elementId ='5cc459b8-36a8-3042-8b4a-258883ea642b', value = true) {
+    MockServer.addMock({
+      url: `/session/13521-10219-202/element/${elementId}/selected`,
+      method: 'GET',
+      response: JSON.stringify({
+        value
+      })
+    }, true);
+  },
+  
+  w3cEnabled(elementId ='5cc459b8-36a8-3042-8b4a-258883ea642b', value = true) {
+    MockServer.addMock({
+      url: `/session/13521-10219-202/element/${elementId}/enabled`,
+      method: 'GET',
+      response: JSON.stringify({
+        value
+      })
+    });
+  },
 
   findElements({using = 'css selector', value = '#container', response = null, times = 0}) {
     const mockOpts = {
