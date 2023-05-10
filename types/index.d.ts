@@ -5265,15 +5265,17 @@ export interface WebDriverProtocolElements {
    *      browser.end();
    *   }
    * }
+   *
+   * @see https://nightwatchjs.org/api/elements.html
    */
   elements(
     using: LocateStrategy,
     value: string,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<Array<{ [ELEMENT_KEY]: string }>>
+      result: NightwatchCallbackResult<ElementResult[]>
     ) => void
-  ): Awaitable<this, Array<{ [ELEMENT_KEY]: string }>>;
+  ): Awaitable<this, ElementResult[]>;
 
   /**
    * Search for an element on the page, starting from the identified element. The located element will be returned as a Web Element JSON object.
@@ -5284,16 +5286,21 @@ export interface WebDriverProtocolElements {
    * @example
    * module.exports = {
    *  'demo Test' : function(browser) {
-   *     browser.elementIdElement('<WebElementId>', 'css selector', '.new-element', function(result) {
-   *       console.log(result.value)
+   *     browser.findElement('.some-element', (result) => {
+   *       this.elementIdElement(result.value.getId(), 'css selector', '.new-element', function(result) {
+   *         console.log(result.value);
+   *       });
    *     });
    *   },
    *
    *   'es6 async demo Test': async function(browser) {
-   *     const result = await browser.elementIdElement('<WebElementId>', 'css selector', '.new-element');
-   *     console.log(result.value);
+   *     const elementObject = await browser.findElement('.some-element');
+   *     const result = await browser.elementIdElement(elementId.getId(), 'css selector', '.new-element');
+   *     console.log(result);
    *   }
    * }
+   *
+   * @see https://nightwatchjs.org/api/elementIdElement.html
    */
   elementIdElement(
     id: string,
@@ -5301,9 +5308,9 @@ export interface WebDriverProtocolElements {
     value: string,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<{ [ELEMENT_KEY]: string }>
+      result: NightwatchCallbackResult<ElementResult | []>
     ) => void
-  ): this;
+  ): Awaitable<this, ElementResult | []>;
 
   /**
    * Search for multiple elements on the page, starting from the identified element. The located element will be returned as a web element JSON objects.
@@ -5311,16 +5318,21 @@ export interface WebDriverProtocolElements {
    * @example
    * module.exports = {
    *  'demo Test' : function(browser) {
-   *     browser.elementIdElements('<WebElementId>', 'css selector', 'ul li', function(result) {
-   *       console.log(result.value)
+   *     browser.findElement('#main', (result) => {
+   *       browser.elementIdElements(result.value.getId(), 'css selector', 'ul li', function(result) {
+   *         console.log(result.value)
+   *       });
    *     });
    *   },
    *
    *   'es6 async demo Test': async function(browser) {
-   *     const result = await browser.elementIdElements('<WebElementId>', 'css selector', 'ul li');
-   *     console.log(result.value);
+   *     const elementObject = await browser.findElement('#main');
+   *     const result = await browser.elementIdElements(elementObject.getId(), 'css selector', 'ul li');
+   *     console.log(result);
    *   }
    * }
+   *
+   * @see https://nightwatchjs.org/api/elementIdElements.html
    */
   elementIdElements(
     id: string,
@@ -5328,9 +5340,9 @@ export interface WebDriverProtocolElements {
     value: string,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<Array<{ [ELEMENT_KEY]: string }>>
+      result: NightwatchCallbackResult<ElementResult[]>
     ) => void
-  ): this;
+  ): Awaitable<this, ElementResult[]>;
 
   /**
    * Move to the element and performs a double-click in the middle of the given element if
@@ -5341,12 +5353,11 @@ export interface WebDriverProtocolElements {
     webElementId: string,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<void>
+      result: NightwatchCallbackResult<null>
     ) => void
-  ): this;
+  ): Awaitable<this, null>;
 
   /**
-   *
    * Retrieve the value of a specified DOM property for the given element.
    * For all the available DOM element properties, consult the [Element doc at MDN](https://developer.mozilla.org/en-US/docs/Web/API/element).
    */
@@ -5355,9 +5366,9 @@ export interface WebDriverProtocolElements {
     DOMPropertyName: string,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<string>
+      result: NightwatchCallbackResult<any>
     ) => void
-  ): this;
+  ): Awaitable<this, any>;
 
   /**
    * Test if two web element IDs refer to the same DOM element.
@@ -5372,6 +5383,10 @@ export interface WebDriverProtocolElements {
    *     });
    *   }
    * }
+   *
+   * @see https://nightwatchjs.org/api/elementIdEquals.html
+   *
+   * @deprecated In favour of WebElement.equals(a, b) from Selenium Webdriver.
    */
   elementIdEquals(
     id: string,
@@ -5380,10 +5395,11 @@ export interface WebDriverProtocolElements {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<boolean>
     ) => void
-  ): this;
+  ): Awaitable<this, boolean>;
 
   /**
-   * Get the element on the page that currently has focus. The element will be returned as a [Web Element](https://www.w3.org/TR/webdriver1/#dfn-web-elements) JSON object.
+   * Get the element on the page that currently has focus.
+   * The element will be returned as a [Web Element](https://www.w3.org/TR/webdriver1/#dfn-web-elements) id.
    *
    * @example
    * module.exports = {
@@ -5393,18 +5409,22 @@ export interface WebDriverProtocolElements {
    *     });
    *   }
    * }
+   *
+   * @see https://nightwatchjs.org/api/elementActive.html
    */
   elementActive(
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<{ [ELEMENT_KEY]: string }>
+      result: NightwatchCallbackResult<string>
     ) => void
-  ): this;
+  ): Awaitable<this, string>;
 }
 
 export interface WebDriverProtocolElementState {
   /**
    * Get the value of an element's attribute.
+   *
+   * @see https://nightwatchjs.org/api/elementIdAttribute.html
    */
   elementIdAttribute(
     id: string,
@@ -5413,12 +5433,14 @@ export interface WebDriverProtocolElementState {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<string | null>
     ) => void
-  ): this;
+  ): Awaitable<this, string | null>;
 
   /**
    * Retrieve the computed value of the given CSS property of the given element.
    *
    * The CSS property to query should be specified using the CSS property name, not the JavaScript property name (e.g. background-color instead of backgroundColor).
+   *
+   * @see https://nightwatchjs.org/api/elementIdCssProperty.html
    */
   elementIdCssProperty(
     id: string,
@@ -5427,10 +5449,12 @@ export interface WebDriverProtocolElementState {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<string>
     ) => void
-  ): this;
+  ): Awaitable<this, string>;
 
   /**
    * Determine if an element is currently displayed.
+   *
+   * @see https://nightwatchjs.org/api/elementIdDisplayed.html
    */
   elementIdDisplayed(
     id: string,
@@ -5438,10 +5462,12 @@ export interface WebDriverProtocolElementState {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<boolean>
     ) => void
-  ): this;
+  ): Awaitable<this, boolean>;
 
   /**
    * Determine if an element is currently enabled.
+   *
+   * @see https://nightwatchjs.org/api/elementIdEnabled.html
    */
   elementIdEnabled(
     id: string,
@@ -5449,10 +5475,12 @@ export interface WebDriverProtocolElementState {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<boolean>
     ) => void
-  ): this;
+  ): Awaitable<this, boolean>;
 
   /**
    * Retrieve the qualified tag name of the given element.
+   *
+   * @see https://nightwatchjs.org/api/elementIdName.html
    */
   elementIdName(
     id: string,
@@ -5460,10 +5488,12 @@ export interface WebDriverProtocolElementState {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<string>
     ) => void
-  ): this;
+  ): Awaitable<this, string>;
 
   /**
    * Determine if an OPTION element, or an INPUT element of type checkbox or radio button is currently selected.
+   *
+   * @see https://nightwatchjs.org/api/elementIdSelected.html
    */
   elementIdSelected(
     id: string,
@@ -5471,21 +5501,27 @@ export interface WebDriverProtocolElementState {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<boolean>
     ) => void
-  ): this;
+  ): Awaitable<this, boolean>;
 
   /**
    * Determine an element's size in pixels. The size will be returned as a JSON object with width and height properties.
+   *
+   * @see https://nightwatchjs.org/api/elementIdSize.html
+   *
+   * @deprecated In favour of .getElementRect()
    */
   elementIdSize(
     id: string,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<{ width: number; height: number }>
+      result: NightwatchCallbackResult<NightwatchSizeAndPosition>
     ) => void
-  ): this;
+  ): Awaitable<this, NightwatchSizeAndPosition>;
 
   /**
    * Returns the visible text for the element.
+   *
+   * @see https://nightwatchjs.org/api/elementIdText.html
    */
   elementIdText(
     id: string,
@@ -5493,7 +5529,7 @@ export interface WebDriverProtocolElementState {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<string>
     ) => void
-  ): this;
+  ): Awaitable<this, string>;
 }
 
 export interface WebDriverProtocolElementInteraction {
@@ -5502,14 +5538,16 @@ export interface WebDriverProtocolElementInteraction {
    *
    * @example
    * browser.elementIdClear(elementId);
+   *
+   * @see https://nightwatchjs.org/api/elementIdClear.html
    */
   elementIdClear(
     id: string,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<void>
+      result: NightwatchCallbackResult<null>
     ) => void
-  ): this;
+  ): Awaitable<this, null>;
 
   /**
    * Scrolls into view the element and clicks the in-view center point.
@@ -5518,6 +5556,8 @@ export interface WebDriverProtocolElementInteraction {
    *
    * @example
    * browser.elementIdClick(elementId);
+   *
+   * @see https://nightwatchjs.org/api/elementIdClick.html
    */
   elementIdClick(
     id: string,
@@ -5530,23 +5570,26 @@ export interface WebDriverProtocolElementInteraction {
   /**
    * Scrolls into view the form control element and then sends the provided keys to the element, or returns the current value of the element.
    * In case the element is not keyboard interactable, an <code>element not interactable error</code> is returned.
+   *
+   * @see https://nightwatchjs.org/api/elementIdValue.html
+   *
+   * @deprecated In favour of .getValue() and .setValue()
    */
   elementIdValue(
     id: string,
-    value?: string,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<void>
+      result: NightwatchCallbackResult<string>
     ) => void
-  ): this;
+  ): Awaitable<this, string>;
   elementIdValue(
     id: string,
-    value: string,
+    value: string | string[],
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<void>
+      result: NightwatchCallbackResult<null>
     ) => void
-  ): this;
+  ): Awaitable<this, null>;
 
   /**
    * Send a sequence of key strokes to the active element. The sequence is defined in the same format as the `sendKeys` command.
@@ -5556,33 +5599,42 @@ export interface WebDriverProtocolElementInteraction {
    * Rather than the `setValue`, the modifiers are not released at the end of the call. The state of the modifier keys is kept between calls,
    * so mouse interactions can be performed while modifier keys are depressed.
    *
+   * Since v2.0, this command is deprecated. It is only available on older JSONWire-based drivers.
+   * Please use the new [User Actions API](https://nightwatchjs.org/api/useractions/).
+   *
    * @example
    * browser
    * .keys(browser.Keys.CONTROL) // hold down CONTROL key
    * .click('#element')
    * .keys(browser.Keys.NULL) // release all keys
+   *
+   * @see https://nightwatchjs.org/api/keys.html
+   *
+   * @deprecated Please use the new [User Actions API](https://nightwatchjs.org/api/useractions/) instead.
    */
   keys(
     keysToSend: string | string[],
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<void>
+      result: NightwatchCallbackResult<null>
     ) => void
-  ): this;
+  ): Awaitable<this, null>;
 
   /**
    * Submit a FORM element. The submit command may also be applied to any element that is a descendant of a FORM element.
    *
    * @example
    * browser.submit(elementID);
+   *
+   * @see https://nightwatchjs.org/api/submit.html
    */
   submit(
     id: string,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<void>
+      result: NightwatchCallbackResult<null>
     ) => void
-  ): this;
+  ): Awaitable<this, null>;
 }
 
 export interface WebDriverProtocolElementLocation {
@@ -5591,18 +5643,22 @@ export interface WebDriverProtocolElementLocation {
    *
    * The element's coordinates are returned as a JSON object with x and y properties.
    *
-   * @deprecated
+   * @see https://nightwatchjs.org/api/elementIdLocation.html
+   *
+   * @deprecated In favour of .getElementRect()
    */
   elementIdLocation(
     id: string,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<NightwatchPosition>
+      result: NightwatchCallbackResult<NightwatchSizeAndPosition>
     ) => void
-  ): this;
+  ): Awaitable<this, NightwatchSizeAndPosition>;
 
   /**
    * Determine an element's location on the screen once it has been scrolled into view.
+   *
+   * @see https://nightwatchjs.org/api/elementIdLocationInView.html#apimethod-container
    *
    * @deprecated
    */
@@ -5612,7 +5668,7 @@ export interface WebDriverProtocolElementLocation {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<NightwatchPosition>
     ) => void
-  ): this;
+  ): Awaitable<this, NightwatchPosition>;
 }
 
 export interface WebDriverProtocolDocumentHandling {
