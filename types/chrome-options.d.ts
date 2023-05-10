@@ -98,8 +98,8 @@ export interface ChromeOptions {
 
 	/**
 	 * Serial number of the device to connect to via ADB. If not specified, the
-   * WebDriver server will select an unused device at random. An error will be
-   * returned if all devices already have active sessions.
+	 * WebDriver server will select an unused device at random. An error will be
+	 * returned if all devices already have active sessions.
 	 */
 	androidDeviceSerial?: string;
 }
