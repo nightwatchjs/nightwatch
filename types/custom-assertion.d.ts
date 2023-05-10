@@ -149,4 +149,4 @@ export interface NightwatchAssertion<T> {
 /**
  * @see https://nightwatchjs.org/guide/extending-nightwatch/adding-custom-assertions.html
  */
-export interface NightwatchCustomAssertions {}
+export interface NightwatchCustomAssertions<ReturnType> {}

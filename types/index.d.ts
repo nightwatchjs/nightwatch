@@ -34,6 +34,7 @@ import { NightwatchGlobals } from './globals';
 import { EnhancedPageObject } from './page-object';
 import { NightwatchCustomCommands } from './custom-command';
 import { NightwatchDesiredCapabilities, NightwatchOptions, NightwatchTestOptions } from './nightwatch-options';
+import { IfUnknown } from './utils';
 
 export * from './globals';
 export * from './expect';
@@ -492,6 +493,18 @@ export type NightwatchPage = {
   [name: string]: NightwatchPage;
 };
 
+export interface NamespacedApi<ReturnType = unknown> {
+  appium: AppiumCommands<ReturnType>;
+  cookies: CookiesNsCommands<ReturnType>;
+  alerts: AlertsNsCommands<ReturnType>;
+  document: DocumentNsCommands<ReturnType>;
+  window: WindowNsCommands<ReturnType>;
+
+  assert: Assert<ReturnType>;
+  verify: Assert<ReturnType>;
+  expect: Expect;
+}
+
 export interface NightwatchApiCommands {
   readonly WEBDRIVER_ELEMENT_ID: string;
   readonly browserName: string;
@@ -518,19 +531,11 @@ export interface NightwatchAPI
   extends SharedCommands,
   WebDriverProtocol,
   NightwatchCustomCommands,
-  NightwatchApiCommands {
+  NightwatchApiCommands,
+  NamespacedApi<NightwatchAPI> {
   baseUrl: string;
-  assert: Assert;
   actions(options?: { async?: boolean; bridge?: boolean }): Actions;
-  expect: Expect;
   ensure: Ensure;
-  verify: Assert;
-
-  appium: AppiumCommands;
-  cookies: CookiesNsCommands;
-  alerts: AlertsNsCommands;
-  document: DocumentNsCommands;
-  window: WindowNsCommands;
 
   page: NightwatchPage & NightwatchCustomPageObjects;
 
@@ -912,6 +917,7 @@ export interface CreateClientParams {
   config?: string;
 }
 
+// TODO: add namespaced api to `Nightwatch` interface only after fixing EnhancedPageObject.
 export interface Nightwatch {
   cli(callback: any): this;
   client(settings: NightwatchOptions, reporter?: any, argv?: {}): this;
@@ -936,9 +942,9 @@ export interface Nightwatch {
   runner(argv?: {}, done?: () => void, settings?: {}): this;
   runTests(testSource: string | string[], settings?: any, ...args: any[]): any;
   api: NightwatchAPI;
-  assert: Assert;
+  assert: Assert<NightwatchAPI>;
   expect: Expect;
-  verify: Assert;
+  verify: Assert<NightwatchAPI>;
   updateCapabilities(...args: any): this;
   launchBrowser(): NightwatchAPI | Promise<NightwatchAPI>;
 }
@@ -4267,7 +4273,7 @@ export interface ElementCommands {
   ): Awaitable<this, string>;
 }
 
-export interface AppiumCommands {
+export interface AppiumCommands<ReturnType = unknown> {
   /**
    * Get the current device orientation.
    *
@@ -4291,7 +4297,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<'LANDSCAPE' | 'PORTRAIT'>
     ) => void
-  ): Awaitable<NightwatchAPI, 'LANDSCAPE' | 'PORTRAIT'>;
+  ): Awaitable<IfUnknown<ReturnType, this>, 'LANDSCAPE' | 'PORTRAIT'>;
 
   /**
    * Set the current device orientation.
@@ -4310,7 +4316,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<'LANDSCAPE' | 'PORTRAIT'>
     ) => void
-  ): Awaitable<NightwatchAPI, 'LANDSCAPE' | 'PORTRAIT'>;
+  ): Awaitable<IfUnknown<ReturnType, this>, 'LANDSCAPE' | 'PORTRAIT'>;
 
   /**
    * Get a list of the available contexts. Used when testing hybrid mobile apps using Appium.
@@ -4337,7 +4343,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<string[]>
     ) => void
-  ): Awaitable<NightwatchAPI, string[]>;
+  ): Awaitable<IfUnknown<ReturnType, this>, string[]>;
 
   /**
    * Get the current context in which Appium is running. Used when testing hybrid mobile apps using Appium.
@@ -4364,7 +4370,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<string | null>
     ) => void
-  ): Awaitable<NightwatchAPI, string | null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, string | null>;
 
   /**
    * Set the context to be automated. Used when testing hybrid mobile apps using Appium.
@@ -4400,7 +4406,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<null>
     ) => void
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Start an Android activity by providing package name, activity name and other optional parameters.
@@ -4443,7 +4449,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<null>
     ) => void
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Get the name of the current Android activity.
@@ -4468,7 +4474,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<string>
     ) => void
-  ): Awaitable<NightwatchAPI, string>;
+  ): Awaitable<IfUnknown<ReturnType, this>, string>;
 
   /**
    * Get the name of the current Android package.
@@ -4493,7 +4499,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<string>
     ) => void
-  ): Awaitable<NightwatchAPI, string>;
+  ): Awaitable<IfUnknown<ReturnType, this>, string>;
 
   /**
    * Get the current geolocation of the mobile device.
@@ -4518,7 +4524,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<AppiumGeolocation>
     ) => void
-  ): Awaitable<NightwatchAPI, AppiumGeolocation>;
+  ): Awaitable<IfUnknown<ReturnType, this>, AppiumGeolocation>;
 
   /**
    * Set the current geolocation of the mobile device.
@@ -4541,7 +4547,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<AppiumGeolocation>
     ) => void
-  ): Awaitable<NightwatchAPI, AppiumGeolocation>;
+  ): Awaitable<IfUnknown<ReturnType, this>, AppiumGeolocation>;
 
   /**
    * Press a particular key on an Android Device.
@@ -4566,7 +4572,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<null>
     ) => void
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
   pressKeyCode(
     keycode: number,
     metastate?: number,
@@ -4575,7 +4581,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<null>
     ) => void
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Press and hold a particular key on an Android Device.
@@ -4600,7 +4606,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<null>
     ) => void
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
   longPressKeyCode(
     keycode: number,
     metastate?: number,
@@ -4609,7 +4615,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<null>
     ) => void
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Hide soft keyboard.
@@ -4631,7 +4637,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<boolean>
     ) => void
-  ): Awaitable<NightwatchAPI, boolean>;
+  ): Awaitable<IfUnknown<ReturnType, this>, boolean>;
 
   /**
    * Whether or not the soft keyboard is shown.
@@ -4656,7 +4662,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<boolean>
     ) => void
-  ): Awaitable<NightwatchAPI, boolean>;
+  ): Awaitable<IfUnknown<ReturnType, this>, boolean>;
 }
 
 export interface Cookie {
@@ -4670,7 +4676,7 @@ export interface Cookie {
   sameSite?: 'Lax' | 'Strict' | 'None';
 }
 
-export interface CookiesNsCommands {
+export interface CookiesNsCommands<ReturnType = unknown> {
   /**
    * Retrieve a single cookie visible to the current page.
    *
@@ -4697,7 +4703,7 @@ export interface CookiesNsCommands {
   get(
       name: string,
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<Cookie | null>) => void,
-  ): Awaitable<NightwatchAPI, Cookie | null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, Cookie | null>;
 
   /**
    * Retrieve all cookies visible to the current page.
@@ -4723,7 +4729,7 @@ export interface CookiesNsCommands {
    */
   getAll(
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<Cookie[]>) => void,
-  ): Awaitable<NightwatchAPI, Cookie[]>;
+  ): Awaitable<IfUnknown<ReturnType, this>, Cookie[]>;
 
   /**
    * Set a cookie, specified as a cookie JSON object, with properties as defined [here](https://www.w3.org/TR/webdriver/#dfn-table-for-cookie-conversion).
@@ -4756,7 +4762,7 @@ export interface CookiesNsCommands {
   set(
       cookie: Cookie,
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Delete the cookie with the given name. This command is a no-op if there is no such cookie visible to the current page.
@@ -4778,7 +4784,7 @@ export interface CookiesNsCommands {
   delete(
       cookieName: string,
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Delete all cookies visible to the current page.
@@ -4799,10 +4805,10 @@ export interface CookiesNsCommands {
    */
   deleteAll(
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 }
 
-export interface AlertsNsCommands {
+export interface AlertsNsCommands<ReturnType = unknown> {
   /**
    * Accepts the currently displayed alert dialog. Usually, this is equivalent to clicking on the 'OK' button in the dialog.
    *
@@ -4822,7 +4828,7 @@ export interface AlertsNsCommands {
    */
   accept(
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Dismisses the currently displayed alert dialog.
@@ -4846,7 +4852,7 @@ export interface AlertsNsCommands {
    */
   dismiss(
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Get the text of the currently displayed JavaScript alert(), confirm(), or prompt() dialog.
@@ -4868,7 +4874,7 @@ export interface AlertsNsCommands {
    */
   getText(
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void,
-  ): Awaitable<NightwatchAPI, string>;
+  ): Awaitable<IfUnknown<ReturnType, this>, string>;
 
   /**
    * Send keystrokes to a JavaScript prompt() dialog.
@@ -4890,10 +4896,10 @@ export interface AlertsNsCommands {
   setText(
       value: string,
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 }
 
-export interface DocumentNsCommands {
+export interface DocumentNsCommands<ReturnType = unknown> {
   /**
    * Utility command to load an external script into the page specified by url.
    *
@@ -4913,12 +4919,12 @@ export interface DocumentNsCommands {
   injectScript(
       scriptUrl: string,
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WebElement>) => void,
-  ): Awaitable<NightwatchAPI, WebElement>;
+  ): Awaitable<IfUnknown<ReturnType, this>, WebElement>;
   injectScript(
       scriptUrl: string,
       id: string,
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WebElement>) => void,
-  ): Awaitable<NightwatchAPI, WebElement>;
+  ): Awaitable<IfUnknown<ReturnType, this>, WebElement>;
 
   /**
    * Get the string serialized source of the current page.
@@ -4941,7 +4947,7 @@ export interface DocumentNsCommands {
    */
   source(
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void,
-  ): Awaitable<NightwatchAPI, string>;
+  ): Awaitable<IfUnknown<ReturnType, this>, string>;
 
   /**
    * Get the string serialized source of the current page.
@@ -4964,10 +4970,10 @@ export interface DocumentNsCommands {
    */
   pageSource(
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void,
-  ): Awaitable<NightwatchAPI, string>;
+  ): Awaitable<IfUnknown<ReturnType, this>, string>;
 }
 
-export interface WindowNsCommands {
+export interface WindowNsCommands<ReturnType = unknown> {
   /**
    * Close the current window or tab. This can be useful when you're working with multiple windows/tabs open (e.g. an OAuth login).
    *
@@ -4988,7 +4994,7 @@ export interface WindowNsCommands {
    */
   close(
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Opens a new tab (default) or a separate new window, and changes focus to the newly opened tab/window.
@@ -5022,11 +5028,11 @@ export interface WindowNsCommands {
    */
   open(
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
   open(
       type: "window" | "tab",
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Opens a new tab (default) or a separate new window, and changes focus to the newly opened tab/window.
@@ -5060,11 +5066,11 @@ export interface WindowNsCommands {
    */
   openNew(
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
   openNew(
       type: "window" | "tab",
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Retrieve the current window handle.
@@ -5087,7 +5093,7 @@ export interface WindowNsCommands {
    */
   getHandle(
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void,
-  ): Awaitable<NightwatchAPI, string>;
+  ): Awaitable<IfUnknown<ReturnType, this>, string>;
 
   /**
    * Retrieve the list of all window handles available to the session.
@@ -5108,7 +5114,7 @@ export interface WindowNsCommands {
    */
   getAllHandles(
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string[]>) => void,
-  ): Awaitable<NightwatchAPI, string[]>;
+  ): Awaitable<IfUnknown<ReturnType, this>, string[]>;
 
   /**
    * Change focus to another window.
@@ -5178,11 +5184,11 @@ export interface WindowNsCommands {
   switchTo(
       windowHandle: string,
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
   switch(
       windowHandle: string,
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Increases the window to the maximum available size without going full-screen.
@@ -5202,7 +5208,7 @@ export interface WindowNsCommands {
    */
   maximize(
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Hides the window in the system tray. If the window happens to be in fullscreen mode,
@@ -5223,7 +5229,7 @@ export interface WindowNsCommands {
    */
   minimize(
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Set the current window state to fullscreen, similar to pressing F11 in most browsers.
@@ -5243,7 +5249,7 @@ export interface WindowNsCommands {
    */
   fullscreen(
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Get the coordinates of the top left corner of the current window.
@@ -5264,7 +5270,7 @@ export interface WindowNsCommands {
    */
   getPosition(
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WindowPosition>) => void,
-  ): Awaitable<NightwatchAPI, WindowPosition>;
+  ): Awaitable<IfUnknown<ReturnType, this>, WindowPosition>;
 
   /**
    * Get the size of the current window in pixels.
@@ -5285,7 +5291,7 @@ export interface WindowNsCommands {
    */
   getSize(
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WindowSize>) => void,
-  ): Awaitable<NightwatchAPI, WindowSize>;
+  ): Awaitable<IfUnknown<ReturnType, this>, WindowSize>;
 
   /**
    * Fetches the [window rect](https://w3c.github.io/webdriver/#dfn-window-rect) - size and position of the current window.
@@ -5316,7 +5322,7 @@ export interface WindowNsCommands {
    */
   getRect(
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WindowSizeAndPosition>) => void,
-  ): Awaitable<NightwatchAPI, WindowSizeAndPosition>;
+  ): Awaitable<IfUnknown<ReturnType, this>, WindowSizeAndPosition>;
 
   /**
    * Set the position of the current window - move the window to the chosen position.
@@ -5340,7 +5346,7 @@ export interface WindowNsCommands {
       x: number,
       y: number,
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Set the size of the current window in CSS pixels.
@@ -5364,7 +5370,7 @@ export interface WindowNsCommands {
       width: number,
       height: number,
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Set the size of the current window in CSS pixels.
@@ -5388,7 +5394,7 @@ export interface WindowNsCommands {
       width: number,
       height: number,
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Change the [window rect](https://w3c.github.io/webdriver/#dfn-window-rect) - size and position of the current window.
@@ -5427,7 +5433,7 @@ export interface WindowNsCommands {
   setRect(
       options: WindowSize | WindowPosition | WindowSizeAndPosition,
       callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 }
 
 export interface WebDriverProtocol
@@ -7149,6 +7155,20 @@ export interface WebDriverProtocolMobileRelated {
     ) => void
   ): Awaitable<this, null>;
 }
+
+// namespaced api
+export const browser: NightwatchAPI;
+export const app: NightwatchAPI;
+
+export const appium: AppiumCommands;
+export const cookies: CookiesNsCommands;
+export const alerts: AlertsNsCommands;
+export const document: DocumentNsCommands;
+export const window: WindowNsCommands;
+
+export const assert: Assert;
+export const verify: Assert;
+export const expect: Expect;
 
 declare const _default: Nightwatch;
 export default _default;
