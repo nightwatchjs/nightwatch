@@ -10,6 +10,28 @@ interface NightwatchAssertionFailedResult<T> {
 }
 
 /**
+ * @example
+ * import {Definition, NightwatchAssertion} from 'nightwatch';
+ *
+ * export const assertion = function ElementHasCount(this: NightwatchAssertion<number>, selector: Definition, count: number) {
+ *   this.message = `Testing if element <${selector}> has count: ${count}`;   
+ *
+ *   this.expected = count;
+ *
+ *   this.value = (result) => {
+ *     return result.value;
+ *   }
+ *
+ *   this.evaluate = (value) => {
+ *     return value === count;
+ *   }
+ *
+ *   this.command = async (callback) => {
+ *     const elementsCount = await this.api.element.findAll(selector).count();
+ *     callback({value: elementsCount});
+ *   }
+ * }
+ *
  * @see https://nightwatchjs.org/guide/extending-nightwatch/adding-custom-assertions.html
  */
 export interface NightwatchAssertion<T> {
