@@ -528,6 +528,7 @@ export interface NightwatchAPI
 
   appium: AppiumCommands;
   cookies: CookiesNsCommands;
+  alerts: AlertsNsCommands;
 
   page: NightwatchPage & NightwatchCustomPageObjects;
 
@@ -4761,6 +4762,97 @@ export interface CookiesNsCommands {
   ): Awaitable<NightwatchAPI, null>;
 }
 
+export interface AlertsNsCommands {
+  /**
+   * Accepts the currently displayed alert dialog. Usually, this is equivalent to clicking on the 'OK' button in the dialog.
+   *
+   * @example
+   * module.exports = {
+   *   'accept open alert': function (browser) {
+   *     browser
+   *       .alerts.accept(function () {
+   *         console.log('alert accepted successfully');
+   *       });
+   *   },
+   *
+   *   'accept open alert with ES6 async/await': async function (browser) {
+   *     await browser.alerts.accept();
+   *   }
+   * };
+   */
+  accept(
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<NightwatchAPI, null>;
+
+  /**
+   * Dismisses the currently displayed alert dialog.
+   *
+   * For confirm() and prompt() dialogs, this is equivalent to clicking the 'Cancel' button.
+   * For alert() dialogs, this is equivalent to clicking the 'OK' button.
+   *
+   * @example
+   * module.exports = {
+   *   'dismiss open alert': function (browser) {
+   *     browser
+   *       .alerts.dismiss(function () {
+   *         console.log('alert dismissed successfully');
+   *       });
+   *   },
+   *
+   *   'dismiss open alert with ES6 async/await': async function (browser) {
+   *     await browser.alerts.dismiss();
+   *   }
+   * };
+   */
+  dismiss(
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<NightwatchAPI, null>;
+
+  /**
+   * Get the text of the currently displayed JavaScript alert(), confirm(), or prompt() dialog.
+   *
+   * @example
+   * module.exports = {
+   *   'get open alert text': function (browser) {
+   *     browser
+   *       .alerts.getText(function (result) {
+   *         console.log('text on open alert:', result.value);
+   *       });
+   *   },
+   *
+   *   'get open alert text with ES6 async/await': async function (browser) {
+   *     const alertText = await browser.alerts.getText();
+   *     console.log('text on open alert:', alertText);
+   *   }
+   * };
+   */
+  getText(
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void,
+  ): Awaitable<NightwatchAPI, string>;
+
+  /**
+   * Send keystrokes to a JavaScript prompt() dialog.
+   *
+   * @example
+   * module.exports = {
+   *   'set text on JS prompt': function (browser) {
+   *     browser
+   *       .alerts.setText('some text', function () {
+   *         console.log('text sent to JS prompt successfully');
+   *       });
+   *   },
+   *
+   *   'set text on JS prompt with ES6 async/await': async function (browser) {
+   *     await browser.alerts.setText('some text');
+   *   }
+   * };
+   */
+  setText(
+      value: string,
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<NightwatchAPI, null>;
+}
+
 export interface WebDriverProtocol
   extends WebDriverProtocolSessions,
   WebDriverProtocolNavigation,
@@ -6310,7 +6402,9 @@ export interface WebDriverProtocolUserPrompts {
    * @example
    * browser.acceptAlert()
    *
-   * @see https://nightwatchjs.org/api/acceptAlert.html#apimethod-container
+   * @see https://nightwatchjs.org/api/acceptAlert.html
+   *
+   * @deprecated In favour of `.alerts.accept()`.
    */
   acceptAlert(
     callback?: (
@@ -6327,7 +6421,9 @@ export interface WebDriverProtocolUserPrompts {
    * @example
    * browser.dismissAlert();
    *
-   * @see https://nightwatchjs.org/api/dismissAlert.html#apimethod-container
+   * @see https://nightwatchjs.org/api/dismissAlert.html
+   *
+   * @deprecated In favour of `.alerts.dismiss()`.
    */
   dismissAlert(
     callback?: (
@@ -6342,7 +6438,9 @@ export interface WebDriverProtocolUserPrompts {
    * @example
    * browser.getAlertText();
    *
-   * @see https://nightwatchjs.org/api/getAlertText.html#apimethod-container
+   * @see https://nightwatchjs.org/api/getAlertText.html
+   *
+   * @deprecated In favour of `.alerts.getText()`.
    */
   getAlertText(
     callback?: (
@@ -6357,7 +6455,9 @@ export interface WebDriverProtocolUserPrompts {
    * @example
    * browser.setAlertText('randomalert');
    *
-   * @see https://nightwatchjs.org/api/setAlertText.html#apimethod-container
+   * @see https://nightwatchjs.org/api/setAlertText.html
+   *
+   * @deprecated In favour of `.alerts.setText()`.
    */
   setAlertText(
     value: string,
