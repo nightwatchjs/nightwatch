@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
-        typescript-version: [${{ steps.get_typescript_version.outputs.version }}]
+        typescript-version: ${{ steps.get_typescript_version.outputs.version }}
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
