@@ -268,7 +268,7 @@ describe('.waitUntil()', function () {
         tries++;
 
         return false;
-      }, maxTimeout, '200', 'custom error message', function(response) {
+      }, maxTimeout, null, 'custom error message', function(response) {
         timeDiff = new Date().valueOf() - startTime;
         result = response;
       });
