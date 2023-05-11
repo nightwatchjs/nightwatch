@@ -34,6 +34,7 @@ import { NightwatchGlobals } from './globals';
 import { EnhancedPageObject } from './page-object';
 import { NightwatchCustomCommands } from './custom-command';
 import { NightwatchDesiredCapabilities, NightwatchOptions, NightwatchTestOptions } from './nightwatch-options';
+import { IfUnknown } from './utils';
 
 export * from './globals';
 export * from './expect';
@@ -492,6 +493,18 @@ export type NightwatchPage = {
   [name: string]: NightwatchPage;
 };
 
+export interface NamespacedApi<ReturnType = unknown> {
+  appium: AppiumCommands<ReturnType>;
+  cookies: CookiesNsCommands<ReturnType>;
+  alerts: AlertsNsCommands<ReturnType>;
+  document: DocumentNsCommands<ReturnType>;
+  window: WindowNsCommands<ReturnType>;
+
+  assert: Assert<ReturnType>;
+  verify: Assert<ReturnType>;
+  expect: Expect;
+}
+
 export interface NightwatchApiCommands {
   readonly WEBDRIVER_ELEMENT_ID: string;
   readonly browserName: string;
@@ -518,15 +531,11 @@ export interface NightwatchAPI
   extends SharedCommands,
   WebDriverProtocol,
   NightwatchCustomCommands,
-  NightwatchApiCommands {
+  NightwatchApiCommands,
+  NamespacedApi<NightwatchAPI> {
   baseUrl: string;
-  assert: Assert;
   actions(options?: { async?: boolean; bridge?: boolean }): Actions;
-  expect: Expect;
   ensure: Ensure;
-  verify: Assert;
-
-  appium: AppiumCommands;
 
   page: NightwatchPage & NightwatchCustomPageObjects;
 
@@ -908,6 +917,7 @@ export interface CreateClientParams {
   config?: string;
 }
 
+// TODO: add namespaced api to `Nightwatch` interface only after fixing EnhancedPageObject.
 export interface Nightwatch {
   cli(callback: any): this;
   client(settings: NightwatchOptions, reporter?: any, argv?: {}): this;
@@ -932,9 +942,9 @@ export interface Nightwatch {
   runner(argv?: {}, done?: () => void, settings?: {}): this;
   runTests(testSource: string | string[], settings?: any, ...args: any[]): any;
   api: NightwatchAPI;
-  assert: Assert;
+  assert: Assert<NightwatchAPI>;
   expect: Expect;
-  verify: Assert;
+  verify: Assert<NightwatchAPI>;
   updateCapabilities(...args: any): this;
   launchBrowser(): NightwatchAPI | Promise<NightwatchAPI>;
 }
@@ -955,17 +965,6 @@ export type NightwatchLogTypes =
   | 'browser'
   | 'server'
   | 'performance';
-
-export interface Cookie {
-  name: string;
-  value: string;
-  path?: string;
-  domain?: string;
-  secure?: boolean;
-  expiry?: Date | number;
-  httpOnly?: boolean;
-  sameSite?: string;
-}
 
 export interface SharedCommands extends ClientCommands, ElementCommands { }
 
@@ -1294,6 +1293,8 @@ export interface ClientCommands extends ChromiumClientCommands {
    *   });
    * });
    * @see https://nightwatchjs.org/api/closeWindow.html
+   *
+   * @deprecated In favour of `.window.close()`.
    */
   closeWindow(
     callback?: (
@@ -1319,6 +1320,8 @@ export interface ClientCommands extends ChromiumClientCommands {
    *   }
    * }
    * @see https://nightwatchjs.org/api/fullscreenWindow.html
+   *
+   * @deprecated In favour of `.window.fullscreen()`.
    */
   fullscreenWindow(
     callback?: (
@@ -1345,6 +1348,8 @@ export interface ClientCommands extends ChromiumClientCommands {
    *   }
    * }
    * @see https://nightwatchjs.org/api/minimizeWindow.html
+   *
+   * @deprecated In favour of `.window.minimize()`.
    */
   minimizeWindow(
     callback?: (
@@ -1378,6 +1383,8 @@ export interface ClientCommands extends ChromiumClientCommands {
    *   }
    * }
    * @see https://nightwatchjs.org/api/openNewWindow.html
+   *
+   * @deprecated In favour of `.window.open()`.
    */
   openNewWindow(
     type?: WindowType,
@@ -1398,6 +1405,8 @@ export interface ClientCommands extends ChromiumClientCommands {
    * }
    *
    * @see https://nightwatchjs.org/api/deleteCookie.html
+   *
+   * @deprecated In favour of `.cookies.delete()`.
    */
   deleteCookie(
     cookieName: string,
@@ -1418,6 +1427,8 @@ export interface ClientCommands extends ChromiumClientCommands {
    * }
    *
    * @see https://nightwatchjs.org/api/deleteCookies.html
+   *
+   * @deprecated In favour of `.cookies.deleteAll()`.
    */
   deleteCookies(
     callback?: (
@@ -1458,6 +1469,8 @@ export interface ClientCommands extends ChromiumClientCommands {
    * }
    *
    * @see https://nightwatchjs.org/api/getCookie.html
+   *
+   * @deprecated In favour of `.cookies.get()`.
    */
   getCookie(
     name: string,
@@ -1482,6 +1495,8 @@ export interface ClientCommands extends ChromiumClientCommands {
    * }
    *
    * @see https://nightwatchjs.org/api/getCookies.html
+   *
+   * @deprecated In favour of `.cookies.getAll()`.
    */
   getCookies(
     callback?: (
@@ -1665,15 +1680,24 @@ export interface ClientCommands extends ChromiumClientCommands {
    * };
    *
    * @see https://nightwatchjs.org/api/injectScript.html
+   *
+   * @deprecated In favour of `.document.injectScript()`.
    */
   injectScript(
     scriptUrl: string,
-    id?: string,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<HTMLScriptElement>
-    ) => void
-  ): Awaitable<this, HTMLScriptElement>;
+      result: NightwatchCallbackResult<WebElement>
+    ) => void,
+  ): Awaitable<this, WebElement>;
+  injectScript(
+    scriptUrl: string,
+    id: string,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<WebElement>
+    ) => void,
+  ): Awaitable<this, WebElement>;
 
   /**
    * Utility command to test if the log type is available.
@@ -1701,6 +1725,8 @@ export interface ClientCommands extends ChromiumClientCommands {
    *  };
    *
    * @see https://nightwatchjs.org/api/maximizeWindow.html
+   *
+   * @deprecated In favour of `.window.maximize()`.
    */
   maximizeWindow(
     callback?: (
@@ -1852,6 +1878,8 @@ export interface ClientCommands extends ChromiumClientCommands {
    *  };
    *
    * @see https://nightwatchjs.org/api/resizeWindow.html
+   *
+   * @deprecated In favour of `.window.resize()`.
    */
   resizeWindow(
     width: number,
@@ -1899,6 +1927,8 @@ export interface ClientCommands extends ChromiumClientCommands {
    * }
    *
    * @see https://nightwatchjs.org/api/setCookie.html
+   *
+   * @deprecated In favour of `.cookies.set()`.
    */
   setCookie(
     cookie: Cookie,
@@ -1917,6 +1947,8 @@ export interface ClientCommands extends ChromiumClientCommands {
    *  };
    *
    * @see https://nightwatchjs.org/api/setWindowPosition.html
+   *
+   * @deprecated In favour of `.window.setPosition()`.
    */
   setWindowPosition(
     offsetX: number,
@@ -1965,6 +1997,8 @@ export interface ClientCommands extends ChromiumClientCommands {
    * }
    *
    * @see https://nightwatchjs.org/api/setWindowRect.html
+   *
+   * @deprecated In favour of `.window.setRect()`.
    */
   setWindowRect(
     options: WindowSizeAndPosition,
@@ -1984,6 +2018,7 @@ export interface ClientCommands extends ChromiumClientCommands {
    *
    * @see https://nightwatchjs.org/api/setWindowSize.html
    *
+   * @deprecated In favour of `.window.setSize()`.
    */
   setWindowSize(
     width: number,
@@ -2016,6 +2051,8 @@ export interface ClientCommands extends ChromiumClientCommands {
    * @alias switchToWindow
    *
    * @see https://nightwatchjs.org/api/switchWindow.html
+   *
+   * @deprecated In favour of `.window.switch()`.
    */
   switchWindow(
     handleOrName: string,
@@ -2045,6 +2082,8 @@ export interface ClientCommands extends ChromiumClientCommands {
    *  };
    *
    * @see https://nightwatchjs.org/api/switchToWindow.html
+   *
+   * @deprecated In favour of `.window.switchTo()`.
    */
   switchToWindow(
     handleOrName: string,
@@ -2081,7 +2120,9 @@ export interface ClientCommands extends ChromiumClientCommands {
    *   }
    * }
    *
-   *  @see https://nightwatchjs.org/api/getWindowRect.html
+   * @see https://nightwatchjs.org/api/getWindowRect.html
+   *
+   * @deprecated In favour of `.window.getRect()`.
    */
   getWindowRect(
     callback?: (
@@ -2113,6 +2154,8 @@ export interface ClientCommands extends ChromiumClientCommands {
    * }
    *
    * @see https://nightwatchjs.org/api/getWindowSize.html
+   *
+   * @deprecated In favour of `.window.getRect()`.
    */
   getWindowSize(
     callback?: (
@@ -2144,6 +2187,8 @@ export interface ClientCommands extends ChromiumClientCommands {
    * }
    *
    * @see https://nightwatchjs.org/api/getWindowPosition.html
+   *
+   * @deprecated In favour of `.window.getPosition()`.
    */
   getWindowPosition(
     callback?: (
@@ -2163,6 +2208,8 @@ export interface ClientCommands extends ChromiumClientCommands {
    *  };
    *
    * @see https://nightwatchjs.org/api/pageSource.html
+   *
+   * @deprecated In favour of `.document.pageSource()`.
    */
   pageSource(
     callback?: (
@@ -4226,7 +4273,7 @@ export interface ElementCommands {
   ): Awaitable<this, string>;
 }
 
-export interface AppiumCommands {
+export interface AppiumCommands<ReturnType = unknown> {
   /**
    * Get the current device orientation.
    *
@@ -4250,7 +4297,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<'LANDSCAPE' | 'PORTRAIT'>
     ) => void
-  ): Awaitable<NightwatchAPI, 'LANDSCAPE' | 'PORTRAIT'>;
+  ): Awaitable<IfUnknown<ReturnType, this>, 'LANDSCAPE' | 'PORTRAIT'>;
 
   /**
    * Set the current device orientation.
@@ -4269,7 +4316,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<'LANDSCAPE' | 'PORTRAIT'>
     ) => void
-  ): Awaitable<NightwatchAPI, 'LANDSCAPE' | 'PORTRAIT'>;
+  ): Awaitable<IfUnknown<ReturnType, this>, 'LANDSCAPE' | 'PORTRAIT'>;
 
   /**
    * Get a list of the available contexts. Used when testing hybrid mobile apps using Appium.
@@ -4296,7 +4343,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<string[]>
     ) => void
-  ): Awaitable<NightwatchAPI, string[]>;
+  ): Awaitable<IfUnknown<ReturnType, this>, string[]>;
 
   /**
    * Get the current context in which Appium is running. Used when testing hybrid mobile apps using Appium.
@@ -4323,7 +4370,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<string | null>
     ) => void
-  ): Awaitable<NightwatchAPI, string | null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, string | null>;
 
   /**
    * Set the context to be automated. Used when testing hybrid mobile apps using Appium.
@@ -4359,7 +4406,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<null>
     ) => void
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Start an Android activity by providing package name, activity name and other optional parameters.
@@ -4402,7 +4449,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<null>
     ) => void
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Get the name of the current Android activity.
@@ -4427,7 +4474,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<string>
     ) => void
-  ): Awaitable<NightwatchAPI, string>;
+  ): Awaitable<IfUnknown<ReturnType, this>, string>;
 
   /**
    * Get the name of the current Android package.
@@ -4452,7 +4499,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<string>
     ) => void
-  ): Awaitable<NightwatchAPI, string>;
+  ): Awaitable<IfUnknown<ReturnType, this>, string>;
 
   /**
    * Get the current geolocation of the mobile device.
@@ -4477,7 +4524,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<AppiumGeolocation>
     ) => void
-  ): Awaitable<NightwatchAPI, AppiumGeolocation>;
+  ): Awaitable<IfUnknown<ReturnType, this>, AppiumGeolocation>;
 
   /**
    * Set the current geolocation of the mobile device.
@@ -4500,7 +4547,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<AppiumGeolocation>
     ) => void
-  ): Awaitable<NightwatchAPI, AppiumGeolocation>;
+  ): Awaitable<IfUnknown<ReturnType, this>, AppiumGeolocation>;
 
   /**
    * Press a particular key on an Android Device.
@@ -4525,7 +4572,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<null>
     ) => void
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
   pressKeyCode(
     keycode: number,
     metastate?: number,
@@ -4534,7 +4581,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<null>
     ) => void
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Press and hold a particular key on an Android Device.
@@ -4559,7 +4606,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<null>
     ) => void
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
   longPressKeyCode(
     keycode: number,
     metastate?: number,
@@ -4568,7 +4615,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<null>
     ) => void
-  ): Awaitable<NightwatchAPI, null>;
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Hide soft keyboard.
@@ -4590,7 +4637,7 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<boolean>
     ) => void
-  ): Awaitable<NightwatchAPI, boolean>;
+  ): Awaitable<IfUnknown<ReturnType, this>, boolean>;
 
   /**
    * Whether or not the soft keyboard is shown.
@@ -4615,7 +4662,778 @@ export interface AppiumCommands {
       this: NightwatchAPI,
       result: NightwatchCallbackResult<boolean>
     ) => void
-  ): Awaitable<NightwatchAPI, boolean>;
+  ): Awaitable<IfUnknown<ReturnType, this>, boolean>;
+}
+
+export interface Cookie {
+  name: string;
+  value: string;
+  path?: string;
+  domain?: string;
+  secure?: boolean;
+  httpOnly?: boolean;
+  expiry?: number;
+  sameSite?: 'Lax' | 'Strict' | 'None';
+}
+
+export interface CookiesNsCommands<ReturnType = unknown> {
+  /**
+   * Retrieve a single cookie visible to the current page.
+   *
+   * The cookie is returned as a cookie JSON object, with properties as defined [here](https://www.w3.org/TR/webdriver/#dfn-table-for-cookie-conversion).
+   *
+   * @example
+   * module.exports = {
+   *   'get a cookie': function (browser) {
+   *     browser
+   *       .cookies.get('test_cookie', function (result) {
+   *         const cookie = result.value;
+   *         this.assert.equal(cookie.name, 'test_cookie');
+   *         this.assert.equal(cookie.value, '123456');
+   *       });
+   *   },
+   *
+   *   'get a cookie with ES6 async/await': async function (browser) {
+   *     const cookie = await browser.cookies.get('test_cookie');
+   *     browser.assert.equal(cookie.name, 'test_cookie');
+   *     browser.assert.equal(cookie.value, '123456');
+   *   }
+   * };
+   */
+  get(
+      name: string,
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<Cookie | null>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, Cookie | null>;
+
+  /**
+   * Retrieve all cookies visible to the current page.
+   *
+   * The cookies are returned as an array of cookie JSON object, with properties as defined [here](https://www.w3.org/TR/webdriver/#dfn-table-for-cookie-conversion).
+   *
+   * @example
+   * module.exports = {
+   *   'get all cookies': function (browser) {
+   *     browser
+   *       .cookies.getAll(function (result) {
+   *         this.assert.equal(result.value.length, 1);
+   *         this.assert.equal(result.value[0].name, 'test_cookie');
+   *       });
+   *   },
+   *
+   *   'get all cookies with ES6 async/await': async function (browser) {
+   *     const cookies = await browser.cookies.getAll();
+   *     browser.assert.equal(cookies.length, 1);
+   *     browser.assert.equal(cookies[0].name, 'test_cookie');
+   *   }
+   * };
+   */
+  getAll(
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<Cookie[]>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, Cookie[]>;
+
+  /**
+   * Set a cookie, specified as a cookie JSON object, with properties as defined [here](https://www.w3.org/TR/webdriver/#dfn-table-for-cookie-conversion).
+   *
+   * @example
+   * module.exports = {
+   *   'set a cookie': function (browser) {
+   *     browser
+   *       .cookies.set({
+   *         name: "test_cookie",
+   *         value: "test_value",
+   *         path: "/", // (Optional)
+   *         domain: "example.org", // (Optional)
+   *         secure: false, // (Optional)
+   *         httpOnly: false, // (Optional)
+   *         expiry: 1395002765 // (Optional) time in seconds since midnight, January 1, 1970 UTC
+   *       });
+   *   },
+   *
+   *   'set a cookie with ES6 async/await': async function (browser) {
+   *     await browser.cookies.set({
+   *       name: 'test_cookie',
+   *       value: 'test_value',
+   *       domain: 'example.org', // (Optional)
+   *       sameSite: 'Lax' // (Optional)
+   *     });
+   *   }
+   * };
+   */
+  set(
+      cookie: Cookie,
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Delete the cookie with the given name. This command is a no-op if there is no such cookie visible to the current page.
+   *
+   * @example
+   * module.exports = {
+   *   'delete a cookie': function (browser) {
+   *     browser
+   *       .cookies.delete('test_cookie', function () {
+   *         console.log('cookie deleted successfully');
+   *       });
+   *   },
+   *
+   *   'delete a cookie with ES6 async/await': async function (browser) {
+   *     await browser.cookies.delete('test_cookie');
+   *   }
+   * };
+   */
+  delete(
+      cookieName: string,
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Delete all cookies visible to the current page.
+   *
+   * @example
+   * module.exports = {
+   *   'delete all cookies': function (browser) {
+   *     browser
+   *       .cookies.deleteAll(function() {
+   *         console.log('all cookies deleted successfully');
+   *       });
+   *   },
+   *
+   *   'delete all cookies with ES6 async/await': async function (browser) {
+   *     await browser.cookies.deleteAll();
+   *   }
+   * };
+   */
+  deleteAll(
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+}
+
+export interface AlertsNsCommands<ReturnType = unknown> {
+  /**
+   * Accepts the currently displayed alert dialog. Usually, this is equivalent to clicking on the 'OK' button in the dialog.
+   *
+   * @example
+   * module.exports = {
+   *   'accept open alert': function (browser) {
+   *     browser
+   *       .alerts.accept(function () {
+   *         console.log('alert accepted successfully');
+   *       });
+   *   },
+   *
+   *   'accept open alert with ES6 async/await': async function (browser) {
+   *     await browser.alerts.accept();
+   *   }
+   * };
+   */
+  accept(
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Dismisses the currently displayed alert dialog.
+   *
+   * For confirm() and prompt() dialogs, this is equivalent to clicking the 'Cancel' button.
+   * For alert() dialogs, this is equivalent to clicking the 'OK' button.
+   *
+   * @example
+   * module.exports = {
+   *   'dismiss open alert': function (browser) {
+   *     browser
+   *       .alerts.dismiss(function () {
+   *         console.log('alert dismissed successfully');
+   *       });
+   *   },
+   *
+   *   'dismiss open alert with ES6 async/await': async function (browser) {
+   *     await browser.alerts.dismiss();
+   *   }
+   * };
+   */
+  dismiss(
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Get the text of the currently displayed JavaScript alert(), confirm(), or prompt() dialog.
+   *
+   * @example
+   * module.exports = {
+   *   'get open alert text': function (browser) {
+   *     browser
+   *       .alerts.getText(function (result) {
+   *         console.log('text on open alert:', result.value);
+   *       });
+   *   },
+   *
+   *   'get open alert text with ES6 async/await': async function (browser) {
+   *     const alertText = await browser.alerts.getText();
+   *     console.log('text on open alert:', alertText);
+   *   }
+   * };
+   */
+  getText(
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, string>;
+
+  /**
+   * Send keystrokes to a JavaScript prompt() dialog.
+   *
+   * @example
+   * module.exports = {
+   *   'set text on JS prompt': function (browser) {
+   *     browser
+   *       .alerts.setText('some text', function () {
+   *         console.log('text sent to JS prompt successfully');
+   *       });
+   *   },
+   *
+   *   'set text on JS prompt with ES6 async/await': async function (browser) {
+   *     await browser.alerts.setText('some text');
+   *   }
+   * };
+   */
+  setText(
+      value: string,
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+}
+
+export interface DocumentNsCommands<ReturnType = unknown> {
+  /**
+   * Utility command to load an external script into the page specified by url.
+   *
+   * @example
+   * module.exports = {
+   *   'inject external script': function (browser) {
+   *      browser.document.injectScript('<script-url>', function () {
+   *        console.log('script injected successfully');
+   *      });
+   *   },
+   *
+   *   'inject external script using ES6 async/await': async function (browser) {
+   *      await browser.document.injectScript('<script-url>', 'injected-script');
+   *   }
+   * };
+   */
+  injectScript(
+      scriptUrl: string,
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WebElement>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, WebElement>;
+  injectScript(
+      scriptUrl: string,
+      id: string,
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WebElement>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, WebElement>;
+
+  /**
+   * Get the string serialized source of the current page.
+   *
+   * @example
+   * module.exports = {
+   *   'get page source': function (browser) {
+   *      browser.document.source(function (result) {
+   *        console.log('current page source:', result.value);
+   *      });
+   *   },
+   *
+   *   'get page source using ES6 async/await': async function (browser) {
+   *      const pageSource = await browser.document.source();
+   *      console.log('current page source:', pageSource);
+   *   }
+   * };
+   *
+   * @alias document.pageSource
+   */
+  source(
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, string>;
+
+  /**
+   * Get the string serialized source of the current page.
+   *
+   * @example
+   * module.exports = {
+   *   'get page source': function (browser) {
+   *      browser.document.pageSource(function (result) {
+   *        console.log('current page source:', result.value);
+   *      });
+   *   },
+   *
+   *   'get page source using ES6 async/await': async function (browser) {
+   *      const pageSource = await browser.document.pageSource();
+   *      console.log('current page source:', pageSource);
+   *   }
+   * };
+   *
+   * @alias document.source
+   */
+  pageSource(
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, string>;
+}
+
+export interface WindowNsCommands<ReturnType = unknown> {
+  /**
+   * Close the current window or tab. This can be useful when you're working with multiple windows/tabs open (e.g. an OAuth login).
+   *
+   * After closing a window or tab, you must switch back to a valid window handle (using `.window.switchTo()` command) in order to continue execution.
+   *
+   * @example
+   * module.exports = {
+   *  'close current window/tab': function (browser) {
+   *     browser.window.close(function (result) {
+   *       console.log('current window/tab closed successfully');
+   *     });
+   *   },
+   *
+   *   'close current window/tab with ES6 async/await': async function (browser) {
+   *     await browser.window.close();
+   *   }
+   * };
+   */
+  close(
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Opens a new tab (default) or a separate new window, and changes focus to the newly opened tab/window.
+   *
+   * This command is only available for W3C Webdriver compatible browsers.
+   *
+   * @example
+   * module.exports = {
+   *  'open a new tab/window': function (browser) {
+   *     // open a new tab (default)
+   *     browser.window.open(function () {
+   *       console.log('new tab opened successfully');
+   *     });
+   *
+   *     // open a new window
+   *     browser.window.open('window', function () {
+   *       console.log('new window opened successfully');
+   *     });
+   *   },
+   *
+   *   'open a new tab/window ES6 async demo Test': async function (browser) {
+   *     // open a new tab (default)
+   *     await browser.window.open();
+   *
+   *     // open a new window
+   *     await browser.window.open('window');
+   *   }
+   * };
+   *
+   * @alias window.openNew
+   */
+  open(
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+  open(
+      type: "window" | "tab",
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Opens a new tab (default) or a separate new window, and changes focus to the newly opened tab/window.
+   *
+   * This command is only available for W3C Webdriver compatible browsers.
+   *
+   * @example
+   * module.exports = {
+   *  'open a new tab/window': function (browser) {
+   *     // open a new tab (default)
+   *     browser.window.openNew(function () {
+   *       console.log('new tab opened successfully');
+   *     });
+   *
+   *     // open a new window
+   *     browser.window.openNew('window', function () {
+   *       console.log('new window opened successfully');
+   *     });
+   *   },
+   *
+   *   'open a new tab/window ES6 async demo Test': async function (browser) {
+   *     // open a new tab (default)
+   *     await browser.window.openNew();
+   *
+   *     // open a new window
+   *     await browser.window.openNew('window');
+   *   }
+   * };
+   *
+   * @alias window.open
+   */
+  openNew(
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+  openNew(
+      type: "window" | "tab",
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Retrieve the current window handle.
+   *
+   * WebDriver does not make the distinction between windows and tabs. So, if your site opens a new tab or window, you can work with it using a window handle.
+   *
+   * @example
+   * module.exports = {
+   *  'get current window handle': function (browser) {
+   *     browser.window.getHandle(function (result) {
+   *       console.log('current window handle is:', result.value);
+   *     });
+   *   },
+   *
+   *   'get current window handle with ES6 async/await': async function (browser) {
+   *     const windowHandle = await browser.window.getHandle();
+   *     console.log('current window handle is:', windowHandle);
+   *   }
+   * };
+   */
+  getHandle(
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, string>;
+
+  /**
+   * Retrieve the list of all window handles available to the session.
+   *
+   * @example
+   * module.exports = {
+   *  'get all window handles': function (browser) {
+   *     browser.window.getAllHandles(function (result) {
+   *       console.log('available window handles are:', result.value);
+   *     });
+   *   },
+   *
+   *   'get all window handles with ES6 async/await': async function (browser) {
+   *     const windowHandles = await browser.window.getAllHandles();
+   *     console.log('available window handles are:', windowHandles);
+   *   }
+   * };
+   */
+  getAllHandles(
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string[]>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, string[]>;
+
+  /**
+   * Change focus to another window.
+   *
+   * The window to change focus to must be specified by its server assigned window handle. To find out the window handle, use `window.getAllHandles()` command.
+   *
+   * @example
+   * module.exports = {
+   *  'switch to another window': function (browser) {
+   *     browser
+   *       .navigateTo('https://nightwatchjs.org/__e2e/window/')
+   *       .click('#openWindowBttn')
+   *       .waitUntil(function () {
+   *         // wait until window handle for the new window is available
+   *         return new Promise((resolve) => {
+   *           browser.window.getAllHandles(function (result) {
+   *             resolve(result.value.length === 2);
+   *           });
+   *         });
+   *       })
+   *       .perform(async function () {
+   *         const originalWindow = await browser.window.getHandle();
+   *         const allWindows = await browser.window.getAllHandles();
+   *
+   *         // loop through to find the new window handle
+   *         for (const windowHandle of allWindows) {
+   *           if (windowHandle !== originalWindow) {
+   *             await browser.window.switchTo(windowHandle);
+   *             break;
+   *           }
+   *         }
+   *
+   *         const currentWindow = await browser.window.getHandle();
+   *         browser.assert.notEqual(currentWindow, originalWindow);
+   *       });
+   *   },
+   *
+   *   'switch to another window with ES6 async/await': async function (browser) {
+   *     await browser.navigateTo('https://nightwatchjs.org/__e2e/window/');
+   *     await browser.click('#openWindowBttn');
+   *
+   *     // wait until window handle for the new window is available
+   *     await browser.waitUntil(async function () {
+   *       const windowHandles = await browser.window.getAllHandles();
+   *
+   *       return windowHandles.length === 2;
+   *     });
+   *
+   *     const originalWindow = await browser.window.getHandle();
+   *     const allWindows = await browser.window.getAllHandles();
+   *
+   *     // loop through available windows to find the new window handle
+   *     for (const windowHandle of allWindows) {
+   *       if (windowHandle !== originalWindow) {
+   *         await browser.window.switchTo(windowHandle);
+   *         break;
+   *       }
+   *     }
+   *
+   *     const currentWindow = await browser.window.getHandle();
+   *     await browser.assert.notEqual(currentWindow, originalWindow);
+   *   }
+   * };
+   *
+   * @alias window.switch
+   */
+  switchTo(
+      windowHandle: string,
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+  switch(
+      windowHandle: string,
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Increases the window to the maximum available size without going full-screen.
+   *
+   * @example
+   * module.exports = {
+   *  'maximize current window': function (browser) {
+   *     browser.window.maximize(function () {
+   *       console.log('window maximized successfully');
+   *     });
+   *   },
+   *
+   *   'maximize current window using ES6 async/await': async function (browser) {
+   *     await browser.window.maximize();
+   *   }
+   * };
+   */
+  maximize(
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Hides the window in the system tray. If the window happens to be in fullscreen mode,
+   * it is restored the normal state then it will be "iconified" - minimize or hide the window from the visible screen.
+   *
+   * @example
+   * module.exports = {
+   *  'minimize current window': function (browser) {
+   *     browser.window.minimize(function () {
+   *       console.log('window minimized successfully');
+   *     });
+   *   },
+   *
+   *   'minimize current window using ES6 async/await': async function (browser) {
+   *     await browser.window.minimize();
+   *   }
+   * };
+   */
+  minimize(
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Set the current window state to fullscreen, similar to pressing F11 in most browsers.
+   *
+   * @example
+   * module.exports = {
+   *  'make current window fullscreen': function (browser) {
+   *     browser.window.fullscreen(function () {
+   *       console.log('window in fullscreen mode');
+   *     });
+   *   },
+   *
+   *   'make current window fullscreen with ES6 async/await': async function (browser) {
+   *     await browser.window.fullscreen();
+   *   }
+   * };
+   */
+  fullscreen(
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Get the coordinates of the top left corner of the current window.
+   *
+   * @example
+   * module.exports = {
+   *   'get current window position': function (browser) {
+   *      browser.window.getPosition(function (result) {
+   *        console.log('Position of current window:', result.value.x, result.value.y);
+   *      });
+   *   },
+   *
+   *   'get current window position using ES6 async/await': async function (browser) {
+   *      const {x, y} = await browser.window.getPosition();
+   *      console.log('Position of current window:', x, y);
+   *   }
+   * };
+   */
+  getPosition(
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WindowPosition>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, WindowPosition>;
+
+  /**
+   * Get the size of the current window in pixels.
+   *
+   * @example
+   * module.exports = {
+   *   'get current window size': function (browser) {
+   *      browser.window.getSize(function (result) {
+   *        console.log('Size of current window:', result.value.width, result.value.height);
+   *      });
+   *   },
+   *
+   *   'get current window size using ES6 async/await': async function (browser) {
+   *      const {width, height} = await browser.window.getSize();
+   *      console.log('Size of current window:', width, height);
+   *   }
+   * };
+   */
+  getSize(
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WindowSize>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, WindowSize>;
+
+  /**
+   * Fetches the [window rect](https://w3c.github.io/webdriver/#dfn-window-rect) - size and position of the current window.
+   *
+   * Its JSON representation is the following:
+   * - `x` - window's screenX attribute;
+   * - `y` - window's screenY attribute;
+   * - `width` - outerWidth attribute;
+   * - `height` - outerHeight attribute.
+   *
+   * All attributes are in CSS pixels.
+   *
+   * @example
+   * module.exports = {
+   *   'get current window rect': function (browser) {
+   *      browser.window.getRect(function (result) {
+   *        console.log('Size of current window:', result.value.width, result.value.height);
+   *        console.log('Position of current window:', result.value.x, result.value.y);
+   *      });
+   *   },
+   *
+   *   'get current window rect using ES6 async/await': async function (browser) {
+   *      const {width, height, x, y} = await browser.window.getRect();
+   *      console.log('Size of current window:', width, height);
+   *      console.log('Position of current window:', x, y);
+   *   }
+   * };
+   */
+  getRect(
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WindowSizeAndPosition>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, WindowSizeAndPosition>;
+
+  /**
+   * Set the position of the current window - move the window to the chosen position.
+   *
+   * @example
+   * module.exports = {
+   *   'set current window position': function (browser) {
+   *      // Move the window to the top left of the primary monitor
+   *      browser.window.setPosition(0, 0, function (result) {
+   *        console.log('window moved successfully');
+   *      });
+   *   },
+   *
+   *   'set current window position using ES6 async/await': async function (browser) {
+   *      // Move the window to the top left of the primary monitor
+   *      await browser.window.setPosition(0, 0);
+   *   }
+   * };
+   */
+  setPosition(
+      x: number,
+      y: number,
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Set the size of the current window in CSS pixels.
+   *
+   * @example
+   * module.exports = {
+   *   'set current window size': function (browser) {
+   *      browser.window.setSize(1024, 768, function (result) {
+   *        console.log('window resized successfully');
+   *      });
+   *   },
+   *
+   *   'set current window size using ES6 async/await': async function (browser) {
+   *      await browser.window.setSize(1024, 768);
+   *   }
+   * };
+   *
+   * @alias window.resize
+   */
+  setSize(
+      width: number,
+      height: number,
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Set the size of the current window in CSS pixels.
+   *
+   * @example
+   * module.exports = {
+   *   'set current window size': function (browser) {
+   *      browser.window.setSize(1024, 768, function (result) {
+   *        console.log('window resized successfully');
+   *      });
+   *   },
+   *
+   *   'set current window size using ES6 async/await': async function (browser) {
+   *      await browser.window.setSize(1024, 768);
+   *   }
+   * };
+   *
+   * @alias window.setSize
+   */
+  resize(
+      width: number,
+      height: number,
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Change the [window rect](https://w3c.github.io/webdriver/#dfn-window-rect) - size and position of the current window.
+   *
+   * Its JSON representation is the following:
+   * - `x` - window's screenX attribute;
+   * - `y` - window's screenY attribute;
+   * - `width` - outerWidth attribute;
+   * - `height` - outerHeight attribute.
+   *
+   * All attributes are in CSS pixels.
+   *
+   * To change the window rect, you can either specify `width` and `height` together, `x` and `y` together, or all properties together.
+   *
+   * @example
+   * module.exports = {
+   *   'set current window rect': function (browser) {
+   *      // Change the screenX and screenY attributes of the window rect.
+   *      browser.window.setRect({x: 500, y: 500});
+   *
+   *      // Change the outerWidth and outerHeight attributes of the window rect.
+   *      browser.window.setRect({width: 600, height: 300});
+   *   },
+   *
+   *   'set current window rect using ES6 async/await': async function (browser) {
+   *      // Change all attributes of the window rect at once.
+   *      await browser.window.setRect({
+   *        width: 600,
+   *        height: 300,
+   *        x: 100,
+   *        y: 100
+   *      });
+   *   }
+   * };
+   */
+  setRect(
+      options: WindowSize | WindowPosition | WindowSizeAndPosition,
+      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 }
 
 export interface WebDriverProtocol
@@ -4943,23 +5761,6 @@ export interface WebDriverProtocolNavigation {
 
 export interface WebDriverProtocolCommandContexts {
   /**
-   * Change focus to another window or close the current window.
-   * Shouldn't normally be used directly, instead `.switchWindow()` and `.closeWindow()` should be used.
-   *
-   * @see https://nightwatchjs.org/api/window.html
-   *
-   * @deprecated Use `.switchWindow()` and `.closeWindow()` instead.
-   */
-  window(
-    method: "post" | "delete" | "POST" | "DELETE",
-    handleOrName?: string,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
-
-  /**
    * Retrieve the current window handle.
    *
    * @example
@@ -4970,6 +5771,8 @@ export interface WebDriverProtocolCommandContexts {
    *  }
    *
    * @see https://nightwatchjs.org/api/windowHandle.html
+   *
+   * @deprecated In favour of `.window.getHandle()`.
    */
   windowHandle(
     callback?: (
@@ -4990,6 +5793,8 @@ export interface WebDriverProtocolCommandContexts {
    *  }
    *
    * @see https://nightwatchjs.org/api/windowHandles.html
+   *
+   * @deprecated In favour of `.window.getAllHandles()`.
    */
   windowHandles(
     callback?: (
@@ -5009,6 +5814,8 @@ export interface WebDriverProtocolCommandContexts {
    *  }
    *
    * @see https://nightwatchjs.org/api/windowMaximize.html
+   *
+   * @deprecated In favour of `.window.maximize()`.
    */
   windowMaximize(
     handleOrName?: string,
@@ -5039,6 +5846,8 @@ export interface WebDriverProtocolCommandContexts {
    *  }
    *
    * @see https://nightwatchjs.org/api/windowPosition.html
+   *
+   * @deprecated In favour of `.window.getPosition()` and `.window.setPosition()`.
    */
   windowPosition(
     windowHandle: string,
@@ -5076,6 +5885,8 @@ export interface WebDriverProtocolCommandContexts {
    *  }
    *
    * @see https://nightwatchjs.org/api/windowSize.html
+   *
+   * @deprecated In favour of `.window.getSize()` and `.window.setSize()`.
    */
   windowSize(
     windowHandle: string,
@@ -5129,6 +5940,8 @@ export interface WebDriverProtocolCommandContexts {
    * }
    *
    * @see https://nightwatchjs.org/api/windowRect.html
+   *
+   * @deprecated In favour of `.window.getRect()` and `.window.setRect()`.
    */
   windowRect(
     options: { width?: number; height?: number; x?: number; y?: number },
@@ -5678,7 +6491,9 @@ export interface WebDriverProtocolDocumentHandling {
    * @example
    * browser.source();
    *
-   * @see https://nightwatchjs.org/api/source.html#apimethod-container
+   * @see https://nightwatchjs.org/api/source.html
+   *
+   * @deprecated In favour of `.document.source()`.
    */
   source(
     callback?: (
@@ -5880,6 +6695,8 @@ export interface WebDriverProtocolCookies {
    * @see setCookie
    * @see deleteCookie
    * @see deleteCookies
+   *
+   * @deprecated
    */
   cookie(
     method: "GET" | "DELETE",
@@ -6165,7 +6982,9 @@ export interface WebDriverProtocolUserPrompts {
    * @example
    * browser.acceptAlert()
    *
-   * @see https://nightwatchjs.org/api/acceptAlert.html#apimethod-container
+   * @see https://nightwatchjs.org/api/acceptAlert.html
+   *
+   * @deprecated In favour of `.alerts.accept()`.
    */
   acceptAlert(
     callback?: (
@@ -6182,7 +7001,9 @@ export interface WebDriverProtocolUserPrompts {
    * @example
    * browser.dismissAlert();
    *
-   * @see https://nightwatchjs.org/api/dismissAlert.html#apimethod-container
+   * @see https://nightwatchjs.org/api/dismissAlert.html
+   *
+   * @deprecated In favour of `.alerts.dismiss()`.
    */
   dismissAlert(
     callback?: (
@@ -6197,7 +7018,9 @@ export interface WebDriverProtocolUserPrompts {
    * @example
    * browser.getAlertText();
    *
-   * @see https://nightwatchjs.org/api/getAlertText.html#apimethod-container
+   * @see https://nightwatchjs.org/api/getAlertText.html
+   *
+   * @deprecated In favour of `.alerts.getText()`.
    */
   getAlertText(
     callback?: (
@@ -6212,7 +7035,9 @@ export interface WebDriverProtocolUserPrompts {
    * @example
    * browser.setAlertText('randomalert');
    *
-   * @see https://nightwatchjs.org/api/setAlertText.html#apimethod-container
+   * @see https://nightwatchjs.org/api/setAlertText.html
+   *
+   * @deprecated In favour of `.alerts.setText()`.
    */
   setAlertText(
     value: string,
@@ -6330,6 +7155,20 @@ export interface WebDriverProtocolMobileRelated {
     ) => void
   ): Awaitable<this, null>;
 }
+
+// namespaced api
+export const browser: NightwatchAPI;
+export const app: NightwatchAPI;
+
+export const appium: AppiumCommands;
+export const cookies: CookiesNsCommands;
+export const alerts: AlertsNsCommands;
+export const document: DocumentNsCommands;
+export const window: WindowNsCommands;
+
+export const assert: Assert;
+export const verify: Assert;
+export const expect: Expect;
 
 declare const _default: Nightwatch;
 export default _default;

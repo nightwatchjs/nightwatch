@@ -1,5 +1,6 @@
 import {NightwatchCustomAssertions} from './custom-assertion';
-import {Awaitable, Definition, ElementResult, JSON_WEB_OBJECT, NightwatchAPI} from './index';
+import {Awaitable, Definition, ElementResult, JSON_WEB_OBJECT} from './index';
+import { IfUnknown } from './utils';
 
 export interface NightwatchAssertionsError {
 	name: string;
@@ -8,7 +9,7 @@ export interface NightwatchAssertionsError {
 	stack: string;
 }
 
-export interface NightwatchCommonAssertions {
+export interface NightwatchCommonAssertions<ReturnType> {
 	/**
 	 * Checks if the given attribute of an element contains the expected value.
 	 *
@@ -23,7 +24,7 @@ export interface NightwatchCommonAssertions {
 		attribute: string,
 		expected: string,
 		message?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Checks if the given attribute of an element has the expected value.
@@ -39,7 +40,7 @@ export interface NightwatchCommonAssertions {
 		attribute: string,
 		expected: string,
 		message?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Check if an element's attribute value matches a regular expression.
@@ -58,7 +59,7 @@ export interface NightwatchCommonAssertions {
 		attribute: string,
 		regex: string | RegExp,
 		msg?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Checks if the specified css property of a given element has the expected value.
@@ -74,7 +75,7 @@ export interface NightwatchCommonAssertions {
 		cssProperty: string,
 		expected: string,
 		msg?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Checks if the specified DOM property of a given element has the expected value.
@@ -86,7 +87,7 @@ export interface NightwatchCommonAssertions {
 		domProperty: string,
 		expected: string | number,
 		msg?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<any>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<any>>;
 
 	/**
 	 * Checks if the specified DOM property of a given element has the expected value.
@@ -98,7 +99,7 @@ export interface NightwatchCommonAssertions {
 		domProperty: string,
 		expected: string | number,
 		msg?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<any>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<any>>;
 
 	/**
 	 * Check if specified DOM property value of a given element matches a regex.
@@ -109,7 +110,7 @@ export interface NightwatchCommonAssertions {
 		domProperty: string,
 		expected: string | RegExp,
 		msg?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<any>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<any>>;
 
 	/**
 	 * Checks if the number of elements specified by a selector is equal to a given value.
@@ -127,7 +128,7 @@ export interface NightwatchCommonAssertions {
 		count: number,
 		msg?: string
 	): Awaitable<
-		NightwatchAPI,
+		IfUnknown<ReturnType, this>,
 		NightwatchAssertionsResult<JSON_WEB_OBJECT[]> & {
 			WebdriverElementId: string;
 		}
@@ -146,7 +147,7 @@ export interface NightwatchCommonAssertions {
 		selector: Definition,
 		msg?: string
 	): Awaitable<
-		NightwatchAPI,
+		IfUnknown<ReturnType, this>,
 		NightwatchAssertionsResult<ElementResult[]>
 	>;
 
@@ -166,7 +167,7 @@ export interface NightwatchCommonAssertions {
 		selector: Definition,
 		msg?: string
 	): Awaitable<
-		NightwatchAPI,
+		IfUnknown<ReturnType, this>,
 		NightwatchAssertionsResult<ElementResult[]>
 	>;
 
@@ -185,7 +186,7 @@ export interface NightwatchCommonAssertions {
 		selector: Definition,
 		className: string,
 		msg?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Checks if the given element has the specified CSS class.
@@ -202,7 +203,7 @@ export interface NightwatchCommonAssertions {
 		selector: Definition,
 		className: string,
 		message?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Checks if the given element has the specified CSS class.
@@ -223,7 +224,7 @@ export interface NightwatchCommonAssertions {
 		selector: Definition,
 		className: string | string[],
 		msg?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Checks if the given element contains the specified DOM attribute.
@@ -243,7 +244,7 @@ export interface NightwatchCommonAssertions {
 		selector: Definition,
 		expectedAttribute: string,
 		msg?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string[]>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string[]>>;
 
 	/**
 	 * Checks if the given element is enabled (as indicated by the 'disabled' attribute).
@@ -258,7 +259,7 @@ export interface NightwatchCommonAssertions {
 	enabled(
 		selector: Definition,
 		message?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<boolean>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<boolean>>;
 
 	/**
 	 * Checks if the given element is selected.
@@ -273,7 +274,7 @@ export interface NightwatchCommonAssertions {
 	selected(
 		selector: Definition,
 		message?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<boolean>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<boolean>>;
 
 	/**
 	 * Checks if the given element contains the specified text.
@@ -290,7 +291,7 @@ export interface NightwatchCommonAssertions {
 		selector: Definition,
 		expectedText: string,
 		message?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Checks if the given element contains the specified text.
@@ -307,7 +308,7 @@ export interface NightwatchCommonAssertions {
 		selector: Definition,
 		expectedText: string,
 		msg?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Check if an element's inner text equals the expected text.
@@ -325,7 +326,7 @@ export interface NightwatchCommonAssertions {
 		selector: Definition,
 		expectedText: string,
 		msg?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Check if an elements inner text matches a regular expression.
@@ -343,7 +344,7 @@ export interface NightwatchCommonAssertions {
 		selector: Definition,
 		regex: string | RegExp,
 		msg?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Checks if the page title equals the given value.
@@ -359,7 +360,7 @@ export interface NightwatchCommonAssertions {
 	title(
 		expected: string,
 		message?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Checks if the page title equals the given value.
@@ -373,7 +374,7 @@ export interface NightwatchCommonAssertions {
 	titleContains(
 		expected: string,
 		message?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Checks if the page title equals the given value.
@@ -387,7 +388,7 @@ export interface NightwatchCommonAssertions {
 	titleEquals(
 		expected: string,
 		message?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Checks if the current title matches a regular expression.
@@ -404,7 +405,7 @@ export interface NightwatchCommonAssertions {
 	titleMatches(
 		regex: string | RegExp,
 		msg?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Checks if the current URL contains the given value.
@@ -418,7 +419,7 @@ export interface NightwatchCommonAssertions {
 	urlContains(
 		expectedText: string,
 		message?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Checks if the current url equals the given value.
@@ -432,7 +433,7 @@ export interface NightwatchCommonAssertions {
 	urlEquals(
 		expected: string,
 		message?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Checks if the current url matches a regular expression.
@@ -448,7 +449,7 @@ export interface NightwatchCommonAssertions {
 	urlMatches(
 		regex: string | RegExp,
 		msg?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Checks if the given form element's value equals the expected value.
@@ -465,7 +466,7 @@ export interface NightwatchCommonAssertions {
 		selector: Definition,
 		expectedText: string,
 		message?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Checks if the given form element's value contains the expected value.
@@ -480,7 +481,7 @@ export interface NightwatchCommonAssertions {
 		selector: Definition,
 		expectedText: string,
 		message?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Checks if the given form element's value equals the expected value.
@@ -499,7 +500,7 @@ export interface NightwatchCommonAssertions {
 		selector: Definition,
 		expected: string,
 		msg?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Checks if the given element is not visible on the page.
@@ -516,7 +517,7 @@ export interface NightwatchCommonAssertions {
 	hidden(
 		selector: Definition,
 		msg?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<boolean>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<boolean>>;
 
 	/**
 	 * Checks if the given element is visible on the page.
@@ -530,7 +531,7 @@ export interface NightwatchCommonAssertions {
 	visible(
 		selector: Definition,
 		message?: string
-	): Awaitable<NightwatchAPI, NightwatchAssertionsResult<boolean>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<boolean>>;
 
 	NightwatchAssertionsError: NightwatchAssertionsError;
 }
@@ -540,109 +541,109 @@ export interface NightwatchNodeAssertionsResult {
 	returned: 1;
 }
 
-export interface NightwatchNodeAssertions {
+export interface NightwatchNodeAssertions<ReturnType> {
 	// The following definitions are taken from @types/assert
 
 	fail(
 		message?: string | Error
-	): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchNodeAssertionsResult | Error>;
 	fail(
 		actual: any,
 		expected: any,
 		message?: string | Error,
 		operator?: string
-	): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchNodeAssertionsResult | Error>;
 
 	ok(
 		value: any,
 		message?: string | Error
-	): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchNodeAssertionsResult | Error>;
 
 	equal(
 		actual: any,
 		expected: any,
 		message?: string | Error
-	): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchNodeAssertionsResult | Error>;
 	notEqual(
 		actual: any,
 		expected: any,
 		message?: string | Error
-	): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchNodeAssertionsResult | Error>;
 
 	deepEqual(
 		actual: any,
 		expected: any,
 		message?: string | Error
-	): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchNodeAssertionsResult | Error>;
 	notDeepEqual(
 		actual: any,
 		expected: any,
 		message?: string | Error
-	): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchNodeAssertionsResult | Error>;
 
 	strictEqual(
 		actual: any,
 		expected: any,
 		message?: string | Error
-	): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchNodeAssertionsResult | Error>;
 	notStrictEqual(
 		actual: any,
 		expected: any,
 		message?: string | Error
-	): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchNodeAssertionsResult | Error>;
 
 	deepStrictEqual(
 		actual: any,
 		expected: any,
 		message?: string | Error
-	): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchNodeAssertionsResult | Error>;
 	notDeepStrictEqual(
 		actual: any,
 		expected: any,
 		message?: string | Error
-	): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchNodeAssertionsResult | Error>;
 
 	throws(
 		block: () => any,
 		message?: string | Error
-	): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchNodeAssertionsResult | Error>;
 	doesNotThrow(
 		block: () => any,
 		message?: string | Error
-	): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchNodeAssertionsResult | Error>;
 
 	ifError(
 		value: any
-	): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchNodeAssertionsResult | Error>;
 
 	rejects(
 		block: (() => Promise<any>) | Promise<any>,
 		message?: string | Error
-	): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchNodeAssertionsResult | Error>;
 	doesNotReject(
 		block: (() => Promise<any>) | Promise<any>,
 		message?: string | Error
-	): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchNodeAssertionsResult | Error>;
 
 	match(
 		value: string,
 		regExp: RegExp,
 		message?: string | Error
-	): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchNodeAssertionsResult | Error>;
 	doesNotMatch(
 		value: string,
 		regExp: RegExp,
 		message?: string | Error
-	): Awaitable<NightwatchAPI, NightwatchNodeAssertionsResult | Error>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchNodeAssertionsResult | Error>;
 }
 
-export interface NightwatchAssertions
-	extends NightwatchCommonAssertions,
-	NightwatchCustomAssertions {
+export interface NightwatchAssertions<ReturnType>
+	extends NightwatchCommonAssertions<ReturnType>,
+	NightwatchCustomAssertions<ReturnType> {
 	/**
 	 * Negates any of assertions following in the chain.
 	 */
-	not: Omit<NightwatchAssertions, 'not'>;
+	not: Omit<NightwatchAssertions<ReturnType>, 'not'>;
 }
 
 export interface NightwatchAssertionsResult<T> {
@@ -652,7 +653,9 @@ export interface NightwatchAssertionsResult<T> {
 	passed: true;
 }
 
-export interface Assert extends NightwatchAssertions, NightwatchNodeAssertions { }
+export interface Assert<ReturnType = unknown>
+	extends NightwatchAssertions<ReturnType>,
+	NightwatchNodeAssertions<ReturnType> { }
 
 // TODO: Check where the following type is being used.
 /**
