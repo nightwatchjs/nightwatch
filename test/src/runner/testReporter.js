@@ -394,4 +394,30 @@ describe('testReporter', function() {
       assert.deepStrictEqual(result, ['nightwatch_reporter_output', 'html_reporter_output']);
     });
   });
+
+  it('test to check retry data logging', function() {
+    this.timeout(100000);
+
+    const testsPath = path.join(__dirname, '../../sampletests/withfailures');
+    const globals = {
+      calls: 0,
+      reporter(results, cb) {
+        assert.ok('sample' in results.modules);
+        assert.ok('completedSections' in results.modules['sample']);
+        assert.ok('demoTest' in results.modules['sample']['completedSections']);
+        assert.ok('retryTestData' in results.modules['sample']['completedSections']['demoTest']);
+        assert.ok(results.modules['sample']['completedSections']['demoTest']['retryTestData'].length <= 3);
+        cb();
+      },
+      retryAssertionTimeout: 0
+    };
+
+    return runTests({
+      retries: 3,
+      _source: [testsPath]
+    }, settings({
+      skip_testcases_on_fail: false,
+      globals
+    }));
+  });
 });
