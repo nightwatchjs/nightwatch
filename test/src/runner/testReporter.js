@@ -1,12 +1,12 @@
 const assert = require('assert');
 const path = require('path');
 const mockery = require('mockery');
-const mkpath = require('mkpath');
 const rimraf = require('rimraf');
 
 const common = require('../../common.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
+const {mkpath} = common.require('utils');
 const {readFilePromise, readDirPromise} = require('../../lib/utils.js');
 
 const MockServer = require('../../lib/mockserver.js');
@@ -113,7 +113,8 @@ describe('testReporter', function() {
           done();
         }
       },
-      output_folder: 'output'
+      output_folder: 'output',
+      reporter_options: {}
     });
 
     return reporter.writeReportToFile().then(function(result) {
@@ -393,11 +394,38 @@ describe('testReporter', function() {
           done();
         }
       },
-      output_folder: 'output'
+      output_folder: 'output',
+      reporter_options: {}
     });
 
     return reporter.writeReportToFile().then(function(result) {
       assert.deepStrictEqual(result, ['nightwatch_reporter_output', 'html_reporter_output']);
     });
+  });
+
+  it('test to check retry data logging', function() {
+    this.timeout(100000);
+
+    const testsPath = path.join(__dirname, '../../sampletests/withfailures');
+    const globals = {
+      calls: 0,
+      reporter(results, cb) {
+        assert.ok('sample' in results.modules);
+        assert.ok('completedSections' in results.modules['sample']);
+        assert.ok('demoTest' in results.modules['sample']['completedSections']);
+        assert.ok('retryTestData' in results.modules['sample']['completedSections']['demoTest']);
+        assert.ok(results.modules['sample']['completedSections']['demoTest']['retryTestData'].length <= 3);
+        cb();
+      },
+      retryAssertionTimeout: 0
+    };
+
+    return runTests({
+      retries: 3,
+      _source: [testsPath]
+    }, settings({
+      skip_testcases_on_fail: false,
+      globals
+    }));
   });
 });

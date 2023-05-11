@@ -7,7 +7,7 @@ const CommandGlobals = require('../../lib/globals/commands.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
 const {readFilePromise, readDirPromise} = require('../../lib/utils.js');
-const mkpath = require('mkpath');
+const {mkpath} = common.require('utils');
 const rimraf = require('rimraf');
 
 describe('testRunnerJUnitOutput', function() {
