@@ -13,20 +13,13 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
-        typescript-version: ${{ env.TYPESCRIPT_VERSION }}
-    env:
-      TYPESCRIPT_VERSION: ${{ steps.get_typescript_version.outputs.version }}
+        typescript-version: [3.9, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 5.0]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Get TypeScript Version
-        id: get_typescript_version
-        run: |
-          npm install --save-dev @definitelytyped/typescript-versions
-          echo "::set-output name=version::$(node -p 'require("@definitelytyped/typescript-versions").TypeScriptVersion.shipped')"
       - name: Install TypeScript
         run: npm install -g typescript@${{ matrix.typescript-version }}
       - name: Install Dependencies
