@@ -37,7 +37,7 @@ describe('testRunnerRerunJsonOutput', function() {
       path.join(__dirname, '../../sampletests/withsubfolders')
     ];
 
-    return runTests({source: testsPath, reporter: 'rerunJson'}, settings({
+    return runTests({source: testsPath, reporter: 'minimalJson'}, settings({
       output_folder: 'output',
       silent: true,
       globals: {reporter: function() {}}
