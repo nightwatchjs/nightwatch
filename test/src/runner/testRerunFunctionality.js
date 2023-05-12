@@ -64,7 +64,7 @@ describe('testRerun', function () {
 
   it('Rerun with env varaible set and with setting env variable for json reporter', function () {
     process.env.NIGHTWATCH_RERUN_FAILED = 'true';
-    process.env.NIGHTWATCH_RERUN_REPORT_FILE = path.join(__dirname, '../../extra/rerunJsonReporter.json');
+    process.env.NIGHTWATCH_RERUN_REPORT_FILE = path.join(__dirname, '../../extra/minimalJsonReporter.json');
 
     return runTests({
     }, settings({
@@ -84,7 +84,7 @@ describe('testRerun', function () {
   });
 
   it('Rerun with cli flag and with setting env variable for json reporter', function () {
-    process.env.NIGHTWATCH_RERUN_REPORT_FILE = path.join(__dirname, '../../extra/rerunJsonReporter.json');
+    process.env.NIGHTWATCH_RERUN_REPORT_FILE = path.join(__dirname, '../../extra/minimalJsonReporter.json');
 
     return runTests({
       'rerun-failed': true
