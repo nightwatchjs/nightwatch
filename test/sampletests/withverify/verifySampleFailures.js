@@ -1,17 +1,21 @@
 module.exports = {
   before(client) {
     client.globals.calls++;
+    client.url('http://localhost');
   },
 
   demoTest(client) {
-    client.url('http://localhost')
-      .verify.equal(0, 1, 'custom message')
-      .verify.elementPresent('#badElement')
+    client.verify.equal(0, 1, 'custom message')
       .verify.elementPresent('#weblogin')
-      .end();
+      .verify.elementPresent('#badElement');
+  },
+
+  demoTest1(client) {
+    client.verify.equal(0, 0, 'custom message');
   },
 
   after(client, callback) {
+    client.end();
     client.globals.calls++;
     callback();
   }

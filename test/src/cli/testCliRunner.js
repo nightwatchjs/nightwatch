@@ -1158,8 +1158,8 @@ describe('Test CLI Runner', function() {
         },
 
         'android.chrome': {
-          real_mobile: false,
           desiredCapabilities: {
+            real_mobile: false,
             avd: 'nightwatch-android-11',
             browserName: 'chrome',
             'goog:chromeOptions': {
@@ -1178,7 +1178,7 @@ describe('Test CLI Runner', function() {
     }).setup();
 
     assert.strictEqual(runner.argv.env, 'android.chrome');
-    assert.strictEqual(runner.test_settings.real_mobile, false);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.real_mobile, false);
     assert.strictEqual(runner.test_settings.desiredCapabilities.avd, 'nightwatch-android-11');
     assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'chrome');
     assert.ok('goog:chromeOptions' in runner.test_settings.desiredCapabilities);
@@ -1194,8 +1194,8 @@ describe('Test CLI Runner', function() {
         },
 
         'android.firefox': {
-          real_mobile: false,
           desiredCapabilities: {
+            real_mobile: false,
             avd: 'nightwatch-android-11',
             browserName: 'firefox',
             'moz:firefoxOptions': {
@@ -1214,7 +1214,8 @@ describe('Test CLI Runner', function() {
     }).setup();
 
     assert.strictEqual(runner.argv.env, 'android.firefox');
-    assert.strictEqual(runner.test_settings.real_mobile, false);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.real_mobile, false);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.avd, 'nightwatch-android-11');
     assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'firefox');
     assert.ok('moz:firefoxOptions' in runner.test_settings.desiredCapabilities);
     assert.strictEqual(runner.test_settings.desiredCapabilities['moz:firefoxOptions'].androidPackage, 'org.mozilla.firefox');
@@ -1229,8 +1230,8 @@ describe('Test CLI Runner', function() {
         },
 
         'android.chrome': {
-          real_mobile: true,
           desiredCapabilities: {
+            real_mobile: true,
             avd: 'nightwatch-android-11',
             browserName: 'chrome',
             'goog:chromeOptions': {
@@ -1250,7 +1251,7 @@ describe('Test CLI Runner', function() {
     }).setup();
 
     assert.strictEqual(runner.argv.env, 'android.chrome');
-    assert.strictEqual(runner.test_settings.real_mobile, true);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.real_mobile, true);
     assert.strictEqual(runner.test_settings.desiredCapabilities.avd, 'nightwatch-android-11');
     assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'chrome');
     assert.ok('goog:chromeOptions' in runner.test_settings.desiredCapabilities);
@@ -1267,8 +1268,8 @@ describe('Test CLI Runner', function() {
         },
 
         'android.firefox': {
-          real_mobile: true,
           desiredCapabilities: {
+            real_mobile: true,
             avd: 'nightwatch-android-11',
             browserName: 'firefox',
             'moz:firefoxOptions': {
@@ -1288,7 +1289,84 @@ describe('Test CLI Runner', function() {
     }).setup();
 
     assert.strictEqual(runner.argv.env, 'android.firefox');
-    assert.strictEqual(runner.test_settings.real_mobile, true);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.real_mobile, true);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.avd, 'nightwatch-android-11');
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'firefox');
+    assert.ok('moz:firefoxOptions' in runner.test_settings.desiredCapabilities);
+    assert.strictEqual(runner.test_settings.desiredCapabilities['moz:firefoxOptions'].androidPackage, 'org.mozilla.firefox');
+    assert.strictEqual(runner.test_settings.desiredCapabilities['moz:firefoxOptions'].androidDeviceSerial, 'ZD2222W62Y');
+  });
+
+  it('android config setup on real device - for chrome - deviceId passed in args', function() {
+    mockery.registerMock('./android_config.json', {
+      test_settings: {
+        'default': {
+          output: false,
+          silent: false
+        },
+
+        'android.chrome': {
+          desiredCapabilities: {
+            real_mobile: true,
+            avd: 'nightwatch-android-11',
+            browserName: 'chrome',
+            'goog:chromeOptions': {
+              androidPackage: 'com.android.chrome'
+            }
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+
+    const runner = new CliRunner({
+      config: './android_config.json',
+      env: 'android.chrome',
+      deviceId: 'ZD2222W62Y'
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'android.chrome');
+    assert.strictEqual(runner.test_settings.desiredCapabilities.real_mobile, true);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.avd, 'nightwatch-android-11');
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'chrome');
+    assert.ok('goog:chromeOptions' in runner.test_settings.desiredCapabilities);
+    assert.strictEqual(runner.test_settings.desiredCapabilities['goog:chromeOptions'].androidPackage, 'com.android.chrome');
+    assert.strictEqual(runner.test_settings.desiredCapabilities['goog:chromeOptions'].androidDeviceSerial, 'ZD2222W62Y');
+  });
+
+  it('android config setup on real device - for firefox - deviceId passed in args', function() {
+    mockery.registerMock('./android_config.json', {
+      test_settings: {
+        'default': {
+          output: false,
+          silent: false
+        },
+
+        'android.firefox': {
+          desiredCapabilities: {
+            real_mobile: true,
+            avd: 'nightwatch-android-11',
+            browserName: 'firefox',
+            'moz:firefoxOptions': {
+              androidPackage: 'org.mozilla.firefox'
+            }
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+
+    const runner = new CliRunner({
+      config: './android_config.json',
+      env: 'android.firefox',
+      deviceId: 'ZD2222W62Y'
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'android.firefox');
+    assert.strictEqual(runner.test_settings.desiredCapabilities.real_mobile, true);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.avd, 'nightwatch-android-11');
     assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'firefox');
     assert.ok('moz:firefoxOptions' in runner.test_settings.desiredCapabilities);
     assert.strictEqual(runner.test_settings.desiredCapabilities['moz:firefoxOptions'].androidPackage, 'org.mozilla.firefox');
@@ -1348,5 +1426,65 @@ describe('Test CLI Runner', function() {
     });
   });
 
+
+  it('Nightwatch Inspector - By default Chrome in debug mode run serially', function() {
+    mockery.registerMock('./nightwatch_inspector.json', {
+      test_settings: {
+        'default': {
+          output: false,
+          silent: false
+        },
+
+        chrome: {
+          desiredCapabilities: {
+            browserName: 'chrome'
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+
+    const runner = new CliRunner({
+      config: './nightwatch_inspector.json',
+      env: 'chrome',
+      debug: true
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'chrome');
+    assert.strictEqual(runner.test_settings.parallel_mode, false);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'chrome');
+  });
+
+  it('Nightwatch Inspector - parallel argument enables running Chrome in debug mode parallelly', function() {
+    mockery.registerMock('./nightwatch_inspector.json', {
+      test_settings: {
+        'default': {
+          output: false,
+          silent: false
+        },
+
+        chrome: {
+          desiredCapabilities: {
+            browserName: 'chrome'
+          }
+        }
+      }
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+
+    const runner = new CliRunner({
+      config: './nightwatch_inspector.json',
+      env: 'chrome',
+      debug: true,
+      parallel: true
+    }).setup();
+
+    assert.strictEqual(runner.argv.env, 'chrome');
+    assert.strictEqual(runner.argv.serial, undefined);
+    assert.strictEqual(runner.argv.parallel, true);
+    assert.strictEqual(runner.test_settings.desiredCapabilities.browserName, 'chrome');
+  });
 
 });

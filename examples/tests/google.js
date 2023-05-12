@@ -27,9 +27,16 @@ describe('sample google search', function() {
         .pause(1000);
     }
 
+    let locator;
+    if (browser.isMobile()) {
+      locator = 'form[action="/search"] input[type=search]';
+    } else {
+      locator = 'form[action="/search"] input[type=text]';
+    }
+
     await browser
-      .waitForElementVisible('form[action="/search"] input[type=text]')
-      .sendKeys('form[action="/search"] input[type=text]', ['Nightwatch.js', browser.Keys.ENTER])
+      .waitForElementVisible(locator)
+      .sendKeys(locator, ['Nightwatch.js', browser.Keys.ENTER])
       .assert.textContains('#rso>:first-child', 'Nightwatch.js')
       .end();
   });
