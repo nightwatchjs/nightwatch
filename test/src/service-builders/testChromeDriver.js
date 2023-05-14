@@ -148,6 +148,7 @@ describe('ChromeDriver Transport Tests', function () {
 
         assert.strictEqual(this.serviceName, 'ChromeDriver');
         assert.strictEqual(this.outputFile, '_chromedriver.log');
+        assert.strictEqual(this.requiresDriverBinary, true);
         assert.strictEqual(this.defaultPort, undefined);
         assert.strictEqual(this.npmPackageName, 'chromedriver');
         assert.strictEqual(this.serviceDownloadUrl, 'https://sites.google.com/chromium.org/driver/downloads');
@@ -205,6 +206,31 @@ describe('ChromeDriver Transport Tests', function () {
       buildArgs
     };
   }
+
+  it('test create session with chrome driver -- not found error', async function() {
+    let error;
+    try {
+      const mockery = require('mockery');
+      mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
+      mockery.registerMock('chromedriver', null);
+
+      await ChromeDriverTestSetup({
+        desiredCapabilities: {
+          browserName: 'chrome'
+        },
+        webdriver: {
+          port: 9999,
+          start_process: true
+        }
+      });
+      mockery.disable();
+    } catch (err) {
+      error = err;
+    }
+
+    assert.ok(error instanceof Error);
+    assert.strictEqual(error.message, 'ChromeDriver cannot be found in the current project.');
+  });
 
 
   it('test create session with chrome driver', async function() {

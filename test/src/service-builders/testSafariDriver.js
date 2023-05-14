@@ -125,6 +125,7 @@ describe('SafariDriver Transport Tests', function () {
 
         assert.strictEqual(this.serviceName, 'SafariDriver');
         assert.strictEqual(this.outputFile, '_safaridriver.log');
+        assert.strictEqual(this.requiresDriverBinary, false);
         assert.strictEqual(this.defaultPort, 0);
       }
       needsSinkProcess() {

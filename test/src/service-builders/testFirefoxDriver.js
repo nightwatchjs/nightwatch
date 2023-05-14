@@ -160,6 +160,7 @@ describe('GeckoDriver Transport Tests', function () {
 
         assert.strictEqual(this.serviceName, 'GeckoDriver');
         assert.strictEqual(this.outputFile, '_geckodriver.log');
+        assert.strictEqual(this.requiresDriverBinary, true);
         assert.strictEqual(this.defaultPort, undefined);
         assert.strictEqual(this.npmPackageName, 'geckodriver');
         assert.strictEqual(this.serviceDownloadUrl, 'https://github.com/mozilla/geckodriver/releases');
@@ -222,6 +223,29 @@ describe('GeckoDriver Transport Tests', function () {
       verboseLogging
     };
   }
+
+  it('test create session with firefox driver -- not found error', async function() {
+    let error;
+    mockery.registerMock('geckodriver', {
+      path: ''
+    });
+    try {
+      await GeckoDriverTestSetup({
+        desiredCapabilities: {
+          browserName: 'firefox'
+        },
+        webdriver: {
+          port: 9999,
+          start_process: true
+        }
+      });
+    } catch (err) {
+      error = err;
+    }
+
+    assert.ok(error instanceof Error);
+    assert.strictEqual(error.message, 'GeckoDriver cannot be found in the current project.');
+  });
 
 
   it('test create session with firefox driver', async function() {
