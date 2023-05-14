@@ -20,7 +20,7 @@
 import {Protocol} from 'devtools-protocol';
 import {expect as chaiExpect} from 'chai';
 import {
-  By,
+  By as SeleniumBy,
   Actions,
   WebElement,
   RelativeBy,
@@ -43,6 +43,7 @@ export * from './custom-assertion';
 export * from './custom-command';
 export * from './page-object';
 export * from './nightwatch-options';
+export * from './assertions';
 
 export const ELEMENT_KEY = 'element-6066-11e4-a52e-4f735466cecf';
 
@@ -115,7 +116,7 @@ export interface Ensure {
    * Ensures that the Nightwatch WebDriver client is able to switch to the designated frame.
    */
   ableToSwitchToFrame(
-    frame: number | WebElement | By
+    frame: number | WebElement | SeleniumBy
   ): Awaitable<NightwatchAPI, NightwatchEnsureResult>;
 
   /**
@@ -168,7 +169,7 @@ export interface Ensure {
   /**
    * Creates a condition that will loop until an element is found with the given locator.
    */
-  elementLocated(locator: By): Awaitable<NightwatchAPI, NightwatchEnsureResult>;
+  elementLocated(locator: SeleniumBy): Awaitable<NightwatchAPI, NightwatchEnsureResult>;
 
   /**
    * Creates a condition that will wait for the given element's text to contain the given substring.
@@ -198,7 +199,7 @@ export interface Ensure {
    * Creates a condition that will loop until at least one element is found with the given locator.
    */
   elementsLocated(
-    locator: By
+    locator: SeleniumBy
   ): Awaitable<NightwatchAPI, NightwatchEnsureResult>;
 
   /**
@@ -626,6 +627,7 @@ export interface NightwatchTestHooks extends NightwatchGlobals {
 }
 
 export class Element {
+  [ELEMENT_KEY]: string;
   name: string;
   webElement: WebElement;
   index: number;
@@ -644,8 +646,8 @@ export class Element {
     (): Awaitable<NightwatchAPI, WebElement>;
   };
   element: typeof globalElement;
-  find: (selector: Definition | WebElement | By) => any;
-  get: (selector: Definition | WebElement | By) => any;
+  find: (selector: Definition | WebElement | SeleniumBy) => any;
+  get: (selector: Definition | WebElement | SeleniumBy) => any;
   findElements: ElementCommands['findElements'];
   findAll: (selector: Definition) => any;
   click: ElementCommands['click'];
@@ -680,7 +682,7 @@ export class Element {
 }
 
 export function globalElement(
-  locator: Definition | By | WebElement,
+  locator: Definition | SeleniumBy | WebElement,
   options?: any
 ): Element;
 
@@ -3891,7 +3893,7 @@ export interface ElementCommands {
    * @see https://nightwatchjs.org/api/getShadowRoot.html
    */
   getShadowRoot(
-    selector: Definition | WebElement | By,
+    selector: Definition | WebElement | SeleniumBy,
     callback?: (
       this: NightwatchAPI,
       result: NightwatchCallbackResult<Element | null>
@@ -3899,7 +3901,7 @@ export interface ElementCommands {
   ): Awaitable<this, Element | null>;
   getShadowRoot(
     using: LocateStrategy,
-    selector: Definition | WebElement | By,
+    selector: Definition | WebElement | SeleniumBy,
     callback?: (
       this: NightwatchAPI,
       result: NightwatchCallbackResult<Element | null>
@@ -7177,8 +7179,8 @@ declare global {
   const browser: NightwatchBrowser;
   const app: NightwatchAPI;
   const element: ElementFunction;
-  const by: By;
-  const By: By;
+  const by: typeof SeleniumBy;
+  const By: typeof SeleniumBy;
   const ensure: Ensure;
   const expect: typeof chaiExpect;
   const locateWith: typeof seleniumLocateWith;

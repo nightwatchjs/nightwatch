@@ -1,4 +1,4 @@
-import {NightwatchAPI, NightwatchClient} from './index';
+import { NightwatchAPI, NightwatchClient} from './index';
 
 interface NightwatchAssertionSuccessfulResult<T> {
   value?: T;
@@ -84,6 +84,7 @@ export interface NightwatchAssertion<T> {
    * The command which is to be executed by the assertion runner; Nightwatch api is available as this.api
    */
   command(
+    this: Pick<NightwatchAssertion<T>, 'client' | 'api' | 'negate'>,
     callback: (result: NightwatchAssertionSuccessfulResult<T>) => void
   ): unknown;
 

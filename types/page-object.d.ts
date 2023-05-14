@@ -333,6 +333,7 @@ export interface PageObjectModel {
    * const homePage = {
    *   elements: [
    *     {
+   *       contactUs: "#contactUs",
    *       searchBar: {
    *         selector: 'input[type=text]',
    *       },
@@ -344,6 +345,7 @@ export interface PageObjectModel {
    * } satisfies PageObjectModel;
    */
   elements?:
+  | { [name: string]: string }
   | { [name: string]: ElementProperties }
   | { [name: string]: ElementProperties }[];
 

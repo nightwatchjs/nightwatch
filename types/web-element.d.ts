@@ -14,7 +14,8 @@ import {
   NightwatchAPI,
   LocateStrategy,
   NightwatchClient,
-  NightwatchCallbackResult
+  NightwatchCallbackResult,
+  ElementResult
 } from './index';
 
 export interface ScopedElement extends PromiseLike<WebElement> {
@@ -385,16 +386,16 @@ export type DragAndDropDestination = {
 };
 
 export interface ElementFunction {
-  (selector: ScopedElementSelector): ScopedElement;
   (locator: Definition | By | WebElement, options?: any): Element;
+  (selector: ScopedElementSelector): ScopedElement;
   (
     using: LocateStrategy,
     value: string,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<{ [ELEMENT_KEY]: string }>
+      result: NightwatchCallbackResult<ElementResult>
     ) => void
-  ): Awaitable<this, { [ELEMENT_KEY]: string }>;
+  ): Awaitable<this, ElementResult>;
 
   findActive(): ScopedElement;
 
