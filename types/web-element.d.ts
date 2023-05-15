@@ -190,15 +190,22 @@ export interface ScopedElement extends PromiseLike<WebElement> {
   doubleClick(): this;
 
   rightClick(): this;
+
+  waitUntil(signalOrOptions: WaitUntilActions | WaitUntilOptions, waitOptions?: WaitUntilOptions): this;
 }
 
+type WaitUntilOptions = {
+  action?: WaitUntilActions;
+  timeout?: number;
+  message?: string;
+  selector?: string;
+  retryInterval?: number;
+  abortOnFailure?: boolean;
+};
+
+type WaitUntilActions = 'selected' | 'visible' | 'disabled' | 'enabled' | 'not.selected' | 'not.visible' | 'not.enabled';
+
 export class Elements implements PromiseLike<ScopedElement[]> {
-  webElements: Promise<ScopedElement[]>;
-  nightwatchInstance: NightwatchClient;
-  parentScopedElement: ScopedElement;
-
-  get assert(): ElementsAssertions;
-
   constructor(
     selector: ScopedElementSelector,
     parentScopedElement: ScopedElement | null,
@@ -213,62 +220,8 @@ export class Elements implements PromiseLike<ScopedElement[]> {
     onrejected?: ((reason: any) => R2 | PromiseLike<R2>) | null | undefined
   ): PromiseLike<R1 | R2>;
 
+  nth(index: number): ScopedElement;
   count(): ElementValue<number>;
-}
-
-declare class ScopedWebElement implements PromiseLike<WebElement> {
-  webElement: WebElementPromise;
-  nightwatchInstance: NightwatchClient;
-  parentScopedElement: ScopedElement;
-
-  static get methodAliases(): Record<string, string[]>;
-
-  static root(nightwatchInstance: NightwatchClient): ScopedElement;
-
-  static active(nightwatchInstance: NightwatchClient): ScopedElement;
-
-  static create(
-    selector: ScopedSelector,
-    parentScopedElement: ScopedWebElement | null,
-    nightwatchInstance: NightwatchClient
-  ): ScopedElement;
-
-  get assert(): ElementAssertions;
-
-  private constructor(
-    selector: ScopedElementSelector,
-    parentScopedElement: ScopedWebElement | null,
-    nightwatchInstance: NightwatchClient
-  );
-
-  then<R1 = WebElement, R2 = never>(
-    onfulfilled?:
-      | ((value: WebElement) => R1 | PromiseLike<R1>)
-      | null
-      | undefined,
-    onrejected?: ((reason: any) => R2 | PromiseLike<R2>) | null | undefined
-  ): PromiseLike<R1 | R2>;
-
-  getMethodNames(): { commandName: string; originalCommandName?: string }[];
-
-  executeMethod<T>(
-    context: ScopedWebElement,
-    commandName: string,
-    ...args: unknown[]
-  ): this | ElementValue<T> | Elements;
-
-  runQueuedCommand<T>(
-    commandName: string,
-    {
-      scopedValue = false,
-      args = []
-    }?: { scopedValue?: boolean; args?: unknown[] }
-  ): this | ElementValue<T> | Elements;
-
-  runQueuedCommandScoped<T>(
-    commandName: string,
-    ...args: unknown[]
-  ): this | ElementValue<T> | Elements;
 }
 
 export type ValueAssertionsOptions = {
@@ -300,6 +253,7 @@ export class ElementsAssertions {
   constructor(elements: Elements, options: ElementsAssertionsOptions);
 
   get not(): ElementsAssertions;
+
 }
 
 export type ElementAssertionsOptions = {
