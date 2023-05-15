@@ -105,8 +105,6 @@ class Globals {
   }
 
   runProtocolTest({assertion = function() {}, commandName, args = [], mockDriverOverrides = {}, browserDriver = ''}, client) {
-    this.rejected = false;
-
     return new Promise((resolve, reject) => {
       client.transport.runProtocolAction = function(opts) {
         assertion(opts);
@@ -134,12 +132,6 @@ class Globals {
       }
 
       client.queue.tree.empty().createRootNode();
-      client.queue.once('queue:finished', err => {
-        if (err && !this.rejected) {
-          this.rejected = true;
-          reject(err);
-        }
-      });
 
       client.isES6AsyncTestcase = true;
 
@@ -147,20 +139,15 @@ class Globals {
         this.runApiCommand(commandName, args, client)
           .then(result => {
             if (result instanceof Error) {
-              this.rejected = true;
-
               reject(result);
             } else {
               resolve(result);
             }
           })
           .catch(err => {
-            this.rejected = true;
-
             reject(err);
           });
       } catch (err) {
-        this.rejected = true;
         reject(err);
       }
     });
