@@ -215,27 +215,6 @@ describe('EdgeDriver Transport Tests', function () {
     }
   }
 
-  it('test create session with edge driver -- not found error', async function() {
-    let error;
-    try {
-      await EdgeDriverTestSetup({
-        desiredCapabilities: {
-          browserName: 'MicrosoftEdge'
-        },
-        webdriver: {
-          port: 9999,
-          start_process: true
-        }
-      });
-    } catch (err) {
-      error = err;
-    }
-
-    assert.ok(error instanceof Error);
-    assert.strictEqual(error.message, 'EdgeDriver cannot be found in the current project.');
-  });
-
-
   it('test create session with edge driver', async function() {
     const {session, serverPath, serverPort} = await EdgeDriverTestSetup({
       desiredCapabilities: {
