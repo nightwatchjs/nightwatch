@@ -1,0 +1,27 @@
+name: Type Declaration Tests
+
+on:
+  push:
+    branches: [main, feat/types-test]
+  pull_request:
+    branches: [main]
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+        typescript-version: [3.9, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 5.0]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install TypeScript
+        run: npm install -g typescript@${{ matrix.typescript-version }}
+      - name: Install Dependencies
+        run: npm ci
+      - run: npm run test:types
