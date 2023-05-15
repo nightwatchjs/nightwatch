@@ -206,6 +206,28 @@ describe('test Utils', function() {
     console = oldConsole;
   });
 
+  it('test getModuleKey', function() {
+    const srcFolderPath = path.join(__dirname, '../../sampletests/before-after');
+    const {statSync, readdirSync} = require('fs');
+    const getSrcTestsPaths = (testPath)=>{
+      let fullPaths = [];
+      readdirSync(testPath).forEach(file=>{
+        if (statSync(path.join(testPath, file)).isDirectory()){
+          fullPaths = [...fullPaths, ...getSrcTestsPaths(path.join(testPath, file))];
+        } else {
+          fullPaths.push(path.join(testPath, file));
+        }
+      });
+
+      return fullPaths;
+    };
+    const currentTestPath = path.join(srcFolderPath, 'sampleSingleTest.js');
+    const testFiles = getSrcTestsPaths(srcFolderPath);
+    const fullPaths = testFiles.map(file=>({env: 'default', module: file}));
+    assert.equal(Utils.getModuleKey(currentTestPath, testFiles, fullPaths), 'sampleSingleTest.js');
+    assert.equal(Utils.getModuleKey(currentTestPath, ['test/sampletests/simple', 'test/sampletests/before-after'], fullPaths), path.join('before-after', 'sampleSingleTest.js'));
+  });
+
 
   describe('test findTSConfigFile', function () {
     const {constants, rmdirSync} = require('fs');
