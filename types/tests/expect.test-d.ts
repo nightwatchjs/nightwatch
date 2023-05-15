@@ -1,4 +1,4 @@
-import { expectNotAssignable, expectType } from 'tsd';
+import { expectError, expectNotAssignable, expectType } from 'tsd';
 import { NightwatchAPI, NightwatchExpectResult } from '..';
 
 // Expect test for language chains
@@ -165,8 +165,8 @@ describe('expect.elements()', () => {
   it('description', () => {
     browser.expect.elements('div').count.to.equal(10);
     browser.expect.elements('p').count.to.not.equal(1);
-    // @ts-expect-error
-    browser.expect.elements('div').value.contain('nightwatch');
+
+    expectError(browser.expect.elements('div').value.contain('nightwatch'))
   });
 
   it('selector element properties - all & required', () => {

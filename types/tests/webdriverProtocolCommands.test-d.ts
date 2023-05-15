@@ -1,4 +1,4 @@
-import { expectType } from 'tsd';
+import { expectError, expectType } from 'tsd';
 import {
   NightwatchSizeAndPosition,
   Cookie,
@@ -949,10 +949,9 @@ describe('execute command demo', function () {
     });
     expectType<string>(result2);
 
-    // @ts-expect-error
-    await browser.execute(function (arg1: string) {
+    expectError(await browser.execute(function (arg1: string) {
       return 'nightwatch';
-    });
+    }))
 
     await browser.execute(
       function (arg1: string) {
@@ -961,21 +960,19 @@ describe('execute command demo', function () {
       ['js']
     );
 
-    // @ts-expect-error
-    await browser.execute(
+    expectError(await browser.execute(
       function (arg1: string) {
         return 'nightwatch';
       },
       [123]
-    );
+    ))
 
-    // @ts-expect-error
-    await browser.execute(
+    expectError(await browser.execute(
       function (arg1: string) {
         return 'nightwatch';
       },
       ['js', 123]
-    );
+    ))
 
     const result3 = await browser.execute('something');
     expectType<unknown>(result3)
@@ -1010,10 +1007,9 @@ describe('executeScript command demo', function () {
     );
     expectType<string>(result3);
 
-    // @ts-expect-error
-    await browser.executeScript(function (arg1: string) {
+    expectError(await browser.executeScript(function (arg1: string) {
       return 'nightwatch';
-    });
+    }))
 
     await browser.executeScript(
       function (arg1: string) {
@@ -1022,21 +1018,19 @@ describe('executeScript command demo', function () {
       ['js']
     );
 
-    // @ts-expect-error
-    await browser.executeScript(
+    expectError(await browser.executeScript(
       function (arg1: string) {
         return 'nightwatch';
       },
       [123]
-    );
+    ))
 
-    // @ts-expect-error
-    await browser.executeScript(
+    expectError(await browser.executeScript(
       function (arg1: string) {
         return 'nightwatch';
       },
       ['js', 123]
-    );
+    ))
 
     const result4 = await browser.execute('something');
     expectType<unknown>(result4)
@@ -1079,26 +1073,23 @@ describe('executeAsyncScript command demo', function () {
     );
     expectType<unknown>(result3)
 
-    // @ts-expect-error
-    await browser.executeAsyncScript(function (arg1: string) {
+    expectError(await browser.executeAsyncScript(function (arg1: string) {
       return 'nightwatch';
-    });
+    }))
 
-    // @ts-expect-error
-    await browser.executeAsyncScript(
+    expectError(await browser.executeAsyncScript(
       function (arg1: string, done: (result: string) => void) {
         return 'nightwatch';
       },
       [123]
-    );
+    ))
 
-    // @ts-expect-error
-    await browser.executeAsyncScript(
+    expectError(await browser.executeAsyncScript(
       function (arg1: string, done) {
         return 'nightwatch';
       },
       ['js', 123]
-    );
+    ))
 
     const result4 = await browser.executeAsyncScript('something');
     expectType<unknown>(result4)
@@ -1141,26 +1132,23 @@ describe('executeAsync command demo', function () {
     );
     expectType<unknown>(result3)
 
-    // @ts-expect-error
-    await browser.executeAsync(function (arg1: string) {
+    expectError(await browser.executeAsync(function (arg1: string) {
       return 'nightwatch';
-    });
+    }))
 
-    // @ts-expect-error
-    await browser.executeAsync(
+    expectError(await browser.executeAsync(
       function (arg1: string, done: (result: string) => void) {
         return 'nightwatch';
       },
       [123]
-    );
+    ))
 
-    // @ts-expect-error
-    await browser.executeAsync(
+    expectError(await browser.executeAsync(
       function (arg1: string, done) {
         return 'nightwatch';
       },
       ['js', 123]
-    );
+    ))
 
     const result4 = await browser.executeAsync('something');
     expectType<unknown>(result4)
