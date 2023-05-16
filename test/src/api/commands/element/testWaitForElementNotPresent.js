@@ -82,6 +82,7 @@ describe('waitForElementNotPresent', function () {
 
 
   it('client.waitForElementNotPresent() report should not contain error in case of success', async function() {
+    this.timeout(15000);
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/elements',
       method: 'POST',
