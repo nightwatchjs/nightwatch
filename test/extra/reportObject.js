@@ -14,6 +14,8 @@ module.exports = {
       lastError: null,
       skippedAtRuntime: [
       ],
+      skipped: [
+      ],
       time: '1.082',
       timeMs: 1082,
       completed: {
@@ -509,6 +511,8 @@ module.exports = {
       },
       skippedAtRuntime: [
       ],
+      skipped: [
+      ],
       time: '4.669',
       timeMs: 4669,
       completed: {
@@ -920,6 +924,8 @@ module.exports = {
       assertionsCount: 2,
       lastError: null,
       skippedAtRuntime: [
+      ],
+      skipped: [
       ],
       time: '1.908',
       timeMs: 1908,
@@ -1478,6 +1484,8 @@ module.exports = {
         stack: 'Error\n    at DescribeInstance.<anonymous> (/Users/vaibhavsingh/Dev/nightwatch/examples/tests/duckDuckGo.js:8:8)\n    at Context.call (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/context.js:478:35)\n    at TestCase.run (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/testcase.js:58:31)\n    at Runnable.__runFn (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:759:80)\n    at Runnable.run (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/runnable.js:126:21)\n    at TestSuite.executeRunnable (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:912:49)\n    at TestSuite.handleRunnable (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:927:33)\n    at /Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:759:21\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DefaultRunner.runTestSuite (/Users/vaibhavsingh/Dev/nightwatch/lib/runner/test-runners/default.js:78:7)'
       },
       skippedAtRuntime: [
+      ],
+      skipped: [
       ],
       time: '5.777',
       timeMs: 5777,
@@ -2072,6 +2080,9 @@ module.exports = {
       skippedAtRuntime: [
         'should complete the consent form'
       ],
+      skipped: [
+        'should complete the consent form'
+      ],
       time: 0,
       completed: {
       },
@@ -2119,6 +2130,8 @@ module.exports = {
       assertionsCount: 2,
       lastError: null,
       skippedAtRuntime: [
+      ],
+      skipped: [
       ],
       time: '10.68',
       timeMs: 10675,
@@ -2836,6 +2849,9 @@ module.exports = {
       skippedAtRuntime: [
         'retrieve the shadowRoot'
       ],
+      skipped: [
+        'retrieve the shadowRoot'
+      ],
       time: 0,
       completed: {
       },
@@ -2883,6 +2899,8 @@ module.exports = {
       assertionsCount: 3,
       lastError: null,
       skippedAtRuntime: [
+      ],
+      skipped: [
       ],
       time: '1.251',
       timeMs: 1251,
@@ -3468,6 +3486,8 @@ module.exports = {
       assertionsCount: 5,
       lastError: null,
       skippedAtRuntime: [
+      ],
+      skipped: [
       ],
       time: '3.056',
       timeMs: 3056,
@@ -4167,6 +4187,8 @@ module.exports = {
       assertionsCount: 5,
       lastError: null,
       skippedAtRuntime: [
+      ],
+      skipped: [
       ],
       time: '0.2180',
       timeMs: 218,
@@ -4928,6 +4950,8 @@ module.exports = {
         lastError: null,
         skippedAtRuntime: [
         ],
+        skipped: [
+        ],
         time: '2.865',
         timeMs: 2865,
         completed: {
@@ -5419,6 +5443,8 @@ module.exports = {
         lastError: null,
         skippedAtRuntime: [
         ],
+        skipped: [
+        ],
         time: '4.659',
         timeMs: 4659,
         completed: {
@@ -5733,6 +5759,8 @@ module.exports = {
         assertionsCount: 2,
         lastError: null,
         skippedAtRuntime: [
+        ],
+        skipped: [
         ],
         time: '3.868',
         timeMs: 3868,
@@ -6293,6 +6321,8 @@ module.exports = {
           stack: 'Error\n    at DescribeInstance.<anonymous> (/Users/vaibhavsingh/Dev/nightwatch/examples/tests/duckDuckGo.js:8:8)\n    at Context.call (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/context.js:478:35)\n    at TestCase.run (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/testcase.js:58:31)\n    at Runnable.__runFn (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:759:80)\n    at Runnable.run (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/runnable.js:126:21)\n    at TestSuite.executeRunnable (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:912:49)\n    at TestSuite.handleRunnable (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:927:33)\n    at /Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:759:21\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DefaultRunner.runTestSuite (/Users/vaibhavsingh/Dev/nightwatch/lib/runner/test-runners/default.js:78:7)'
         },
         skippedAtRuntime: [
+        ],
+        skipped: [
         ],
         time: '8.932',
         timeMs: 8932,
@@ -6885,6 +6915,8 @@ module.exports = {
         lastError: null,
         skippedAtRuntime: [
         ],
+        skipped: [
+        ],
         time: '5.086',
         timeMs: 5086,
         completed: {
@@ -7374,6 +7406,8 @@ module.exports = {
         assertionsCount: 2,
         lastError: null,
         skippedAtRuntime: [
+        ],
+        skipped: [
         ],
         time: '49.04',
         timeMs: 49044,
@@ -8052,6 +8086,8 @@ module.exports = {
         lastError: null,
         skippedAtRuntime: [
         ],
+        skipped: [
+        ],
         time: '1.116',
         timeMs: 1116,
         completed: {
@@ -8616,6 +8652,8 @@ module.exports = {
         assertionsCount: 3,
         lastError: null,
         skippedAtRuntime: [
+        ],
+        skipped: [
         ],
         time: '0.8370',
         timeMs: 837,
@@ -9203,6 +9241,8 @@ module.exports = {
         assertionsCount: 5,
         lastError: null,
         skippedAtRuntime: [
+        ],
+        skipped: [
         ],
         time: '0.2180',
         timeMs: 218,
@@ -9961,6 +10001,8 @@ module.exports = {
         lastError: null,
         skippedAtRuntime: [
         ],
+        skipped: [
+        ],
         time: '3.056',
         timeMs: 3056,
         completed: {
@@ -10662,6 +10704,8 @@ module.exports = {
         lastError: null,
         skippedAtRuntime: [
         ],
+        skipped: [
+        ],
         time: '1.908',
         timeMs: 1908,
         completed: {
@@ -11219,6 +11263,8 @@ module.exports = {
         },
         skippedAtRuntime: [
         ],
+        skipped: [
+        ],
         time: '4.669',
         timeMs: 4669,
         completed: {
@@ -11637,6 +11683,8 @@ module.exports = {
           stack: 'Error\n    at DescribeInstance.<anonymous> (/Users/vaibhavsingh/Dev/nightwatch/examples/tests/duckDuckGo.js:8:8)\n    at Context.call (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/context.js:478:35)\n    at TestCase.run (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/testcase.js:58:31)\n    at Runnable.__runFn (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:759:80)\n    at Runnable.run (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/runnable.js:126:21)\n    at TestSuite.executeRunnable (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:912:49)\n    at TestSuite.handleRunnable (/Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:927:33)\n    at /Users/vaibhavsingh/Dev/nightwatch/lib/testsuite/index.js:759:21\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DefaultRunner.runTestSuite (/Users/vaibhavsingh/Dev/nightwatch/lib/runner/test-runners/default.js:78:7)'
         },
         skippedAtRuntime: [
+        ],
+        skipped: [
         ],
         time: '5.777',
         timeMs: 5777,
@@ -12231,6 +12279,9 @@ module.exports = {
         skippedAtRuntime: [
           'should complete the consent form'
         ],
+        skipped: [
+          'should complete the consent form'
+        ],
         time: 0,
         completed: {
         },
@@ -12278,6 +12329,8 @@ module.exports = {
         assertionsCount: 5,
         lastError: null,
         skippedAtRuntime: [
+        ],
+        skipped: [
         ],
         time: '3.401',
         timeMs: 3401,
@@ -12976,6 +13029,8 @@ module.exports = {
         lastError: null,
         skippedAtRuntime: [
         ],
+        skipped: [
+        ],
         time: '1.082',
         timeMs: 1082,
         completed: {
@@ -13464,6 +13519,8 @@ module.exports = {
         assertionsCount: 5,
         lastError: null,
         skippedAtRuntime: [
+        ],
+        skipped: [
         ],
         time: '0.09500',
         timeMs: 95,
@@ -14221,6 +14278,9 @@ module.exports = {
         skippedAtRuntime: [
           'retrieve the shadowRoot'
         ],
+        skipped: [
+          'retrieve the shadowRoot'
+        ],
         time: 0,
         completed: {
         },
@@ -14268,6 +14328,8 @@ module.exports = {
         assertionsCount: 2,
         lastError: null,
         skippedAtRuntime: [
+        ],
+        skipped: [
         ],
         time: '10.68',
         timeMs: 10675,
@@ -14983,6 +15045,8 @@ module.exports = {
         assertionsCount: 3,
         lastError: null,
         skippedAtRuntime: [
+        ],
+        skipped: [
         ],
         time: '1.251',
         timeMs: 1251,
