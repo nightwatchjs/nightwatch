@@ -91,8 +91,9 @@ describe('waitForElementNotPresent', function () {
       },
       response: JSON.stringify({
         value: []
-      })
-    }, true, true);
+      }),
+      times: 2
+    });
 
     const testsPath = [
       path.join(__dirname, '../../../../sampletests/withwait/elementNotPresent.js')
@@ -112,7 +113,5 @@ describe('waitForElementNotPresent', function () {
     await NightwatchClient.runTests(testsPath, settings({
       globals
     }));
-
-    return true;
   });
 });
