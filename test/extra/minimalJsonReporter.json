@@ -1,0 +1,12 @@
+{
+    "modules": {
+        "demoTagTest": {
+            "modulePath": "./test/sampletests/tags/sample.js",
+            "status": "pass"
+        },
+        "demoTest": {
+            "modulePath": "./test/sampletests/simple/test/sample.js",
+            "status": "fail"
+        }
+    }
+}
