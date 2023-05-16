@@ -137,7 +137,7 @@ describe('testInspectorExtension', function () {
         browserName: 'chrome'
       }
     }));
-  })
+  });
 
   it('extension should not attach if debug mode is false', function() {
     MockServer.addMock({
@@ -194,5 +194,79 @@ describe('testInspectorExtension', function () {
         browserName: 'chrome'
       }
     }));
-  })
-})
+  });
+
+  it('websocket should be closed after execution', function() {
+    let closeSocketCalled = false;
+
+    mockery.registerMock('./websocket-server', class {
+      initSocket() {};
+
+      closeSocket() {
+        closeSocketCalled = true;
+      };
+    });
+
+    MockServer.addMock({
+      url: '/wd/hub/session',
+      statusCode: 200,
+      method: 'POST',
+      postdata: JSON.stringify({
+        capabilities: {
+          firstMatch: [{}],
+          alwaysMatch: {
+            browserName: 'chrome',
+            'goog:chromeOptions': {
+              extensions: ['mocked crxfile'],
+              args: ['--auto-open-devtools-for-tabs']
+            }
+          }
+        }
+      }),
+      response: JSON.stringify({
+        value: {
+          sessionId: '13521-10219-202',
+          capabilities: {
+            acceptInsecureCerts: false,
+            browserName: 'chrome',
+            browserVersion: '65.0.1'
+          }
+        }
+      })
+    }, false);
+
+    const testsPath = path.join(__dirname, '../../sampletests/simple/test/sample.js');
+    let desiredCapabilities;
+
+    const globals = {
+      calls: 0,
+      retryAssertionTimeout: 0,
+      beforeEach: function(client, cb) {
+        desiredCapabilities = client.desiredCapabilities;
+        cb();
+      },
+      reporter(results, cb) {
+        assert.strictEqual(desiredCapabilities.browserName, 'chrome');
+        assert.ok('goog:chromeOptions' in desiredCapabilities);
+        assert.deepStrictEqual(desiredCapabilities['goog:chromeOptions'].extensions, ['mocked crxfile']);
+        assert.deepStrictEqual(desiredCapabilities['goog:chromeOptions'].args, ['--auto-open-devtools-for-tabs']);
+        assert.strictEqual(this.settings.parallel_mode, false);
+        assert.strictEqual(results.passed, 2);
+        assert.strictEqual(results.errors, 0);
+        assert.ok(closeSocketCalled);
+        cb();
+      }
+    };
+
+    return runTests({
+      _source: [testsPath],
+      debug: true
+    }, settings({
+      globals,
+      output: false,
+      desiredCapabilities: {
+        browserName: 'chrome'
+      }
+    }));
+  });
+});
