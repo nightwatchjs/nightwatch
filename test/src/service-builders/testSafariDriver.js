@@ -263,7 +263,6 @@ describe('SafariDriver Transport Tests', function () {
   });
 
   it('session create should throw error after max retryAttempts', function() {
-    this.timeout(5000);
 
     let testsPath = [
       path.join(__dirname, '../../sampletests/async')
@@ -285,6 +284,7 @@ describe('SafariDriver Transport Tests', function () {
     });
 
     let globals = {
+      retryRequestInterval: 0,
       reporter(results) {
         const sep = path.sep;
         assert.strictEqual(results.errors, 1);
