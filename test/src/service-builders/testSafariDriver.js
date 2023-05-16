@@ -314,8 +314,6 @@ describe('SafariDriver Transport Tests', function () {
   });
 
   it('session create should retry on internal server error (500)', function() {
-    this.timeout(5000);
-
     let testsPath = [
       path.join(__dirname, '../../sampletests/async')
     ];
@@ -354,6 +352,7 @@ describe('SafariDriver Transport Tests', function () {
     });
 
     let globals = {
+      retryRequestInterval: 100,
       reporter(results) {
         const sep = path.sep;
         assert.strictEqual(results.errors, 0);

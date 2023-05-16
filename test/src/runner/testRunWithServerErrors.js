@@ -42,6 +42,17 @@ describe('testRunWithServerErrors', function() {
       statusCode: 502,
       contentType: 'text/html',
       response: '<html>\n<head>\n<title>502 Bad Gateway</title>\n</head>\n<body>\n</body></html>'
+    }, true, true);
+
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/elements',
+      postdata: {
+        using: 'css selector',
+        value: '#element-server-error'
+      },
+      statusCode: 502,
+      contentType: 'text/html',
+      response: '<html>\n<head>\n<title>502 Bad Gateway</title>\n</head>\n<body>\n</body></html>'
     });
 
     let testsPath = path.join(__dirname, '../../sampletests/withservererrors');
@@ -50,6 +61,7 @@ describe('testRunWithServerErrors', function() {
       retryAssertionTimeout: 150,
       waitForConditionTimeout: 150,
       waitForConditionPollInterval: 50,
+      retryRequestInterval: 0,
       reporter(results, cb) {
         assert.strictEqual(results.errmessages.length, 4);
         assert.strictEqual(results.passed, 0);

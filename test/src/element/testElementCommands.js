@@ -195,13 +195,32 @@ describe('element base commands', function() {
 </head>
 <body></body>
 </html>`
-    }, true);
+    }, true, true);
+
+    Nightwatch.addMock({
+      url: '/session/13521-10219-202/element',
+      postdata: {
+        using: 'css selector',
+        value: '#weblogin-error'
+      },
+      contentType: 'text/plain',
+      statusCode: 502,
+      response: `<html>
+<head>
+<title>502 Bad Gateway</title>
+</head>
+<body></body>
+</html>`
+    });
 
     await Nightwatch.initAsync({
       output: false,
       silent: false,
       selenium: {
         host: null
+      },
+      globals: {
+        retryRequestInterval: 0
       }
     });
 
