@@ -1,6 +1,12 @@
+const path = require('path');
 const assert = require('assert');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 const {strictEqual} = assert;
+const common = require('../../../../common.js');
+const {settings} = common;
+const NightwatchClient = common.require('index.js');
+const MockServer = require('../../../../lib/mockserver.js');
+
 
 describe('waitForElementNotPresent', function () {
   let commandResult;
@@ -72,5 +78,40 @@ describe('waitForElementNotPresent', function () {
       strictEqual(commandInstance.ms, 15);
       strictEqual(commandInstance.rescheduleInterval, 10);
     });
+  });
+
+
+  it('client.waitForElementNotPresent() report should not contain error in case of success', async function() {
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/elements',
+      method: 'POST',
+      postdata: {
+        using: 'css selector',
+        value: '#badElement'
+      },
+      response: JSON.stringify({
+        value: []
+      }),
+      times: 2
+    });
+
+    const testsPath = [
+      path.join(__dirname, '../../../../sampletests/withwait/elementNotPresent.js')
+    ];
+
+    const globals = {
+      calls: 0,
+      reporter(results) {
+        assert.strictEqual(globals.calls, 2);
+        assert.strictEqual(Object.keys(results.modules).length, 1);
+        assert.ok('elementNotPresent' in results.modules);
+        assert.strictEqual(results.modulesWithEnv.default.elementNotPresent.completedSections.demoTest.commands[1].status, 'pass');
+        assert.strictEqual(results.modulesWithEnv.default.elementNotPresent.completedSections.demoTest.commands[2].status, 'fail');
+      }
+    };
+
+    await NightwatchClient.runTests(testsPath, settings({
+      globals
+    }));
   });
 });

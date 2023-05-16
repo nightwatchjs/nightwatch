@@ -16,9 +16,8 @@ describe('submitForm', function() {
       url: '/wd/hub/session/1352110219202/element/0/submit',
       method: 'POST',
       response: JSON.stringify({
-        sessionId: '1352110219202',
-        status: 0
-      })
+        value: null
+      }, true, true)
     });
 
     this.client.api.submitForm('#weblogin', function callback(result) {
