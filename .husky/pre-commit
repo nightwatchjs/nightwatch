@@ -1,0 +1,45 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+NORMAL=$(tput sgr0)
+RED=$(tput setaf 1)
+
+exec < /dev/tty
+
+# Function to display a message with asterisks
+display_box() {
+  local message="$1"
+  local length=${#message}
+
+  printf "\n"
+  printf "%0.s*" $(seq 1 $((length + 6)))
+  printf "\n"
+  printf "*${RED}  %s  ${NORMAL}*\n" "$message"
+  printf "%0.s*" $(seq 1 $((length + 6)))
+  printf "\n"
+}
+
+# Function to display staged files in a box
+display_staged_files() {
+  local files=$(git diff --cached --name-only)
+  local file_count=$(echo $files | wc -l)
+  echo "+-------------------+\n"
+  echo "|    Staged files   |\n"
+  echo "+-------------------+\n"
+  if [ $file_count -gt 0 ]; then
+    git diff --cached --name-only | sed 's/^/| /;s/$/ |/'
+  else
+    echo "|    No files       |\n"
+  fi
+  echo "+-------------------+\n"
+}
+
+display_staged_files
+echo "Did you add types for these changes?"
+read -p "Enter your response (yes/no): " response
+
+
+if [ "$response" != "yes" ]; then
+  display_box "Error: Types not added. Please add types before committing."
+  exit 1
+fi
