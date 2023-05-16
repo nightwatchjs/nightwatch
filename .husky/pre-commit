@@ -43,3 +43,5 @@ if [ "$response" != "yes" ]; then
   display_box "Error: Types not added. Please add types before committing."
   exit 1
 fi
+
+npx lint-staged
