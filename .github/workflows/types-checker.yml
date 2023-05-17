@@ -59,7 +59,8 @@ jobs:
         with:
           script: |
             const comment = `
-            :white_check_mark: Modified files found in the 'types' directory:`;
+            ## Status
+            * :white_check_mark: Type files updated!`;
             const comments = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
