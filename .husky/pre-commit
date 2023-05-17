@@ -4,7 +4,7 @@
 NORMAL=$(tput sgr0)
 RED=$(tput setaf 1)
 
-exec < /dev/tty
+staged_files="git diff --cached --name-only"
 
 # Function to display a message with asterisks
 display_box() {
@@ -21,25 +21,25 @@ display_box() {
 
 # Function to display staged files in a box
 display_staged_files() {
-  local files=$(git diff --cached --name-only)
-  local file_count=$(echo $files | wc -l)
-  echo "+-------------------+\n"
-  echo "|    Staged files   |\n"
-  echo "+-------------------+\n"
+  local file_count=$($staged_files | wc -l)
+  echo "+-------------------+"
+  echo "|    Staged files   |"
+  echo "+-------------------+"
   if [ $file_count -gt 0 ]; then
-    git diff --cached --name-only | sed 's/^/| /;s/$/ |/'
+    $staged_files | sed 's/^/| /;s/$/ |/'
   else
     echo "|    No files       |\n"
   fi
   echo "+-------------------+\n"
 }
 
+# Check if changes are not present in the 'types' folder
+check_types_changes() {
+  $staged_files | grep -q "^types/"
+}
+
 display_staged_files
-echo "Did you add types for these changes?"
-read -p "Enter your response (yes/no): " response
-
-
-if [ "$response" != "yes" ]; then
+if ! check_types_changes; then
   display_box "Error: Types not added. Please add types before committing."
   exit 1
 fi
