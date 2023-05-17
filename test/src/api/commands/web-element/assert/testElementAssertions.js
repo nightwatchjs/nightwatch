@@ -10,7 +10,6 @@ describe('element() assert commands', function () {
       this.client.isES6AsyncTestcase = true;
       done();
     });
-    
   });
 
   after(function (done) {
@@ -204,6 +203,7 @@ describe('element() assert commands', function () {
     assert.strictEqual(assertPromise instanceof Promise, true);
     assert.strictEqual(typeof assertPromise.find, 'undefined');
 
+    await assertPromise;
 
     try {
       await notAssertPromise;
