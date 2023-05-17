@@ -1,47 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-NORMAL=$(tput sgr0)
-RED=$(tput setaf 1)
-
-staged_files="git diff --cached --name-only"
-
-# Function to display a message with asterisks
-display_box() {
-  local message="$1"
-  local length=${#message}
-
-  printf "\n"
-  printf "%0.s*" $(seq 1 $((length + 6)))
-  printf "\n"
-  printf "*${RED}  %s  ${NORMAL}*\n" "$message"
-  printf "%0.s*" $(seq 1 $((length + 6)))
-  printf "\n"
-}
-
-# Function to display staged files in a box
-display_staged_files() {
-  local file_count=$($staged_files | wc -l)
-  echo "+-------------------+"
-  echo "|    Staged files   |"
-  echo "+-------------------+"
-  if [ $file_count -gt 0 ]; then
-    $staged_files | sed 's/^/| /;s/$/ |/'
-  else
-    echo "|    No files       |\n"
-  fi
-  echo "+-------------------+\n"
-}
-
-# Check if changes are not present in the 'types' folder
-check_types_changes() {
-  $staged_files | grep -q "^types/"
-}
-
-display_staged_files
-if ! check_types_changes; then
-  display_box "Error: Types not added. Please add types before committing."
-  exit 1
-fi
-
 npx lint-staged
