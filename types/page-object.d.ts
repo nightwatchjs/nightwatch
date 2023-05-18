@@ -92,10 +92,10 @@ export interface SectionProperties {
 
 export type EnhancedSectionInstance<
   Commands = {},
-  Props = {},
   Elements = {},
-  Sections extends Record<string, PageObjectSection> = {}
-> = EnhancedPageObjectSections<Commands, Props, Elements, Sections> &
+  Sections extends Record<string, PageObjectSection> = {},
+  Props = {}
+> = EnhancedPageObjectSections<Commands, Elements, Sections, Props> &
   Commands &
   ElementCommands &
   ChromiumClientCommands &
@@ -151,15 +151,14 @@ interface PageObjectSection {
 
 export interface EnhancedPageObjectSections<
   Commands = {},
-  Props = {},
   Elements = {},
-  Sections extends Record<string, PageObjectSection> = {}
+  Sections extends Record<string, PageObjectSection> = {},
+  Props = {}
 > extends EnhancedPageObjectSharedFields<
-  {},
   Commands,
-  Props,
   Elements,
-  Sections
+  Sections,
+  Props
 > {
   /**
    * The element selector name
@@ -195,9 +194,9 @@ interface EnhancedPageObjectSharedFields<
   section: {
     [Key in keyof Sections]: EnhancedSectionInstance<
       Required<MergeObjectsArray<Sections[Key]['commands']>>,
-      Sections[Key]['props'],
       Sections[Key]['elements'],
-      Sections[Key]['sections']
+      Sections[Key]['sections'],
+      Sections[Key]['props']
     >;
   };
 
