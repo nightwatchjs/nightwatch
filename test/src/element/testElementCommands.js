@@ -204,8 +204,8 @@ describe('element base commands', function() {
       selenium: {
         host: null
       },
-      globals: {
-        retryRequestInterval: 0
+      webdriver: {
+        internal_server_error_retry_interval: 0
       }
     });
 

@@ -284,7 +284,6 @@ describe('SafariDriver Transport Tests', function () {
     });
 
     let globals = {
-      retryRequestInterval: 0,
       reporter(results) {
         const sep = path.sep;
         assert.strictEqual(results.errors, 1);
@@ -305,7 +304,8 @@ describe('SafariDriver Transport Tests', function () {
         host: 'localhost',
         timeout_options: {
           retry_attempts: 1
-        }
+        },
+        internal_server_error_retry_interval: 0
       },
       globals,
       output: false,
@@ -352,7 +352,6 @@ describe('SafariDriver Transport Tests', function () {
     });
 
     let globals = {
-      retryRequestInterval: 100,
       reporter(results) {
         const sep = path.sep;
         assert.strictEqual(results.errors, 0);
@@ -370,7 +369,8 @@ describe('SafariDriver Transport Tests', function () {
         host: 'localhost',
         timeout_options: {
           retry_attempts: 3
-        }
+        },
+        internal_server_error_retry_interval: 100
       },
       globals,
       output: false,

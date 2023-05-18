@@ -51,7 +51,6 @@ describe('testRunWithServerErrors', function() {
       retryAssertionTimeout: 150,
       waitForConditionTimeout: 150,
       waitForConditionPollInterval: 50,
-      retryRequestInterval: 100,
       reporter(results, cb) {
         assert.strictEqual(results.errmessages.length, 4);
         assert.strictEqual(results.passed, 0);
@@ -73,7 +72,10 @@ describe('testRunWithServerErrors', function() {
       skip_testcases_on_fail: false,
       report_command_errors: true,
       disable_error_log: 0,
-      globals
+      globals,
+      webdriver: {
+        internal_server_error_retry_interval: 100
+      }
     }));
   });
 
