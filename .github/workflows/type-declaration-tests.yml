@@ -2,7 +2,7 @@ name: Type Declaration Tests
 
 on:
   push:
-    branches: [main, feat/types-test]
+    branches: [main]
   pull_request:
     branches: [main]
 
