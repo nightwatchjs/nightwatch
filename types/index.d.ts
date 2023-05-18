@@ -489,11 +489,10 @@ export interface NightwatchKeys {
 }
 
 /**
- * Keeping for backward compatibility.
+ * Kept for backward compatibility.
  *
- * If `NightwatchPage` type is removed, users would need to do extra work after
- * migrating to v3 to fix the types for page objects, which we don't want. So,
- * users can keep using these default types for page objects, but if they want
+ * NightwatchPage provides some basic types for page objects. 
+ * Users can keep using these default types for page objects, but if they want
  * to be strict, they can define their own page object types by extending
  * `NightwatchCustomPageObjects` interface.
  *
