@@ -171,11 +171,11 @@ export interface EnhancedPageObjectSections<
 }
 
 interface EnhancedPageObjectSharedFields<
-  URL = string,
   Commands = {},
-  Props = {},
   Elements = {},
-  Sections extends Record<string, PageObjectSection> = {}
+  Sections extends Record<string, PageObjectSection> = {},
+  Props = {},
+  URL = string
 > {
   /**
    * A map of Element objects
@@ -184,7 +184,7 @@ interface EnhancedPageObjectSharedFields<
    */
   elements: {
     [key in keyof Elements]: EnhancedElementInstance<
-      EnhancedPageObject<URL, Commands, Props, Elements, Sections>
+      EnhancedPageObject<Commands, Elements, Sections, Props, URL>
     >;
   };
 
@@ -406,20 +406,20 @@ export interface PageObjectModel {
  * Every time a factory function like MyPage above is called, a new instance of the page object is instantiated.
  */
 export type EnhancedPageObject<
-  URL = string,
   Commands = {},
-  Props = {},
   Elements = {},
-  Sections extends Record<string, PageObjectSection> = {}
+  Sections extends Record<string, PageObjectSection> = {},
+  Props = {},
+  URL = string
 > = Nightwatch &
   SharedCommands &
   NightwatchCustomCommands &
   EnhancedPageObjectSharedFields<
-    URL,
     Required<MergeObjectsArray<Commands>>,
-    Props,
     Required<MergeObjectsArray<Elements>>,
-    Sections
+    Sections,
+    Props,
+    URL
   > &
   Required<MergeObjectsArray<Commands>> & {
     /**
@@ -446,5 +446,5 @@ export type EnhancedPageObject<
     navigate(
       url?: string,
       callback?: () => void
-    ): EnhancedPageObject<URL, Commands, Props, Elements, Sections>;
+    ): EnhancedPageObject<Commands, Elements, Sections, Props, URL>;
   };
