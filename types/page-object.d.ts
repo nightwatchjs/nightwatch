@@ -97,8 +97,18 @@ export interface SectionProperties {
    * sections: {
    *   apps: {
    *     selector: 'div.gb_pc',
+   *     // object version
    *     props: {
    *       myVar: "some info"
+   *     }
+   *   },
+   *   menu: {
+   *     selector: '#gb',
+   *     // function version
+   *     props: function () {
+   *       return {
+   *         myOtherVar: "some other info"
+   *       };
    *     }
    *   }
    * }
@@ -162,6 +172,7 @@ interface PageObjectSection {
   commands?: Record<string, unknown>[];
   props?: Record<string, unknown>;
   elements?: Record<string, unknown>;
+  // TODO: make sections type more strict.
   sections?: any;
 }
 
