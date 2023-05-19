@@ -87,7 +87,23 @@ export interface SectionProperties {
    *   }
    * }
    */
-  commands?: Record<string, () => unknown>[];
+  commands?: Partial<Record<string, (...args: any) => unknown>>[]
+
+  /**
+   * An object or a function returning an object representing a container for user variables.
+   * Props objects are copied directly into the props property of the page object instance.
+   *
+   * @example
+   * sections: {
+   *   apps: {
+   *     selector: 'div.gb_pc',
+   *     props: {
+   *       myVar: "some info"
+   *     }
+   *   }
+   * }
+   */
+  props?: Record<string, unknown> | (() => Record<string, unknown>);
 }
 
 export type EnhancedSectionInstance<
@@ -143,10 +159,10 @@ export type EnhancedSectionInstance<
   Pick<Nightwatch, 'client' | 'api' | 'assert' | 'verify' | 'expect'>;
 
 interface PageObjectSection {
-  commands: Record<string, unknown>;
-  props: Record<string, unknown>;
-  elements: Record<string, unknown>;
-  sections: Record<string, PageObjectSection>;
+  commands?: Record<string, unknown>[];
+  props?: Record<string, unknown>;
+  elements?: Record<string, unknown>;
+  sections?: any;
 }
 
 export interface EnhancedPageObjectSections<
@@ -194,9 +210,9 @@ interface EnhancedPageObjectSharedFields<
   section: {
     [Key in keyof Sections]: EnhancedSectionInstance<
       Required<MergeObjectsArray<Sections[Key]['commands']>>,
-      Sections[Key]['elements'],
-      Sections[Key]['sections'],
-      Sections[Key]['props']
+      Required<Sections[Key]['elements']>,
+      Required<Sections[Key]['sections']>,
+      Required<Sections[Key]['props']>
     >;
   };
 
