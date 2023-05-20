@@ -252,6 +252,9 @@ describe('testReporter', function() {
             assert.ok(Object.keys(module).includes('startTimestamp'));
             assert.ok(Object.keys(module).includes('endTimestamp'));
             assert.ok(Object.keys(module).includes('host'));
+            assert.ok(Object.keys(module).includes('name'));
+            assert.ok(Object.keys(module).includes('tags'));
+
             // check for individual test properties
             const test = module.completed['demoTest'];
             assert.ok(Object.keys(test).includes('status'));
@@ -292,12 +295,17 @@ describe('testReporter', function() {
 
             const completedSections = module['completedSections'];
 
-            // check for module properties
-            assert.ok(Object.keys(completedSections).includes('__after_hook'));
-            assert.ok(Object.keys(completedSections).includes('__before_hook'));
-            assert.ok(Object.keys(completedSections).includes('__global_afterEach_hook'));
-            assert.ok(Object.keys(completedSections).includes('__global_beforeEach_hook'));
-            assert.ok(Object.keys(completedSections).includes('demoTest'));
+            // check module properties all for hooks
+            const hooks = ['__after_hook', '__before_hook', '__global_afterEach_hook', '__global_beforeEach_hook', 'demoTest'];
+
+            hooks.forEach(hook => {
+              assert.ok(Object.keys(completedSections).includes(hook));
+
+              const sectionData = completedSections[hook];
+              assert.ok(Object.keys(sectionData).includes('startTimestamp'));
+              assert.ok(Object.keys(sectionData).includes('endTimestamp'));
+              assert.ok(Object.keys(sectionData).includes('httpOutput'));
+            });
             
             assert.strictEqual(completedSections['__after_hook']['commands'].length, 1);
             assert.strictEqual(completedSections['__after_hook']['commands'][0].name, 'end');
@@ -393,5 +401,31 @@ describe('testReporter', function() {
     return reporter.writeReportToFile().then(function(result) {
       assert.deepStrictEqual(result, ['nightwatch_reporter_output', 'html_reporter_output']);
     });
+  });
+
+  it('test to check retry data logging', function() {
+    this.timeout(100000);
+
+    const testsPath = path.join(__dirname, '../../sampletests/withfailures');
+    const globals = {
+      calls: 0,
+      reporter(results, cb) {
+        assert.ok('sample' in results.modules);
+        assert.ok('completedSections' in results.modules['sample']);
+        assert.ok('demoTest' in results.modules['sample']['completedSections']);
+        assert.ok('retryTestData' in results.modules['sample']['completedSections']['demoTest']);
+        assert.ok(results.modules['sample']['completedSections']['demoTest']['retryTestData'].length <= 3);
+        cb();
+      },
+      retryAssertionTimeout: 0
+    };
+
+    return runTests({
+      retries: 3,
+      _source: [testsPath]
+    }, settings({
+      skip_testcases_on_fail: false,
+      globals
+    }));
   });
 });

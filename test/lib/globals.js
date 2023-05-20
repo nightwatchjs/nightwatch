@@ -132,11 +132,6 @@ class Globals {
       }
 
       client.queue.tree.empty().createRootNode();
-      client.queue.once('queue:finished', err => {
-        if (err) {
-          reject(err);
-        }
-      });
 
       client.isES6AsyncTestcase = true;
 

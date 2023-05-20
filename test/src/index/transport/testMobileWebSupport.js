@@ -12,7 +12,7 @@ const mockery = require('mockery');
 describe('MobileSupport', function () {
   before(function () {
     mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
-  })
+  });
 
   beforeEach(function (done) {
     this.getDriverBackup = Transport.prototype.getDriver;
@@ -24,7 +24,7 @@ describe('MobileSupport', function () {
     this.server = MockServer.init();
 
     this.server.on('listening', () => {
-      done()
+      done();
     });
   });
 
