@@ -1,5 +1,11 @@
+const fs = require('fs');
+const path = require('path');
+const Utils = require('../lib/utils');
+const {Logger} = Utils;
 const {Formatter} = require('@cucumber/cucumber');
-const {NightwatchEventHub, CUCUMBER_USER_EVENTS: {
+
+const NightwatchState = require('./nightwatchState');
+const {NightwatchEventHub, CUCUMBER_RUNNER_EVENTS: {
   TestRunStarted, 
   TestRunFinished,
   TestCaseStarted,
@@ -7,9 +13,6 @@ const {NightwatchEventHub, CUCUMBER_USER_EVENTS: {
   TestStepStarted,
   TestStepFinished
 }} = require('../lib/runner/eventHub');
-const NightwatchState = require('./nightwatchState');
-const Utils = require('../lib/utils');
-const {Logger} = Utils;
 
 module.exports = class MessageFormatter extends Formatter {
   constructor(options) {
@@ -42,7 +45,7 @@ module.exports = class MessageFormatter extends Formatter {
   }
 
   gherkinDocumentData(gherkinDocument) {
-    this.report.gherkinDocument = gherkinDocument;
+    this.report.gherkinDocument = [...(this.report.gherkinDocument || []), gherkinDocument];
   }
 
   parseErrorData(parseError) {
@@ -50,11 +53,11 @@ module.exports = class MessageFormatter extends Formatter {
   }
 
   pickleData(pickle) {
-    this.report.pickle = pickle;
+    this.report.pickle = [...(this.report.pickle || []), pickle];
   }
 
   sourceData(source) {
-    this.report.source = source;
+    this.report.source = [...(this.report.source || []), source];
   }
 
   stepDefinitionData(stepDefinition) {
@@ -96,6 +99,30 @@ module.exports = class MessageFormatter extends Formatter {
       envelope: result,
       report: this.report
     });
+
+    let {output_folder} = this.client.settings;
+    output_folder = path.join(output_folder, 'cucumber');
+    const filename = path.join(output_folder, 'cucumber-report.json');
+
+    return this.writeReportFile(filename, JSON.stringify(this.report, null, 2), true, output_folder)
+      .then(_ => {
+        Logger.info(Logger.colors.stack_trace(`Wrote JSON report file to: ${path.resolve(filename)}`));
+      });
+  }
+
+  writeReportFile(filename, rendered, shouldCreateFolder, output_folder) {
+    return (shouldCreateFolder ? Utils.createFolder(output_folder) : Promise.resolve())
+      .then(() => {
+        return new Promise((resolve, reject) => {
+          fs.writeFile(filename, rendered, function(err) {
+            if (err) {
+              return reject(err);
+            }
+
+            resolve();
+          });
+        });
+      });
   }
 
   testRunStartedData(result) {
