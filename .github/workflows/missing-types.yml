@@ -15,9 +15,9 @@ jobs:
       - name: Get modified files
         id: modified-files
         run: |
-          echo $(git diff --name-only origin/$GITHUB_BASE_REF origin/$GITHUB_HEAD_REF types/ | tr '\n' ',')
+          echo $(git diff --name-only origin/$GITHUB_BASE_REF $GITHUB_SHA types/ | tr '\n' ',')
           mkdir -p ./pr
-          echo $(git diff --name-only origin/$GITHUB_BASE_REF origin/$GITHUB_HEAD_REF types/ | tr '\n' ',') > ./pr/files_changed
+          echo $(git diff --name-only origin/$GITHUB_BASE_REF $GITHUB_SHA types/ | tr '\n' ',') > ./pr/files_changed
           echo ${{ github.event.number }} > ./pr/NR
 
       - uses: actions/upload-artifact@v2
