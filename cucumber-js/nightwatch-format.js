@@ -6,8 +6,8 @@ const {Formatter} = require('@cucumber/cucumber');
 
 const NightwatchState = require('./nightwatchState');
 const {NightwatchEventHub, CUCUMBER_RUNNER_EVENTS: {
-  TestRunStarted, 
-  TestRunFinished,
+  TestStarted, 
+  TestFinished,
   TestCaseStarted,
   TestCaseFinished,
   TestStepStarted,
@@ -95,7 +95,7 @@ module.exports = class MessageFormatter extends Formatter {
     this.report.testRunFinished = result;
 
     NightwatchEventHub.emit({
-      eventName: TestRunFinished,
+      eventName: TestFinished,
       envelope: result,
       report: this.report
     });
@@ -129,7 +129,7 @@ module.exports = class MessageFormatter extends Formatter {
     this.report.testRunStarted = result;
 
     NightwatchEventHub.emit({
-      eventName: TestRunStarted,
+      eventName: TestStarted,
       envelope: result,
       report: this.report
     });
