@@ -87,15 +87,41 @@ export interface SectionProperties {
    *   }
    * }
    */
-  commands?: Record<string, () => unknown>[];
+  commands?: Partial<Record<string, (...args: any) => unknown>>[]
+
+  /**
+   * An object or a function returning an object representing a container for user variables.
+   * Props objects are copied directly into the props property of the page object instance.
+   *
+   * @example
+   * sections: {
+   *   apps: {
+   *     selector: 'div.gb_pc',
+   *     // object version
+   *     props: {
+   *       myVar: "some info"
+   *     }
+   *   },
+   *   menu: {
+   *     selector: '#gb',
+   *     // function version
+   *     props: function () {
+   *       return {
+   *         myOtherVar: "some other info"
+   *       };
+   *     }
+   *   }
+   * }
+   */
+  props?: Record<string, unknown> | (() => Record<string, unknown>);
 }
 
 export type EnhancedSectionInstance<
   Commands = {},
-  Props = {},
   Elements = {},
-  Sections extends Record<string, PageObjectSection> = {}
-> = EnhancedPageObjectSections<Commands, Props, Elements, Sections> &
+  Sections extends Record<string, PageObjectSection> = {},
+  Props = {}
+> = EnhancedPageObjectSections<Commands, Elements, Sections, Props> &
   Commands &
   ElementCommands &
   ChromiumClientCommands &
@@ -143,23 +169,23 @@ export type EnhancedSectionInstance<
   Pick<Nightwatch, 'client' | 'api' | 'assert' | 'verify' | 'expect'>;
 
 interface PageObjectSection {
-  commands: Record<string, unknown>;
-  props: Record<string, unknown>;
-  elements: Record<string, unknown>;
-  sections: Record<string, PageObjectSection>;
+  commands?: Record<string, unknown>[];
+  props?: Record<string, unknown>;
+  elements?: Record<string, unknown>;
+  // TODO: make sections type more strict.
+  sections?: any;
 }
 
 export interface EnhancedPageObjectSections<
   Commands = {},
-  Props = {},
   Elements = {},
-  Sections extends Record<string, PageObjectSection> = {}
+  Sections extends Record<string, PageObjectSection> = {},
+  Props = {}
 > extends EnhancedPageObjectSharedFields<
-  {},
   Commands,
-  Props,
   Elements,
-  Sections
+  Sections,
+  Props
 > {
   /**
    * The element selector name
@@ -171,11 +197,11 @@ export interface EnhancedPageObjectSections<
 }
 
 interface EnhancedPageObjectSharedFields<
-  URL = string,
   Commands = {},
-  Props = {},
   Elements = {},
-  Sections extends Record<string, PageObjectSection> = {}
+  Sections extends Record<string, PageObjectSection> = {},
+  Props = {},
+  URL = string
 > {
   /**
    * A map of Element objects
@@ -184,7 +210,7 @@ interface EnhancedPageObjectSharedFields<
    */
   elements: {
     [key in keyof Elements]: EnhancedElementInstance<
-      EnhancedPageObject<URL, Commands, Props, Elements, Sections>
+      EnhancedPageObject<Commands, Elements, Sections, Props, URL>
     >;
   };
 
@@ -195,9 +221,9 @@ interface EnhancedPageObjectSharedFields<
   section: {
     [Key in keyof Sections]: EnhancedSectionInstance<
       Required<MergeObjectsArray<Sections[Key]['commands']>>,
-      Sections[Key]['props'],
-      Sections[Key]['elements'],
-      Sections[Key]['sections']
+      Required<Sections[Key]['elements']>,
+      Required<Sections[Key]['sections']>,
+      Required<Sections[Key]['props']>
     >;
   };
 
@@ -406,20 +432,20 @@ export interface PageObjectModel {
  * Every time a factory function like MyPage above is called, a new instance of the page object is instantiated.
  */
 export type EnhancedPageObject<
-  URL = string,
   Commands = {},
-  Props = {},
   Elements = {},
-  Sections extends Record<string, PageObjectSection> = {}
+  Sections extends Record<string, PageObjectSection> = {},
+  Props = {},
+  URL = string
 > = Nightwatch &
   SharedCommands &
   NightwatchCustomCommands &
   EnhancedPageObjectSharedFields<
-    URL,
     Required<MergeObjectsArray<Commands>>,
-    Props,
     Required<MergeObjectsArray<Elements>>,
-    Sections
+    Sections,
+    Props,
+    URL
   > &
   Required<MergeObjectsArray<Commands>> & {
     /**
@@ -446,5 +472,5 @@ export type EnhancedPageObject<
     navigate(
       url?: string,
       callback?: () => void
-    ): EnhancedPageObject<URL, Commands, Props, Elements, Sections>;
+    ): EnhancedPageObject<Commands, Elements, Sections, Props, URL>;
   };

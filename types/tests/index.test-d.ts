@@ -14,6 +14,7 @@ import {
   JSON_WEB_OBJECT,
   ElementResult,
   Awaitable,
+  SectionProperties,
 } from '..';
 
 function isNightwatchAssertionsResult<T>(result: NightwatchAssertionsResult<T>): T {
@@ -347,29 +348,41 @@ const appsSection = {
   selector: 'div.gb_qc',
   commands: [
     {
-      clickYoutube(this: AppsSection) {
+      clickYoutube(this: EnhancedSectionInstance) {
+        return this.click('@youtube');
+      },
+    },
+    {
+      something(this: EnhancedSectionInstance) {
         return this.click('@youtube');
       },
     },
   ],
   elements: {
     myAccount: {
-      selector: '#gb192',
+      selector: '#gb192'
     },
     youtube: {
       selector: '#gb36',
     },
-  },
-};
-
-interface AppsSection extends EnhancedSectionInstance<(typeof appsSection.commands)[0], typeof appsSection.elements> {}
+  }
+} satisfies SectionProperties;
 
 const menuSection = {
   selector: '#gb',
   commands: [
     {
       // add section commands here
-      clickApps(this: MenuSection) {
+      clickApps(this: EnhancedSectionInstance) {
+        return this.click('@appSection');
+      },
+
+      randomCommand(this: EnhancedSectionInstance) {
+        return this.click('@appSection');
+      },
+    },
+    {
+      doSomething(this: EnhancedSectionInstance) {
         return this.click('@appSection');
       },
     },
@@ -385,17 +398,10 @@ const menuSection = {
   sections: {
     apps: appsSection,
   },
-};
-
-interface MenuSection
-  extends EnhancedSectionInstance<
-    (typeof menuSection.commands)[0],
-    typeof menuSection.elements,
-    { apps: AppsSection }
-  > {}
+} satisfies SectionProperties;
 
 const googleCommands = {
-  submit(this: GooglePage) {
+  submit(this: EnhancedPageObject) {
     this.api.pause(1000);
     return this.waitForElementVisible('@submitButton', 1000)
       .click('@submitButton')
@@ -443,9 +449,13 @@ const iFrame = {
 // export = iFrame
 
 interface GooglePage
-  extends EnhancedPageObject<typeof googleCommands, typeof googlePage.elements, { menu: MenuSection }> {}
+  extends EnhancedPageObject<
+    typeof googleCommands,
+    typeof googlePage.elements,
+    typeof googlePage.sections
+  > {}
 
-interface iFramePage extends EnhancedPageObject<(typeof iFrame.commands)[0], typeof iFrame.elements> {}
+interface iFramePage extends EnhancedPageObject<typeof iFrame.commands, typeof iFrame.elements> {}
 
 declare module '..' {
   interface NightwatchCustomPageObjects {
@@ -455,75 +465,77 @@ declare module '..' {
 }
 
 // TODO: fix Page Object types
-// const testPage = {
-//   'Test commands': () => {
-//     const google = browser.page.google();
-//     google.setValue('@searchBar', 'nightwatch').submit();
+const testPage = {
+  'Test commands': () => {
+    const google = browser.page.google();
+    google.setValue('@searchBar', 'nightwatch').submit();
 
-//     browser.end();
-//   },
+    browser.end();
+  },
 
-//   'Test sections': () => {
-//     const google = browser.page.google();
+  'Test sections': () => {
+    const google = browser.page.google();
 
-//     const menuSection = google.section.menu;
-//     menuSection.expect.element('@mail').to.be.visible;
-//     menuSection.expect.element('@images').to.be.visible;
+    const menuSection = google.section.menu;
+    menuSection.expect.element('@mail').to.be.visible;
+    menuSection.expect.element('@images').to.be.visible;
 
-//     menuSection.clickApps();
+    menuSection.selector;
 
-//     const appSection = menuSection.section.apps;
-//     appSection.expect.element('@myAccount').to.be.visible;
-//     appSection.expect.element('@youtube').to.be.visible;
+    menuSection.clickApps();
 
-//     appSection.clickYoutube();
+    const appSection = menuSection.section.apps;
+    appSection.expect.element('@myAccount').to.be.visible;
+    appSection.expect.element('@youtube').to.be.visible;
 
-//     browser.end();
-//   },
+    appSection.clickYoutube();
 
-//   'Test assertions on page': () => {
-//     const google: GooglePage = browser.page.google();
+    browser.end();
+  },
 
-//     google
-//       .navigate()
-//       .assert.title('Google') // deprecated
-//       .assert.titleEquals('Google') // new in 2.0
-//       .assert.visible('@searchBar')
-//       .assert.strictEqual('Google', 'Google') // node assertion returning NightwatchAPI
-//       .assert.not.titleContains('DuckDuckGo')
-//       .moveToElement('@searchBar', 1, 1)
-//       .setValue('@searchBar', 'nightwatch')
-//       .click('@submit');
+  'Test assertions on page': () => {
+    const google: GooglePage = browser.page.google();
 
-//     expectError(google.assert.not.not.elementPresent('@searchbar'))
-//     expectError(google.assert.not.strictEqual('nightwatch', 'nightwatch'))
+    google
+      .navigate()
+      .assert.title('Google') // deprecated
+      .assert.titleEquals('Google') // new in 2.0
+      .assert.visible('@searchBar')
+      .assert.strictEqual('Google', 'Google') // node assertion returning NightwatchAPI
+      .assert.not.titleContains('DuckDuckGo')
+      .moveToElement('@searchBar', 1, 1)
+      .setValue('@searchBar', 'nightwatch')
+      .click('@submit');
 
-//     browser.end();
-//   },
+    expectError(google.assert.not.not.elementPresent('@searchbar'))
+    expectError(google.assert.not.strictEqual('nightwatch', 'nightwatch'))
 
-//   'Test iFrame on page': async () => {
-//     const iFrame = browser.page.IFrame();
-//     iFrame.navigate();
-//     const frame = await browser.findElement(iFrame.elements.iframe);
-//     console.log(frame.getId());
-//     browser.frame(frame.getId());
-//     iFrame.expect.element('@textbox').text.to.equal('Your content goes here.');
+    browser.end();
+  },
 
-//     browser.end();
-//   },
+  'Test iFrame on page': async () => {
+    const iFrame = browser.page.IFrame();
+    iFrame.navigate();
+    const frame = await browser.findElement(iFrame.elements.iframe);
+    console.log(frame.getId());
+    browser.frame(frame.getId());
+    iFrame.expect.element('@textbox').text.to.equal('Your content goes here.');
 
-//   'Test passing CSS selector string to frame': () => {
-//     const iFrame = browser.page.IFrame();
-//     iFrame.navigate().waitForElementPresent('#mce_0_ifr', 10000);
-//     browser.frame('#mce_0_ifr');
-//     iFrame.expect.element('@textbox').text.to.equal('Your content goes here.');
-//     browser.end();
-//   },
+    browser.end();
+  },
 
-//   'Test nested page objects': () => {
-//     const google = browser.page.subfolder1.subfolder2.subfolder3.google();
-//   },
-// };
+  'Test passing CSS selector string to frame': () => {
+    const iFrame = browser.page.IFrame();
+    iFrame.navigate().waitForElementPresent('#mce_0_ifr', 10000);
+    browser.frame('#mce_0_ifr');
+    iFrame.expect.element('@textbox').text.to.equal('Your content goes here.');
+    browser.end();
+  },
+
+  'Test nested page objects': () => {
+    const google = browser.page.subfolder1.subfolder2.subfolder3.google();
+  },
+};
 
 //
 // ./tests/specific-commands.ts
@@ -747,7 +759,7 @@ it('Chai demo test', () => {
 });
 
 // Relative locator test
-
+// Describe not working
 describe('sample with relative locators', () => {
   before((browser) => browser.navigateTo('https://archive.org/account/login'));
 

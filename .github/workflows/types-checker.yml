@@ -1,0 +1,77 @@
+name: Missing Types Checker
+
+on:
+  pull_request:
+    types:
+      - synchronize
+
+jobs:
+  detect-modified-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+            fetch-depth: 0
+
+      - name: Get modified files
+        id: modified-files
+        run: |
+          echo $(git diff --name-only HEAD^ types/)
+          echo $(git diff --name-only main types/)
+          echo "::set-output name=modified::$(git diff --name-only HEAD^ types/)"
+      
+      - name: Comment on PR
+        if: steps.modified-files.outputs.modified == ''
+        id: comment-on-pr
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const comment = `
+            ## Status
+            * ❌ No modified files found in the **types** directory.
+
+            Please make sure to include types for any changes you have made. Thank you!.`;
+            const pullRequest = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+            const existingComment = comments.data.find(comment => comment.user.login === 'github-actions[bot]' && comment.body.includes('No modified files found in the **types** director'));
+            if (existingComment) {
+              console.log('Comment already exists');
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }
+      - name: Edit comment on PR
+        if: steps.modified-files.outputs.modified != ''
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const comment = `
+            ## Status
+            * :white_check_mark: Type files updated!`;
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+            const existingComment = comments.data.find(comment => comment.user.login === 'github-actions[bot]' && comment.body.includes('No modified files found in the **types** director'));
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body: comment
+              });
+            }
