@@ -1,4 +1,4 @@
-class SyncUp {
+class NightwatchState {
 
   setClient(client){
     this.client = client;
@@ -9,4 +9,4 @@ class SyncUp {
   }
 }
 
-module.exports = new SyncUp();
+module.exports = new NightwatchState();

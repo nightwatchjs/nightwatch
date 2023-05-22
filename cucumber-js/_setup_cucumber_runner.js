@@ -1,6 +1,6 @@
 const Nightwatch = require('../lib');
 const {Before, After, setDefaultTimeout} = require('@cucumber/cucumber');
-const SyncUp = require('./syncup');
+const NightwatchState = require('./nightwatchState');
 
 setDefaultTimeout(-1);
 
@@ -52,7 +52,7 @@ Before(function({pickle}) {
     });
   }
 
-  SyncUp.setClient(this.client);
+  NightwatchState.setClient(this.client);
 
   // eslint-disable-next-line
   console.log('\n');
@@ -63,7 +63,7 @@ Before(function({pickle}) {
   if (options.auto_start_session || typeof options.auto_start_session == 'undefined') {
     return this.client.launchBrowser().then(browser => {
       this.browser = browser;
-      SyncUp.setBrowser(this.browser);
+      NightwatchState.setBrowser(this.browser);
     });
   }
 });

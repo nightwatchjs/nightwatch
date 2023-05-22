@@ -7,7 +7,9 @@ const {NightwatchEventHub, CUCUMBER_USER_EVENTS: {
   TestStepStarted,
   TestStepFinished
 }} = require('../lib/runner/eventHub');
-const SyncUp = require('./syncup');
+const NightwatchState = require('./nightwatchState');
+const Utils = require('../lib/utils');
+const {Logger} = Utils;
 
 module.exports = class MessageFormatter extends Formatter {
   constructor(options) {
@@ -16,9 +18,9 @@ module.exports = class MessageFormatter extends Formatter {
     this.report = {};
 
     options.eventBroadcaster.on('envelope', (envelope) => {
-      if (SyncUp.client && !this.client) {
-        this.client = SyncUp.client;
-        this.browser = SyncUp.browser;
+      if (NightwatchState.client && !this.client) {
+        this.client = NightwatchState.client;
+        this.browser = NightwatchState.browser;
         this.setCapabilities();
       }
       
@@ -28,6 +30,7 @@ module.exports = class MessageFormatter extends Formatter {
 
   setCapabilities() {
     this.report = {
+      ...this.report,
       seleniumLogs: this.client.transport.driverService.getSeleniumOutputFilePath(),
       sessionCapabilities: this.browser.capabilities,
       sessionId: this.browser.sessionId
@@ -63,11 +66,13 @@ module.exports = class MessageFormatter extends Formatter {
   }
 
   testCaseFinishedData(result) {
-    this.report.testCaseFinished = [...(this.report.testCaseFinished || []), result];;
+    result.httpOutput = Logger.collectTestSectionOutput();
+
+    this.report.testCaseFinished = [...(this.report.testCaseFinished || []), result];
 
     NightwatchEventHub.emit({
       eventName: TestCaseFinished,
-      data: result,
+      envelope: result,
       report: this.report
     });
   }
@@ -77,17 +82,18 @@ module.exports = class MessageFormatter extends Formatter {
 
     NightwatchEventHub.emit({
       eventName: TestCaseStarted,
-      data: result,
+      envelope: result,
       report: this.report
     });
   }
 
   testRunFinishedData(result) {
+    result.httpOutput = Logger.collectOutput();
     this.report.testRunFinished = result;
 
     NightwatchEventHub.emit({
       eventName: TestRunFinished,
-      data: result,
+      envelope: result,
       report: this.report
     });
   }
@@ -97,7 +103,7 @@ module.exports = class MessageFormatter extends Formatter {
 
     NightwatchEventHub.emit({
       eventName: TestRunStarted,
-      data: result,
+      envelope: result,
       report: this.report
     });
   }
@@ -107,7 +113,7 @@ module.exports = class MessageFormatter extends Formatter {
 
     NightwatchEventHub.emit({
       eventName: TestStepFinished,
-      data: result,
+      envelope: result,
       report: this.report
     });
   }
@@ -117,7 +123,7 @@ module.exports = class MessageFormatter extends Formatter {
 
     NightwatchEventHub.emit({
       eventName: TestStepStarted,
-      data: result,
+      envelope: result,
       report: this.report
     });
   }
@@ -147,5 +153,5 @@ module.exports = class MessageFormatter extends Formatter {
     if (handlers[key]) {
       handlers[key].call(this, envelope[key]);
     }
-  }  
+  }
 };
