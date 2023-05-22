@@ -109,6 +109,7 @@ module.exports = class MessageFormatter extends Formatter {
   }
 
   testStepFinishedData(result) {
+    result.httpOutput = Logger.collectCommandOutput();
     this.report.testStepFinished = [...(this.report.testStepFinished || []), result];;
 
     NightwatchEventHub.emit({
