@@ -1,7 +1,6 @@
 name: Check missing types
 
-on:
-  pull_request:
+on: pull_request
 
 jobs:
   detect-modified-files:
