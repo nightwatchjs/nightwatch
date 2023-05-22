@@ -8,9 +8,9 @@
  * // if object
  * {} => {}
  */
-export type MergeObjectsArray<T> = T extends Array<infer U>
+export type MergeObjectsArray<T> = T extends Array<unknown>
   ? {
-      [K in keyof U]: U[K];
+      [K in keyof T[number]]: T[number][K];
     }
   : T;
 
