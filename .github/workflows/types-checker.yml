@@ -1,15 +1,11 @@
 name: Missing Types Checker
 
 on:
-  pull_request:
+  pull_request_target:
     types:
       - opened
       - reopened
       - synchronize
-
-permissions:
-  issues: write
-  pull-requests: write
 
 jobs:
   detect-modified-files:
