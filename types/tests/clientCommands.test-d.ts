@@ -1,5 +1,5 @@
 import { expectError, expectType } from 'tsd';
-import { Cookie, NightwatchAPI, NightwatchCallbackResult, NightwatchLogEntry } from '..';
+import { Cookie, NightwatchAPI, NightwatchCallbackResult, NightwatchElement, NightwatchLogEntry } from '..';
 
 //
 // .navigateTo
@@ -471,4 +471,32 @@ describe('axeInject test', function () {
     expectType<null>(result);
   });
   after((browser) => browser.end());
+});
+
+//
+// .injectScript
+//
+describe('injectScript command demo', function() {
+    before(browser => browser.url('https://www.google.com/'));
+
+    test('demo test', function(browser) {
+        browser.injectScript('<script-url>', function(result) {
+            expectType<NightwatchAPI>(this);
+            expectType<NightwatchCallbackResult<NightwatchElement>>(result);
+        });
+        browser.injectScript('<script-url>', 'id', function(result) {
+            expectType<NightwatchAPI>(this);
+            expectType<NightwatchCallbackResult<NightwatchElement>>(result);
+        });
+    });
+
+    test('async demo test', async function(browser) {
+        const result = await browser.injectScript('<script-url>');
+        expectType<NightwatchElement>(result);
+
+        const result2 = await browser.injectScript('<script-url>', 'id');
+        expectType<NightwatchElement>(result2);
+    });
+
+    after(browser => browser.end());
 });
