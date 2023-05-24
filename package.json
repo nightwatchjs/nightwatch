@@ -127,7 +127,7 @@
     }
   },
   "engines": {
-    "node": ">= 14.0.0"
+    "node": ">= 14.20.0"
   },
   "keywords": [
     "nightwatch",
@@ -162,8 +162,8 @@
     "LICENSE.md",
     "index.js"
   ],
-  "lint-staged":{
-    "**/*.js":[
+  "lint-staged": {
+    "**/*.js": [
       "npx eslint --fix"
     ]
   }
