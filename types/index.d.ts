@@ -488,6 +488,33 @@ export interface NightwatchKeys {
   COMMAND: string;
 }
 
+/**
+ * Kept for backward compatibility.
+ *
+ * NightwatchPage provides some basic types for page objects. 
+ * Users can keep using these default types for page objects, but if they want
+ * to be strict, they can define their own page object types by extending
+ * `NightwatchCustomPageObjects` interface.
+ *
+ * @example
+ * // using default types
+ * const googlePage = browser.page.google();
+ * 
+ * // defining types by extending NightwatchCustomPageObjects interface
+ * interface GooglePage
+ *   extends EnhancedPageObject<
+ *     typeof googleCommands,
+ *     typeof googlePage.elements
+ *   > {}
+ *
+ * declare module 'nightwatch' {
+ *   interface NightwatchCustomPageObjects {
+ *     google(): GooglePage;
+ *   }
+ * }
+ *
+ * const googlePage = browser.page.google(); // type automatically inferred as GooglePage
+ */
 export type NightwatchPage = {
   [name: string]: () => EnhancedPageObject<any, any, any>;
 } & {
