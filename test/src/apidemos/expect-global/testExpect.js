@@ -95,7 +95,7 @@ describe('expect(element.<command>) - passed', function() {
         assert.strictEqual(results.lastError.name, 'NightwatchAssertError');
         /* eslint-disable no-control-regex */
         const cleanErrorMessage = results.lastError.message.replace(/\x1b\[[0-9;]*m|\(.*?\)/g, '');
-        assert.strictEqual(cleanErrorMessage, 'expected { a: 1, b: 4 } to deeply equal { b: 5 } - expected "{ b: 5 }" but got: "{ a: 1, b: 4 }" ');
+        assert.strictEqual(cleanErrorMessage, 'expected [ { a: 1, b: 4 } ] to deeply equal [ { b: 5 } ] - expected "[ { b: 5 } ]" but got: "[ { a: 1, b: 4 } ]" ');
       }
     };
 
