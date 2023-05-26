@@ -63,6 +63,7 @@ describe('test HttpRequest', function() {
   });
 
   afterEach(function () {
+    HttpRequest.resetHttpKeepAliveAgents();
     mockery.deregisterAll();
     mockery.resetCache();
     mockery.disable();
@@ -285,6 +286,38 @@ describe('test HttpRequest', function() {
     assert.ok(opts.agent instanceof http.Agent);
     assert.strictEqual(opts.agent.keepAliveMsecs, 1000);
     assert.ok('agent' in opts);
+  });
+
+  it('keep alive uses single instance of agent across requests',  function() {
+    const options = {
+      path: '/session',
+      method: 'POST',
+      port: 4444,
+      data: {
+        desiredCapabilities: {
+          browserName: 'firefox'
+        }
+      }
+    };
+
+    HttpRequest.globalSettings = {
+      default_path: '/wd/hub',
+      port: 4444,
+      keep_alive: {
+        keepAliveMsecs: 1000,
+        enabled: true
+      }
+    };
+
+    const request = new HttpRequest(options);
+    const secondRequest = new HttpRequest(options);
+
+    const opts = request.reqOptions;
+    const http = require('http');
+    assert.ok(opts.agent instanceof http.Agent);
+    assert.strictEqual(opts.agent.keepAliveMsecs, 1000);
+    assert.ok('agent' in opts);
+    assert.strictEqual(secondRequest.reqOptions.agent, opts.agent);
   });
 
   it('test send post request with keep alive extended - disabled', function (done) {
