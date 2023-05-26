@@ -71,8 +71,4 @@ describe('Cucumber integration - parallel running single formatter', function() 
         assert.strictEqual(errorOrFailed, false);
       });
   });
-
-
-
-
 });
