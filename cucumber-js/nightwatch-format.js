@@ -34,9 +34,9 @@ module.exports = class MessageFormatter extends Formatter {
   setCapabilities() {
     this.report = {
       ...this.report,
-      seleniumLogs: this.client.transport.driverService.getSeleniumOutputFilePath(),
-      sessionCapabilities: this.browser.capabilities,
-      sessionId: this.browser.sessionId
+      seleniumLogs: this.client?.transport?.driverService?.getSeleniumOutputFilePath(),
+      sessionCapabilities: this.browser?.capabilities,
+      sessionId: this.browser?.sessionId
     };
   }
 
@@ -104,14 +104,14 @@ module.exports = class MessageFormatter extends Formatter {
     output_folder = path.join(output_folder, 'cucumber');
     const filename = path.join(output_folder, 'cucumber-report.json');
 
-    return this.writeReportFile(filename, JSON.stringify(this.report, null, 2), true, output_folder)
+    this.writeReportFile(filename, JSON.stringify(this.report, null, 2), true, output_folder)
       .then(_ => {
         Logger.info(Logger.colors.stack_trace(`Wrote JSON report file to: ${path.resolve(filename)}`));
       });
   }
 
   writeReportFile(filename, rendered, shouldCreateFolder, output_folder) {
-    return (shouldCreateFolder ? Utils.createFolder(output_folder) : Promise.resolve())
+    (shouldCreateFolder ? Utils.createFolder(output_folder) : Promise.resolve())
       .then(() => {
         return new Promise((resolve, reject) => {
           fs.writeFile(filename, rendered, function(err) {
