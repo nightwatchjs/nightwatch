@@ -37,7 +37,7 @@ describe('testRunnerScreenshotsOutput', function () {
   });
 
   it('takes screenshot on each test failure', function () {
-    let testsPath = [
+    const testsPath = [
       path.join(__dirname, '../../sampletests/withfailures')
     ];
 
@@ -79,7 +79,7 @@ describe('testRunnerScreenshotsOutput', function () {
 
   it('takes screenshot for failed test and exits if skip_testcases_on_fail is set to true', function () {
 
-    let testsPath = [
+    const testsPath = [
       path.join(__dirname, '../../sampletests/withfailures')
     ];
 
@@ -124,7 +124,7 @@ describe('testRunnerScreenshotsOutput', function () {
 
   it('doesnt save file if screenshot call is failed', function () {
 
-    let testsPath = [
+    const testsPath = [
       path.join(__dirname, '../../sampletests/withfailures')
     ];
 
@@ -171,7 +171,7 @@ describe('testRunnerScreenshotsOutput', function () {
 
   it('does not take screenshot if screenshot is disabled', function () {
 
-    let testsPath = [
+    const testsPath = [
       path.join(__dirname, '../../sampletests/withfailures')
     ];
 
@@ -203,7 +203,7 @@ describe('testRunnerScreenshotsOutput', function () {
 
   it('does not take screenshot if screenshot is enabled but on_failure is set to false', function () {
 
-    let testsPath = [
+    const testsPath = [
       path.join(__dirname, '../../sampletests/withfailures')
     ];
 
@@ -233,7 +233,65 @@ describe('testRunnerScreenshotsOutput', function () {
       });
   });
 
+  it('emit screenshot event on test failure', function () {
+    const testsPath = [
+      path.join(__dirname, '../../sampletests/withfailures')
+    ];
 
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/screenshot',
+      method: 'GET',
+      response: JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0,
+        value: 'c2NyZWVuZGF0YQ=='
+      })
+    }, true);
+
+    return runTests(testsPath, settings({
+      skip_testcases_on_fail: false,
+      globals: {
+        waitForConditionPollInterval: 5,
+        waitForConditionTimeout: 5,
+        retryAssertionTimeout: 1,
+        reporter: function () {
+        },
+        onEvent: function({eventName, ...args}) {
+          assert.ok(['GlobalHookRunStarted',
+            'GlobalHookRunFinished',
+            'TestSuiteStarted',
+            'TestSuiteFinished',
+            'HookRunStarted',
+            'HookRunFinished',
+            'TestRunStarted',
+            'TestRunFinished',
+            'LogCreated',
+            'ScreenshotCreated'
+          ].includes(eventName));
+
+          switch (eventName) {
+            case 'ScreenshotCreated':
+              assert.deepStrictEqual(Object.keys(args), ['path']);
+              break;
+          }
+        }
+      },
+      screenshots: {
+        enabled: true,
+        on_failure: true,
+        on_error: true,
+        path: screenshotFilePath
+      }
+    }))
+      .then(_ => {
+        return readDirPromise(`${screenshotFilePath}/${moduleName}`);
+      })
+      .then(files => {
+        assert.ok(Array.isArray(files));
+        assert.strictEqual(files.length, 1);
+        files.forEach((val) => assert.ok(val.endsWith('.png')));
+      });
+  });
 });
 
 function readDirPromise(dirName) {

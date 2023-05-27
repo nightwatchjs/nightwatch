@@ -105,7 +105,7 @@ describe('testNightwatchEventReporter', function() {
     } catch (error) {
       possibleError = error;
     }
+    
     assert.strictEqual(possibleError, null);
-
   });
 });
