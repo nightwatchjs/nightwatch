@@ -586,27 +586,49 @@ export interface NightwatchBrowser
   NightwatchComponentTestingCommands,
   NightwatchCustomCommands { }
 
+/**
+ * @deprecated Please use the types exported by individual plugins.
+ */
 export interface NightwatchComponentTestingCommands {
+  /**
+   * @deprecated Please use the types exported by individual plugins.
+   */
   importScript(
     scriptPath: string,
     options: { scriptType: string; componentTyp: string },
     callback: () => void
   ): this;
+
+  /**
+   * @deprecated Please use the types exported by individual plugins.
+   */
   mountReactComponent(
     componentPath: string,
     props?: string | (() => void),
     callback?: () => void
   ): Element;
+
+  /**
+   * @deprecated Please use the types exported by individual plugins.
+   */
   mountComponent(
     componentPath: string,
     props?: string | (() => void),
     callback?: () => void
   ): Element;
+
+  /**
+   * @deprecated Please use the types exported by individual plugins.
+   */
   mountVueComponent(
     componentPath: string,
     options?: any,
     callback?: () => void
   ): Element;
+
+  /**
+   * @deprecated Please use the types exported by individual plugins.
+   */
   launchComponentRenderer(): this;
 }
 
