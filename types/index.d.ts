@@ -3132,6 +3132,8 @@ export interface ElementCommands {
    * You can change the polling interval by defining a `waitForConditionPollInterval` property (in milliseconds) in as a global property in your `nightwatch.json` or in your external globals file.
    * Similarly, a default timeout can be specified as a global `waitForConditionTimeout` property (in milliseconds).
    *
+   * @returns `null` if element not found, `Error` otherwise.
+   *
    * @example
    * module.exports = {
    *  'demo Test': function() {
@@ -3203,10 +3205,10 @@ export interface ElementCommands {
     abortOnFailure?: boolean,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<ElementResult[]>
+      result: NightwatchCallbackResult<null | ElementResult[]>
     ) => void,
     message?: string
-  ): Awaitable<this, ElementResult[]>;
+  ): Awaitable<this, null | Error>;
   waitForElementNotPresent(
     using: LocateStrategy,
     selector: Definition,
@@ -3215,10 +3217,10 @@ export interface ElementCommands {
     abortOnFailure?: boolean,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<ElementResult[]>
+      result: NightwatchCallbackResult<null | ElementResult[]>
     ) => void,
     message?: string
-  ): Awaitable<this, ElementResult[]>;
+  ): Awaitable<this, null | Error>;
 
   /**
    * Opposite of `waitForElementVisible`. Waits a given time in milliseconds (default 5000ms)
@@ -3228,6 +3230,8 @@ export interface ElementCommands {
    *
    * You can change the polling interval by defining a `waitForConditionPollInterval` property (in milliseconds) in as a global property in your `nightwatch.json` or in your external globals file.
    * Similarly, a default timeout can be specified as a global `waitForConditionTimeout` property (in milliseconds).
+   *
+   * @returns `false` if element not visible, `Error` otherwise.
    *
    * @example
    * module.exports = {
@@ -3303,7 +3307,7 @@ export interface ElementCommands {
       result: NightwatchCallbackResult<boolean>
     ) => void,
     message?: string
-  ): Awaitable<this, boolean>;
+  ): Awaitable<this, false | Error>;
   waitForElementNotVisible(
     using: LocateStrategy,
     selector: Definition,
@@ -3315,7 +3319,7 @@ export interface ElementCommands {
       result: NightwatchCallbackResult<boolean>
     ) => void,
     message?: string
-  ): Awaitable<this, boolean>;
+  ): Awaitable<this, false | Error>;
 
   /**
    * Waits a given time in milliseconds (default 5000ms) for an element to be present in the page before performing any other commands or assertions.
@@ -3323,6 +3327,8 @@ export interface ElementCommands {
    *
    * You can change the polling interval by defining a `waitForConditionPollInterval` property (in milliseconds) in as a global property in your `nightwatch.json` or in your external globals file.
    * Similarly, the default timeout can be specified as a global `waitForConditionTimeout` property (in milliseconds).
+   *
+   * @returns `ElementResult[]` if element is found, `Error` otherwise.
    *
    * @example
    * module.exports = {
@@ -3394,10 +3400,10 @@ export interface ElementCommands {
     abortOnFailure?: boolean,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<ElementResult[]>
+      result: NightwatchCallbackResult<ElementResult[] | null>
     ) => void,
     message?: string
-  ): Awaitable<this, ElementResult[]>;
+  ): Awaitable<this, ElementResult[] | Error>;
   waitForElementPresent(
     using: LocateStrategy,
     selector: Definition,
@@ -3406,10 +3412,10 @@ export interface ElementCommands {
     abortOnFailure?: boolean,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<ElementResult[]>
+      result: NightwatchCallbackResult<ElementResult[] | null>
     ) => void,
     message?: string
-  ): Awaitable<this, ElementResult[]>;
+  ): Awaitable<this, ElementResult[] | Error>;
 
   /**
    * Waits a given time in milliseconds for an element to be visible in the page before performing any other commands or assertions.
@@ -3419,6 +3425,8 @@ export interface ElementCommands {
    * You can change the polling interval by defining a `waitForConditionPollInterval` property (in milliseconds) in as a global property in your `nightwatch.json` or in your external globals file.
    *
    * Similarly, a default timeout can be specified as a global `waitForConditionTimeout` property (in milliseconds).
+   *
+   * @returns `true` is element is visible, `Error` otherwise.
    *
    * @example
    * this.demoTest = function (browser) {
@@ -3447,7 +3455,7 @@ export interface ElementCommands {
       result: NightwatchCallbackResult<boolean>
     ) => void,
     message?: string
-  ): Awaitable<this, boolean>;
+  ): Awaitable<this, true | Error>;
 
   waitForElementVisible(
     using: LocateStrategy,
@@ -3460,7 +3468,7 @@ export interface ElementCommands {
       result: NightwatchCallbackResult<boolean>
     ) => void,
     message?: string
-  ): Awaitable<this, boolean>;
+  ): Awaitable<this, true | Error>;
 
   /**
    * Returns the computed WAI-ARIA label of an element.
