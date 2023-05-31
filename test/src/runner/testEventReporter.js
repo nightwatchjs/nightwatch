@@ -56,46 +56,38 @@ describe('testNightwatchEventReporter', function() {
           waitForConditionPollInterval: 20,
           waitForConditionTimeout: 50,
           retryAssertionTimeout: 50,
-          onEvent: function({eventName, ...args}) {
-            assert.ok(['GlobalHookRunStarted',
-              'GlobalHookRunFinished',
-              'TestSuiteStarted',
-              'TestSuiteFinished',
-              'HookRunStarted',
-              'HookRunFinished',
-              'TestRunStarted',
-              'TestRunFinished',
-              'LogCreated'].includes(eventName));
+          registerEventHandlers: function(eventBroadcaster) {
+            eventBroadcaster.on('TestSuiteStarted', (args) => {
+              assert.deepStrictEqual(Object.keys(args), ['testResults']);
+            });
 
-            switch (eventName) {
-              case 'TestSuiteStarted':
-                assert.deepStrictEqual(Object.keys(args), ['testResults']);
-                break;
+            eventBroadcaster.on('TestSuiteFinished', (args) => {
+              assert.deepStrictEqual(Object.keys(args), ['testResults']);
+            });
 
-              case 'TestSuiteFinished':
-                assert.deepStrictEqual(Object.keys(args), ['testResults']);
-                break;
-        
-              case 'LogCreated':
-                assert.deepStrictEqual(Object.keys(args), ['httpOutput']);
-                break;
+            eventBroadcaster.on('LogCreated', (args) => {
+              assert.deepStrictEqual(Object.keys(args), ['httpOutput']);
+            });
 
-              case 'HookRunStarted':
-                assert.deepStrictEqual(Object.keys(args), ['testResults', 'hook_type']);
-                break;
-            
-              case 'HookRunFinished':
-                assert.deepStrictEqual(Object.keys(args), ['testResults', 'hook_type']);
-                break;
+            eventBroadcaster.on('HookRunStarted', (args) => {
+              assert.deepStrictEqual(Object.keys(args), ['testResults', 'hook_type']);
+            });
 
-              case 'TestRunStarted':
-                assert.deepStrictEqual(Object.keys(args), ['testResults']);
-                break;
-            
-              case 'TestRunFinished':
-                assert.deepStrictEqual(Object.keys(args), ['testResults']);
-                break;
-            }
+            eventBroadcaster.on('HookRunFinished', (args) => {
+              assert.deepStrictEqual(Object.keys(args), ['testResults', 'hook_type']);
+            });
+
+            eventBroadcaster.on('TestRunStarted', (args) => {
+              assert.deepStrictEqual(Object.keys(args), ['testResults']);
+            });
+
+            eventBroadcaster.on('TestRunFinished', (args) => {
+              assert.deepStrictEqual(Object.keys(args), ['testResults']);
+            });
+
+            eventBroadcaster.on('HookRunStarted', (args) => {
+              assert.deepStrictEqual(Object.keys(args), ['testResults', 'hook_type']);
+            });
           }
         },
         silent: true,
