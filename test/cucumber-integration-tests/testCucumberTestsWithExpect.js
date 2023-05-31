@@ -46,4 +46,32 @@ describe('Cucumber integration with .expect APIs', function() {
     });
   });
 
+  it('testCucumberSampleTests -- nightwatch formatter live events', function() {
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/text',
+      statusCode: 200,
+      method: 'GET',
+      response: {
+        value: 'jean sibelius'
+      },
+      times: 3
+    });
+
+    const source = [path.join(__dirname, './sample_cucumber_tests/withexpect/testSample.js')];
+
+    return runTests({
+      source,
+      verbose: false,
+      config: path.join(__dirname, '../extra/cucumber-config-events.js')
+    }, settings({
+      silent: false,
+      output: false,
+      globals: {
+        waitForConditionTimeout: 10,
+        waitForConditionPollInterval: 50
+      }
+    })).then(failures => {
+      assert.strictEqual(failures, true, 'Cucumber should have test failures');
+    });
+  });
 });
