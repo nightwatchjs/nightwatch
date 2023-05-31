@@ -1,5 +1,5 @@
 import { expectError, expectType } from 'tsd';
-import { Cookie, NightwatchAPI, NightwatchCallbackResult, NightwatchLogEntry } from '..';
+import { Cookie, NightwatchAPI, NightwatchCallbackResult, NightwatchElement, NightwatchLogEntry } from '..';
 
 //
 // .navigateTo
@@ -443,6 +443,7 @@ describe('waitUntil command demo', function () {
   test('demo test', function () {
     browser.waitUntil(
       async function () {
+        expectType<NightwatchAPI>(this);
         return true;
       },
       5000,
@@ -453,12 +454,24 @@ describe('waitUntil command demo', function () {
       }
     );
   });
-  test('async demo test', async function (browser) {
+  it('demo Test 2', function() {
+    browser
+      .url('https://nightwatchjs.org')
+      .waitUntil(async function() {
+        const title = await this.execute(function() {
+          return document.title;
+        });
+
+        return title === 'Nightwatch.js';
+      }, 1000, 100, 'some message');
+  });
+  test('async demo test', async function () {
     const result = await browser.waitUntil(async function () {
       return true;
     });
     expectType<null>(result);
   });
+
   after((browser) => browser.end());
 });
 
@@ -471,4 +484,85 @@ describe('axeInject test', function () {
     expectType<null>(result);
   });
   after((browser) => browser.end());
+});
+
+//
+// .injectScript
+//
+describe('injectScript command demo', function() {
+    before(browser => browser.url('https://www.google.com/'));
+
+    test('demo test', function(browser) {
+        browser.injectScript('<script-url>', function(result) {
+            expectType<NightwatchAPI>(this);
+            expectType<NightwatchCallbackResult<NightwatchElement>>(result);
+        });
+        browser.injectScript('<script-url>', 'id', function(result) {
+            expectType<NightwatchAPI>(this);
+            expectType<NightwatchCallbackResult<NightwatchElement>>(result);
+        });
+    });
+
+    test('async demo test', async function(browser) {
+        const result = await browser.injectScript('<script-url>');
+        expectType<NightwatchElement>(result);
+
+        const result2 = await browser.injectScript('<script-url>', 'id');
+        expectType<NightwatchElement>(result2);
+    });
+
+    after(browser => browser.end());
+});
+
+//
+// .perform
+//
+describe('perform command demo', function() {
+  test('demo test', function() {
+    browser.perform(async function() {
+      expectType<NightwatchAPI>(this);
+    });
+    browser.perform(function() {
+      expectType<NightwatchAPI>(this);
+    });
+    browser.perform(function(done: () => void) {
+      expectType<NightwatchAPI>(this);
+      done();
+    });
+    browser.perform(function(client: NightwatchAPI, done: () => void) {
+      expectType<NightwatchAPI>(this);
+      expectType<NightwatchAPI>(client);
+      done();
+    });
+  });
+
+  test('async demo test', async function() {
+    const result = await browser.perform(function() {
+      expectType<NightwatchAPI>(this); 
+      return '';
+    })
+    expectType<string>(result);
+
+    const result2 = await browser.perform(async function() {
+      expectType<NightwatchAPI>(this); 
+      return true;
+    })
+    expectType<boolean>(result2);
+
+    const result3 = await browser.perform(function(done: (result?: number) => void) {
+      expectType<NightwatchAPI>(this);
+      done(2);
+    });
+    expectType<number>(result3);
+
+    const result4 = await browser.perform(function(client: NightwatchAPI, done: (result?: string) => void) {
+      expectType<NightwatchAPI>(this);
+      expectType<NightwatchAPI>(client);
+
+      client.getTitle((result) => {
+        done(result);
+      });
+    });
+    expectType<string>(result4);
+  });
 });
