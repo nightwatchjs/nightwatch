@@ -340,7 +340,7 @@ export type DragAndDropDestination = {
 };
 
 export interface ElementFunction {
-  (locator: Definition | By | WebElement, options?: any): Element;
+  (locator: Definition | By | WebElement, options?: {[key: string]: any}): Element;
   (selector: ScopedElementSelector): ScopedElement;
   (
     using: LocateStrategy,

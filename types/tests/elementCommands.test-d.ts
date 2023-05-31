@@ -450,7 +450,7 @@ describe('waitForElementVisible command demo', function () {
 
   test('async demo test', async function (browser) {
     const result = await browser.waitForElementVisible('input[type=text]', undefined, undefined, true);
-    expectType<boolean>(result);
+    expectType<true | Error>(result);
   });
 
   after((browser) => browser.end());
@@ -466,13 +466,13 @@ describe('waitForElementPresent command demo', function () {
     browser.waitForElementPresent('input[type=text]', undefined, undefined, undefined, function (result) {
       expectType<NightwatchAPI>(this);
 
-      expectType<NightwatchCallbackResult<ElementResult[]>>(result);
+      expectType<NightwatchCallbackResult<null | ElementResult[]>>(result);
     });
   });
 
   test('async demo test', async function (browser) {
     const result = await browser.waitForElementPresent('input[type=text]');
-    expectType<ElementResult[]>(result);
+    expectType<ElementResult[] | Error>(result);
   });
 
   after((browser) => browser.end());

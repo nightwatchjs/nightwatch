@@ -329,40 +329,29 @@ export interface NightwatchLogEntry {
   /**
    * The time stamp of log entry in seconds.
    */
-  opt_timestamp: number;
+  timestamp: number;
 
   /**
-   * The log type, if known.
+   * The log type.
    */
-  opt_type?: string;
+  type: string;
 
   /**
    * Severity level
    */
-  level:
-  | 'ALL'
-  | 'DEBUG'
-  | 'FINE'
-  | 'FINER'
-  | 'FINEST'
-  | 'INFO'
-  | 'OFF'
-  | 'SEVERE'
-  | 'WARNING'
-  | Level
-  | number;
+  level: Level
 }
 
 export interface Level {
   /**
    * the level's name.
    */
-  name: string;
+  name: 'ALL' | 'DEBUG' | 'FINE' | 'FINER' | 'FINEST' | 'INFO' | 'OFF' | 'SEVERE' | 'WARNING';
 
   /**
    * the level's numeric value.
    */
-  level: number;
+  value: number;
 }
 
 export interface NightwatchKeys {
@@ -597,27 +586,49 @@ export interface NightwatchBrowser
   NightwatchComponentTestingCommands,
   NightwatchCustomCommands { }
 
+/**
+ * @deprecated Please use the types exported by individual plugins.
+ */
 export interface NightwatchComponentTestingCommands {
+  /**
+   * @deprecated Please use the types exported by individual plugins.
+   */
   importScript(
     scriptPath: string,
     options: { scriptType: string; componentTyp: string },
     callback: () => void
   ): this;
+
+  /**
+   * @deprecated Please use the types exported by individual plugins.
+   */
   mountReactComponent(
     componentPath: string,
     props?: string | (() => void),
     callback?: () => void
   ): Element;
+
+  /**
+   * @deprecated Please use the types exported by individual plugins.
+   */
   mountComponent(
     componentPath: string,
     props?: string | (() => void),
     callback?: () => void
   ): Element;
+
+  /**
+   * @deprecated Please use the types exported by individual plugins.
+   */
   mountVueComponent(
     componentPath: string,
     options?: any,
     callback?: () => void
   ): Element;
+
+  /**
+   * @deprecated Please use the types exported by individual plugins.
+   */
   launchComponentRenderer(): this;
 }
 
@@ -1819,45 +1830,68 @@ export interface ClientCommands extends ChromiumClientCommands {
    *  - two parameters: allows for asynchronous execution with the Nightwatch `api` object passed in as the first argument, followed by the done callback.
    *
    * @example
-   * this.demoTest = function () {
+   * describe('perform example', function() {
    *   var elementValue;
-   *   browser
-   *     .getValue('.some-element', function(result) {
-   *       elementValue = result.value;
-   *     })
-   *     // other stuff going on ...
-   *     //
-   *     // self-completing callback
-   *     .perform(function() {
-   *       console.log('elementValue', elementValue);
-   *       // without any defined parameters, perform
-   *       // completes immediately (synchronously)
-   *     })
-   *     //
-   *     // asynchronous completion
-   *     .perform(function(done) {
-   *       console.log('elementValue', elementValue);
-   *       // potentially other async stuff going on
-   *       // on finished, call the done callback
-   *       done();
-   *     })
-   *     //
-   *     // asynchronous completion including api (client)
-   *     .perform(function(done) {
-   *       console.log('elementValue', elementValue);
-   *       // similar to before, but now with client
-   *       // potentially other async stuff going on
-   *       // on finished, call the done callback
-   *       done();
+   *
+   *   it('basic perform', function(browser) {
+   *     browser
+   *       .getValue('.some-element', function(result) {
+   *         elementValue = result.value;
+   *       })
+   *       // other stuff going on ...
+   *
+   *       // self-completing callback
+   *       .perform(function() {
+   *         console.log('elementValue', elementValue);
+   *         // without any defined parameters, perform
+   *         // completes immediately (synchronously)
+   *       })
+   *
+   *       // returning a Promise
+   *       .perform(async function() {
+   *         // `this` can be used to directly access Nightwatch API
+   *         const sessionId = await this.sessionId;
+   *         console.log('session id', sessionId);
+   *       })
+   *
+   *       // DEPRECATED: asynchronous completion using done
+   *       .perform(function(done: (result: string) => void) {
+   *         // potentially some async stuff going on
+   *         // `this` can be used to directly access Nightwatch API
+   *         this.getTitle((result) => {
+   *           // when finished, call the done callback
+   *           done(result.value);
+   *         });
+   *       })
+   *
+   *       // DEPRECATED: asynchronous completion including api (client)
+   *       .perform(function(client: NightwatchAPI, done: () => void) {
+   *         this.navigateTo('https://google.com/', () => {
+   *           done();
+   *         });
+   *       });
+   *   });
+   *
+   *   it('perform with async', function(browser) {
+   *     const result = await browser.perform(async function() {
+   *       // `this` can be used to directly access Nightwatch API
+   *       const pageTitle = await this.getTitle();
+   *
+   *       return 100;
    *     });
+   *     console.log('result:', result); // 100
+   *   })
    * };
    */
-  perform(
-    callback:
-      | (() => undefined | Promise<any>)
-      | ((done: () => void) => void)
-      | ((client: NightwatchAPI, done: () => void) => void)
-  ): Awaitable<this, undefined | Error>;
+  perform<ReturnValue>(
+    callback: (this: NightwatchAPI) => ReturnValue | Promise<ReturnValue>
+  ): Awaitable<this, ReturnValue>;
+  perform<ReturnValue>(
+    callback: (this: NightwatchAPI, client: NightwatchAPI, done: (result?: ReturnValue) => void) => void
+  ): Awaitable<this, ReturnValue>;
+  perform<ReturnValue>(
+    callback: (this: NightwatchAPI, done: (result?: ReturnValue) => void) => void
+  ): Awaitable<this, ReturnValue>;
 
   /**
    * Waits for a condition to evaluate to a "truthy" value. The condition may be specified by any function which
@@ -1869,7 +1903,7 @@ export interface ClientCommands extends ChromiumClientCommands {
    * describe('waitUntil Example', function() {
    *   it('demo Test', function(browser) {
    *     browser
-   *       .url('https://nightwatchjs.org)
+   *       .url('https://nightwatchjs.org')
    *       .waitUntil(async function() {
    *         const title = await this.execute(function() {
    *           return document.title;
@@ -1878,24 +1912,29 @@ export interface ClientCommands extends ChromiumClientCommands {
    *         return title === 'Nightwatch.js';
    *       }, 1000);
    *   });
-   * }
-   *
+   * });
    */
   waitUntil(
-    conditionFn:
-      | ((this: NightwatchAPI) => undefined | Promise<any>)
-      | ((this: NightwatchAPI, done: () => void) => void)
-      | ((
-        this: NightwatchAPI,
-        client: NightwatchAPI,
-        done: () => void
-      ) => void),
-    waitTimeMs?: number,
-    retryInterval?: number,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
+    conditionFn: (this: NightwatchAPI) => void,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<this, null>;
+  waitUntil(
+    conditionFn: (this: NightwatchAPI) => void,
+    waitTimeMs: number,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<this, null>;
+  waitUntil(
+    conditionFn: (this: NightwatchAPI) => void,
+    waitTimeMs: number,
+    retryInterval: number,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<this, null>;
+  waitUntil(
+    conditionFn: (this: NightwatchAPI) => void,
+    waitTimeMs: number,
+    retryInterval: number,
+    message: string,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
   ): Awaitable<this, null>;
 
   /**
@@ -2681,7 +2720,7 @@ export interface ElementCommands {
   ): Awaitable<this, NightwatchSizeAndPosition>;
 
   /**
-   * Determine an element's location on the screen once it has been scrolled into view. Uses `elementIdLocationInView` protocol command.
+   * Determine an element's location on the screen once it has been scrolled into view.
    *
    * @example
    * this.demoTest = function () {
@@ -2694,6 +2733,8 @@ export interface ElementCommands {
    * };
    *
    * @see https://nightwatchjs.org/api/getLocationInView.html
+   *
+   * @deprecated This is JSON Wire Protocol command and is no longer supported.
    */
   getLocationInView(
     selector: Definition,
@@ -3115,6 +3156,8 @@ export interface ElementCommands {
    * You can change the polling interval by defining a `waitForConditionPollInterval` property (in milliseconds) in as a global property in your `nightwatch.json` or in your external globals file.
    * Similarly, a default timeout can be specified as a global `waitForConditionTimeout` property (in milliseconds).
    *
+   * @returns `null` if element not found, `Error` otherwise.
+   *
    * @example
    * module.exports = {
    *  'demo Test': function() {
@@ -3186,10 +3229,10 @@ export interface ElementCommands {
     abortOnFailure?: boolean,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<ElementResult[]>
+      result: NightwatchCallbackResult<null | ElementResult[]>
     ) => void,
     message?: string
-  ): Awaitable<this, ElementResult[]>;
+  ): Awaitable<this, null | Error>;
   waitForElementNotPresent(
     using: LocateStrategy,
     selector: Definition,
@@ -3198,10 +3241,10 @@ export interface ElementCommands {
     abortOnFailure?: boolean,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<ElementResult[]>
+      result: NightwatchCallbackResult<null | ElementResult[]>
     ) => void,
     message?: string
-  ): Awaitable<this, ElementResult[]>;
+  ): Awaitable<this, null | Error>;
 
   /**
    * Opposite of `waitForElementVisible`. Waits a given time in milliseconds (default 5000ms)
@@ -3211,6 +3254,8 @@ export interface ElementCommands {
    *
    * You can change the polling interval by defining a `waitForConditionPollInterval` property (in milliseconds) in as a global property in your `nightwatch.json` or in your external globals file.
    * Similarly, a default timeout can be specified as a global `waitForConditionTimeout` property (in milliseconds).
+   *
+   * @returns `false` if element not visible, `Error` otherwise.
    *
    * @example
    * module.exports = {
@@ -3286,7 +3331,7 @@ export interface ElementCommands {
       result: NightwatchCallbackResult<boolean>
     ) => void,
     message?: string
-  ): Awaitable<this, boolean>;
+  ): Awaitable<this, false | Error>;
   waitForElementNotVisible(
     using: LocateStrategy,
     selector: Definition,
@@ -3298,7 +3343,7 @@ export interface ElementCommands {
       result: NightwatchCallbackResult<boolean>
     ) => void,
     message?: string
-  ): Awaitable<this, boolean>;
+  ): Awaitable<this, false | Error>;
 
   /**
    * Waits a given time in milliseconds (default 5000ms) for an element to be present in the page before performing any other commands or assertions.
@@ -3306,6 +3351,8 @@ export interface ElementCommands {
    *
    * You can change the polling interval by defining a `waitForConditionPollInterval` property (in milliseconds) in as a global property in your `nightwatch.json` or in your external globals file.
    * Similarly, the default timeout can be specified as a global `waitForConditionTimeout` property (in milliseconds).
+   *
+   * @returns `ElementResult[]` if element is found, `Error` otherwise.
    *
    * @example
    * module.exports = {
@@ -3377,10 +3424,10 @@ export interface ElementCommands {
     abortOnFailure?: boolean,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<ElementResult[]>
+      result: NightwatchCallbackResult<ElementResult[] | null>
     ) => void,
     message?: string
-  ): Awaitable<this, ElementResult[]>;
+  ): Awaitable<this, ElementResult[] | Error>;
   waitForElementPresent(
     using: LocateStrategy,
     selector: Definition,
@@ -3389,10 +3436,10 @@ export interface ElementCommands {
     abortOnFailure?: boolean,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<ElementResult[]>
+      result: NightwatchCallbackResult<ElementResult[] | null>
     ) => void,
     message?: string
-  ): Awaitable<this, ElementResult[]>;
+  ): Awaitable<this, ElementResult[] | Error>;
 
   /**
    * Waits a given time in milliseconds for an element to be visible in the page before performing any other commands or assertions.
@@ -3402,6 +3449,8 @@ export interface ElementCommands {
    * You can change the polling interval by defining a `waitForConditionPollInterval` property (in milliseconds) in as a global property in your `nightwatch.json` or in your external globals file.
    *
    * Similarly, a default timeout can be specified as a global `waitForConditionTimeout` property (in milliseconds).
+   *
+   * @returns `true` is element is visible, `Error` otherwise.
    *
    * @example
    * this.demoTest = function (browser) {
@@ -3430,7 +3479,7 @@ export interface ElementCommands {
       result: NightwatchCallbackResult<boolean>
     ) => void,
     message?: string
-  ): Awaitable<this, boolean>;
+  ): Awaitable<this, true | Error>;
 
   waitForElementVisible(
     using: LocateStrategy,
@@ -3443,7 +3492,7 @@ export interface ElementCommands {
       result: NightwatchCallbackResult<boolean>
     ) => void,
     message?: string
-  ): Awaitable<this, boolean>;
+  ): Awaitable<this, true | Error>;
 
   /**
    * Returns the computed WAI-ARIA label of an element.
@@ -6502,7 +6551,7 @@ export interface WebDriverProtocolElementLocation {
    *
    * @see https://nightwatchjs.org/api/elementIdLocationInView.html#apimethod-container
    *
-   * @deprecated
+   * @deprecated This is JSON Wire Protocol command and is no longer supported.
    */
   elementIdLocationInView(
     id: string,
