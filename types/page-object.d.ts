@@ -4,8 +4,9 @@ import {
   ChromiumClientCommands,
   ElementCommands,
   LocateStrategy,
-  Nightwatch,
+  NamespacedApi,
   NightwatchAPI,
+  NightwatchClient,
   NightwatchComponentTestingCommands,
   SharedCommands
 } from './index';
@@ -166,7 +167,7 @@ export type EnhancedSectionInstance<
     | 'doubleClick'
     | 'rightClick'
   > &
-  Pick<Nightwatch, 'client' | 'api' | 'assert' | 'verify' | 'expect'>;
+  Pick<NamespacedApi<NightwatchAPI>, 'alerts' | 'cookies' | 'document' | 'assert' | 'verify' | 'expect'>;
 
 interface PageObjectSection {
   commands?: Record<string, unknown>[];
@@ -237,7 +238,18 @@ interface EnhancedPageObjectSharedFields<
    * An object or a function returning an object representing a container for user variables.
    */
   props: Props;
+
+  /**
+   * Nightwatch Client.
+   */ 
+  client: NightwatchClient;
+
+  /**
+   * Nightwatch API.
+   */
+  api: NightwatchAPI;
 }
+
 export interface ElementProperties {
   /**
    * The element selector name
@@ -437,9 +449,9 @@ export type EnhancedPageObject<
   Sections extends Record<string, PageObjectSection> = {},
   Props = {},
   URL = string
-> = Nightwatch &
-  SharedCommands &
+> = SharedCommands &
   NightwatchCustomCommands &
+  Pick<NamespacedApi<NightwatchAPI>, 'alerts' | 'cookies' | 'document' | 'assert' | 'verify' | 'expect'> &
   EnhancedPageObjectSharedFields<
     Required<MergeObjectsArray<Commands>>,
     Required<MergeObjectsArray<Elements>>,

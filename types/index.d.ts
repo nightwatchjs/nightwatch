@@ -22,6 +22,7 @@ import {expect as chaiExpect} from 'chai';
 import {
   By as SeleniumBy,
   Actions,
+  Capabilities,
   WebElement,
   RelativeBy,
   locateWith as seleniumLocateWith
@@ -930,37 +931,85 @@ declare global {
   const afterEach: NightwatchBddTestHook;
 }
 
-export interface NightwatchClient extends Nightwatch {
+export interface NightwatchClient extends NightwatchClientObject {
+  argv: {[key: string]: any};
+  client: NightwatchClientObject;
+  configLocateStrategy: "css selector" | "xpath";
+  // TODO: Add missing properties, like:
+  // elementLocator
+  // httpOpts
+  // initialCapabilities
+  // queue
+  // reporter
+  unitTestingMode: boolean;
+  usingCucumber: boolean;
+}
+
+export interface NightwatchClientObject {
   api: NightwatchAPI;
-  locateStrategy: LocateStrategy;
   options: NightwatchOptions;
-  // TODO: Add reporter
-  // reporter: reporte
-  sessionID: string;
   settings: NightwatchOptions;
+  locateStrategy: LocateStrategy;
+  // TODO: Add missing properties, like:
+  // reporter: reporter
+  // elementLocator
+  sessionId: string | null;
 }
 
 export interface CreateClientParams {
-  browserName: string | null;
+  browserName?: string | null;
   headless?: boolean;
   silent?: boolean;
   output?: boolean;
   useAsync?: boolean;
-  env?: string;
-  timeout?: number;
+  env?: string | null;
+  timeout?: number | null;
   parallel?: boolean;
-  reporter?: null;
-  globals?: any;
+  reporter?: any;
+  globals?: Partial<NightwatchGlobals>;
   devtools?: boolean;
   debug?: boolean;
   enable_global_apis?: boolean;
   config?: string;
+  test_settings?: Partial<NightwatchOptions>;
 }
 
-// TODO: add namespaced api to `Nightwatch` interface only after fixing EnhancedPageObject.
 export interface Nightwatch {
-  cli(callback: any): this;
-  client(settings: NightwatchOptions, reporter?: any, argv?: {}): this;
+  /**
+   * Internal method in Nightwatch.
+   */
+  cli(callback: () => void): void;
+
+  /**
+   * Internal method in Nightwatch.
+   */
+  client(settings: NightwatchOptions, reporter?: any, argv?: {}, skipInt?: boolean): this;
+
+  /**
+   * Internal method in Nightwatch.
+   */
+  CliRunner(argv?: {}): this; // TODO: return type is `CliRunner` instance.
+
+  /**
+   * Internal method in Nightwatch.
+   */
+  initClient(opts?: {}): this;
+
+  /**
+   * Internal method in Nightwatch.
+   *
+   * @deprecated
+   */
+  runner(argv?: {}, done?: () => void, settings?: {}): Promise<void>;
+
+  /**
+   * Internal method in Nightwatch.
+   */
+  runTests(testSource: string | string[], settings?: any, ...args: any[]): Promise<void>;
+
+  /**
+   * Creates a new Nightwatch client that can be used to create WebDriver sessions.
+   */
   createClient({
     headless,
     silent,
@@ -975,18 +1024,39 @@ export interface Nightwatch {
     devtools,
     debug,
     enable_global_apis,
-    config
-  }: CreateClientParams): this;
-  CliRunner(argv?: {}): this;
-  initClient(opts: any): this;
-  runner(argv?: {}, done?: () => void, settings?: {}): this;
-  runTests(testSource: string | string[], settings?: any, ...args: any[]): any;
-  api: NightwatchAPI;
-  assert: Assert<NightwatchAPI>;
-  expect: Expect;
-  verify: Assert<NightwatchAPI>;
-  updateCapabilities(...args: any): this;
-  launchBrowser(): NightwatchAPI | Promise<NightwatchAPI>;
+    config,
+    test_settings
+  }?: CreateClientParams): NightwatchProgrammaticAPIClient;
+
+  // TODO: add the following missing properties
+  // Logger
+  // element (only available after createClient is called)
+
+  // Not adding named-exports (Namespaced API) here because those
+  // would go away from Nightwatch interface after migrating to TypeScript,
+  // because then named-exports will be exported directly instead
+  // of first adding them to Nightwatch (default export).
+  browser: NightwatchAPI;
+  app: NightwatchAPI;
+  by: typeof By;
+  Capabilities: typeof Capabilities;
+  Key: NightwatchKeys;
+}
+
+export interface NightwatchProgrammaticAPIClient {
+  /**
+   * Create a new browser session.
+   */
+  launchBrowser(): Promise<NightwatchAPI>;
+
+  /**
+   * Update the initially specified capabilities.
+   */
+  updateCapabilities(value: {} | (() => {})): void;
+
+  nightwatch_client: NightwatchClient;
+  settings: NightwatchOptions;
+  // TODO: 'transport' property missing
 }
 
 export type LocateStrategy =

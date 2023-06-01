@@ -15,6 +15,8 @@ import {
   ElementResult,
   Awaitable,
   SectionProperties,
+  NightwatchClient,
+  NightwatchClientObject,
 } from '..';
 
 function isNightwatchAssertionsResult<T>(result: NightwatchAssertionsResult<T>): T {
@@ -470,15 +472,30 @@ const testPage = {
     const google = browser.page.google();
     google.setValue('@searchBar', 'nightwatch').submit();
 
+    expectType<NightwatchAPI>(google.api);
+    expectType<NightwatchClient>(google.client);
+
     browser.end();
   },
 
   'Test sections': () => {
     const google = browser.page.google();
 
+    expectType<Awaitable<NightwatchAPI, null>>(google.cookies.deleteAll());
+    expectError(googlePage.window.maximize());
+
     const menuSection = google.section.menu;
+
+    menuSection
+      .assert.visible('@mail')
+      .assert.visible('@images');
+
     menuSection.expect.element('@mail').to.be.visible;
     menuSection.expect.element('@images').to.be.visible;
+
+    expectType<Awaitable<NightwatchAPI, null>>(menuSection.alerts.accept());
+    expectType<NightwatchAPI>(menuSection.api);
+    expectType<NightwatchClient>(menuSection.client);
 
     menuSection.selector;
 
@@ -686,14 +703,18 @@ function text(this: NightwatchAssertion<string>, selector: string, expectedText:
   this.value = (result) => result.value!;
 
   // TODO: fix callback types
-  // this.command = function (callback) {
-  //   this.api.element('css selector', selector, (elementResult) => {
-  //     this.api.elementIdText(elementResult.value[ELEMENT_KEY as keyof ElementResult], (textResult) => {
-  //       callback({ value: textResult.value as string });
-  //     });
-  //   });
-  //   return this;
-  // };
+  this.command = function (callback) {
+    this.api.element('css selector', selector, (elementResult) => {
+      if (elementResult.status === 0) {
+        this.api.elementIdText(elementResult.value[ELEMENT_KEY as keyof ElementResult], (textResult) => {
+          callback({ value: textResult.value as string });
+        });
+      }
+    });
+    return this;
+  };
+
+  expectType<NightwatchClientObject>(this.client);
 }
 
 // exports.assertion = text;
