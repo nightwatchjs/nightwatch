@@ -1,5 +1,5 @@
 // New Programmatic APi
-import { expectType } from 'tsd';
+import { expectType, expectError } from 'tsd';
 import Nightwatch, { NightwatchAPI, NightwatchClient, NightwatchProgrammaticAPIClient } from '..';
 
 const client = Nightwatch.createClient({
@@ -17,8 +17,7 @@ new Nightwatch.Capabilities();
 expectType<NightwatchAPI>(Nightwatch.browser);
 expectType<NightwatchAPI>(Nightwatch.app);
 Nightwatch.Key.NULL;
-// @ts-expect-error
-Nightwatch.launchBrowser();
+expectError(Nightwatch.launchBrowser());
 // @ts-expect-error
 Nightwatch.updateCapabilities({});
 
