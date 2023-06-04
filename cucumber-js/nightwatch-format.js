@@ -73,8 +73,7 @@ module.exports = class MessageFormatter extends Formatter {
 
     this.report.testCaseFinished = [...(this.report.testCaseFinished || []), result];
 
-    NightwatchEventHub.emit({
-      eventName: TestCaseFinished,
+    NightwatchEventHub.emit(TestCaseFinished, {
       envelope: result,
       report: this.report
     });
@@ -83,8 +82,7 @@ module.exports = class MessageFormatter extends Formatter {
   testCaseStartedData(result) {
     this.report.testCaseStarted = [...(this.report.testCaseStarted || []), result];;
 
-    NightwatchEventHub.emit({
-      eventName: TestCaseStarted,
+    NightwatchEventHub.emit(TestCaseStarted, {
       envelope: result,
       report: this.report
     });
@@ -94,8 +92,7 @@ module.exports = class MessageFormatter extends Formatter {
     result.httpOutput = Logger.collectOutput();
     this.report.testRunFinished = result;
 
-    NightwatchEventHub.emit({
-      eventName: TestFinished,
+    NightwatchEventHub.emit(TestFinished, {
       envelope: result,
       report: this.report
     });
@@ -128,19 +125,18 @@ module.exports = class MessageFormatter extends Formatter {
   testRunStartedData(result) {
     this.report.testRunStarted = result;
 
-    NightwatchEventHub.emit({
-      eventName: TestStarted,
+    NightwatchEventHub.emit(TestStarted, {
       envelope: result,
       report: this.report
-    });
+    }
+    );
   }
 
   testStepFinishedData(result) {
     result.httpOutput = Logger.collectCommandOutput();
     this.report.testStepFinished = [...(this.report.testStepFinished || []), result];;
 
-    NightwatchEventHub.emit({
-      eventName: TestStepFinished,
+    NightwatchEventHub.emit(TestStepFinished, {
       envelope: result,
       report: this.report
     });
@@ -149,8 +145,7 @@ module.exports = class MessageFormatter extends Formatter {
   testStepStartedData(result) {
     this.report.testStepStarted = [...(this.report.testStepStarted || []), result];;
 
-    NightwatchEventHub.emit({
-      eventName: TestStepStarted,
+    NightwatchEventHub.emit(TestStepStarted, {
       envelope: result,
       report: this.report
     });
