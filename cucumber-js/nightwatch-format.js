@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const Utils = require('../lib/utils');
-const {Logger} = Utils;
+const {Logger, createFolder} = Utils;
 const {Formatter} = require('@cucumber/cucumber');
 
 const NightwatchState = require('./nightwatchState');
@@ -108,7 +108,7 @@ module.exports = class MessageFormatter extends Formatter {
   }
 
   writeReportFile(filename, rendered, shouldCreateFolder, output_folder) {
-    (shouldCreateFolder ? Utils.createFolder(output_folder) : Promise.resolve())
+    (shouldCreateFolder ? createFolder(output_folder) : Promise.resolve())
       .then(() => {
         return new Promise((resolve, reject) => {
           fs.writeFile(filename, rendered, function(err) {
@@ -172,9 +172,9 @@ module.exports = class MessageFormatter extends Formatter {
       testStepStarted: this.testStepStartedData
     };
   
-    const key = Object.keys(envelope)[0];
-    if (handlers[key]) {
-      handlers[key].call(this, envelope[key]);
+    const cucumberEvent = Object.keys(envelope)[0];
+    if (cucumberEvent && handlers[cucumberEvent]) {
+      handlers[cucumberEvent].call(this, envelope[cucumberEvent]);
     }
   }
 };
