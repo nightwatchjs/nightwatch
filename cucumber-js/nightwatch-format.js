@@ -45,33 +45,33 @@ module.exports = class MessageFormatter extends Formatter {
   }
 
   gherkinDocumentData(gherkinDocument) {
-    this.report.gherkinDocument = [...(this.report.gherkinDocument || []), gherkinDocument];
+    this.report.gherkinDocument = gherkinDocument;
   }
 
   parseErrorData(parseError) {
-    this.report.error = [...(this.report.parseError || []), parseError];
+    this.report.error = parseError;
   }
 
   pickleData(pickle) {
-    this.report.pickle = [...(this.report.pickle || []), pickle];
+    this.report.pickle = pickle;
   }
 
   sourceData(source) {
-    this.report.source = [...(this.report.source || []), source];
+    this.report.source = source;
   }
 
   stepDefinitionData(stepDefinition) {
-    this.report.stepDefinitions = [...(this.report.stepDefinition || []), stepDefinition];
+    this.report.stepDefinitions = stepDefinition;
   }
 
   testCaseData(testCase) {
-    this.report.testCases = [...(this.report.testCase || []), testCase];
+    this.report.testCases = testCase;
   }
 
   testCaseFinishedData(result) {
     result.httpOutput = Logger.collectTestSectionOutput();
 
-    this.report.testCaseFinished = [...(this.report.testCaseFinished || []), result];
+    this.report.testCaseFinished = result;
 
     NightwatchEventHub.emit(TestCaseFinished, {
       envelope: result,
@@ -80,7 +80,7 @@ module.exports = class MessageFormatter extends Formatter {
   }
 
   testCaseStartedData(result) {
-    this.report.testCaseStarted = [...(this.report.testCaseStarted || []), result];;
+    this.report.testCaseStarted = result;
 
     NightwatchEventHub.emit(TestCaseStarted, {
       envelope: result,
@@ -134,7 +134,7 @@ module.exports = class MessageFormatter extends Formatter {
 
   testStepFinishedData(result) {
     result.httpOutput = Logger.collectCommandOutput();
-    this.report.testStepFinished = [...(this.report.testStepFinished || []), result];;
+    this.report.testStepFinished = result;
 
     NightwatchEventHub.emit(TestStepFinished, {
       envelope: result,
@@ -143,7 +143,7 @@ module.exports = class MessageFormatter extends Formatter {
   }
 
   testStepStartedData(result) {
-    this.report.testStepStarted = [...(this.report.testStepStarted || []), result];;
+    this.report.testStepStarted = result;
 
     NightwatchEventHub.emit(TestStepStarted, {
       envelope: result,
