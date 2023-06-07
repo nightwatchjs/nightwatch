@@ -55,7 +55,7 @@ export interface JSON_WEB_OBJECT extends ElementResult {
   getId: () => string;
 }
 
-export type Definition = string | ElementProperties | Element | RelativeBy;
+export type Definition = string | ElementProperties | Element | SeleniumBy | RelativeBy;
 
 export type Awaitable<T, V> = Omit<T, 'then'> & PromiseLike<V>;
 
@@ -86,7 +86,6 @@ export interface NightwatchTestRunner {
   }
   | undefined;
 }
-
 
 export interface TimeoutOptions {
   /**
@@ -595,7 +594,7 @@ export interface NightwatchComponentTestingCommands {
    */
   importScript(
     scriptPath: string,
-    options: { scriptType: string; componentTyp: string },
+    options: { scriptType: string; componentType: string },
     callback: () => void
   ): this;
 
@@ -665,64 +664,262 @@ export interface NightwatchTestHooks extends NightwatchGlobals {
 }
 
 export class Element {
-  [ELEMENT_KEY]: string;
-  name: string;
-  webElement: WebElement;
+  name: string | undefined;
+  locateStrategy: LocateStrategy;
   index: number;
-  selector: string;
-  locateStrategy: string;
-  pseudoSelector: null;
+  selector: string | undefined; // and probably `RelativeBy`.
+  pseudoSelector: string | null;
+
+  resolvedElement: string | null;
   parent: any;
-  resolvedElement: any;
-  abortOnFailure: boolean;
-  suppressNotFoundErrors: boolean;
-  retryInterval: number;
-  message: string;
-  timeout: number;
-  getId: () => string;
-  findElement: ElementCommands['findElement'] & {
-    (): Awaitable<NightwatchAPI, WebElement>;
-  };
-  element: typeof globalElement;
-  find: (selector: Definition | WebElement | SeleniumBy) => any;
-  get: (selector: Definition | WebElement | SeleniumBy) => any;
-  findElements: ElementCommands['findElements'];
-  findAll: (selector: Definition) => any;
-  click: ElementCommands['click'];
-  sendKeys: ElementCommands['sendKeys'];
-  getTagName: ElementCommands['getTagName'];
-  tagName: (selector: Definition) => string;
-  getCssValue: ElementCommands['getCssProperty'];
-  css: (selector: Definition) => string;
-  getAttribute: ElementCommands['getAttribute'];
-  attr: (selector: Definition) => string;
-  attribute: (selector: Definition) => string;
-  getProperty: ElementCommands['getElementProperty'];
-  property: (selector: Definition) => any;
-  prop: (selector: Definition) => any;
-  getText: ElementCommands['getText'];
-  text: (selector: Definition) => string;
-  getAriaRole: ElementCommands['getAriaRole'];
-  arialRole: (selector: Definition) => string;
-  getAccessibleName: ElementCommands['getAccessibleName'];
-  accessibleName: (selector: Definition) => string;
-  getRect: ClientCommands['getWindowRect'];
-  rect: () => { x: number; y: number; width: number; height: number };
-  isEnabled: ElementCommands['isEnabled'];
-  isSelected: ElementCommands['isSelected'];
-  submit: WebDriverProtocolElementInteraction['submit'];
-  clear: ElementCommands['clearValue'];
-  isDisplayed: WebDriverProtocolElementState['elementIdDisplayed'];
-  takeScreenshot: ElementCommands['takeElementScreenshot'];
-  screenshot: (selector: Definition) => 'string';
-  getWebElement: () => Promise<WebElement>;
-  isComponent: () => boolean;
+  usingRecursion: boolean;
+
+  webElement?: WebElement;
+  webElementId?: string;
+
+  abortOnFailure?: boolean;
+  suppressNotFoundErrors?: boolean;
+  retryInterval?: number;
+  message?: string;
+  timeout?: number;
+}
+
+export interface ElementGlobal extends Element {
+  /**
+   * Get the server-assigned opaque ID assigned to this element.
+   */
+  getId: (
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void
+  ) => Awaitable<NightwatchAPI, string>;
+
+  /**
+   * Locates the descendants of this element that match the given search criteria, and returns the first one.
+   *
+   * If no `selector` is passed, returns the[WebElement](https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebElement.html)
+   * instance for this element.
+   */
+  findElement: (
+    selector?: Definition,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WebElement>) => void
+  ) => Awaitable<NightwatchAPI, WebElement>;
+
+  find: (
+    selector: Definition,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<ElementGlobal | null>) => void
+  ) => Awaitable<NightwatchAPI, ElementGlobal | null>;
+  get: ElementGlobal['find'];
+  element: ElementGlobal['find'];
+
+  /**
+   * Locates all of the descendants of this element that match the given search criteria.
+   */
+  findElements: (
+    selector: Definition,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WebElement[]>) => void
+  ) => Awaitable<NightwatchAPI, WebElement[]>;
+
+  findAll: (
+    selector: Definition,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<ElementGlobal[]>) => void
+  ) => Awaitable<NightwatchAPI, ElementGlobal[]>;
+
+  /**
+   * Clear the `value` of this element. This command has no effect if the underlying DOM element
+   * is neither a text INPUT element nor a TEXTAREA element.
+   *
+   * @see https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebElement.html#clear
+   */
+  clear: (
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void
+  ) => Awaitable<NightwatchAPI, null>;
+
+  /**
+   * Clicks on this element.
+   *
+   * @see https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebElement.html#click
+   */
+  click: (
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void
+  ) => Awaitable<NightwatchAPI, null>;
+
+  /**
+   * Get the computed WAI-ARIA label of element.
+   */
+  getAccessibleName: (
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void
+  ) => Awaitable<NightwatchAPI, string>;
+  /**
+   * Get the computed WAI-ARIA label of element.
+   */
+  accessibleName: ElementGlobal['getAccessibleName'];
+
+  /**
+   * Get the computed WAI-ARIA role of element.
+   */
+  getAriaRole: (
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void
+  ) => Awaitable<NightwatchAPI, string>;
+  /**
+   * Get the computed WAI-ARIA role of element.
+   */
+  arialRole: ElementGlobal['getAriaRole'];
+
+  /**
+   * Retrieves the current value of the given attribute of this element.
+   *
+   * @see https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebElement.html#getAttribute
+   */
+  getAttribute: (
+    attributeName: string,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string | null>) => void
+  ) => Awaitable<NightwatchAPI, string | null>;
+  /**
+   * Retrieves the current value of the given attribute of this element.
+   *
+   * @see https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebElement.html#getAttribute
+   */
+  attr: ElementGlobal['getAttribute'];
+  /**
+   * Retrieves the current value of the given attribute of this element.
+   *
+   * @see https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebElement.html#getAttribute
+   */
+  attribute: ElementGlobal['getAttribute'];
+
+  /**
+   * Retrieves the value of a computed style property for this instance.
+   *
+   * @see https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebElement.html#getCssValue
+   */
+  getCssValue: (
+    cssStyleProperty: string,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void
+  ) => Awaitable<NightwatchAPI, string>;
+  /**
+   * Retrieves the value of a computed style property for this instance.
+   *
+   * @see https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebElement.html#getCssValue
+   */
+  css: ElementGlobal['getCssValue'];
+
+  /**
+   * Retrieves the value of the given property of this element.
+   */
+  getProperty: (
+    propertyName: string,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string | null>) => void
+  ) => Awaitable<NightwatchAPI, string | null>;
+  /**
+   * Retrieves the value of the given property of this element.
+   */
+  property: ElementGlobal['getProperty'];
+  /**
+   * Retrieves the value of the given property of this element.
+   */
+  prop: ElementGlobal['getProperty'];
+
+  /**
+   * Returns an object describing an element's location, in pixels relative to the document element, and the element's size in pixels.
+   */
+  getRect: (
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<NightwatchSizeAndPosition>) => void
+  ) => Awaitable<NightwatchAPI, NightwatchSizeAndPosition>;
+  /**
+   * Returns an object describing an element's location, in pixels relative to the document element, and the element's size in pixels.
+   */
+  rect: ElementGlobal['getRect'];
+
+  /**
+   * Retrieves the element's tag name.
+   */
+  getTagName: (
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void
+  ) => Awaitable<NightwatchAPI, string>;
+  /**
+   * Retrieves the element's tag name.
+   */
+  tagName: ElementGlobal['getTagName'];
+
+  /**
+   * Get the visible (i.e. not hidden by CSS) innerText of this element, including sub-elements, without any leading or trailing whitespace.
+   */
+  getText: (
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void
+  ) => Awaitable<NightwatchAPI, string>;
+  /**
+   * Get the visible (i.e. not hidden by CSS) innerText of this element, including sub-elements, without any leading or trailing whitespace.
+   */
+  text: ElementGlobal['getText'];
+
+  /**
+   * Types a key sequence on the DOM element represented by this instance.
+   *
+   * @example
+   * element(<selector>).sendKeys(1, 'something', browser.Keys.SPACE, Promise.resolve(2));
+   *
+   * @see https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebElement.html#sendKeys
+   */
+  sendKeys: (
+    ...args: Array<string | number | PromiseLike<string> | PromiseLike<number>>
+  ) => Awaitable<NightwatchAPI, null>;
+
+  /**
+   * Submits the form containing this element (or this element if it is itself a FORM element).
+   * This command is a no-op if the element is not contained in a form.
+   *
+   * @see https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebElement.html#submit
+   */
+  submit: (
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void
+  ) => Awaitable<NightwatchAPI, null>;
+
+  /**
+   * Take a screenshot of the visible region encompassed by this element's bounding rectangle.
+   */
+  takeScreenshot: (
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void
+  ) => Awaitable<NightwatchAPI, string>;
+  /**
+   * Take a screenshot of the visible region encompassed by this element's bounding rectangle.
+   */
+  screenshot: ElementGlobal['takeScreenshot'];
+
+  /**
+   * Test whether this element is currently displayed.
+   */
+  isDisplayed: (
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<boolean>) => void
+  ) => Awaitable<NightwatchAPI, boolean>;
+
+  /**
+   * Tests whether this element is enabled, as dictated by the `disabled` attribute.
+   */
+  isEnabled: (
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<boolean>) => void
+  ) => Awaitable<NightwatchAPI, boolean>;
+
+  /**
+   * Tests whether this element is selected.
+   */
+  isSelected: (
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<boolean>) => void
+  ) => Awaitable<NightwatchAPI, boolean>;
+
+  /**
+   * Get the [WebElement](https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebElement.html) instance for this element.
+   */
+  getWebElement: () => Awaitable<NightwatchAPI, WebElement>;
+
+  isComponent?: boolean;
 }
 
 export function globalElement(
-  locator: Definition | SeleniumBy | WebElement,
-  options?: any
-): Element;
+  locator: Definition | WebElement,
+  options?: {
+    isComponent?: boolean;
+    type: string;
+  }
+): ElementGlobal;
 
 export type NightwatchTests = NightwatchTestFunctions | NightwatchTestHooks;
 
@@ -3969,20 +4166,20 @@ export interface ElementCommands {
    * @see https://nightwatchjs.org/api/getShadowRoot.html
    */
   getShadowRoot(
-    selector: Definition | WebElement | SeleniumBy,
+    selector: Definition | WebElement,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<Element | null>
+      result: NightwatchCallbackResult<ElementGlobal | null>
     ) => void
-  ): Awaitable<this, Element | null>;
+  ): Awaitable<this, ElementGlobal | null>;
   getShadowRoot(
     using: LocateStrategy,
-    selector: Definition | WebElement | SeleniumBy,
+    selector: Definition | WebElement,
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<Element | null>
+      result: NightwatchCallbackResult<ElementGlobal | null>
     ) => void
-  ): Awaitable<this, Element | null>;
+  ): Awaitable<this, ElementGlobal | null>;
 
   /**
    * Search for an elements on the page, starting from the document root. The located element will be returned as web element JSON object (with an added .getId() convenience method).
@@ -6086,34 +6283,31 @@ export interface WebDriverProtocolCommandContexts {
 
 export interface WebDriverProtocolElements {
   /**
-   * Search for an element on the page, starting from the document root. The located element will be returned as a web element JSON object.
-   * First argument to be passed is the locator strategy, which is detailed on the [WebDriver docs](https://www.w3.org/TR/webdriver/#locator-strategies).
-   *
-   * The locator stragy can be one of:
-   * - `css selector`
-   * - `link text`
-   * - `partial link text`
-   * - `tag name`
-   * - `xpath`
+   * Provides access to Nightwatch new element API.
    *
    * @example
    * module.exports = {
-   *  'demo Test' : function(browser) {
-   *     browser.element('css selector', 'body', function(result) {
-   *       console.log(result.value)
-   *     });
+   *   'new element api': function (browser) {
+   *     // Using element as function.
+   *     const button1 = browser.element('button.submit-form');
+   *
+   *     // Using the find method of the element namespace.
+   *     const button2 = browser.element.find('button.submit-form');
+   *     // Searching for the icon element inside the .submit-form button.
+   *     const icon = button2.find('i');
+   * 
+   *     // Use an object to customise locating behaviour.
+   *     const main = browser.element({ selector: 'main', locateStrategy: 'css selector' });
    *   },
    *
-   *   'es6 async demo Test': async function(browser) {
-   *     const result = await browser.element('css selector', 'body');
-   *     console.log('result value is:', result);
+   *   'new element api async': function (browser) {
+   *     // button is the WebElement object.
+   *     const button = await browser.element('button.submit-form');
    *   },
    *
-   *   'demo Test with page object': function(browser) {
-   *     const loginPage = browser.page.login();
-   *     loginPage.api.element('@resultContainer', function(result) {
-   *       console.log(result.value)
-   *     });
+   *   'with backward compatibility': function (browser) {
+   *     // for backward compatibility
+   *     browser.element('css selector', 'body');
    *   }
    * }
    */
@@ -7248,13 +7442,15 @@ export const assert: Assert;
 export const verify: Assert;
 export const expect: Expect;
 
+export const element: ElementFunction;
+
 declare const _default: Nightwatch;
 export default _default;
 
 declare global {
   const browser: NightwatchBrowser;
   const app: NightwatchAPI;
-  const element: ElementFunction;
+  const element: typeof globalElement;
   const by: typeof SeleniumBy;
   const By: typeof SeleniumBy;
   const ensure: Ensure;

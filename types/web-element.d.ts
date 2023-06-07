@@ -6,20 +6,12 @@ import {
 } from 'selenium-webdriver';
 
 import {ElementProperties} from './page-object';
-import {
-  Element,
-  Awaitable,
-  Definition,
-  ELEMENT_KEY,
-  NightwatchAPI,
-  LocateStrategy,
-  NightwatchClient,
-  NightwatchCallbackResult,
-  ElementResult
-} from './index';
+import {Element, LocateStrategy, NightwatchClient} from './index';
 
-export interface ScopedElement extends PromiseLike<WebElement> {
+export interface ScopedElement extends Element, PromiseLike<WebElement> {
   assert: ElementAssertions;
+
+  webElement: WebElementPromise;
 
   find(selector: ScopedElementSelector): ScopedElement;
   get(selector: ScopedElementSelector): ScopedElement;
@@ -205,16 +197,16 @@ type WaitUntilOptions = {
 
 type WaitUntilActions = 'selected' | 'visible' | 'disabled' | 'enabled' | 'not.selected' | 'not.visible' | 'not.enabled';
 
-export class Elements implements PromiseLike<ScopedElement[]> {
+export class Elements implements PromiseLike<WebElement[]> {
   constructor(
     selector: ScopedElementSelector,
     parentScopedElement: ScopedElement | null,
     nightwatchInstance: NightwatchClient
   );
 
-  then<R1 = ScopedElement[], R2 = never>(
+  then<R1 = WebElement[], R2 = never>(
     onfulfilled?:
-      | ((value: ScopedElement[]) => R1 | PromiseLike<R1>)
+      | ((value: WebElement[]) => R1 | PromiseLike<R1>)
       | null
       | undefined,
     onrejected?: ((reason: any) => R2 | PromiseLike<R2>) | null | undefined
@@ -231,17 +223,16 @@ export type ValueAssertionsOptions = {
 
 export class ValueAssertions<T> {
   scopedValue: ElementValue<T>;
-  nightwatchInstance: NightwatchClient;
 
   get not(): ValueAssertions<T>;
 
   constructor(scopedValue: ElementValue<T>, options: ValueAssertionsOptions);
 
-  contains(expected: string, message?: string): ElementValue<T>;
+  contains(expected: string, message?: string): Promise<T>;
 
-  equals(expected: T, message?: string): ElementValue<T>;
+  equals(expected: T, message?: string): Promise<T>;
 
-  matches(expected: string | RegExp, message?: string): ElementValue<T>;
+  matches(expected: string | RegExp, message?: string): Promise<T>;
 }
 
 export type ElementsAssertionsOptions = {
@@ -266,24 +257,23 @@ export class ElementAssertions {
 
   get not(): ElementAssertions;
 
-  enabled(message?: string): ScopedElement;
+  enabled(message?: string): Promise<WebElement>;
 
-  selected(message?: string): ScopedElement;
+  selected(message?: string): Promise<WebElement>;
 
-  visible(message?: string): ScopedElement;
+  visible(message?: string): Promise<WebElement>;
 
-  present(message?: string): ScopedElement;
+  present(message?: string): Promise<WebElement>;
 
-  hasClass(name: string, message?: string): ScopedElement;
+  hasClass(name: string, message?: string): Promise<WebElement>;
 
-  hasAttribute(name: string, message?: string): ScopedElement;
+  hasAttribute(name: string, message?: string): Promise<WebElement>;
 
-  hasDescendants(message?: string): ScopedElement;
+  hasDescendants(message?: string): Promise<WebElement>;
 }
 
 export class ElementValue<T> implements PromiseLike<T> {
   value: Promise<T>;
-  nightwatchInstance: NightwatchClient;
 
   get assert(): ValueAssertions<T>;
 
@@ -340,115 +330,34 @@ export type DragAndDropDestination = {
 };
 
 export interface ElementFunction {
-  (locator: Definition | By | WebElement, options?: {[key: string]: any}): Element;
   (selector: ScopedElementSelector): ScopedElement;
   (
     using: LocateStrategy,
     value: string,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<ElementResult>
-    ) => void
-  ): Awaitable<this, ElementResult>;
+    callback?: (result: never) => void
+  ): ScopedElement;
 
   findActive(): ScopedElement;
 
-  find(selector: ScopedElementSelector): ScopedElement;
+  find: ScopedElement['find'];
 
-  findByText(
-    text: string,
-    options?: Omit<ScopedSelectorObject, 'selector'> & {
-      readonly exact?: boolean;
-    }
-  ): ScopedElement;
+  findByText: ScopedElement['findByText'];
 
-  findByRole(
-    role: 'heading',
-    options?: Omit<ScopedSelectorObject, 'selector'> & {
-      readonly level?: number;
-      readonly checked?: boolean;
-      readonly current?: boolean | string;
-      readonly pressed?: boolean;
-      readonly expanded?: boolean;
-      readonly selected?: boolean;
-    }
-  ): ScopedElement;
+  findByRole: ScopedElement['findByRole'];
 
-  findByRole(
-    role: string,
-    options?: Omit<ScopedSelectorObject, 'selector'> & {
-      readonly current?: boolean | string;
-      readonly checked?: boolean;
-      readonly pressed?: boolean;
-      readonly selected?: boolean;
-      readonly expanded?: boolean;
-    }
-  ): ScopedElement;
-  
-  findByPlaceholderText(
-    text: string,
-    options?: Omit<ScopedSelectorObject, 'selector'> & {
-      readonly exact?: boolean;
-    }
-  ): ScopedElement;
+  findByPlaceholderText: ScopedElement['findByPlaceholderText'];
 
-  findByLabelText(
-    text: string,
-    options?: Omit<ScopedSelectorObject, 'selector'> & {
-      readonly exact?: boolean;
-    }
-  ): ScopedElement;
+  findByLabelText: ScopedElement['findByLabelText'];
 
-  findByAltText(
-    text: string,
-    options?: Omit<ScopedSelectorObject, 'selector'> & {
-      readonly exact?: boolean;
-    }
-  ): ScopedElement;
+  findByAltText: ScopedElement['findByAltText'];
   
-  findAll(selector: ScopedElementSelector): Elements;
+  findAll: ScopedElement['findAll'];
   
-  findAllByText(
-    text: string,
-    options?: Omit<ScopedSelectorObject, 'selector'> & {
-      readonly exact?: boolean;
-    }
-  ): Elements;
+  findAllByText: ScopedElement['findAllByText'];
   
-  findAllByRole(
-    role: 'heading',
-    options?: Omit<ScopedSelectorObject, 'selector'> & {
-      readonly level?: number;
-      readonly checked?: boolean;
-      readonly current?: boolean | string;
-      readonly pressed?: boolean;
-      readonly expanded?: boolean;
-      readonly selected?: boolean;
-    }
-  ): Elements;
+  findAllByRole: ScopedElement['findAllByRole'];
   
-  findAllByRole(
-    role: string,
-    options?: Omit<ScopedSelectorObject, 'selector'> & {
-      readonly current?: boolean | string;
-      readonly checked?: boolean;
-      readonly pressed?: boolean;
-      readonly selected?: boolean;
-      readonly expanded?: boolean;
-    }
-  ): Elements;
+  findAllByPlaceholderText: ScopedElement['findAllByPlaceholderText'];
   
-  findAllByPlaceholderText(
-    text: string,
-    options?: Omit<ScopedSelectorObject, 'selector'> & {
-      readonly exact?: boolean;
-    }
-  ): Elements;
-  
-  findAllByAltText(
-    text: string,
-    options?: Omit<ScopedSelectorObject, 'selector'> & {
-      readonly exact?: boolean;
-    }
-  ): Elements;
+  findAllByAltText: ScopedElement['findAllByAltText'];
 }
