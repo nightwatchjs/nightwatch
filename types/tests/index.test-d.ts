@@ -702,7 +702,6 @@ function text(this: NightwatchAssertion<string>, selector: string, expectedText:
 
   this.value = (result) => result.value!;
 
-  // TODO: fix callback types
   this.command = function (callback) {
     this.api.element('css selector', selector, (elementResult) => {
       if (elementResult.status === 0) {

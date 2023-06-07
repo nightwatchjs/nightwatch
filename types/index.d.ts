@@ -1038,7 +1038,7 @@ export interface Nightwatch {
   // of first adding them to Nightwatch (default export).
   browser: NightwatchAPI;
   app: NightwatchAPI;
-  by: typeof By;
+  by: typeof SeleniumBy;
   Capabilities: typeof Capabilities;
   Key: NightwatchKeys;
 }
