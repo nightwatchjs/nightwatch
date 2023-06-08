@@ -133,7 +133,7 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   getPreviousElementSibling(): ScopedElement;
 
-  getShadowRoot(): ScopedElement;
+  getShadowRoot(): Omit<ScopedElement, 'then'> & PromiseLike<ShadowRoot>;
 
   getId(): ElementValue<string>;
 
@@ -143,29 +143,29 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   getText(): ElementValue<string>;
 
-  click(): this;
+  click(): Promise<WebElement>;
 
-  clear(): this;
+  clear(): Promise<WebElement>;
 
-  sendKeys<E extends readonly unknown[]>(...keys: E): this;
+  sendKeys<E extends readonly unknown[]>(...keys: E): Promise<WebElement>;
 
-  submit(): this;
+  submit(): Promise<WebElement>;
 
-  getProperty<V>(name: string): ElementValue<V>;
+  getProperty(name: string): ElementValue<string | null>;
 
-  setProperty(name: string, value: unknown): this;
+  setProperty(name: string, value: unknown): Promise<WebElement>;
 
   getAttribute(name: string): ElementValue<string | null>;
 
-  setAttribute(name: string, value: string | null): this;
+  setAttribute(name: string, value: string | null): Promise<WebElement>;
 
-  takeScreenshot(shouldBeInView?: boolean): Promise<string>;
+  takeScreenshot(shouldBeInView?: boolean): ElementValue<string>;
 
-  dragAndDrop(destination: DragAndDropDestination): this;
+  dragAndDrop(destination: DragAndDropDestination): Promise<WebElement>;
 
-  moveTo(x?: number, y?: number): this;
+  moveTo(x?: number, y?: number): Promise<WebElement>;
 
-  update<E extends readonly unknown[]>(...keys: E): this;
+  update<E extends readonly unknown[]>(...keys: E): Promise<WebElement>;
 
   getAccessibleName(): ElementValue<string>;
 
@@ -175,15 +175,17 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   getSize(): ElementValue<ScopedElementRect>;
 
-  getValue(): ElementValue<string>;
+  getValue(): ElementValue<string | null>;
 
-  clickAndHold(): this;
+  setValue<E extends readonly unknown[]>(...keys: E): Promise<WebElement>;
 
-  doubleClick(): this;
+  clickAndHold(): Promise<WebElement>;
 
-  rightClick(): this;
+  doubleClick(): Promise<WebElement>;
 
-  waitUntil(signalOrOptions: WaitUntilActions | WaitUntilOptions, waitOptions?: WaitUntilOptions): this;
+  rightClick(): Promise<WebElement>;
+
+  waitUntil(signalOrOptions: WaitUntilActions | WaitUntilOptions, waitOptions?: WaitUntilOptions): Promise<WebElement>;
 }
 
 type WaitUntilOptions = {
@@ -329,7 +331,12 @@ export type DragAndDropDestination = {
   readonly yOffset: number;
 };
 
-export interface ElementFunction {
+export interface ElementFunction
+  extends Pick<
+    ScopedElement,
+    'find' | 'findByText' | 'findByRole' | 'findByPlaceholderText' | 'findByLabelText' | 'findByAltText' |
+    'findAll' | 'findAllByText' | 'findAllByRole' | 'findAllByPlaceholderText' | 'findAllByAltText'
+  > {
   (selector: ScopedElementSelector): ScopedElement;
   (
     using: LocateStrategy,
@@ -338,26 +345,4 @@ export interface ElementFunction {
   ): ScopedElement;
 
   findActive(): ScopedElement;
-
-  find: ScopedElement['find'];
-
-  findByText: ScopedElement['findByText'];
-
-  findByRole: ScopedElement['findByRole'];
-
-  findByPlaceholderText: ScopedElement['findByPlaceholderText'];
-
-  findByLabelText: ScopedElement['findByLabelText'];
-
-  findByAltText: ScopedElement['findByAltText'];
-  
-  findAll: ScopedElement['findAll'];
-  
-  findAllByText: ScopedElement['findAllByText'];
-  
-  findAllByRole: ScopedElement['findAllByRole'];
-  
-  findAllByPlaceholderText: ScopedElement['findAllByPlaceholderText'];
-  
-  findAllByAltText: ScopedElement['findAllByAltText'];
 }
