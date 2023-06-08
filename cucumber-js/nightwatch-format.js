@@ -49,11 +49,11 @@ module.exports = class MessageFormatter extends Formatter {
   }
 
   parseErrorData(parseError) {
-    this.report.error = parseError;
+    this.report.error = [...(this.report.error || []), parseError];;
   }
 
   pickleData(pickle) {
-    this.report.pickle = pickle;
+    this.report.pickle = [...(this.report.pickle || []), pickle];
   }
 
   sourceData(source) {
@@ -61,11 +61,11 @@ module.exports = class MessageFormatter extends Formatter {
   }
 
   stepDefinitionData(stepDefinition) {
-    this.report.stepDefinitions = stepDefinition;
+    this.report.stepDefinition = [...(this.report.stepDefinition || []), stepDefinition];
   }
 
   testCaseData(testCase) {
-    this.report.testCases = testCase;
+    this.report.testCases = [...(this.report.testCases || []), testCase];
   }
 
   testCaseFinishedData(result) {
