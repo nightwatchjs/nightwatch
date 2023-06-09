@@ -3,6 +3,7 @@ import {NightwatchCustomCommands} from './custom-command';
 import {
   ChromiumClientCommands,
   ElementCommands,
+  ElementFunction,
   LocateStrategy,
   Nightwatch,
   NightwatchAPI,
@@ -237,6 +238,11 @@ interface EnhancedPageObjectSharedFields<
    * An object or a function returning an object representing a container for user variables.
    */
   props: Props;
+
+  /**
+   * Nightwatch new element API.
+   */
+  element: ElementFunction;
 }
 export interface ElementProperties {
   /**
