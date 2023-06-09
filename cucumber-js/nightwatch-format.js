@@ -40,35 +40,35 @@ module.exports = class MessageFormatter extends Formatter {
     };
   }
 
-  metaData(meta) {
+  onMeta(meta) {
     this.report.metadata = meta;
   }
 
-  gherkinDocumentData(gherkinDocument) {
+  onGherkinDocument(gherkinDocument) {
     this.report.gherkinDocument = gherkinDocument;
   }
 
-  parseErrorData(parseError) {
+  onParseError(parseError) {
     this.report.error = [...(this.report.error || []), parseError];;
   }
 
-  pickleData(pickle) {
+  onPickle(pickle) {
     this.report.pickle = [...(this.report.pickle || []), pickle];
   }
 
-  sourceData(source) {
+  onSource(source) {
     this.report.source = source;
   }
 
-  stepDefinitionData(stepDefinition) {
+  onStepDefinition(stepDefinition) {
     this.report.stepDefinition = [...(this.report.stepDefinition || []), stepDefinition];
   }
 
-  testCaseData(testCase) {
+  onTestCase(testCase) {
     this.report.testCases = [...(this.report.testCases || []), testCase];
   }
 
-  testCaseFinishedData(result) {
+  onTestCaseFinished(result) {
     result.httpOutput = Logger.collectTestSectionOutput();
 
     this.report.testCaseFinished = result;
@@ -79,7 +79,7 @@ module.exports = class MessageFormatter extends Formatter {
     });
   }
 
-  testCaseStartedData(result) {
+  onTestCaseStarted(result) {
     this.report.testCaseStarted = result;
 
     NightwatchEventHub.emit(TestCaseStarted, {
@@ -88,7 +88,7 @@ module.exports = class MessageFormatter extends Formatter {
     });
   }
 
-  testRunFinishedData(result) {
+  onTestRunFinished(result) {
     result.httpOutput = Logger.collectOutput();
     this.report.testRunFinished = result;
 
@@ -122,7 +122,7 @@ module.exports = class MessageFormatter extends Formatter {
       });
   }
 
-  testRunStartedData(result) {
+  onTestRunStarted(result) {
     this.report.testRunStarted = result;
 
     NightwatchEventHub.emit(TestStarted, {
@@ -132,7 +132,7 @@ module.exports = class MessageFormatter extends Formatter {
     );
   }
 
-  testStepFinishedData(result) {
+  onTestStepFinished(result) {
     result.httpOutput = Logger.collectCommandOutput();
     this.report.testStepFinished = result;
 
@@ -142,7 +142,7 @@ module.exports = class MessageFormatter extends Formatter {
     });
   }
 
-  testStepStartedData(result) {
+  onTestStepStarted(result) {
     this.report.testStepStarted = result;
 
     NightwatchEventHub.emit(TestStepStarted, {
@@ -157,19 +157,19 @@ module.exports = class MessageFormatter extends Formatter {
     }
 
     const handlers = {
-      meta: this.metaData,
-      gherkinDocument: this.gherkinDocumentData,
-      parseError: this.parseErrorData,
-      pickle: this.pickleData,
-      source: this.sourceData,
-      stepDefinition: this.stepDefinitionData,
-      testCase: this.testCaseData,
-      testCaseFinished: this.testCaseFinishedData,
-      testCaseStarted: this.testCaseStartedData,
-      testRunFinished: this.testRunFinishedData,
-      testRunStarted: this.testRunStartedData,
-      testStepFinished: this.testStepFinishedData,
-      testStepStarted: this.testStepStartedData
+      meta: this.onMeta,
+      gherkinDocument: this.onGherkinDocument,
+      parseError: this.onParseError,
+      pickle: this.onPickle,
+      source: this.onSource,
+      stepDefinition: this.onStepDefinition,
+      testCase: this.onTestCase,
+      testCaseFinished: this.onTestCaseFinished,
+      testCaseStarted: this.onTestCaseStarted,
+      testRunFinished: this.onTestRunFinished,
+      testRunStarted: this.onTestRunStarted,
+      testStepFinished: this.onTestStepFinished,
+      testStepStarted: this.onTestStepStarted
     };
   
     const cucumberEvent = Object.keys(envelope)[0];
