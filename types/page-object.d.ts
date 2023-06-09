@@ -5,8 +5,9 @@ import {
   ElementCommands,
   ElementFunction,
   LocateStrategy,
-  Nightwatch,
+  NamespacedApi,
   NightwatchAPI,
+  NightwatchClient,
   NightwatchComponentTestingCommands,
   SharedCommands
 } from './index';
@@ -167,7 +168,7 @@ export type EnhancedSectionInstance<
     | 'doubleClick'
     | 'rightClick'
   > &
-  Pick<Nightwatch, 'client' | 'api' | 'assert' | 'verify' | 'expect'>;
+  Pick<NamespacedApi<NightwatchAPI>, 'alerts' | 'cookies' | 'document' | 'assert' | 'verify' | 'expect'>;
 
 interface PageObjectSection {
   commands?: Record<string, unknown>[];
@@ -240,10 +241,21 @@ interface EnhancedPageObjectSharedFields<
   props: Props;
 
   /**
+   * Nightwatch Client.
+   */ 
+  client: NightwatchClient;
+
+  /**
+   * Nightwatch API.
+   */
+  api: NightwatchAPI;
+
+  /**
    * Nightwatch new element API.
    */
   element: ElementFunction;
 }
+
 export interface ElementProperties {
   /**
    * The element selector name
@@ -443,9 +455,9 @@ export type EnhancedPageObject<
   Sections extends Record<string, PageObjectSection> = {},
   Props = {},
   URL = string
-> = Nightwatch &
-  SharedCommands &
+> = SharedCommands &
   NightwatchCustomCommands &
+  Pick<NamespacedApi<NightwatchAPI>, 'alerts' | 'cookies' | 'document' | 'assert' | 'verify' | 'expect'> &
   EnhancedPageObjectSharedFields<
     Required<MergeObjectsArray<Commands>>,
     Required<MergeObjectsArray<Elements>>,
