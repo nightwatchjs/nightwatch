@@ -722,7 +722,7 @@ function text(this: NightwatchAssertion<string>, selector: string, expectedText:
   this.value = (result) => result.value!;
 
   this.command = function (callback) {
-    this.api.element('css selector', selector, (elementResult) => {
+    this.api.findElement('css selector', selector, (elementResult) => {
       if (elementResult.status === 0) {
         this.api.elementIdText(elementResult.value[ELEMENT_KEY as keyof ElementResult], (textResult) => {
           callback({ value: textResult.value as string });
