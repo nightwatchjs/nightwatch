@@ -18,7 +18,6 @@
 // Nightwatch Version: 3.0.0
 
 import {Protocol} from 'devtools-protocol';
-import {expect as chaiExpect} from 'chai';
 import {
   By as SeleniumBy,
   Actions,
@@ -7568,6 +7567,6 @@ declare global {
   const by: typeof SeleniumBy;
   const By: typeof SeleniumBy;
   const ensure: Ensure;
-  const expect: typeof chaiExpect;
+  const expect: Expect;
   const locateWith: typeof seleniumLocateWith;
 }

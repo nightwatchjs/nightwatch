@@ -1,5 +1,24 @@
-import { expectError, expectNotAssignable, expectType } from 'tsd';
-import { NightwatchAPI, NightwatchExpectResult } from '..';
+import { expectAssignable, expectError, expectNotAssignable, expectNotType, expectType } from 'tsd';
+import { ExpectElement, NightwatchAPI, NightwatchExpectResult } from '..';
+
+// Chai expect() library
+it('test expect()', async () => {
+  expectType<Chai.Assertion>(expect('Nightwatch.js').to.contain('Nightwatch'));
+  expectType<Chai.Assertion>(expect(2).to.equal(2));
+  expectType<Chai.Assertion>(expect(function () {}).to.not.throw());
+  expectType<Chai.Assertion>(expect({a: 2, b: 1}).to.have.property('b'));
+  expectType<Chai.Assertion>(expect([1, 2]).to.be.an('array').that.does.not.include(3));
+  expectType<Chai.Assertion>(expect([1, 2, 3]).to.be.an('array').that.does.include(3));
+
+  // if element is passed to expect
+  const expectAssert = expect(element('selector')).text.equal('something')
+  expectNotType<Chai.Assertion>(expectAssert);;
+  expectNotAssignable<Chai.Assertion>(expectAssert);
+  expectAssignable<ExpectElement>(expectAssert);
+  expectAssignable<ExpectElement>(expect(by.xpath('//tagname')).text.equal('something'));
+  expectAssignable<ExpectElement>(expect(await element('selector').getWebElement()).text.equal('something'))
+  expectAssignable<ExpectElement>(expect(await browser.findElement('selector')).text.equal('something'));;
+});
 
 // Expect test for language chains
 it('expect.equal(value)/.contain(value)/.match(regex)', () => {
