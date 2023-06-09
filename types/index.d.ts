@@ -763,7 +763,7 @@ export interface ElementGlobal extends Element {
   /**
    * Get the computed WAI-ARIA role of element.
    */
-  arialRole: ElementGlobal['getAriaRole'];
+  ariaRole: ElementGlobal['getAriaRole'];
 
   /**
    * Retrieves the current value of the given attribute of this element.
