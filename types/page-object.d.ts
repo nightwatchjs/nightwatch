@@ -3,6 +3,7 @@ import {NightwatchCustomCommands} from './custom-command';
 import {
   ChromiumClientCommands,
   ElementCommands,
+  ElementFunction,
   LocateStrategy,
   NamespacedApi,
   NightwatchAPI,
@@ -248,6 +249,11 @@ interface EnhancedPageObjectSharedFields<
    * Nightwatch API.
    */
   api: NightwatchAPI;
+
+  /**
+   * Nightwatch new element API.
+   */
+  element: ElementFunction;
 }
 
 export interface ElementProperties {

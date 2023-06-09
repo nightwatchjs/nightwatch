@@ -6,6 +6,8 @@ import {
   NightwatchAPI,
   NightwatchAssertion,
   NightwatchAssertionsResult,
+  NightwatchClient,
+  NightwatchClientObject,
   NightwatchEnsureResult,
   NightwatchNodeAssertionsResult,
   NightwatchTests,
@@ -15,9 +17,10 @@ import {
   ElementResult,
   Awaitable,
   SectionProperties,
-  NightwatchClient,
-  NightwatchClientObject,
+  ScopedElement
 } from '..';
+import { element as elementNamedExport } from '..';
+import { WebElement } from 'selenium-webdriver';
 
 function isNightwatchAssertionsResult<T>(result: NightwatchAssertionsResult<T>): T {
   return result.value;
@@ -84,12 +87,11 @@ const testGeneral: NightwatchTests = {
       browser.browserName = 'firefox';
     })
 
-    browser.element('css selector', 'something', function (result) {
+    expectError(browser.element('css selector', 'something', function (result) {
       if (result.status === 0) {
-        expectType<string>(result.value[ELEMENT_KEY]);
+        console.log(result.value);
       }
-      expectType<NightwatchAPI>(this);
-    });
+    }));
 
     browser.elements('css selector', 'something', function (result) {
       if (result.status === 0) {
@@ -100,11 +102,20 @@ const testGeneral: NightwatchTests = {
   },
 
   'Demo Nightwatch API commands with async/await': async () => {
+    // backward compatibility to some extent
     const element = await browser.element('css selector', 'something');
-    expectType<string>(element[ELEMENT_KEY]);
+    expectType<WebElement>(element);
 
     const elements = await browser.elements('css selector', 'something');
     expectType<string>(elements[0][ELEMENT_KEY]);
+
+    // new element api
+    const elem = elementNamedExport('selector');
+    expectType<ScopedElement>(elem);
+    expectType<WebElement>(await elem);
+
+    const childChildEle = await elementNamedExport.find('selector').findAll('child-selector').nth(2).find('child-child-selector');
+    expectType<WebElement>(childChildEle);
   },
 
   'Can run accessibility tests': () => {
@@ -475,6 +486,10 @@ const testPage = {
     expectType<NightwatchAPI>(google.api);
     expectType<NightwatchClient>(google.client);
 
+    // test new element api
+    google.element('@searchBar');
+    google.element.findAll('@searchBar');
+
     browser.end();
   },
 
@@ -504,6 +519,10 @@ const testPage = {
     const appSection = menuSection.section.apps;
     appSection.expect.element('@myAccount').to.be.visible;
     appSection.expect.element('@youtube').to.be.visible;
+
+    // test new element api
+    menuSection.element('@main');
+    menuSection.element.findAll('@main').nth(1).find('@images');
 
     appSection.clickYoutube();
 
