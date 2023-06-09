@@ -1206,6 +1206,40 @@ export interface Nightwatch {
 
   /**
    * Creates a new Nightwatch client that can be used to create WebDriver sessions.
+   *
+   * @example
+   * const Nightwatch = require('nightwatch');
+   *
+   * const client = Nightwatch.createClient({
+   *   headless: true,
+   *   output: true,
+   *   silent: true, // set to false to enable verbose logging
+   *   browserName: 'firefox', // can be either: firefox, chrome, safari, or edge
+   * 
+   *   // set the global timeout to be used with waitFor commands and when retrying assertions/expects
+   *   timeout: 10000,
+   * 
+   *   // set the current test environment from the nightwatch config
+   *   env: null,
+   * 
+   *   // any additional capabilities needed
+   *   desiredCapabilities: {
+   * 
+   *   },
+   * 
+   *   // can define/overwrite test globals here; 
+   *   // when using a third-party test runner only the global hooks onBrowserNavigate/onBrowserQuit are supported
+   *   globals: {},
+   * 
+   *   // when the test runner used supports running tests in parallel; 
+   *   // set to true if you need the webdriver port to be randomly generated
+   *   parallel: false, 
+   * 
+   *   // All other Nightwatch config settings can be overwritten here, such as:
+   *   disable_colors: false
+   * });
+   *
+   * @see https://nightwatchjs.org/api/programmatic/#programmatic-api
    */
   createClient({
     headless,
@@ -1243,11 +1277,21 @@ export interface Nightwatch {
 export interface NightwatchProgrammaticAPIClient {
   /**
    * Create a new browser session.
+   *
+   * Returns [NightwatchAPI](https://nightwatchjs.org/api/) object.
+   *
+   * @example
+   * const browser = await client.launchBrowser();
    */
   launchBrowser(): Promise<NightwatchAPI>;
 
   /**
    * Update the initially specified capabilities.
+   *
+   * @example
+   * client.updateCapabilities({
+   *   testCapability: 'one, two, three'
+   * });
    */
   updateCapabilities(value: {} | (() => {})): void;
 
