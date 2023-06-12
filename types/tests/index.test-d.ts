@@ -243,8 +243,8 @@ const testGeneral: NightwatchTests = {
     isNightwatchAssertionsResult<Array<{ [ELEMENT_KEY]: string }>>(await elementPresentResult);
 
     const hasAttributeResult = browser.assert.hasAttribute('input[name=q]', 'placeholder');
-    expectType<Awaitable<NightwatchAPI, NightwatchAssertionsResult<string[]>>>(hasAttributeResult);
-    isNightwatchAssertionsResult<string[]>(await hasAttributeResult);
+    expectType<Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>>(hasAttributeResult);
+    isNightwatchAssertionsResult<string>(await hasAttributeResult);
 
     const selectedResult = browser.assert.selected('input[name=q]');
     expectType<Awaitable<NightwatchAPI, NightwatchAssertionsResult<boolean>>>(selectedResult);
