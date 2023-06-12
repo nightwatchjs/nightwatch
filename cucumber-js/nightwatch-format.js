@@ -113,7 +113,7 @@ module.exports = class NightwatchFormatter extends Formatter {
   }
 
   writeReportFile(filename, rendered, shouldCreateFolder, output_folder) {
-    (shouldCreateFolder ? createFolder(output_folder) : Promise.resolve())
+    return (shouldCreateFolder ? createFolder(output_folder) : Promise.resolve())
       .then(() => {
         return new Promise((resolve, reject) => {
           fs.writeFile(filename, rendered, function(err) {
