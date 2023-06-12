@@ -14,16 +14,14 @@ const {NightwatchEventHub, CUCUMBER_RUNNER_EVENTS: {
   TestStepFinished
 }} = require('../lib/runner/eventHub');
 
-module.exports = class MessageFormatter extends Formatter {
+module.exports = class NightwatchFormatter extends Formatter {
   constructor(options) {
     super(options);
 
     this.report = {};
 
     options.eventBroadcaster.on('envelope', (envelope) => {
-      if (NightwatchState.client && !this.client) {
-        this.client = NightwatchState.client;
-        this.browser = NightwatchState.browser;
+      if (NightwatchFormatter.browser && (!this.report.sessionId || NightwatchFormatter.browser?.sessionId !== this.report.sessionId)) {
         this.setCapabilities();
       }
       
@@ -31,12 +29,20 @@ module.exports = class MessageFormatter extends Formatter {
     });
   }
 
+  static setClient(client){
+    NightwatchFormatter.client = client;
+  }
+
+  static setBrowser(browser) {
+    NightwatchFormatter.browser = browser;
+  }
+
   setCapabilities() {
     this.report = {
       ...this.report,
-      seleniumLogs: this.client?.transport?.driverService?.getSeleniumOutputFilePath(),
-      sessionCapabilities: this.browser?.capabilities,
-      sessionId: this.browser?.sessionId
+      seleniumLogs: NightwatchFormatter.client?.transport?.driverService?.getSeleniumOutputFilePath(),
+      sessionCapabilities: NightwatchFormatter.browser?.capabilities,
+      sessionId: NightwatchFormatter.browser?.sessionId
     };
   }
 
@@ -97,7 +103,7 @@ module.exports = class MessageFormatter extends Formatter {
       report: this.report
     });
 
-    let {output_folder} = this.client.settings;
+    let {output_folder} = NightwatchFormatter.client.settings;
     output_folder = path.join(output_folder, 'cucumber');
     const filename = path.join(output_folder, 'cucumber-report.json');
 

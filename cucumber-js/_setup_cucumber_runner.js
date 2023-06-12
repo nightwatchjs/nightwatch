@@ -1,6 +1,6 @@
 const Nightwatch = require('../lib');
 const {Before, After, setDefaultTimeout} = require('@cucumber/cucumber');
-const NightwatchState = require('./nightwatchState');
+const NightwatchFormat = require('./nightwatch-format');
 
 setDefaultTimeout(-1);
 
@@ -52,7 +52,7 @@ Before(function({pickle}) {
     });
   }
 
-  NightwatchState.setClient(this.client);
+  NightwatchFormat.setClient(this.client);
 
   // eslint-disable-next-line
   console.log('\n');
@@ -63,7 +63,7 @@ Before(function({pickle}) {
   if (options.auto_start_session || typeof options.auto_start_session == 'undefined') {
     return this.client.launchBrowser().then(browser => {
       this.browser = browser;
-      NightwatchState.setBrowser(this.browser);
+      NightwatchFormat.setBrowser(this.browser);
     });
   }
 });
