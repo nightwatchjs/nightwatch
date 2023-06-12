@@ -42,7 +42,7 @@ describe('testNightwatchEventReporter', function() {
     });
   });
 
-  it.only('Check reporter output on real time event', async function () {
+  it('Check reporter output on real time event', async function () {
     let possibleError = null;
     const testsPath = [path.join(__dirname, '../../sampletests/before-after/sampleWithBeforeAndAfterNoCallback.js')];
 

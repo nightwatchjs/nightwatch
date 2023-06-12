@@ -238,6 +238,8 @@ describe('testRunnerScreenshotsOutput', function () {
       path.join(__dirname, '../../sampletests/withfailures')
     ];
 
+    let screenshotEventExecuted = false;
+
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/screenshot',
       method: 'GET',
@@ -256,24 +258,11 @@ describe('testRunnerScreenshotsOutput', function () {
         retryAssertionTimeout: 1,
         reporter: function () {
         },
-        onEvent: function({eventName, ...args}) {
-          assert.ok(['GlobalHookRunStarted',
-            'GlobalHookRunFinished',
-            'TestSuiteStarted',
-            'TestSuiteFinished',
-            'HookRunStarted',
-            'HookRunFinished',
-            'TestRunStarted',
-            'TestRunFinished',
-            'LogCreated',
-            'ScreenshotCreated'
-          ].includes(eventName));
-
-          switch (eventName) {
-            case 'ScreenshotCreated':
-              assert.deepStrictEqual(Object.keys(args), ['path']);
-              break;
-          }
+        registerEventHandlers: function(eventBroadcaster) {
+          eventBroadcaster.on('ScreenshotCreated', (args) => {
+            assert.deepStrictEqual(Object.keys(args), ['path']);
+            screenshotEventExecuted = true;
+          });
         }
       },
       screenshots: {
@@ -284,6 +273,8 @@ describe('testRunnerScreenshotsOutput', function () {
       }
     }))
       .then(_ => {
+        assert.strictEqual(screenshotEventExecuted, true);
+
         return readDirPromise(`${screenshotFilePath}/${moduleName}`);
       })
       .then(files => {
