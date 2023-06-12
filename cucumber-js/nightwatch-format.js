@@ -4,7 +4,6 @@ const Utils = require('../lib/utils');
 const {Logger, createFolder} = Utils;
 const {Formatter} = require('@cucumber/cucumber');
 
-const NightwatchState = require('./nightwatchState');
 const {NightwatchEventHub, CUCUMBER_RUNNER_EVENTS: {
   TestStarted, 
   TestFinished,
