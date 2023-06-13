@@ -172,7 +172,7 @@ describe('ChromeDriver Transport Tests', function () {
 
     let serverPath;
     let serverPort;
-    let buildArgs = [];
+    const buildArgs = [];
     let logFilePath;
 
     mockServiceBuilder({
@@ -253,6 +253,7 @@ describe('ChromeDriver Transport Tests', function () {
   });
 
   it('test chrome logging is absent in creating session with chrome driver on windows', async () => {
+    const platform = process.platform;
     Object.defineProperty(process, 'platform', {
       value: 'win32'
     });
@@ -278,6 +279,10 @@ describe('ChromeDriver Transport Tests', function () {
     assert.strictEqual(serverPath, '/path/to/chromedriver');
     assert.strictEqual(serverPort, 9999);
     assert.deepStrictEqual(buildArgs, ['--verbose']);
+
+    Object.defineProperty(process, 'platform', {
+      value: platform
+    });
   });
 
   it('test chrome logging is present in creating session with chrome driver on mac', async () => {
@@ -311,5 +316,69 @@ describe('ChromeDriver Transport Tests', function () {
     Object.defineProperty(process, 'platform', {
       value: platform
     });
+  });
+
+  it('test verbose logging is absent when --silent cli_arg is used.', async () => {
+    mockery.registerMock('chromedriver', {
+      path: '/path/to/chromedriver'
+    });
+
+    const {session, serverPath, serverPort, buildArgs} = await ChromeDriverTestSetup({
+      desiredCapabilities: {
+        browserName: 'chrome'
+      },
+      webdriver: {
+        port: 9999,
+        start_process: true,
+        cli_args: [
+          '--silent'
+        ]
+      }
+    });
+
+    assert.deepStrictEqual(session, {
+      sessionId: '1111',
+      capabilities: {}
+    });
+    assert.strictEqual(serverPath, '/path/to/chromedriver');
+    assert.strictEqual(serverPort, 9999);
+
+    const expectedBuildArgs = ['--silent'];
+    if (process.platform !== 'win32') {
+      expectedBuildArgs.push('--enable-chrome-logs');
+    }
+    assert.deepStrictEqual(buildArgs, expectedBuildArgs);
+  });
+
+  it('test verbose logging is absent when --log-level cli_arg is used.', async () => {
+    mockery.registerMock('chromedriver', {
+      path: '/path/to/chromedriver'
+    });
+
+    const {session, serverPath, serverPort, buildArgs} = await ChromeDriverTestSetup({
+      desiredCapabilities: {
+        browserName: 'chrome'
+      },
+      webdriver: {
+        port: 9999,
+        start_process: true,
+        cli_args: [
+          '--log-level=WARNING'
+        ]
+      }
+    });
+
+    assert.deepStrictEqual(session, {
+      sessionId: '1111',
+      capabilities: {}
+    });
+    assert.strictEqual(serverPath, '/path/to/chromedriver');
+    assert.strictEqual(serverPort, 9999);
+
+    const expectedBuildArgs = ['--log-level=WARNING'];
+    if (process.platform !== 'win32') {
+      expectedBuildArgs.push('--enable-chrome-logs');
+    }
+    assert.deepStrictEqual(buildArgs, expectedBuildArgs);
   });
 });
