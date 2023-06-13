@@ -243,8 +243,8 @@ const testGeneral: NightwatchTests = {
     isNightwatchAssertionsResult<Array<{ [ELEMENT_KEY]: string }>>(await elementPresentResult);
 
     const hasAttributeResult = browser.assert.hasAttribute('input[name=q]', 'placeholder');
-    expectType<Awaitable<NightwatchAPI, NightwatchAssertionsResult<string[]>>>(hasAttributeResult);
-    isNightwatchAssertionsResult<string[]>(await hasAttributeResult);
+    expectType<Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>>(hasAttributeResult);
+    isNightwatchAssertionsResult<string>(await hasAttributeResult);
 
     const selectedResult = browser.assert.selected('input[name=q]');
     expectType<Awaitable<NightwatchAPI, NightwatchAssertionsResult<boolean>>>(selectedResult);
@@ -285,7 +285,7 @@ describe('duckduckgo example', function () {
 //
 const wikipediaAppTest: NightwatchTests = {
   before: (client: NightwatchAPI) => {
-    client.click('xpath', '//XCUIElementTypeButton[@name="Skip"]');
+    client.click(by.xpath('//XCUIElementTypeButton[@name="Skip"]'));
   },
 
   'Search for BrowserStack': async (client: NightwatchAPI) => {
