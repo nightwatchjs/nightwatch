@@ -24,14 +24,18 @@ describe('element().takeScreenshot() command', function () {
     }, true);
 
     const resultPromise = this.client.api.element('#signupSection').takeScreenshot();
-    // neither an instance of Element or Promise, but an instance of ScopedWebElement.
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
+
     assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
 
     const result = await resultPromise;
-    assert.strictEqual(result instanceof WebElement, true);
-    assert.strictEqual(await result.getId(), '0');
+    assert.strictEqual(result instanceof WebElement, false);
+    assert.strictEqual(result, 'iVBORw0KGgoAAAANSUhEUgAAAbsAAAAiCAYAAADGd3chAAABK');
+
+    const resultValue = await resultPromise.value;
+    assert.strictEqual(resultValue, 'iVBORw0KGgoAAAANSUhEUgAAAbsAAAAiCAYAAADGd3chAAABK');
   });
 
   it('test .element().find().takeScreenshot()', async function() {
@@ -45,14 +49,18 @@ describe('element().takeScreenshot() command', function () {
     }, true);
 
     const resultPromise = this.client.api.element('#signupSection').find('#helpBtn').takeScreenshot();
-    // neither an instance of Element or Promise, but an instance of ScopedWebElement.
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
+
     assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
 
     const result = await resultPromise;
-    assert.strictEqual(result instanceof WebElement, true);
-    assert.strictEqual(await result.getId(), '1');
+    assert.strictEqual(result instanceof WebElement, false);
+    assert.strictEqual(result, 'iVBORw0KGgoAAAANSUhEUgAAAbsAAAAiCAYAAADGd3chAAABK');
+
+    const resultValue = await resultPromise.value;
+    assert.strictEqual(resultValue, 'iVBORw0KGgoAAAANSUhEUgAAAbsAAAAiCAYAAADGd3chAAABK');
   });
 
   it('test .element.find().takeScreenshot()', async function() {
@@ -66,13 +74,17 @@ describe('element().takeScreenshot() command', function () {
     }, true);
 
     const resultPromise = this.client.api.element.find('#signupSection').takeScreenshot();
-    // neither an instance of Element or Promise, but an instance of ScopedWebElement.
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
+
     assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
 
     const result = await resultPromise;
-    assert.strictEqual(result instanceof WebElement, true);
-    assert.strictEqual(await result.getId(), '0');
+    assert.strictEqual(result instanceof WebElement, false);
+    assert.strictEqual(result, 'iVBORw0KGgoAAAANSUhEUgAAAbsAAAAiCAYAAADGd3chAAABK');
+
+    const resultValue = await resultPromise.value;
+    assert.strictEqual(resultValue, 'iVBORw0KGgoAAAANSUhEUgAAAbsAAAAiCAYAAADGd3chAAABK');
   });
 });
