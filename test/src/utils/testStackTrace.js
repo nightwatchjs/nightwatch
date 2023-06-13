@@ -121,9 +121,8 @@ describe('test stackTrace parse', function() {
     const errorMessage = Logger.getErrorContent(error);
     assert.ok(!errorMessage.includes('\t'));
 
-    assert.strictEqual(errorMessage, ` [1;31m→ TypeError[0m
-
-    [0;31mUnknown method[0m
+    assert.strictEqual(errorMessage, ` ✖ [1;31mTypeError[0m
+   [0;31mUnknown method[0m
 [0;33m
     Error location:[0m
     ${errorFilePath}:
