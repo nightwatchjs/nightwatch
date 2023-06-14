@@ -487,7 +487,7 @@ describe('test programmatic apis', function () {
 
   it('test createClient() programmatic API defaults parallel and local server', async function() {
     const server_path = './bin/geckodriver';
-    const {constants, rmdirSync, readdirSync, lstatSync} = require('fs');
+    const {constants, rmdirSync, readdirSync, lstatSync, stat, lstat, access, read, write, readFile, realpathSync, promises, close, open} = require('fs');
     delete require.cache['fs'];
 
     let serverPort;
@@ -505,7 +505,17 @@ describe('test programmatic apis', function () {
       },
       writeFile(filePath, output, cb) {
         cb(null);
-      }
+      },
+      stat,
+      lstat,
+      access,
+      readFile,
+      write,
+      read,
+      open,
+      close,
+      realpathSync,
+      promises
     });
 
     mockery.registerMock('../io/exec', {

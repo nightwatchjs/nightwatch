@@ -211,9 +211,9 @@ describe('Test CLI Runner', function() {
           return 'globals';
         }
       },
-      dirname(a) {
-        return '';
-      },
+      dirname: origPath.dirname,
+      sep: origPath.sep,
+      posix: origPath.posix,
       join: function(a, b) {
         if (b === './settings.json') {
           return './settings.json';
