@@ -244,7 +244,7 @@ export interface NightwatchCommonAssertions<ReturnType> {
 		selector: Definition,
 		expectedAttribute: string,
 		msg?: string
-	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string[]>>;
+	): Awaitable<IfUnknown<ReturnType, this>, NightwatchAssertionsResult<string>>;
 
 	/**
 	 * Checks if the given element is enabled (as indicated by the 'disabled' attribute).

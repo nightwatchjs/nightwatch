@@ -11,6 +11,7 @@ import {
   NightwatchCallbackResult,
   NightwatchAPI,
 } from '..';
+import { WebElement } from 'selenium-webdriver';
 
 //
 // .elementIdAttribute
@@ -941,15 +942,12 @@ describe('element command demo', function() {
     before(browser => browser.url('https://www.google.com/'));
 
     test('demo test', function() {
-      browser.element('css selector', 'body', function(result) {
-        expectType<NightwatchAPI>(this);
-        expectType<NightwatchCallbackResult<ElementResult>>(result);
-      });
+      browser.element('css selector', 'body');
     });
 
     test('async demo test', async function() {
       const result = await browser.element('css selector', 'body');
-      expectType<ElementResult>(result);
+      expectType<WebElement>(result);
     });
 
     after(browser => browser.end());

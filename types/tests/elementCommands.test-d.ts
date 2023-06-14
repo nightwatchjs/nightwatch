@@ -1,5 +1,5 @@
 import { expectType } from 'tsd';
-import { JSON_WEB_OBJECT, NightwatchSizeAndPosition, ElementResult, NightwatchAPI, NightwatchCallbackResult } from '..';
+import { JSON_WEB_OBJECT, NightwatchSizeAndPosition, ElementResult, NightwatchAPI, NightwatchCallbackResult, ElementGlobal } from '..';
 
 //
 // .clearValue
@@ -190,6 +190,26 @@ describe('getValue command demo', function () {
   });
 
   after((browser) => browser.end());
+});
+
+//
+// .getShadowRoot
+//
+describe('getShadowRoot command demo', function () {
+  test('demo test', function () {
+    browser.getShadowRoot('input[type=text]', function (result) {
+      expectType<NightwatchAPI>(this);
+      expectType<NightwatchCallbackResult<ElementGlobal | null>>(result);
+    });
+  });
+
+  test('async demo test', async function (browser) {
+    const result = await browser.getShadowRoot('input[type=text]');
+    expectType<ElementGlobal | null>(result);
+
+    const result2 = await browser.getShadowRoot(await element('selector').getWebElement());
+    expectType<ElementGlobal | null>(result2);
+  });
 });
 
 //

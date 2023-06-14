@@ -1,4 +1,4 @@
-import {NightwatchAPI, NightwatchClient} from './index';
+import {NightwatchAPI, NightwatchClientObject} from './index';
 
 interface NightwatchAssertionSuccessfulResult<T> {
   value?: T;
@@ -139,7 +139,7 @@ export interface NightwatchAssertion<T> {
   /**
    * Nightwatch Client
    */
-  readonly client: NightwatchClient;
+  readonly client: NightwatchClientObject;
 
   /**
    * Use this.negate to determine if ".not" is in use
