@@ -18,6 +18,7 @@
     "@nightwatch/chai": "5.0.2",
     "@nightwatch/html-reporter-template": "0.2.1",
     "@nightwatch/nightwatch-inspector": "^1.0.1",
+    "@nightwatch/setup-tools": "^0.0.2",
     "@npmcli/package-json": "^3.1.0",
     "@types/chai": "^4.3.5",
     "@types/selenium-webdriver": "^4.1.14",
