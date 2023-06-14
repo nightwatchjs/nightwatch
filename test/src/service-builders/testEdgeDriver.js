@@ -34,12 +34,12 @@ describe('EdgeDriver Transport Tests', function () {
   const sessionData = {
     sessionId: '111',
     getId() {
-      return '1111'
+      return '1111';
     },
     getCapabilities() {
       return {
         getPlatform() {
-          return 'MAC'
+          return 'MAC';
         },
         getBrowserName() {
           return 'MicrosoftEdge';
@@ -53,7 +53,7 @@ describe('EdgeDriver Transport Tests', function () {
         keys() {
           return new Map();
         }
-      }
+      };
     }
   };
 
@@ -65,9 +65,9 @@ describe('EdgeDriver Transport Tests', function () {
     async getExecutor() {
       return {
         w3c: true
-      }
+      };
     }
-  }
+  };
 
   const fn = function() {};
   function deleteFromRequireCache(location) {
@@ -116,15 +116,11 @@ describe('EdgeDriver Transport Tests', function () {
         onSetPath(h);
       }
 
-      addArguments(args) {
+      addArguments(...args) {
         onAddArguments(args);
       }
 
       enableChromeLogging() {
-        return this;
-      }
-
-      enableVerboseLogging() {
         return this;
       }
 
@@ -134,9 +130,9 @@ describe('EdgeDriver Transport Tests', function () {
 
           },
           async start() {
-            return 'http://localhost'
+            return 'http://localhost';
           }
-        }
+        };
       }
     }
 
@@ -179,7 +175,7 @@ describe('EdgeDriver Transport Tests', function () {
 
     let serverPath;
     let serverPort;
-    let buildArgs;
+    const buildArgs = [];
     let logFilePath;
 
     mockServiceBuilder({
@@ -188,7 +184,7 @@ describe('EdgeDriver Transport Tests', function () {
       },
 
       onAddArguments(args) {
-        buildArgs = args;
+        buildArgs.push(...args);
       },
 
       onSetPort(p) {
@@ -211,12 +207,13 @@ describe('EdgeDriver Transport Tests', function () {
     return {
       session,
       serverPath,
-      serverPort
-    }
+      serverPort,
+      buildArgs
+    };
   }
 
   it('test create session with edge driver', async function() {
-    const {session, serverPath, serverPort} = await EdgeDriverTestSetup({
+    const {session, serverPath, serverPort, buildArgs} = await EdgeDriverTestSetup({
       desiredCapabilities: {
         browserName: 'MicrosoftEdge'
       },
@@ -232,10 +229,11 @@ describe('EdgeDriver Transport Tests', function () {
     });
     assert.strictEqual(serverPath, '/path/to/edgedriver');
     assert.strictEqual(serverPort, 9999);
+    assert.deepStrictEqual(buildArgs, ['--verbose']);
   });
 
   it('test create session with edge driver -- random port', async function() {
-    const {session, serverPath, serverPort} = await EdgeDriverTestSetup({
+    const {session, serverPath, serverPort, buildArgs} = await EdgeDriverTestSetup({
       desiredCapabilities: {
         browserName: 'MicrosoftEdge'
       },
@@ -250,6 +248,52 @@ describe('EdgeDriver Transport Tests', function () {
     });
     assert.strictEqual(serverPath, '/path/to/edgedriver');
     assert.strictEqual(serverPort, undefined);
+    assert.deepStrictEqual(buildArgs, ['--verbose']);
   });
 
+  it('test verbose logging is absent when --silent cli_arg is used.', async () => {
+    const {session, serverPath, serverPort, buildArgs} = await EdgeDriverTestSetup({
+      desiredCapabilities: {
+        browserName: 'edge'
+      },
+      webdriver: {
+        port: 9999,
+        start_process: true,
+        server_path: '/path/to/edgedriver',
+        cli_args: [
+          '--silent'
+        ]
+      }
+    });
+
+    assert.deepStrictEqual(session, {
+      sessionId: '1111', capabilities: {}
+    });
+    assert.strictEqual(serverPath, '/path/to/edgedriver');
+    assert.strictEqual(serverPort, 9999);
+    assert.deepStrictEqual(buildArgs, ['--silent']);
+  });
+
+  it('test verbose logging is absent when --log-level cli_arg is used.', async () => {
+    const {session, serverPath, serverPort, buildArgs} = await EdgeDriverTestSetup({
+      desiredCapabilities: {
+        browserName: 'edge'
+      },
+      webdriver: {
+        port: 9999,
+        start_process: true,
+        server_path: '/path/to/edgedriver',
+        cli_args: [
+          '--log-level=SEVERE'
+        ]
+      }
+    });
+
+    assert.deepStrictEqual(session, {
+      sessionId: '1111', capabilities: {}
+    });
+    assert.strictEqual(serverPath, '/path/to/edgedriver');
+    assert.strictEqual(serverPort, 9999);
+    assert.deepStrictEqual(buildArgs, ['--log-level=SEVERE']);
+  });
 });
