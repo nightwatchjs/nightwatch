@@ -50,7 +50,7 @@ module.exports = class NightwatchFormatter extends Formatter {
   }
 
   onGherkinDocument(gherkinDocument) {
-    this.report.gherkinDocument = gherkinDocument;
+    this.report.gherkinDocument = [...(this.report.gherkinDocument || []), gherkinDocument];
   }
 
   onParseError(parseError) {
