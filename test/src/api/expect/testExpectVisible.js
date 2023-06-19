@@ -52,7 +52,12 @@ describe('expect.visible', function () {
     beforeEach(function (done) {
       ExpectGlobals.beforeEach.call(this, {
         output: false,
-        silent: false
+        silent: false,
+        webdriver: {
+          timeout_options: {
+            retry_attempts: 0
+          }
+        }
       }, () => {
         this.client.api.globals.abortOnAssertionFailure = false;
         done();

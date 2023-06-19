@@ -41,7 +41,8 @@ describe('testRunWithServerErrors', function() {
       },
       statusCode: 502,
       contentType: 'text/html',
-      response: '<html>\n<head>\n<title>502 Bad Gateway</title>\n</head>\n<body>\n</body></html>'
+      response: '<html>\n<head>\n<title>502 Bad Gateway</title>\n</head>\n<body>\n</body></html>',
+      times: 6
     });
 
     let testsPath = path.join(__dirname, '../../sampletests/withservererrors');
@@ -71,7 +72,10 @@ describe('testRunWithServerErrors', function() {
       skip_testcases_on_fail: false,
       report_command_errors: true,
       disable_error_log: 0,
-      globals
+      globals,
+      webdriver: {
+        internal_server_error_retry_interval: 100
+      }
     }));
   });
 

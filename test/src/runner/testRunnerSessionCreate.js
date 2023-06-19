@@ -80,7 +80,10 @@ describe('testRunnerSessionCreate', function () {
       },
       selenium_host: null,
       webdriver: {
-        host: 'localhost'
+        host: 'localhost',
+        timeout_options: {
+          retry_attempts: 0
+        }
       },
       globals,
       output: false,
@@ -140,7 +143,10 @@ describe('testRunnerSessionCreate', function () {
       },
       selenium_host: null,
       webdriver: {
-        host: 'localhost'
+        host: 'localhost',
+        timeout_options: {
+          retry_attempts: 0
+        }
       },
       globals,
       output: false,
@@ -205,7 +211,10 @@ describe('testRunnerSessionCreate', function () {
       },
       selenium_host: null,
       webdriver: {
-        host: 'localhost'
+        host: 'localhost',
+        timeout_options: {
+          retry_attempts: 0
+        }
       },
       globals,
       output: false,

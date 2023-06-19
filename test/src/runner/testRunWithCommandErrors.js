@@ -119,6 +119,11 @@ describe('testRunWithCommandErrors', function() {
         report_command_errors: true,
         skip_testcases_on_fail: false,
         disable_error_log: 0,
+        webdriver: {
+          timeout_options: {
+            retry_attempts: 0
+          }
+        },
         globals
       }));
     });

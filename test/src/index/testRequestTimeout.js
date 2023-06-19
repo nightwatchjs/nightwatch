@@ -85,6 +85,7 @@ describe('test HttpRequestTimeout', function() {
     assert.strictEqual(request.retryAttempts, 1);
     assert.deepStrictEqual(request.httpOpts, {
       host: 'localhost',
+      internal_server_error_retry_interval: 1000,
       port: 10195,
       default_path: '/wd/hub',
       credentials: {
