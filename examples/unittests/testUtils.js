@@ -1,5 +1,5 @@
 const assert = require('assert');
-const Utils = require('../../lib/utils/');
+const Utils = require('../../dist/utils/');
 
 module.exports = {
   testFormatElapsedTime: function() {

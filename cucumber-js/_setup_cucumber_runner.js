@@ -1,4 +1,4 @@
-const Nightwatch = require('../lib');
+const Nightwatch = require('../dist');
 const {Before, After, setDefaultTimeout} = require('@cucumber/cucumber');
 
 setDefaultTimeout(-1);

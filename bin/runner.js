@@ -1,8 +1,8 @@
 /**
  * Module dependencies
  */
-const Nightwatch = require('../lib/index.js');
-const {Logger, shouldReplaceStack, alwaysDisplayError} = require('../lib/utils');
+const Nightwatch = require('../dist/index.js');
+const {Logger, shouldReplaceStack, alwaysDisplayError} = require('../dist/utils');
 
 try {
   Nightwatch.cli(function (argv) {

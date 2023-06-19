@@ -1,7 +1,8 @@
 const assert = require('assert');
 const MockServer  = require('../../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../../lib/globals/commands-w3c.js');
-const Element = require('../../../../../../lib/element/index.js');
+const common = require('../../../../../common.js');
+const Element = common.require('element/index.js');
 
 describe('element() assert commands', function () {
   this.timeout(10000);

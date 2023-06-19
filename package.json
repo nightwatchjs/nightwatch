@@ -4,8 +4,8 @@
   "version": "3.0.0-beta.1",
   "author": "Andrei Rusu",
   "homepage": "https://nightwatchjs.org",
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./types/index.d.ts",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/nightwatchjs/nightwatch/issues"
@@ -99,12 +99,13 @@
   },
   "man": "",
   "scripts": {
+    "build": "rm -rf dist && tsc",
     "eslint": "eslint index.js lib bin api examples cucumber-js test --quiet",
     "mocha-coverage": "nyc --reporter=html mocha test/src/ --recursive",
-    "test": "mocha test/src/ --recursive --timeout 20000",
+    "test": "npm run build && mocha test/src/ --recursive --timeout 20000",
     "test:types": "tsd --files types/tests",
-    "component-tests": "mocha test/component-tests/src",
-    "test-cucumber": "mocha test/cucumber-integration-tests --parallel",
+    "component-tests": "npm run build && mocha test/component-tests/src",
+    "test-cucumber": "npm run build && mocha test/cucumber-integration-tests --parallel",
     "coverage": "npx nyc report --reporter=text-lcov > ./coverage/mocha_coverage.lcov",
     "prepare": "husky install"
   },
@@ -153,7 +154,7 @@
   "files": [
     "bin",
     "examples",
-    "lib",
+    "dist",
     "api",
     "types",
     "cucumber-js",
