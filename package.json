@@ -100,6 +100,7 @@
   "man": "",
   "scripts": {
     "build": "rm -rf dist && tsc",
+    "prepublishOnly": "npm run build",
     "eslint": "eslint index.js lib bin api examples cucumber-js test --quiet",
     "mocha-coverage": "nyc --reporter=html mocha test/src/ --recursive",
     "test": "npm run build && mocha test/src/ --recursive --timeout 20000",
