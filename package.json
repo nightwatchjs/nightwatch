@@ -57,6 +57,7 @@
   "devDependencies": {
     "@cucumber/cucumber": "^8.2.1",
     "@types/node": "^18.11.7",
+    "copyfiles": "^2.4.1",
     "coveralls": "^3.1.1",
     "eslint": "^8.9.0",
     "husky": "^8.0.0",
@@ -100,6 +101,7 @@
   "man": "",
   "scripts": {
     "build": "rm -rf dist && tsc",
+    "postbuild": "copyfiles -u 1 lib/**/*.ejs dist",
     "prepublishOnly": "npm run build",
     "eslint": "eslint index.js lib bin api examples cucumber-js test --quiet",
     "mocha-coverage": "nyc --reporter=html mocha test/src/ --recursive",
