@@ -10,7 +10,7 @@ export interface NightwatchGlobals {
    * @example
    * myGlobalVar: "some value"
    */
-  [key: string]: unknown;
+  [key: string]: any;
 
   /**
    * This controls whether to abort the test execution when an assertion failed and skip the rest
