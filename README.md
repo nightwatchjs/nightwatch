@@ -4,7 +4,7 @@
 [![Node.js CI](https://github.com/nightwatchjs/nightwatch/actions/workflows/build-node.yaml/badge.svg?branch=main)](https://github.com/nightwatchjs/nightwatch/actions/workflows/build-node.yaml)
 [![codecov](https://codecov.io/gh/nightwatchjs/nightwatch/branch/main/graph/badge.svg?token=MSObyfECEh)](https://codecov.io/gh/nightwatchjs/nightwatch)
 [![Discord][discord-badge]][discord]
-[![Node Support](https://img.shields.io/badge/node-%3E12.x-brightgreen.svg)](https://github.com/nightwatchjs/nightwatch/blob/27a855a2ec0c2008073708d5a2286c2819584fdc/.github/workflows/build-node.yaml#L19)
+
 
 
 <p align="center">
@@ -15,15 +15,26 @@
 
 Nightwatch is an integrated testing framework powered by Node.js and using the [W3C Webdriver API](https://www.w3.org/TR/webdriver/). It is a complete testing solution developed at [BrowserStack](https://www.browserstack.com/) and which can be used for: 
 
-☑️ end-to-end testing of web applications and websites<br>
-☑️ component testing in isolation (React / Vue)<br>
-☑️ Node.js unit and API testing
+☑️ end-to-end testing of web applications and websites
 
-## 🚀 Nightwatch v2
+☑️ component testing in isolation (React / Vue / Storybook / Angular)
 
-#### [What's New](https://nightwatchjs.org/guide/getting-started/whats-new-v2.html) | [Release Notes](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.0.0) | [Discussions](https://github.com/nightwatchjs/nightwatch/discussions)
+☑️ Node.js unit, visual regression testing, accessibility testing & API testing
 
-[Nightwatch v2](https://github.com/nightwatchjs/nightwatch/releases/tag/v2.0.0) is now available in the public NPM channel. Read the [what's new](https://nightwatchjs.org/guide/getting-started/whats-new-v2.html) docs page for an overview of the new features, improvements, and important changes.
+☑️ Native mobile app testing on Android & iOS
+
+## 🚀 Nightwatch v3
+[What's New](https://nightwatchjs.org/guide/overview/whats-new-in-v3.html) | [Release Notes](https://github.com/nightwatchjs/nightwatch/releases/tag/v3.0.1) | [Discussions](https://github.com/nightwatchjs/nightwatch/discussions)
+
+Nightwatch v3 is an all new generation that has been built around these three pillars:
+
+* **Developer Experience** : The entire experience from getting started, to writing and debugging tests, has been redesigned for speed, stability, and consistent non-flaky results.
+
+* **Mobile first**: Test your web or native, iOS and Android, mobile applications on simulators, real mobile devices or a cloud grid like BrowserStack.
+
+* **One test automation framework**: Run all types of tests from unit, component, and E2E to API, visual, and accessibility with a single framework.
+
+The [Nightwatch v3](https://github.com/nightwatchjs/nightwatch/releases/tag/v3.0.1) is not just a new version, it’s the result of months of engineering effort to reimagine test automation for the future. Try it out in 60 seconds and see it in action.  
 
 ## ⚙️ Get started in 60 seconds
 
@@ -65,29 +76,67 @@ You can follow the instructions given at the end of the setup to run your first 
 
 ---
 
-## Nightwatch unit tests
-The tests for Nightwatch are written using [Mocha](http://mochajs.org/).
+## Nightwatch mobile app testing
 
-#### 1. Clone the project
-```sh
+Nightwatch enables automation testing of native mobile applications via Appium. It combines the robustness of Appium with the enhanced developer experience provided by Nightwatch. It enables end-to-end functional testing of native mobile apps on Android and iOS devices. Try it now
+
+## Go beyond E2E
+### [Component testing](https://nightwatchjs.org/guide/component-testing/introduction.html)
+
+With Nightwatch you can test components in isolation by mounting them in the browser. Nightwatch 2 added support for component testing for popular web frameworks such as
+
+1. [React](https://nightwatchjs.org/guide/component-testing/testing-react-components.html)
+2. [VueJS](https://nightwatchjs.org/guide/component-testing/vite-plugin.html)
+3. [Angular](https://nightwatchjs.org/guide/component-testing/angular-component-testing.html)
+4. [Storybook](https://nightwatchjs.org/guide/component-testing/storybook-component-testing.html)
+
+### Nightwatch unit tests
+
+The tests for Nightwatch are written using Mocha.
+1. Clone the project
+```bash
 $ git clone https://github.com/nightwatchjs/nightwatch.git
 $ cd nightwatch
 $ npm install
 ```
+2. Run tests
 
-#### 2. Run tests
 To run the complete test suite:
-
-```sh
+```bash
 $ npm test
 ```
 
 To check test coverage, run the command:
-
-```sh
+```bash
 $ npm run mocha-coverage
 ```
-and then open the generated _coverage/index.html_ file in your browser.
+
+and then open the generated coverage/index.html file in your browser.
+
+[Unit testing guide](https://nightwatchjs.org/guide/writing-tests/write-nodejs-unit-integration-tests.html)
+
+### Other types of testing
+#### [Visual Regression Testing](https://nightwatchjs.org/guide/writing-tests/visual-regression-testing.html)
+
+Nightwatch v3 introduces visual regression testing as an in-house plugin. The plugin takes care of
+
+1. Capturing screenshots
+2. Comparison with baseline to highlight visual differences
+3. Report to review the differences
+4. Approve the changes
+
+VRT can be done on real desktop & mobile browsers. Also, VRT can be run on components as part of component testing as well.
+#### [API Testing](https://nightwatchjs.org/guide/writing-tests/api-testing.html)
+
+API testing is now available with Nightwatch v3. The following functionality can be achieved with API testing
+
+1. Request assertions
+2. Response assertions
+3. Viewing API tests in the HTML report
+4. Mock server
+
+#### [Accessibility Testing](https://nightwatchjs.org/guide/using-nightwatch/accessibility-testing.html)
+Nightwatch v3 packages the aXe-core package developed by Deque Systems as a plugin. It enables 90 different types of accessibility tests for WCAG compliance.
 
 ## 🦉 About Nightwatch
 Nightwatch was initially built by [@pineviewlabs](https://github.com/pineviewlabs/) - an independent software consultancy based in Oslo, Norway, with help from [contributors](https://github.com/nightwatchjs/nightwatch/graphs/contributors). In mid 2021, Nightwatch has become a part of the [@BrowserStack](https://github.com/browserstack) family and it is being developed further at the BrowserStack Open-source Program Office. Read more on [our blog](https://nightwatchjs.org/blog/nightwatch-has-joined-the-browserstack-family.html).
