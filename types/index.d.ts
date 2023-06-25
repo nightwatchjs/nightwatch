@@ -5205,6 +5205,13 @@ export interface CookiesNsCommands<ReturnType = unknown> {
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 }
 
+export interface FirefoxNsCommands<ReturnType = unknown> {
+  getContext(): Awaitable<IfUnknown<ReturnType, this>, 'content' | 'chrome'>;
+  setContext(ctx: Promise<string>): Awaitable<IfUnknown<ReturnType, this>, void>;
+  installAddon(path:string, temporary?: boolean): Awaitable<IfUnknown<string, this>, Promise<string>>;
+  uninstallAddon(id: string | Promise<string>): Awaitable<IfUnknown<ReturnType, this>, void>;
+} 
+
 export interface AlertsNsCommands<ReturnType = unknown> {
   /**
    * Accepts the currently displayed alert dialog. Usually, this is equivalent to clicking on the 'OK' button in the dialog.
