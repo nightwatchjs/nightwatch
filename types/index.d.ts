@@ -515,6 +515,7 @@ export interface NamespacedApi<ReturnType = unknown> {
   alerts: AlertsNsCommands<ReturnType>;
   document: DocumentNsCommands<ReturnType>;
   window: WindowNsCommands<ReturnType>;
+  firefox: FirefoxNsCommands<ReturnType>;
 
   assert: Assert<ReturnType>;
   verify: Assert<ReturnType>;
@@ -5207,9 +5208,9 @@ export interface CookiesNsCommands<ReturnType = unknown> {
 
 export interface FirefoxNsCommands<ReturnType = unknown> {
   getContext(): Awaitable<IfUnknown<ReturnType, this>, 'content' | 'chrome'>;
-  setContext(ctx: Promise<string>): Awaitable<IfUnknown<ReturnType, this>, void>;
-  installAddon(path:string, temporary?: boolean): Awaitable<IfUnknown<string, this>, Promise<string>>;
-  uninstallAddon(id: string | Promise<string>): Awaitable<IfUnknown<ReturnType, this>, void>;
+  setContext(ctx: 'content' | 'chrome' | PromiseLike<'content' | 'chrome'>): Awaitable<IfUnknown<ReturnType, this>, null>;
+  installAddon(path:string, temporary?: boolean): Awaitable<IfUnknown<ReturnType, this>, string>;
+  uninstallAddon(addonId: string | PromiseLike<string>): Awaitable<IfUnknown<ReturnType, this>, null>;
 } 
 
 export interface AlertsNsCommands<ReturnType = unknown> {
@@ -7566,6 +7567,7 @@ export const cookies: CookiesNsCommands;
 export const alerts: AlertsNsCommands;
 export const document: DocumentNsCommands;
 export const window: WindowNsCommands;
+export const firefox: FirefoxNsCommands;
 
 export const assert: Assert;
 export const verify: Assert;
