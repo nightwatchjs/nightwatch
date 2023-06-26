@@ -4,8 +4,19 @@ const common = require('../../common.js');
 const NightwatchClient = common.require('index.js');
 const Settings = common.require('settings/settings.js');
 const path = require('path');
+const MockServer = require('../../lib/mockserver.js');
+const {settings} = common;
+const {runTests} = common.require('index.js');
 
 describe('SafariDriver Transport Tests', function () {
+  before(function(done) {
+    this.server = MockServer.init();
+
+    this.server.on('listening', () => {
+      done();
+    });
+  });
+
   beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
   });
@@ -14,6 +25,12 @@ describe('SafariDriver Transport Tests', function () {
     mockery.deregisterAll();
     mockery.disable();
     mockery.resetCache();
+  });
+
+  after(function(done) {
+    this.server.close(function() {
+      done();
+    });
   });
 
   const fn = function() {};
@@ -77,9 +94,9 @@ describe('SafariDriver Transport Tests', function () {
 
           },
           async start() {
-            return 'http://localhost'
+            return 'http://localhost';
           }
-        }
+        };
       }
     }
 
@@ -93,12 +110,12 @@ describe('SafariDriver Transport Tests', function () {
     mockExecutor({
       sessionId: '111',
       getId() {
-        return '1111'
+        return '1111';
       },
       getCapabilities() {
         return {
           getPlatform() {
-            return 'MAC'
+            return 'MAC';
           },
           getBrowserName() {
             return 'safari';
@@ -112,7 +129,7 @@ describe('SafariDriver Transport Tests', function () {
           keys() {
             return new Map();
           }
-        }
+        };
       }
     });
 
@@ -181,7 +198,7 @@ describe('SafariDriver Transport Tests', function () {
       session,
       serverPath,
       serverPort
-    }
+    };
   }
 
   it('test create session with safari driver', async function() {
@@ -243,5 +260,121 @@ describe('SafariDriver Transport Tests', function () {
       sessionId: '1111', capabilities: {}
     });
     assert.strictEqual(serverPath, '/Applications/Safari Technology Preview.app/Contents/MacOS/safaridriver');
+  });
+
+  it('session create should throw error after max retryAttempts', function() {
+
+    const testsPath = [
+      path.join(__dirname, '../../sampletests/async')
+    ];
+
+    MockServer.addMock({
+      url: '/session',
+      statusCode: 500,
+      postdata: JSON.stringify({
+        'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'safari'}}
+      }),
+      response: JSON.stringify({
+        value: {
+          error: 'session not created',
+          message: 'Could not create a session: Some devices were found, but could not be used:\n'
+        }
+      }),
+      times: 2
+    });
+
+    const globals = {
+      reporter(results) {
+        const sep = path.sep;
+        assert.strictEqual(results.errors, 1);
+        assert.strictEqual(Object.keys(results.modules).length, 1);
+        assert.ok(Object.keys(results.modules).includes(`test${sep}sample`));
+        assert.ok(results.lastError instanceof Error);
+
+        assert.strictEqual(results.lastError.message, 'An error occurred while creating a new SafariDriver session: [SessionNotCreatedError] Could not create a session: Some devices were found, but could not be used:\n');
+      }
+    };
+
+    return runTests({source: testsPath}, settings({
+      selenium_host: null,
+      desiredCapabilities: {
+        browserName: 'safari'
+      },
+      webdriver: {
+        host: 'localhost',
+        timeout_options: {
+          retry_attempts: 1
+        },
+        internal_server_error_retry_interval: 0
+      },
+      globals,
+      output: false,
+      output_folder: false
+    }));
+  });
+
+  it('session create should retry on internal server error (500)', function() {
+    const testsPath = [
+      path.join(__dirname, '../../sampletests/async')
+    ];
+
+    MockServer.addMock({
+      url: '/session',
+      statusCode: 500,
+      postdata: JSON.stringify({
+        'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'safari'}}
+      }),
+      response: JSON.stringify({
+        value: {
+          error: 'session not created',
+          message: 'Could not create a session: Some devices were found, but could not be used:\n'
+        }
+      }),
+      times: 3
+    });
+
+    MockServer.addMock({
+      url: '/session',
+      statusCode: 200,
+      postdata: JSON.stringify({
+        'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'safari'}}
+      }),
+      response: JSON.stringify({
+        value: {
+          sessionId: 'D5E59FB5-1DBA-4ED8-9402-459D9A4AA0D7',
+          capabilities: {
+            'safari:deviceName': 'Binayak\'s iPhone',
+            'safari:platformVersion': '16.2'
+          }
+        }
+      }),
+      times: 1
+    });
+
+    const globals = {
+      reporter(results) {
+        const sep = path.sep;
+        assert.strictEqual(results.errors, 0);
+        assert.strictEqual(Object.keys(results.modules).length, 1);
+        assert.ok(Object.keys(results.modules).includes(`test${sep}sample`));
+      }
+    };
+
+    return runTests({source: testsPath}, settings({
+      selenium_host: null,
+      desiredCapabilities: {
+        browserName: 'safari'
+      },
+      webdriver: {
+        host: 'localhost',
+        timeout_options: {
+          retry_attempts: 3
+        },
+        internal_server_error_retry_interval: 100
+      },
+      globals,
+      output: false,
+      output_folder: false
+    }));
   });
 });

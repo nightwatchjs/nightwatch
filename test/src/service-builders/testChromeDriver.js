@@ -116,7 +116,7 @@ describe('ChromeDriver Transport Tests', function () {
         onSetPath(h);
       }
 
-      addArguments(args) {
+      addArguments(...args) {
         onAddArguments(args);
       }
 
@@ -181,7 +181,7 @@ describe('ChromeDriver Transport Tests', function () {
       },
 
       onAddArguments(args) {
-        buildArgs.push(args);
+        buildArgs.push(...args);
       },
 
       onSetPort(p) {
@@ -363,7 +363,8 @@ describe('ChromeDriver Transport Tests', function () {
         port: 9999,
         start_process: true,
         cli_args: [
-          '--log-level=WARNING'
+          '--log-level=WARNING',
+          '--version'
         ]
       }
     });
@@ -375,7 +376,7 @@ describe('ChromeDriver Transport Tests', function () {
     assert.strictEqual(serverPath, '/path/to/chromedriver');
     assert.strictEqual(serverPort, 9999);
 
-    const expectedBuildArgs = ['--log-level=WARNING'];
+    const expectedBuildArgs = ['--log-level=WARNING', '--version'];
     if (process.platform !== 'win32') {
       expectedBuildArgs.push('--enable-chrome-logs');
     }

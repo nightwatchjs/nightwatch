@@ -1,7 +1,7 @@
 {
   "name": "nightwatch",
   "description": "Easy to use Node.js based end-to-end testing solution for web applications using the W3C WebDriver API.",
-  "version": "3.0.0-beta.1",
+  "version": "3.0.1",
   "author": "Andrei Rusu",
   "homepage": "https://nightwatchjs.org",
   "main": "./lib/index.js",
@@ -47,7 +47,7 @@
     "open": "8.4.0",
     "ora": "5.4.1",
     "piscina": "^3.2.0",
-    "selenium-webdriver": "4.9.2",
+    "selenium-webdriver": "~4.10.0",
     "semver": "7.3.5",
     "stacktrace-parser": "0.1.10",
     "strip-ansi": "6.0.1",
