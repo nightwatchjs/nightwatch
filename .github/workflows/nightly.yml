@@ -36,7 +36,7 @@ jobs:
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "nightly"
-          title: "Nightly ${{ inputs.version }}"
+          automatic_release_tag: "nightly-v${{ inputs.version }}"
+          title: "Nightly v${{ inputs.version }}"
           prerelease: true
           files: '*.tgz'
