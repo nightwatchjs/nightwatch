@@ -5206,9 +5206,10 @@ export interface CookiesNsCommands<ReturnType = unknown> {
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 }
 
+type FirefoxContext = 'content' | 'chrome';
 export interface FirefoxNsCommands<ReturnType = unknown> {
-  getContext(): Awaitable<IfUnknown<ReturnType, this>, 'content' | 'chrome'>;
-  setContext(ctx: 'content' | 'chrome' | PromiseLike<'content' | 'chrome'>): Awaitable<IfUnknown<ReturnType, this>, null>;
+  getContext(): Awaitable<IfUnknown<ReturnType, this>, FirefoxContext>;
+  setContext(ctx: FirefoxContext | PromiseLike<FirefoxContext>): Awaitable<IfUnknown<ReturnType, this>, null>;
   installAddon(path:string, temporary?: boolean): Awaitable<IfUnknown<ReturnType, this>, string>;
   uninstallAddon(addonId: string | PromiseLike<string>): Awaitable<IfUnknown<ReturnType, this>, null>;
 } 
