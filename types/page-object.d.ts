@@ -1,9 +1,14 @@
 import {MergeObjectsArray} from './utils';
 import {NightwatchCustomCommands} from './custom-command';
 import {
+  AlertsNsCommands,
+  Assert,
   ChromiumClientCommands,
+  CookiesNsCommands,
+  DocumentNsCommands,
   ElementCommands,
   ElementFunction,
+  Expect,
   LocateStrategy,
   NamespacedApi,
   NightwatchAPI,
@@ -167,8 +172,7 @@ export type EnhancedSectionInstance<
     | 'clickAndHold'
     | 'doubleClick'
     | 'rightClick'
-  > &
-  Pick<NamespacedApi<NightwatchAPI>, 'alerts' | 'cookies' | 'document' | 'assert' | 'verify' | 'expect'>;
+  >;
 
 interface PageObjectSection {
   commands?: Record<string, unknown>[];
@@ -254,6 +258,14 @@ interface EnhancedPageObjectSharedFields<
    * Nightwatch new element API.
    */
   element: ElementFunction;
+
+  // Namespaces directly available on page-objects and sections.
+  alerts: AlertsNsCommands<this>;
+  cookies: CookiesNsCommands<this>;
+  document: DocumentNsCommands<this>;
+  assert: Assert<this>;
+  verify: Assert<this>;
+  expect: Expect;
 }
 
 export interface ElementProperties {
@@ -457,7 +469,6 @@ export type EnhancedPageObject<
   URL = string
 > = SharedCommands &
   NightwatchCustomCommands &
-  Pick<NamespacedApi<NightwatchAPI>, 'alerts' | 'cookies' | 'document' | 'assert' | 'verify' | 'expect'> &
   EnhancedPageObjectSharedFields<
     Required<MergeObjectsArray<Commands>>,
     Required<MergeObjectsArray<Elements>>,
