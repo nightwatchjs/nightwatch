@@ -33,16 +33,21 @@ Feature requests are welcome.
 ## Submitting a pull request
 Thanks in advance for your contribution.
 
-1. Follow the usual git workflow for submitting a pull request
-  
-  * fork the project
-  * create a new branch from master (e.g. `features/my-new-feature` or `issue/123-my-bugfix`)
-2. If you're fixing a bug also create an issue if one doesn't exist yet
-3. If it's a new feature/enhancemnt explain why do you think it's necessary
-4. If your change include drastic or low level changes please discuss them to make sure they will be accepted and what the impact will be
-5. If your change is based on exisiting functionality please consider refactoring first. Pull requests that duplicate code will not make it in very quick, if at all
-6. Do not include changes that are not related to the issue at hand
+1. Follow the usual git workflow for submitting a pull request:
+   * fork the project
+   * create a new branch from main (e.g. `features/my-new-feature` or `issue/123-my-bugfix`)
+   * add your changes
+   * try to run some Nightwatch tests locally to test the functionality after making your changes: `npm run dev -- examples/tests/ecosia.js --env chrome`
+   * run Nightwatch unit tests locally: `npm test`  
+     or, run individual tests: `npm run mocha -- test/src/api/commands/client/testWaitUntil.js`
+   * commit your changes and create a pull request
+
+2. If you're fixing a bug, also create an issue if one doesn't exist yet.
+3. If it's a new feature/enhancement, explain why do you think it's necessary.
+4. If your change include drastic or low level changes please discuss them to make sure they will be accepted and what the impact will be.
+5. If your change is based on existing functionality, please consider refactoring first. Pull requests that duplicate code will not make it in very quick, if at all.
+6. Do not include changes that are not related to the issue at hand.
 6. Follow the same coding style with regards to spaces, semicolons, variable naming etc. 
-7. Always add tests - after all this _is_ a testing framework
+7. Always add tests - after all this _is_ a testing framework.
 
 
