@@ -55,7 +55,7 @@ module.exports = class NightwatchFormatter extends Formatter {
   }
 
   onHook(hook) {
-    this.report.hooks = [...(this.report.hook || []), hook];
+    this.report.hooks = [...(this.report.hooks || []), hook];
   }
 
   onSource(source) {
