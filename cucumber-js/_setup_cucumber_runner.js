@@ -63,7 +63,6 @@ Before(function({pickle}) {
   if (options.auto_start_session || typeof options.auto_start_session == 'undefined') {
     return this.client.launchBrowser().then(browser => {
       this.browser = browser;
-      NightwatchFormat.setBrowser(this.browser);
     });
   }
 });

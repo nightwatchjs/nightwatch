@@ -20,8 +20,9 @@ module.exports = class NightwatchFormatter extends Formatter {
     this.report = {};
 
     options.eventBroadcaster.on('envelope', (envelope) => {
-      if (NightwatchFormatter.browser && (!this.report.sessionId || NightwatchFormatter.browser?.sessionId !== this.report.sessionId)) {
-        this.setCapabilities();
+      if (NightwatchFormatter.sessionId && (!this.report.sessionId || NightwatchFormatter.sessionId !== this.report.sessionId)) {
+        this.report.sessionId = NightwatchFormatter.sessionId;
+        this.report.sessionCapabilities = NightwatchFormatter.sessionCapabilities;
       }
       
       this.reportHandler(envelope);
@@ -32,17 +33,9 @@ module.exports = class NightwatchFormatter extends Formatter {
     NightwatchFormatter.client = client;
   }
 
-  static setBrowser(browser) {
-    NightwatchFormatter.browser = browser;
-  }
-
-  setCapabilities() {
-    this.report = {
-      ...this.report,
-      seleniumLogs: NightwatchFormatter.client?.transport?.driverService?.getSeleniumOutputFilePath(),
-      sessionCapabilities: NightwatchFormatter.browser?.capabilities,
-      sessionId: NightwatchFormatter.browser?.sessionId
-    };
+  static setCapabilities({sessionId, capabilities}) {
+    NightwatchFormatter.sessionId = sessionId;
+    NightwatchFormatter.sessionCapabilities = capabilities;
   }
 
   onMeta(meta) {
@@ -59,6 +52,10 @@ module.exports = class NightwatchFormatter extends Formatter {
 
   onPickle(pickle) {
     this.report.pickle = [...(this.report.pickle || []), pickle];
+  }
+
+  onHook(hook) {
+    this.report.hooks = [...(this.report.hook || []), hook];
   }
 
   onSource(source) {
@@ -169,6 +166,7 @@ module.exports = class NightwatchFormatter extends Formatter {
       source: this.onSource,
       stepDefinition: this.onStepDefinition,
       testCase: this.onTestCase,
+      hook: this.onHook,
       testCaseFinished: this.onTestCaseFinished,
       testCaseStarted: this.onTestCaseStarted,
       testRunFinished: this.onTestRunFinished,
