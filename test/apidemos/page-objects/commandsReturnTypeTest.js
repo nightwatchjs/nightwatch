@@ -99,4 +99,33 @@ describe('test return type of various commands on page-objects', function () {
     assert.strictEqual(typeof pageChaiAssert.a, 'function');
     assert.strictEqual(typeof pageChaiAssert.present, 'object');
   });
+
+  it('return correct type on sections in non-async mode', function() {
+    const signUpSection = pageObject.section.signUp;
+
+    const sectionClick = signUpSection.click('@help');
+    // sectionClick does not have methods specific to NightwatchAPI
+    assert.strictEqual(typeof sectionClick.submit, 'undefined');
+    assert.strictEqual(typeof sectionClick.isChrome, 'undefined');
+    // sectionClick does not page specific methods/properties
+    assert.strictEqual(typeof sectionClick.testCommand, 'undefined');
+    // sectionClick have section specific property/methods
+    assert.strictEqual(typeof sectionClick.sectionElements, 'function');
+    assert.strictEqual(typeof sectionClick.section, 'object');
+  });
+
+  it('return correct type on sections in async mode', async function() {
+    const signUpSection = pageObject.section.signUp;
+
+    const sectionClick = signUpSection.click('@help');
+    assert.strictEqual(sectionClick instanceof Promise, true);
+    // sectionClick does not have methods specific to NightwatchAPI
+    assert.strictEqual(typeof sectionClick.submit, 'undefined');
+    assert.strictEqual(typeof sectionClick.isChrome, 'undefined');
+    // sectionClick does not page specific methods/properties
+    assert.strictEqual(typeof sectionClick.testCommand, 'undefined');
+    // sectionClick have section specific property/methods
+    assert.strictEqual(typeof sectionClick.sectionElements, 'function');
+    assert.strictEqual(typeof sectionClick.section, 'object');
+  });
 });

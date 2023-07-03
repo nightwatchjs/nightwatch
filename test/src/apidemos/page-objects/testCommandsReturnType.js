@@ -45,7 +45,28 @@ describe('new element api with page objects', function() {
           value: true
         }),
         times: 4  
-      });
+      })
+      .addMock({
+        url: '/session/13521-10219-202/element/0/elements',
+        postdata: {
+          using: 'css selector',
+          value: '#helpBtn'
+        },
+        method: 'POST',
+        response: JSON.stringify({
+          value: [
+            {'element-6066-11e4-a52e-4f735466cecf': '1'},
+            {'element-6066-11e4-a52e-4f735466cecf': '2'}
+          ]
+        })
+      }, true, true)
+      .addMock({
+        url: '/session/13521-10219-202/element/1/click',
+        method: 'POST',
+        response: JSON.stringify({
+          value: null
+        })
+      }, true, true);
 
     const globals = {
       calls: 0,
