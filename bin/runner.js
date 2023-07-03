@@ -1,8 +1,10 @@
 /**
  * Module dependencies
  */
-const Nightwatch = require('../dist/index.js');
-const {Logger, shouldReplaceStack, alwaysDisplayError} = require('../dist/utils');
+const mainDir = process.env.NIGHTWATCH_TS_NODE_DEV ? 'lib' : 'dist';
+
+const Nightwatch = require(`../${mainDir}/index.js`);
+const {Logger, shouldReplaceStack, alwaysDisplayError} = require(`../${mainDir}/utils`);
 
 try {
   Nightwatch.cli(function (argv) {
