@@ -500,6 +500,7 @@ export interface NamespacedApi<ReturnType = unknown> {
   logs: LogsNsCommands<ReturnType>;
   window: WindowNsCommands<ReturnType>;
   firefox: FirefoxNsCommands<ReturnType>;
+  chrome: ChromeNsCommands<ReturnType>;
   network: NetworkNsCommands<ReturnType>;
 
   assert: Assert<ReturnType>;
@@ -5057,6 +5058,47 @@ export interface FirefoxNsCommands<ReturnType = unknown> {
   uninstallAddon(addonId: string | PromiseLike<string>): Awaitable<IfUnknown<ReturnType, this>, null>;
 } 
 
+export interface ChromeNsCommands<ReturnType = unknown>{
+  launchApp(
+    id:string
+  ): Awaitable<IfUnknown<ReturnType, this>, null>; 
+
+  getNetworkConditions(): Awaitable<IfUnknown<ReturnType, this>, {[key: string]: any}>; 
+
+  setNetworkConditions(
+    parameter: {[key: string]: any}
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  sendDevToolsCommand(
+    cmd: string, 
+    params: {[key: string]: any} | null
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  sendAndGetDevToolsCommand(
+    cmd: string, 
+    params: {[key: string]: any}
+  ): Awaitable<IfUnknown<ReturnType, this>, string>;
+
+  setPermission(
+    name: string, 
+    state: 'granted' | 'denied' | 'prompt'
+  ): Awaitable<IfUnknown<ReturnType, this>, {[key: string]: any}>;
+
+  setDownloadPath(
+    id:string
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  getCastSinks(): Awaitable<IfUnknown<ReturnType, this>, string[]>;
+
+  setCastSinkToUse(
+    deviceName: string
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  startCasttabMirroring(): Awaitable<IfUnknown<ReturnType, this>, null>;
+  getCastIssueMessage(): Awaitable<IfUnknown<ReturnType, this>, string>;
+  stopCasting(): Awaitable<IfUnknown<ReturnType, this>, null>;
+ }
+
 export interface NetworkNsCommands<ReturnType = unknown> {
   /**
    * Capture outgoing network calls from the browser.
@@ -7650,6 +7692,7 @@ export const alerts: AlertsNsCommands;
 export const document: DocumentNsCommands;
 export const window: WindowNsCommands;
 export const firefox: FirefoxNsCommands;
+export const chrome: ChromeNsCommands;
 
 export const assert: Assert;
 export const verify: Assert;
