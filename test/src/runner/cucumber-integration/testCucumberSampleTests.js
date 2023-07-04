@@ -16,7 +16,7 @@ describe('Cucumber integration', function() {
   });
 
   it('testCucumberSampleTests', function() {
-    const source = [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')];
+    const source = [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/parallelWithMultipleDefinition/testExpect.js'), path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')];
 
     return runTests({
       source,
