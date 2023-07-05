@@ -1,4 +1,4 @@
-const BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
+const BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'dist';
 const path = require('path');
 
 module.exports = {
@@ -15,7 +15,7 @@ module.exports = {
   },
 
   requireMock(relativeFilePath, ...args) {
-    let mockedModule = require(path.join(__dirname, './lib/mocks', relativeFilePath));
+    const mockedModule = require(path.join(__dirname, './lib/mocks', relativeFilePath));
 
     return mockedModule(...args);
   },

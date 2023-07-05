@@ -1,6 +1,7 @@
 const assert = require('assert');
 const mockery = require('mockery');
 const nodeRepl = require('repl');
+const common = require('../../../../common.js');
 
 describe('startServer', function() {
   beforeEach(function() {
@@ -30,7 +31,7 @@ describe('startServer', function() {
       }
     });
 
-    const NightwatchRepl = require('../../../../../lib/testsuite/repl.js');
+    const NightwatchRepl = common.require('testsuite/repl.js');
     const repl = new NightwatchRepl();
 
     const context = {browser: 'something', app: 'other'};
@@ -61,7 +62,7 @@ describe('startServer', function() {
       }
     });
 
-    const NightwatchRepl = require('../../../../../lib/testsuite/repl.js');
+    const NightwatchRepl = common.require('testsuite/repl.js');
 
     const config = {preview: false, timeout: 6000};
     const repl = new NightwatchRepl(config);
@@ -90,7 +91,7 @@ describe('_eval', function() {
   });
 
   it('calls _outputPreview if cmd represents auto-complete request', () => {
-    const NightwatchRepl = require('../../../../../lib/testsuite/repl.js');
+    const NightwatchRepl = common.require('testsuite/repl.js');
     const repl = new NightwatchRepl();
 
     let outputPreviewCalled = false;
@@ -110,7 +111,7 @@ describe('_eval', function() {
       }
     });
 
-    const NightwatchRepl = require('../../../../../lib/testsuite/repl.js');
+    const NightwatchRepl = common.require('testsuite/repl.js');
     const repl = new NightwatchRepl();
 
     repl._resultAwaited = true;
@@ -127,7 +128,7 @@ describe('_eval', function() {
     let handleResultCalled = false;
     let resultObtained;
 
-    const NightwatchRepl = require('../../../../../lib/testsuite/repl.js');
+    const NightwatchRepl = common.require('testsuite/repl.js');
     const repl = new NightwatchRepl();
 
     repl.startServer({});
@@ -167,7 +168,7 @@ describe('_eval', function() {
 
     let handleResultCalled = false;
 
-    const NightwatchRepl = require('../../../../../lib/testsuite/repl.js');
+    const NightwatchRepl = common.require('testsuite/repl.js');
     const repl = new NightwatchRepl();
 
     repl.startServer({});
@@ -201,7 +202,7 @@ describe('_eval', function() {
 
     let handleResultCalled = false;
 
-    const NightwatchRepl = require('../../../../../lib/testsuite/repl.js');
+    const NightwatchRepl = common.require('testsuite/repl.js');
     const repl = new NightwatchRepl();
 
     repl.startServer({});
@@ -227,7 +228,7 @@ describe('_handleResult', function() {
       resultReturned = result;
     };
 
-    const NightwatchRepl = require('../../../../../lib/testsuite/repl.js');
+    const NightwatchRepl = common.require('testsuite/repl.js');
     const repl = new NightwatchRepl();
     repl._handleResult(undefined, callback);
 
@@ -246,7 +247,7 @@ describe('_handleResult', function() {
       resultReturned = result;
     };
 
-    const NightwatchRepl = require('../../../../../lib/testsuite/repl.js');
+    const NightwatchRepl = common.require('testsuite/repl.js');
     const repl = new NightwatchRepl();
     repl._handleResult('Google', callback);
 
@@ -259,7 +260,7 @@ describe('_handleResult', function() {
     const startTime = new Date();
     let callbackCalledCount = 0;
 
-    const NightwatchRepl = require('../../../../../lib/testsuite/repl.js');
+    const NightwatchRepl = common.require('testsuite/repl.js');
 
     const config = {timeout: 1000};
     const repl = new NightwatchRepl(config);
@@ -296,7 +297,7 @@ describe('_handleResult', function() {
     const startTime = new Date();
     let callbackCalledCount = 0;
 
-    const NightwatchRepl = require('../../../../../lib/testsuite/repl.js');
+    const NightwatchRepl = common.require('testsuite/repl.js');
 
     const config = {timeout: 1000};
     const repl = new NightwatchRepl(config);
@@ -341,7 +342,7 @@ describe('_outputPreview', () => {
       callbackResultPassed = result;
     };
 
-    const NightwatchRepl = require('../../../../../lib/testsuite/repl.js');
+    const NightwatchRepl = common.require('testsuite/repl.js');
     const repl = new NightwatchRepl();
     repl._context = {
       nightwatch: {
@@ -367,7 +368,7 @@ describe('_outputPreview', () => {
       callbackResultPassed = result;
     };
 
-    const NightwatchRepl = require('../../../../../lib/testsuite/repl.js');
+    const NightwatchRepl = common.require('testsuite/repl.js');
     const repl = new NightwatchRepl();
     repl._context = {
       nightwatch: {
