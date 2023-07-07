@@ -1,4 +1,4 @@
-import { expectError, expectType } from 'tsd';
+import { expectAssignable, expectError, expectType } from 'tsd';
 import { EventEmitter } from 'events';
 import {
   EnhancedPageObject,
@@ -414,7 +414,7 @@ const menuSection = {
 } satisfies SectionProperties;
 
 const googleCommands = {
-  submit(this: EnhancedPageObject) {
+  submit(this: GooglePage) {
     this.api.pause(1000);
     return this.waitForElementVisible('@submitButton', 1000)
       .click('@submitButton')
@@ -481,10 +481,18 @@ declare module '..' {
 const testPage = {
   'Test commands': () => {
     const google = browser.page.google();
-    google.setValue('@searchBar', 'nightwatch').submit();
+    google.setValue('@searchBar', 'nightwatch').submit().assert.titleContains('nightwatch');
 
     expectType<NightwatchAPI>(google.api);
     expectType<NightwatchClient>(google.client);
+
+    const result = google
+      .setValue('@searchBar', 'nightwatch')
+      .assert.titleContains('Google');
+    
+    expectAssignable<GooglePage>(result);
+    expectAssignable<GooglePage>(result.submit());
+    expectAssignable<GooglePage>(result.cookies.getAll());
 
     // test new element api
     google.element('@searchBar');
@@ -496,19 +504,21 @@ const testPage = {
   'Test sections': () => {
     const google = browser.page.google();
 
-    expectType<Awaitable<NightwatchAPI, null>>(google.cookies.deleteAll());
+    expectAssignable<GooglePage>(google.cookies.deleteAll());
     expectError(googlePage.window.maximize());
 
     const menuSection = google.section.menu;
 
-    menuSection
+    const result = menuSection
       .assert.visible('@mail')
       .assert.visible('@images');
+
+    expectAssignable<typeof menuSection>(result);
 
     menuSection.expect.element('@mail').to.be.visible;
     menuSection.expect.element('@images').to.be.visible;
 
-    expectType<Awaitable<NightwatchAPI, null>>(menuSection.alerts.accept());
+    expectAssignable<typeof menuSection>(menuSection.alerts.accept());
     expectType<NightwatchAPI>(menuSection.api);
     expectType<NightwatchClient>(menuSection.client);
 

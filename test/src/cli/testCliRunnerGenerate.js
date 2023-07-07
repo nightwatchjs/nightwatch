@@ -34,7 +34,7 @@ describe('Test CLI Runner Generate', function() {
     let configData;
     const {constants, rmdirSync, readFileSync} = require('fs');
     const path = require('path');
-    const tplData = readFileSync(path.resolve('lib/runner/cli/nightwatch.conf.ejs')).toString();
+    const tplData = readFileSync(path.resolve('dist/runner/cli/nightwatch.conf.ejs')).toString();
 
     const os = require('os');
     mockery.registerMock('os', {

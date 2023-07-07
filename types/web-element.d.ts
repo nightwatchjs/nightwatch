@@ -159,7 +159,7 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   setAttribute(name: string, value: string | null): Promise<WebElement>;
 
-  takeScreenshot(shouldBeInView?: boolean): ElementValue<string>;
+  takeScreenshot(): ElementValue<string>;
 
   dragAndDrop(destination: DragAndDropDestination): Promise<WebElement>;
 

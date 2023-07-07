@@ -1,5 +1,6 @@
 const assert = require('assert');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
+const common = require('../../../../common.js');
 
 describe('.pause()', function() {
   before(function(done) {
@@ -69,7 +70,7 @@ describe('.pause()', function() {
   });
 
   it('browser.pause() and then step over using <space>', function(done) {
-    const Debuggability = require('../../../../../lib/utils/debuggability.js');
+    const Debuggability = common.require('utils/debuggability.js');
 
     const startTime = new Date();
 
@@ -88,7 +89,7 @@ describe('.pause()', function() {
   });
 
   it('browser.pause() and then step over using F10', function(done) {
-    const Debuggability = require('../../../../../lib/utils/debuggability.js');
+    const Debuggability = common.require('utils/debuggability.js');
 
     const startTime = new Date();
 

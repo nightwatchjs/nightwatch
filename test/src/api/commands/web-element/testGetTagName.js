@@ -2,7 +2,8 @@ const assert = require('assert');
 const {WebElement} = require('selenium-webdriver');
 const MockServer  = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands-w3c.js');
-const Element = require('../../../../../lib/element/index.js');
+const common = require('../../../../common.js');
+const Element = common.require('element/index.js');
 
 describe('element().getTagName() command', function () {
   before(function (done) {

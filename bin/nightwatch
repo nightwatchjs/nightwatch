@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 
+const utilsPath = process.env.NIGHTWATCH_TS_NODE_DEV ?
+  '../lib/utils' :
+  '../dist/utils';
+
 const semver = require('semver');
-const {Logger} = require('../lib/utils');
+const {Logger} = require(utilsPath);
 const requiredVersion = require('../package.json').engines.node;
 
 function checkNodeVersion (wanted, id) {
