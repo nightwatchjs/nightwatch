@@ -3,6 +3,7 @@ const path = require('path');
 const Utils = require('../lib/utils');
 const {Logger, createFolder} = Utils;
 const {Formatter} = require('@cucumber/cucumber');
+const lodashCloneDeep = require('lodash.clonedeep');
 
 const {NightwatchEventHub, CUCUMBER_RUNNER_EVENTS: {
   TestStarted, 
@@ -20,12 +21,14 @@ module.exports = class NightwatchFormatter extends Formatter {
     this.report = {};
 
     options.eventBroadcaster.on('envelope', (envelope) => {
+      const envelopeCopy = lodashCloneDeep(envelope);
+
       if (NightwatchFormatter.sessionId && (!this.report.sessionId || NightwatchFormatter.sessionId !== this.report.sessionId)) {
         this.report.sessionId = NightwatchFormatter.sessionId;
         this.report.sessionCapabilities = NightwatchFormatter.sessionCapabilities;
       }
       
-      this.reportHandler(envelope);
+      this.reportHandler(envelopeCopy);
     });
   }
 
