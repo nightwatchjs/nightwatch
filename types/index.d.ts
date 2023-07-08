@@ -5058,25 +5058,27 @@ export interface FirefoxNsCommands<ReturnType = unknown> {
   uninstallAddon(addonId: string | PromiseLike<string>): Awaitable<IfUnknown<ReturnType, this>, null>;
 } 
 
+type setNetworktype = {offline: boolean, latency: number, download_throughput: number, upload_throughput: number};
+
 export interface ChromeNsCommands<ReturnType = unknown>{
   launchApp(
-    id:string
+    id: string
   ): Awaitable<IfUnknown<ReturnType, this>, null>; 
 
-  getNetworkConditions(): Awaitable<IfUnknown<ReturnType, this>, {[key: string]: any}>; 
+  getNetworkConditions(): Awaitable<IfUnknown<ReturnType, this>, setNetworktype | null>; 
 
   setNetworkConditions(
-    parameter: {[key: string]: any}
+    params?: setNetworktype | null
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   sendDevToolsCommand(
     cmd: string, 
-    params: {[key: string]: any} | null
+    params?: {[key: string]: any} | null 
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   sendAndGetDevToolsCommand(
     cmd: string, 
-    params: {[key: string]: any}
+    params?: {[key: string]: any}
   ): Awaitable<IfUnknown<ReturnType, this>, string>;
 
   setPermission(
@@ -5085,7 +5087,7 @@ export interface ChromeNsCommands<ReturnType = unknown>{
   ): Awaitable<IfUnknown<ReturnType, this>, {[key: string]: any}>;
 
   setDownloadPath(
-    id:string
+    id: string
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   getCastSinks(): Awaitable<IfUnknown<ReturnType, this>, string[]>;
@@ -5097,7 +5099,7 @@ export interface ChromeNsCommands<ReturnType = unknown>{
   startCasttabMirroring(): Awaitable<IfUnknown<ReturnType, this>, null>;
   getCastIssueMessage(): Awaitable<IfUnknown<ReturnType, this>, string>;
   stopCasting(): Awaitable<IfUnknown<ReturnType, this>, null>;
- }
+}
 
 export interface NetworkNsCommands<ReturnType = unknown> {
   /**
