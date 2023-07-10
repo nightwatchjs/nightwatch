@@ -85,6 +85,73 @@ describe('.captureNetworkRequests()', function () {
     });
   });
 
+  it.only('browser.network.captureRequests()', function (done) {
+
+    MockServer.addMock({
+      url: '/session',
+      response: {
+        value: {
+          sessionId: '13521-10219-202',
+          capabilities: {
+            browserName: 'chrome',
+            browserVersion: '92.0'
+          }
+        }
+      },
+      method: 'POST',
+      statusCode: 201
+    }, true);
+
+    Nightwatch.initW3CClient({
+      desiredCapabilities: {
+        browserName: 'chrome',
+        'goog:chromeOptions': {}
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
+    }).then(client => {
+      const expected = {};
+
+      const cdpNetworkEvent = JSON.stringify({
+        method: 'Network.requestWillBeSent',
+        params: {
+          request: {
+            url: 'https://www.google.com',
+            method: 'GET',
+            headers: []
+          }
+        }
+      });
+
+      cdp.resetConnection();
+      client.transport.driver.createCDPConnection = function() {
+        return Promise.resolve({
+          _wsConnection: {
+            on: (event, callback) => {
+              expected['wsEvent'] = event;
+              callback(cdpNetworkEvent);
+            }
+          },
+          execute: function(command, params) {
+            expected['cdpCommand'] = command;
+            expected['cdpParams'] = params;
+          }
+        });
+      };
+
+      const userCallback = (requestParams) => {
+        expected['requestParams'] = requestParams;
+      };
+      client.api.network.captureRequests(userCallback, function () {
+        assert.deepEqual(expected.cdpCommand, 'Network.enable');
+        assert.deepEqual(expected.cdpParams, {});
+        assert.strictEqual(expected.wsEvent, 'message');
+        assert.deepEqual(expected.requestParams, JSON.parse(cdpNetworkEvent).params);
+      });
+      client.start(done);
+    });
+  });
+
   it('throws error without callback', function (done) {
 
     MockServer.addMock({
@@ -138,3 +205,4 @@ describe('.captureNetworkRequests()', function () {
   });
 
 });
+

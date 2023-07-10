@@ -59,6 +59,54 @@ describe('.setNetworkConditions()', function () {
     });
   });
 
+
+  it.only('browser.network.setConditions()', function (done) {
+    MockServer.addMock(
+      {
+        url: '/session',
+        response: {
+          value: {
+            sessionId: '13521-10219-202',
+            capabilities: {
+              browserName: 'chrome',
+              browserVersion: '92.0'
+            }
+          }
+        },
+        method: 'POST',
+        statusCode: 201
+      },
+      true
+    );
+
+    Nightwatch.initW3CClient({
+      desiredCapabilities: {
+        browserName: 'chrome',
+        'goog:chromeOptions': {}
+      }
+    }).then((client) => {
+      client.transport.driver.setNetworkConditions = function (spec) {
+        assert.strictEqual('download_throughput', 460800);
+        assert.strictEqual('latency', 50000);
+        assert.strictEqual('offline', false);
+        assert.strictEqual('upload_throughput', 153600);
+
+        return Promise.resolve();
+      };
+      client.api.network.setConditions({
+        offline: false,
+        latency: 50000,
+        download_throughput: 450 * 1024,
+        upload_throughput: 150 * 1024
+      },
+      function (result) {
+        assert.deepStrictEqual(result.value, null);
+      }
+      );
+      client.start(done);
+    });
+  });
+
   it('browser.setNetworkConditions - driver not supported', function (done) {
     Nightwatch.initW3CClient({
       desiredCapabilities: {
