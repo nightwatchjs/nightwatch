@@ -53,6 +53,7 @@
     "stacktrace-parser": "0.1.10",
     "strip-ansi": "6.0.1",
     "untildify": "^4.0.0",
+    "typescript": "^4.9.5",
     "uuid": "8.3.2"
   },
   "devDependencies": {
@@ -80,7 +81,6 @@
     "serve": "^14.2.0",
     "ts-node": "^10.9.1",
     "tsd": "^0.28.1",
-    "typescript": "^4.9.5",
     "wait-on": "^7.0.1"
   },
   "peerDependencies": {
