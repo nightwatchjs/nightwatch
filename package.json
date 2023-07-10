@@ -169,7 +169,8 @@
     "README.md",
     "CODE_OF_CONDUCT.md",
     "LICENSE.md",
-    "index.js"
+    "index.js",
+    "tsconfig.json"
   ],
   "lint-staged": {
     "**/*.js": [
