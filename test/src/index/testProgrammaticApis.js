@@ -570,4 +570,74 @@ describe('test programmatic apis', function () {
     CliRunner.createDefaultConfig = createDefaultConfig;
     CliRunner.prototype.loadConfig = loadConfig;
   });
+
+  it('test if process listener get disabled', async function() {
+    let processListenerCalled = false;
+    mockery.enable({useCleanCache: true, warnOnUnregistered: false});
+    mockery.registerMock('../process-listener.js', class {
+      constructor() {
+        processListenerCalled = true;
+      }
+
+      setTestRunner() {}
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+    const Nightwatch = common.require('index.js');
+
+    const createDefaultConfig = CliRunner.createDefaultConfig;
+    const loadConfig = CliRunner.prototype.loadConfig;
+    const defaultConfig = {
+      test_settings: {
+        default: {
+          launchUrl: 'http://localhost'
+        }
+      },
+      selenium: {
+        port: 10195,
+        start_process: false
+      },
+      selenium_host: 'localhost'
+    };
+
+    CliRunner.createDefaultConfig = function(destFileName) {
+      return defaultConfig;
+    };
+
+    CliRunner.prototype.loadConfig = function () {
+      return defaultConfig;
+    };
+
+    const clientWithoutListner = Nightwatch.createClient({
+      timeout: 500,
+      useAsync: false,
+      output: false,
+      silent: false,
+      headless: true,
+      output_folder: 'output',
+      globals: {
+        testGlobal: 'one'
+      },
+      disable_process_listener: true
+    });
+
+    assert.ok(!processListenerCalled);
+
+    const client = Nightwatch.createClient({
+      timeout: 500,
+      useAsync: false,
+      output: false,
+      silent: false,
+      headless: true,
+      output_folder: 'output',
+      globals: {
+        testGlobal: 'one'
+      }
+    });
+
+    assert.ok(processListenerCalled);
+
+    CliRunner.createDefaultConfig = createDefaultConfig;
+    CliRunner.prototype.loadConfig = loadConfig;
+  });
 });
