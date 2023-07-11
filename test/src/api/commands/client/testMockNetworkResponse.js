@@ -98,7 +98,7 @@ describe('.mockNetworkResponse()', function () {
     });
   });
 
-  it.only('browser.network.mockResponse(urlToIntercept, {status, headers, body}) with url match', function (done) {
+  it('browser.network.mockResponse(urlToIntercept, {status, headers, body}) with url match', function (done) {
     MockServer.addMock({
       url: '/session',
       response: {

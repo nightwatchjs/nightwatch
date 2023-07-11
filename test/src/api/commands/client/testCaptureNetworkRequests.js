@@ -85,7 +85,7 @@ describe('.captureNetworkRequests()', function () {
     });
   });
 
-  it.only('browser.network.captureRequests()', function (done) {
+  it('browser.network.captureRequests()', function (done) {
 
     MockServer.addMock({
       url: '/session',
@@ -205,4 +205,3 @@ describe('.captureNetworkRequests()', function () {
   });
 
 });
-
