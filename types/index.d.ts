@@ -523,8 +523,6 @@ export interface NamespacedApi<ReturnType = unknown> {
   expect: Expect;
 }
 
-
-
 export interface NightwatchApiCommands {
   readonly WEBDRIVER_ELEMENT_ID: string;
   readonly browserName: string;
