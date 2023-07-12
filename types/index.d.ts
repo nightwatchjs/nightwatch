@@ -516,11 +516,14 @@ export interface NamespacedApi<ReturnType = unknown> {
   document: DocumentNsCommands<ReturnType>;
   window: WindowNsCommands<ReturnType>;
   firefox: FirefoxNsCommands<ReturnType>;
+  network: NetworkNsCommands<ReturnType>;
 
   assert: Assert<ReturnType>;
   verify: Assert<ReturnType>;
   expect: Expect;
 }
+
+
 
 export interface NightwatchApiCommands {
   readonly WEBDRIVER_ELEMENT_ID: string;
@@ -5213,6 +5216,45 @@ export interface FirefoxNsCommands<ReturnType = unknown> {
   installAddon(path:string, temporary?: boolean): Awaitable<IfUnknown<ReturnType, this>, string>;
   uninstallAddon(addonId: string | PromiseLike<string>): Awaitable<IfUnknown<ReturnType, this>, null>;
 } 
+
+export interface NetworkNsCommands<ReturnType = unknown> {
+  captureRequests(
+    onRequestCallback: (
+      requestParams: Protocol.Network.RequestWillBeSentEvent
+    ) => void,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  mockResponse(
+    urlToIntercept: string,
+    response?: {
+      status?: Protocol.Fetch.FulfillRequestRequest['responseCode'];
+      headers?: { [name: string]: string };
+      body?: Protocol.Fetch.FulfillRequestRequest['body'];
+    },
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  setConditions(
+    spec: {
+      offline: boolean;
+      latency: number;
+      download_throughput: number;
+      upload_throughput: number;
+    },
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+}
 
 export interface AlertsNsCommands<ReturnType = unknown> {
   /**
