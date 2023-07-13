@@ -1,3 +1,7 @@
-exports.command = function(data, callback = function() {}) {
-  this.execute(function(data) {return data}, [data], callback);
+module.exports = {
+  namespacedAliases: ['document.customExecute'],
+
+  command: function(data, callback = function() {}) {
+    this.execute(function(data) {return data}, [data], callback);
+  }
 };
