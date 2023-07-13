@@ -20,16 +20,27 @@ describe('getLogTypes', function () {
         status: 0,
         value: ['browser', 'har']
       })
-    });
+    }, true, true);
 
     const api = this.client.api;
-    this.client.api.getLogTypes(function callback(result) {
-      assert.strictEqual(this, api);
-      assert.ok(Array.isArray(result));
-      assert.strictEqual(result.length, 2);
-      assert.strictEqual(result[0], 'browser');
-      assert.strictEqual(result[1], 'har');
-    });
+
+    this.client.api
+      .getLogTypes(function callback(result) {
+        assert.strictEqual(this, api);
+        assert.ok(Array.isArray(result));
+        assert.strictEqual(result.length, 2);
+        assert.strictEqual(result[0], 'browser');
+        assert.strictEqual(result[1], 'har');
+      })
+      .logs.getLogTypes(function callback(result) {
+        const availableLogTypes = result.value;
+
+        assert.strictEqual(this, api);
+        assert.ok(Array.isArray(availableLogTypes));
+        assert.strictEqual(availableLogTypes.length, 2);
+        assert.strictEqual(availableLogTypes[0], 'browser');
+        assert.strictEqual(availableLogTypes[1], 'har');
+      });
 
     this.client.start(done);
   });
