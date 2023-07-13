@@ -97,6 +97,41 @@ describe('capture network requests', function () {
 
     expectType<null>(result);
   });
+
+  it('captures and logs network requests as they occur', function (this: ExtendDescribeThis<{ requestCount: number }>) {
+    this.requestCount = 1;
+    browser
+      .network.captureRequests((requestParams) => {
+        console.log('Request Number:', this.requestCount!++);
+        console.log('Request URL:', requestParams.request.url);
+        console.log('Request method:', requestParams.request.method);
+        console.log('Request headers:', requestParams.request.headers);
+      })
+      .navigateTo('https://www.google.com');
+  });
+
+  it('tests different ways of using captureRequests', () => {
+    // with all parameters
+    browser.network.captureRequests(
+      (requestParams) => {
+        console.log('Request URL:', requestParams.request.url);
+        console.log('Request method:', requestParams.request.method);
+        console.log('Request headers:', requestParams.request.headers);
+      },
+      function (result) {
+        expectType<NightwatchAPI>(this);
+        // without any parameter
+        expectError(this.network.captureRequests())
+        console.log(result.value);
+      }
+    );
+  });
+
+  it('tests captureRequests with async', async () => {
+    const result = await browser.network.captureRequests(() => {});
+
+    expectType<null>(result);
+  });
 });
 
 //
@@ -149,6 +184,165 @@ describe('mock network response', function () {
 
   it('tests mockNetworkResponse with async', async () => {
     const result = await browser.mockNetworkResponse('https://www.google.com/');
+
+    expectType<null>(result);
+  });
+
+  it('intercepts the request made to Google search and mocks its response', function () {
+    browser
+      .network.mockResponse('https://www.google.com/', {
+        status: 200,
+        headers: {
+          'Content-Type': 'UTF-8',
+        },
+        body: 'Hello there!',
+      })
+      .navigateTo('https://www.google.com/')
+      .pause(2000);
+  });
+
+  it('tests different ways of using mockNetworkResponse', () => {
+    // with all parameters
+    browser.network.mockResponse(
+      'https://www.google.com/',
+      {
+        status: 200,
+        headers: {
+          'Content-Type': 'UTF-8',
+        },
+        body: 'Hello there!',
+      },
+      function (result) {
+        expectType<NightwatchAPI>(this);
+        // without any parameter (invalid)
+        expectError(this.network.mockResponse())
+        console.log(result.value);
+      }
+    );
+
+    // with no response
+    browser.network.mockResponse('https://www.google.com/');
+
+    // with empty response
+    browser.network.mockResponse('https://www.google.com/', {});
+
+    // with just one parameter
+    browser.network.mockResponse('https://www.google.com/', {
+      body: 'Hello there!',
+    });
+  });
+
+  it('tests mockResponse with async', async () => {
+    const result = await browser.network.mockResponse('https://www.google.com/');
+
+    expectType<null>(result);
+  });
+});
+
+//
+//.setNetworkConditions
+//
+describe('set network conditions', function () {
+  it('sets the network conditions to offline and reset it', function () {
+    browser
+      .setNetworkConditions({
+        offline: true,
+        latency: 5, // Additional latency (ms).
+        download_throughput: 500 * 1024, // Maximal aggregated download throughput.
+        upload_throughput: 500 * 1024, // Maximal aggregated upload throughput.
+      })
+      .navigateTo('https://www.google.com')
+      .pause(1000)
+      .setNetworkConditions(
+        {
+          offline: false,
+          latency: 0,
+          download_throughput: 0,
+          upload_throughput: 0,
+        },
+      ) // resets the network conditions
+      .navigateTo('https://www.google.com')
+  });
+
+  it('tests different ways of using setNetworkConditions', () => {
+    // with all parameters
+    browser.setNetworkConditions(
+      {
+        offline: true,
+        latency: 5, // Additional latency (ms).
+        download_throughput: 500 * 1024, // Maximal aggregated download throughput.
+        upload_throughput: 500 * 1024, // Maximal aggregated upload throughput.
+      },
+      function (result) {
+        expectType<NightwatchAPI>(this);
+        // without any parameter (resets the network conditions)
+        // without any parameter (invalid)
+        expectError(this.setNetworkConditions())
+        console.log(result.value);
+      }
+    );
+
+  });
+
+  it('tests setNetworkConditions with async', async () => {
+    const result = await browser.setNetworkConditions({
+      offline: true,
+      latency: 5, // Additional latency (ms).
+      download_throughput: 500 * 1024, // Maximal aggregated download throughput.
+      upload_throughput: 500 * 1024, // Maximal aggregated upload throughput.
+    });
+
+    expectType<null>(result);
+  });
+
+  it('sets the network conditions to offline and reset it', function () {
+    browser
+      .network.setConditions({
+        offline: true,
+        latency: 5, // Additional latency (ms).
+        download_throughput: 500 * 1024, // Maximal aggregated download throughput.
+        upload_throughput: 500 * 1024, // Maximal aggregated upload throughput.
+      })
+      .navigateTo('https://www.google.com')
+      .pause(1000)
+      .network.setConditions(
+        {
+          offline: false,
+          latency: 0,
+          download_throughput: 0,
+          upload_throughput: 0,
+        },
+      ) // resets the network conditions
+      .navigateTo('https://www.google.com')
+  });
+
+  it('tests different ways of using setNetworkConditions', () => {
+    // with all parameters
+    browser.network.setConditions(
+      {
+        offline: true,
+        latency: 5, // Additional latency (ms).
+        download_throughput: 500 * 1024, // Maximal aggregated download throughput.
+        upload_throughput: 500 * 1024, // Maximal aggregated upload throughput.
+      },
+      function (result) {
+        expectType<NightwatchAPI>(this);
+        // without any parameter (resets the network conditions)
+        // without any parameter (invalid)
+        expectError(this.network.setConditions())
+        console.log(result.value);
+      }
+    );
+
+  });
+
+  it('tests setConditions with async', async () => {
+    const result = await browser.network.setConditions({
+      offline: true,
+      latency: 5, // Additional latency (ms).
+      download_throughput: 500 * 1024, // Maximal aggregated download throughput.
+      upload_throughput: 500 * 1024, // Maximal aggregated upload throughput.
+    });
 
     expectType<null>(result);
   });
