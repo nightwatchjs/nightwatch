@@ -278,6 +278,31 @@ describe('set network conditions', function () {
         // without any parameter (resets the network conditions)
         // without any parameter (invalid)
         expectError(this.setNetworkConditions())
+         // missing 'offline' parameter
+        expectError(this.setNetworkConditions({
+          latency: 5,
+          download_throughput: 500 * 1024,
+          upload_throughput: 500 * 1024,
+        }));
+        // missing 'latency' parameter
+        expectError(this.setNetworkConditions({
+          offline: true,
+          download_throughput: 500 * 1024,
+          upload_throughput: 500 * 1024,
+        }));
+        // missing 'download_throughput' parameter
+        expectError(this.setNetworkConditions({
+          offline: true,
+          latency: 5,
+          upload_throughput: 500 * 1024,
+        }));
+        // missing 'upload_throughput' parameter
+        expectError(this.setNetworkConditions({
+          offline: true,
+          latency: 5,
+          download_throughput: 500 * 1024,
+        }));
+
         console.log(result.value);
       }
     );
@@ -330,6 +355,31 @@ describe('set network conditions', function () {
         // without any parameter (resets the network conditions)
         // without any parameter (invalid)
         expectError(this.network.setConditions())
+         // missing 'offline' parameter
+        expectError(this.network.setConditions({
+          latency: 5,
+          download_throughput: 500 * 1024,
+          upload_throughput: 500 * 1024,
+        }));
+        // missing 'latency' parameter
+        expectError(this.network.setConditions({
+          offline: true,
+          download_throughput: 500 * 1024,
+          upload_throughput: 500 * 1024,
+        }));
+        // missing 'download_throughput' parameter
+        expectError(this.network.setConditions({
+          offline: true,
+          latency: 5,
+          upload_throughput: 500 * 1024,
+        }));
+        // missing 'upload_throughput' parameter
+        expectError(this.network.setConditions({
+          offline: true,
+          latency: 5,
+          download_throughput: 500 * 1024,
+        }));
+
         console.log(result.value);
       }
     );
