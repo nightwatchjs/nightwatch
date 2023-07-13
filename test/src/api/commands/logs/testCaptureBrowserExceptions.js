@@ -19,7 +19,6 @@ describe('.captureBrowserExceptions()', function () {
   });
 
   it('browser.captureBrowserExceptions(callback)', function (done) {
-
     MockServer.addMock({
       url: '/session',
       response: {
@@ -67,8 +66,54 @@ describe('.captureBrowserExceptions()', function () {
     });
   });
 
-  it('throws error without callback', function (done) {
+  it('browser.logs.captureBrowserExceptions(callback)', function (done) {
+    MockServer.addMock({
+      url: '/session',
+      response: {
+        value: {
+          sessionId: '13521-10219-202',
+          capabilities: {
+            browserName: 'chrome',
+            browserVersion: '92.0'
+          }
+        }
+      },
+      method: 'POST',
+      statusCode: 201
+    }, true);
 
+    Nightwatch.initW3CClient({
+      desiredCapabilities: {
+        browserName: 'chrome',
+        'goog:chromeOptions': {}
+      },
+      output: process.env.VERBOSE === '1',
+      silent: false
+    }).then(client => {
+      let expectedCdpConnection;
+      let expectedUserCallback;
+
+      cdp.resetConnection();
+      client.transport.driver.createCDPConnection = function() {
+        return Promise.resolve();
+      };
+      client.transport.driver.onLogException = (cdpConnection, userCallback) => {
+        expectedCdpConnection = cdpConnection;
+        expectedUserCallback = userCallback;
+      };
+
+      //eslint-disable-next-line
+      const userCallback = (event) => {console.log(event)};
+      client.api.logs.captureBrowserExceptions(userCallback, function () {
+        assert.strictEqual(expectedCdpConnection, undefined);  // cdpConnection is mocked
+        assert.strictEqual(expectedUserCallback, userCallback);
+      });
+
+      client.start(done);
+    });
+  });
+
+  it('throws error without callback', function (done) {
     MockServer.addMock({
       url: '/session',
       response: {
@@ -119,5 +164,4 @@ describe('.captureBrowserExceptions()', function () {
       client.start(done);
     });
   });
-
 });
