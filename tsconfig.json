@@ -101,5 +101,5 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   "include": ["lib/**/*"],
-  "files":["./types/index.d.ts"]
+  "files": ["./types/index.d.ts"]
 }
