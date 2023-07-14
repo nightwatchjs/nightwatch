@@ -73,7 +73,7 @@ describe('.setNetworkConditions()', function () {
       },
       function (result) {
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'SetNetworkConditions is not supported while using this driver');
+        assert.strictEqual(result.error, 'The command .setNetworkConditions() is only supported in Chrome and Edge drivers');
       }
       );
       client.start(done);
