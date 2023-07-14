@@ -5229,9 +5229,9 @@ export interface NetworkNsCommands<ReturnType = unknown> {
    *  this.demoTest = function() {
    *    browser.network.setConditions({
    *      offline: false,
-   *      latency: 50000,
-   *      download_throughput: 450 * 1024,
-   *      upload_throughput: 150 * 1024
+   *      latency: 5,
+   *      download_throughput: 500 * 1024,
+   *      upload_throughput: 500 * 1024
    *    });
    *  };
    *

@@ -243,32 +243,23 @@ describe('mock network response', function () {
 //.setNetworkConditions
 //
 describe('set network conditions', function () {
-  it('sets the network conditions to offline and reset it', function () {
+  it('sets the network conditions', function () {
     browser
       .setNetworkConditions({
-        offline: true,
+        offline: false,
         latency: 5, // Additional latency (ms).
         download_throughput: 500 * 1024, // Maximal aggregated download throughput.
         upload_throughput: 500 * 1024, // Maximal aggregated upload throughput.
       })
       .navigateTo('https://www.google.com')
-      .pause(1000)
-      .setNetworkConditions(
-        {
-          offline: false,
-          latency: 0,
-          download_throughput: 0,
-          upload_throughput: 0,
-        },
-      ) // resets the network conditions
-      .navigateTo('https://www.google.com')
+      .pause(2000)
   });
 
   it('tests different ways of using setNetworkConditions', () => {
     // with all parameters
     browser.setNetworkConditions(
       {
-        offline: true,
+        offline: false,
         latency: 5, // Additional latency (ms).
         download_throughput: 500 * 1024, // Maximal aggregated download throughput.
         upload_throughput: 500 * 1024, // Maximal aggregated upload throughput.
@@ -286,19 +277,19 @@ describe('set network conditions', function () {
         }));
         // missing 'latency' parameter
         expectError(this.setNetworkConditions({
-          offline: true,
+          offline: false,
           download_throughput: 500 * 1024,
           upload_throughput: 500 * 1024,
         }));
         // missing 'download_throughput' parameter
         expectError(this.setNetworkConditions({
-          offline: true,
+          offline: false,
           latency: 5,
           upload_throughput: 500 * 1024,
         }));
         // missing 'upload_throughput' parameter
         expectError(this.setNetworkConditions({
-          offline: true,
+          offline: false,
           latency: 5,
           download_throughput: 500 * 1024,
         }));
@@ -311,7 +302,7 @@ describe('set network conditions', function () {
 
   it('tests setNetworkConditions with async', async () => {
     const result = await browser.setNetworkConditions({
-      offline: true,
+      offline: false,
       latency: 5, // Additional latency (ms).
       download_throughput: 500 * 1024, // Maximal aggregated download throughput.
       upload_throughput: 500 * 1024, // Maximal aggregated upload throughput.
@@ -320,32 +311,23 @@ describe('set network conditions', function () {
     expectType<null>(result);
   });
 
-  it('sets the network conditions to offline and reset it', function () {
+  it('sets the network conditions', function () {
     browser
       .network.setConditions({
-        offline: true,
+        offline: false,
         latency: 5, // Additional latency (ms).
         download_throughput: 500 * 1024, // Maximal aggregated download throughput.
         upload_throughput: 500 * 1024, // Maximal aggregated upload throughput.
       })
       .navigateTo('https://www.google.com')
-      .pause(1000)
-      .network.setConditions(
-        {
-          offline: false,
-          latency: 0,
-          download_throughput: 0,
-          upload_throughput: 0,
-        },
-      ) // resets the network conditions
-      .navigateTo('https://www.google.com')
+      .pause(2000)
   });
 
   it('tests different ways of using setNetworkConditions', () => {
     // with all parameters
     browser.network.setConditions(
       {
-        offline: true,
+        offline: false,
         latency: 5, // Additional latency (ms).
         download_throughput: 500 * 1024, // Maximal aggregated download throughput.
         upload_throughput: 500 * 1024, // Maximal aggregated upload throughput.
@@ -363,19 +345,19 @@ describe('set network conditions', function () {
         }));
         // missing 'latency' parameter
         expectError(this.network.setConditions({
-          offline: true,
+          offline: false,
           download_throughput: 500 * 1024,
           upload_throughput: 500 * 1024,
         }));
         // missing 'download_throughput' parameter
         expectError(this.network.setConditions({
-          offline: true,
+          offline: false,
           latency: 5,
           upload_throughput: 500 * 1024,
         }));
         // missing 'upload_throughput' parameter
         expectError(this.network.setConditions({
-          offline: true,
+          offline: false,
           latency: 5,
           download_throughput: 500 * 1024,
         }));
@@ -388,7 +370,7 @@ describe('set network conditions', function () {
 
   it('tests setConditions with async', async () => {
     const result = await browser.network.setConditions({
-      offline: true,
+      offline: false,
       latency: 5, // Additional latency (ms).
       download_throughput: 500 * 1024, // Maximal aggregated download throughput.
       upload_throughput: 500 * 1024, // Maximal aggregated upload throughput.
