@@ -5195,7 +5195,7 @@ export interface NetworkNsCommands<ReturnType = unknown> {
    *  describe('mock network response', function() {
    *    it('intercepts the request made to Google search and mocks its response', function() {
    *      browser
-   *        .network.Response('https://www.google.com/', {
+   *        .network.mockResponse('https://www.google.com/', {
    *          status: 200,
    *          headers: {
    *            'Content-Type': 'UTF-8'
