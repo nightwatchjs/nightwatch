@@ -2,7 +2,7 @@ const common = require('../../common.js');
 const mockery = require('mockery');
 const assert = require('assert');
 
-describe('Test CLI Runner Generate', function() {
+describe.only('Test CLI Runner Generate', function() {
 
   beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
@@ -48,6 +48,9 @@ describe('Test CLI Runner Generate', function() {
     });
 
     mockery.registerMock('fs', {
+      existsSync() {
+        return false;
+      },
       statSync: function (fileName) {
         if (fileName.endsWith('/nightwatch.conf.js')) {
           return {
