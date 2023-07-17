@@ -48,6 +48,9 @@ describe('Test CLI Runner Generate', function() {
     });
 
     mockery.registerMock('fs', {
+      existsSync() {
+        return false;
+      },
       statSync: function (fileName) {
         if (fileName.endsWith('/nightwatch.conf.js')) {
           return {
