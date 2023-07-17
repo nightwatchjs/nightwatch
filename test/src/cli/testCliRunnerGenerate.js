@@ -2,7 +2,7 @@ const common = require('../../common.js');
 const mockery = require('mockery');
 const assert = require('assert');
 
-describe.only('Test CLI Runner Generate', function() {
+describe('Test CLI Runner Generate', function() {
 
   beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
