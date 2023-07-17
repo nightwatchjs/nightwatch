@@ -106,7 +106,7 @@
     "postbuild": "copyfiles -u 1 lib/**/*.ejs dist",
     "prepublishOnly": "npm run build",
     "dev": "NIGHTWATCH_TS_NODE_DEV=true npx ts-node --swc ./bin/nightwatch",
-    "eslint": "eslint index.js lib bin api examples cucumber-js test --quiet",
+    "eslint": "eslint index.js lib bin api examples test --quiet",
     "mocha": "npm run build && mocha",
     "mocha-coverage": "nyc --reporter=html mocha test/src/ --recursive",
     "test": "npm run build && mocha test/src/ --recursive --timeout 20000",
