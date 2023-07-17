@@ -247,7 +247,7 @@ describe('set network conditions', function () {
     browser
       .setNetworkConditions({
         offline: false,
-        latency: 5, // Additional latency (ms).
+        latency: 3000, // Additional latency (ms).
         download_throughput: 500 * 1024, // Maximal aggregated download throughput.
         upload_throughput: 500 * 1024, // Maximal aggregated upload throughput.
       })
@@ -260,7 +260,7 @@ describe('set network conditions', function () {
     browser.setNetworkConditions(
       {
         offline: false,
-        latency: 5, // Additional latency (ms).
+        latency: 3000, // Additional latency (ms).
         download_throughput: 500 * 1024, // Maximal aggregated download throughput.
         upload_throughput: 500 * 1024, // Maximal aggregated upload throughput.
       },
@@ -271,7 +271,7 @@ describe('set network conditions', function () {
         expectError(this.setNetworkConditions())
          // missing 'offline' parameter
         expectError(this.setNetworkConditions({
-          latency: 5,
+          latency: 3000,
           download_throughput: 500 * 1024,
           upload_throughput: 500 * 1024,
         }));
@@ -284,13 +284,13 @@ describe('set network conditions', function () {
         // missing 'download_throughput' parameter
         expectError(this.setNetworkConditions({
           offline: false,
-          latency: 5,
+          latency: 3000,
           upload_throughput: 500 * 1024,
         }));
         // missing 'upload_throughput' parameter
         expectError(this.setNetworkConditions({
           offline: false,
-          latency: 5,
+          latency: 3000,
           download_throughput: 500 * 1024,
         }));
 
@@ -303,7 +303,7 @@ describe('set network conditions', function () {
   it('tests setNetworkConditions with async', async () => {
     const result = await browser.setNetworkConditions({
       offline: false,
-      latency: 5, // Additional latency (ms).
+      latency: 3000, // Additional latency (ms).
       download_throughput: 500 * 1024, // Maximal aggregated download throughput.
       upload_throughput: 500 * 1024, // Maximal aggregated upload throughput.
     });
@@ -315,7 +315,7 @@ describe('set network conditions', function () {
     browser
       .network.setConditions({
         offline: false,
-        latency: 5, // Additional latency (ms).
+        latency: 3000, // Additional latency (ms).
         download_throughput: 500 * 1024, // Maximal aggregated download throughput.
         upload_throughput: 500 * 1024, // Maximal aggregated upload throughput.
       })
@@ -328,7 +328,7 @@ describe('set network conditions', function () {
     browser.network.setConditions(
       {
         offline: false,
-        latency: 5, // Additional latency (ms).
+        latency: 3000, // Additional latency (ms).
         download_throughput: 500 * 1024, // Maximal aggregated download throughput.
         upload_throughput: 500 * 1024, // Maximal aggregated upload throughput.
       },
@@ -339,7 +339,7 @@ describe('set network conditions', function () {
         expectError(this.network.setConditions())
          // missing 'offline' parameter
         expectError(this.network.setConditions({
-          latency: 5,
+          latency: 3000,
           download_throughput: 500 * 1024,
           upload_throughput: 500 * 1024,
         }));
@@ -352,13 +352,13 @@ describe('set network conditions', function () {
         // missing 'download_throughput' parameter
         expectError(this.network.setConditions({
           offline: false,
-          latency: 5,
+          latency: 3000,
           upload_throughput: 500 * 1024,
         }));
         // missing 'upload_throughput' parameter
         expectError(this.network.setConditions({
           offline: false,
-          latency: 5,
+          latency: 3000,
           download_throughput: 500 * 1024,
         }));
 
@@ -371,7 +371,7 @@ describe('set network conditions', function () {
   it('tests setConditions with async', async () => {
     const result = await browser.network.setConditions({
       offline: false,
-      latency: 5, // Additional latency (ms).
+      latency: 3000, // Additional latency (ms).
       download_throughput: 500 * 1024, // Maximal aggregated download throughput.
       upload_throughput: 500 * 1024, // Maximal aggregated upload throughput.
     });

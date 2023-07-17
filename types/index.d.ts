@@ -5195,7 +5195,7 @@ export interface NetworkNsCommands<ReturnType = unknown> {
    *  describe('mock network response', function() {
    *    it('intercepts the request made to Google search and mocks its response', function() {
    *      browser
-   *        .mockNetworkResponse('https://www.google.com/', {
+   *        .network.Response('https://www.google.com/', {
    *          status: 200,
    *          headers: {
    *            'Content-Type': 'UTF-8'
@@ -5226,14 +5226,17 @@ export interface NetworkNsCommands<ReturnType = unknown> {
    * Command to set Chrome network emulation settings.
    *
    * @example
-   *  this.demoTest = function() {
-   *    browser.network.setConditions({
+   * describe('set network conditions', function() {
+   *  it('sets the network conditions',function() {
+   *    browser
+   *     .network.setConditions({
    *      offline: false,
-   *      latency: 5,
+   *      latency: 3000,
    *      download_throughput: 500 * 1024,
    *      upload_throughput: 500 * 1024
    *    });
-   *  };
+   *  });
+   * });
    *
    * @see https://nightwatchjs.org/api/setNetworkConditions.html
    */
