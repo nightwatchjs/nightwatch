@@ -1,5 +1,5 @@
 const assert = require('assert');
-const Globals = require('../../../lib/globals.js');
+const Globals = require('../../../../lib/globals.js');
 
 describe('client.frame', function() {
   before(function() {
