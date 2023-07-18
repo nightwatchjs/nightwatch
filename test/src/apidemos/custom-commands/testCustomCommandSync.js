@@ -39,12 +39,10 @@ describe('sync custom commands', function() {
       }
     };
 
-    return NightwatchClient.runTests(testsPath, settings({
-      output: false,
-      silent: false,
-      selenium_host: null,
-      test_workers: true,
-      custom_commands_path: [path.join(__dirname, '../../../extra/commands/other')],
+    return NightwatchClient.runTests({
+      env: 'default',
+      config: 'test/extra/parallelism-customCommandsSync.json'
+    }, Object.assign({}, {
       globals
     }));
   });
