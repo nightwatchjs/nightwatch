@@ -50,8 +50,8 @@ export interface SectionProperties {
    * }
    */
   elements?:
-  | { [name: string]: ElementProperties }
-  | { [name: string]: ElementProperties }[];
+  | Partial<{ [name: string]: string | ElementProperties }>
+  | Partial<{ [name: string]: string | ElementProperties }>[];
 
   /**
    * An object of named sections definitions defining the sections.
@@ -94,7 +94,9 @@ export interface SectionProperties {
    *   }
    * }
    */
-  commands?: Partial<Record<string, (...args: any) => unknown>>[]
+  commands?:
+    | Partial<Record<string, (...args: any) => unknown>>
+    | Partial<Record<string, (...args: any) => unknown>>[];
 
   /**
    * An object or a function returning an object representing a container for user variables.
@@ -175,9 +177,9 @@ export type EnhancedSectionInstance<
   >;
 
 interface PageObjectSection {
-  commands?: Record<string, unknown>[];
+  commands?: Record<string, unknown> | Record<string, unknown>[];
+  elements?: Record<string, unknown> | Record<string, unknown>[];
   props?: Record<string, unknown>;
-  elements?: Record<string, unknown>;
   // TODO: make sections type more strict.
   sections?: any;
 }
@@ -227,7 +229,7 @@ interface EnhancedPageObjectSharedFields<
   section: {
     [Key in keyof Sections]: EnhancedSectionInstance<
       Required<MergeObjectsArray<Sections[Key]['commands']>>,
-      Required<Sections[Key]['elements']>,
+      Required<MergeObjectsArray<Sections[Key]['elements']>>,
       Required<Sections[Key]['sections']>,
       Required<Sections[Key]['props']>
     >;
@@ -379,7 +381,9 @@ export interface PageObjectModel {
    *   commands: MyCommands
    * } satisfies PageObjectModel;
    */
-  commands?: Record<string, (...args: any) => unknown>[];
+  commands?:
+    | Partial<Record<string, (...args: any) => unknown>>
+    | Partial<Record<string, (...args: any) => unknown>>[];
 
   /**
    * An object, or array of objects, of named element definitions to be used
@@ -401,9 +405,8 @@ export interface PageObjectModel {
    * } satisfies PageObjectModel;
    */
   elements?:
-  | { [name: string]: string }
-  | { [name: string]: ElementProperties }
-  | { [name: string]: ElementProperties }[];
+  | Partial<{ [name: string]: string | ElementProperties }>
+  | Partial<{ [name: string]: string | ElementProperties }>[];
 
   /**
    * An object or a function returning an object representing a container for user variables.
