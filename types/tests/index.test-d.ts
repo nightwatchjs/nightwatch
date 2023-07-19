@@ -1,4 +1,4 @@
-import { expectAssignable, expectError, expectType } from 'tsd';
+import { expectAssignable, expectError, expectNotType, expectType } from 'tsd';
 import { EventEmitter } from 'events';
 import {
   EnhancedPageObject,
@@ -359,26 +359,22 @@ const wikipediaAppTest: NightwatchTests = {
 
 const appsSection = {
   selector: 'div.gb_qc',
-  commands: [
-    {
-      clickYoutube(this: EnhancedSectionInstance) {
-        return this.click('@youtube');
-      },
+  commands: {
+    clickYoutube(this: EnhancedSectionInstance) {
+      return this.click('@youtube');
     },
-    {
-      something(this: EnhancedSectionInstance) {
-        return this.click('@youtube');
-      },
+    something(this: EnhancedSectionInstance) {
+      return this.click('@youtube');
     },
-  ],
-  elements: {
-    myAccount: {
-      selector: '#gb192'
-    },
+  },
+  elements: [{
+    myAccount: '#gb192'
+  },
+  {
     youtube: {
       selector: '#gb36',
     },
-  }
+  }]
 } satisfies SectionProperties;
 
 const menuSection = {
@@ -401,9 +397,7 @@ const menuSection = {
     },
   ],
   elements: {
-    mail: {
-      selector: 'a[href="mail"]',
-    },
+    mail: 'a[href="mail"]',
     images: {
       selector: 'a[href="imghp"]',
     },
@@ -425,11 +419,10 @@ const googleCommands = {
 const googlePage = {
   commands: [googleCommands],
   elements: {
-    searchBar: {
-      selector: 'input[type=text]',
-    },
+    searchBar: 'input[type=text]',
     submitButton: {
       selector: 'input[name=btnK]',
+      locateStrategy: 'css selector'
     },
   },
   sections: {
@@ -446,17 +439,20 @@ const googlePage = {
 // }
 
 const iFrame = {
-  elements: {
+  elements: [{
     iframe: '#mce_0_ifr',
-    textbox: 'body#tinymce p',
+    hey: undefined
   },
-  commands: [
-    {
-      url(this: EnhancedPageObject) {
-        return `${this.api.launch_url}/iframe`;
-      },
+  {
+    textbox: {
+      selector: 'body#tinymce p',
+    }
+  }],
+  commands: {
+    url(this: EnhancedPageObject) {
+      return `${this.api.launch_url}/iframe`;
     },
-  ],
+  },
 } satisfies PageObjectModel;
 
 // export = iFrame
@@ -524,17 +520,23 @@ const testPage = {
 
     menuSection.selector;
 
-    menuSection.clickApps();
+    expectNotType<any>(menuSection.clickApps());
+
+    const imagesElement = menuSection.elements.images;
+    expectNotType<any>(imagesElement);
 
     const appSection = menuSection.section.apps;
     appSection.expect.element('@myAccount').to.be.visible;
     appSection.expect.element('@youtube').to.be.visible;
 
+    const youtubeElement = appSection.elements.youtube;
+    expectNotType<any>(youtubeElement);
+
     // test new element api
     menuSection.element('@main');
     menuSection.element.findAll('@main').nth(1).find('@images');
 
-    appSection.clickYoutube();
+    expectNotType<any>(appSection.clickYoutube());
 
     browser.end();
   },

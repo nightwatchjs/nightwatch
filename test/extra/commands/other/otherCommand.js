@@ -1,5 +1,5 @@
-module.exports = {
-  command: function() {
-    return this;
+module.exports = class OtherCommand {
+  command() {
+    return this.api.pause(10);
   }
 };
