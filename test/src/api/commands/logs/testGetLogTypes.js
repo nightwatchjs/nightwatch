@@ -32,7 +32,7 @@ describe('getLogTypes', function () {
         assert.strictEqual(result[0], 'browser');
         assert.strictEqual(result[1], 'har');
       })
-      .logs.getLogTypes(function callback(result) {
+      .logs.getSessionLogTypes(function callback(result) {
         const availableLogTypes = result.value;
 
         assert.strictEqual(this, api);

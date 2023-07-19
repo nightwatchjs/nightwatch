@@ -5367,7 +5367,7 @@ export interface LogsNsCommands<ReturnType = unknown> {
    * @example
    * describe('get log from Selenium', function() {
    *   it('get browser log (default)', function(browser) {
-   *     browser.logs.getLog(function(result) {
+   *     browser.logs.getSessionLog(function(result) {
    *       if (result.status === 0) {
    *         const logEntriesArray = result.value;
    *         console.log('Log length: ' + logEntriesArray.length);
@@ -5381,7 +5381,7 @@ export interface LogsNsCommands<ReturnType = unknown> {
    *   it('get driver log with ES6 async/await', async function(browser) {
    *     const driverLogAvailable = await browser.logs.isAvailable('driver');
    *     if (driverLogAvailable) {
-   *       const logEntriesArray = await browser.logs.getLog('driver');
+   *       const logEntriesArray = await browser.logs.getSessionLog('driver');
    *       logEntriesArray.forEach(function(log) {
    *         console.log('[' + log.level + '] ' + log.timestamp + ' : ' + log.message);
    *       });
@@ -5389,12 +5389,12 @@ export interface LogsNsCommands<ReturnType = unknown> {
    *   });
    * });
    *
-   * @see https://nightwatchjs.org/api/getLog.html
+   * @see https://nightwatchjs.org/api/logs/getSessionLog.html
    */
-  getLog(
+  getSessionLog(
     callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<NightwatchLogEntry[]>) => void
   ): Awaitable<IfUnknown<ReturnType, this>, NightwatchLogEntry[]>;
-  getLog(
+  getSessionLog(
     typeString: NightwatchLogTypes,
     callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<NightwatchLogEntry[]>) => void
   ): Awaitable<IfUnknown<ReturnType, this>, NightwatchLogEntry[]>;
@@ -5405,7 +5405,7 @@ export interface LogsNsCommands<ReturnType = unknown> {
    * @example
    * describe('get available log types', function() {
    *   it('get log types', function(browser) {
-   *     browser.logs.getLogTypes(function(result) {
+   *     browser.logs.getSessionLogTypes(function(result) {
    *       if (result.status === 0) {
    *         const logTypes = result.value;
    *         console.log('Log types available:', logTypes);
@@ -5414,14 +5414,14 @@ export interface LogsNsCommands<ReturnType = unknown> {
    *   });
    *
    *   it('get log types with ES6 async/await', async function(browser) {
-   *     const logTypes = await browser.logs.getLogTypes();
+   *     const logTypes = await browser.logs.getSessionLogTypes();
    *     console.log('Log types available:', logTypes);
    *   });
    * });
    *
-   * @see https://nightwatchjs.org/api/getLogTypes.html
+   * @see https://nightwatchjs.org/api/logs/getSessionLogTypes.html
    */
-  getLogTypes(
+  getSessionLogTypes(
     callback?: (
       this: NightwatchAPI,
       result: NightwatchCallbackResult<NightwatchLogTypes[]>
@@ -5437,7 +5437,7 @@ export interface LogsNsCommands<ReturnType = unknown> {
    * @example
    * describe('test if the log type is available', function() {
    *   it('test browser log type', function(browser) {
-   *     browser.logs.isAvailable('browser', function(result) {
+   *     browser.logs.isSessionLogAvailable('browser', function(result) {
    *       if (result.status === 0) {
    *         const isAvailable = result.value;
    *         if (isAvailable) {
@@ -5448,19 +5448,19 @@ export interface LogsNsCommands<ReturnType = unknown> {
    *   });
    *
    *   it('test driver log type with ES6 async/await', async function(browser) {
-   *     const isAvailable = await browser.logs.isAvailable('driver');
+   *     const isAvailable = await browser.logs.isSessionLogAvailable('driver');
    *     if (isAvailable) {
    *       // do something more in here
    *     }
    *   });
    * });
    *
-   * @see https://nightwatchjs.org/api/isLogAvailable.html
+   * @see https://nightwatchjs.org/api/logs/isSessionLogAvailable.html
    */
-  isAvailable(
+  isSessionLogAvailable(
     callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<boolean>) => void
   ): Awaitable<IfUnknown<ReturnType, this>, boolean>;
-  isAvailable(
+  isSessionLogAvailable(
     typeString: NightwatchLogTypes,
     callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<boolean>) => void
   ): Awaitable<IfUnknown<ReturnType, this>, boolean>;

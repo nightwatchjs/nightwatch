@@ -18,7 +18,7 @@ describe('isLogAvailable', function () {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('client.logs.isAvailable()', function (done) {
+  it('client.logs.isSessionLogAvailable()', function (done) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/se/log/types',
       method: 'GET',
@@ -32,13 +32,13 @@ describe('isLogAvailable', function () {
     const api = this.client.api;
 
     this.client.api
-      .logs.isAvailable('unknown', function callback(result) {
+      .logs.isSessionLogAvailable('unknown', function callback(result) {
         const isAvailable = result.value;
 
         assert.strictEqual(this, api);
         assert.strictEqual(isAvailable, false);
       })
-      .logs.isAvailable('browser', function callback(result) {
+      .logs.isSessionLogAvailable('browser', function callback(result) {
         const isAvailable = result.value;
 
         assert.strictEqual(typeof isAvailable, 'boolean');
@@ -48,7 +48,7 @@ describe('isLogAvailable', function () {
     this.client.start(done);
   });
 
-  it('client.logs.isAvailable() failure', function (done) {
+  it('client.logs.isSessionLogAvailable() failure', function (done) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/se/log/types',
       method: 'GET',
@@ -60,13 +60,13 @@ describe('isLogAvailable', function () {
     });
 
     this.client.api
-      .logs.isAvailable('unknown', function callback(result) {
+      .logs.isSessionLogAvailable('unknown', function callback(result) {
         const isAvailable = result.value;
 
         assert.strictEqual(typeof isAvailable === 'boolean', true);
         assert.strictEqual(isAvailable, false);
       })
-      .logs.isAvailable('browser', function callback(result) {
+      .logs.isSessionLogAvailable('browser', function callback(result) {
         const isAvailable = result.value;
 
         assert.strictEqual(typeof isAvailable === 'boolean', true);

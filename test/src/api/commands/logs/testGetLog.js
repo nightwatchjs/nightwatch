@@ -11,7 +11,7 @@ describe('getLog', function() {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('client.logs.getLog()', function(done) {
+  it('client.logs.getSessionLog()', function(done) {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/se/log',
       postdata: {
@@ -30,7 +30,7 @@ describe('getLog', function() {
     let logsReceived;
     const api = this.client.api;
 
-    this.client.api.logs.getLog('driver', function(result) {
+    this.client.api.logs.getSessionLog('driver', function(result) {
       logsReceived = result.value;
 
       assert.strictEqual(this, api);
@@ -56,9 +56,9 @@ describe('getLog', function() {
     });
   });
 
-  it('client.logs.getLog() implicit', function(done) {
+  it('client.logs.getSessionLog() implicit', function(done) {
     let logsReceived;
-    this.client.api.logs.getLog(function(result) {
+    this.client.api.logs.getSessionLog(function(result) {
       logsReceived = result.value;
     });
 
@@ -76,8 +76,8 @@ describe('getLog', function() {
     });
   });
 
-  it('client.logs.getLog() with callback rejecting a Promise', function() {
-    this.client.api.logs.getLog('browser', function(result) {
+  it('client.logs.getSessionLog() with callback rejecting a Promise', function() {
+    this.client.api.logs.getSessionLog('browser', function(result) {
       return new Promise((resolve, reject) => {
         reject(new Error('test error'));
       });
@@ -85,13 +85,13 @@ describe('getLog', function() {
 
     return this.client.start(function(err) {
       assert.ok(err instanceof Error);
-      assert.strictEqual(err.message, 'Error while running "logs.getLog" command: test error');
+      assert.strictEqual(err.message, 'Error while running "logs.getSessionLog" command: test error');
     });
   });
 
-  it('client.logs.getLog() with callback returning a Promise', function() {
+  it('client.logs.getSessionLog() with callback returning a Promise', function() {
     let logsResult;
-    this.client.api.logs.getLog('browser', function(result) {
+    this.client.api.logs.getSessionLog('browser', function(result) {
       logsResult = result.value;
 
       return new Promise((resolve) => {
