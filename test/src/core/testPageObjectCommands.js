@@ -2,7 +2,6 @@ const assert = require('assert');
 const path = require('path');
 const MockServer = require('../../lib/mockserver.js');
 const Nightwatch = require('../../lib/nightwatch.js');
-/* eslint-disable */
 
 describe('test PageObject Commands', function () {
   before(function (done) {
