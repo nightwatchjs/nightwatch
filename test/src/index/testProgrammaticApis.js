@@ -75,7 +75,8 @@ describe('test programmatic apis', function () {
     assert.ok(!!global.browser);
     assert.ok(!!global.browser.page);
 
-    assert.deepStrictEqual(Object.keys(client), ['updateCapabilities', 'launchBrowser']);
+    assert.deepStrictEqual(Object.keys(client), ['updateCapabilities', 'runGlobalBeforeHook', 
+      'runGlobalAfterHook', 'launchBrowser', 'cleanup']);
     assert.strictEqual(typeof client.launchBrowser, 'function');
     assert.strictEqual(typeof client.settings, 'object');
 

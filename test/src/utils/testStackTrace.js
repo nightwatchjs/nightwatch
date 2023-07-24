@@ -121,18 +121,18 @@ describe('test stackTrace parse', function() {
     const errorMessage = Logger.getErrorContent(error);
     assert.ok(!errorMessage.includes('\t'));
 
-    assert.strictEqual(errorMessage, ` ✖ [1;31mTypeError[0m
+    const correctMessage = ` ✖ [1;31mTypeError[0m
    [0;31mUnknown method[0m
 [0;33m
     Error location:[0m
     ${errorFilePath}:
-    ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+    –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
      2 |   it('failure stack trace', function() {
      3 |    
     [0;37m[41m 4 |     browser.url('http://localhost') [0m
      5 |       .assert.elementPresen('#badElement'); // mispelled API method
      6 |   });
-    ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+    –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 [0;33m    Stack Trace :[0m
 [0;90m    at DescribeInstance.<anonymous> (${errorFilePath}:${lineNumber}:21)[0m
@@ -144,6 +144,7 @@ describe('test stackTrace parse', function() {
 [0;90m      at TestSuite.handleRunnable (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:781:33)[0m
 [0;90m      at /Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:669:21[0m
 [0;90m      at processTicksAndRejections (node:internal/process/task_queues:96:5)[0m
-`);
+`;
+    assert.strictEqual(errorMessage, correctMessage);
   });
 });
