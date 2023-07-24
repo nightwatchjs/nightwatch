@@ -516,6 +516,7 @@ export interface NamespacedApi<ReturnType = unknown> {
   document: DocumentNsCommands<ReturnType>;
   window: WindowNsCommands<ReturnType>;
   firefox: FirefoxNsCommands<ReturnType>;
+  network: NetworkNsCommands<ReturnType>;
 
   assert: Assert<ReturnType>;
   verify: Assert<ReturnType>;
@@ -1384,70 +1385,6 @@ export interface ChromiumClientCommands {
   ): Awaitable<this, null>;
 
   /**
-   * Capture outgoing network calls from the browser.
-   *
-   * @example
-   *  describe('capture network requests', function() {
-   *    it('captures and logs network requests as they occur', function(this: ExtendDescribeThis<{requestCount: number}>) {
-   *      this.requestCount = 1;
-   *      browser
-   *        .captureNetworkRequests((requestParams) => {
-   *          console.log('Request Number:', this.requestCount!++);
-   *          console.log('Request URL:', requestParams.request.url);
-   *          console.log('Request method:', requestParams.request.method);
-   *          console.log('Request headers:', requestParams.request.headers);
-   *        })
-   *        .navigateTo('https://www.google.com');
-   *    });
-   *  });
-   *
-   * @see https://nightwatchjs.org/guide/network-requests/capture-network-calls.html
-   */
-  captureNetworkRequests(
-    onRequestCallback: (
-      requestParams: Protocol.Network.RequestWillBeSentEvent
-    ) => void,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
-
-  /**
-   * Intercept the request made on a particular URL and mock the response.
-   *
-   * @example
-   *  describe('mock network response', function() {
-   *    it('intercepts the request made to Google search and mocks its response', function() {
-   *      browser
-   *        .mockNetworkResponse('https://www.google.com/', {
-   *          status: 200,
-   *          headers: {
-   *            'Content-Type': 'UTF-8'
-   *          },
-   *          body: 'Hello there!'
-   *        })
-   *        .navigateTo('https://www.google.com/')
-   *        .pause(2000);
-   *    });
-   *  });
-   *
-   * @see https://nightwatchjs.org/guide/network-requests/mock-network-response.html
-   */
-  mockNetworkResponse(
-    urlToIntercept: string,
-    response?: {
-      status?: Protocol.Fetch.FulfillRequestRequest['responseCode'];
-      headers?: { [name: string]: string };
-      body?: Protocol.Fetch.FulfillRequestRequest['body'];
-    },
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
-
-  /**
    * Override device mode/dimensions.
    *
    * @example
@@ -1575,6 +1512,12 @@ export interface ChromiumClientCommands {
       result: NightwatchCallbackResult<string>
     ) => void
   ): Awaitable<this, string>;
+
+  captureNetworkRequests: NetworkNsCommands<this>['captureRequests'];
+
+  mockNetworkResponse: NetworkNsCommands<this>['mockResponse'];
+
+  setNetworkConditions: NetworkNsCommands<this>['setConditions'];
 
   /**
    * Listen to the `console` events (ex. `console.log` event) and
@@ -5214,6 +5157,103 @@ export interface FirefoxNsCommands<ReturnType = unknown> {
   uninstallAddon(addonId: string | PromiseLike<string>): Awaitable<IfUnknown<ReturnType, this>, null>;
 } 
 
+export interface NetworkNsCommands<ReturnType = unknown> {
+  /**
+   * Capture outgoing network calls from the browser.
+   *
+   * @example
+   *  describe('capture network requests', function() {
+   *    it('captures and logs network requests as they occur', function(this: ExtendDescribeThis<{requestCount: number}>) {
+   *      this.requestCount = 1;
+   *      browser
+   *        .network.captureRequests((requestParams) => {
+   *          console.log('Request Number:', this.requestCount!++);
+   *          console.log('Request URL:', requestParams.request.url);
+   *          console.log('Request method:', requestParams.request.method);
+   *          console.log('Request headers:', requestParams.request.headers);
+   *        })
+   *        .navigateTo('https://www.google.com');
+   *    });
+   *  });
+   *
+   * @see https://nightwatchjs.org/guide/network-requests/capture-network-calls.html
+   */
+  captureRequests(
+    onRequestCallback: (
+      requestParams: Protocol.Network.RequestWillBeSentEvent
+    ) => void,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Intercept the request made on a particular URL and mock the response.
+   *
+   * @example
+   *  describe('mock network response', function() {
+   *    it('intercepts the request made to Google search and mocks its response', function() {
+   *      browser
+   *        .network.mockResponse('https://www.google.com/', {
+   *          status: 200,
+   *          headers: {
+   *            'Content-Type': 'UTF-8'
+   *          },
+   *          body: 'Hello there!'
+   *        })
+   *        .navigateTo('https://www.google.com/')
+   *        .pause(2000);
+   *    });
+   *  });
+   *
+   * @see https://nightwatchjs.org/guide/network-requests/mock-network-response.html
+   */
+  mockResponse(
+    urlToIntercept: string,
+    response?: {
+      status?: Protocol.Fetch.FulfillRequestRequest['responseCode'];
+      headers?: { [name: string]: string };
+      body?: Protocol.Fetch.FulfillRequestRequest['body'];
+    },
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Command to set Chrome network emulation settings.
+   *
+   * @example
+   * describe('set network conditions', function() {
+   *  it('sets the network conditions',function() {
+   *    browser
+   *     .network.setConditions({
+   *      offline: false,
+   *      latency: 3000,
+   *      download_throughput: 500 * 1024,
+   *      upload_throughput: 500 * 1024
+   *    });
+   *  });
+   * });
+   *
+   * @see https://nightwatchjs.org/api/setNetworkConditions.html
+   */
+  setConditions(
+    spec: {
+      offline: boolean;
+      latency: number;
+      download_throughput: number;
+      upload_throughput: number;
+    },
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+}
+
 export interface AlertsNsCommands<ReturnType = unknown> {
   /**
    * Accepts the currently displayed alert dialog. Usually, this is equivalent to clicking on the 'OK' button in the dialog.
@@ -6040,34 +6080,6 @@ export interface WebDriverProtocolSessions {
       result: NightwatchCallbackResult<NightwatchLogTypes[]>
     ) => void
   ): Awaitable<this, NightwatchLogTypes[]>;
-
-  /**
-   * Command to set Chrome network emulation settings.
-   *
-   * @example
-   *  this.demoTest = function() {
-   *    browser.setNetworkConditions({
-   *      offline: false,
-   *      latency: 50000,
-   *      download_throughput: 450 * 1024,
-   *      upload_throughput: 150 * 1024
-   *    });
-   *  };
-   *
-   * @see https://nightwatchjs.org/api/setNetworkConditions.html
-   */
-  setNetworkConditions(
-    spec: {
-      offline: boolean;
-      latency: number;
-      download_throughput: number;
-      upload_throughput: number;
-    },
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
 }
 
 export interface WebDriverProtocolNavigation {

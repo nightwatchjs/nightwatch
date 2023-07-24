@@ -1,5 +1,5 @@
 const common = require('../../common.js');
-const {browser, appium, assert, expect, firefox} = common.require('index.js');
+const {browser, appium, assert, expect, firefox, document} = common.require('index.js');
 
 describe('namespaced api test', function() {
   it('browser.navigateTo', function () {
@@ -26,6 +26,15 @@ describe('namespaced api test', function() {
       .strictEqual(typeof result.navigateTo, 'undefined')
       .strictEqual(typeof result.debug, 'undefined')
       .strictEqual(typeof result.hideKeyboard, 'function')
+      .strictEqual(typeof result.sessionId, 'undefined');
+  });
+
+  it('document.customExecute (namespaced alias loaded on namespaced api)', function () {
+    const result = document.customExecute('acme');
+    assert
+      .strictEqual(typeof result.navigateTo, 'undefined')
+      .strictEqual(typeof result.debug, 'undefined')
+      .strictEqual(typeof result.injectScript, 'function')
       .strictEqual(typeof result.sessionId, 'undefined');
   });
 
