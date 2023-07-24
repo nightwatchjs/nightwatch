@@ -640,4 +640,67 @@ describe('test programmatic apis', function () {
     CliRunner.createDefaultConfig = createDefaultConfig;
     CliRunner.prototype.loadConfig = loadConfig;
   });
+
+  it('should test updateCapabilities() programmatic API with multiple nested caps', async function() {
+    const CliRunner = common.require('runner/cli/cli.js');
+    const Nightwatch = common.require('index.js');
+    MockServer.createFirefoxSession({});
+  
+    const defaultConfig = {
+      test_settings: {
+        default: {
+          launchUrl: 'http://localhost'
+        }
+      },
+      selenium: {
+        port: 10195,
+        start_process: false
+      },
+      selenium_host: 'localhost'
+    };
+  
+    const createDefaultConfig = CliRunner.createDefaultConfig;
+    const loadConfig = CliRunner.prototype.loadConfig;
+  
+    CliRunner.createDefaultConfig = function(destFileName) {
+      return defaultConfig;
+    };
+  
+    CliRunner.prototype.loadConfig = function () {
+      return defaultConfig;
+    };
+  
+    const client = Nightwatch.createClient({
+      headless: true,
+      silent: false,
+      output: false,
+      enable_global_apis: true
+    });
+
+    client.updateCapabilities({
+      'testName': 'newCaps',
+      'options': {
+        'testCapabilitiesOne': 'capabilityOne'
+      }
+    });
+      
+    client.updateCapabilities({
+      'testName': 'updatedCaps',
+      'options': {
+        'testCapabilitiesTwo': 'capabilityTwo'
+      }
+    });
+  
+    const session = await client.launchBrowser();
+    assert.deepStrictEqual(session.desiredCapabilities, {
+      browserName: 'firefox',
+      testName: 'updatedCaps',
+      options: {
+        testCapabilitiesOne: 'capabilityOne',
+        testCapabilitiesTwo: 'capabilityTwo'
+      }
+    });
+    CliRunner.createDefaultConfig = createDefaultConfig;
+    CliRunner.prototype.loadConfig = loadConfig;
+  });
 });
