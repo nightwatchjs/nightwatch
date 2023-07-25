@@ -39,29 +39,29 @@ describe('test PageObject Commands', function () {
         value: [{ELEMENT: '1'}]
       })
     }, true);
-
+    
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/frame',
       method: 'POST',
       postdata: JSON.stringify({id: {ELEMENT: '1'}}),
       response: JSON.stringify({
         sessionId: '1352110219202',
-        status: 0
+        value: null
       })
     });
-
-    const page = this.client.api.page.simplePageObj();
-    const expected={};
-
-    page.frame('@frameElement', function callback(result) {
-      expected['status']=result.status;
-    });          
     
+    const page = this.client.api.page.simplePageObj();
+    let callbackResult;
+    
+    page.frame('@frameElement', function callback(result) {
+      callbackResult = result;
+    }); 
     this.client.start(
       function(err) {
         try {
           assert.strictEqual(err, undefined);
-          assert.strictEqual(expected.status, 0);
+          assert.strictEqual(callbackResult.status, 0);
+          assert.strictEqual(callbackResult.value, null);
           done();
         } catch (e){
           done(e);
@@ -90,7 +90,7 @@ describe('test PageObject Commands', function () {
       }
     });
 
-    let page = this.client.api.page.simplePageObj();
+    const page = this.client.api.page.simplePageObj();
     page.setValue('@loginCss', '1', function callback(result) {
       assert.strictEqual(result.status, 0);
       done();
@@ -100,8 +100,8 @@ describe('test PageObject Commands', function () {
   });
 
   it('testPageObjectCallbackContext', function(done) {
-    let api = this.client.api;
-    let page = api.page.simplePageObj();
+    const api = this.client.api;
+    const page = api.page.simplePageObj();
 
     page
       .waitForElementPresent('#weblogin', 1000, true, function callback(result) {
@@ -122,8 +122,8 @@ describe('test PageObject Commands', function () {
   });
 
   it('testPageObjectLocateStrategy', function(done) {
-    let client = this.client;
-    let page = client.api.page.simplePageObj();
+    const client = this.client;
+    const page = client.api.page.simplePageObj();
 
     assert.strictEqual(client.locateStrategy, 'css selector', 'locateStrategy should default to css selector');
 
@@ -150,8 +150,8 @@ describe('test PageObject Commands', function () {
         status: 0
       })
     }, true);
-    let client = this.client;
-    let section = client.api.page.simplePageObj().section.signUp;
+    const client = this.client;
+    const section = client.api.page.simplePageObj().section.signUp;
     section.click('@help', function callback(result) {
       assert.strictEqual(result.status, 0, result.value && result.value.message || 'An error occurred:\n' + JSON.stringify(result));
     });
@@ -173,7 +173,7 @@ describe('test PageObject Commands', function () {
       })
     });
 
-    let section = this.client.api.page.simplePageObj().section.signUp;
+    const section = this.client.api.page.simplePageObj().section.signUp;
     section.waitForElementPresent('@help', 1000, true, function callback(result) {
       assert.strictEqual(result.status, 0);
       assert.strictEqual(result.value.length, 1);
@@ -202,7 +202,7 @@ describe('test PageObject Commands', function () {
       })
     }, true);
 
-    let page = this.client.api.page.simplePageObj();
+    const page = this.client.api.page.simplePageObj();
 
     page.click('@loginCss', function callback(result) {
       assert.strictEqual(result.status, 0);
@@ -215,7 +215,7 @@ describe('test PageObject Commands', function () {
   });
 
   it('testPageObjectInvalidElementCommand', function(done) {
-    let page = this.client.api.page.simplePageObj();
+    const page = this.client.api.page.simplePageObj();
 
     assert.throws(
       function () {
@@ -226,14 +226,14 @@ describe('test PageObject Commands', function () {
   });
 
   it('testPageObjectPropsFunctionReturnsObject', function() {
-    let page = this.client.api.page.simplePageObj();
+    const page = this.client.api.page.simplePageObj();
 
     assert.strictEqual(typeof page.props, 'object', 'props function should be called and set page.props equals its returned object');
     assert.strictEqual(page.props.url, page.url, 'props function should be called with page context');
   });
 
   it('testSectionObjectPropsFunctionReturnsObject', function() {
-    let page = this.client.api.page.simplePageObj();
+    const page = this.client.api.page.simplePageObj();
 
     assert.strictEqual(typeof page.section.propTest.props, 'object', 'props function should be called and set page.props equals its returned object');
     assert.ok(page.section.propTest.props.defaults.propTest, 'props function should be called with page context');
@@ -241,8 +241,8 @@ describe('test PageObject Commands', function () {
   });
 
   it('testPageObjectWithUrlChanged', function (done) {
-    let page = this.client.api.page.simplePageObj();
-    let urlsArr = [];
+    const page = this.client.api.page.simplePageObj();
+    const urlsArr = [];
     page.api.url = function (url) {
       urlsArr.push(url);
     };
@@ -272,8 +272,8 @@ describe('test PageObject Commands', function () {
   });
 
   it('testPageObject navigate() with url param', function (done) {
-    let page = this.client.api.page.simplePageObj();
-    let urlsArr = [];
+    const page = this.client.api.page.simplePageObj();
+    const urlsArr = [];
     page.api.url = function (url) {
       urlsArr.push(url);
     };
@@ -303,8 +303,8 @@ describe('test PageObject Commands', function () {
   });
 
   it('testPageObject navigate() with url param and callback', function (done) {
-    let page = this.client.api.page.simplePageObj();
-    let urlsArr = [];
+    const page = this.client.api.page.simplePageObj();
+    const urlsArr = [];
     page.api.url = function (url, callback) {
       urlsArr.push(url);
       callback();
