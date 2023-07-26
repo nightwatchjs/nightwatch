@@ -65,7 +65,7 @@ describe('.registerBasicAuth()', function () {
     }).then(client => {
       client.api.registerBasicAuth('admin', 'admin', function(result){
         assert.strictEqual(result.status, -1);
-        assert.strictEqual(result.error, 'RegisterBasicAuth is not supported while using this driver');
+        assert.strictEqual(result.error, 'The command .registerBasicAuth() is only supported in Chromium based drivers');
       });
 
       client.start(done);
