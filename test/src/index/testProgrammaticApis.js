@@ -2,6 +2,7 @@ const assert = require('assert');
 const mockery = require('mockery');
 const MockServer = require('../../lib/command-mocks.js');
 const common = require('../../common.js');
+const {Logger} = common.require('utils');
 
 describe('test programmatic apis', function () {
   // [ '-vv', '--port=62625' ]
@@ -75,7 +76,8 @@ describe('test programmatic apis', function () {
     assert.ok(!!global.browser);
     assert.ok(!!global.browser.page);
 
-    assert.deepStrictEqual(Object.keys(client), ['updateCapabilities', 'launchBrowser']);
+    assert.deepStrictEqual(Object.keys(client), ['updateCapabilities', 'runGlobalBeforeHook', 
+      'runGlobalAfterHook', 'launchBrowser', 'cleanup']);
     assert.strictEqual(typeof client.launchBrowser, 'function');
     assert.strictEqual(typeof client.settings, 'object');
 
@@ -637,6 +639,159 @@ describe('test programmatic apis', function () {
 
     assert.ok(processListenerCalled);
 
+    CliRunner.createDefaultConfig = createDefaultConfig;
+    CliRunner.prototype.loadConfig = loadConfig;
+  });
+
+  it('test runGlobalBeforeHook() programmatic API', async function() {
+    const CliRunner = common.require('runner/cli/cli.js');
+    const Nightwatch = common.require('index.js');
+    MockServer.createFirefoxSession({});
+
+    let globalBeforeCalled = false;
+
+    const defaultConfig = {
+      test_settings: {
+        default: {
+          launchUrl: 'http://localhost'
+        }
+      },
+      selenium: {
+        port: 10195,
+        start_process: false
+      },
+      selenium_host: 'localhost',
+
+      globals: {
+        before() {
+          globalBeforeCalled = true;
+        }
+      }
+    };
+
+    const createDefaultConfig = CliRunner.createDefaultConfig;
+    const loadConfig = CliRunner.prototype.loadConfig;
+
+    CliRunner.createDefaultConfig = function(destFileName) {
+      return defaultConfig;
+    };
+
+    CliRunner.prototype.loadConfig = function () {
+      return defaultConfig;
+    };
+
+    const client = Nightwatch.createClient({
+      headless: true,
+      silent: false,
+      output: false,
+      enable_global_apis: true
+    });
+
+    await client.runGlobalBeforeHook();
+
+    assert.ok(globalBeforeCalled);
+
+    CliRunner.createDefaultConfig = createDefaultConfig;
+    CliRunner.prototype.loadConfig = loadConfig;
+  });
+
+  it('test runGlobalAfterHook() programmatic API', async function() {
+    const CliRunner = common.require('runner/cli/cli.js');
+    const Nightwatch = common.require('index.js');
+    MockServer.createFirefoxSession({});
+
+    let globalAfterCalled = false;
+
+    const defaultConfig = {
+      test_settings: {
+        default: {
+          launchUrl: 'http://localhost'
+        }
+      },
+      selenium: {
+        port: 10195,
+        start_process: false
+      },
+      selenium_host: 'localhost',
+
+      globals: {
+        after() {
+          globalAfterCalled = true;
+        }
+      }
+    };
+
+    const createDefaultConfig = CliRunner.createDefaultConfig;
+    const loadConfig = CliRunner.prototype.loadConfig;
+
+    CliRunner.createDefaultConfig = function(destFileName) {
+      return defaultConfig;
+    };
+
+    CliRunner.prototype.loadConfig = function () {
+      return defaultConfig;
+    };
+
+    const client = Nightwatch.createClient({
+      headless: true,
+      silent: false,
+      output: false,
+      enable_global_apis: true
+    });
+
+    await client.runGlobalAfterHook();
+
+    assert.ok(globalAfterCalled);
+
+    CliRunner.createDefaultConfig = createDefaultConfig;
+    CliRunner.prototype.loadConfig = loadConfig;
+  });
+
+  it('test cleanup() programmatic API', async function() {
+    const CliRunner = common.require('runner/cli/cli.js');
+    const Nightwatch = common.require('index.js');
+    MockServer.createFirefoxSession({});
+
+    const defaultConfig = {
+      test_settings: {
+        default: {
+          launchUrl: 'http://localhost'
+        }
+      },
+      selenium: {
+        port: 10195,
+        start_process: false
+      },
+      selenium_host: 'localhost'
+    };
+
+    const createDefaultConfig = CliRunner.createDefaultConfig;
+    const loadConfig = CliRunner.prototype.loadConfig;
+
+    CliRunner.createDefaultConfig = function(destFileName) {
+      return defaultConfig;
+    };
+
+    CliRunner.prototype.loadConfig = function () {
+      return defaultConfig;
+    };
+
+    const client = Nightwatch.createClient({
+      headless: true,
+      silent: false,
+      output: false,
+      enable_global_apis: true
+    });
+
+    const session = await client.launchBrowser();
+
+    await client.cleanup();
+
+    const httpOutput = Logger.collectOutput();
+    const httpSectionOutput = Logger.collectTestSectionOutput();
+
+    assert.equal(httpOutput.length, 0);
+    assert.equal(httpSectionOutput.length, 0);
     CliRunner.createDefaultConfig = createDefaultConfig;
     CliRunner.prototype.loadConfig = loadConfig;
   });
