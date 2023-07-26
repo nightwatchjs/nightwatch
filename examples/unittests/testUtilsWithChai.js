@@ -1,4 +1,4 @@
-const Utils = require('../../lib/utils/');
+const Utils = require('../../dist/utils/');
 const expect = require('chai').expect;
 
 module.exports = {

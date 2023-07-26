@@ -1,9 +1,10 @@
 const assert = require('assert');
+const common = require('../../../../common.js');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 const MockServer = require('../../../../lib/mockserver.js');
 const Nightwatch = require('../../../../lib/nightwatch.js');
 const fs = require('fs');
-const cdp = require('../../../../../lib/transport/selenium-webdriver/cdp.js');
+const cdp = common.require('transport/selenium-webdriver/cdp.js');
 
 describe('.takeHeapSnapshot()', function(done) {
   beforeEach(function(done) {

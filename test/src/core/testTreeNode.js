@@ -1,7 +1,7 @@
 const assert = require('assert');
 const EventEmitter = require('events');
-const TreeNode = require('../../../lib/core/treenode');
 const common = require('../../common.js');
+const TreeNode = common.require('core/treenode');
 
 describe('test Queue', function () {
   it('Test commands treeNode - clear error events in handleCommandResult', function () {

@@ -1,4 +1,8 @@
-const Nightwatch = require('../lib');
+const nightwatchMain = process.env.NIGHTWATCH_TS_NODE_DEV ?
+  '../lib' :
+  '../dist';
+
+const Nightwatch = require(nightwatchMain);
 const {Before, After, setDefaultTimeout} = require('@cucumber/cucumber');
 
 setDefaultTimeout(-1);

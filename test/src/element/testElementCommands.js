@@ -50,7 +50,12 @@ describe('element base commands', function() {
     const client = await Nightwatch.initClient({
       backwards_compatibility_mode: true,
       output: false,
-      silent: false
+      silent: false,
+      webdriver: {
+        timeout_options: {
+          retry_attempts: 0
+        }
+      }
     }, reporter);
 
     MockServer.addMock({
@@ -194,8 +199,9 @@ describe('element base commands', function() {
 <title>502 Bad Gateway</title>
 </head>
 <body></body>
-</html>`
-    }, true);
+</html>`,
+      times: 3
+    });
 
     await Nightwatch.initAsync({
       backwards_compatibility_mode: true,
@@ -203,6 +209,9 @@ describe('element base commands', function() {
       silent: false,
       selenium: {
         host: null
+      },
+      webdriver: {
+        internal_server_error_retry_interval: 0
       }
     });
 

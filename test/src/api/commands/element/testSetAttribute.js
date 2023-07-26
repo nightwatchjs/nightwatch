@@ -13,7 +13,7 @@ describe('setAttribute', function() {
 
   it('client.setAttribute()', function(done) {
     let commandArgs;
-    
+
     // eslint-disable-next-line
     const fn = function(e,a,v){try{if(e&&typeof e.setAttribute=='function'){e.setAttribute(a,v);}return true;}catch(err){return{error:err.message,message:err.name+': '+err.message};}};
     const script = 'var passedArgs = Array.prototype.slice.call(arguments,0); ' +
@@ -30,7 +30,7 @@ describe('setAttribute', function() {
 
     this.client.api.setAttribute('css selector', '#weblogin', 'disabled', 'true', function(result) {
       assert.strictEqual(commandArgs.length, 4);
-      assert.strictEqual(commandArgs[0], script);
+      assert.strictEqual(commandArgs[0].replace(/\s/g, ''), script.replace(/\s/g, ''));
       assert.deepStrictEqual(commandArgs[1], {
         ELEMENT: '0'
       });
@@ -39,7 +39,7 @@ describe('setAttribute', function() {
       assert.strictEqual(result.status, 0);
     }).setAttribute('#weblogin', 'disabled', 0, function(result) {
       assert.strictEqual(commandArgs.length, 4);
-      assert.strictEqual(commandArgs[0], script);
+      assert.strictEqual(commandArgs[0].replace(/\s/g, ''), script.replace(/\s/g, ''));
       assert.deepStrictEqual(commandArgs[1], {
         ELEMENT: '0'
       });

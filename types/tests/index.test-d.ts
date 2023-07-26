@@ -1,4 +1,4 @@
-import { expectError, expectType } from 'tsd';
+import { expectAssignable, expectError, expectNotType, expectType } from 'tsd';
 import { EventEmitter } from 'events';
 import {
   EnhancedPageObject,
@@ -6,6 +6,8 @@ import {
   NightwatchAPI,
   NightwatchAssertion,
   NightwatchAssertionsResult,
+  NightwatchClient,
+  NightwatchClientObject,
   NightwatchEnsureResult,
   NightwatchNodeAssertionsResult,
   NightwatchTests,
@@ -15,7 +17,10 @@ import {
   ElementResult,
   Awaitable,
   SectionProperties,
+  ScopedElement
 } from '..';
+import { element as elementNamedExport } from '..';
+import { WebElement } from 'selenium-webdriver';
 
 function isNightwatchAssertionsResult<T>(result: NightwatchAssertionsResult<T>): T {
   return result.value;
@@ -82,12 +87,11 @@ const testGeneral: NightwatchTests = {
       browser.browserName = 'firefox';
     })
 
-    browser.element('css selector', 'something', function (result) {
+    expectError(browser.element('css selector', 'something', function (result) {
       if (result.status === 0) {
-        expectType<string>(result.value[ELEMENT_KEY]);
+        console.log(result.value);
       }
-      expectType<NightwatchAPI>(this);
-    });
+    }));
 
     browser.elements('css selector', 'something', function (result) {
       if (result.status === 0) {
@@ -98,11 +102,20 @@ const testGeneral: NightwatchTests = {
   },
 
   'Demo Nightwatch API commands with async/await': async () => {
+    // backward compatibility to some extent
     const element = await browser.element('css selector', 'something');
-    expectType<string>(element[ELEMENT_KEY]);
+    expectType<WebElement>(element);
 
     const elements = await browser.elements('css selector', 'something');
     expectType<string>(elements[0][ELEMENT_KEY]);
+
+    // new element api
+    const elem = elementNamedExport('selector');
+    expectType<ScopedElement>(elem);
+    expectType<WebElement>(await elem);
+
+    const childChildEle = await elementNamedExport.find('selector').findAll('child-selector').nth(2).find('child-child-selector');
+    expectType<WebElement>(childChildEle);
   },
 
   'Can run accessibility tests': () => {
@@ -230,8 +243,8 @@ const testGeneral: NightwatchTests = {
     isNightwatchAssertionsResult<Array<{ [ELEMENT_KEY]: string }>>(await elementPresentResult);
 
     const hasAttributeResult = browser.assert.hasAttribute('input[name=q]', 'placeholder');
-    expectType<Awaitable<NightwatchAPI, NightwatchAssertionsResult<string[]>>>(hasAttributeResult);
-    isNightwatchAssertionsResult<string[]>(await hasAttributeResult);
+    expectType<Awaitable<NightwatchAPI, NightwatchAssertionsResult<string>>>(hasAttributeResult);
+    isNightwatchAssertionsResult<string>(await hasAttributeResult);
 
     const selectedResult = browser.assert.selected('input[name=q]');
     expectType<Awaitable<NightwatchAPI, NightwatchAssertionsResult<boolean>>>(selectedResult);
@@ -272,7 +285,7 @@ describe('duckduckgo example', function () {
 //
 const wikipediaAppTest: NightwatchTests = {
   before: (client: NightwatchAPI) => {
-    client.click('xpath', '//XCUIElementTypeButton[@name="Skip"]');
+    client.click(by.xpath('//XCUIElementTypeButton[@name="Skip"]'));
   },
 
   'Search for BrowserStack': async (client: NightwatchAPI) => {
@@ -296,7 +309,7 @@ const wikipediaAppTest: NightwatchTests = {
       .click('//XCUIElementTypeStaticText[@name="BrowserStack"]')
       .waitUntil(async function () {
         // wait for webview context to be available
-        const contexts = await client.contexts(function (result) {
+        const contexts = await this.appium.getContexts(function (result) {
           if (result.status === 0) {
             expectType<string[]>(result.value);
           }
@@ -307,15 +320,15 @@ const wikipediaAppTest: NightwatchTests = {
       }, 50000)
       .perform(async function () {
         // switch to webview context
-        const contexts = await client.contexts();
-        const setContextResult = await client.setContext(contexts[1], function (result) {
+        const contexts = await this.contexts();
+        const setContextResult = await this.setContext(contexts[1], function (result) {
           if (result.status === 0) {
             expectType<null>(result.value);
           }
           expectType<NightwatchAPI>(this);
         });
 
-        const currContext = await client.currentContext(function (result) {
+        const currContext = await this.currentContext(function (result) {
           if (result.status === 0) {
             expectType<string | null>(result.value);
           }
@@ -346,26 +359,22 @@ const wikipediaAppTest: NightwatchTests = {
 
 const appsSection = {
   selector: 'div.gb_qc',
-  commands: [
-    {
-      clickYoutube(this: EnhancedSectionInstance) {
-        return this.click('@youtube');
-      },
+  commands: {
+    clickYoutube(this: EnhancedSectionInstance) {
+      return this.click('@youtube');
     },
-    {
-      something(this: EnhancedSectionInstance) {
-        return this.click('@youtube');
-      },
+    something(this: EnhancedSectionInstance) {
+      return this.click('@youtube');
     },
-  ],
-  elements: {
-    myAccount: {
-      selector: '#gb192'
-    },
+  },
+  elements: [{
+    myAccount: '#gb192'
+  },
+  {
     youtube: {
       selector: '#gb36',
     },
-  }
+  }]
 } satisfies SectionProperties;
 
 const menuSection = {
@@ -388,9 +397,7 @@ const menuSection = {
     },
   ],
   elements: {
-    mail: {
-      selector: 'a[href="mail"]',
-    },
+    mail: 'a[href="mail"]',
     images: {
       selector: 'a[href="imghp"]',
     },
@@ -401,7 +408,7 @@ const menuSection = {
 } satisfies SectionProperties;
 
 const googleCommands = {
-  submit(this: EnhancedPageObject) {
+  submit(this: GooglePage) {
     this.api.pause(1000);
     return this.waitForElementVisible('@submitButton', 1000)
       .click('@submitButton')
@@ -412,11 +419,10 @@ const googleCommands = {
 const googlePage = {
   commands: [googleCommands],
   elements: {
-    searchBar: {
-      selector: 'input[type=text]',
-    },
+    searchBar: 'input[type=text]',
     submitButton: {
       selector: 'input[name=btnK]',
+      locateStrategy: 'css selector'
     },
   },
   sections: {
@@ -433,17 +439,20 @@ const googlePage = {
 // }
 
 const iFrame = {
-  elements: {
+  elements: [{
     iframe: '#mce_0_ifr',
-    textbox: 'body#tinymce p',
+    hey: undefined
   },
-  commands: [
-    {
-      url(this: EnhancedPageObject) {
-        return `${this.api.launch_url}/iframe`;
-      },
+  {
+    textbox: {
+      selector: 'body#tinymce p',
+    }
+  }],
+  commands: {
+    url(this: EnhancedPageObject) {
+      return `${this.api.launch_url}/iframe`;
     },
-  ],
+  },
 } satisfies PageObjectModel;
 
 // export = iFrame
@@ -468,7 +477,22 @@ declare module '..' {
 const testPage = {
   'Test commands': () => {
     const google = browser.page.google();
-    google.setValue('@searchBar', 'nightwatch').submit();
+    google.setValue('@searchBar', 'nightwatch').submit().assert.titleContains('nightwatch');
+
+    expectType<NightwatchAPI>(google.api);
+    expectType<NightwatchClient>(google.client);
+
+    const result = google
+      .setValue('@searchBar', 'nightwatch')
+      .assert.titleContains('Google');
+    
+    expectAssignable<GooglePage>(result);
+    expectAssignable<GooglePage>(result.submit());
+    expectAssignable<GooglePage>(result.cookies.getAll());
+
+    // test new element api
+    google.element('@searchBar');
+    google.element.findAll('@searchBar');
 
     browser.end();
   },
@@ -476,19 +500,43 @@ const testPage = {
   'Test sections': () => {
     const google = browser.page.google();
 
+    expectAssignable<GooglePage>(google.cookies.deleteAll());
+    expectError(googlePage.window.maximize());
+
     const menuSection = google.section.menu;
+
+    const result = menuSection
+      .assert.visible('@mail')
+      .assert.visible('@images');
+
+    expectAssignable<typeof menuSection>(result);
+
     menuSection.expect.element('@mail').to.be.visible;
     menuSection.expect.element('@images').to.be.visible;
 
+    expectAssignable<typeof menuSection>(menuSection.alerts.accept());
+    expectType<NightwatchAPI>(menuSection.api);
+    expectType<NightwatchClient>(menuSection.client);
+
     menuSection.selector;
 
-    menuSection.clickApps();
+    expectNotType<any>(menuSection.clickApps());
+
+    const imagesElement = menuSection.elements.images;
+    expectNotType<any>(imagesElement);
 
     const appSection = menuSection.section.apps;
     appSection.expect.element('@myAccount').to.be.visible;
     appSection.expect.element('@youtube').to.be.visible;
 
-    appSection.clickYoutube();
+    const youtubeElement = appSection.elements.youtube;
+    expectNotType<any>(youtubeElement);
+
+    // test new element api
+    menuSection.element('@main');
+    menuSection.element.findAll('@main').nth(1).find('@images');
+
+    expectNotType<any>(appSection.clickYoutube());
 
     browser.end();
   },
@@ -685,15 +733,18 @@ function text(this: NightwatchAssertion<string>, selector: string, expectedText:
 
   this.value = (result) => result.value!;
 
-  // TODO: fix callback types
-  // this.command = function (callback) {
-  //   this.api.element('css selector', selector, (elementResult) => {
-  //     this.api.elementIdText(elementResult.value[ELEMENT_KEY as keyof ElementResult], (textResult) => {
-  //       callback({ value: textResult.value as string });
-  //     });
-  //   });
-  //   return this;
-  // };
+  this.command = function (callback) {
+    this.api.findElement('css selector', selector, (elementResult) => {
+      if (elementResult.status === 0) {
+        this.api.elementIdText(elementResult.value[ELEMENT_KEY as keyof ElementResult], (textResult) => {
+          callback({ value: textResult.value as string });
+        });
+      }
+    });
+    return this;
+  };
+
+  expectType<NightwatchClientObject>(this.client);
 }
 
 // exports.assertion = text;
