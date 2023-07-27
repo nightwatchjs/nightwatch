@@ -10,5 +10,9 @@ describe('demo tests using waitUntil element APIs', function() {
   it('wait until element is enabled', function({element}) {
     element('#weblogin').waitUntil('enabled');
   });
+
+  it('wait until with custom message', function({element}) {
+    element('#weblogin').waitUntil('enabled', {message: 'elemento %s no era presente en %d ms'});
+  });
 });
 
