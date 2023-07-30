@@ -1,5 +1,22 @@
-module.exports = class ClientCommand {
-  static get isTraceable() {
+interface ResultObject {
+  status: number;
+  code: any;
+  name: any;
+  value: {
+    message: any;
+  };
+  error: any;
+}
+
+interface MakePromiseOptions {
+  performAction: (callback : (result : ResultObject) => void) => void;
+  userSuppliedCallback?: (param : any) => any;
+  fullResultObject?: boolean;
+  fullPromiseResolve?: boolean;
+}
+
+export default class ClientCommand {
+  static get isTraceable() : boolean {
     return false;
   }
 
@@ -11,9 +28,14 @@ module.exports = class ClientCommand {
    * @param {boolean} fullPromiseResolve Weather to resolve the promise with the full result object or just the "value" property
    * @return {Promise}
    */
-  static makePromise({performAction, userSuppliedCallback = function() {}, fullResultObject = true, fullPromiseResolve = true}) {
-    return new Promise(function(resolve, reject) {
-      performAction(function(result) {
+  static makePromise({
+      performAction, 
+      userSuppliedCallback = function() {}, 
+      fullResultObject = true, 
+      fullPromiseResolve = true
+    } : MakePromiseOptions) : Promise<any> {
+    return new Promise((resolve, reject) => {
+      performAction((result) => {
         try {
           if (result instanceof Error) {
             const {name, message, code} = result;
@@ -44,19 +66,19 @@ module.exports = class ClientCommand {
     });
   }
 
-  get returnsFullResultObject() {
+  get returnsFullResultObject() : boolean {
     return true;
   }
 
-  get resolvesWithFullResultObject() {
+  get resolvesWithFullResultObject() : boolean {
     return true;
   }
 
-  reportProtocolErrors(result) {
+  reportProtocolErrors(result : any) : boolean {
     return true;
   }
 
-  command(userSuppliedCallback) {
+  command(userSuppliedCallback : (param : any) => void) {
     const {performAction} = this;
 
     return ClientCommand.makePromise({
@@ -76,7 +98,7 @@ module.exports = class ClientCommand {
    * @param {function} callback
    * @private
    */
-  executeScriptHandler(method, script, args, callback) {
+  executeScriptHandler(method : string, script : string | Function, args : any[], callback : (param : any) => void) {
     let fn;
 
     if (script.originalTarget) {
