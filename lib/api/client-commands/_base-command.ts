@@ -28,6 +28,7 @@ export default class ClientCommand {
    * @param {boolean} fullPromiseResolve Weather to resolve the promise with the full result object or just the "value" property
    * @return {Promise}
    */
+  
   static makePromise({
       performAction, 
       userSuppliedCallback = function() {}, 
@@ -58,7 +59,7 @@ export default class ClientCommand {
           }
 
           const resolveValue = fullPromiseResolve ? result : result.value;
-          promise.then(_ => resolve(resolveValue)).catch(err => reject(err));
+          promise.then((_ : any) => resolve(resolveValue)).catch((err : Error) => reject(err));
         } catch (e) {
           reject(e);
         }
@@ -77,6 +78,8 @@ export default class ClientCommand {
   reportProtocolErrors(result : any) : boolean {
     return true;
   }
+
+  performAction () {}
 
   command(userSuppliedCallback : (param : any) => void) {
     const {performAction} = this;
@@ -98,11 +101,14 @@ export default class ClientCommand {
    * @param {function} callback
    * @private
    */
+
+  transportActions : any = {}
+
   executeScriptHandler(method : string, script : string | Function, args : any[], callback : (param : any) => void) {
     let fn;
 
-    if (script.originalTarget) {
-      script = script.originalTarget;
+    if ((script as any).originalTarget) {
+      script = (script as any).originalTarget;
     }
 
     if (typeof script === 'function') {
