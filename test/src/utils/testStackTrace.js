@@ -4,7 +4,7 @@ const AssertionError = require('assertion-error');
 const common = require('../../common.js');
 const Utils = common.require('utils');
 const beautifyStackTrace = common.require('utils/beautifyStackTrace.js');
-const colors = common.require('utils/colors.js');
+const colors = common.require('utils/chalkColors.js');
 const {Logger} = common.require('utils');
 
 
