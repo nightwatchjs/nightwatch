@@ -1,4 +1,4 @@
-const BrowserName = module.exports = {
+const BrowserName = {
   get CHROME() {
     return 'chrome';
   },
@@ -25,3 +25,5 @@ const BrowserName = module.exports = {
 };
 
 Object.freeze(BrowserName);
+
+export = BrowserName;

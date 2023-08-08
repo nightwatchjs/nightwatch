@@ -1,8 +1,10 @@
+import { Deferred } from "./nightwatchInterfaces";
+
 /**
  * @return {{resolve, reject, promise}}
  */
-module.exports = function createPromise() {
-  const deferred = {
+export = function createPromise<T>() {
+  const deferred: Deferred<T> = {
     resolve: null,
     reject: null,
     promise: null
