@@ -567,7 +567,7 @@ export interface NightwatchAPI
    */
   setSessionId(sessionId: string): this;
 
-  options: NightwatchTestOptions;
+  options: NightwatchOptions & Pick<NightwatchTestOptions, "desiredCapabilities">;
 
   Keys: NightwatchKeys;
 
