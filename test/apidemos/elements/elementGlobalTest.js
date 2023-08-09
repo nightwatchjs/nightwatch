@@ -53,4 +53,11 @@ describe('get text using element-global', function () {
     assert.strictEqual(signupSectionId, '0');
   });
 
+  test('test for element properties as argument', async function () {
+    const weblogin = element({selector: '#weblogin', index: 1});
+    const id = await weblogin.getId();
+
+    assert.strictEqual(id, '5cc459b8-36a8-3042-8b4a-258883ea642b');
+  });
+
 });
