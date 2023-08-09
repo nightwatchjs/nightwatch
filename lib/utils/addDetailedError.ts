@@ -29,7 +29,7 @@ export = function(err: NightwatchError) {
     const stackParts = err.stack?.split('SyntaxError:');
     detailedErr = stackParts?.[0];
     let modulePath = err.stack?.split('\n')[0];
-    if (modulePath && modulePath.includes(':')) {
+    if (modulePath?.includes(':')) {
       modulePath = modulePath.split(':')[0];
     }
 
