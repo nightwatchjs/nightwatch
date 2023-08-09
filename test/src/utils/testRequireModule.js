@@ -1,7 +1,8 @@
 const {strict: assert} = require('node:assert');
 const path = require('node:path');
 
-const requireModule = require('../../../dist/utils/requireModule.js');
+const common = require('../../common.js');
+const requireModule = common.require('utils/requireModule.js');
 
 describe('test requireModule', function () {
   it('should load commonjs file', function () {
