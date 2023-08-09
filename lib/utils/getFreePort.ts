@@ -2,8 +2,6 @@ import * as net from 'net';
 
 /**
  * @method getFreePort
- * @param host
- * @returns {Promise<number>}
  */
 export = function(host = 'localhost'): Promise<number> {
   return new Promise((resolve, reject) => {

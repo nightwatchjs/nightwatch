@@ -47,7 +47,7 @@ export = function(err: NightwatchError) {
       detailedErr = header + detailedErr;
     }
 
-    if (modulePath && (modulePath.endsWith('.jsx') || modulePath.endsWith('.tsx'))) {
+    if (modulePath?.endsWith('.jsx') || modulePath?.endsWith('.tsx')) {
       detailedErr = `\n   In order to be able to load JSX files, one of these plugins is needed:
    - @nightwatch/react
    - @nightwatch/storybook (only if using Storybook in your project)
