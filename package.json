@@ -134,7 +134,7 @@
     }
   },
   "engines": {
-    "node": ">= 14.20.0"
+    "node": ">= 16"
   },
   "keywords": [
     "nightwatch",
