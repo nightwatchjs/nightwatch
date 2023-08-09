@@ -22,6 +22,6 @@ class BrowserName {
   get OPERA() {
     return 'opera';
   }
-};
+}
 
 export = new BrowserName();

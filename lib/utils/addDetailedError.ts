@@ -1,4 +1,4 @@
-import { NightwatchError } from "./types";
+import {NightwatchError} from './types';
 
 /**
  * @method addDetailedError
