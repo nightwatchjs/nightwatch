@@ -50,7 +50,7 @@ describe('element global demos', function() {
 
     return NightwatchClient.runTests(testsPath, settings({
       selenium_host: null,
-      output: true,
+      output: false,
       skip_testcases_on_fail: false,
       globals
     }));
