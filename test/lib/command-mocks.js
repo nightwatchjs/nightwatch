@@ -259,14 +259,15 @@ module.exports = {
     return this;
   },
 
-  w3cVisible(value = true) {
+  w3cVisible(value = true, {times = 0} = {}) {
     MockServer.addMock({
       url: '/session/13521-10219-202/execute/sync',
       method: 'POST',
       response: JSON.stringify({
         value
-      })
-    }, true);
+      }),
+      times
+    }, times === 0);
   },
   
   w3cSelected(elementId ='5cc459b8-36a8-3042-8b4a-258883ea642b', value = true) {
