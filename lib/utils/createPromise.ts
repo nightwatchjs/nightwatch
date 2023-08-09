@@ -1,9 +1,6 @@
 import { Deferred } from "./types";
 
-/**
- * @return {{resolve, reject, promise}}
- */
-export = function createPromise<T>() {
+export = function createPromise<T>(): Deferred<T> {
   const deferred: Deferred<T> = {
     resolve: null,
     reject: null,
