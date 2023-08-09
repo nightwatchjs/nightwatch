@@ -130,7 +130,7 @@ describe('Test edge option', function(){
     });
   });
 
-  it('BrowserName option', function () {
+  it('msedge as browserName', function () {
     const client = Nightwatch.createClient({
       desiredCapabilities: {
         browserName: 'msedge'
