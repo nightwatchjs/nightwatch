@@ -1,4 +1,4 @@
-import { Deferred } from "./nightwatchInterfaces";
+import { Deferred } from "./types";
 
 /**
  * @return {{resolve, reject, promise}}
