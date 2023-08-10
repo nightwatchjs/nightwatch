@@ -1,5 +1,5 @@
-import packageConfig from '../../package.json';
-const fullVersion = packageConfig.version;
+const packageConfig = require('../../package.json');
+const fullVersion: string = packageConfig.version!;
 
 export = {
   full: fullVersion,
