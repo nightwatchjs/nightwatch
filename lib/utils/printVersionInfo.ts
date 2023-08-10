@@ -1,7 +1,6 @@
-const VERSION = require('./version');
+import VERSION = require('./version');
 
-module.exports = function() {
-
+export = function() {
   // eslint-disable-next-line no-console
   console.log('\n  Nightwatch:');
   // eslint-disable-next-line no-console

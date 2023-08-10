@@ -1,7 +1,7 @@
-const packageConfig = require(__dirname + '/../../package.json');
+import packageConfig from '../../package.json';
 const fullVersion = packageConfig.version;
 
-module.exports = {
+export = {
   full: fullVersion,
   major: fullVersion.split('.')[0],
   minor: fullVersion.split('.')[1],
