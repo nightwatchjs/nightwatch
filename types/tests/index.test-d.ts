@@ -34,6 +34,8 @@ const testGeneral: NightwatchTests = {
   'Demo test Google 1': () => {
     browser.registerBasicAuth('test-username', 'test-password').navigateTo('https://google.com').pause(1000);
 
+    // check types on browser.options
+    expectType<string | string[] | undefined>(browser.options.tag_filter);
     // expect element <body> to be present in 1000ms
     browser.expect.element('body').to.be.present.before(1000);
 

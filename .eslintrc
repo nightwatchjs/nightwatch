@@ -43,13 +43,13 @@
         "omitLastInOneLineBlock": true
       }
     ],
-    "no-trailing-spaces": 0,
+    "no-trailing-spaces": 1,
     "no-else-return": 2,
     "no-extra-bind": 0,
     "no-implicit-coercion": 0,
     "no-useless-call": 0,
     "no-return-assign": 0,
-    "eol-last": 0,
+    "eol-last": 1,
     "no-unused-vars": 0,
     "no-extra-semi": 0,
     "comma-dangle": 2,
@@ -86,6 +86,7 @@
         "after": true
       }
     ],
+    "space-infix-ops": 1,
     "padding-line-between-statements": [
       "error",
       {

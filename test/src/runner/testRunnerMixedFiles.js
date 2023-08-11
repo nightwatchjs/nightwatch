@@ -10,7 +10,10 @@ describe('testRunnerMixedFiles', function() {
   let tsNode;
 
   before(function(done) {
-    tsNode = require('ts-node').register();
+    tsNode = require('ts-node').register({
+      project: path.resolve('tsconfig.json'),
+      swc: true
+    });
 
     this.server = MockServer.init();
     this.server.on('listening', () => {
@@ -35,8 +38,8 @@ describe('testRunnerMixedFiles', function() {
   this.timeout(5000);
 
   it('testRunWithoutDisablingTypescriptExplicitly', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/mixed-files');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/mixed-files');
+    const globals = {
       reporter({lastError, errmessages, modules}) {
         if (lastError) {
           throw lastError;
@@ -45,7 +48,7 @@ describe('testRunnerMixedFiles', function() {
         if (errmessages.length) {
           throw new Error(errmessages[0]);
         }
-  
+
         assert.ok('sampleJs' in modules);
         assert.ok('sampleTs' in modules);
         assert.strictEqual(modules['sampleJs'].modulePath, path.join(__dirname, '../../sampletests/mixed-files/sampleJs.js'));
@@ -62,8 +65,8 @@ describe('testRunnerMixedFiles', function() {
   });
 
   it('testRunWithoutDisablingTypescriptImplicitly', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/mixed-files');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/mixed-files');
+    const globals = {
       reporter({lastError, errmessages, modules}) {
         if (lastError) {
           throw lastError;
@@ -87,8 +90,8 @@ describe('testRunnerMixedFiles', function() {
   });
 
   it('testRunSimpleDisablingTypescript', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/mixed-files');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/mixed-files');
+    const globals = {
       reporter({lastError, errmessages, modules}) {
         if (lastError) {
           throw lastError;
