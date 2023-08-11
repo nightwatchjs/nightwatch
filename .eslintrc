@@ -3,7 +3,7 @@
     "eslint:recommended"
   ],
   "parserOptions": {
-    "ecmaVersion": 2020,
+    "ecmaVersion": 13,
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": false
