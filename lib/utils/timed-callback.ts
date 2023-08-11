@@ -14,51 +14,51 @@ class TimedCallback {
   private name: string;
   private timeoutMs: number;
 
-  private __timeoutId?: NodeJS.Timeout;
-  private __onTimeoutExpired: OnTimeoutExpired | null;
-  private __onTimerStarted: OnTimerStarted | null;
+  #timeoutId?: NodeJS.Timeout;
+  #onTimeoutExpired: OnTimeoutExpired | null;
+  #onTimerStarted: OnTimerStarted | null;
 
   constructor(callbackFn: (err: unknown) => void, name: string, timeoutMs: number) {
     this.callbackFn = callbackFn;
     this.name = name;
     this.timeoutMs = timeoutMs;
-    this.__onTimeoutExpired = null;
-    this.__onTimerStarted = null;
+    this.#onTimeoutExpired = null;
+    this.#onTimerStarted = null;
   }
 
   get onTimeoutExpired(): OnTimeoutExpired {
-    return this.__onTimeoutExpired || function() {};
+    return this.#onTimeoutExpired || function() {};
   }
 
   get onTimerStarted(): OnTimerStarted {
-    return this.__onTimerStarted || function() {};
+    return this.#onTimerStarted || function() {};
   }
 
   set onTimeoutExpired(val: OnTimeoutExpired) {
-    this.__onTimeoutExpired = val;
+    this.#onTimeoutExpired = val;
   }
 
   set onTimerStarted(val: OnTimerStarted) {
-    this.__onTimerStarted = val;
+    this.#onTimerStarted = val;
   }
 
   getWrapper() {
     this.createTimeout();
 
     return (err: unknown) => {
-      clearTimeout(this.__timeoutId);
+      clearTimeout(this.#timeoutId);
       this.callbackFn(err);
     };
   }
 
-  createTimeout() {
-    this.__timeoutId = setTimeout(() => {
+  private createTimeout() {
+    this.#timeoutId = setTimeout(() => {
       let err = new TimeoutError(`done() callback timeout of ${this.timeoutMs}ms was reached while executing "${this.name}".` +
         ' Make sure to call the done() callback when the operation finishes.');
       this.onTimeoutExpired(err, this.name, this.timeoutMs);
     }, this.timeoutMs);
 
-    this.onTimerStarted(this.__timeoutId);
+    this.onTimerStarted(this.#timeoutId);
   }
 }
 
