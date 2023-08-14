@@ -1,7 +1,7 @@
-const __RECURSION__ = 'recursion';
+const __RECURSION__: string = 'recursion';
 
 class LocateStrategy {
-  static get Strategies() {
+  static get Strategies(): {[key: string]: string} {
     return {
       ID: 'id',
       CSS_SELECTOR: 'css selector',
@@ -19,31 +19,31 @@ class LocateStrategy {
     };
   }
 
-  static isValid(strategy) {
+  static isValid(strategy: string): boolean {
     return Object.keys(LocateStrategy.Strategies).some(key => {
       return String(strategy).toLocaleLowerCase() === LocateStrategy.Strategies[key];
     });
   }
 
-  static getList() {
+  static getList(): string {
     return Object.keys(LocateStrategy.Strategies).map(k => LocateStrategy.Strategies[k]).join(', ');
   }
 
-  static get XPATH() {
+  static get XPATH(): string {
     return LocateStrategy.Strategies.XPATH;
   }
 
-  static get CSS_SELECTOR() {
+  static get CSS_SELECTOR(): string {
     return LocateStrategy.Strategies.CSS_SELECTOR;
   }
 
-  static getDefault() {
+  static getDefault(): string {
     return LocateStrategy.CSS_SELECTOR;
   }
 
-  static get Recursion() {
+  static get Recursion(): string {
     return __RECURSION__;
   }
 }
 
-module.exports = LocateStrategy;
+export = LocateStrategy;
