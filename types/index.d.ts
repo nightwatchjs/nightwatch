@@ -637,33 +637,23 @@ export interface NightwatchComponentTestingCommands {
 export interface NightwatchElement extends WebElement { }
 
 export type NightwatchTest = (browser?: NightwatchBrowser) => void;
+
 export interface NightwatchTestFunctions {
-  before?: NightwatchTestHook | undefined;
-  after?: NightwatchTestHook | undefined;
-  beforeEach?: NightwatchTestHook | undefined;
-  afterEach?: NightwatchTestHook | undefined;
-  '@tags'?: string | string[] | undefined;
-  '@disabled'?: boolean | undefined;
+  before?: NightwatchTestHook;
+  after?: NightwatchTestHook;
+  beforeEach?: NightwatchTestHook;
+  afterEach?: NightwatchTestHook;
+
+  '@tags'?: string | string[];
+  '@disabled'?: boolean;
+
   [key: string]: any;
 }
 
-export type NightwatchTestHook =
-  | GlobalNightwatchTestHookEach
-  | GlobalNightwatchTestHook;
-
-export type GlobalNightwatchTestHookEach = (
-  browser: NightwatchBrowser,
-  done: (err?: any) => void
+export type NightwatchTestHook = (
+  browser: NightwatchAPI,
+  done: (err?: unknown) => void
 ) => void;
-
-export type GlobalNightwatchTestHook = (done: (err?: any) => void) => void;
-
-export interface NightwatchTestHooks extends NightwatchGlobals {
-  before?: GlobalNightwatchTestHook | undefined;
-  after?: GlobalNightwatchTestHook | undefined;
-  beforeEach?: GlobalNightwatchTestHookEach | undefined;
-  afterEach?: GlobalNightwatchTestHookEach | undefined;
-}
 
 export class Element {
   name: string | undefined;
@@ -932,7 +922,7 @@ export function globalElement(
   }
 ): ElementGlobal;
 
-export type NightwatchTests = NightwatchTestFunctions | NightwatchTestHooks;
+export type NightwatchTests = NightwatchTestFunctions;
 
 export class DescribeInstance {
   '[instance]': any;
