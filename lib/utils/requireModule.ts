@@ -1,14 +1,14 @@
-const getNodeVersion = () => {
+const getNodeVersion = (): number => {
   const version = process.version.replace('v', '');
   
   return parseInt(version, 10);
 }
 
-module.exports = function (fullpath) {
-  let exported;
+export = function (fullpath: string) {
+  let exported: any;
   try {
     exported = require(fullpath);
-  } catch (err) {
+  } catch (err: any) {
     if (err.message === 'Cannot use import statement outside a module' || err.message === 'Unexpected token \'export\'') {
       err.detailedErr = err.message;
       err.help = ['Using ES6 import/export syntax? - make sure to specify "type=module" in your package.json or use .mjs extension.'];
