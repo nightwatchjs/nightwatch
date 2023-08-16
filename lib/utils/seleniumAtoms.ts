@@ -9,16 +9,16 @@ const SELENIUM_ATOMS_PATH = path.join(path.dirname(require.resolve('selenium-web
  * @param {string} module
  * @return {!Function}
  */
-function requireAtom(module) {
+function requireAtom(module: string): Function {
   try {
     return require(path.join(SELENIUM_ATOMS_PATH, module));
-  } catch (ex) {
+  } catch (ex: any) {
     throw Error(`Failed to import atoms module ${module} using Selenium path: ${SELENIUM_ATOMS_PATH}`);
   }
 }
 
 module.exports = {
-  requireIsDisplayed() {
+  requireIsDisplayed(): Function {
     return requireAtom(isDisplayed);
   }
 };
