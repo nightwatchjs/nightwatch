@@ -514,6 +514,7 @@ export interface NamespacedApi<ReturnType = unknown> {
   cookies: CookiesNsCommands<ReturnType>;
   alerts: AlertsNsCommands<ReturnType>;
   document: DocumentNsCommands<ReturnType>;
+  logs: LogsNsCommands<ReturnType>;
   window: WindowNsCommands<ReturnType>;
   firefox: FirefoxNsCommands<ReturnType>;
   network: NetworkNsCommands<ReturnType>;
@@ -1519,69 +1520,9 @@ export interface ChromiumClientCommands {
 
   setNetworkConditions: NetworkNsCommands<this>['setConditions'];
 
-  /**
-   * Listen to the `console` events (ex. `console.log` event) and
-   * register callback to process the same.
-   *
-   * @example
-   *  describe('capture console events', function() {
-   *    it('captures and logs console.log event', function() {
-   *      browser
-   *        .captureBrowserConsoleLogs((event) => {
-   *          console.log(event.type, event.timestamp, event.args[0].value);
-   *        })
-   *        .navigateTo('https://www.google.com')
-   *        .executeScript(function() {
-   *          console.log('here');
-   *        }, []);
-   *    });
-   *  });
-   *
-   * @see https://nightwatchjs.org/guide/running-tests/capture-console-messages.html
-   */
-  captureBrowserConsoleLogs(
-    onEventCallback: (
-      event: Pick<
-        Protocol.Runtime.ConsoleAPICalledEvent,
-        'type' | 'timestamp' | 'args'
-      >
-    ) => void,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
+  captureBrowserConsoleLogs: LogsNsCommands<this>['captureBrowserConsoleLogs'];
 
-  /**
-   * Catch the JavaScript exceptions thrown in the browser.
-   *
-   * @example
-   *  describe('catch browser exceptions', function() {
-   *    it('captures the js exceptions thrown in the browser', async function() {
-   *      await browser.captureBrowserExceptions((event) => {
-   *        console.log('>>> Exception:', event);
-   *      });
-   *
-   *      await browser.navigateTo('https://duckduckgo.com/');
-   *
-   *      const searchBoxElement = await browser.findElement('input[name=q]');
-   *      await browser.executeScript(function(_searchBoxElement) {
-   *        _searchBoxElement.setAttribute('onclick', 'throw new Error("Hello world!")');
-   *      }, [searchBoxElement]);
-   *
-   *      await browser.elementIdClick(searchBoxElement.getId());
-   *    });
-   *  });
-   *
-   * @see https://nightwatchjs.org/guide/running-tests/catch-js-exceptions.html
-   */
-  captureBrowserExceptions(
-    onExceptionCallback: (event: Protocol.Runtime.ExceptionThrownEvent) => void,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
+  captureBrowserExceptions: LogsNsCommands<this>['captureBrowserExceptions'];
 }
 
 export interface ClientCommands extends ChromiumClientCommands {
@@ -5419,6 +5360,175 @@ export interface DocumentNsCommands<ReturnType = unknown> {
   ): Awaitable<IfUnknown<ReturnType, this>, string>;
 }
 
+export interface LogsNsCommands<ReturnType = unknown> {
+  /**
+   * Gets a log from Selenium.
+   *
+   * @example
+   * describe('get log from Selenium', function() {
+   *   it('get browser log (default)', function(browser) {
+   *     browser.logs.getSessionLog(function(result) {
+   *       if (result.status === 0) {
+   *         const logEntriesArray = result.value;
+   *         console.log('Log length: ' + logEntriesArray.length);
+   *         logEntriesArray.forEach(function(log) {
+   *           console.log('[' + log.level + '] ' + log.timestamp + ' : ' + log.message);
+   *         });
+   *       }
+   *     });
+   *   });
+   *
+   *   it('get driver log with ES6 async/await', async function(browser) {
+   *     const driverLogAvailable = await browser.logs.isAvailable('driver');
+   *     if (driverLogAvailable) {
+   *       const logEntriesArray = await browser.logs.getSessionLog('driver');
+   *       logEntriesArray.forEach(function(log) {
+   *         console.log('[' + log.level + '] ' + log.timestamp + ' : ' + log.message);
+   *       });
+   *     }
+   *   });
+   * });
+   *
+   * @see https://nightwatchjs.org/api/logs/getSessionLog.html
+   */
+  getSessionLog(
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<NightwatchLogEntry[]>) => void
+  ): Awaitable<IfUnknown<ReturnType, this>, NightwatchLogEntry[]>;
+  getSessionLog(
+    typeString: NightwatchLogTypes,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<NightwatchLogEntry[]>) => void
+  ): Awaitable<IfUnknown<ReturnType, this>, NightwatchLogEntry[]>;
+
+  /**
+   * Gets the available log types. More info about log types in WebDriver can be found here: https://github.com/SeleniumHQ/selenium/wiki/Logging
+   *
+   * @example
+   * describe('get available log types', function() {
+   *   it('get log types', function(browser) {
+   *     browser.logs.getSessionLogTypes(function(result) {
+   *       if (result.status === 0) {
+   *         const logTypes = result.value;
+   *         console.log('Log types available:', logTypes);
+   *       }
+   *     });  
+   *   });
+   *
+   *   it('get log types with ES6 async/await', async function(browser) {
+   *     const logTypes = await browser.logs.getSessionLogTypes();
+   *     console.log('Log types available:', logTypes);
+   *   });
+   * });
+   *
+   * @see https://nightwatchjs.org/api/logs/getSessionLogTypes.html
+   */
+  getSessionLogTypes(
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<NightwatchLogTypes[]>
+    ) => void
+  ): Awaitable<
+    IfUnknown<ReturnType, this>,
+    NightwatchLogTypes[]
+  >;
+
+  /**
+   * Utility command to test if the log type is available.
+   *
+   * @example
+   * describe('test if the log type is available', function() {
+   *   it('test browser log type', function(browser) {
+   *     browser.logs.isSessionLogAvailable('browser', function(result) {
+   *       if (result.status === 0) {
+   *         const isAvailable = result.value;
+   *         if (isAvailable) {
+   *           // do something more in here
+   *         }
+   *       }
+   *     });  
+   *   });
+   *
+   *   it('test driver log type with ES6 async/await', async function(browser) {
+   *     const isAvailable = await browser.logs.isSessionLogAvailable('driver');
+   *     if (isAvailable) {
+   *       // do something more in here
+   *     }
+   *   });
+   * });
+   *
+   * @see https://nightwatchjs.org/api/logs/isSessionLogAvailable.html
+   */
+  isSessionLogAvailable(
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<boolean>) => void
+  ): Awaitable<IfUnknown<ReturnType, this>, boolean>;
+  isSessionLogAvailable(
+    typeString: NightwatchLogTypes,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<boolean>) => void
+  ): Awaitable<IfUnknown<ReturnType, this>, boolean>;
+
+  /**
+   * Listen to the `console` events (ex. `console.log` event) and
+   * register callback to process the same.
+   *
+   * @example
+   *  describe('capture console events', function() {
+   *    it('captures and logs console.log event', function() {
+   *      browser
+   *        .captureBrowserConsoleLogs((event) => {
+   *          console.log(event.type, event.timestamp, event.args[0].value);
+   *        })
+   *        .navigateTo('https://www.google.com')
+   *        .executeScript(function() {
+   *          console.log('here');
+   *        }, []);
+   *    });
+   *  });
+   *
+   * @see https://nightwatchjs.org/guide/running-tests/capture-console-messages.html
+   */
+  captureBrowserConsoleLogs(
+    onEventCallback: (
+      event: Pick<
+        Protocol.Runtime.ConsoleAPICalledEvent,
+        'type' | 'timestamp' | 'args'
+      >
+    ) => void,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Catch the JavaScript exceptions thrown in the browser.
+   *
+   * @example
+   *  describe('catch browser exceptions', function() {
+   *    it('captures the js exceptions thrown in the browser', async function() {
+   *      await browser.captureBrowserExceptions((event) => {
+   *        console.log('>>> Exception:', event);
+   *      });
+   *
+   *      await browser.navigateTo('https://duckduckgo.com/');
+   *
+   *      const searchBoxElement = await browser.findElement('input[name=q]');
+   *      await browser.executeScript(function(_searchBoxElement) {
+   *        _searchBoxElement.setAttribute('onclick', 'throw new Error("Hello world!")');
+   *      }, [searchBoxElement]);
+   *
+   *      await browser.elementIdClick(searchBoxElement.getId());
+   *    });
+   *  });
+   *
+   * @see https://nightwatchjs.org/guide/running-tests/catch-js-exceptions.html
+   */
+  captureBrowserExceptions(
+    onExceptionCallback: (event: Protocol.Runtime.ExceptionThrownEvent) => void,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+}
 export interface WindowNsCommands<ReturnType = unknown> {
   /**
    * Close the current window or tab. This can be useful when you're working with multiple windows/tabs open (e.g. an OAuth login).

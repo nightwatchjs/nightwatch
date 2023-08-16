@@ -558,6 +558,17 @@ describe('capture console events', function () {
       }, []);
   });
 
+  it('captures and logs console.log event using logs ns', function () {
+    browser
+      .logs.captureBrowserConsoleLogs((event) => {
+        console.log(event.type, event.timestamp, event.args[0].value);
+      })
+      .navigateTo('https://www.google.com')
+      .executeScript(function () {
+        console.log('here');
+      }, []);
+  });
+
   it('tests different ways of using captureBrowserConsoleLogs', () => {
     // with all parameters
     browser.captureBrowserConsoleLogs(
@@ -592,6 +603,24 @@ describe('catch browser exceptions', function () {
     });
 
     await browser.navigateTo('https://duckduckgo.com/');
+
+    const searchBoxElement = await browser.findElement('input[name=q]');
+    await browser.executeScript(
+      function (_searchBoxElement) {
+        expectError(_searchBoxElement.setAttribute('onclick', 'throw new Error("Hello world!")'))
+      },
+      [searchBoxElement]
+    );
+
+    await browser.elementIdClick(searchBoxElement.getId());
+  });
+
+  it('captures the js exceptions thrown in the browser ', async function () {
+    await browser
+      .logs.captureBrowserExceptions((event) => {
+        console.log('>>> Exception:', event);
+      })
+      .navigateTo('https://duckduckgo.com/');
 
     const searchBoxElement = await browser.findElement('input[name=q]');
     await browser.executeScript(
