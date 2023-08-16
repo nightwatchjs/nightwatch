@@ -1,7 +1,7 @@
 {
   "name": "nightwatch",
   "description": "Easy to use Node.js based end-to-end testing solution for web applications using the W3C WebDriver API.",
-  "version": "3.1.0",
+  "version": "3.1.2",
   "author": "Andrei Rusu",
   "homepage": "https://nightwatchjs.org",
   "main": "./dist/index.js",
@@ -42,7 +42,7 @@
     "lodash.pick": "4.4.0",
     "minimatch": "3.1.2",
     "minimist": "1.2.6",
-    "mocha": "9.2.2",
+    "mocha": "10.2.0",
     "nightwatch-axe-verbose": "^2.2.2",
     "open": "8.4.0",
     "ora": "5.4.1",
@@ -61,6 +61,7 @@
     "@typescript-eslint/eslint-plugin": "^6.3.0",
     "@typescript-eslint/parser": "^6.3.0",
     "copyfiles": "^2.4.1",
+    "cross-env": "^7.0.3",
     "eslint": "^8.9.0",
     "husky": "^8.0.0",
     "is-ci": "^3.0.1",
@@ -102,10 +103,10 @@
   },
   "man": "",
   "scripts": {
-    "build": "rm -rf dist && tsc",
+    "build": "rimraf dist && tsc",
     "postbuild": "copyfiles -u 1 lib/**/*.ejs dist",
     "prepublishOnly": "npm run build",
-    "dev": "NIGHTWATCH_TS_NODE_DEV=true npx ts-node --swc ./bin/nightwatch",
+    "dev": "cross-env NIGHTWATCH_TS_NODE_DEV=true npx ts-node --swc ./bin/nightwatch",
     "eslint": "eslint index.js lib bin api examples cucumber-js test --quiet",
     "mocha": "npm run build && mocha",
     "mocha-coverage": "nyc --reporter=html mocha test/src/ --recursive",
@@ -135,7 +136,7 @@
     }
   },
   "engines": {
-    "node": ">= 14.20.0"
+    "node": ">= 16"
   },
   "keywords": [
     "nightwatch",
