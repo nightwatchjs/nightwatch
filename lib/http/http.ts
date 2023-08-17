@@ -27,7 +27,7 @@ const Http = module.exports = {
     TEMPORARY_REDIRECT: 307
   },
 
-  isRedirect(statusCode) {
+  isRedirect(statusCode: number): boolean {
     return [
       Http.StatusCode.MOVED_PERMANENTLY,
       Http.StatusCode.MOVED_TEMPORARILY,
@@ -36,7 +36,7 @@ const Http = module.exports = {
     ].indexOf(statusCode) > -1;
   },
 
-  needsContentLengthHeader(requestMethod) {
+  needsContentLengthHeader(requestMethod: string): boolean {
     return [
       Http.Method.POST,
       Http.Method.PUT,
