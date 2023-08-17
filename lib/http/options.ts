@@ -9,65 +9,90 @@ const Settings = {
   TIMEOUT: 'timeout',
   RETRY_ATTEMPTS: 'retry_attempts',
   INTERNAL_SERVER_ERROR_RETRY_INTERVAL: 'internal_server_error_retry_interval'
-};
+};  
+
+interface SettingsMap {
+  [key: string]: string | number | boolean | Keep_Alive | Credentials;
+}
+
+interface Keep_Alive {
+  keepAliveMsecs: number;
+  enabled: boolean;
+}
+
+interface Credentials {
+  username: string;
+  key: string;
+}
 
 class HttpOptions {
+  #settings: SettingsMap;
+
   constructor() {
-    this.__settings__ = {};
+    this.#settings = {};
   }
 
-  get settings () {
-    return this.__settings__;
+  get settings(): SettingsMap {
+    return this.#settings;
   }
 
-  updateSetting(key, value) {
-    this.__settings__[key] = value;
-
+  updateSetting(key: string, value: string | number | boolean | Keep_Alive | Credentials) {
+    this.#settings[key] = value;
     return this;
   }
 
-  setPort(port) {
+  setPort(port: number) {
     this.updateSetting(Settings.SELENIUM_PORT, port);
+    return this;
   }
 
-  setHost(value) {
+  setHost(value: string) {
     this.updateSetting(Settings.SELENIUM_HOST, value);
+    return this;
   }
 
-  useSSL(value) {
+  useSSL(value: boolean) {
     this.updateSetting(Settings.USE_SSL, value);
+    return this;
   }
 
-  setKeepAlive(value) {
+  setKeepAlive(value: Keep_Alive) {
     this.updateSetting(Settings.KEEP_ALIVE, value);
+    return this;
   }
 
-  setCredentials(credentials) {
+  setCredentials(credentials: Credentials) {
     this.updateSetting(Settings.CREDENTIALS, credentials);
+    return this;
   }
 
-  setProxy(proxy) {
+  setProxy(proxy: string) {
     this.updateSetting(Settings.PROXY, proxy);
+    return this;
   }
 
-  setDefaultPathPrefix(path) {
+  setDefaultPathPrefix(path: string) {
     this.updateSetting(Settings.DEFAULT_PATH, path);
+    return this;
   }
 
-  setTimeout(timeout) {
+  setTimeout(timeout: number) {
     this.updateSetting(Settings.TIMEOUT, timeout);
+    return this;
   }
 
-  setRetryAttempts(retryAttempts) {
+  setRetryAttempts(retryAttempts: number) {
     this.updateSetting(Settings.RETRY_ATTEMPTS, retryAttempts);
+    return this;
   }
 
-  setInternalServerRetryIntervel(retryInterval) {
+  setInternalServerRetryInterval(retryInterval: number) {
     this.updateSetting(Settings.INTERNAL_SERVER_ERROR_RETRY_INTERVAL, retryInterval);
+    return this;
   }
 }
 
-module.exports = {
+export = {
   global: new HttpOptions(),
   HttpOptions
 };
