@@ -1,25 +1,25 @@
 class Debuggability {
-  private static _debugMode: boolean;
-  private static _stepOverAndPause: boolean;
+  static #debugMode: boolean;
+  static #stepOverAndPause: boolean;
 
   static get stepOverAndPause(): boolean {
-    return this._stepOverAndPause || false;
+    return this.#stepOverAndPause || false;
   }
 
   static set stepOverAndPause(value: boolean) {
-    this._stepOverAndPause = value;
+    this.#stepOverAndPause = value;
   }
   
   static reset(): void {
-    this._stepOverAndPause = false;
+    this.#stepOverAndPause = false;
   }
 
   static get debugMode(): boolean {
-    return this._debugMode;
+    return this.#debugMode;
   }
 
   static set debugMode(value: boolean) {
-    this._debugMode = value;
+    this.#debugMode = value;
   }
 }
 
