@@ -24,13 +24,11 @@ class LocateStrategy {
   }
 
   static isValid(strategy: string): boolean {
-    return Object.keys(LocateStrategy.Strategies).some(key => {
-      return String(strategy).toLocaleLowerCase() === LocateStrategy.Strategies[key as StrategiesType];
-    });
+    return Object.values(LocateStrategy.Strategies).includes(strategy.toLowerCase());
   }
 
   static getList(): string {
-    return Object.keys(LocateStrategy.Strategies).map(k => LocateStrategy.Strategies[k as StrategiesType]).join(', ');
+    return Object.values(LocateStrategy.Strategies).join(', ');
   }
 
   static get XPATH(): Strategies.XPATH {
