@@ -73,31 +73,6 @@ export interface AppiumGeolocation {
   altitude?: number;
 }
 
-export interface NightwatchTestRunner {
-  type?: string | undefined;
-  options?:
-  | {
-    ui?: string | undefined;
-    feature_path?: string | undefined;
-    auto_start_session?: boolean | undefined;
-    parallel?: number | undefined;
-    reporter?: string | undefined;
-    reporterOptions?: { [key: string]: any };
-  }
-  | undefined;
-}
-
-export interface TimeoutOptions {
-  /**
-   * @default 60000
-   */
-  timeout: number;
-  /**
-   * @default 0
-   */
-  retry_attempts: number;
-}
-
 export interface NightwatchTestSuite {
   name: string;
   module: string;
@@ -567,7 +542,7 @@ export interface NightwatchAPI
    */
   setSessionId(sessionId: string): this;
 
-  options: NightwatchOptions & Pick<NightwatchTestOptions, "desiredCapabilities">;
+  options: NightwatchTestOptions;
 
   Keys: NightwatchKeys;
 
