@@ -21,7 +21,7 @@ describe('expect.visible', function () {
 
     it('to be visible [PASSED]', function () {
       Nocks.elementFound().visible();
-      let expect = this.client.api.expect.element('#weblogin').to.be.visible;
+      const expect = this.client.api.expect.element('#weblogin').to.be.visible;
 
       return this.client.start(function () {
         strictEqual(expect.assertion.selector, '#weblogin');
@@ -38,7 +38,7 @@ describe('expect.visible', function () {
 
       Nocks.elementFound().notVisible(3);
 
-      let expect = this.client.api.expect.element('#weblogin').to.be.visible.before(60);
+      const expect = this.client.api.expect.element('#weblogin').to.be.visible.before(60);
 
       return this.client.start(function () {
         strictEqual(expect.assertion.waitForMs, 60);
@@ -73,7 +73,7 @@ describe('expect.visible', function () {
 
     it('to be visible [PASSED]', function () {
       Nocks.elementFound().visible();
-      let expect = this.client.api.expect.element('#weblogin').to.be.visible;
+      const expect = this.client.api.expect.element('#weblogin').to.be.visible;
 
       return this.client.start(function () {
         strictEqual(expect.assertion.selector, '#weblogin');
@@ -92,7 +92,7 @@ describe('expect.visible', function () {
       this.client.api.options.selenium.use_appium = true;
       strictEqual(this.client.api.isAppiumClient(), true);
 
-      let expect = this.client.api.expect.element({selector: 'com.app:id/web-login', locateStrategy: 'id'}).to.be.visible;
+      const expect = this.client.api.expect.element({selector: 'com.app:id/web-login', locateStrategy: 'id'}).to.be.visible;
 
       return this.client.start(function () {
         strictEqual(expect.assertion.selector, 'com.app:id/web-login');
@@ -107,7 +107,7 @@ describe('expect.visible', function () {
     it('to be visible with waitFor [PASSED]', function () {
       Nocks.elementFound().visible();
 
-      let expect = this.client.api.expect.element('#weblogin').to.be.visible.before(100);
+      const expect = this.client.api.expect.element('#weblogin').to.be.visible.before(100);
 
       return this.client.start(function () {
         strictEqual(expect.assertion.waitForMs, 100);
@@ -121,7 +121,7 @@ describe('expect.visible', function () {
 
       Nocks.elementFound().notVisible(3);
 
-      let expect = this.client.api.expect.element('#weblogin').to.be.visible.before(60);
+      const expect = this.client.api.expect.element('#weblogin').to.be.visible.before(60);
 
       return this.client.start(function () {
         strictEqual(expect.assertion.waitForMs, 60);
@@ -158,7 +158,7 @@ describe('expect.visible', function () {
     it('to not be visible [PASSED]', function () {
       Nocks.elementFound().notVisible();
 
-      let expect = this.client.api.expect.element('#weblogin').to.not.be.visible;
+      const expect = this.client.api.expect.element('#weblogin').to.not.be.visible;
 
       return this.client.start(function () {
         strictEqual(expect.assertion.selector, '#weblogin');
@@ -181,7 +181,7 @@ describe('expect.visible', function () {
         .visible()
         .visible();
 
-      let expect = this.client.api.expect.element('#weblogin').to.not.be.visible;
+      const expect = this.client.api.expect.element('#weblogin').to.not.be.visible;
 
       return this.client.start(function () {
         strictEqual(expect.assertion.selector, '#weblogin');
@@ -204,7 +204,7 @@ describe('expect.visible', function () {
         .elementNotFound()
         .elementNotFound();
 
-      let expect = this.client.api.expect.element('#weblogin').to.be.visible;
+      const expect = this.client.api.expect.element('#weblogin').to.be.visible;
 
       return this.client.start(function () {
         strictEqual(expect.assertion.selector, '#weblogin');
@@ -228,7 +228,7 @@ describe('expect.visible', function () {
         .elementFound()
         .visible();
 
-      let expect = this.client.api.expect.element('#weblogin').to.be.visible;
+      const expect = this.client.api.expect.element('#weblogin').to.be.visible;
 
       return this.client.start(function () {
         strictEqual(expect.assertion.selector, '#weblogin');
@@ -249,7 +249,7 @@ describe('expect.visible', function () {
         .elementFound()
         .visible();
 
-      let expect = this.client.api.expect.element('#weblogin').to.be.visible;
+      const expect = this.client.api.expect.element('#weblogin').to.be.visible;
 
       return this.client.start(function () {
         strictEqual(expect.assertion.selector, '#weblogin');
@@ -273,7 +273,7 @@ describe('expect.visible', function () {
         .elementFound()
         .visible();
 
-      let expect = this.client.api.expect.element('#weblogin').to.be.visible;
+      const expect = this.client.api.expect.element('#weblogin').to.be.visible;
 
       return this.client.start(function () {
         strictEqual(expect.assertion.retries, 1);
@@ -294,7 +294,7 @@ describe('expect.visible', function () {
         .elementFound()
         .visible();
 
-      let expect = this.client.api.expect.element('#weblogin').to.be.visible;
+      const expect = this.client.api.expect.element('#weblogin').to.be.visible;
 
       return this.client.start(function () {
         strictEqual(expect.assertion.retries, 1);
@@ -315,7 +315,7 @@ describe('expect.visible', function () {
         .elementFound()
         .visible();
 
-      let expect = this.client.api.expect.element('#weblogin').to.be.visible;
+      const expect = this.client.api.expect.element('#weblogin').to.be.visible;
 
       return this.client.start(function () {
         strictEqual(expect.assertion.retries, 1);
@@ -336,7 +336,7 @@ describe('expect.visible', function () {
           times: 5
         });
 
-      let expect = this.client.api.expect.element('#weblogin').to.be.visible;
+      const expect = this.client.api.expect.element('#weblogin').to.be.visible;
 
       return this.client.start(function () {
         assert.ok(expect.assertion.retries >= 2);
@@ -358,7 +358,7 @@ describe('expect.visible', function () {
           times: 5
         });
 
-      let expect = this.client.api.expect.element('#weblogin').to.be.visible;
+      const expect = this.client.api.expect.element('#weblogin').to.be.visible;
 
       return this.client.start(function () {
         assert.ok(expect.assertion.retries >= 2);
@@ -381,7 +381,7 @@ describe('expect.visible', function () {
           reply: '<html></html>'
         });
 
-      let expect = this.client.api.expect.element('#weblogin').to.be.visible;
+      const expect = this.client.api.expect.element('#weblogin').to.be.visible;
 
       return this.client.start(function () {
         assert.ok(expect.assertion.retries >= 2);
@@ -396,7 +396,7 @@ describe('expect.visible', function () {
 
       Nocks.elementFound().visible().visible();
 
-      let expect = this.client.api.expect.element('#weblogin').to.not.be.visible.before(25);
+      const expect = this.client.api.expect.element('#weblogin').to.not.be.visible.before(25);
 
       return this.client.start(function () {
         strictEqual(expect.assertion.waitForMs, 25);
@@ -410,7 +410,7 @@ describe('expect.visible', function () {
 
       Nocks.elementFound().visible().notVisible().notVisible();
 
-      let expect = this.client.api.expect.element('#weblogin').to.not.be.visible.before(130);
+      const expect = this.client.api.expect.element('#weblogin').to.not.be.visible.before(130);
 
       return this.client.start(function () {
         strictEqual(expect.assertion.waitForMs, 130);
@@ -424,7 +424,7 @@ describe('expect.visible', function () {
 
       Nocks.elementNotFound().elementNotFound().elementNotFound();
 
-      let expect = this.client.api.expect.element('#weblogin').to.be.visible.before(60);
+      const expect = this.client.api.expect.element('#weblogin').to.be.visible.before(60);
 
       return this.client.start(function () {
         strictEqual(expect.assertion.waitForMs, 60);
@@ -438,7 +438,7 @@ describe('expect.visible', function () {
 
       Nocks.elementNotFound().elementFound().visible();
 
-      let expect = this.client.api.expect.element('#weblogin').to.be.visible.before(60);
+      const expect = this.client.api.expect.element('#weblogin').to.be.visible.before(60);
 
       return this.client.start(function () {
         strictEqual(expect.assertion.waitForMs, 60);

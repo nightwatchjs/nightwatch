@@ -211,9 +211,9 @@ describe('Test CLI Runner', function() {
           return 'globals';
         }
       },
-      dirname(a) {
-        return '';
-      },
+      dirname: origPath.dirname,
+      sep: origPath.sep,
+      posix: origPath.posix,
       join: function(a, b) {
         if (b === './settings.json') {
           return './settings.json';
@@ -1426,6 +1426,64 @@ describe('Test CLI Runner', function() {
     });
   });
 
+  it('Test Nightwatch setup tools flags', async () => {
+    let hasSupportedFlagCalled = false;
+    let runCalled = false;
+
+    class NightwatchConfiguratorMock {
+      constructor(argv) {
+
+      }
+
+      static hasSupportedFlags(args) {
+        hasSupportedFlagCalled = true;
+        if (args.add) {
+          assert.equal(args.add, 'component-testing');
+
+          return true;
+        } else {
+          return false;
+        }
+      }
+
+      run() {
+        runCalled = true;
+      }
+    }
+
+    mockery.registerMock('@nightwatch/setup-tools', {
+      NightwatchConfigurator: NightwatchConfiguratorMock
+    });
+
+    mockery.registerMock('./runner/cli/argv-setup.js', {
+      argv: {
+        add: 'component-testing'
+      }
+    });
+
+    const NwClient = common.require('index.js');
+    await NwClient.cli();
+
+    assert.ok(hasSupportedFlagCalled);
+    assert.ok(runCalled);
+
+    hasSupportedFlagCalled = false;
+    runCalled = false;
+
+    mockery.registerMock('./runner/cli/argv-setup.js', {
+      argv: {
+        install: 'component-testing'
+      }
+    });
+    let callbackCalled = false;
+    await NwClient.cli(() => {
+      callbackCalled = true;
+    });
+
+    assert.ok(hasSupportedFlagCalled);
+    assert.ok(!runCalled);
+    assert.ok(callbackCalled);
+  });
 
   it('Nightwatch Inspector - By default Chrome in debug mode run serially', function() {
     mockery.registerMock('./nightwatch_inspector.json', {
