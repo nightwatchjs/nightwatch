@@ -33,7 +33,8 @@ import { ElementFunction } from './web-element';
 import { NightwatchGlobals } from './globals';
 import { EnhancedPageObject } from './page-object';
 import { NightwatchCustomCommands } from './custom-command';
-import { NightwatchDesiredCapabilities, NightwatchOptions, NightwatchTestOptions } from './nightwatch-options';
+import { NightwatchDesiredCapabilities } from './desired-capabilities';
+import { NightwatchOptions, NightwatchTestOptions } from './nightwatch-options';
 import { IfUnknown } from './utils';
 
 export * from './globals';
@@ -42,6 +43,7 @@ export * from './web-element';
 export * from './custom-assertion';
 export * from './custom-command';
 export * from './page-object';
+export * from './desired-capabilities';
 export * from './nightwatch-options';
 export * from './assertions';
 

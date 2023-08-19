@@ -86,7 +86,7 @@ export interface NightwatchTestSettingGeneric {
 	/**
 	 * An array of folders (excluding subfolders) where the tests are located.
 	 */
-	src_folders: string | string[] | null;
+	src_folders?: string | string[] | null;
 
 	/**
 	 * An object which will be passed to the Selenium WebDriver when a new session will be created. You can specify browser name for instance along with other capabilities.
@@ -219,7 +219,7 @@ export interface NightwatchTestSettingGeneric {
 	 *      "path": ""
 	 * }
 	 */
-	screenshots: NightwatchScreenshotOptions | boolean;
+	screenshots?: NightwatchScreenshotOptions;
 
 	/**
 	 * Controls whether to run tests in unit testing mode, which means the session will not automatically be created.=
@@ -407,7 +407,7 @@ export interface NightwatchOptions extends NightwatchTestSettingGeneric {
 	 * @example
 	 * plugins: ['@nightwatch/react']
 	 */
-	plugins: string[];
+	plugins?: string[];
 
 	/**
 	 * Location of the tsconfig file to be used by Nightwatch for running tests written in TS.
@@ -427,9 +427,9 @@ export interface NightwatchOptions extends NightwatchTestSettingGeneric {
 	dotenv?: any;
 
 	/**
-	 * disable support of loading of typescript files for backwards compatibility with test suites.
+	 * Disable support for loading of typescript test files for backwards compatibility with test suites.
 	 */
-	disable_typescript: boolean | undefined;
+	disable_typescript?: boolean;
 
 	/**
 	 * This object contains all the test related options. See below for details.
@@ -719,11 +719,16 @@ export interface NightwatchSeleniumOptions {
 	start_session?: boolean;
 
 	/**
-	 * The location of the selenium jar file.
+	 * The location of the selenium jar file. Leave empty if @nightwatch/selenium-server is installed.
 	 *
 	 * @example 'lib/selenium-server-standalone-2.43.0.jar'
 	 */
 	server_path?: string | null;
+
+	/**
+	 * Required when using Selenium 4. Set this to 'standalone'.
+	 */
+	command?: string;
 
 	/**
 	 * The location where the selenium Selenium `output.log` file will be placed. Defaults to current directory.
@@ -759,6 +764,11 @@ export interface NightwatchSeleniumOptions {
 	 * name in the desiredCapabilities object.
 	 */
 	cli_args?: {};
+
+	/**
+	 * Set this to true when using Nightwatch to manage and/or connect to an Appium server.
+	 */
+	use_appium?: boolean;
 
 	/**
 	 * Time to wait (in ms) before starting to check the Selenium server is up and running
@@ -797,5 +807,10 @@ export interface NightwatchTestOptions extends NightwatchTestSettingGeneric {
 }
 
 export interface NightwatchTestSettings {
-	[key: string]: NightwatchTestSettingGeneric;
+	[key: string]: NightwatchTestSettingGeneric & {
+		/**
+		 * Inherit settings from another environment.
+		 */
+		extends?: string;
+	};
 }

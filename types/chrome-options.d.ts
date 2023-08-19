@@ -25,6 +25,13 @@ export interface ChromePerfLoggingPrefs {
 
 export interface ChromeOptions {
 	/**
+	 * Whether to run Chromedriver using w3c protocol or the legacy JSONWire protocol.
+	 *
+	 * @deprecated Chromedriver now only supports w3c protocol.
+	 */
+	w3c?: true;
+
+	/**
 	 * List of command-line arguments to use when starting Chrome. Arguments with an associated value should be separated by a '=' sign
 	 * (e.g., ['start-maximized', 'user-data-dir=/tmp/temp_profile']).
 	 */

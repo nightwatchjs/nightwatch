@@ -2,6 +2,8 @@ import {ChromeOptions} from "./chrome-options";
 
 //  TODO: visit later (some settings here are no longer used)
 export interface NightwatchDesiredCapabilities {
+	[key: `${string}:${string}`]: unknown;
+
 	/**
 	 * The name of the browser being used; examples: {chrome|firefox|safari|edge|internet explorer|opera|brave|null}.
 	 */
@@ -17,7 +19,12 @@ export interface NightwatchDesiredCapabilities {
 	 * When requesting a new session, the client may specify ANY to indicate any available platform may be used.
 	 * For more information see [GridPlatforms (https://code.google.com/p/selenium/wiki/GridPlatforms)]
 	 */
-	platformName?: string | undefined;
+	platformName?: string;
+
+	/**
+	 * Indicates whether untrusted and self-signed TLS certificates are implicitly trusted on navigation for the duration of the session.
+	 */
+	acceptInsecureCerts?: boolean;
 
 	/**
 	 * Whether the session supports taking screenshots of the current page.
