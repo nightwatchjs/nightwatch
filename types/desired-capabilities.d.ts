@@ -110,7 +110,7 @@ export interface NightwatchDesiredCapabilities {
 
 	/**
 	 * List all the Chrome-specific desired capabilities.
-	 * @deprecated
+	 * @deprecated In favour of `goog:chromeOptions`.
 	 */
 	chromeOptions?: ChromeOptions;
 
