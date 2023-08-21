@@ -16,15 +16,13 @@ enum Strategies {
   IOS_CLASS_CHAIN = '-ios class chain'
 }
 
-type StrategiesType = keyof typeof Strategies;
-
 class LocateStrategy {
   static get Strategies() {
     return Strategies;
   }
 
   static isValid(strategy: string): boolean {
-    return Object.values(LocateStrategy.Strategies).includes(strategy.toLowerCase());
+    return Object.values(LocateStrategy.Strategies).includes(strategy.toLowerCase() as Strategies);
   }
 
   static getList(): string {
