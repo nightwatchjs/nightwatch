@@ -46,7 +46,7 @@ module.exports = new function () {
   }
 
   this.createClient = function(options = {}, reporter = null, argv = {}) {
-    let opts = {
+    const opts = {
       selenium: {
         port: 10195,
         host: 'localhost',
@@ -118,7 +118,7 @@ module.exports = new function () {
     });
   };
 
-  this.initW3CClient = function(opts = {}, argv={}) {
+  this.initW3CClient = function(opts = {}, argv = {}) {
     const settings = Object.assign({
       selenium: {
         version2: false,

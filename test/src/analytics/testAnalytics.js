@@ -173,7 +173,7 @@ describe('test analytics utility', function() {
 
     const analyticsNock = Nocks.analyticsCollector(analytics.__getGoogleAnalyticsPath());
     const err = new Error('test');
-    err.name ='UserGeneratedError';
+    err.name = 'UserGeneratedError';
 
     await analytics.collectErrorEvent(err);
 

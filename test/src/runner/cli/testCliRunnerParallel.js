@@ -126,7 +126,7 @@ describe('Test CLI Runner in Parallel', function () {
           setTimeout(()=>{
             numberOfTasks++;
             reject(new Error('Nigtwatch custom error'));
-          }, 10*(numberOfTasks+1));
+          }, 10 * (numberOfTasks + 1));
         }));
 
         return Promise.resolve(0);

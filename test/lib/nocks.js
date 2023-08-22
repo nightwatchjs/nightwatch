@@ -191,7 +191,7 @@ module.exports = {
     return this;
   },
 
-  childElementsNotFound(selector='#badElement') {
+  childElementsNotFound(selector = '#badElement') {
     nock('http://localhost:10195')
       .post('/wd/hub/session/1352110219202/element/0/elements', {'using': 'css selector', 'value': selector})
       .reply(200, {
@@ -203,14 +203,14 @@ module.exports = {
     return this;
   },
 
-  childElementsFound(selector='#weblogin') {
+  childElementsFound(selector = '#weblogin') {
     nock('http://localhost:10195')
       .post('/wd/hub/session/1352110219202/element/0/elements', {'using': 'css selector', 'value': selector})
       .reply(200, {
         status: 0,
         state: 'success',
         value: [{'element-6066-11e4-a52e-4f735466cecf': '0'}]
-      })
+      });
 
     return this;
   },
@@ -589,7 +589,7 @@ module.exports = {
       .reply(200, {
         status: 0,
         state: 'success',
-        value : {
+        value: {
           domain: 'cookie-domain',
           name: name,
           value: value
