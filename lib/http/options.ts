@@ -26,18 +26,18 @@ interface Credentials {
 }
 
 class HttpOptions {
-  #settings: SettingsMap;
+  private Settings: SettingsMap;
 
   constructor() {
-    this.#settings = {};
+    this.Settings = {};
   }
 
   get settings(): SettingsMap {
-    return this.#settings;
+    return this.Settings;
   }
 
   updateSetting(key: string, value: string | number | boolean | Keep_Alive | Credentials) {
-    this.#settings[key] = value;
+    this.Settings[key] = value;
     return this;
   }
 
@@ -86,7 +86,7 @@ class HttpOptions {
     return this;
   }
 
-  setInternalServerRetryInterval(retryInterval: number) {
+  setInternalServerRetryIntervel(retryInterval: number) {
     this.updateSetting(Settings.INTERNAL_SERVER_ERROR_RETRY_INTERVAL, retryInterval);
     return this;
   }
