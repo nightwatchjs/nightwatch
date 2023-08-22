@@ -1,5 +1,5 @@
-export interface NightwatchError extends Error {
-  detailedErr: string;
-  link: string;
-  help: string[];
+export interface NightwatchNodeError extends NodeJS.ErrnoException {
+  detailedErr?: string;
+  link?: string;
+  help?: string[];
 }

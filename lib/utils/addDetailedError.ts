@@ -1,9 +1,9 @@
-import {NightwatchError} from './types';
+import {NightwatchNodeError} from './types';
 
 /**
  * @method addDetailedError
  */
-export = function(err: NightwatchError) {
+export = function(err: NightwatchNodeError) {
   let detailedErr: string | undefined;
 
   if (err instanceof TypeError) {
