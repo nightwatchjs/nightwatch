@@ -1,4 +1,4 @@
-const __RECURSION__ = 'recursion'
+const __RECURSION__ = 'recursion';
 
 enum Strategies {
   ID = 'id',
