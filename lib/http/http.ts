@@ -11,7 +11,7 @@ const Headers = {
   AUTHORIZATION: 'authorization'
 };
 
-const Http = module.exports = {
+const Http =  {
   Method: {
     POST: 'POST',
     PUT: 'PUT',
@@ -47,3 +47,5 @@ const Http = module.exports = {
   Headers: Headers,
   ContentTypes: ContentTypes
 };
+
+export = Http;

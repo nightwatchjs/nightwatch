@@ -1,4 +1,4 @@
-const HttpUtil = require('./http.js');
+import HttpUtil = require('./http.js');
 import {ClientRequest} from 'http';
 
 
@@ -24,4 +24,4 @@ class Auth {
   }
 }
 
-module.exports = Auth;
+export = Auth;
