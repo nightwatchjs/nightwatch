@@ -1,5 +1,5 @@
 const HttpUtil = require('./http.js');
-import { ClientRequest } from "http";
+import {ClientRequest} from 'http';
 
 
 class Auth {
