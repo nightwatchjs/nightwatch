@@ -21,9 +21,9 @@ class LocateStrategy {
     return Strategies;
   }
 
-  static isValid(strategy: string): boolean {
+  static isValid(strategy: unknown): boolean {
     return Object.values(LocateStrategy.Strategies).some(strategyValue => {
-      return strategy.toLocaleLowerCase() === strategyValue;
+      return String(strategy).toLocaleLowerCase() === strategyValue;
     });
   }
 
