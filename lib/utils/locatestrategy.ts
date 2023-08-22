@@ -22,7 +22,9 @@ class LocateStrategy {
   }
 
   static isValid(strategy: string): boolean {
-    return Object.values(LocateStrategy.Strategies).includes(strategy.toLowerCase() as Strategies);
+    return Object.values(LocateStrategy.Strategies).some(strategyValue => {
+      return strategy.toLocaleLowerCase() === strategyValue;
+    });
   }
 
   static getList(): string {
