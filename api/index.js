@@ -16,7 +16,7 @@ const exportedCommands = [
 const basePath = '../dist/api';
 const Commands = {};
 const props = exportedCommands.reduce((prev, fileName) => {
-  const commandName = fileName.substring(fileName.lastIndexOf('/')+1).replace('.js', '');
+  const commandName = fileName.substring(fileName.lastIndexOf('/') + 1).replace('.js', '');
   prev[commandName] = {
     configurable: true,
     get: function() {
