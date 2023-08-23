@@ -1,4 +1,4 @@
-const Settings = {
+const __settings__ = {
   SELENIUM_HOST: 'host',
   SELENIUM_PORT: 'port',
   CREDENTIALS: 'credentials',
@@ -26,80 +26,60 @@ interface Credentials {
 }
 
 class HttpOptions {
-  private Settings: SettingsMap;
+  private __settings__: SettingsMap;
 
   constructor() {
-    this.Settings = {};
+    this.__settings__ = {};
   }
 
   get settings(): SettingsMap {
-    return this.Settings;
+    return this.__settings__;
   }
 
   updateSetting(key: string, value: string | number | boolean | Keep_Alive | Credentials) {
-    this.Settings[key] = value;
+    this.__settings__[key] = value;
     
     return this;
   }
 
   setPort(port: number) {
-    this.updateSetting(Settings.SELENIUM_PORT, port);
-
-    return this;
+    this.updateSetting(__settings__.SELENIUM_PORT, port);
   }
 
   setHost(value: string) {
-    this.updateSetting(Settings.SELENIUM_HOST, value);
-
-    return this;
+    this.updateSetting(__settings__.SELENIUM_HOST, value);
   }
 
   useSSL(value: boolean) {
-    this.updateSetting(Settings.USE_SSL, value);
-
-    return this;
+    this.updateSetting(__settings__.USE_SSL, value);
   }
 
   setKeepAlive(value: Keep_Alive) {
-    this.updateSetting(Settings.KEEP_ALIVE, value);
-
-    return this;
+    this.updateSetting(__settings__.KEEP_ALIVE, value);
   }
 
   setCredentials(credentials: Credentials) {
-    this.updateSetting(Settings.CREDENTIALS, credentials);
-
-    return this;
+    this.updateSetting(__settings__.CREDENTIALS, credentials);
   }
 
   setProxy(proxy: string) {
-    this.updateSetting(Settings.PROXY, proxy);
-
-    return this;
+    this.updateSetting(__settings__.PROXY, proxy);
   }
 
   setDefaultPathPrefix(path: string) {
-    this.updateSetting(Settings.DEFAULT_PATH, path);
-
-    return this;
+    this.updateSetting(__settings__.DEFAULT_PATH, path);
   }
 
   setTimeout(timeout: number) {
-    this.updateSetting(Settings.TIMEOUT, timeout);
-
-    return this;
+    this.updateSetting(__settings__.TIMEOUT, timeout);
   }
 
   setRetryAttempts(retryAttempts: number) {
-    this.updateSetting(Settings.RETRY_ATTEMPTS, retryAttempts);
-
-    return this;
+    this.updateSetting(__settings__.RETRY_ATTEMPTS, retryAttempts);
   }
 
   setInternalServerRetryIntervel(retryInterval: number) {
-    this.updateSetting(Settings.INTERNAL_SERVER_ERROR_RETRY_INTERVAL, retryInterval);
-
-    return this;
+    this.updateSetting(__settings__.INTERNAL_SERVER_ERROR_RETRY_INTERVAL, retryInterval);
   }
 }
 
