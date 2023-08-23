@@ -638,6 +638,13 @@ export interface WebdriverOptions {
 	process_create_timeout?: number;
 
 	/**
+	 * Interval (in ms) to wait for before sending another request to the WebDriver server in case of an Internal Server Error (5xx).
+	 *
+	 * Number of times the retry attempts are made depend on `timeout_options.retryAttempts` webdriver setting.
+	 */
+	internal_server_error_retry_interval?: number;
+
+	/**
 	 * Usually only needed for cloud testing Selenium services. In case the server requires credentials this username will be used to compute the `Authorization` header.
 	 *
 	 * The value can be also an environment variable, in which case it will look like this:
