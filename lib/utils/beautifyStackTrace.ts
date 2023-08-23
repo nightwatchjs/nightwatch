@@ -5,7 +5,7 @@ import AssertionError from 'assertion-error';
 import stackTrace = require('./stackTrace');
 const {filterStackTrace} = stackTrace;
 import alwaysDisplayError = require('./alwaysDisplayError');
-import chalkColors = require('./chalkColors.js');
+import chalkColors = require('./chalkColors');
 const {colors} = chalkColors;
 
 function isAssertionError(err: unknown): err is AssertionError {
