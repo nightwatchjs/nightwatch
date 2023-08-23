@@ -13,7 +13,7 @@ class Auth {
     return `Basic ${Auth.toBase64(`${user}:${pass}`)}`;
   }
 
- addAuth(user: string, pass: string): void {
+  addAuth(user: string, pass: string): void {
     if (user && pass) {
       this.#httpRequest.setHeader(HttpUtil.Headers.AUTHORIZATION, this.basic(user, pass));
     }
