@@ -1,5 +1,5 @@
 import fs from 'fs';
-import stackTraceParser from 'stacktrace-parser';
+import {parse as parseStackTrace, StackFrame} from 'stacktrace-parser';
 import AssertionError from 'assertion-error';
 
 import stackTrace = require('./stackTrace');
@@ -31,7 +31,7 @@ function beautifyStackTrace(err: string | Error, errStackPassed = false, modulep
   }
 
   try {
-    const parsedStacks = stackTraceParser.parse(filterStackTrace(errorStack));
+    const parsedStacks = parseStackTrace(filterStackTrace(errorStack));
     let parsedStack = modulepath ? parsedStacks.find(o => o.file === modulepath) : parsedStacks[0];
 
     if (!parsedStack) {
@@ -80,7 +80,7 @@ interface FormatStackTraceResult {
 
 function formatStackTrace(
   errorLinesofFile: string[],
-  parsedStack: stackTraceParser.StackFrame
+  parsedStack: StackFrame
 ): FormatStackTraceResult {
   const result: FormatStackTraceResult = {
     filePath: parsedStack.file || '',
