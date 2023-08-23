@@ -5,7 +5,7 @@ function hasDefaultProperty(object: unknown): object is {default: unknown} {
   return Object.prototype.hasOwnProperty.call(object, 'default');
 }
 
-module.exports = function (fullpath: string): unknown {
+export = function (fullpath: string): unknown {
   let exported: unknown;
   try {
     exported = require(fullpath);

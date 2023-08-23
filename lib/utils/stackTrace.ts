@@ -1,11 +1,15 @@
-const boxen = require('boxen');
-const {colors} = require('./chalkColors.js');
-const isErrorObject = require('./isErrorObject');
-const addDetailedError = require('./addDetailedError');
+import boxen from 'boxen';
+
+import chalkColors = require('./chalkColors');
+const {colors} = chalkColors;
+import isErrorObject = require('./isErrorObject');
+import addDetailedError = require('./addDetailedError');
+import {NightwatchNodeError} from './types';
+
 const indentRegex = /^/gm;
 
-const stackTraceFilter = function (parts) {
-  const stack = parts.reduce(function(list, line) {
+const stackTraceFilter = function (parts: string[]): string {
+  const stack = parts.reduce(function(list: string[], line: string) {
     if (contains(line, [
       'node_modules',
       '(node.js:',
@@ -32,21 +36,23 @@ const stackTraceFilter = function (parts) {
   return stack.join('\n');
 };
 
-const contains = function(str, text) {
+const contains = function(str: string, text: string | string[]) {
   if (Array.isArray(text)) {
     for (let i = 0; i < text.length; i++) {
       if (contains(str, text[i])) {
         return true;
       }
     }
+
+    return false;
   }
 
   return str.includes(text);
 };
 
-const filterStack = function(err) {
+const filterStack = function(err: unknown): string {
   if (err instanceof Error) {
-    const stackTrace = err.stack.split('\n').slice(1);
+    const stackTrace = err.stack?.split('\n').slice(1) || [];
 
     return stackTraceFilter(stackTrace);
   }
@@ -54,31 +60,31 @@ const filterStack = function(err) {
   return '';
 };
 
-const filterStackTrace = function(stackTrace = '') {
+const filterStackTrace = function(stackTrace = ''): string {
   const sections = stackTrace.split('\n');
 
   return stackTraceFilter(sections);
 };
 
-const showStackTrace = function (stack) {
+const showStackTrace = function (stack: string) {
   const parts = stack.split('\n');
-  const headline = parts.shift();
+  const headline = parts.shift() || '';
 
   console.error(colors.red(headline.replace(indentRegex, '   ')));
 
   if (parts.length > 0) {
     const result = stackTraceFilter(parts);
-    console.error(colors.stack_trace(result.replace(indentRegex, '   ')));
+    console.error(colors.grey(result.replace(indentRegex, '   ')));
   }
 };
 
-/**
- * @method errorToStackTrace
- * @param {Error} err
- */
-const errorToStackTrace = function(err) {
-  if (!isErrorObject(err)) {
-    err = new Error(err);
+const errorToStackTrace = function(error: unknown) {
+  let err: NightwatchNodeError;
+
+  if (isErrorObject(error)) {
+    err = error;
+  } else {
+    err = new Error(String(error));
   }
 
   addDetailedError(err);
@@ -87,9 +93,9 @@ const errorToStackTrace = function(err) {
   headline = colors.red(headline.replace(indentRegex, ' '));
 
   if (err.detailedErr) {
-    headline += `\n ${colors.light_green(err.detailedErr)}`;
+    headline += `\n ${colors.green.bold(err.detailedErr)}`;
     if (err.extraDetail) {
-      headline += `\n ${colors.light_green(err.extraDetail)}`;
+      headline += `\n ${colors.green.bold(err.extraDetail)}`;
     }
   }
 
@@ -105,12 +111,12 @@ const errorToStackTrace = function(err) {
   }
 
   stackTrace = filterStack(err);
-  stackTrace = '\n' + colors.stack_trace(stackTrace.replace(indentRegex, '   '));
+  stackTrace = '\n' + colors.grey(stackTrace.replace(indentRegex, '   '));
 
   return `${headline}${stackTrace}`;
 };
 
-module.exports = {
+export = {
   errorToStackTrace,
   stackTraceFilter,
   filterStack,

@@ -1,9 +1,26 @@
-const chalk = require('chalk');
+import chalk from 'chalk';
+
+interface CustomColors {
+  dark_gray?: chalk.Chalk;
+  light_blue?: chalk.Chalk;
+  light_green?: chalk.Chalk;
+  light_cyan?: chalk.Chalk;
+  light_red?: chalk.Chalk;
+  light_purple?: chalk.Chalk;
+  light_gray?: chalk.Chalk;
+  purple?: chalk.Chalk;
+  brown?: chalk.Chalk;
+  stack_trace?: chalk.Chalk;
+}
 
 class ChalkColors {
+  instance: chalk.Chalk & CustomColors;
+  origLevel: chalk.Level;
+  prevLevel: chalk.Level;
+
   constructor() {
     this.instance = new chalk.Instance();
-    this.origLevel = this.instance.level;
+    this.origLevel = this.prevLevel = this.instance.level;
 
     this.loadCustomColors(); // for backward compatibility
 
@@ -51,4 +68,4 @@ class ChalkColors {
   }
 }
 
-module.exports = new ChalkColors();
+export = new ChalkColors();

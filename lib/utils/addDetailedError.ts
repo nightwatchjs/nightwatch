@@ -4,7 +4,7 @@ import {NightwatchNodeError} from './types';
  * @method addDetailedError
  */
 export = function(err: NightwatchNodeError) {
-  let detailedErr: string | undefined;
+  let detailedErr: string = '';
 
   if (err instanceof TypeError) {
     if (err.detailedErr && /browser\..+ is not a function$/.test(err.detailedErr)) {
@@ -27,7 +27,7 @@ export = function(err: NightwatchNodeError) {
     }
   } else if (err instanceof SyntaxError) {
     const stackParts = err.stack?.split('SyntaxError:');
-    detailedErr = stackParts?.[0];
+    detailedErr = stackParts?.[0] || '';
     let modulePath = err.stack?.split('\n')[0];
     if (modulePath?.includes(':')) {
       modulePath = modulePath.split(':')[0];
