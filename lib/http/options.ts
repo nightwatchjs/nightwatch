@@ -9,21 +9,13 @@ enum Settings {
   TIMEOUT = 'timeout',
   RETRY_ATTEMPTS = 'retry_attempts',
   INTERNAL_SERVER_ERROR_RETRY_INTERVAL = 'internal_server_error_retry_interval'
-};  
-
-interface SettingsMap {
-  [key: string]: unknown;
-}
+}  
 
 interface KeepAlive {
   keepAliveMsecs: number;
   enabled: boolean;
 }
 
-interface Credentials {
-  username: string;
-  key: string;
-}
 
 class HttpOptions {
   #settings: {[key: string]: unknown};
