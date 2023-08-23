@@ -1,21 +1,21 @@
-const __settings__ = {
-  SELENIUM_HOST: 'host',
-  SELENIUM_PORT: 'port',
-  CREDENTIALS: 'credentials',
-  PROXY: 'proxy',
-  USE_SSL: 'use_ssl',
-  KEEP_ALIVE: 'keep_alive',
-  DEFAULT_PATH: 'default_path',
-  TIMEOUT: 'timeout',
-  RETRY_ATTEMPTS: 'retry_attempts',
-  INTERNAL_SERVER_ERROR_RETRY_INTERVAL: 'internal_server_error_retry_interval'
+enum Settings {
+  SELENIUM_HOST = 'host',
+  SELENIUM_PORT = 'port',
+  CREDENTIALS = 'credentials',
+  PROXY = 'proxy',
+  USE_SSL = 'use_ssl',
+  KEEP_ALIVE = 'keep_alive',
+  DEFAULT_PATH = 'default_path',
+  TIMEOUT = 'timeout',
+  RETRY_ATTEMPTS = 'retry_attempts',
+  INTERNAL_SERVER_ERROR_RETRY_INTERVAL = 'internal_server_error_retry_interval'
 };  
 
 interface SettingsMap {
-  [key: string]: string | number | boolean | Keep_Alive | Credentials;
+  [key: string]: unknown;
 }
 
-interface Keep_Alive {
+interface KeepAlive {
   keepAliveMsecs: number;
   enabled: boolean;
 }
@@ -26,60 +26,60 @@ interface Credentials {
 }
 
 class HttpOptions {
-  private __settings__: SettingsMap;
+  #settings: {[key: string]: unknown};
 
   constructor() {
-    this.__settings__ = {};
+    this.#settings = {};
   }
 
-  get settings(): SettingsMap {
-    return this.__settings__;
+  get settings() {
+    return this.#settings;
   }
 
-  updateSetting(key: string, value: string | number | boolean | Keep_Alive | Credentials) {
-    this.__settings__[key] = value;
+  #updateSetting(key: string, value: unknown) {
+    this.#settings[key] = value;
     
     return this;
   }
 
   setPort(port: number) {
-    this.updateSetting(__settings__.SELENIUM_PORT, port);
+    this.#updateSetting(Settings.SELENIUM_PORT, port);
   }
 
   setHost(value: string) {
-    this.updateSetting(__settings__.SELENIUM_HOST, value);
+    this.#updateSetting(Settings.SELENIUM_HOST, value);
   }
 
   useSSL(value: boolean) {
-    this.updateSetting(__settings__.USE_SSL, value);
+    this.#updateSetting(Settings.USE_SSL, value);
   }
 
-  setKeepAlive(value: Keep_Alive) {
-    this.updateSetting(__settings__.KEEP_ALIVE, value);
+  setKeepAlive(value: KeepAlive | boolean) {
+    this.#updateSetting(Settings.KEEP_ALIVE, value);
   }
 
-  setCredentials(credentials: Credentials) {
-    this.updateSetting(__settings__.CREDENTIALS, credentials);
+  setCredentials(credentials: {username: string, key: string}) {
+    this.#updateSetting(Settings.CREDENTIALS, credentials);
   }
 
   setProxy(proxy: string) {
-    this.updateSetting(__settings__.PROXY, proxy);
+    this.#updateSetting(Settings.PROXY, proxy);
   }
 
   setDefaultPathPrefix(path: string) {
-    this.updateSetting(__settings__.DEFAULT_PATH, path);
+    this.#updateSetting(Settings.DEFAULT_PATH, path);
   }
 
   setTimeout(timeout: number) {
-    this.updateSetting(__settings__.TIMEOUT, timeout);
+    this.#updateSetting(Settings.TIMEOUT, timeout);
   }
 
   setRetryAttempts(retryAttempts: number) {
-    this.updateSetting(__settings__.RETRY_ATTEMPTS, retryAttempts);
+    this.#updateSetting(Settings.RETRY_ATTEMPTS, retryAttempts);
   }
 
   setInternalServerRetryIntervel(retryInterval: number) {
-    this.updateSetting(__settings__.INTERNAL_SERVER_ERROR_RETRY_INTERVAL, retryInterval);
+    this.#updateSetting(Settings.INTERNAL_SERVER_ERROR_RETRY_INTERVAL, retryInterval);
   }
 }
 

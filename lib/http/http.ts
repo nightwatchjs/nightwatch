@@ -1,8 +1,21 @@
+enum ContentTypes {
+  JSON = 'application/json',
+  JSON_WITH_CHARSET = 'application/json; charset=utf-8',
+  MULTIPART_FORM_DATA = 'multipart/form-data'
+}
+
 enum Headers {
   ACCEPT = 'accept',
   CONTENT_TYPE = 'content-type',
   CONTENT_LENGTH = 'content-length',
   AUTHORIZATION = 'authorization'
+}
+
+enum HttpMethod {
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
+  GET = 'GET'
 }
 
 enum StatusCode {
@@ -13,24 +26,11 @@ enum StatusCode {
   TEMPORARY_REDIRECT = 307
 }
 
-enum Method {
-  POST = 'POST',
-  PUT = 'PUT',
-  DELETE = 'DELETE',
-  GET = 'GET'
-}
-
-const ContentTypes = {
-  JSON: 'application/json',
-  JSON_WITH_CHARSET: 'application/json; charset=utf-8',
-  MULTIPART_FORM_DATA: 'multipart/form-data'
-};
-
-const Http =  {
-  Method: Method,
+const Http = {
+  Method: HttpMethod,
   StatusCode: StatusCode,
 
-  isRedirect(statusCode: number): boolean {
+  isRedirect(statusCode: StatusCode): boolean {
     return [
       Http.StatusCode.MOVED_PERMANENTLY,
       Http.StatusCode.MOVED_TEMPORARILY,
@@ -39,7 +39,7 @@ const Http =  {
     ].indexOf(statusCode) > -1;
   },
 
-  needsContentLengthHeader(requestMethod: Method): boolean {
+  needsContentLengthHeader(requestMethod: HttpMethod): boolean {
     return [
       Http.Method.POST,
       Http.Method.PUT,
