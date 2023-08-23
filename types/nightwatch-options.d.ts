@@ -604,7 +604,10 @@ export interface WebdriverOptions {
 	 * @example
 	 * "keep_alive": {"enabled": true, "keepAliveMsecs": 2000}
 	 */
-	keep_alive?: boolean;
+	keep_alive?: boolean | {
+		enabled: boolean,
+		keepAliveMsecs: number
+	};
 
 	/**
 	 * Requests to the Webdriver service will timeout in `timeout` milliseconds; a retry will happen `retry_attempts` number of times.
