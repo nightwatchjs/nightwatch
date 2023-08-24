@@ -1,20 +1,25 @@
+import * as net from 'net';
+
 /**
  * @method getFreePort
- * @param host
- * @returns {Promise<number>}
  */
-module.exports = function(host = 'localhost') {
-  const net = require('net');
-
+export = function(host = 'localhost'): Promise<number> {
   return new Promise((resolve, reject) => {
     const server = net.createServer();
 
     server.on('listening', function () {
-      resolve(server.address().port);
+      const serverAddress = server.address();
+
+      if (!serverAddress || typeof serverAddress === 'string') {
+        reject(new Error('Unable to get port from server address.'));
+      } else {
+        resolve(serverAddress.port);
+      }
+
       server.close();
     });
 
-    server.on('error', (e) => {
+    server.on('error', (e: NodeJS.ErrnoException) => {
       let err;
       if (e.code === 'EADDRINUSE' || e.code === 'EACCES') {
         err = new Error('Unable to find a free port');

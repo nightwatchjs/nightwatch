@@ -94,9 +94,9 @@ describe('SafariDriver Transport Tests', function () {
 
           },
           async start() {
-            return 'http://localhost'
+            return 'http://localhost';
           }
-        }
+        };
       }
     }
 
@@ -110,12 +110,12 @@ describe('SafariDriver Transport Tests', function () {
     mockExecutor({
       sessionId: '111',
       getId() {
-        return '1111'
+        return '1111';
       },
       getCapabilities() {
         return {
           getPlatform() {
-            return 'MAC'
+            return 'MAC';
           },
           getBrowserName() {
             return 'safari';
@@ -129,7 +129,7 @@ describe('SafariDriver Transport Tests', function () {
           keys() {
             return new Map();
           }
-        }
+        };
       }
     });
 
@@ -198,7 +198,7 @@ describe('SafariDriver Transport Tests', function () {
       session,
       serverPath,
       serverPort
-    }
+    };
   }
 
   it('test create session with safari driver', async function() {
@@ -264,7 +264,7 @@ describe('SafariDriver Transport Tests', function () {
 
   it('session create should throw error after max retryAttempts', function() {
 
-    let testsPath = [
+    const testsPath = [
       path.join(__dirname, '../../sampletests/async')
     ];
 
@@ -272,7 +272,7 @@ describe('SafariDriver Transport Tests', function () {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'safari'}}
+        'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'safari', 'safari:options': {}}}
       }),
       response: JSON.stringify({
         value: {
@@ -283,7 +283,7 @@ describe('SafariDriver Transport Tests', function () {
       times: 2
     });
 
-    let globals = {
+    const globals = {
       reporter(results) {
         const sep = path.sep;
         assert.strictEqual(results.errors, 1);
@@ -314,7 +314,7 @@ describe('SafariDriver Transport Tests', function () {
   });
 
   it('session create should retry on internal server error (500)', function() {
-    let testsPath = [
+    const testsPath = [
       path.join(__dirname, '../../sampletests/async')
     ];
 
@@ -322,7 +322,7 @@ describe('SafariDriver Transport Tests', function () {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'safari'}}
+        'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'safari', 'safari:options': {}}}
       }),
       response: JSON.stringify({
         value: {
@@ -337,7 +337,7 @@ describe('SafariDriver Transport Tests', function () {
       url: '/session',
       statusCode: 200,
       postdata: JSON.stringify({
-        'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'safari'}}
+        'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'safari', 'safari:options': {}}}
       }),
       response: JSON.stringify({
         value: {
@@ -351,7 +351,7 @@ describe('SafariDriver Transport Tests', function () {
       times: 1
     });
 
-    let globals = {
+    const globals = {
       reporter(results) {
         const sep = path.sep;
         assert.strictEqual(results.errors, 0);
