@@ -55,7 +55,8 @@ export interface JSON_WEB_OBJECT extends ElementResult {
   getId: () => string;
 }
 
-export type Definition = string | ElementProperties | Element | SeleniumBy | RelativeBy;
+export type ScopedSelector = string | ElementProperties | Element | SeleniumBy | RelativeBy;
+export type Definition = ScopedSelector | WebElement;
 
 export type Awaitable<T, V> = Omit<T, 'then'> & PromiseLike<V>;
 
@@ -687,6 +688,8 @@ export class Element {
   timeout?: number;
 }
 
+type ElementGlobalDefinition = string | SeleniumBy | RelativeBy | {selector: string; locateStrategy?: string; [name: string]: unknown} | {using: string, value: string};
+
 export interface ElementGlobal extends Element {
   /**
    * Get the server-assigned opaque ID assigned to this element.
@@ -698,24 +701,24 @@ export interface ElementGlobal extends Element {
   /**
    * Locates the descendants of this element that match the given search criteria, and returns the first one.
    *
-   * If no `selector` is passed, returns the[WebElement](https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebElement.html)
+   * If no `selector` is passed, returns the [WebElement](https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebElement.html)
    * instance for this element.
    */
   findElement(): Awaitable<NightwatchAPI, WebElement>;
   findElement(
-    selector: Definition,
+    selector: ElementGlobalDefinition,
     callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WebElement>) => void
   ): Awaitable<NightwatchAPI, WebElement>;
 
   /**
    * Locates and wraps the first element, that match the given search criteria in the descendants of this element, in global element() api object.
    *
-   * If no `selector` is passed, returns the[WebElement](https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebElement.html)
+   * If no `selector` is passed, returns the [WebElement](https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebElement.html)
    * instance for this element.
    */
   find(): Awaitable<NightwatchAPI, WebElement>;
   find(
-    selector: Definition,
+    selector: ElementGlobalDefinition,
     callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<ElementGlobal | null>) => void
   ): Awaitable<NightwatchAPI, ElementGlobal | null>;
 
@@ -726,12 +729,12 @@ export interface ElementGlobal extends Element {
    * Locates all of the descendants of this element that match the given search criteria.
    */
   findElements(
-    selector: Definition,
+    selector: ElementGlobalDefinition,
     callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WebElement[]>) => void
   ): Awaitable<NightwatchAPI, WebElement[]>;
 
   findAll(
-    selector: Definition,
+    selector: ElementGlobalDefinition,
     callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<ElementGlobal[]>) => void
   ): Awaitable<NightwatchAPI, ElementGlobal[]>;
 
@@ -926,7 +929,7 @@ export interface ElementGlobal extends Element {
 }
 
 export function globalElement(
-  locator: Definition | WebElement,
+  locator: Definition,
   options?: {
     isComponent?: boolean;
     type: string;
@@ -4173,7 +4176,7 @@ export interface ElementCommands {
    * @see https://nightwatchjs.org/api/getShadowRoot.html
    */
   getShadowRoot(
-    selector: Definition | WebElement,
+    selector: Definition,
     callback?: (
       this: NightwatchAPI,
       result: NightwatchCallbackResult<ElementGlobal | null>
@@ -4181,7 +4184,7 @@ export interface ElementCommands {
   ): Awaitable<this, ElementGlobal | null>;
   getShadowRoot(
     using: LocateStrategy,
-    selector: Definition | WebElement,
+    selector: Definition,
     callback?: (
       this: NightwatchAPI,
       result: NightwatchCallbackResult<ElementGlobal | null>

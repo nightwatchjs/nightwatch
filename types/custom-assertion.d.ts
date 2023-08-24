@@ -11,9 +11,9 @@ interface NightwatchAssertionFailedResult<T> {
 
 /**
  * @example
- * import {Definition, NightwatchAssertion} from 'nightwatch';
+ * import {ScopedSelector, NightwatchAssertion} from 'nightwatch';
  *
- * export const assertion = function ElementHasCount(this: NightwatchAssertion<number>, selector: Definition, count: number) {
+ * export const assertion = function ElementHasCount(this: NightwatchAssertion<number>, selector: ScopedSelector, count: number) {
  *   this.message = `Testing if element <${selector}> has count: ${count}`;   
  *
  *   this.expected = count;

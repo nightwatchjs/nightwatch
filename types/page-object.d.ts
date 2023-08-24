@@ -19,7 +19,7 @@ import {
 
 export interface SectionProperties {
   /**
-   * The element selector name
+   * The selector string to be used to find the section in the DOM.
    *
    * @example
    * sections: {
@@ -29,6 +29,19 @@ export interface SectionProperties {
    * }
    */
   selector: string;
+
+  /**
+   * The locate strategy to be used with `selector` when finding the section within the DOM.
+   *  - css selector
+   *  - link text
+   *  - partial link text
+   *  - tag name
+   *  - xpath
+   *
+   * @example
+   * 'css selector'
+   */
+  locateStrategy?: LocateStrategy;
 
   /**
    * An object, or array of objects, of named element definitions to be used
@@ -196,12 +209,25 @@ export interface EnhancedPageObjectSections<
   Props
 > {
   /**
-   * The element selector name
+   * The selector string used to find the section in the DOM.
    *
    * @example
-   * '@searchBar'
+   * '#searchBar'
    */
   selector: string;
+
+  /**
+   * The locate strategy used with `selector` when finding the section within the DOM.
+   *  - css selector
+   *  - link text
+   *  - partial link text
+   *  - tag name
+   *  - xpath
+   *
+   * @example
+   * 'css selector'
+   */
+  locateStrategy: LocateStrategy;
 }
 
 interface EnhancedPageObjectSharedFields<
@@ -272,15 +298,15 @@ interface EnhancedPageObjectSharedFields<
 
 export interface ElementProperties {
   /**
-   * The element selector name
+   * The selector string to be used to find the element in the DOM.
    *
    * @example
-   * '@searchBar'
+   * '#searchBar'
    */
   selector: string;
 
   /**
-   * locator strategy can be one of
+   * The locate strategy to be used with `selector` when finding the element within the DOM.
    *  - css selector
    *  - link text
    *  - partial link text

@@ -67,8 +67,8 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
     }
   ): ScopedElement;
   
-  findAll(selector: ScopedElementSelector): Elements;
-  getAll(selector: ScopedElementSelector): Elements;
+  findAll(selector: ScopedSelector | Promise<ScopedSelector>): Elements;
+  getAll(selector: ScopedSelector | Promise<ScopedSelector>): Elements;
 
   findAllByText(
     text: string,
