@@ -56,6 +56,7 @@ describe('global element() api', function () {
     expectType<ElementGlobal | null>(await elem.find('child-selector'));
 
     elem.find({using: 'css selector', value: 'child-selector'});
+    expectError(elem.find({value: 'child-selector'}));
     expectError(elem.find({using: 'css selector', value: 'child-selector', abortOnFailure: true}));
 
     const elemProp = {locateStrategy: 'css selector', selector: 'child-selector', abortOnFailure: true};

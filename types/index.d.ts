@@ -688,7 +688,7 @@ export class Element {
   timeout?: number;
 }
 
-type ElementGlobalDefinition = string | SeleniumBy | RelativeBy | {selector: string; locateStrategy?: string; [name: string]: unknown} | {using: string, value: string};
+type ElementGlobalDefinition = string | SeleniumBy | RelativeBy | {selector: string; locateStrategy?: string} | {using: string, value: string};
 
 export interface ElementGlobal extends Element {
   /**
