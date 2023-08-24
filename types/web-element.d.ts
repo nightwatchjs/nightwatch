@@ -167,6 +167,8 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   update<E extends readonly unknown[]>(...keys: E): Promise<WebElement>;
 
+  upload(file: string): Promise<WebElement>;
+
   getAccessibleName(): ElementValue<string>;
 
   getAriaRole(): ElementValue<string>;
