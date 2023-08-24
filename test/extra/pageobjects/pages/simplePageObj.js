@@ -13,6 +13,7 @@ module.exports = {
   url: 'http://localhost.com',
   elements: {
     loginAsString: '#weblogin',
+    frameElement: {selector: 'iframe'},
     loginCss: {selector: '#weblogin'},
     loginIndexed: {selector: '#weblogin', index: 1},
     loginXpath: {selector: '//weblogin', locateStrategy: 'xpath'},

@@ -1,6 +1,6 @@
 const assert = require('assert');
-const CommandGlobals = require('../../../lib/globals/commands-w3c');
-const commandMocks = require('../../../lib/command-mocks.js');
+const CommandGlobals = require('../../../../lib/globals/commands-w3c');
+const commandMocks = require('../../../../lib/command-mocks.js');
 
 describe('client.frame()', function() {
   before(function(done) {
