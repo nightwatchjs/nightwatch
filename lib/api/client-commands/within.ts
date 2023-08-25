@@ -16,8 +16,8 @@
  * @api protocol.elements
  * @since 2.5.5
  */
-module.exports = class WithinAbstract {
-  static get allowOverride() {
+export = class WithinAbstract {
+  static get allowOverride(): boolean {
     return true;
   }
 };

@@ -54,17 +54,29 @@
  * @param {function} callback The function to run as part of the queue.
  * @api protocol.utilities
  */
-const {Actions} = require('selenium-webdriver/lib/input');
-const EventEmitter = require('events');
+import {Actions} from 'selenium-webdriver/lib/input';
+import EventEmitter  from 'events';
+
+interface NightwatchClient {
+  settings: {
+    globals: {
+      asyncHookTimeout: number;
+    };
+  };
+}
 
 class Perform extends EventEmitter {
-  static get alwaysAsync() {
+  timeoutId: string | number  | undefined | NodeJS.Timeout;
+  api: (result: unknown) => void = () => {};
+  client: NightwatchClient = {} as NightwatchClient;
+
+  static get alwaysAsync(): boolean {
     return true;
   }
 
   command(callback = function() {}) {
-    let doneCallback;
-    let asyncHookTimeout = this.client.settings.globals.asyncHookTimeout;
+    let doneCallback: () => void;
+    const asyncHookTimeout: number = this.client.settings.globals.asyncHookTimeout;
 
     this.timeoutId = setTimeout(() => {
       this.emit('error', new Error(`Timeout while waiting (${asyncHookTimeout}ms) for the .perform() command callback to be called.`));
@@ -99,7 +111,7 @@ class Perform extends EventEmitter {
       };
     } else {
       doneCallback = () => {
-        let args = [(result) => {
+        const args = [(result: unknown) => {
           clearTimeout(this.timeoutId);
           this.emit('complete', result);
         }];
@@ -117,7 +129,7 @@ class Perform extends EventEmitter {
     return this;
   }
 
-  runCallback(cb, args) {
+  runCallback(cb: (...args: unknown[]) => unknown, args: unknown[]): unknown {
     try {
       return cb.apply(this.api, args);
     } catch (err) {

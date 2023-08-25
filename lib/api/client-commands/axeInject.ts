@@ -21,8 +21,8 @@
  * @api protocol.accessibility
  * @since 2.3.6
  */
-module.exports = class AxeInjectAbstract {
-  static get allowOverride() {
+export = class AxeInjectAbstract {
+  static get allowOverride(): boolean {
     return true;
   }
 };
