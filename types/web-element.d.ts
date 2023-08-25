@@ -197,7 +197,7 @@ type WaitUntilOptions = {
   abortOnFailure?: boolean;
 };
 
-type WaitUntilActions = 'selected' | 'visible' | 'disabled' | 'enabled' | 'not.selected' | 'not.visible' | 'not.enabled';
+type WaitUntilActions = 'selected' | 'visible' | 'disabled' | 'enabled' | 'not.selected' | 'not.visible' | 'not.enabled' | 'present' | 'not.present';
 
 export class Elements implements PromiseLike<WebElement[]> {
   constructor(
