@@ -1,4 +1,4 @@
-const packageConfig = require('../../package.json');
+const packageConfig = require('../../package.json'); // eslint-disable-line @typescript-eslint/no-var-requires
 const fullVersion: string = packageConfig.version!;
 
 export = {

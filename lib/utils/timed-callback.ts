@@ -53,7 +53,7 @@ class TimedCallback {
 
   private createTimeout() {
     this.#timeoutId = setTimeout(() => {
-      let err = new TimeoutError(`done() callback timeout of ${this.timeoutMs}ms was reached while executing "${this.name}".` +
+      const err = new TimeoutError(`done() callback timeout of ${this.timeoutMs}ms was reached while executing "${this.name}".` +
         ' Make sure to call the done() callback when the operation finishes.');
       this.onTimeoutExpired(err, this.name, this.timeoutMs);
     }, this.timeoutMs);
