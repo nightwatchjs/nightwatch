@@ -23,12 +23,15 @@ interface TypeClient {
     closeDriver: (reason: string) => Promise<void>;
   };
   api: NightwatchAPI;
+  settings: {
+    report_command_errors: boolean;
+  };
 }
 
 class End extends EventEmitter {
   timeoutId: string | number  | undefined | NodeJS.Timeout;
   api: NightwatchAPI = {} as NightwatchAPI;
-  client: TypeClient = {sessionId: null, setApiProperty: () => {}, transport: {closeDriver: () => Promise.resolve()}, api: this.api};
+  client: TypeClient = {sessionId: null, setApiProperty: () => {}, transport: {closeDriver: () => Promise.resolve()}, api: this.api, settings: {report_command_errors: true}};
   reuseBrowser: boolean = false;
 
   command(forceEnd = !this.reuseBrowser, callback: ((this: NightwatchAPI, result: NightwatchCallbackResult<null> | null) => void) | undefined | boolean) {

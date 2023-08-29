@@ -62,13 +62,14 @@ interface NightwatchClient {
     globals: {
       asyncHookTimeout: number;
     };
+    report_command_errors: boolean;
   };
 }
 
 class Perform extends EventEmitter {
   timeoutId: string | number  | undefined | NodeJS.Timeout;
   api: (result: unknown) => void = () => {};
-  client: NightwatchClient = {} as NightwatchClient;
+  client: NightwatchClient = {settings: {globals: {asyncHookTimeout: 10000}, report_command_errors: true}} as NightwatchClient;
 
   static get alwaysAsync(): boolean {
     return true;
@@ -142,4 +143,4 @@ class Perform extends EventEmitter {
   }
 }
 
-module.exports = Perform;
+export = Perform;
