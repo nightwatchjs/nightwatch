@@ -1,4 +1,4 @@
-import { expectAssignable, expectType } from "tsd";
+import { expectAssignable, expectError, expectType } from "tsd";
 import { ElementGlobal, NightwatchAPI, NightwatchCallbackResult, NightwatchSizeAndPosition } from "..";
 import { WebElement } from "selenium-webdriver";
 
@@ -54,6 +54,16 @@ describe('global element() api', function () {
       expectType<NightwatchCallbackResult<ElementGlobal | null>>(result);
     }));
     expectType<ElementGlobal | null>(await elem.find('child-selector'));
+
+    elem.find({using: 'css selector', value: 'child-selector'});
+    expectError(elem.find({value: 'child-selector'}));
+    expectError(elem.find({using: 'css selector', value: 'child-selector', abortOnFailure: true}));
+
+    const elemProp = {locateStrategy: 'css selector', selector: 'child-selector', abortOnFailure: true};
+    elem.find(elemProp);
+    expectError(elem.find({locateStrategy: 'css selector', selector: 'child-selector', abortOnFailure: true}));
+
+    expectError(elem.find({locateStrategy: 'css selector', value: 'child-selector'}));
 
     // .get()
     expectAssignable<NightwatchAPI>(elem.get());

@@ -17,7 +17,8 @@ import {
   ElementResult,
   Awaitable,
   SectionProperties,
-  ScopedElement
+  ScopedElement,
+  LocateStrategy
 } from '..';
 import { element as elementNamedExport } from '..';
 import { WebElement } from 'selenium-webdriver';
@@ -381,6 +382,7 @@ const appsSection = {
 
 const menuSection = {
   selector: '#gb',
+  locateStrategy: 'css selector',
   commands: [
     {
       // add section commands here
@@ -506,6 +508,12 @@ const testPage = {
     expectError(googlePage.window.maximize());
 
     const menuSection = google.section.menu;
+
+    expectType<string>(menuSection.selector);
+    expectType<LocateStrategy>(menuSection.locateStrategy);
+
+    google.expect.section('@menu').to.be.visible;
+    google.expect.section(menuSection).to.be.visible;
 
     const result = menuSection
       .assert.visible('@mail')

@@ -1,4 +1,5 @@
 {
+  "root": true,
   "extends": [
     "eslint:recommended"
   ],
@@ -13,6 +14,33 @@
     "mocha": true,
     "node": true
   },
+  "overrides": [
+    {
+      "files": [
+        "**/*.ts"
+      ],
+      "excludedFiles": [
+        "test/**/*.ts"
+      ],
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+      ],
+      "parser": "@typescript-eslint/parser",
+      "plugins": [
+        "@typescript-eslint"
+      ],
+      "parserOptions": {
+        "ecmaVersion": 2020,
+        "sourceType": "module",
+        "ecmaFeatures": {
+          "jsx": false
+        },
+        "project": "./tsconfig.json"
+      }
+    }
+  ],
   "rules": {
     "eqeqeq": [
       "error",

@@ -1,5 +1,5 @@
 import { By, WebElement } from 'selenium-webdriver';
-import {Definition, NightwatchAPI, Awaitable, Element, ELEMENT_KEY} from './index';
+import {Definition, NightwatchAPI, Awaitable, Element, ELEMENT_KEY, ScopedSelector} from './index';
 
 export interface NightwatchExpectResult {
   value: null;
@@ -196,23 +196,23 @@ export interface Expect {
   /**
    * Expect assertions operating on a single element, specified by its CSS/Xpath selector.
    */
-  element(property: Definition | WebElement): ExpectElement;
+  element(property: Definition): ExpectElement;
 
   /**
    * Expect assertions operating on a single component.
    */
-  component(property: Definition | WebElement): ExpectElement;
+  component(property: Definition): ExpectElement;
 
   /**
    * Expect assertions operating on a page-object section, specified by '`@section_name`'.
    */
-  section(property: Definition): ExpectSection;
+  section(property: ScopedSelector): ExpectSection;
 
   /**
    * Expect assertions operating on a collection of elements, specified by a CSS/Xpath selector.
    * So far only .count is available.
    */
-  elements(property: Definition): ExpectElements;
+  elements(property: ScopedSelector): ExpectElements;
 
   /**
    * Retrieves the page title value in order to be used for performing equal, match or contains assertions on it.

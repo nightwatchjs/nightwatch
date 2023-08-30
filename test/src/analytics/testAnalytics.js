@@ -37,7 +37,7 @@ describe('test analytics utility', function() {
 
   it('should throw error if event parameters contain objects or arrays', function() {
     assert.rejects(async function() {
-      await analytics.event('test', {
+      await analytics.collectEvent('test', {
         foo: {
           bar: 'bas'
         }
@@ -45,28 +45,43 @@ describe('test analytics utility', function() {
     });
 
     assert.rejects(async function() {
-      await analytics.event('test', {
+      await analytics.collectEvent('test', {
         foo: [1, 2, 3]
       });
     });
   });
 
   it('should write events to a log file', async function() {
-    await analytics.event('test', {
+    const flushFn = analytics.__flush;
+    let flushCalled = false;
+    analytics.__flush = function() {
+      flushCalled = true;
+    };
+
+    await analytics.collectEvent('test', {
       foo: 'bar'
     });
     const logFile = analytics.__getLogFileLocation();
-    
+
     try {
       const stats = await fs.stat(logFile);
       assert.ok(stats.size > 0);
+      assert.ok(flushCalled);
     } catch (e) {
       assert.fail(e);
     }
+
+    analytics.__flush = flushFn;
   });
 
   it('should have default parameters', async function() {
-    await analytics.event('test', {
+    const flushFn = analytics.__flush;
+    let flushCalled = false;
+    analytics.__flush = function() {
+      flushCalled = true;
+    };
+
+    await analytics.collectEvent('test', {
       foo: 'bar'
     });
 
@@ -79,12 +94,15 @@ describe('test analytics utility', function() {
     assert.ok(logFileJson.params.env_os);
     assert.ok(logFileJson.params.env_nw_version);
     assert.ok(logFileJson.params.env_node_version);
+    assert.ok(flushCalled);
+
+    analytics.__flush = flushFn;
   });
 
   it('should send analytics data to GA', async function() {
     const analyticsNock = Nocks.analyticsCollector(analytics.__getGoogleAnalyticsPath());
 
-    await analytics.event('test', {log: 'log'});
+    await analytics.collectEvent('test', {log: 'log'});
 
     await analytics.__flush().then((res) => {
       analyticsNock.done();
@@ -103,12 +121,12 @@ describe('test analytics utility', function() {
       called = true;
     };
 
-    await analytics.event('test', {log: 'log'});
-    await analytics.event('test', {log: 'log'});
-    await analytics.event('test', {log: 'log'});
-    await analytics.event('test', {log: 'log'});
-    await analytics.event('test', {log: 'log'});
-    await analytics.event('test', {log: 'log'});
+    await analytics.collectEvent('test', {log: 'log'});
+    await analytics.collectEvent('test', {log: 'log'});
+    await analytics.collectEvent('test', {log: 'log'});
+    await analytics.collectEvent('test', {log: 'log'});
+    await analytics.collectEvent('test', {log: 'log'});
+    await analytics.collectEvent('test', {log: 'log'});
 
     assert.ok(called);
     analytics.__flush = flushBack;
@@ -137,7 +155,7 @@ describe('test analytics utility', function() {
         called = true;
       };
       analytics.updateSettings(settings);
-      await analytics.event('test', {log: 'log'});
+      await analytics.collectEvent('test', {log: 'log'});
     }
     
     assert.ok(called);
@@ -147,34 +165,42 @@ describe('test analytics utility', function() {
   });
 
   it('should report only allowed exceptions', async function() {
+    const flushFn = analytics.__flush;
+    let flushCalled = false;
+    analytics.__flush = function() {
+      flushCalled = true;
+    };
+
     const analyticsNock = Nocks.analyticsCollector(analytics.__getGoogleAnalyticsPath());
     const err = new Error('test');
-    err.name ='UserGeneratedError';
+    err.name = 'UserGeneratedError';
 
-    await analytics.exception(err);
+    await analytics.collectErrorEvent(err);
+
+    assert.ok(flushCalled);
+    analytics.__flush = flushFn;
 
     const logFile = analytics.__getLogFileLocation();
     let logFileContent = await fs.readFile(logFile, 'utf8');
     let logFileJson = JSON.parse(logFileContent);
 
-    assert.ok(logFileJson.params.errorName === 'CustomError');
+    assert.equal(logFileJson.params.err_name, 'UserGeneratedError');
 
     await analytics.__flush().then((res) => {
       analyticsNock.done();
     }).catch((err) => {
       assert.strictEqual(err, undefined);
     });
-    
 
     const analyticsNock2 = Nocks.analyticsCollector(analytics.__getGoogleAnalyticsPath());
     err.name = 'SyntaxError';
 
-    await analytics.exception(err);
-    
+    await analytics.collectErrorEvent(err);
+
     logFileContent = await fs.readFile(logFile, 'utf8');
     logFileJson = JSON.parse(logFileContent);
-    
-    assert.ok(logFileJson.params.errorName === 'SyntaxError');
+
+    assert.equal(logFileJson.params.err_name, 'SyntaxError');
 
     await analytics.__flush().then((res) => {
       analyticsNock2.done();
