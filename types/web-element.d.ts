@@ -67,8 +67,8 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
     }
   ): ScopedElement;
   
-  findAll(selector: ScopedElementSelector): Elements;
-  getAll(selector: ScopedElementSelector): Elements;
+  findAll(selector: ScopedSelector | Promise<ScopedSelector>): Elements;
+  getAll(selector: ScopedSelector | Promise<ScopedSelector>): Elements;
 
   findAllByText(
     text: string,
@@ -166,6 +166,8 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
   moveTo(x?: number, y?: number): Promise<WebElement>;
 
   update<E extends readonly unknown[]>(...keys: E): Promise<WebElement>;
+
+  upload(file: string): Promise<WebElement>;
 
   getAccessibleName(): ElementValue<string>;
 

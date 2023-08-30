@@ -1,5 +1,5 @@
 import {NightwatchCustomAssertions} from './custom-assertion';
-import {Awaitable, Definition, ElementResult, JSON_WEB_OBJECT} from './index';
+import {Awaitable, Definition, ElementResult, JSON_WEB_OBJECT, ScopedSelector} from './index';
 import { IfUnknown } from './utils';
 
 export interface NightwatchAssertionsError {
@@ -124,7 +124,7 @@ export interface NightwatchCommonAssertions<ReturnType> {
 	 *
 	 */
 	elementsCount(
-		selector: Definition,
+		selector: ScopedSelector,
 		count: number,
 		msg?: string
 	): Awaitable<
@@ -144,7 +144,7 @@ export interface NightwatchCommonAssertions<ReturnType> {
 	 * ```
 	 */
 	elementPresent(
-		selector: Definition,
+		selector: ScopedSelector,
 		msg?: string
 	): Awaitable<
 		IfUnknown<ReturnType, this>,
