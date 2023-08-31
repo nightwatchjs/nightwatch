@@ -34,7 +34,7 @@ class End extends EventEmitter {
   client: TypeClient = {sessionId: null, setApiProperty: () => {}, transport: {closeDriver: () => Promise.resolve()}, api: this.api, settings: {report_command_errors: true}};
   reuseBrowser: boolean = false;
 
-  command(forceEnd = !this.reuseBrowser, callback: ((this: NightwatchAPI, result: NightwatchCallbackResult<null> | null) => void) | undefined | boolean) {
+  command(forceEnd = !this.reuseBrowser, callback: (result: NightwatchCallbackResult<null>) => NightwatchCallbackResult<null>) {
 
     if (typeof callback === 'function') {
       forceEnd = forceEnd || !this.reuseBrowser;
@@ -46,12 +46,12 @@ class End extends EventEmitter {
     const client = this.client;
 
     if (this.api.sessionId && forceEnd) {
-      this.api.session('delete', (result: NightwatchCallbackResult<Record<string, unknown>> | null) => {
+      this.api.session('delete', (result: NightwatchCallbackResult<Record<string, unknown>>) => {
         client.sessionId = null;
         client.setApiProperty('sessionId', null);
 
         this.client.transport.closeDriver('FINISHED').then(() => {
-          this.complete(callback, result as NightwatchCallbackResult<null>);
+          this.complete(callback, result);
         });
       });
     } else {
@@ -63,12 +63,12 @@ class End extends EventEmitter {
     return this.client.api;
   }
 
-  complete(callback: ((this: NightwatchAPI, result: NightwatchCallbackResult<null> | null) => void) | undefined | boolean, response: NightwatchCallbackResult<null> | null) {
-    let result;
+  complete(callback: (result: NightwatchCallbackResult<null>) => NightwatchCallbackResult<null>, response: NightwatchCallbackResult<Record<string, unknown>> | null) {
+    let result: NightwatchCallbackResult<null> = {status: 0, value: null, error: {cause: '', message: '', name: ''}};
     if (typeof callback === 'function') {
       result = callback.call(this.api,  response as NightwatchCallbackResult<null>);
     }
-
+    
     this.emit('complete', result);
   }
 }
