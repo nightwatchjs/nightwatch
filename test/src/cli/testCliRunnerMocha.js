@@ -26,6 +26,7 @@ describe('test CLI Runner Mocha', function() {
       resolve: function(a) {
         return a;
       },
+      extname: path.extname,
       join: path.join
     });
 
@@ -86,6 +87,49 @@ describe('test CLI Runner Mocha', function() {
 
     return runner.runTests().then(function() {
       assert.deepStrictEqual(testFiles, ['test1.js', 'test2.js']);
+    });
+  });
+
+  it('testRunWithMocha - parallelism', function() {
+
+    const ChildProcess = common.require('runner/concurrency/child-process.js');
+    let childProcessCreated = false;
+    class ChildProcessMock extends ChildProcess {
+      run(colors, type) {
+        childProcessCreated = true;
+        assert.strictEqual(colors.length, 4);
+        assert.strictEqual(type, 'workers');
+        assert.deepStrictEqual(Object.keys(this._events), ['message']);
+  
+        return Promise.resolve(0);
+      }
+    }
+  
+    mockery.registerMock('./child-process.js', ChildProcessMock);
+  
+    mockery.registerMock('./withmocha.json', {
+      src_folders: ['tests'],
+      output_folder: false,
+      use_child_process: false,
+      test_settings: {
+        'default': {
+          silent: true
+        }
+      },
+      test_runner: 'mocha'
+    });
+
+  
+    const CliRunner = common.require('runner/cli/cli.js');
+    const runner = new CliRunner({
+      config: './withmocha.json',
+      env: 'default',
+      reporter: 'junit',
+      parallel: true
+    }).setup();
+  
+    return runner.runTests().then(function() {
+      assert.ok(childProcessCreated, 'mocha runner with parallel threads should use child process');
     });
   });
 
