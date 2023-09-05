@@ -83,4 +83,37 @@ describe('waitUntil element command', function() {
       globals
     }));
   });
+
+  it('test waitUntil element command - element not present', function() {
+    const testsPath = path.join(__dirname, '../../../apidemos/web-elements/waitUntilElementNotPresent.js');
+  
+
+    const globals = {
+      waitForConditionPollInterval: 50,
+      waitForConditionTimeout: 120,
+      retryAssertionTimeout: 100,
+
+      reporter(results) {
+        if (!results.lastError) {
+          assert.fail('Should result into failure');
+        }
+        assert.ok(results.lastError.message.includes('not present'), 'err message should be element not present');
+      }
+    };
+
+    return NightwatchClient.runTests(testsPath, settings({
+      selenium: {
+        port: null,
+        start_process: false
+      },
+      selenium_host: null,
+      webdriver: {
+        port: 10195,
+        start_process: false
+      },
+      output: false,
+      skip_testcases_on_fail: false,
+      globals
+    }));
+  });
 });
