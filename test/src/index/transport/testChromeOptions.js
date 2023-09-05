@@ -209,4 +209,28 @@ describe('Test chrome options', function () {
     });
   });
   
+  it('always match in desired capabilties', function() {
+    const client = Nightwatch.createClient({
+      desiredCapabilities: {
+        browserName: 'chrome',
+        alwaysMatch: {
+          acceptInsecureCerts: true,
+          'goog:chromeOptions': {
+            args: [
+              '--headless'
+            ]
+          }
+        }
+      }
+    });
+
+    const options = client.transport.createSessionOptions();
+    assert.ok(options instanceof ChromeOptions);
+    assert.strictEqual(options.get('acceptInsecureCerts'), true);
+    assert.deepStrictEqual(options.get('goog:chromeOptions'), {
+      args: ['--headless']
+    });
+  });
+
+  
 });
