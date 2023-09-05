@@ -11,5 +11,5 @@ describe('duckduckgo example', function() {
       .assert.visible('button[type=submit]')
       .click('button[type=submit]')
       .assert.textContains('.react-results--main', 'Nightwatch.js');
-  }); 
+  });
 });
