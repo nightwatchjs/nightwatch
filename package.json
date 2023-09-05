@@ -63,7 +63,7 @@
     "@typescript-eslint/parser": "^6.3.0",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
-    "eslint": "^8.9.0",
+    "eslint": "^8.46.0",
     "husky": "^8.0.0",
     "is-ci": "^3.0.1",
     "js-yaml": "^3.13.1",

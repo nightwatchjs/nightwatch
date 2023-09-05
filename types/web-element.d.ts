@@ -67,8 +67,8 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
     }
   ): ScopedElement;
   
-  findAll(selector: ScopedElementSelector): Elements;
-  getAll(selector: ScopedElementSelector): Elements;
+  findAll(selector: ScopedSelector | Promise<ScopedSelector>): Elements;
+  getAll(selector: ScopedSelector | Promise<ScopedSelector>): Elements;
 
   findAllByText(
     text: string,
@@ -167,6 +167,8 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   update<E extends readonly unknown[]>(...keys: E): Promise<WebElement>;
 
+  upload(file: string): Promise<WebElement>;
+
   getAccessibleName(): ElementValue<string>;
 
   getAriaRole(): ElementValue<string>;
@@ -197,7 +199,7 @@ type WaitUntilOptions = {
   abortOnFailure?: boolean;
 };
 
-type WaitUntilActions = 'selected' | 'visible' | 'disabled' | 'enabled' | 'not.selected' | 'not.visible' | 'not.enabled';
+type WaitUntilActions = 'selected' | 'visible' | 'disabled' | 'enabled' | 'not.selected' | 'not.visible' | 'not.enabled' | 'present' | 'not.present';
 
 export class Elements implements PromiseLike<WebElement[]> {
   constructor(

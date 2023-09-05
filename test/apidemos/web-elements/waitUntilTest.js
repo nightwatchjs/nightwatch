@@ -4,7 +4,7 @@ describe('demo tests using waitUntil element APIs', function() {
   });
 
   it('wait until element is selected', function({element, state}) {
-    element('#weblogin').waitUntil('selected');
+    element('#weblogin').waitUntil('present').waitUntil('selected');
   });
 
   it('wait until element is enabled', function({element}) {
