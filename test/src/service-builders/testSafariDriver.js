@@ -77,9 +77,9 @@ describe('SafariDriver Transport Tests', function () {
 
           },
           async start() {
-            return 'http://localhost'
+            return 'http://localhost';
           }
-        }
+        };
       }
     }
 
@@ -93,12 +93,12 @@ describe('SafariDriver Transport Tests', function () {
     mockExecutor({
       sessionId: '111',
       getId() {
-        return '1111'
+        return '1111';
       },
       getCapabilities() {
         return {
           getPlatform() {
-            return 'MAC'
+            return 'MAC';
           },
           getBrowserName() {
             return 'safari';
@@ -112,7 +112,7 @@ describe('SafariDriver Transport Tests', function () {
           keys() {
             return new Map();
           }
-        }
+        };
       }
     });
 
@@ -181,7 +181,7 @@ describe('SafariDriver Transport Tests', function () {
       session,
       serverPath,
       serverPort
-    }
+    };
   }
 
   it('test create session with safari driver', async function() {
