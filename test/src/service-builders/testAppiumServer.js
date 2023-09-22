@@ -243,7 +243,7 @@ describe('AppiumServer Transport Tests', function () {
     });
 
     assert.deepStrictEqual(session, {
-      sessionId: '1111', capabilities: {}
+      sessionId: '1111', capabilities: {}, host: 'localhost', port: 9999
     });
     assert.strictEqual(command, 'node');
     assert.strictEqual(serverPort, 9999);
@@ -322,7 +322,7 @@ describe('AppiumServer Transport Tests', function () {
     });
 
     assert.deepStrictEqual(session, {
-      sessionId: '1111', capabilities: {}
+      sessionId: '1111', capabilities: {}, host: 'somewhere', port: 4725
     });
     // service not created
     assert.ok(!serverPort);

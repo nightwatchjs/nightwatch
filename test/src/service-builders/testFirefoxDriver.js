@@ -229,7 +229,7 @@ describe('GeckoDriver Transport Tests', function () {
     });
 
     assert.deepStrictEqual(session, {
-      sessionId: '1111', capabilities: {}
+      sessionId: '1111', capabilities: {}, host: 'localhost', port: 9999
     });
     assert.strictEqual(serverPath, '/path/to/geckodriver');
     assert.strictEqual(serverPort, 9999);
@@ -253,7 +253,7 @@ describe('GeckoDriver Transport Tests', function () {
     });
 
     assert.deepStrictEqual(session, {
-      sessionId: '1111', capabilities: {}
+      sessionId: '1111', capabilities: {}, host: 'localhost', port: undefined
     });
     assert.strictEqual(serverPath, '/path/to/geckodriver');
     assert.strictEqual(serverPort, undefined);
@@ -282,7 +282,7 @@ describe('GeckoDriver Transport Tests', function () {
     });
 
     assert.deepStrictEqual(session, {
-      sessionId: '1111', capabilities: {}
+      sessionId: '1111', capabilities: {}, host: 'localhost', port: 9999
     });
     assert.strictEqual(serverPath, '/path/to/geckodriver');
     assert.strictEqual(serverPort, 9999);

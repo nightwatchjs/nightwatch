@@ -223,7 +223,7 @@ describe('ChromeDriver Transport Tests', function () {
     });
 
     assert.deepStrictEqual(session, {
-      sessionId: '1111', capabilities: {}
+      sessionId: '1111', capabilities: {}, host: 'localhost', port: 9999
     });
     assert.strictEqual(serverPath, '/path/to/chromedriver');
     assert.strictEqual(serverPort, 9999);
@@ -246,7 +246,7 @@ describe('ChromeDriver Transport Tests', function () {
     });
 
     assert.deepStrictEqual(session, {
-      sessionId: '1111', capabilities: {}
+      sessionId: '1111', capabilities: {}, host: 'localhost', port: undefined
     });
     assert.strictEqual(serverPath, '/path/to/chromedriver');
     assert.strictEqual(serverPort, undefined);
@@ -274,6 +274,8 @@ describe('ChromeDriver Transport Tests', function () {
 
     assert.deepStrictEqual(session, {
       sessionId: '1111',
+      host: 'localhost',
+      port: '9999',
       capabilities: {}
     });
     assert.strictEqual(serverPath, '/path/to/chromedriver');
@@ -307,6 +309,8 @@ describe('ChromeDriver Transport Tests', function () {
 
     assert.deepStrictEqual(session, {
       sessionId: '1111',
+      host: 'localhost',
+      port: 9999,
       capabilities: {}
     });
     assert.strictEqual(serverPath, '/path/to/chromedriver');
@@ -338,6 +342,8 @@ describe('ChromeDriver Transport Tests', function () {
 
     assert.deepStrictEqual(session, {
       sessionId: '1111',
+      host: 'localhost',
+      port: 9999,
       capabilities: {}
     });
     assert.strictEqual(serverPath, '/path/to/chromedriver');
@@ -371,7 +377,9 @@ describe('ChromeDriver Transport Tests', function () {
 
     assert.deepStrictEqual(session, {
       sessionId: '1111',
-      capabilities: {}
+      capabilities: {},
+      host: 'localhost',
+      port: 9999
     });
     assert.strictEqual(serverPath, '/path/to/chromedriver');
     assert.strictEqual(serverPort, 9999);

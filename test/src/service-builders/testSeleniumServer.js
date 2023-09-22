@@ -18,12 +18,12 @@ describe('SeleniumServer Transport Tests', function () {
   const sessionData = {
     sessionId: '111',
     getId() {
-      return '1111'
+      return '1111';
     },
     getCapabilities() {
       return {
         getPlatform() {
-          return 'MAC'
+          return 'MAC';
         },
         getBrowserName() {
           return 'chrome';
@@ -37,7 +37,7 @@ describe('SeleniumServer Transport Tests', function () {
         keys() {
           return new Map();
         }
-      }
+      };
     }
   };
 
@@ -49,9 +49,9 @@ describe('SeleniumServer Transport Tests', function () {
     async getExecutor() {
       return {
         w3c: true
-      }
+      };
     }
-  }
+  };
 
   const fn = function() {};
   function deleteFromRequireCache(location) {
@@ -108,7 +108,7 @@ describe('SeleniumServer Transport Tests', function () {
       }
 
       async start() {
-        return {}
+        return {};
       }
     }
 
@@ -124,7 +124,7 @@ describe('SeleniumServer Transport Tests', function () {
       }
 
       async start() {
-        return {}
+        return {};
       }
     }
 
@@ -217,7 +217,7 @@ describe('SeleniumServer Transport Tests', function () {
       serverPath,
       serverPort,
       options
-    }
+    };
   }
 
   it('test create session with selenium server 3', async function() {
@@ -249,7 +249,7 @@ describe('SeleniumServer Transport Tests', function () {
     });
 
     assert.deepStrictEqual(session, {
-      sessionId: '1111', capabilities: {}
+      sessionId: '1111', capabilities: {}, host: 'localhost', port: 9999
     });
     assert.strictEqual(serverPath, '/path/to/selenium-server-standalone.3.0.jar');
     assert.strictEqual(serverPort, 9999);
@@ -317,7 +317,7 @@ describe('SeleniumServer Transport Tests', function () {
     });
 
     assert.deepStrictEqual(session, {
-      sessionId: '1111', capabilities: {}
+      sessionId: '1111', capabilities: {}, host: 'localhost', port: null
     });
     assert.strictEqual(serverPath, '/path/to/selenium-server-standalone.3.0.jar');
     assert.ok(!!serverPort);
@@ -357,7 +357,7 @@ describe('SeleniumServer Transport Tests', function () {
     });
 
     assert.deepStrictEqual(session, {
-      sessionId: '1111', capabilities: {}
+      sessionId: '1111', capabilities: {}, host: 'localhost', port: 9999
     });
 
     assert.strictEqual(serverPort, 9999);

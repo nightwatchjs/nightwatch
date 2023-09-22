@@ -225,7 +225,7 @@ describe('EdgeDriver Transport Tests', function () {
     });
 
     assert.deepStrictEqual(session, {
-      sessionId: '1111', capabilities: {}
+      sessionId: '1111', capabilities: {}, host: 'localhost', port: 9999
     });
     assert.strictEqual(serverPath, '/path/to/edgedriver');
     assert.strictEqual(serverPort, 9999);
@@ -244,7 +244,7 @@ describe('EdgeDriver Transport Tests', function () {
     }, {parallel: true});
 
     assert.deepStrictEqual(session, {
-      sessionId: '1111', capabilities: {}
+      sessionId: '1111', capabilities: {}, host: 'localhost', port: undefined
     });
     assert.strictEqual(serverPath, '/path/to/edgedriver');
     assert.strictEqual(serverPort, undefined);
@@ -267,7 +267,7 @@ describe('EdgeDriver Transport Tests', function () {
     });
 
     assert.deepStrictEqual(session, {
-      sessionId: '1111', capabilities: {}
+      sessionId: '1111', capabilities: {}, host: 'localhost', port: 9999
     });
     assert.strictEqual(serverPath, '/path/to/edgedriver');
     assert.strictEqual(serverPort, 9999);
@@ -290,7 +290,7 @@ describe('EdgeDriver Transport Tests', function () {
     });
 
     assert.deepStrictEqual(session, {
-      sessionId: '1111', capabilities: {}
+      sessionId: '1111', capabilities: {}, host: 'localhost', port: 9999
     });
     assert.strictEqual(serverPath, '/path/to/edgedriver');
     assert.strictEqual(serverPort, 9999);
