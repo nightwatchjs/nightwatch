@@ -105,7 +105,7 @@ describe('.waitUntil()', function () {
 
     it('client.waitUntil() function failure with custom timeout', function (done) {
       let tries = 0;
-      let startTime = new Date().valueOf();
+      const startTime = new Date().valueOf();
       let timeDiff;
       const maxTimeout = 100;
       const client = this.client.api;
@@ -123,7 +123,7 @@ describe('.waitUntil()', function () {
 
       this.client.start(err => {
         try {
-          assert.ok(timeDiff <= maxTimeout+100, `Expected lower than ${maxTimeout}, but got ${timeDiff}`);
+          assert.ok(timeDiff <= maxTimeout + 100, `Expected lower than ${maxTimeout}, but got ${timeDiff}`);
           assert.strictEqual(result.status, -1);
           assert.strictEqual(tries, 3);
           assert.ok(err instanceof Error);
@@ -136,7 +136,7 @@ describe('.waitUntil()', function () {
 
     it('client.waitUntil() function failure with custom timeout, interval, message, and callback', function (done) {
       let tries = 0;
-      let startTime = new Date().valueOf();
+      const startTime = new Date().valueOf();
       let timeDiff;
       const maxTimeout = 100;
       const client = this.client.api;
@@ -154,7 +154,7 @@ describe('.waitUntil()', function () {
 
       this.client.start(err => {
         try {
-          assert.ok(timeDiff <= maxTimeout+100, `Expected lower than ${maxTimeout}, but got ${timeDiff}`);
+          assert.ok(timeDiff <= maxTimeout + 100, `Expected lower than ${maxTimeout}, but got ${timeDiff}`);
           assert.strictEqual(result.status, -1);
           assert.ok(err instanceof Error);
           const messageParts = err.message.split('\n');
@@ -196,7 +196,7 @@ describe('.waitUntil()', function () {
 
     it('client.waitUntil() function failure with custom timeout and default interval', function (done) {
       let tries = 0;
-      let startTime = new Date().valueOf();
+      const startTime = new Date().valueOf();
       let timeDiff;
       const maxTimeout = 100;
       const client = this.client.api;
@@ -215,7 +215,7 @@ describe('.waitUntil()', function () {
       this.client.start(err => {
         try {
           assert.ok(err instanceof Error);
-          assert.ok(timeDiff <= maxTimeout+100, `Expected lower than ${maxTimeout}, but got ${timeDiff}`);
+          assert.ok(timeDiff <= maxTimeout + 100, `Expected lower than ${maxTimeout}, but got ${timeDiff}`);
           assert.strictEqual(result.status, -1);
           assert.strictEqual(tries, 3);
           done();
@@ -255,7 +255,7 @@ describe('.waitUntil()', function () {
 
     it('client.waitUntil() function failure with custom waitForConditionPollInterval', function (done) {
       let tries = 0;
-      let startTime = new Date().valueOf();
+      const startTime = new Date().valueOf();
       let timeDiff;
       const maxTimeout = 100;
       const client = this.client.api;
@@ -276,7 +276,7 @@ describe('.waitUntil()', function () {
       this.client.start(err => {
         try {
           assert.ok(err instanceof Error);
-          assert.ok(timeDiff <= maxTimeout+100, `Expected lower than ${maxTimeout}, but got ${timeDiff}`);
+          assert.ok(timeDiff <= maxTimeout + 100, `Expected lower than ${maxTimeout}, but got ${timeDiff}`);
           assert.strictEqual(result.status, -1);
           assert.ok(tries > 5);
           done();

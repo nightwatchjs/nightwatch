@@ -6,7 +6,7 @@ const menuCommands = {
     var self = this;
 
     return this.getAttribute(product, 'class', function (result) {
-      let isSelected = result.value.indexOf('hdtb-msel') > -1;
+      const isSelected = result.value.indexOf('hdtb-msel') > -1;
       callback.call(self, isSelected);
     });
   }

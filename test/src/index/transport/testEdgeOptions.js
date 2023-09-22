@@ -130,5 +130,17 @@ describe('Test edge option', function(){
     });
   });
 
+  it('msedge as browserName', function () {
+    const client = Nightwatch.createClient({
+      desiredCapabilities: {
+        browserName: 'msedge'
+      }
+    });
+    const options = client.transport.createSessionOptions();
+
+    assert.strictEqual(options instanceof EdgeOptions, true);
+    assert.strictEqual(client.api.isEdge(), true);
+    assert.strictEqual(client.api.browserName, 'msedge');
+  });
 
 });

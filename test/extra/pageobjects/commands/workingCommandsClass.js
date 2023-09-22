@@ -5,7 +5,7 @@ module.exports = class RealCommands {
       selector,
       suppressNotFoundErrors: true
     }, function(result) {
-      return callback(result ? result.value: []);
+      return callback(result ? result.value : []);
     });
   }
 

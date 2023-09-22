@@ -42,7 +42,7 @@ describe('Cucumber cli arguments', function(){
     let index = cliArgs.indexOf('--require-module') + 1;
 
     assert.strictEqual(cliArgs[index], 'coffeescript/register');
-    index =  cliArgs.indexOf('--require-module', index)+1;
+    index =  cliArgs.indexOf('--require-module', index) + 1;
     assert.strictEqual(cliArgs[index], 'ts-node/register');
   });
 
@@ -59,17 +59,18 @@ describe('Cucumber cli arguments', function(){
 
     assert.strictEqual(cliArgs.length, 21);
     assert.ok(cliArgs.includes('--name'));
-    assert.strictEqual(cliArgs[cliArgs.indexOf('--name')+1], 'sample');
+    assert.strictEqual(cliArgs[cliArgs.indexOf('--name') + 1], 'sample');
     assert.ok(cliArgs.includes('--fail-fast'));
     assert.ok(cliArgs.includes('--retry'));
-    assert.strictEqual(cliArgs[cliArgs.indexOf('--retry')+1], 2);
+    assert.strictEqual(cliArgs[cliArgs.indexOf('--retry') + 1], 2);
     assert.ok(cliArgs.includes('--retry-tag-filter'));
-    assert.strictEqual(cliArgs[cliArgs.indexOf('--retry-tag-filter')+1], '@nightwatch');
+    assert.strictEqual(cliArgs[cliArgs.indexOf('--retry-tag-filter') + 1], '@nightwatch');
     assert.ok(cliArgs.includes('--profile'));
-    assert.strictEqual(cliArgs[cliArgs.indexOf('--profile')+1], 'local');
+    assert.strictEqual(cliArgs[cliArgs.indexOf('--profile') + 1], 'local');
     assert.ok(cliArgs.includes('--no-strict'));
     assert.ok(cliArgs.includes('--parallel'));
-    assert.strictEqual(cliArgs[cliArgs.indexOf('--parallel')+1], 3);
+    assert.strictEqual(cliArgs[cliArgs.indexOf('--parallel') + 1], 3);
+    assert.ok(cliArgs.includes('--require'));
   });
 
   it('Cucumber cli arg --dry-run', function(){
@@ -90,7 +91,7 @@ describe('Cucumber cli arguments', function(){
     assert.ok(cliArgs.includes('--dry-run'));
   });
 
-  it('Cucumbr additional option --retries', function(){
+  it('Cucumber additional option --retries', function(){
     const runner = new CucumberRunner({
       test_runner: {
         type: 'cucumber',
@@ -108,7 +109,7 @@ describe('Cucumber cli arguments', function(){
     assert.ok(cliArgs.includes('--retry'));
   });
 
-  it('Cucumbr additional options --retry and --format', function(){
+  it('Cucumber additional options --retry and --format', function(){
     const runner = new CucumberRunner({
       test_runner: {
         type: 'cucumber',
@@ -126,7 +127,47 @@ describe('Cucumber cli arguments', function(){
 
     assert.ok(cliArgs.includes('--retry'));
     assert.ok(cliArgs.includes('--format'));
-    assert.strictEqual(cliArgs[cliArgs.indexOf('--retry')+1], 3);
-    assert.strictEqual(cliArgs[cliArgs.indexOf('--format')+1], '@cucumber/pretty-formatter');
+    assert.strictEqual(cliArgs[cliArgs.indexOf('--retry') + 1], 3);
+    assert.strictEqual(cliArgs[cliArgs.indexOf('--format') + 1], '@cucumber/pretty-formatter');
+  });
+
+  it('Cucumber cli arg --enable-esm', function(){
+    const runner = new CucumberRunner({
+      test_runner: {
+        type: 'cucumber',
+        options: {}
+      }
+    }, {
+      'enable-esm': true
+    }, {});
+
+    runner.createTestSuite({
+      modules: [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')],
+      modulePath: [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')]
+    });
+
+    assert.ok(cliArgs.includes('--import'));
+    assert.ok(!cliArgs.includes('--require'));
+  });
+
+  it('Cucumber options enable esm support', function(){
+    const runner = new CucumberRunner({
+      test_runner: {
+        type: 'cucumber',
+        options: {
+          enable_esm: true
+        }
+      }
+    }, {}, {});
+
+    const testModulePath = path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js');
+
+    runner.createTestSuite({
+      modules: [testModulePath],
+      modulePath: [testModulePath]
+    });
+
+    assert.ok(cliArgs.includes('--import'));
+    assert.ok(!cliArgs.includes('--require'));
   });
 });

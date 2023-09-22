@@ -55,7 +55,8 @@ export interface JSON_WEB_OBJECT extends ElementResult {
   getId: () => string;
 }
 
-export type Definition = string | ElementProperties | Element | SeleniumBy | RelativeBy;
+export type ScopedSelector = string | ElementProperties | Element | SeleniumBy | RelativeBy;
+export type Definition = ScopedSelector | WebElement;
 
 export type Awaitable<T, V> = Omit<T, 'then'> & PromiseLike<V>;
 
@@ -514,8 +515,10 @@ export interface NamespacedApi<ReturnType = unknown> {
   cookies: CookiesNsCommands<ReturnType>;
   alerts: AlertsNsCommands<ReturnType>;
   document: DocumentNsCommands<ReturnType>;
+  logs: LogsNsCommands<ReturnType>;
   window: WindowNsCommands<ReturnType>;
   firefox: FirefoxNsCommands<ReturnType>;
+  network: NetworkNsCommands<ReturnType>;
 
   assert: Assert<ReturnType>;
   verify: Assert<ReturnType>;
@@ -566,7 +569,7 @@ export interface NightwatchAPI
    */
   setSessionId(sessionId: string): this;
 
-  options: NightwatchTestOptions;
+  options: NightwatchOptions & Pick<NightwatchTestOptions, "desiredCapabilities">;
 
   Keys: NightwatchKeys;
 
@@ -685,6 +688,8 @@ export class Element {
   timeout?: number;
 }
 
+type ElementGlobalDefinition = string | SeleniumBy | RelativeBy | {selector: string; locateStrategy?: string} | {using: string, value: string};
+
 export interface ElementGlobal extends Element {
   /**
    * Get the server-assigned opaque ID assigned to this element.
@@ -696,24 +701,24 @@ export interface ElementGlobal extends Element {
   /**
    * Locates the descendants of this element that match the given search criteria, and returns the first one.
    *
-   * If no `selector` is passed, returns the[WebElement](https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebElement.html)
+   * If no `selector` is passed, returns the [WebElement](https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebElement.html)
    * instance for this element.
    */
   findElement(): Awaitable<NightwatchAPI, WebElement>;
   findElement(
-    selector: Definition,
+    selector: ElementGlobalDefinition,
     callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WebElement>) => void
   ): Awaitable<NightwatchAPI, WebElement>;
 
   /**
    * Locates and wraps the first element, that match the given search criteria in the descendants of this element, in global element() api object.
    *
-   * If no `selector` is passed, returns the[WebElement](https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebElement.html)
+   * If no `selector` is passed, returns the [WebElement](https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebElement.html)
    * instance for this element.
    */
   find(): Awaitable<NightwatchAPI, WebElement>;
   find(
-    selector: Definition,
+    selector: ElementGlobalDefinition,
     callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<ElementGlobal | null>) => void
   ): Awaitable<NightwatchAPI, ElementGlobal | null>;
 
@@ -724,12 +729,12 @@ export interface ElementGlobal extends Element {
    * Locates all of the descendants of this element that match the given search criteria.
    */
   findElements(
-    selector: Definition,
+    selector: ElementGlobalDefinition,
     callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WebElement[]>) => void
   ): Awaitable<NightwatchAPI, WebElement[]>;
 
   findAll(
-    selector: Definition,
+    selector: ElementGlobalDefinition,
     callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<ElementGlobal[]>) => void
   ): Awaitable<NightwatchAPI, ElementGlobal[]>;
 
@@ -924,7 +929,7 @@ export interface ElementGlobal extends Element {
 }
 
 export function globalElement(
-  locator: Definition | WebElement,
+  locator: Definition,
   options?: {
     isComponent?: boolean;
     type: string;
@@ -1384,70 +1389,6 @@ export interface ChromiumClientCommands {
   ): Awaitable<this, null>;
 
   /**
-   * Capture outgoing network calls from the browser.
-   *
-   * @example
-   *  describe('capture network requests', function() {
-   *    it('captures and logs network requests as they occur', function(this: ExtendDescribeThis<{requestCount: number}>) {
-   *      this.requestCount = 1;
-   *      browser
-   *        .captureNetworkRequests((requestParams) => {
-   *          console.log('Request Number:', this.requestCount!++);
-   *          console.log('Request URL:', requestParams.request.url);
-   *          console.log('Request method:', requestParams.request.method);
-   *          console.log('Request headers:', requestParams.request.headers);
-   *        })
-   *        .navigateTo('https://www.google.com');
-   *    });
-   *  });
-   *
-   * @see https://nightwatchjs.org/guide/network-requests/capture-network-calls.html
-   */
-  captureNetworkRequests(
-    onRequestCallback: (
-      requestParams: Protocol.Network.RequestWillBeSentEvent
-    ) => void,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
-
-  /**
-   * Intercept the request made on a particular URL and mock the response.
-   *
-   * @example
-   *  describe('mock network response', function() {
-   *    it('intercepts the request made to Google search and mocks its response', function() {
-   *      browser
-   *        .mockNetworkResponse('https://www.google.com/', {
-   *          status: 200,
-   *          headers: {
-   *            'Content-Type': 'UTF-8'
-   *          },
-   *          body: 'Hello there!'
-   *        })
-   *        .navigateTo('https://www.google.com/')
-   *        .pause(2000);
-   *    });
-   *  });
-   *
-   * @see https://nightwatchjs.org/guide/network-requests/mock-network-response.html
-   */
-  mockNetworkResponse(
-    urlToIntercept: string,
-    response?: {
-      status?: Protocol.Fetch.FulfillRequestRequest['responseCode'];
-      headers?: { [name: string]: string };
-      body?: Protocol.Fetch.FulfillRequestRequest['body'];
-    },
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
-
-  /**
    * Override device mode/dimensions.
    *
    * @example
@@ -1576,69 +1517,15 @@ export interface ChromiumClientCommands {
     ) => void
   ): Awaitable<this, string>;
 
-  /**
-   * Listen to the `console` events (ex. `console.log` event) and
-   * register callback to process the same.
-   *
-   * @example
-   *  describe('capture console events', function() {
-   *    it('captures and logs console.log event', function() {
-   *      browser
-   *        .captureBrowserConsoleLogs((event) => {
-   *          console.log(event.type, event.timestamp, event.args[0].value);
-   *        })
-   *        .navigateTo('https://www.google.com')
-   *        .executeScript(function() {
-   *          console.log('here');
-   *        }, []);
-   *    });
-   *  });
-   *
-   * @see https://nightwatchjs.org/guide/running-tests/capture-console-messages.html
-   */
-  captureBrowserConsoleLogs(
-    onEventCallback: (
-      event: Pick<
-        Protocol.Runtime.ConsoleAPICalledEvent,
-        'type' | 'timestamp' | 'args'
-      >
-    ) => void,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
+  captureNetworkRequests: NetworkNsCommands<this>['captureRequests'];
 
-  /**
-   * Catch the JavaScript exceptions thrown in the browser.
-   *
-   * @example
-   *  describe('catch browser exceptions', function() {
-   *    it('captures the js exceptions thrown in the browser', async function() {
-   *      await browser.captureBrowserExceptions((event) => {
-   *        console.log('>>> Exception:', event);
-   *      });
-   *
-   *      await browser.navigateTo('https://duckduckgo.com/');
-   *
-   *      const searchBoxElement = await browser.findElement('input[name=q]');
-   *      await browser.executeScript(function(_searchBoxElement) {
-   *        _searchBoxElement.setAttribute('onclick', 'throw new Error("Hello world!")');
-   *      }, [searchBoxElement]);
-   *
-   *      await browser.elementIdClick(searchBoxElement.getId());
-   *    });
-   *  });
-   *
-   * @see https://nightwatchjs.org/guide/running-tests/catch-js-exceptions.html
-   */
-  captureBrowserExceptions(
-    onExceptionCallback: (event: Protocol.Runtime.ExceptionThrownEvent) => void,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
+  mockNetworkResponse: NetworkNsCommands<this>['mockResponse'];
+
+  setNetworkConditions: NetworkNsCommands<this>['setConditions'];
+
+  captureBrowserConsoleLogs: LogsNsCommands<this>['captureBrowserConsoleLogs'];
+
+  captureBrowserExceptions: LogsNsCommands<this>['captureBrowserExceptions'];
 }
 
 export interface ClientCommands extends ChromiumClientCommands {
@@ -4289,7 +4176,7 @@ export interface ElementCommands {
    * @see https://nightwatchjs.org/api/getShadowRoot.html
    */
   getShadowRoot(
-    selector: Definition | WebElement,
+    selector: Definition,
     callback?: (
       this: NightwatchAPI,
       result: NightwatchCallbackResult<ElementGlobal | null>
@@ -4297,7 +4184,7 @@ export interface ElementCommands {
   ): Awaitable<this, ElementGlobal | null>;
   getShadowRoot(
     using: LocateStrategy,
-    selector: Definition | WebElement,
+    selector: Definition,
     callback?: (
       this: NightwatchAPI,
       result: NightwatchCallbackResult<ElementGlobal | null>
@@ -5214,6 +5101,103 @@ export interface FirefoxNsCommands<ReturnType = unknown> {
   uninstallAddon(addonId: string | PromiseLike<string>): Awaitable<IfUnknown<ReturnType, this>, null>;
 } 
 
+export interface NetworkNsCommands<ReturnType = unknown> {
+  /**
+   * Capture outgoing network calls from the browser.
+   *
+   * @example
+   *  describe('capture network requests', function() {
+   *    it('captures and logs network requests as they occur', function(this: ExtendDescribeThis<{requestCount: number}>) {
+   *      this.requestCount = 1;
+   *      browser
+   *        .network.captureRequests((requestParams) => {
+   *          console.log('Request Number:', this.requestCount!++);
+   *          console.log('Request URL:', requestParams.request.url);
+   *          console.log('Request method:', requestParams.request.method);
+   *          console.log('Request headers:', requestParams.request.headers);
+   *        })
+   *        .navigateTo('https://www.google.com');
+   *    });
+   *  });
+   *
+   * @see https://nightwatchjs.org/guide/network-requests/capture-network-calls.html
+   */
+  captureRequests(
+    onRequestCallback: (
+      requestParams: Protocol.Network.RequestWillBeSentEvent
+    ) => void,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Intercept the request made on a particular URL and mock the response.
+   *
+   * @example
+   *  describe('mock network response', function() {
+   *    it('intercepts the request made to Google search and mocks its response', function() {
+   *      browser
+   *        .network.mockResponse('https://www.google.com/', {
+   *          status: 200,
+   *          headers: {
+   *            'Content-Type': 'UTF-8'
+   *          },
+   *          body: 'Hello there!'
+   *        })
+   *        .navigateTo('https://www.google.com/')
+   *        .pause(2000);
+   *    });
+   *  });
+   *
+   * @see https://nightwatchjs.org/guide/network-requests/mock-network-response.html
+   */
+  mockResponse(
+    urlToIntercept: string,
+    response?: {
+      status?: Protocol.Fetch.FulfillRequestRequest['responseCode'];
+      headers?: { [name: string]: string };
+      body?: Protocol.Fetch.FulfillRequestRequest['body'];
+    },
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Command to set Chrome network emulation settings.
+   *
+   * @example
+   * describe('set network conditions', function() {
+   *  it('sets the network conditions',function() {
+   *    browser
+   *     .network.setConditions({
+   *      offline: false,
+   *      latency: 3000,
+   *      download_throughput: 500 * 1024,
+   *      upload_throughput: 500 * 1024
+   *    });
+   *  });
+   * });
+   *
+   * @see https://nightwatchjs.org/api/setNetworkConditions.html
+   */
+  setConditions(
+    spec: {
+      offline: boolean;
+      latency: number;
+      download_throughput: number;
+      upload_throughput: number;
+    },
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+}
+
 export interface AlertsNsCommands<ReturnType = unknown> {
   /**
    * Accepts the currently displayed alert dialog. Usually, this is equivalent to clicking on the 'OK' button in the dialog.
@@ -5379,6 +5363,175 @@ export interface DocumentNsCommands<ReturnType = unknown> {
   ): Awaitable<IfUnknown<ReturnType, this>, string>;
 }
 
+export interface LogsNsCommands<ReturnType = unknown> {
+  /**
+   * Gets a log from Selenium.
+   *
+   * @example
+   * describe('get log from Selenium', function() {
+   *   it('get browser log (default)', function(browser) {
+   *     browser.logs.getSessionLog(function(result) {
+   *       if (result.status === 0) {
+   *         const logEntriesArray = result.value;
+   *         console.log('Log length: ' + logEntriesArray.length);
+   *         logEntriesArray.forEach(function(log) {
+   *           console.log('[' + log.level + '] ' + log.timestamp + ' : ' + log.message);
+   *         });
+   *       }
+   *     });
+   *   });
+   *
+   *   it('get driver log with ES6 async/await', async function(browser) {
+   *     const driverLogAvailable = await browser.logs.isAvailable('driver');
+   *     if (driverLogAvailable) {
+   *       const logEntriesArray = await browser.logs.getSessionLog('driver');
+   *       logEntriesArray.forEach(function(log) {
+   *         console.log('[' + log.level + '] ' + log.timestamp + ' : ' + log.message);
+   *       });
+   *     }
+   *   });
+   * });
+   *
+   * @see https://nightwatchjs.org/api/logs/getSessionLog.html
+   */
+  getSessionLog(
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<NightwatchLogEntry[]>) => void
+  ): Awaitable<IfUnknown<ReturnType, this>, NightwatchLogEntry[]>;
+  getSessionLog(
+    typeString: NightwatchLogTypes,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<NightwatchLogEntry[]>) => void
+  ): Awaitable<IfUnknown<ReturnType, this>, NightwatchLogEntry[]>;
+
+  /**
+   * Gets the available log types. More info about log types in WebDriver can be found here: https://github.com/SeleniumHQ/selenium/wiki/Logging
+   *
+   * @example
+   * describe('get available log types', function() {
+   *   it('get log types', function(browser) {
+   *     browser.logs.getSessionLogTypes(function(result) {
+   *       if (result.status === 0) {
+   *         const logTypes = result.value;
+   *         console.log('Log types available:', logTypes);
+   *       }
+   *     });  
+   *   });
+   *
+   *   it('get log types with ES6 async/await', async function(browser) {
+   *     const logTypes = await browser.logs.getSessionLogTypes();
+   *     console.log('Log types available:', logTypes);
+   *   });
+   * });
+   *
+   * @see https://nightwatchjs.org/api/logs/getSessionLogTypes.html
+   */
+  getSessionLogTypes(
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<NightwatchLogTypes[]>
+    ) => void
+  ): Awaitable<
+    IfUnknown<ReturnType, this>,
+    NightwatchLogTypes[]
+  >;
+
+  /**
+   * Utility command to test if the log type is available.
+   *
+   * @example
+   * describe('test if the log type is available', function() {
+   *   it('test browser log type', function(browser) {
+   *     browser.logs.isSessionLogAvailable('browser', function(result) {
+   *       if (result.status === 0) {
+   *         const isAvailable = result.value;
+   *         if (isAvailable) {
+   *           // do something more in here
+   *         }
+   *       }
+   *     });  
+   *   });
+   *
+   *   it('test driver log type with ES6 async/await', async function(browser) {
+   *     const isAvailable = await browser.logs.isSessionLogAvailable('driver');
+   *     if (isAvailable) {
+   *       // do something more in here
+   *     }
+   *   });
+   * });
+   *
+   * @see https://nightwatchjs.org/api/logs/isSessionLogAvailable.html
+   */
+  isSessionLogAvailable(
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<boolean>) => void
+  ): Awaitable<IfUnknown<ReturnType, this>, boolean>;
+  isSessionLogAvailable(
+    typeString: NightwatchLogTypes,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<boolean>) => void
+  ): Awaitable<IfUnknown<ReturnType, this>, boolean>;
+
+  /**
+   * Listen to the `console` events (ex. `console.log` event) and
+   * register callback to process the same.
+   *
+   * @example
+   *  describe('capture console events', function() {
+   *    it('captures and logs console.log event', function() {
+   *      browser
+   *        .captureBrowserConsoleLogs((event) => {
+   *          console.log(event.type, event.timestamp, event.args[0].value);
+   *        })
+   *        .navigateTo('https://www.google.com')
+   *        .executeScript(function() {
+   *          console.log('here');
+   *        }, []);
+   *    });
+   *  });
+   *
+   * @see https://nightwatchjs.org/guide/running-tests/capture-console-messages.html
+   */
+  captureBrowserConsoleLogs(
+    onEventCallback: (
+      event: Pick<
+        Protocol.Runtime.ConsoleAPICalledEvent,
+        'type' | 'timestamp' | 'args'
+      >
+    ) => void,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Catch the JavaScript exceptions thrown in the browser.
+   *
+   * @example
+   *  describe('catch browser exceptions', function() {
+   *    it('captures the js exceptions thrown in the browser', async function() {
+   *      await browser.captureBrowserExceptions((event) => {
+   *        console.log('>>> Exception:', event);
+   *      });
+   *
+   *      await browser.navigateTo('https://duckduckgo.com/');
+   *
+   *      const searchBoxElement = await browser.findElement('input[name=q]');
+   *      await browser.executeScript(function(_searchBoxElement) {
+   *        _searchBoxElement.setAttribute('onclick', 'throw new Error("Hello world!")');
+   *      }, [searchBoxElement]);
+   *
+   *      await browser.elementIdClick(searchBoxElement.getId());
+   *    });
+   *  });
+   *
+   * @see https://nightwatchjs.org/guide/running-tests/catch-js-exceptions.html
+   */
+  captureBrowserExceptions(
+    onExceptionCallback: (event: Protocol.Runtime.ExceptionThrownEvent) => void,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+}
 export interface WindowNsCommands<ReturnType = unknown> {
   /**
    * Close the current window or tab. This can be useful when you're working with multiple windows/tabs open (e.g. an OAuth login).
@@ -6040,34 +6193,6 @@ export interface WebDriverProtocolSessions {
       result: NightwatchCallbackResult<NightwatchLogTypes[]>
     ) => void
   ): Awaitable<this, NightwatchLogTypes[]>;
-
-  /**
-   * Command to set Chrome network emulation settings.
-   *
-   * @example
-   *  this.demoTest = function() {
-   *    browser.setNetworkConditions({
-   *      offline: false,
-   *      latency: 50000,
-   *      download_throughput: 450 * 1024,
-   *      upload_throughput: 150 * 1024
-   *    });
-   *  };
-   *
-   * @see https://nightwatchjs.org/api/setNetworkConditions.html
-   */
-  setNetworkConditions(
-    spec: {
-      offline: boolean;
-      latency: number;
-      download_throughput: number;
-      upload_throughput: number;
-    },
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
 }
 
 export interface WebDriverProtocolNavigation {

@@ -4,12 +4,15 @@ const AssertionError = require('assertion-error');
 const common = require('../../common.js');
 const Utils = common.require('utils');
 const beautifyStackTrace = common.require('utils/beautifyStackTrace.js');
-const colors = common.require('utils/colors.js');
+const colors = common.require('utils/chalkColors.js');
 const {Logger} = common.require('utils');
 
 
 describe('test stackTrace parse', function() {
-  before(() => colors.disable());
+  before(() => {
+    colors.colors.level = 3;
+    colors.disable();
+  });
   after(() => colors.enable());
 
   it('filterStackTrace', function() {
@@ -121,29 +124,29 @@ describe('test stackTrace parse', function() {
     const errorMessage = Logger.getErrorContent(error);
     assert.ok(!errorMessage.includes('\t'));
 
-    assert.strictEqual(errorMessage, ` ✖ [1;31mTypeError[0m
-   [0;31mUnknown method[0m
-[0;33m
-    Error location:[0m
+    assert.strictEqual(errorMessage, ` \x1B[31m\x1B[1m✖\x1B[22m\x1B[39m \x1B[31m\x1B[1mTypeError\x1B[22m\x1B[39m
+   \x1B[31mUnknown method\x1B[39m
+\x1B[33m\x1B[39m
+\x1B[33m    Error location:\x1B[39m
     ${errorFilePath}:
     ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
      2 |   it('failure stack trace', function() {
      3 |    
-    [0;37m[41m 4 |     browser.url('http://localhost') [0m
+    \x1B[41m\x1B[37m 4 |     browser.url('http://localhost') \x1B[39m\x1B[49m
      5 |       .assert.elementPresen('#badElement'); // mispelled API method
      6 |   });
     ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-[0;33m    Stack Trace :[0m
-[0;90m    at DescribeInstance.<anonymous> (${errorFilePath}:${lineNumber}:21)[0m
-[0;90m      at Context.call (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/context.js:430:35)[0m
-[0;90m      at TestCase.run (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/testcase.js:58:31)[0m
-[0;90m      at Runnable.__runFn (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:669:80)[0m
-[0;90m      at Runnable.run (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/runnable.js:126:21)[0m
-[0;90m      at TestSuite.createRunnable (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:776:33)[0m
-[0;90m      at TestSuite.handleRunnable (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:781:33)[0m
-[0;90m      at /Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:669:21[0m
-[0;90m      at processTicksAndRejections (node:internal/process/task_queues:96:5)[0m
+\x1B[33m    Stack Trace :\x1B[39m
+\x1B[90m    at DescribeInstance.<anonymous> (${errorFilePath}:${lineNumber}:21)\x1B[39m
+\x1B[90m      at Context.call (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/context.js:430:35)\x1B[39m
+\x1B[90m      at TestCase.run (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/testcase.js:58:31)\x1B[39m
+\x1B[90m      at Runnable.__runFn (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:669:80)\x1B[39m
+\x1B[90m      at Runnable.run (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/runnable.js:126:21)\x1B[39m
+\x1B[90m      at TestSuite.createRunnable (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:776:33)\x1B[39m
+\x1B[90m      at TestSuite.handleRunnable (/Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:781:33)\x1B[39m
+\x1B[90m      at /Users/BarnOwl/Documents/Projects/Nightwatch-tests/node_modules/nightwatch/lib/testsuite/index.js:669:21\x1B[39m
+\x1B[90m      at processTicksAndRejections (node:internal/process/task_queues:96:5)\x1B[39m
 `);
   });
 });

@@ -272,7 +272,7 @@ describe('SafariDriver Transport Tests', function () {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'safari'}}
+        'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'safari', 'safari:options': {}}}
       }),
       response: JSON.stringify({
         value: {
@@ -322,7 +322,7 @@ describe('SafariDriver Transport Tests', function () {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'safari'}}
+        'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'safari', 'safari:options': {}}}
       }),
       response: JSON.stringify({
         value: {
@@ -337,7 +337,7 @@ describe('SafariDriver Transport Tests', function () {
       url: '/session',
       statusCode: 200,
       postdata: JSON.stringify({
-        'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'safari'}}
+        'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'safari', 'safari:options': {}}}
       }),
       response: JSON.stringify({
         value: {

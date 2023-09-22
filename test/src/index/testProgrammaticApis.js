@@ -2,6 +2,7 @@ const assert = require('assert');
 const mockery = require('mockery');
 const MockServer = require('../../lib/command-mocks.js');
 const common = require('../../common.js');
+const {Logger} = common.require('utils');
 
 describe('test programmatic apis', function () {
   // [ '-vv', '--port=62625' ]
@@ -75,7 +76,8 @@ describe('test programmatic apis', function () {
     assert.ok(!!global.browser);
     assert.ok(!!global.browser.page);
 
-    assert.deepStrictEqual(Object.keys(client), ['updateCapabilities', 'launchBrowser']);
+    assert.deepStrictEqual(Object.keys(client), ['updateCapabilities', 'runGlobalBeforeHook', 
+      'runGlobalAfterHook', 'launchBrowser', 'cleanup']);
     assert.strictEqual(typeof client.launchBrowser, 'function');
     assert.strictEqual(typeof client.settings, 'object');
 
@@ -567,6 +569,292 @@ describe('test programmatic apis', function () {
     assert.strictEqual(typeof serverPort, 'number');
     assert.ok(serverPort > 0);
     assert.notStrictEqual(serverPort, 10195);
+    CliRunner.createDefaultConfig = createDefaultConfig;
+    CliRunner.prototype.loadConfig = loadConfig;
+  });
+
+  it('test if process listener get disabled', async function() {
+    let processListenerCalled = false;
+    mockery.enable({useCleanCache: true, warnOnUnregistered: false});
+    mockery.registerMock('../process-listener.js', class {
+      constructor() {
+        processListenerCalled = true;
+      }
+
+      setTestRunner() {}
+    });
+
+    const CliRunner = common.require('runner/cli/cli.js');
+    const Nightwatch = common.require('index.js');
+
+    const createDefaultConfig = CliRunner.createDefaultConfig;
+    const loadConfig = CliRunner.prototype.loadConfig;
+    const defaultConfig = {
+      test_settings: {
+        default: {
+          launchUrl: 'http://localhost'
+        }
+      },
+      selenium: {
+        port: 10195,
+        start_process: false
+      },
+      selenium_host: 'localhost'
+    };
+
+    CliRunner.createDefaultConfig = function(destFileName) {
+      return defaultConfig;
+    };
+
+    CliRunner.prototype.loadConfig = function () {
+      return defaultConfig;
+    };
+
+    const clientWithoutListner = Nightwatch.createClient({
+      timeout: 500,
+      useAsync: false,
+      output: false,
+      silent: false,
+      headless: true,
+      output_folder: 'output',
+      globals: {
+        testGlobal: 'one'
+      },
+      disable_process_listener: true
+    });
+
+    assert.ok(!processListenerCalled);
+
+    const client = Nightwatch.createClient({
+      timeout: 500,
+      useAsync: false,
+      output: false,
+      silent: false,
+      headless: true,
+      output_folder: 'output',
+      globals: {
+        testGlobal: 'one'
+      }
+    });
+
+    assert.ok(processListenerCalled);
+
+    CliRunner.createDefaultConfig = createDefaultConfig;
+    CliRunner.prototype.loadConfig = loadConfig;
+  });
+
+  it('test runGlobalBeforeHook() programmatic API', async function() {
+    const CliRunner = common.require('runner/cli/cli.js');
+    const Nightwatch = common.require('index.js');
+    MockServer.createFirefoxSession({});
+
+    let globalBeforeCalled = false;
+
+    const defaultConfig = {
+      test_settings: {
+        default: {
+          launchUrl: 'http://localhost'
+        }
+      },
+      selenium: {
+        port: 10195,
+        start_process: false
+      },
+      selenium_host: 'localhost',
+
+      globals: {
+        before() {
+          globalBeforeCalled = true;
+        }
+      }
+    };
+
+    const createDefaultConfig = CliRunner.createDefaultConfig;
+    const loadConfig = CliRunner.prototype.loadConfig;
+
+    CliRunner.createDefaultConfig = function(destFileName) {
+      return defaultConfig;
+    };
+
+    CliRunner.prototype.loadConfig = function () {
+      return defaultConfig;
+    };
+
+    const client = Nightwatch.createClient({
+      headless: true,
+      silent: false,
+      output: false,
+      enable_global_apis: true
+    });
+
+    await client.runGlobalBeforeHook();
+
+    assert.ok(globalBeforeCalled);
+
+    CliRunner.createDefaultConfig = createDefaultConfig;
+    CliRunner.prototype.loadConfig = loadConfig;
+  });
+
+  it('test runGlobalAfterHook() programmatic API', async function() {
+    const CliRunner = common.require('runner/cli/cli.js');
+    const Nightwatch = common.require('index.js');
+    MockServer.createFirefoxSession({});
+
+    let globalAfterCalled = false;
+
+    const defaultConfig = {
+      test_settings: {
+        default: {
+          launchUrl: 'http://localhost'
+        }
+      },
+      selenium: {
+        port: 10195,
+        start_process: false
+      },
+      selenium_host: 'localhost',
+
+      globals: {
+        after() {
+          globalAfterCalled = true;
+        }
+      }
+    };
+
+    const createDefaultConfig = CliRunner.createDefaultConfig;
+    const loadConfig = CliRunner.prototype.loadConfig;
+
+    CliRunner.createDefaultConfig = function(destFileName) {
+      return defaultConfig;
+    };
+
+    CliRunner.prototype.loadConfig = function () {
+      return defaultConfig;
+    };
+
+    const client = Nightwatch.createClient({
+      headless: true,
+      silent: false,
+      output: false,
+      enable_global_apis: true
+    });
+
+    await client.runGlobalAfterHook();
+
+    assert.ok(globalAfterCalled);
+
+    CliRunner.createDefaultConfig = createDefaultConfig;
+    CliRunner.prototype.loadConfig = loadConfig;
+  });
+
+  it('test cleanup() programmatic API', async function() {
+    const CliRunner = common.require('runner/cli/cli.js');
+    const Nightwatch = common.require('index.js');
+    MockServer.createFirefoxSession({});
+
+    const defaultConfig = {
+      test_settings: {
+        default: {
+          launchUrl: 'http://localhost'
+        }
+      },
+      selenium: {
+        port: 10195,
+        start_process: false
+      },
+      selenium_host: 'localhost'
+    };
+
+    const createDefaultConfig = CliRunner.createDefaultConfig;
+    const loadConfig = CliRunner.prototype.loadConfig;
+
+    CliRunner.createDefaultConfig = function(destFileName) {
+      return defaultConfig;
+    };
+
+    CliRunner.prototype.loadConfig = function () {
+      return defaultConfig;
+    };
+
+    const client = Nightwatch.createClient({
+      headless: true,
+      silent: false,
+      output: false,
+      enable_global_apis: true
+    });
+
+    const session = await client.launchBrowser();
+
+    await client.cleanup();
+
+    const httpOutput = Logger.collectOutput();
+    const httpSectionOutput = Logger.collectTestSectionOutput();
+
+    assert.equal(httpOutput.length, 0);
+    assert.equal(httpSectionOutput.length, 0);
+    CliRunner.createDefaultConfig = createDefaultConfig;
+    CliRunner.prototype.loadConfig = loadConfig;
+  });
+
+  it('should test updateCapabilities() programmatic API with multiple nested caps', async function() {
+    const CliRunner = common.require('runner/cli/cli.js');
+    const Nightwatch = common.require('index.js');
+    MockServer.createFirefoxSession({});
+  
+    const defaultConfig = {
+      test_settings: {
+        default: {
+          launchUrl: 'http://localhost'
+        }
+      },
+      selenium: {
+        port: 10195,
+        start_process: false
+      },
+      selenium_host: 'localhost'
+    };
+  
+    const createDefaultConfig = CliRunner.createDefaultConfig;
+    const loadConfig = CliRunner.prototype.loadConfig;
+  
+    CliRunner.createDefaultConfig = function(destFileName) {
+      return defaultConfig;
+    };
+  
+    CliRunner.prototype.loadConfig = function () {
+      return defaultConfig;
+    };
+  
+    const client = Nightwatch.createClient({
+      headless: true,
+      silent: false,
+      output: false,
+      enable_global_apis: true
+    });
+
+    client.updateCapabilities({
+      'testName': 'newCaps',
+      'options': {
+        'testCapabilitiesOne': 'capabilityOne'
+      }
+    });
+      
+    client.updateCapabilities({
+      'testName': 'updatedCaps',
+      'options': {
+        'testCapabilitiesTwo': 'capabilityTwo'
+      }
+    });
+  
+    const session = await client.launchBrowser();
+    assert.deepStrictEqual(session.desiredCapabilities, {
+      browserName: 'firefox',
+      testName: 'updatedCaps',
+      options: {
+        testCapabilitiesOne: 'capabilityOne',
+        testCapabilitiesTwo: 'capabilityTwo'
+      }
+    });
     CliRunner.createDefaultConfig = createDefaultConfig;
     CliRunner.prototype.loadConfig = loadConfig;
   });

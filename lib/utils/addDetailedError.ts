@@ -1,9 +1,10 @@
+import {NightwatchError} from './types';
+
 /**
  * @method addDetailedError
- * @param {Error} err
  */
-module.exports = function(err) {
-  let detailedErr;
+export = function(err: NightwatchError) {
+  let detailedErr: string | undefined;
 
   if (err instanceof TypeError) {
     if (err.detailedErr && /browser\..+ is not a function$/.test(err.detailedErr)) {
@@ -25,14 +26,14 @@ module.exports = function(err) {
       detailedErr = '  - writing an ES6 async test case? - keep in mind that commands return a Promise; \n      - writing unit tests? - make sure to specify "unit_tests_mode=true" in your config.';
     }
   } else if (err instanceof SyntaxError) {
-    const stackParts = err.stack.split('SyntaxError:');
-    detailedErr = stackParts[0];
-    let modulePath = err.stack.split('\n')[0];
-    if (modulePath.includes(':')) {
+    const stackParts = err.stack?.split('SyntaxError:');
+    detailedErr = stackParts?.[0];
+    let modulePath = err.stack?.split('\n')[0];
+    if (modulePath?.includes(':')) {
       modulePath = modulePath.split(':')[0];
     }
 
-    if (stackParts[1]) {
+    if (stackParts?.[1]) {
       if (detailedErr) {
         err.stack = '';
       }
@@ -46,7 +47,7 @@ module.exports = function(err) {
       detailedErr = header + detailedErr;
     }
 
-    if (modulePath.endsWith('.jsx') || modulePath.endsWith('.tsx')) {
+    if (modulePath?.endsWith('.jsx') || modulePath?.endsWith('.tsx')) {
       detailedErr = `\n   In order to be able to load JSX files, one of these plugins is needed:
    - @nightwatch/react
    - @nightwatch/storybook (only if using Storybook in your project)

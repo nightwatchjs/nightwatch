@@ -3,6 +3,7 @@ const path = require('path');
 const mockery = require('mockery');
 const common = require('../../../common.js');
 const NightwatchClient = common.require('index.js');
+const {settings} = common;
 
 describe('Test CLI Runner in Parallel', function () {
   const ChildProcess = common.require('runner/concurrency/child-process.js');
@@ -103,6 +104,51 @@ describe('Test CLI Runner in Parallel', function () {
       output: false,
       output_folder: false
     });
+  });
+
+  it('run error test file with concurrency - worker threads', function() {
+    let numberOfTasks = 0;
+    class RunnerBaseMock extends RunnerBase {
+      static readTestSource(settings, argv) {
+        assert.strictEqual(settings.testWorkersEnabled, true);
+
+        return [
+          'test_file_1.js',
+          'test_file_2.js'
+        ];
+      }
+    }
+
+    class WorkerProcessMock extends WorkerProcess {
+      addTask({colors}) {
+
+        this.__tasks.push(new Promise((resolve, reject) => {
+          setTimeout(()=>{
+            numberOfTasks++;
+            reject(new Error('Nigtwatch custom error'));
+          }, 10 * (numberOfTasks + 1));
+        }));
+
+        return Promise.resolve(0);
+      }
+    }
+    mockery.registerMock('./worker-process.js', WorkerProcessMock);
+    mockery.registerMock('../runner.js', RunnerBaseMock);
+
+    return NightwatchClient.runTests({
+      env: 'default',
+      config: path.join(__dirname, '../../../extra/withgeckodriver-concurrent.json')
+    }, settings({
+      globals: {
+        reporter() {
+          assert.strictEqual(numberOfTasks, 2); 
+        }
+      },
+      use_child_process: false,
+      silent: false,
+      output: false,
+      output_folder: false
+    }));
   });
 
   it('start single test run with geckodriver and test workers enabled', function () {
