@@ -275,7 +275,7 @@ describe('ChromeDriver Transport Tests', function () {
     assert.deepStrictEqual(session, {
       sessionId: '1111',
       host: 'localhost',
-      port: '9999',
+      port: 9999,
       capabilities: {}
     });
     assert.strictEqual(serverPath, '/path/to/chromedriver');

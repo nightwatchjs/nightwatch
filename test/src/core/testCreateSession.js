@@ -444,8 +444,8 @@ describe('test Request With Credentials', function () {
         name: 'sample test goes here'
       },
       sessionId: '1352110219202',
-      host: 'locahost',
-      port: 4723
+      host: 'localhost',
+      port: '4723'
     });
   });
 
