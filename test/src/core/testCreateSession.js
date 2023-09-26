@@ -47,6 +47,8 @@ describe('test Request With Credentials', function () {
     });
     assert.deepStrictEqual(result, {
       sessionId: '1352110219202',
+      host: 'localhost',
+      port: 10195,
       capabilities: {browserName: 'firefox', version: 'TEST', platform: 'TEST'}
     });
   });
@@ -79,6 +81,8 @@ describe('test Request With Credentials', function () {
     });
     assert.deepStrictEqual(result, {
       sessionId: '1352110219202',
+      host: 'localhost',
+      port: 10195,
       capabilities: {
         browserName: 'chrome', version: 'TEST', platform: 'TEST'
       }
@@ -113,6 +117,8 @@ describe('test Request With Credentials', function () {
     });
     assert.deepStrictEqual(result, {
       sessionId: '1352110219202',
+      host: 'localhost',
+      port: 10195,
       capabilities: {
         browserName: 'MicrosoftEdge', version: 'TEST', platform: 'TEST'
       }
@@ -154,6 +160,8 @@ describe('test Request With Credentials', function () {
 
     assert.deepStrictEqual(session, {
       sessionId: '1352110219202',
+      host: 'localhost',
+      port: 10195,
       capabilities: {browserName: 'firefox', version: 'TEST', platform: 'TEST'}
     });
     assert.deepStrictEqual(sessionOptions.get('moz:firefoxOptions'), {args: ['-headless']});
@@ -197,6 +205,8 @@ describe('test Request With Credentials', function () {
 
     assert.deepStrictEqual(session, {
       sessionId: '1352110219202',
+      host: 'localhost',
+      port: 10195,
       capabilities: {browserName: 'chrome', version: 'TEST', platform: 'TEST'}
     });
     assert.deepStrictEqual(sessionOptions.get('goog:chromeOptions'), {args: ['headless=new']});
@@ -240,6 +250,8 @@ describe('test Request With Credentials', function () {
 
     assert.deepStrictEqual(session, {
       sessionId: '1352110219202',
+      host: 'localhost',
+      port: 10195,
       capabilities: {browserName: 'MicrosoftEdge', version: 'TEST', platform: 'TEST'}
     });
 
@@ -369,6 +381,8 @@ describe('test Request With Credentials', function () {
     });
     assert.deepStrictEqual(result, {
       sessionId: '1352110219202',
+      host: 'localhost',
+      port: 10195,
       capabilities: {
         browserName: 'chrome', version: 'TEST', platform: 'TEST'
       }
@@ -429,7 +443,9 @@ describe('test Request With Credentials', function () {
         deviceName: 'iPhone 13',
         name: 'sample test goes here'
       },
-      sessionId: '1352110219202'
+      sessionId: '1352110219202',
+      host: 'localhost',
+      port: '4723'
     });
   });
 
@@ -486,7 +502,9 @@ describe('test Request With Credentials', function () {
         platformVersion: '12.0',
         name: 'sample test goes here'
       },
-      sessionId: '1352110219202'
+      sessionId: '1352110219202',
+      host: 'somewhere',
+      port: 9999
     });
   });
 
@@ -580,6 +598,8 @@ describe('test Request With Credentials', function () {
     const result = await client.createSession();
     assert.deepEqual(result, {
       sessionId: '1352110219202',
+      host: 'hub.browserstack.com',
+      port: 443,
       capabilities: {
         firstMatch: [{}],
         alwaysMatch: {
@@ -704,6 +724,8 @@ describe('test Request With Credentials', function () {
     const result = await client.createSession();
     assert.deepStrictEqual(result, {
       sessionId: '1352110219202',
+      host: 'hub.browserstack.com',
+      port: 443,
       capabilities: {
         platform: 'MAC',
         platformName: 'iOS',
@@ -831,6 +853,8 @@ describe('test Request With Credentials', function () {
     const result = await client.createSession();
     assert.deepStrictEqual(result, {
       sessionId: '1352110219202',
+      host: 'hub.browserstack.com',
+      port: 443,
       capabilities: {
         platform: 'LINUX',
         platformName: 'Android',
@@ -927,6 +951,8 @@ describe('test Request With Credentials', function () {
     const result = await client.createSession();
     assert.deepStrictEqual(result, {
       sessionId: '1352110219202',
+      host: 'hub.browserstack.com',
+      port: 443,
       capabilities: {
         firstMatch: [{}],
         alwaysMatch: {
@@ -1026,6 +1052,8 @@ describe('test Request With Credentials', function () {
     const result = await client.createSession();
     assert.deepStrictEqual(result, {
       sessionId: '1352110219202',
+      host: 'hub.browserstack.com',
+      port: 443,
       capabilities: {
         firstMatch: [{}],
         alwaysMatch: {

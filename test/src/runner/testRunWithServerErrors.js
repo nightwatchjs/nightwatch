@@ -45,8 +45,8 @@ describe('testRunWithServerErrors', function() {
       times: 6
     });
 
-    let testsPath = path.join(__dirname, '../../sampletests/withservererrors');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/withservererrors');
+    const globals = {
       calls: 0,
       retryAssertionTimeout: 150,
       waitForConditionTimeout: 150,

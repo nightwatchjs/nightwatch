@@ -218,7 +218,7 @@ describe('SafariDriver Transport Tests', function () {
     });
 
     assert.deepStrictEqual(session, {
-      sessionId: '1111', capabilities: {}
+      sessionId: '1111', capabilities: {}, host: 'localhost', port: 9999
     });
     assert.strictEqual(serverPath, '/usr/bin/safaridriver');
     assert.strictEqual(serverPort, 9999);
@@ -236,7 +236,7 @@ describe('SafariDriver Transport Tests', function () {
     });
 
     assert.deepStrictEqual(session, {
-      sessionId: '1111', capabilities: {}
+      sessionId: '1111', capabilities: {}, host: 'localhost', port: undefined
     });
     assert.strictEqual(serverPath, '/usr/bin/safaridriver');
     assert.strictEqual(serverPort, undefined);
@@ -257,7 +257,7 @@ describe('SafariDriver Transport Tests', function () {
     });
 
     assert.deepStrictEqual(session, {
-      sessionId: '1111', capabilities: {}
+      sessionId: '1111', capabilities: {}, host: 'localhost', port: 9999
     });
     assert.strictEqual(serverPath, '/Applications/Safari Technology Preview.app/Contents/MacOS/safaridriver');
   });

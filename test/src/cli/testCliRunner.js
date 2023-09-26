@@ -296,6 +296,9 @@ describe('Test CLI Runner', function() {
 
   function registerNoSettingsJsonMock(){
     mockery.registerMock('fs', {
+      existsSync() {
+        return false;
+      },
       statSync: function(module) {
         if (module === './settings.json') {
           throw new Error('Does not exist');
@@ -395,6 +398,9 @@ describe('Test CLI Runner', function() {
 
   it('testSetOutputFolder', function() {
     mockery.registerMock('fs', {
+      existsSync() {
+        return false;
+      },
       statSync: function(module) {
         if (module === './settings.json' || module === './nightwatch.conf.js') {
           throw new Error('Does not exist');
@@ -421,6 +427,9 @@ describe('Test CLI Runner', function() {
 
   it('testSetOutputFolder using reporterOptions', function(done) {
     mockery.registerMock('fs', {
+      existsSync() {
+        return false;
+      },
       statSync: function(module) {
         if (module === './settings.json' || module === './nightwatch.conf.js') {
           throw new Error('Does not exist');
@@ -450,6 +459,9 @@ describe('Test CLI Runner', function() {
 
   it('testReadSettingsDeprecated', function(done) {
     mockery.registerMock('fs', {
+      existsSync() {
+        return false;
+      },
       statSync: function(module) {
         if (module === './settings.json') {
           return {
@@ -489,6 +501,9 @@ describe('Test CLI Runner', function() {
 
   it('testCustomSettingsFileAndEnvironment', function() {
     mockery.registerMock('fs', {
+      existsSync() {
+        return false;
+      },
       statSync: function(module) {
         if (module === './custom.json') {
           return {
@@ -785,6 +800,9 @@ describe('Test CLI Runner', function() {
 
   it('testGetTestSourceMultipleGroups', function() {
     mockery.registerMock('fs', {
+      existsSync() {
+        return false;
+      },
       statSync: function(module) {
         switch (module) {
           case './custom.json':
@@ -844,6 +862,9 @@ describe('Test CLI Runner', function() {
 
   it('testParseTestSettingsNull', function() {
     mockery.registerMock('fs', {
+      existsSync() {
+        return false;
+      },
       statSync: function(module) {
         if (module === './null.json') {
           return {
@@ -872,6 +893,9 @@ describe('Test CLI Runner', function() {
 
   it('testParseTestSettingsIncorrect', async function() {
     mockery.registerMock('fs', {
+      existsSync() {
+        return false;
+      },
       statSync: function(module) {
         if (module === './incorrect.json') {
           return {
@@ -902,6 +926,9 @@ describe('Test CLI Runner', function() {
 
   it('testReadExternalGlobals', function() {
     mockery.registerMock('fs', {
+      existsSync() {
+        return false;
+      },
       statSync: function(module) {
         if (module === './custom.json' || module === './globals.json') {
           return {
@@ -949,7 +976,9 @@ describe('Test CLI Runner', function() {
 
   it('testReadExternalGlobalsError', function() {
     mockery.registerMock('fs', {
-      statSync: function(module) {
+      existsSync() {
+        return false;
+      }, statSync: function(module) {
         if (module === './custom.json') {
           return {
             isFile: function() {
@@ -1014,6 +1043,9 @@ describe('Test CLI Runner', function() {
       }
     });
     mockery.registerMock('fs', {
+      existsSync() {
+        return false;
+      },
       statSync: function (module) {
         if (module === './nightwatch.conf.ts') {
           return {
