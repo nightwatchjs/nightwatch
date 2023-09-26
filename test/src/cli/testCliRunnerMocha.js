@@ -1,8 +1,6 @@
 const common = require('../../common.js');
 const mockery = require('mockery');
 const assert = require('assert');
-const CI_Info = require('ci-info');
-const isCi = CI_Info.isCI;
 const path = require('path');
 
 describe('test CLI Runner Mocha', function() {
@@ -59,10 +57,6 @@ describe('test CLI Runner Mocha', function() {
     const testFiles = [];
 
     const defaultOptions = {timeout: 20000, reporterOptions: {}};
-    if (isCi) {
-      defaultOptions.color = false;
-    }
-
     mockery.registerMock('./withmocha.json', {
       src_folders: ['tests'],
       output_folder: false,
@@ -136,9 +130,6 @@ describe('test CLI Runner Mocha', function() {
   it('testRunWithMochaPerEnvironment', function() {
     const testFiles = [];
     const defaultOptions = {timeout: 20000, reporterOptions: {}};
-    if (isCi) {
-      defaultOptions.color = false;
-    }
 
     mockery.registerMock('./withmocha.json', {
       src_folders: ['tests'],
@@ -178,10 +169,6 @@ describe('test CLI Runner Mocha', function() {
       timeout: 20000,
       reporterOptions: {}
     };
-
-    if (isCi) {
-      defaultOptions.color = false;
-    }
 
     mockery.registerMock('./withmocha.json', {
       src_folders: ['tests'],
@@ -226,9 +213,6 @@ describe('test CLI Runner Mocha', function() {
       reporter: 'mochawesome'
     };
 
-    if (isCi) {
-      mochaOptions.color = false;
-    }
 
     mockery.registerMock('mochawesome', {});
 
