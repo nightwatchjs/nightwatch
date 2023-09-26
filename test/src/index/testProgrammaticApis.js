@@ -2,6 +2,7 @@ const assert = require('assert');
 const mockery = require('mockery');
 const MockServer = require('../../lib/command-mocks.js');
 const common = require('../../common.js');
+const PluginLoader = common.require('api/_loaders/plugin.js');
 const {Logger} = common.require('utils');
 
 describe('test programmatic apis', function () {
@@ -649,6 +650,8 @@ describe('test programmatic apis', function () {
     MockServer.createFirefoxSession({});
 
     let globalBeforeCalled = false;
+    let pluginBeforeCalled = false;
+    let pluginAfterCalled = false;
 
     const defaultConfig = {
       test_settings: {
@@ -680,19 +683,40 @@ describe('test programmatic apis', function () {
       return defaultConfig;
     };
 
+    const pluginLoader = PluginLoader.load;
+    PluginLoader.load = function(pluginName) {
+      return {
+        globals: {
+          before(settings) {
+            assert.deepEqual(settings.plugins, ['@nightwatch/mockedPlugin']);
+            pluginBeforeCalled = true;
+          },
+          after(settings) {
+            assert.deepEqual(settings.plugins, ['@nightwatch/mockedPlugin']);
+            pluginAfterCalled = true;
+          }
+        }
+      };
+    };
+
     const client = Nightwatch.createClient({
       headless: true,
       silent: false,
       output: false,
-      enable_global_apis: true
+      enable_global_apis: true,
+      plugins: ['@nightwatch/mockedPlugin']
     });
 
     await client.runGlobalBeforeHook();
+    await client.runGlobalAfterHook();
 
     assert.ok(globalBeforeCalled);
+    assert.ok(pluginBeforeCalled);
+    assert.ok(pluginAfterCalled);
 
     CliRunner.createDefaultConfig = createDefaultConfig;
     CliRunner.prototype.loadConfig = loadConfig;
+    PluginLoader.load = pluginLoader;
   });
 
   it('test runGlobalAfterHook() programmatic API', async function() {
