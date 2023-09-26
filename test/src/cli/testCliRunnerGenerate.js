@@ -100,11 +100,9 @@ describe('Test CLI Runner Generate', function() {
         assert.deepStrictEqual(configData.test_settings.firefox, {
           desiredCapabilities: {
             browserName: 'firefox',
-            alwaysMatch: {
-              acceptInsecureCerts: true,
-              'moz:firefoxOptions': {
-                args: []
-              }
+            acceptInsecureCerts: true,
+            'moz:firefoxOptions': {
+              args: []
             }
           },
           webdriver: {
