@@ -115,4 +115,27 @@ describe('Firefox driver options', function(){
     });
   });
 
+  it('always match in desired capabilties', function() {
+    const client = Nightwatch.createClient({
+      desiredCapabilities: {
+        desiredCapabilities: 'firefox',
+        alwaysMatch: {
+          acceptInsecureCerts: true,
+          'moz:firefoxOptions': {
+            args: [
+              '--headless'
+            ]
+          }
+        }
+      }
+    });
+
+    const options = client.transport.createSessionOptions();
+    assert.ok(options instanceof FirefoxOptions);
+    assert.strictEqual(options.get('acceptInsecureCerts'), true);
+    assert.deepStrictEqual(options.get('moz:firefoxOptions'), {
+      args: ['--headless']
+    });
+  });
+
 });
