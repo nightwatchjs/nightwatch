@@ -29,6 +29,7 @@
     "jsdom": "19.0.0",
     "lodash.clone": "3.0.3",
     "lodash.defaultsdeep": "4.6.1",
+    "eventemitter3": "latest",
     "lodash.escape": "4.0.1",
     "lodash.merge": "4.6.2",
     "lodash.pick": "4.4.0",
