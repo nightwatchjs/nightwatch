@@ -1,5 +1,5 @@
 const assert = require('assert');
-const EventEmitter = require('events');
+const EventEmitter = require('eventemitter3');
 const TreeNode = require('../../../lib/core/treenode');
 const common = require('../../common.js');
 

@@ -1,5 +1,5 @@
 const util = require('util');
-const events = require('events');
+const events = require('eventemitter3');
 const mockery = require('mockery');
 const path = require('path');
 const assert = require('assert');

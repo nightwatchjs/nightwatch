@@ -1,5 +1,5 @@
 var util = require('util');
-var events = require('events');
+var events = require('eventemitter3');
 
 function Command() {
   events.EventEmitter.call(this);
