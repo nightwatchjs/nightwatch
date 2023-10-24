@@ -12,6 +12,7 @@ describe('test Parallel Execution', function() {
   const allOpts = [];
 
   this.timeout(10000);
+  let workerCount;
 
   beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
@@ -48,7 +49,7 @@ describe('test Parallel Execution', function() {
 
         this.tasks = [];
         this.index = 0;
-
+        workerCount = maxWorkerCount;
         workerPoolArgv.push(args);
       }
 
@@ -628,4 +629,20 @@ describe('test Parallel Execution', function() {
     assert.equal(client2.transport.settings.webdriver.port, 9999);
   });
 
+  it('test number of work threads for parallel execution', function() {
+
+    const CliRunner = common.require('runner/cli/cli.js');
+    const runner = new CliRunner({
+      reporter: 'junit',
+      config: path.join(__dirname, '../../extra/parallelism-count.json'),
+      env: 'default',
+      headless: true
+    });
+
+    runner.setup({});
+
+    return runner.runTests().then(_ => {
+      assert.strictEqual(workerCount, 4);
+    }); 
+  });
 });
