@@ -60,7 +60,7 @@ describe('MobileSupport', function () {
         start_process: true,
         server_path: '',
         cli_args: [
-          // --verbose
+          // '--verbose'
         ]
       }
     })).catch(err => {
@@ -122,7 +122,7 @@ describe('MobileSupport', function () {
         start_process: true,
         server_path: '',
         cli_args: [
-          // --verbose
+          // '--verbose'
         ]
       }
     }))
@@ -157,7 +157,7 @@ describe('MobileSupport', function () {
         start_process: true,
         server_path: '',
         cli_args: [
-          // --verbose
+          // '--verbose'
         ]
       }
     }));
@@ -233,7 +233,7 @@ describe('MobileSupport', function () {
         start_process: true,
         server_path: '',
         cli_args: [
-          // --verbose
+          // '--verbose'
         ]
       }
     }))
