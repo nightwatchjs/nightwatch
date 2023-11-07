@@ -208,6 +208,46 @@ describe('Test CLI Runner in Parallel', function () {
     assert.strictEqual(runner.parallelMode(), false);
   });
 
+  it('mobile config setup on with worker threads - enable worker threads while using server config', function() {
+    class RunnerBaseMock extends RunnerBase {
+      static readTestSource(settings, argv) {
+        assert.strictEqual(settings.testWorkersEnabled, true);
+
+        return [
+          'test_file_1.js',
+          'test_file_2.js'
+        ];
+      }
+    }
+    mockery.registerMock('../runner.js', RunnerBaseMock);
+    mockery.registerMock(path.join(process.cwd(), 'ios_config.json'), {
+      test_settings: {
+        desiredCapabilities: {
+          browserName: 'firefox'
+        },
+        'simulator.ios': {
+          selenium: {
+            use_appium: true
+          },
+          desiredCapabilities: {
+            browserName: null,
+            platformName: 'iOS',
+            'appium:deviceName': 'iPhone 13',
+            'appium:platformVersion': '15.0'
+          }
+        }
+      }
+    });
+    const runner = NightwatchClient.CliRunner({
+      config: 'ios_config.json',
+      env: 'simulator.ios',
+      workers: 4
+    }).setup();
+    assert.strictEqual(runner.isTestWorkersEnabled(), true);
+    assert.strictEqual(runner.parallelMode(), true);
+  });
+
+
   it('disable parallelism when running tests on safari', function() {
     class RunnerBaseMock extends RunnerBase {
       static readTestSource(settings, argv) {
