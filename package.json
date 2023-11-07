@@ -107,7 +107,6 @@
   "scripts": {
     "build": "rimraf dist && tsc",
     "postbuild": "copyfiles -u 1 lib/**/*.ejs dist",
-    "postinstall": "npm run build",
     "prepublishOnly": "npm run build",
     "dev": "cross-env NIGHTWATCH_TS_NODE_DEV=true npx ts-node --swc ./bin/nightwatch",
     "eslint": "eslint index.js lib bin api examples test --quiet",
