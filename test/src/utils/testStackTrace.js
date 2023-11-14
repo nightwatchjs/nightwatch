@@ -129,7 +129,7 @@ describe('test stackTrace parse', function() {
 \x1B[33m\x1B[39m
 \x1B[33m    Error location:\x1B[39m
     ${errorFilePath}:4
-    ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+    ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
      2 |   it('failure stack trace', function() {
      3 |    
     \x1B[41m\x1B[37m 4 |     browser.url('http://localhost') \x1B[39m\x1B[49m
