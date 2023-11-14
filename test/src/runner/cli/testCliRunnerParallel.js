@@ -227,6 +227,7 @@ describe('Test CLI Runner in Parallel', function () {
         },
         'simulator.ios': {
           selenium: {
+            host: 'localhost',
             use_appium: true
           },
           desiredCapabilities: {
