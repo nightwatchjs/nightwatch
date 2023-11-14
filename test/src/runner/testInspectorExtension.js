@@ -199,7 +199,7 @@ describe('testInspectorExtension', function () {
   it('websocket should be closed after execution', function() {
     let closeSocketCalled = false;
 
-    mockery.registerMock('./websocket-server', class {
+    mockery.registerMock('./websocket-server.js', class {
       initSocket() {};
 
       closeSocket() {

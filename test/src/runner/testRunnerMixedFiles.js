@@ -11,7 +11,7 @@ describe('testRunnerMixedFiles', function() {
 
   before(function(done) {
     tsNode = require('ts-node').register({
-      project: path.resolve('tsconfig.json'),
+      project: path.resolve('test/tsconfig.json'),
       swc: true
     });
 
