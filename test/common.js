@@ -1,9 +1,15 @@
-const BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'dist';
+const BASE_PATH = process.env.NIGHTWATCH_COV ? 'lib-cov' : 'lib';
 const path = require('path');
 
 module.exports = {
   require(relativeFilePath) {
-    return require(path.join('../', BASE_PATH, relativeFilePath));
+    try {
+      return require(path.join('../', BASE_PATH, relativeFilePath));
+    } catch (err) {
+      console.error('Error', err);
+      throw err;
+    }
+
   },
 
   requireApi(relativeFilePath) {

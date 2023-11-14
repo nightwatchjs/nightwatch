@@ -1,4 +1,4 @@
-var featuresCommands = {
+const featuresCommands = {
   getFeatureCount: function(callback) {
     this.api.elements(null, this.elements.features, function (result) {
       if (result.status === 0) {

@@ -101,6 +101,8 @@ describe('waitForElementNotPresent', function () {
 
     const globals = {
       calls: 0,
+      waitForConditionTimeout: 10,
+      waitForConditionPollInterval: 10,
       reporter(results) {
         assert.strictEqual(globals.calls, 2);
         assert.strictEqual(Object.keys(results.modules).length, 1);

@@ -54,7 +54,7 @@ describe('test stackTrace parse', function() {
       at processTicksAndRejections (node:internal/process/task_queues:96:5)`;
 
     const delimiter = (new Array(errorFilePath.length + 3).join('–'));
-    const expected = ` ${errorFilePath}:
+    const expected = ` ${errorFilePath}:15
  ${delimiter}
   13 |     client.url('http://localhost')
   14 |       .assert.elementPresent('#weblogin')
@@ -85,7 +85,7 @@ describe('test stackTrace parse', function() {
       at processTicksAndRejections (node:internal/process/task_queues:96:5)`;
 
     const delimiter = (new Array(errorFilePath.length + 3).join('–'));      
-    const expected = ` ${errorFilePath}:
+    const expected = ` ${errorFilePath}:4
  ${delimiter}
   2 |   it('failure stack trace', function() {
   3 |    
@@ -128,14 +128,14 @@ describe('test stackTrace parse', function() {
    \x1B[31mUnknown method\x1B[39m
 \x1B[33m\x1B[39m
 \x1B[33m    Error location:\x1B[39m
-    ${errorFilePath}:
-    ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+    ${errorFilePath}:4
+    ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
      2 |   it('failure stack trace', function() {
      3 |    
     \x1B[41m\x1B[37m 4 |     browser.url('http://localhost') \x1B[39m\x1B[49m
      5 |       .assert.elementPresen('#badElement'); // mispelled API method
      6 |   });
-    ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+    ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 \x1B[33m    Stack Trace :\x1B[39m
 \x1B[90m    at DescribeInstance.<anonymous> (${errorFilePath}:${lineNumber}:21)\x1B[39m

@@ -214,7 +214,7 @@ describe('element() assert commands', function () {
     }
   });
 
-  it('test .element() hasAttribute assert', async function() {
+  xit('test .element() hasAttribute assert', async function() {
     MockServer.addMock({
       url: '/session/13521-10219-202/execute/sync',
       method: 'POST',

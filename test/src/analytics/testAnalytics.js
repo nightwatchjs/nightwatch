@@ -148,7 +148,7 @@ describe('test analytics utility', function() {
     var called = false;
 
     for (let i = 0; i < 7; i++) {
-      analytics = requireUncached('../../../dist/utils/analytics.js');
+      analytics = requireUncached('../../../lib/utils/analytics.js');
     
       flushBack = analytics.__flush;
       analytics.__flush = function() {

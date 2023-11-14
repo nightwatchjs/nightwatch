@@ -13,7 +13,7 @@ const exportedCommands = [
   'protocol/quit.js'
 ];
 
-const basePath = '../dist/api';
+const basePath = '../lib/api';
 const Commands = {};
 const props = exportedCommands.reduce((prev, fileName) => {
   const commandName = fileName.substring(fileName.lastIndexOf('/') + 1).replace('.js', '');

@@ -2,10 +2,14 @@ const common = require('../../common.js');
 const mockery = require('mockery');
 const assert = require('assert');
 const origPath = require('path');
-
+const Options = common.require('transport/selenium-webdriver/options.js');
 const IS_WINDOWS = process.platform === 'win32';
 
-(IS_WINDOWS ? describe.skip : describe)('Service creation from cli.js', function() {
+describe('Service creation from cli.js', function() {
+  if (IS_WINDOWS) {
+    return;
+  }
+
   this.timeout(15000);
 
   beforeEach(function() {
@@ -42,16 +46,17 @@ const IS_WINDOWS = process.platform === 'win32';
   }
 
   function mockOptions({onAppiumPathQuery = fn}) {
-    const Options = common.require('transport/selenium-webdriver/options.js');
     class MockOptions extends Options {
-      getAppiumPath() {
-        onAppiumPathQuery();
 
-        return 'path/to/appium';
-      }
     }
 
-    deleteFromRequireCache('selenium-webdriver/options');
+    MockOptions.prototype.getAppiumPath = function () {
+      onAppiumPathQuery();
+
+      return 'path/to/appium';
+    };
+
+    deleteFromRequireCache('selenium-webdriver/options.js');
 
     mockery.registerMock('./options.js', MockOptions);
   }
@@ -82,7 +87,7 @@ const IS_WINDOWS = process.platform === 'win32';
       }
     });
   
-    mockery.registerMock('./service-builders/appium', class AppiumServer {
+    mockery.registerMock('./service-builders/appium.js', class AppiumServer {
       constructor(settings) {
         this.settings = settings;
         this.service = {
@@ -147,7 +152,7 @@ const IS_WINDOWS = process.platform === 'win32';
       }
     });
   
-    mockery.registerMock('./service-builders/appium', class AppiumServer {
+    mockery.registerMock('./service-builders/appium.js', class AppiumServer {
       constructor(settings) {
         this.settings = settings;
         this.service = {
