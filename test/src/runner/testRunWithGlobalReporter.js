@@ -26,7 +26,7 @@ describe('testRunWithGlobalReporter', function() {
   });
 
   it('testRunWithGlobalReporter', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after');
+    const testsPath = path.join(__dirname, '../../sampletests/before-after');
     const globals = {
       reporterCount: 0
     };
@@ -42,7 +42,7 @@ describe('testRunWithGlobalReporter', function() {
   });
 
   it('testRunner with global async reporter', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after');
+    const testsPath = path.join(__dirname, '../../sampletests/before-after');
     let reporterCount = 0;
 
     return runTests(testsPath, settings({
@@ -62,7 +62,7 @@ describe('testRunWithGlobalReporter', function() {
   });
 
   it('testRunner with global async reporter and timeout error', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after');
+    const testsPath = path.join(__dirname, '../../sampletests/before-after');
     let reporterCount = 0;
 
     return runTests(testsPath, settings({
@@ -77,12 +77,12 @@ describe('testRunWithGlobalReporter', function() {
     })).then(_ => {
       assert.strictEqual(reporterCount, 1);
     }).catch(err => {
-      assert.strictEqual(err.message, 'Timeout while waiting (20s) for the custom global reporter callback to be called.');
+      assert.strictEqual(err.message, 'Timeout while waiting for the custom reporter to finish.');
     });
   });
 
   it('to check skipped count in global reporter', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/globalreporterskippedcount/sample.js');
+    const testsPath = path.join(__dirname, '../../sampletests/globalreporterskippedcount/sample.js');
     let reporterCount = 0;
 
     return runTests(testsPath, settings({
@@ -97,7 +97,7 @@ describe('testRunWithGlobalReporter', function() {
       output_folder: false
     })).then(_ => {
       assert.strictEqual(reporterCount, 1);
-    }).catch(err => (err))
+    }).catch(err => (err));
   });
 
 
