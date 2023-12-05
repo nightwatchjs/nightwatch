@@ -17,8 +17,8 @@ describe('element().getShadowRoot() command', function () {
 
   it('test .element().getShadowRoot()', async function() {
     MockServer.addMock({
-      url: '/session/13521-10219-202/execute/sync',
-      method: 'POST',
+      url: '/session/13521-10219-202/element/0/shadow',
+      method: 'GET',
       response: JSON.stringify({
         value: {
           'shadow-6066-11e4-a52e-4f735466cecf': '9'
@@ -39,8 +39,8 @@ describe('element().getShadowRoot() command', function () {
 
   it('test .element().find().getShadowRoot()', async function() {
     MockServer.addMock({
-      url: '/session/13521-10219-202/execute/sync',
-      method: 'POST',
+      url: '/session/13521-10219-202/element/1/shadow',
+      method: 'GET',
       response: JSON.stringify({
         value: {
           'shadow-6066-11e4-a52e-4f735466cecf': '10'
@@ -61,8 +61,8 @@ describe('element().getShadowRoot() command', function () {
 
   it('test .element.find().getShadowRoot()', async function() {
     MockServer.addMock({
-      url: '/session/13521-10219-202/execute/sync',
-      method: 'POST',
+      url: '/session/13521-10219-202/element/0/shadow',
+      method: 'GET',
       response: JSON.stringify({
         value: {
           'shadow-6066-11e4-a52e-4f735466cecf': '9'
