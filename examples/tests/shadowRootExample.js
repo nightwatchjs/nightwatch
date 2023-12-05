@@ -1,8 +1,4 @@
 describe('Shadow Root example test', function() {
-
-  // Doesn't work in Firefox due to a serialization issue in Geckodriver
-  this.disabled = this.settings.desiredCapabilities.browserName === 'firefox';
-
   it('retrieve the shadowRoot', async function(browser) {
     browser
       .navigateTo('https://mdn.github.io/web-components-examples/popup-info-box-web-component/')
@@ -33,7 +29,9 @@ describe('Shadow Root example test', function() {
     //
     // //await expect(shadowId).to.be.a('string').and.to.include('shadow')
     //
-    const shadowRootEl = await browser.element('popup-info').getShadowRoot();
+
+    // no `await` used since `shadowRootEl` is going to be chained further
+    const shadowRootEl = browser.element('popup-info').getShadowRoot();
     const infoElement = shadowRootEl.find('.info').property('innerHTML');
     //
     // //console.log('!!! infoElement', infoElement.assert)
