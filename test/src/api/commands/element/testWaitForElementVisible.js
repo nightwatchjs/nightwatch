@@ -160,41 +160,40 @@ describe('waitForElementVisible', function () {
         postdata: '{"using":"css selector","value":"#stale-element"}',
         method: 'POST',
         response: JSON.stringify({
-          status: 0,
-          state: 'success',
           value: [{'element-6066-11e4-a52e-4f735466cecf': '99'}]
-        })
-      })
-      .addMock({
-        url: '/wd/hub/session/1352110219202/execute/sync',
-        method: 'POST',
-        response: JSON.stringify({
-          sessionId: '1352110219202',
-          state: 'stale element reference',
-          status: 10
         })
       }, true)
       .addMock({
         url: '/wd/hub/session/1352110219202/execute/sync',
         method: 'POST',
         response: JSON.stringify({
-          state: 'success',
-          status: 0,
+          value: {
+            error: 'stale element reference'
+          }
+        })
+      }, true)
+      .addMock({
+        url: '/wd/hub/session/1352110219202/elements',
+        postdata: '{"using":"css selector","value":"#stale-element"}',
+        method: 'POST',
+        response: JSON.stringify({
+          value: [{'element-6066-11e4-a52e-4f735466cecf': '88'}]
+        })
+      }, true)
+      .addMock({
+        url: '/wd/hub/session/1352110219202/execute/sync',
+        method: 'POST',
+        response: JSON.stringify({
           value: true
         })
       }, true);
 
     this.client.api.waitForElementVisible('#stale-element', 110, 10, function callback(result, instance) {
-      assert.strictEqual(instance.elementId, '99');
+      assert.strictEqual(instance.elementId, '88');  // element id refreshed
       assert.strictEqual(result.value, true);
     });
 
     return this.client.start(function (err) {
-      MockServer.removeMock({
-        url: '/wd/hub/session/1352110219202/elements',
-        method: 'POST'
-      });
-
       if (err) {
         throw err;
       }
