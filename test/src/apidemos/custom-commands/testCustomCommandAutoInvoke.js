@@ -20,7 +20,7 @@ describe('custom commands with auto invoke', function() {
     });
   });
 
-  it('custom find elements es6 async', function() {
+  it('test custom command using autoInvoke', function() {
     const testsPath = path.join(__dirname, '../../../apidemos/custom-commands/testUsingAutoInvokeCommand.js');
     Mocks.createNewW3CSession({
       testName: 'Test Using ES6 Async Custom Commands'
@@ -46,6 +46,34 @@ describe('custom commands with auto invoke', function() {
       silent: false,
       selenium_host: null,
       custom_commands_path: [path.join(__dirname, '../../../extra/commands/autoInvoke')],
+      globals
+    }));
+  });
+
+  it('test custom command with returnFn', function() {
+    const testsPath = path.join(__dirname, '../../../apidemos/custom-commands/testUsingCommandReturnFn.js');
+    Mocks.createNewW3CSession({
+      testName: 'Test using custom commands with returnFn'
+    });
+
+    const globals = {
+      waitForConditionPollInterval: 50,
+      waitForConditionTimeout: 120,
+      retryAssertionTimeout: 1000,
+      count: 0,
+      reporter(results) {
+        if (results.lastError) {
+          throw results.lastError;
+        }
+        assert.strictEqual(this.count, 2);
+      }
+    };
+
+    return NightwatchClient.runTests(testsPath, settings({
+      output: true,
+      silent: false,
+      selenium_host: null,
+      custom_commands_path: [path.join(__dirname, '../../../extra/commands/returnFn')],
       globals
     }));
   });
