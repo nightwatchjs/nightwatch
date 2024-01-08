@@ -58,6 +58,11 @@ export interface JSON_WEB_OBJECT extends ElementResult {
 export type ScopedSelector = string | ElementProperties | Element | SeleniumBy | RelativeBy;
 export type Definition = ScopedSelector | WebElement;
 
+export type NightwatchGenericCallback<T> = (
+  this: NightwatchAPI,
+  result: NightwatchCallbackResult<T>
+) => void
+
 export type Awaitable<T, V> = Omit<T, 'then'> & PromiseLike<V>;
 
 // tslint:disable-next-line
@@ -3366,6 +3371,8 @@ export interface ElementCommands {
    * @returns `null` if element not found, `Error` otherwise.
    *
    * @example
+   * // 'message' should always be the last argument (if provided).
+   * // 'callback' should only be second-last to the 'message' argument, otherwise always last.
    * module.exports = {
    *  'demo Test': function() {
    *     // with default implicit timeout of 5000ms (can be overwritten in settings under 'globals.waitForConditionTimeout')
@@ -3431,25 +3438,19 @@ export interface ElementCommands {
    */
   waitForElementNotPresent(
     selector: Definition,
-    time?: number,
-    poll?: number,
-    abortOnFailure?: boolean,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null | ElementResult[]>
-    ) => void,
+    timeoutOrCallbackOrMessage?: number | NightwatchGenericCallback<null | ElementResult[]> | string,
+    pollIntervalOrAbortOnFailureOrCallbackOrMessage?: number | boolean | NightwatchGenericCallback<null | ElementResult[]> | string,
+    abortOnFailureOrCallbackOrMessage?: boolean | NightwatchGenericCallback<null | ElementResult[]> | string,
+    callbackOrMessage?: NightwatchGenericCallback<null | ElementResult[]> | string,
     message?: string
   ): Awaitable<this, null | Error>;
   waitForElementNotPresent(
     using: LocateStrategy,
     selector: Definition,
-    time?: number,
-    poll?: number,
-    abortOnFailure?: boolean,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null | ElementResult[]>
-    ) => void,
+    timeoutOrCallbackOrMessage?: number | NightwatchGenericCallback<null | ElementResult[]> | string,
+    pollIntervalOrAbortOnFailureOrCallbackOrMessage?: number | boolean | NightwatchGenericCallback<null | ElementResult[]> | string,
+    abortOnFailureOrCallbackOrMessage?: boolean | NightwatchGenericCallback<null | ElementResult[]> | string,
+    callbackOrMessage?: NightwatchGenericCallback<null | ElementResult[]> | string,
     message?: string
   ): Awaitable<this, null | Error>;
 
@@ -3465,6 +3466,8 @@ export interface ElementCommands {
    * @returns `false` if element not visible, `Error` otherwise.
    *
    * @example
+   * // 'message' should always be the last argument (if provided).
+   * // 'callback' should only be second-last to the 'message' argument, otherwise always last.
    * module.exports = {
    *  'demo Test': function() {
    *     // with default implicit timeout of 5000ms (can be overwritten in settings under 'globals.waitForConditionTimeout')
@@ -3530,25 +3533,19 @@ export interface ElementCommands {
    */
   waitForElementNotVisible(
     selector: Definition,
-    time?: number,
-    poll?: number,
-    abortOnFailure?: boolean,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<boolean>
-    ) => void,
+    timeoutOrCallbackOrMessage?: number | NightwatchGenericCallback<boolean> | string,
+    pollIntervalOrAbortOnFailureOrCallbackOrMessage?: number | boolean | NightwatchGenericCallback<boolean> | string,
+    abortOnFailureOrCallbackOrMessage?: boolean | NightwatchGenericCallback<boolean> | string,
+    callbackOrMessage?: NightwatchGenericCallback<boolean> | string,
     message?: string
   ): Awaitable<this, false | Error>;
   waitForElementNotVisible(
     using: LocateStrategy,
     selector: Definition,
-    time?: number,
-    poll?: number,
-    abortOnFailure?: boolean,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<boolean>
-    ) => void,
+    timeoutOrCallbackOrMessage?: number | NightwatchGenericCallback<boolean> | string,
+    pollIntervalOrAbortOnFailureOrCallbackOrMessage?: number | boolean | NightwatchGenericCallback<boolean> | string,
+    abortOnFailureOrCallbackOrMessage?: boolean | NightwatchGenericCallback<boolean> | string,
+    callbackOrMessage?: NightwatchGenericCallback<boolean> | string,
     message?: string
   ): Awaitable<this, false | Error>;
 
@@ -3562,6 +3559,8 @@ export interface ElementCommands {
    * @returns `ElementResult[]` if element is found, `Error` otherwise.
    *
    * @example
+   * // 'message' should always be the last argument (if provided).
+   * // 'callback' should only be second-last to the 'message' argument, otherwise always last.
    * module.exports = {
    *  'demo Test': function() {
    *     // with default implicit timeout of 5000ms (can be overwritten in settings under 'globals.waitForConditionTimeout')
@@ -3626,25 +3625,19 @@ export interface ElementCommands {
    */
   waitForElementPresent(
     selector: Definition,
-    time?: number,
-    poll?: number,
-    abortOnFailure?: boolean,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<ElementResult[] | null>
-    ) => void,
+    timeoutOrCallbackOrMessage?: number | NightwatchGenericCallback<null | ElementResult[]> | string,
+    pollIntervalOrAbortOnFailureOrCallbackOrMessage?: number | boolean | NightwatchGenericCallback<null | ElementResult[]> | string,
+    abortOnFailureOrCallbackOrMessage?: boolean | NightwatchGenericCallback<null | ElementResult[]> | string,
+    callbackOrMessage?: NightwatchGenericCallback<null | ElementResult[]> | string,
     message?: string
   ): Awaitable<this, ElementResult[] | Error>;
   waitForElementPresent(
     using: LocateStrategy,
     selector: Definition,
-    time?: number,
-    poll?: number,
-    abortOnFailure?: boolean,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<ElementResult[] | null>
-    ) => void,
+    timeoutOrCallbackOrMessage?: number | NightwatchGenericCallback<null | ElementResult[]> | string,
+    pollIntervalOrAbortOnFailureOrCallbackOrMessage?: number | boolean | NightwatchGenericCallback<null | ElementResult[]> | string,
+    abortOnFailureOrCallbackOrMessage?: boolean | NightwatchGenericCallback<null | ElementResult[]> | string,
+    callbackOrMessage?: NightwatchGenericCallback<null | ElementResult[]> | string,
     message?: string
   ): Awaitable<this, ElementResult[] | Error>;
 
@@ -3660,6 +3653,8 @@ export interface ElementCommands {
    * @returns `true` is element is visible, `Error` otherwise.
    *
    * @example
+   * // 'message' should always be the last argument (if provided).
+   * // 'callback' should only be second-last to the 'message' argument, otherwise always last.
    * this.demoTest = function (browser) {
    *   browser.waitForElementVisible('body', 1000);
    *   // continue if failed
@@ -3678,26 +3673,20 @@ export interface ElementCommands {
    */
   waitForElementVisible(
     selector: Definition,
-    time?: number,
-    poll?: number,
-    abortOnFailure?: boolean,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<boolean>
-    ) => void,
+    timeoutOrCallbackOrMessage?: number | NightwatchGenericCallback<boolean> | string,
+    pollIntervalOrAbortOnFailureOrCallbackOrMessage?: number | boolean | NightwatchGenericCallback<boolean> | string,
+    abortOnFailureOrCallbackOrMessage?: boolean | NightwatchGenericCallback<boolean> | string,
+    callbackOrMessage?: NightwatchGenericCallback<boolean> | string,
     message?: string
   ): Awaitable<this, true | Error>;
 
   waitForElementVisible(
     using: LocateStrategy,
     selector: Definition,
-    time?: number,
-    poll?: number,
-    abortOnFailure?: boolean,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<boolean>
-    ) => void,
+    timeoutOrCallbackOrMessage?: number | NightwatchGenericCallback<boolean> | string,
+    pollIntervalOrAbortOnFailureOrCallbackOrMessage?: number | boolean | NightwatchGenericCallback<boolean> | string,
+    abortOnFailureOrCallbackOrMessage?: boolean | NightwatchGenericCallback<boolean> | string,
+    callbackOrMessage?: NightwatchGenericCallback<boolean> | string,
     message?: string
   ): Awaitable<this, true | Error>;
 
