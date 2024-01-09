@@ -3,7 +3,7 @@ import { NightwatchAPI } from './index';
 /**
  * @see https://nightwatchjs.org/guide/concepts/test-globals.html#external-test-globals
  */
-export interface NightwatchGlobals {
+export interface NightwatchGlobals extends NightwatchInternalGlobals {
   /**
    * Custom Globals properties
    *
@@ -11,7 +11,9 @@ export interface NightwatchGlobals {
    * myGlobalVar: "some value"
    */
   [key: string]: any;
+}
 
+export interface NightwatchInternalGlobals {
   /**
    * This controls whether to abort the test execution when an assertion failed and skip the rest
    * it's being used in waitFor commands and expect assertions
@@ -152,7 +154,7 @@ export interface NightwatchGlobals {
    *   done();
    * }
    */
-  before?(done: (...args: unknown[]) => void): void;
+  before?(done: (err?: unknown) => void): void;
 
   /**
    * External after hook is ran at the very end of the tests run, after closing the Selenium session
@@ -162,7 +164,7 @@ export interface NightwatchGlobals {
    *   done();
    * }
    */
-  after?(done: (...args: unknown[]) => void): void;
+  after?(done: (err?: unknown) => void): void;
 
   /**
    * This will be run before each test suite is started
@@ -174,7 +176,7 @@ export interface NightwatchGlobals {
    */
   beforeEach?(
     browser: NightwatchAPI,
-    done: (...args: unknown[]) => void
+    done: (err?: unknown) => void
   ): void;
 
   /**
@@ -187,7 +189,7 @@ export interface NightwatchGlobals {
    */
   afterEach?(
     browser: NightwatchAPI,
-    done: (...args: unknown[]) => void
+    done: (err?: unknown) => void
   ): void;
 
   /**

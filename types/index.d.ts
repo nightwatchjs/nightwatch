@@ -33,7 +33,8 @@ import { ElementFunction } from './web-element';
 import { NightwatchGlobals } from './globals';
 import { EnhancedPageObject } from './page-object';
 import { NightwatchCustomCommands } from './custom-command';
-import { NightwatchDesiredCapabilities, NightwatchOptions, NightwatchTestOptions } from './nightwatch-options';
+import { NightwatchDesiredCapabilities } from './desired-capabilities';
+import { NightwatchOptions, NightwatchTestOptions } from './nightwatch-options';
 import { IfUnknown } from './utils';
 
 export * from './globals';
@@ -42,6 +43,7 @@ export * from './web-element';
 export * from './custom-assertion';
 export * from './custom-command';
 export * from './page-object';
+export * from './desired-capabilities';
 export * from './nightwatch-options';
 export * from './assertions';
 
@@ -72,31 +74,6 @@ export interface AppiumGeolocation {
   latitude: number;
   longitude: number;
   altitude?: number;
-}
-
-export interface NightwatchTestRunner {
-  type?: string | undefined;
-  options?:
-  | {
-    ui?: string | undefined;
-    feature_path?: string | undefined;
-    auto_start_session?: boolean | undefined;
-    parallel?: number | undefined;
-    reporter?: string | undefined;
-    reporterOptions?: { [key: string]: any };
-  }
-  | undefined;
-}
-
-export interface TimeoutOptions {
-  /**
-   * @default 60000
-   */
-  timeout: number;
-  /**
-   * @default 0
-   */
-  retry_attempts: number;
 }
 
 export interface NightwatchTestSuite {
@@ -569,7 +546,7 @@ export interface NightwatchAPI
    */
   setSessionId(sessionId: string): this;
 
-  options: NightwatchOptions & Pick<NightwatchTestOptions, "desiredCapabilities">;
+  options: NightwatchTestOptions;
 
   Keys: NightwatchKeys;
 
@@ -639,33 +616,23 @@ export interface NightwatchComponentTestingCommands {
 export interface NightwatchElement extends WebElement { }
 
 export type NightwatchTest = (browser?: NightwatchBrowser) => void;
+
 export interface NightwatchTestFunctions {
-  before?: NightwatchTestHook | undefined;
-  after?: NightwatchTestHook | undefined;
-  beforeEach?: NightwatchTestHook | undefined;
-  afterEach?: NightwatchTestHook | undefined;
-  '@tags'?: string | string[] | undefined;
-  '@disabled'?: boolean | undefined;
+  before?: NightwatchTestHook;
+  after?: NightwatchTestHook;
+  beforeEach?: NightwatchTestHook;
+  afterEach?: NightwatchTestHook;
+
+  '@tags'?: string | string[];
+  '@disabled'?: boolean;
+
   [key: string]: any;
 }
 
-export type NightwatchTestHook =
-  | GlobalNightwatchTestHookEach
-  | GlobalNightwatchTestHook;
-
-export type GlobalNightwatchTestHookEach = (
-  browser: NightwatchBrowser,
-  done: (err?: any) => void
+export type NightwatchTestHook = (
+  browser: NightwatchAPI,
+  done: (err?: unknown) => void
 ) => void;
-
-export type GlobalNightwatchTestHook = (done: (err?: any) => void) => void;
-
-export interface NightwatchTestHooks extends NightwatchGlobals {
-  before?: GlobalNightwatchTestHook | undefined;
-  after?: GlobalNightwatchTestHook | undefined;
-  beforeEach?: GlobalNightwatchTestHookEach | undefined;
-  afterEach?: GlobalNightwatchTestHookEach | undefined;
-}
 
 export class Element {
   name: string | undefined;
@@ -936,7 +903,7 @@ export function globalElement(
   }
 ): ElementGlobal;
 
-export type NightwatchTests = NightwatchTestFunctions | NightwatchTestHooks;
+export type NightwatchTests = NightwatchTestFunctions;
 
 export class DescribeInstance {
   '[instance]': any;
