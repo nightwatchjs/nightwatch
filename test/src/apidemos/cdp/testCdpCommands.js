@@ -30,7 +30,7 @@ describe('cdp commands test', function() {
     const testsPath = [path.join(__dirname, '../../../apidemos/cdp')];
     let resetConnectionCalled = false;
 
-    mockery.registerMock('./cdp.js', {
+    mockery.registerMock('../transport/selenium-webdriver/cdp.js', {
       getConnection: function(...args) {
         return Promise.resolve();
       },
