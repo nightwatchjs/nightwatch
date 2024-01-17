@@ -466,6 +466,54 @@ describe('waitForElementVisible command demo', function () {
       expectType<NightwatchAPI>(this);
       expectType<NightwatchCallbackResult<boolean>>(result);
     });
+
+    // - with no arguments; in this case a global default timeout is used
+    browser.waitForElementVisible('body');
+
+    // specify the locate strategy (css selector/xpath) as the first argument
+    browser.waitForElementVisible('css selector', '#dialog');
+
+    // with custom output message - the locate strategy is required
+    browser.waitForElementVisible('css selector', '#dialog', 'The dialog container is removed.');
+  
+    // - with a global default timeout and a callback
+    browser.waitForElementVisible('body', function() {});
+  
+    // - with a global default timeout, a callback, and a custom message
+    browser.waitForElementVisible('body', function() {}, 'test message');
+  
+    // - with a global default timeout a custom message
+    browser.waitForElementVisible('body', 'test message');
+  
+    // - with only the timeout
+    browser.waitForElementVisible('body', 500);
+  
+    // - with a timeout and a custom message
+    browser.waitForElementVisible('body', 500, 'test message');
+  
+    // - with a timeout and a callback
+    browser.waitForElementVisible('body', 500, function() {});
+  
+    // - with a timeout and a custom abortOnFailure
+    browser.waitForElementVisible('body', 500, true);
+  
+    // - with a timeout, a custom abortOnFailure, and a custom message
+    browser.waitForElementVisible('body', 500, true, 'test message');
+  
+    // - with a timeout, a custom abortOnFailure, and a callback
+    browser.waitForElementVisible('body', 500, true, function() {});
+  
+    // - with a timeout, a custom abortOnFailure, a callback and a custom message
+    browser.waitForElementVisible('body', 500, true, function() {}, 'test message');
+  
+    // - with a timeout, a custom reschedule interval, and a callback
+    browser.waitForElementVisible('body', 500, 100, function() {});
+  
+    // - with a timeout, a custom rescheduleInterval, and a custom abortOnFailure
+    browser.waitForElementVisible('body', 500, 100, false);
+
+    // - with a timeout, a custom rescheduleInterval, a custom abortOnFailure, and a custom message
+    browser.waitForElementVisible('body', 500, 100, false, 'test message');
   });
 
   test('async demo test', async function (browser) {
@@ -488,6 +536,54 @@ describe('waitForElementPresent command demo', function () {
 
       expectType<NightwatchCallbackResult<null | ElementResult[]>>(result);
     });
+
+    // - with no arguments; in this case a global default timeout is used
+    browser.waitForElementPresent('body');
+
+    // specify the locate strategy (css selector/xpath) as the first argument
+    browser.waitForElementPresent('css selector', '#dialog');
+
+    // with custom output message - the locate strategy is required
+    browser.waitForElementPresent('css selector', '#dialog', 'The dialog container is removed.');
+  
+    // - with a global default timeout and a callback
+    browser.waitForElementPresent('body', function() {});
+  
+    // - with a global default timeout, a callback, and a custom message
+    browser.waitForElementPresent('body', function() {}, 'test message');
+  
+    // - with a global default timeout a custom message
+    browser.waitForElementPresent('body', 'test message');
+  
+    // - with only the timeout
+    browser.waitForElementPresent('body', 500);
+  
+    // - with a timeout and a custom message
+    browser.waitForElementPresent('body', 500, 'test message');
+  
+    // - with a timeout and a callback
+    browser.waitForElementPresent('body', 500, function() {});
+  
+    // - with a timeout and a custom abortOnFailure
+    browser.waitForElementPresent('body', 500, true);
+  
+    // - with a timeout, a custom abortOnFailure, and a custom message
+    browser.waitForElementPresent('body', 500, true, 'test message');
+  
+    // - with a timeout, a custom abortOnFailure, and a callback
+    browser.waitForElementPresent('body', 500, true, function() {});
+  
+    // - with a timeout, a custom abortOnFailure, a callback and a custom message
+    browser.waitForElementPresent('body', 500, true, function() {}, 'test message');
+  
+    // - with a timeout, a custom reschedule interval, and a callback
+    browser.waitForElementPresent('body', 500, 100, function() {});
+  
+    // - with a timeout, a custom rescheduleInterval, and a custom abortOnFailure
+    browser.waitForElementPresent('body', 500, 100, false);
+
+    // - with a timeout, a custom rescheduleInterval, a custom abortOnFailure, and a custom message
+    browser.waitForElementPresent('body', 500, 100, false, 'test message');
   });
 
   test('async demo test', async function (browser) {
