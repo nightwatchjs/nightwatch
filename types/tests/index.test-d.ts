@@ -123,22 +123,18 @@ const testGeneral: NightwatchTests = {
 
   'Can run accessibility tests': () => {
     browser
-      .url('https://www.google.com')
+      .url('https://nightwatchjs.org')
       .axeInject()
-      .axeRun(
-        'body',
-        {
-          rules: {
-            'color-contrast': {
-              enabled: false,
-            },
-            region: {
-              enabled: false,
-            },
-          },
+      .axeRun(['#navBar', 'nav'], {
+        rules: {
+          'color-contrast': { enabled: false },
+          region: { enabled: false }
         },
-        (results) => {}
-      );
+      }, (result) => {
+        if (result.status === 0) {
+          expectType<{[key: string]: any}>(result.value);
+        }
+      });
   },
 
   'step one: navigate to google': () => {

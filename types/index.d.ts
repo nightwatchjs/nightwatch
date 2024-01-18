@@ -2511,16 +2511,21 @@ export interface ClientCommands extends ChromiumClientCommands {
   ): Awaitable<this, undefined>;
 
   /**
-   * Injects the axe-core js library into the current page (using the .executeScript() command) to be paired
-   * with axeRun to evaluate the axe-core accessibility rules.
+   * Injects the [axe-core](https://github.com/dequelabs/axe-core) js library into the current page (using the `.executeScript()` command).
+   * To be paired with `.axeRun()` to evaluate the axe-core accessibility rules.
    *
    * @example
-   * this.demoTest = function () {
-   *   browser
-   *     .url('https://nightwatchjs.org')
-   *     .axeInject()
-   *     .axeRun();
-   * };
+   * describe('accessibility testing', function () {
+   *   it('accessibility rule subset', function (browser) {
+   *     browser
+   *       .url('https://www.w3.org/WAI/demos/bad/after/home.html')
+   *       .assert.titleEquals('Welcome to CityLights! [Accessible Home Page]')
+   *       .axeInject()
+   *       .axeRun('body', {
+   *         runOnly: ['color-contrast', 'image-alt'],
+   *       });
+   *   });
+   * });
    *
    * @see https://nightwatchjs.org/api/axeInject.html
    */
@@ -2530,46 +2535,46 @@ export interface ClientCommands extends ChromiumClientCommands {
    * Analyzes the current page against applied axe rules.
    *
    * @example
-   * this.demoTest = function () {
-   *   browser
-   *     .url('https://nightwatchjs.org')
-   *     .axeInject()
-   *     .axeRun(
-   *        'body',
-   *        { runOnly: ['color-contrast', 'image-alt'] }
-   *     );
-   * };
+   * describe('accessibility testing', function () {
+   *   it('accessibility rule subset', function (browser) {
+   *     browser
+   *       .url('https://www.w3.org/WAI/demos/bad/after/home.html')
+   *       .assert.titleEquals('Welcome to CityLights! [Accessible Home Page]')
+   *       .axeInject()
+   *       .axeRun('body', {
+   *         runOnly: ['color-contrast', 'image-alt'],
+   *       });
+   *   });
+   * 
+   *   it('accessibility rule subset 2', function (browser) {
+   *     browser
+   *       .url('https://nightwatchjs.org')
+   *       .axeInject()
+   *       .axeRun(['#navBar', 'nav'], {
+   *         rules: {
+   *           'color-contrast': { enabled: false },
+   *         }
+   *       });
+   *   });
+   * });
    *
-   * @example
-   * this.demoTest = function () {
-   *   browser
-   *     .url('https://nightwatchjs.org')
-   *     .axeInject()
-   *     .axeRun(
-   *        'body',
-   *        {
-   *          'color-contrast': {
-   *             enabled: false
-   *            }
-   *          },
-   *        }
-   *     );
-   * };
-   *
-   * @param selector - CSS selector to scope rule analysis against, will cascade to child elements
-   * @param options - Allows configuration of what rules will be run (accessibility standard or rules to enable/disable)
-   * @see {@link https://www.deque.com/axe/core-documentation/api-documentation/#options-parameter}
+   * @param context - Defines the scope of the analysis, will cascade to child elements. See
+   * [axe-core docs](https://github.com/dequelabs/axe-core/blob/master/doc/API.md#context-parameter) for more details.
+   * @param options - Allows configuration of what rules will be run (accessibility standard or rules to enable/disable).
+   * See [axe-core docs](https://www.deque.com/axe/core-documentation/api-documentation/#options-parameter) for more details.
+   * @param callback - Optional callback function which is called with the results.
    *
    * @see {@link https://nightwatchjs.org/api/axeRun.html}
+   * @see {@link https://github.com/dequelabs/axe-core/blob/master/doc/API.md#api-name-axerun}
    */
   axeRun(
-    selector?: string,
+    context?: unknown,
     options?: { [key: string]: any },
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
+      result: NightwatchCallbackResult<{[key: string]: any}>
     ) => void
-  ): Awaitable<this, null>;
+  ): Awaitable<this, {[key: string]: any}>;
 }
 
 export interface ElementCommands {
