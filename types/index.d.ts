@@ -5058,47 +5058,140 @@ export interface FirefoxNsCommands<ReturnType = unknown> {
   uninstallAddon(addonId: string | PromiseLike<string>): Awaitable<IfUnknown<ReturnType, this>, null>;
 } 
 
-type setNetworktype = {offline: boolean, latency: number, download_throughput: number, upload_throughput: number};
+type NetworkConditionsSpec = {
+  offline: boolean,
+  latency: number,
+  download_throughput: number,
+  upload_throughput: number
+};
 
 export interface ChromeNsCommands<ReturnType = unknown>{
+  /**
+   * Launch Chrome App with given ID.
+   * @param id ID of the App to launch.
+   */
   launchApp(
     id: string
   ): Awaitable<IfUnknown<ReturnType, this>, null>; 
 
-  getNetworkConditions(): Awaitable<IfUnknown<ReturnType, this>, setNetworktype | null>; 
+  /**
+   * Get Chromium network emulation settings.
+   *
+   * Network conditions must be set before it can be retrieved.
+   */
+  getNetworkConditions(): Awaitable<IfUnknown<ReturnType, this>, NetworkConditionsSpec>;
 
+  /**
+   * Set Chromium network emulation settings.
+   *
+   * @example
+   * describe('set network conditions', function() {
+   *  it('sets the network conditions', function() {
+   *    browser
+   *     .chrome.setNetworkConditions({
+   *       offline: false,
+   *       latency: 5, // Additional latency (ms).
+   *       download_throughput: 500 * 1024, // Maximal aggregated download throughput.
+   *       upload_throughput: 500 * 1024 // Maximal aggregated upload throughput.
+   *    });
+   *  });
+   * });
+   *
+   * @param spec Defines the network conditions to set
+   */
   setNetworkConditions(
-    params?: setNetworktype | null
+    spec: NetworkConditionsSpec
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
+  /**
+   * Delete Chromium network emulation settings.
+   */
+  deleteNetworkConditions(): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Sends an arbitrary devtools command to the browser.
+   *
+   * @param cmd The name of the command to send.
+   * @param params The command parameters.
+   * @see <https://chromedevtools.github.io/devtools-protocol/>
+   */
   sendDevToolsCommand(
     cmd: string, 
-    params?: {[key: string]: any} | null 
+    params?: {[key: string]: any}
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
+  /**
+   * Sends an arbitrary devtools command to the browser and get the result.
+   *
+   * @param cmd The name of the command to send.
+   * @param params The command parameters.
+   * @see <https://chromedevtools.github.io/devtools-protocol/>
+   */
   sendAndGetDevToolsCommand(
     cmd: string, 
     params?: {[key: string]: any}
-  ): Awaitable<IfUnknown<ReturnType, this>, string>;
+  ): Awaitable<IfUnknown<ReturnType, this>, unknown>;
 
+  /**
+   * Set a permission state to the given value.
+   *
+   * @param name A name of the permission to update.
+   * @param state State to set permission to.
+   * @see <https://w3c.github.io/permissions/#permission-registry> for valid names
+   */
   setPermission(
     name: string, 
     state: 'granted' | 'denied' | 'prompt'
-  ): Awaitable<IfUnknown<ReturnType, this>, {[key: string]: any}>;
-
-  setDownloadPath(
-    id: string
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
+  /**
+   * Sends a DevTools command to change the browser's download directory.
+   *
+   * @param path The desired download directory.
+   * @see chrome.sendDevToolsCommand
+   */
+  setDownloadPath(
+    path: string
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Returns the list of cast sinks (Cast devices) available to the Chrome media router.
+   *
+   * @return An array of Strings containing the friendly device names of available cast sink targets.
+   */
   getCastSinks(): Awaitable<IfUnknown<ReturnType, this>, string[]>;
 
+  /**
+   * Selects a cast sink (Cast device) as the recipient of media router intents (connect or play).
+   *
+   * @param deviceName name of the target device.
+   */
   setCastSinkToUse(
     deviceName: string
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
-  startCasttabMirroring(): Awaitable<IfUnknown<ReturnType, this>, null>;
+  /**
+   * Initiates tab mirroring for the current browser tab on the specified device.
+   *
+   * @param deviceName name of the target device.
+   */
+  startCastTabMirroring(
+    deviceName: string
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Returns an error message when there is any issue in a Cast session.
+   */
   getCastIssueMessage(): Awaitable<IfUnknown<ReturnType, this>, string>;
-  stopCasting(): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Stops casting from media router to the specified device, if connected.
+   *
+   * @param deviceName name of the target device.
+   */
+  stopCasting(
+    deviceName: string
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 }
 
 export interface NetworkNsCommands<ReturnType = unknown> {
@@ -5185,12 +5278,7 @@ export interface NetworkNsCommands<ReturnType = unknown> {
    * @see https://nightwatchjs.org/api/setNetworkConditions.html
    */
   setConditions(
-    spec: {
-      offline: boolean;
-      latency: number;
-      download_throughput: number;
-      upload_throughput: number;
-    },
+    spec: NetworkConditionsSpec,
     callback?: (
       this: NightwatchAPI,
       result: NightwatchCallbackResult<null>
