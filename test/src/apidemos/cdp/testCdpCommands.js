@@ -26,16 +26,16 @@ describe('cdp commands test', function() {
     });
   });
 
-  it('reset cdp connection after each session', function() {
+  it('reset cdp connection after each session is created', function() {
     const testsPath = [path.join(__dirname, '../../../apidemos/cdp')];
-    let resetConnectionCalled = false;
+    let resetConnectionCalled = 0;
 
-    mockery.registerMock('./cdp.js', {
+    mockery.registerMock('../transport/selenium-webdriver/cdp.js', {
       getConnection: function(...args) {
         return Promise.resolve();
       },
       resetConnection: function() {
-        resetConnectionCalled = true;
+        resetConnectionCalled += 1;
       }
     });
 
@@ -49,7 +49,6 @@ describe('cdp commands test', function() {
       })
       .navigateTo({url: 'http://localhost', persist: true});
 
-   
 
     const globals = {
       calls: 0,
@@ -57,9 +56,9 @@ describe('cdp commands test', function() {
       waitForConditionTimeout: 120,
       retryAssertionTimeout: 1000,
 
-
       reporter(results) {
-        assert.strictEqual(resetConnectionCalled, true);
+        // cdp connection is reset once for each session (two test suites).
+        assert.strictEqual(resetConnectionCalled, 2);
         if (results.lastError) {
           throw results.lastError;
         }
@@ -77,5 +76,64 @@ describe('cdp commands test', function() {
     }));
   });
 
-  
+  it('reset cdp connection after each selenium session is created', function() {
+    const testsPath = [path.join(__dirname, '../../../apidemos/cdp')];
+    let resetConnectionCalled = 0;
+
+    Mocks
+      .createChromeSession({
+        headless: false,
+        times: 2
+      });
+
+    MockServer.addMock({
+      url: '/wd/hub/session/13521-10219-202/url',
+      method: 'POST',
+      postdata: JSON.stringify({
+        url: 'http://localhost'
+      }),
+      response: {
+        value: null
+      },
+      times: 2
+    });
+
+    mockery.registerMock('../transport/selenium-webdriver/cdp.js', {
+      getConnection: function(...args) {
+        return Promise.resolve();
+      },
+      resetConnection: function() {
+        resetConnectionCalled += 1;
+      }
+    });
+
+    const globals = {
+      calls: 0,
+      waitForConditionPollInterval: 50,
+      waitForConditionTimeout: 120,
+      retryAssertionTimeout: 1000,
+
+      reporter(results) {
+        // cdp connection is reset once for each session (two test suites).
+        assert.strictEqual(resetConnectionCalled, 2);
+        if (results.lastError) {
+          throw results.lastError;
+        }
+      }
+    };
+
+    return NightwatchClient.runTests(testsPath, settings({
+      desiredCapabilities: {
+        browserName: 'chrome'
+      },
+      selenium: {
+        host: 'localhost',
+        port: 10195,
+        start_process: false
+      },
+      output: false,
+      skip_testcases_on_fail: false,
+      globals
+    }));
+  });
 });

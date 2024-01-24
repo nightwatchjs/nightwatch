@@ -453,7 +453,8 @@ module.exports = {
     sessionId = '13521-10219-202',
     headless = true,
     deleteSession = true,
-    url = '/wd/hub/session'
+    url = '/wd/hub/session',
+    times = 0
   }) {
     const browserName = 'chrome';
     const headlessOpt = headless ? 'headless=new' : '';
@@ -472,7 +473,7 @@ module.exports = {
       postdata: JSON.stringify({
         capabilities: {firstMatch: [{}], alwaysMatch: {browserName, ...options}}
       }),
-
+      times,
       response: JSON.stringify({
         value: {
           sessionId,
@@ -486,16 +487,19 @@ module.exports = {
     }, !persist);
 
     if (!deleteSession) {
-      return;
+      return this;
     }
 
     MockServer.addMock({
-      url: `/session/${sessionId}`,
+      url: `${url}/${sessionId}`,
       method: 'DELETE',
+      times,
       response: {
         value: null
       }
     }, !persist);
+
+    return this;
   },
 
   createNewW3CSession({
