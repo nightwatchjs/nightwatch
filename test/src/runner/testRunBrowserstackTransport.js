@@ -7,7 +7,8 @@ const {settings} = common;
 const {runTests} = common.require('index.js');
 
 describe('testRunBrowserstackTransport', function() {
-  let nockCalled = 0;
+  let statusSetNockCalled = 0;
+  let sessionNockCalled = 0;
 
   before(function(done) {
     try {
@@ -31,7 +32,7 @@ describe('testRunBrowserstackTransport', function() {
       });
 
     nock('https://api.browserstack.com')
-      .get('/automate/builds.json')
+      .get('/automate/builds.json?status=running')
       .times(2)
       .reply(200, []);
 
@@ -58,13 +59,37 @@ describe('testRunBrowserstackTransport', function() {
       });
 
     nock('https://api.browserstack.com')
+      .get('/automate/sessions/1352110219202.json')
+      .reply(200, function() {
+        sessionNockCalled++;
+
+        return {
+          automation_session: {
+            status: 'failed'
+          }
+        };
+      });
+
+    nock('https://api.browserstack.com')
+      .get('/automate/sessions/1352110219202.json')
+      .reply(200, function() {
+        sessionNockCalled++;
+
+        return {
+          automation_session: {
+            status: 'done'
+          }
+        };
+      });
+
+    nock('https://api.browserstack.com')
       .put('/automate/sessions/1352110219202.json', {
         status: 'failed',
         reason: /^NightwatchAssertError: Testing if element <#weblogin> is present in 10ms/
       })
-      .times(2)
+      .times(1)
       .reply(200, function() {
-        nockCalled++;
+        statusSetNockCalled++;
 
         return {};
       });
@@ -103,7 +128,8 @@ describe('testRunBrowserstackTransport', function() {
         waitForConditionTimeout: 11,
         retryAssertionTimeout: 10,
         reporter(results) {
-          assert.strictEqual(nockCalled, 2);
+          assert.strictEqual(sessionNockCalled, 2);
+          assert.strictEqual(statusSetNockCalled, 1);
           assert.strictEqual(Object.keys(results.modules).length, 1);
         }
       }

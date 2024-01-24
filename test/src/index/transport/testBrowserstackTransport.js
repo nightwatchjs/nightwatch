@@ -75,7 +75,7 @@ xdescribe('BrowserstackTransport', function () {
       });
   
     nock('https://api.browserstack.com')
-      .get('/automate/builds.json')
+      .get('/automate/builds.json?status=running')
       .reply(200, [
         {
           automation_build: {
@@ -129,7 +129,7 @@ xdescribe('BrowserstackTransport', function () {
       });
     
     nock('https://api.browserstack.com')
-      .get('/automate/builds.json')
+      .get('/automate/builds.json?status=running')
       .reply(200, [
         {
           automation_build: {
@@ -160,6 +160,11 @@ xdescribe('BrowserstackTransport', function () {
     assert.strictEqual(transport.accessKey, 'test-access-key');
     assert.strictEqual(client.settings.webdriver.start_process, false);
       
+    nock('https://api.browserstack.com')
+      .get('/automate/sessions/1234567.json')
+      .reply(200, {
+        automation_session: {status: 'done'}
+      });
     nock('https://api.browserstack.com')
       .put('/automate/sessions/1234567.json', {
         status: 'passed',
@@ -201,7 +206,7 @@ xdescribe('BrowserstackTransport', function () {
       });
 
     nock('https://api.browserstack.com')
-      .get('/app-automate/builds.json')
+      .get('/app-automate/builds.json?status=running')
       .reply(200, [
         {
           automation_build: {
@@ -232,6 +237,11 @@ xdescribe('BrowserstackTransport', function () {
     assert.strictEqual(transport.accessKey, 'test-access-key');
     assert.strictEqual(client.settings.webdriver.start_process, false);
       
+    nock('https://api.browserstack.com')
+      .get('/app-automate/sessions/1234567.json')
+      .reply(200, {
+        automation_session: {status: 'done'}
+      });
     nock('https://api.browserstack.com')
       .put('/app-automate/sessions/1234567.json', {
         status: 'passed',
@@ -275,7 +285,7 @@ xdescribe('BrowserstackTransport', function () {
       });
 
     nock('https://api.browserstack.com')
-      .get('/automate/builds.json')
+      .get('/automate/builds.json?status=running')
       .reply(200, [
         {
           automation_build: {
@@ -298,6 +308,11 @@ xdescribe('BrowserstackTransport', function () {
     return new Promise((resolve, reject) => {
       setTimeout(async function() {
         try {
+          nock('https://api.browserstack.com')
+            .get('/automate/sessions/1234567.json')
+            .reply(200, {
+              automation_session: {status: 'done'}
+            });
           nock('https://api.browserstack.com')
             .put('/automate/sessions/1234567.json', {
               status: 'failed',

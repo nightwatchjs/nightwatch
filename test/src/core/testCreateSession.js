@@ -543,7 +543,8 @@ describe('test Request With Credentials', function () {
       });
 
     nock('https://api.browserstack.com')
-      .get('/automate/builds.json')
+      .get('/automate/builds.json?status=running')
+      .times(2)
       .reply(200, [
         {
           automation_build: {
@@ -620,6 +621,9 @@ describe('test Request With Credentials', function () {
       }
     });
 
+    const buildId = await client.transport.getBuildId();
+    assert.strictEqual(buildId, undefined);
+
     assert.strictEqual(client.api.isAppiumClient(), false);
   });
 
@@ -667,7 +671,8 @@ describe('test Request With Credentials', function () {
       });
 
     nock('https://api.browserstack.com')
-      .get('/app-automate/builds.json')
+      .get('/app-automate/builds.json?status=running')
+      .times(2)
       .reply(200, [
         {
           automation_build: {
@@ -733,6 +738,9 @@ describe('test Request With Credentials', function () {
         realMobile: true
       }
     });
+
+    const buildId = await client.transport.getBuildId();
+    assert.strictEqual(buildId, undefined);
   
     assert.strictEqual(client.transport.uploadedAppUrl, 'bs://878bdf21505f0004ce');
 
@@ -796,8 +804,16 @@ describe('test Request With Credentials', function () {
       });
 
     nock('https://api.browserstack.com')
-      .get('/app-automate/builds.json')
+      .get('/app-automate/builds.json?status=running')
+      .times(2)
       .reply(200, [
+        {
+          automation_build: {
+            name: 'Nightwatch Programmatic Api Demo',
+            status: 'running',
+            hashed_id: '123456789'
+          }
+        },
         {
           automation_build: {
             name: 'WIN_CHROME_PROD_SANITY_LIVE_1831',
@@ -865,6 +881,9 @@ describe('test Request With Credentials', function () {
       }
     });
 
+    const buildId = await client.transport.getBuildId();
+    assert.strictEqual(buildId, '123456789');
+
     assert.strictEqual(client.transport.uploadedAppUrl, undefined);
 
     assert.strictEqual(client.settings.selenium.use_appium, undefined);
@@ -902,8 +921,16 @@ describe('test Request With Credentials', function () {
       });
 
     nock('https://api.browserstack.com')
-      .get('/automate/builds.json')
+      .get('/automate/builds.json?status=running')
+      .times(2)
       .reply(200, [
+        {
+          automation_build: {
+            name: 'nightwatch-test-build',
+            status: 'running',
+            hashed_id: '123-456-789'
+          }
+        },
         {
           automation_build: {
             name: 'WIN_CHROME_PROD_SANITY_LIVE_1831',
@@ -968,6 +995,9 @@ describe('test Request With Credentials', function () {
         }
       }
     });
+
+    const buildId = await client.transport.getBuildId();
+    assert.strictEqual(buildId, '123-456-789');
   });
 
   it('Test create session with browserstack with random browser and update buildName', async function () {
@@ -1001,8 +1031,16 @@ describe('test Request With Credentials', function () {
       });
 
     nock('https://api.browserstack.com')
-      .get('/automate/builds.json')
+      .get('/automate/builds.json?status=running')
+      .times(2)
       .reply(200, [
+        {
+          automation_build: {
+            name: 'Nightwatch Programmatic Api Demo',
+            status: 'running',
+            hashed_id: '123456789'
+          }
+        },
         {
           automation_build: {
             name: 'WIN_CHROME_PROD_SANITY_LIVE_1831',
@@ -1070,5 +1108,8 @@ describe('test Request With Credentials', function () {
         }
       }
     });
+
+    const buildId = await client.transport.getBuildId();
+    assert.strictEqual(buildId, '123456789');
   });
 });
