@@ -1,5 +1,5 @@
 const path = require('path');
-const lodashMerge = require('lodash.merge');
+const lodashMerge = require('lodash/merge');
 const clone = require('lodash.clone');
 
 const config = require('./cucumber-config.js');

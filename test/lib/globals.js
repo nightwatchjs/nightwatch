@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
-const lodashMerge = require('lodash.merge');
+const lodashMerge = require('lodash/merge');
 const common = require('../common.js');
 const Settings = common.require('settings/settings.js');
 const Runner = common.require('runner/runner.js');
@@ -175,8 +175,8 @@ class Globals {
   }
 
   startTestRunner(testsPath, suppliedSettings) {
-    let settings = Settings.parse(suppliedSettings);
-    let runner = Runner.create(settings, {
+    const settings = Settings.parse(suppliedSettings);
+    const runner = Runner.create(settings, {
       reporter: 'junit'
     });
 

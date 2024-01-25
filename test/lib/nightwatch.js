@@ -1,4 +1,4 @@
-const lodashMerge = require('lodash.merge');
+const lodashMerge = require('lodash/merge');
 const MockServer  = require('./mockserver.js');
 const common = require('../common.js');
 const Settings = common.require('settings/settings.js');
