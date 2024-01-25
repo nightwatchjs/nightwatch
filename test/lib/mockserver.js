@@ -2,7 +2,7 @@ const http = require('http');
 const jsYaml = require('js-yaml');
 const fs   = require('fs');
 const path   = require('path');
-const defaultsDeep = require('lodash.defaultsdeep');
+const defaultsDeep = require('lodash/defaultsdeep');
 
 class MockServer {
 
@@ -50,7 +50,7 @@ class MockServer {
       });
 
       req.on('end', () => {
-        let item = this.nextInLine(req, postdata);
+        const item = this.nextInLine(req, postdata);
         let responsedata = '';
 
         if (item) {
@@ -139,7 +139,7 @@ class MockServer {
     const mockMethod = mock.method || 'get';
 
     for (let i = 0; i < this.mocks.length; i++) {
-      let item = this.mocks[i];
+      const item = this.mocks[i];
 
       if (
         item.url === mock.url && item.method.toLowerCase() === mockMethod.toLowerCase() &&
@@ -155,7 +155,7 @@ class MockServer {
     const data = postdata ? normalizeJSONString(postdata) : null;
 
     for (let i = 0; i < this.mocks.length; i++) {
-      let item = this.mocks[i];
+      const item = this.mocks[i];
 
       item.postdata = item.postdata || '';
       item.method = item.method || 'POST';
