@@ -1,9 +1,9 @@
 const path = require('path');
 const lodashMerge = require('lodash/merge');
-const clone = require('lodash.clone');
+const lodashClone = require('lodash/clone');
 
 const config = require('./cucumber-config.js');
-const configCopy = clone(config);
+const configCopy = lodashClone(config);
 const settings = lodashMerge(configCopy, {
   selenium: {
     port: 10193
