@@ -2,7 +2,7 @@ const http = require('http');
 const jsYaml = require('js-yaml');
 const fs   = require('fs');
 const path   = require('path');
-const defaultsDeep = require('lodash/defaultsdeep');
+const defaultsDeep = require('lodash/defaultsDeep');
 
 class MockServer {
 
