@@ -567,6 +567,9 @@ export interface NightwatchAPI
 // tslint:disable-next-line:no-empty-interface
 export interface NightwatchCustomPageObjects { }
 
+/**
+ * @deprecated Use `NightwatchAPI` instead.
+ */
 export interface NightwatchBrowser
   extends NightwatchAPI,
   NightwatchComponentTestingCommands,
@@ -636,7 +639,7 @@ export interface NightwatchTestFunctions {
 }
 
 export type NightwatchTestHook = (
-  browser: NightwatchAPI,
+  browser: NightwatchBrowser,
   done: (err?: unknown) => void
 ) => void;
 

@@ -6,6 +6,7 @@ import {
   NightwatchAPI,
   NightwatchAssertion,
   NightwatchAssertionsResult,
+  NightwatchBrowser,
   NightwatchClient,
   NightwatchClientObject,
   NightwatchEnsureResult,
@@ -283,8 +284,12 @@ describe('duckduckgo example', function () {
 // .tests/native/wikipedia.ts
 //
 const wikipediaAppTest: NightwatchTests = {
-  before: (client: NightwatchAPI) => {
+  before: (client: NightwatchBrowser) => {
     client.click(by.xpath('//XCUIElementTypeButton[@name="Skip"]'));
+  },
+
+  after: (client: NightwatchAPI) => {
+    client.end();
   },
 
   'Search for BrowserStack': async (client: NightwatchAPI) => {
@@ -347,8 +352,6 @@ const wikipediaAppTest: NightwatchTests = {
       })
       .useCss()
       .assert.textEquals('.pcs-edit-section-title', 'BrowserStack'); // command run in webview context
-
-    client.end();
   },
 };
 
