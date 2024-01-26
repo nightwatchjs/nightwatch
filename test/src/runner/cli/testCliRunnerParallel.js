@@ -8,10 +8,11 @@ const {settings} = common;
 describe('Test CLI Runner in Parallel', function () {
   const ChildProcess = common.require('runner/concurrency/child-process.js');
   const WorkerProcess = common.require('runner/concurrency/worker-process.js');
+  const WorkerTask = common.require('runner/concurrency/worker-task.js');
   const RunnerBase = common.require('runner/runner.js');
 
   const filtered = Object.keys(require.cache).filter(item => (
-    item.endsWith('runner/runner.js') || item.endsWith('runner/concurrency/child-process.js') || item.endsWith('runner/concurrency/worker-process.js')
+    item.endsWith('runner/runner.js') || item.endsWith('runner/concurrency/child-process.js') || item.endsWith('runner/concurrency/worker-process.js') || item.endsWith('runner/concurrency/worker-task.js')
   ));
 
   if (filtered && filtered.length > 0) {
@@ -326,5 +327,52 @@ describe('Test CLI Runner in Parallel', function () {
     assert.strictEqual(runner.isTestWorkersEnabled(), false);
     assert.strictEqual(runner.parallelMode(), true);
   });
+  
 
+  it('run worker threads with parallel_process_delay - worker threads', function() {
+    let startDelay = 0;
+    class RunnerBaseMock extends RunnerBase {
+      static readTestSource(settings, argv) {
+        assert.strictEqual(settings.testWorkersEnabled, true);
+
+        return [
+          'test_file_1.js',
+          'test_file_2.js'
+        ];
+      }
+    }
+
+    class WorkerTaskMock extends WorkerTask {
+      async runWorkerTask(colors, type) {
+        startDelay = this.startDelay;
+       
+        return new Promise((resolve, reject) => {
+          try {
+            assert.strictEqual(this.startDelay, 10);
+            resolve();
+          } catch (err) {
+            reject(err);
+          }
+        }, 10);
+      }
+    }
+    mockery.registerMock('./worker-task.js', WorkerTaskMock);
+    mockery.registerMock('../runner.js', RunnerBaseMock);
+
+    return NightwatchClient.runTests({
+      env: 'default',
+      config: path.join(__dirname, '../../../extra/withgeckodriver-concurrent.json')
+    }, settings({
+      parallel_process_delay: 100,
+      globals: {
+        reporter() {
+          assert.strictEqual(startDelay, 100);
+        }
+      },
+      use_child_process: false,
+      silent: false,
+      output: true,
+      output_folder: false
+    }));
+  });
 });
