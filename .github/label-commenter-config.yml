@@ -32,8 +32,4 @@ labels:
           Either a complete code snippet (if more than one file is needed, provide a GitHub repo and instructions to run the code), the specific versions used, or a more detailed description to help us understand the issue.
 
           Reply to this issue when all information is provided, thank you.
-  - name: enhancement
-    labeled:
-      issue:
-        body: |
-          Thank you for setting this as an enhancement. One of the product folk will triage this again to help see when we can fit this in an upcoming sprint.
+ 
