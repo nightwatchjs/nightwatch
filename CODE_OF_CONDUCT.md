@@ -49,8 +49,9 @@ This Code of Conduct is adapted from the [Contributor Covenant][homepage], versi
 available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.html. 
 
 It's inspired among other things by:
+
 - [Citizen Code of Conduct](http://citizencodeofconduct.org/)
-- [Appim](https://github.com/appium/appium/blob/master/CONDUCT.md)
+- [Appium](https://github.com/appium/appium/blob/master/CONDUCT.md)
 
 [homepage]: https://www.contributor-covenant.org
 

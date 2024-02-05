@@ -6,6 +6,10 @@ __Please do not ask for assistance in the Issues list.__ Join our [Discord serve
 
 Assistance requests posted in the Issues list are usually closed right away.
 
+## Code of Conduct
+
+Contributors are expected to adhere to the [Code of Conduct](CODE_OF_CONDUCT.md).
+
 ## Submit an issue
 
 Before submitting a new issues, try searching for a similar one here: https://github.com/nightwatchjs/nightwatch/search?type=Issues and add your scenario there and anything else which you think will help with fixing it;
