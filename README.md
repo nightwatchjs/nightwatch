@@ -93,27 +93,32 @@ With Nightwatch you can test components in isolation by mounting them in the bro
 ### Nightwatch unit tests
 
 The tests for Nightwatch are written using Mocha.
-1. Clone the project
-```bash
-$ git clone https://github.com/nightwatchjs/nightwatch.git
-$ cd nightwatch
-$ npm install
-```
-2. Run tests
 
-To run the complete test suite:
-```bash
-$ npm test
-```
+1. **Clone the project**
 
-To check test coverage, run the command:
-```bash
-$ npm run mocha-coverage
-```
+   ```bash
+   $ git clone https://github.com/nightwatchjs/nightwatch.git
+   $ cd nightwatch
+   $ npm install
+   ```
 
-and then open the generated coverage/index.html file in your browser.
+2. **Run tests**
 
-[Unit testing guide](https://nightwatchjs.org/guide/writing-tests/write-nodejs-unit-integration-tests.html)
+   To run the complete test suite:
+
+   ```bash
+   $ npm test
+   ```
+
+   To check test coverage, run the command:
+
+   ```bash
+   $ npm run mocha-coverage
+   ```
+
+   and then open the generated coverage/index.html file in your browser.
+
+See [Unit testing guide](https://nightwatchjs.org/guide/writing-tests/write-nodejs-unit-integration-tests.html) for more details.
 
 ### Other types of testing
 #### [Visual Regression Testing](https://nightwatchjs.org/guide/writing-tests/visual-regression-testing.html)
@@ -140,6 +145,10 @@ Nightwatch v3 packages the aXe-core package developed by Deque Systems as a plug
 
 ## 🦉 About Nightwatch
 Nightwatch was initially built by [@pineviewlabs](https://github.com/pineviewlabs/) - an independent software consultancy based in Oslo, Norway, with help from [contributors](https://github.com/nightwatchjs/nightwatch/graphs/contributors). In mid 2021, Nightwatch has become a part of the [@BrowserStack](https://github.com/browserstack) family and it is being developed further at the BrowserStack Open-source Program Office. Read more on [our blog](https://nightwatchjs.org/blog/nightwatch-has-joined-the-browserstack-family.html).
+
+## Contributing
+
+We welcome any and all contributions from the community which can help improve Nightwatch. Please check out [CONTRIBUTING.md](CONTRIBUTING.md) for more extensive contributing guidelines.
 
 ## Licence
 [MIT](https://github.com/nightwatchjs/nightwatch/blob/main/LICENSE.md)
