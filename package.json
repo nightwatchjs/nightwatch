@@ -42,7 +42,7 @@
     "nightwatch-axe-verbose": "^2.3.0",
     "open": "8.4.2",
     "ora": "5.4.1",
-    "piscina": "3.2.0",
+    "piscina": "^4.3.1",
     "selenium-webdriver": "4.16.0",
     "semver": "7.5.4",
     "stacktrace-parser": "0.1.10",
