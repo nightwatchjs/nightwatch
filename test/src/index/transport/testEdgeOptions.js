@@ -1,24 +1,24 @@
 const assert = require('assert');
 const Nightwatch = require('../../../lib/nightwatch.js');
-const EdgeOptions =  require('selenium-webdriver/edge').Options;
+const EdgeOptions = require('selenium-webdriver/edge').Options;
 
-describe('Test edge option', function(){
-  
-  it('Edge option object with headless', function(){
+describe('Test edge option', function () {
+
+  it('Edge option object with headless', function () {
     const edgeoptions = new EdgeOptions();
-    edgeoptions.headless();
+    edgeoptions.addArguments('--headless=new');
 
     const client = Nightwatch.createClient({
       capabilities: edgeoptions
     });
 
-    const options =  client.transport.createSessionOptions();
+    const options = client.transport.createSessionOptions();
     assert.strictEqual(options, edgeoptions);
     assert.strictEqual(client.api.isEdge(), true);
     assert.strictEqual(client.api.browserName, 'MicrosoftEdge');
   });
 
-  it('ms:edgeOption detach driver option', function(){
+  it('ms:edgeOption detach driver option', function () {
     const client = Nightwatch.createClient({
       desiredCapabilities: {
         browserName: 'edge',
@@ -34,8 +34,8 @@ describe('Test edge option', function(){
     assert.strictEqual(client.api.isEdge(), true);
     assert.strictEqual(client.api.browserName, 'edge');
   });
-  
-  it('Edge Binary Path option', function(){
+
+  it('Edge Binary Path option', function () {
     const client = Nightwatch.createClient({
       webdriver: {
         edge_binary: '/Applications/Edge.app/Contents/MacOS/Edge'
@@ -50,7 +50,7 @@ describe('Test edge option', function(){
     assert.strictEqual(options.options_.binary, '/Applications/Edge.app/Contents/MacOS/Edge');
   });
 
-  it('Edge log path option', function(){
+  it('Edge log path option', function () {
     const client = Nightwatch.createClient({
       webdriver: {
         edge_log_file: '/Nightwatch/EdgeLog/'
@@ -66,7 +66,7 @@ describe('Test edge option', function(){
 
   });
 
-  it('headless option', function(){
+  it('headless option', function () {
     const client = Nightwatch.createClient({
       desiredCapabilities: {
         browserName: 'edge'
@@ -78,8 +78,8 @@ describe('Test edge option', function(){
     assert.deepStrictEqual(options.options_.args, ['headless']);
   });
 
-  it('window size option', function(){
-    const client =  Nightwatch.createClient({
+  it('window size option', function () {
+    const client = Nightwatch.createClient({
       window_size: {
         height: 100,
         width: 100
@@ -88,13 +88,13 @@ describe('Test edge option', function(){
         browserName: 'edge'
       }
     });
-    const options =  client.transport.createSessionOptions();
+    const options = client.transport.createSessionOptions();
 
     assert.strictEqual(options instanceof EdgeOptions, true);
     assert.deepStrictEqual(options.options_.args, ['window-size=100,100']);
   });
 
-  it('Andriod package option', function() {
+  it('Andriod package option', function () {
     const client = Nightwatch.createClient({
       webdriver: {
         android_package: 'com.android.edge'
@@ -104,13 +104,13 @@ describe('Test edge option', function(){
       }
     });
     const options = client.transport.createSessionOptions();
-    
+
     assert.strictEqual(options instanceof EdgeOptions, true);
     assert.strictEqual(options.options_.androidPackage, 'com.android.edge');
   });
 
-  it('proxy option', function(){
-    const client =  Nightwatch.createClient({
+  it('proxy option', function () {
+    const client = Nightwatch.createClient({
       desiredCapabilities: {
         browserName: 'edge',
         proxy: {

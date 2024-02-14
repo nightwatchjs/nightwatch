@@ -4,13 +4,13 @@ const ChromeOptions = require('selenium-webdriver/chrome').Options;
 
 describe('Test chrome options', function () {
 
-  it('Chrome option object with headless', function(){
+  it('Chrome option object with headless', function () {
     const capabilities = new ChromeOptions();
-    capabilities.headless();
+    capabilities.addArguments('--headless=chrome');
     const client = Nightwatch.createClient({
       capabilities
     });
-    
+
     const options = client.transport.createSessionOptions();
     assert.strictEqual(options, capabilities);
     assert.strictEqual(client.api.isChrome(), true);
@@ -51,7 +51,7 @@ describe('Test chrome options', function () {
     assert.strictEqual(client.api.browserName, 'chrome');
   });
 
-  it('Chrome Binary Path option', function(){
+  it('Chrome Binary Path option', function () {
     const client = Nightwatch.createClient({
       webdriver: {
         chrome_binary: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
@@ -68,7 +68,7 @@ describe('Test chrome options', function () {
     assert.strictEqual(client.api.browserName, 'chrome');
   });
 
-  it('Chrome log path option', function(){
+  it('Chrome log path option', function () {
     const client = Nightwatch.createClient({
       webdriver: {
         chrome_log_file: '/Nightwatch/ChromeLog/'
@@ -84,7 +84,7 @@ describe('Test chrome options', function () {
 
   });
 
-  it('Andriod chrome option', function() {
+  it('Andriod chrome option', function () {
     const client = Nightwatch.createClient({
       webdriver: {
         android_chrome: 'com.android.chrome'
@@ -94,12 +94,12 @@ describe('Test chrome options', function () {
       }
     });
     const options = client.transport.createSessionOptions();
-    
+
     assert.strictEqual(options instanceof ChromeOptions, true);
     assert.strictEqual(options.options_.androidPackage, 'com.android.chrome');
   });
 
-  it('headless option', function(){
+  it('headless option', function () {
     const client = Nightwatch.createClient({
       desiredCapabilities: {
         browserName: 'chrome'
@@ -111,7 +111,7 @@ describe('Test chrome options', function () {
     assert.deepStrictEqual(options.options_.args, ['headless=new']);
   });
 
-  it('devtools cli arg', function(){
+  it('devtools cli arg', function () {
     const client = Nightwatch.createClient({
       desiredCapabilities: {
         browserName: 'chrome'
@@ -124,7 +124,7 @@ describe('Test chrome options', function () {
     assert.deepStrictEqual(options.options_.args, ['auto-open-devtools-for-tabs']);
   });
 
-  it('devtools cli arg with already defined setting', function(){
+  it('devtools cli arg with already defined setting', function () {
     const client = Nightwatch.createClient({
       desiredCapabilities: {
         browserName: 'chrome',
@@ -140,7 +140,7 @@ describe('Test chrome options', function () {
     assert.deepStrictEqual(options.options_.args, ['auto-open-devtools-for-tabs']);
   });
 
-  it('devtools cli arg with already defined setting 2', function(){
+  it('devtools cli arg with already defined setting 2', function () {
     const client = Nightwatch.createClient({
       desiredCapabilities: {
         browserName: 'chrome',
@@ -156,7 +156,7 @@ describe('Test chrome options', function () {
     assert.deepStrictEqual(options.options_.args, ['--auto-open-devtools-for-tabs']);
   });
 
-  it('devtools cli arg with already defined setting (using chromeOptions)', function(){
+  it('devtools cli arg with already defined setting (using chromeOptions)', function () {
     const client = Nightwatch.createClient({
       desiredCapabilities: {
         browserName: 'chrome',
@@ -172,8 +172,8 @@ describe('Test chrome options', function () {
     assert.deepStrictEqual(options.options_.args, ['auto-open-devtools-for-tabs']);
   });
 
-  it('window size option', function(){
-    const client =  Nightwatch.createClient({
+  it('window size option', function () {
+    const client = Nightwatch.createClient({
       window_size: {
         height: 100,
         width: 100
@@ -182,13 +182,13 @@ describe('Test chrome options', function () {
         browserName: 'chrome'
       }
     });
-    const options =  client.transport.createSessionOptions();
+    const options = client.transport.createSessionOptions();
 
     assert.strictEqual(options instanceof ChromeOptions, true);
     assert.deepStrictEqual(options.options_.args, ['window-size=100,100']);
   });
 
-  it('proxy option', function(){
+  it('proxy option', function () {
     const client = Nightwatch.createClient({
       desiredCapabilities: {
         browserName: 'chrome',
@@ -198,7 +198,7 @@ describe('Test chrome options', function () {
       }
     });
     const options = client.transport.createSessionOptions();
-    
+
     assert.strictEqual(options instanceof ChromeOptions, true);
     assert.deepStrictEqual(options.getProxy(), {
       proxyType: 'manual',
@@ -208,8 +208,8 @@ describe('Test chrome options', function () {
       noProxy: undefined
     });
   });
-  
-  it('always match in desired capabilties', function() {
+
+  it('always match in desired capabilties', function () {
     const client = Nightwatch.createClient({
       desiredCapabilities: {
         browserName: 'chrome',
@@ -217,7 +217,7 @@ describe('Test chrome options', function () {
           acceptInsecureCerts: true,
           'goog:chromeOptions': {
             args: [
-              '--headless'
+              '--headless=new'
             ]
           }
         }
@@ -228,9 +228,9 @@ describe('Test chrome options', function () {
     assert.ok(options instanceof ChromeOptions);
     assert.strictEqual(options.get('acceptInsecureCerts'), true);
     assert.deepStrictEqual(options.get('goog:chromeOptions'), {
-      args: ['--headless']
+      args: ['--headless=new']
     });
   });
 
-  
+
 });
