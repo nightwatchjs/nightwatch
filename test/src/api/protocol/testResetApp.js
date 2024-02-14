@@ -1,7 +1,7 @@
 const assert = require('assert');
 const Globals = require('../../../lib/globals.js');
 
-describe('Android activity commands', function () {
+describe('App reset command', function () {
   before(function () {
     Globals.protocolBefore();
   });
@@ -11,7 +11,7 @@ describe('Android activity commands', function () {
       assertion: function (opts) {
         assert.strictEqual(opts.path, '/session/1352110219202/appium/app/reset');
       },
-      commandName: 'appium.getResetApp',
+      commandName: 'appium.resetApp',
       args: []
     });
   });

@@ -18,7 +18,7 @@ describe('appium api demo', function () {
     'getContexts',
     'getContext',
     'setContext',
-    're'
+    'resetApp'
   ];
 
   it('test appium available API commands', async function () {
