@@ -1,23 +1,23 @@
 const assert = require('assert');
 const Nightwatch = require('../../../lib/nightwatch.js');
-const FirefoxOptions =  require('selenium-webdriver/firefox').Options;
+const FirefoxOptions = require('selenium-webdriver/firefox').Options;
 
-describe('Firefox driver options', function(){
+describe('Firefox driver options', function () {
 
-  it('Firefox option object with headless', function(){
-    const firefoxOptions =  new FirefoxOptions();
-    firefoxOptions.headless();
+  it('Firefox option object with headless', function () {
+    const firefoxOptions = new FirefoxOptions();
+    firefoxOptions.addArguments('--headless');
     const client = Nightwatch.createClient({
       capabilities: firefoxOptions
     });
 
-    const options =  client.transport.createSessionOptions();
+    const options = client.transport.createSessionOptions();
     assert.strictEqual(options, firefoxOptions);
     assert.strictEqual(client.api.isFirefox(), true);
     assert.strictEqual(client.api.browserName, 'firefox');
   });
 
-  it('moz:firefoxOptions detach driver option', function(){
+  it('moz:firefoxOptions detach driver option', function () {
     const client = Nightwatch.createClient({
       desiredCapabilities: {
         browserName: 'firefox',
@@ -26,7 +26,7 @@ describe('Firefox driver options', function(){
         }
       }
     });
-    const options =  client.transport.createSessionOptions();
+    const options = client.transport.createSessionOptions();
 
     assert.strictEqual(options instanceof FirefoxOptions, true);
     assert.deepStrictEqual(options.get('moz:firefoxOptions').detach, true);
@@ -34,7 +34,7 @@ describe('Firefox driver options', function(){
     assert.strictEqual(client.api.browserName, 'firefox');
   });
 
-  it('Firefox Binary Path option', function(){
+  it('Firefox Binary Path option', function () {
     const client = Nightwatch.createClient({
       webdriver: {
         firefox_binary: '/Applications/Firefox.app/Contents/MacOS/Firefox'
@@ -49,7 +49,7 @@ describe('Firefox driver options', function(){
     assert.strictEqual(options.get('moz:firefoxOptions').binary, '/Applications/Firefox.app/Contents/MacOS/Firefox');
   });
 
-  it('Firefox log path option', function(){
+  it('Firefox log path option', function () {
     const client = Nightwatch.createClient({
       webdriver: {
         firefox_profile: 'Nightwatch'
@@ -65,7 +65,7 @@ describe('Firefox driver options', function(){
 
   });
 
-  it('headless option', function(){
+  it('headless option', function () {
     const client = Nightwatch.createClient({
       desiredCapabilities: {
         browserName: 'firefox'
@@ -77,7 +77,7 @@ describe('Firefox driver options', function(){
     assert.deepStrictEqual(options.get('moz:firefoxOptions').args, ['-headless']);
   });
 
-  it('window size option', function(){
+  it('window size option', function () {
     const client = Nightwatch.createClient({
       window_size: {
         height: 100,
@@ -93,8 +93,8 @@ describe('Firefox driver options', function(){
     assert.strictEqual(options instanceof FirefoxOptions, true);
     assert.deepStrictEqual(options.get('moz:firefoxOptions').args, ['--width=100', '--height=100']);
   });
-  
-  it('proxy options', function(){
+
+  it('proxy options', function () {
     const client = Nightwatch.createClient({
       desiredCapabilities: {
         proxy: {
@@ -115,7 +115,7 @@ describe('Firefox driver options', function(){
     });
   });
 
-  it('always match in desired capabilties', function() {
+  it('always match in desired capabilties', function () {
     const client = Nightwatch.createClient({
       desiredCapabilities: {
         desiredCapabilities: 'firefox',
