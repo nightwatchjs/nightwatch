@@ -17,7 +17,7 @@
 // TypeScript Version: 4.5
 // Nightwatch Version: 3.0.0
 
-import {Protocol} from 'devtools-protocol';
+import { Protocol } from 'devtools-protocol';
 import {
   By as SeleniumBy,
   Actions,
@@ -70,10 +70,10 @@ export type Awaitable<T, V> = Omit<T, 'then'> & PromiseLike<V>;
 // tslint:disable-next-line
 type VoidToNull<T> = T extends void ? null : T;
 
-type ExecuteScriptFunction<ArgType extends any[], ReturnValue> = (this: {[key: string]: any}, ...args: ArgType) => ReturnValue;
+type ExecuteScriptFunction<ArgType extends any[], ReturnValue> = (this: { [key: string]: any }, ...args: ArgType) => ReturnValue;
 
 type ExecuteAsyncScriptFunction<ArgType extends any[], ReturnValue> =
-  (this: {[key: string]: any}, ...args: [...innerArgs: ArgType, done: (result?: ReturnValue) => void]) => void;
+  (this: { [key: string]: any }, ...args: [...innerArgs: ArgType, done: (result?: ReturnValue) => void]) => void;
 
 export interface AppiumGeolocation {
   latitude: number;
@@ -462,7 +462,7 @@ export interface NightwatchKeys {
 /**
  * Kept for backward compatibility.
  *
- * NightwatchPage provides some basic types for page objects. 
+ * NightwatchPage provides some basic types for page objects.
  * Users can keep using these default types for page objects, but if they want
  * to be strict, they can define their own page object types by extending
  * `NightwatchCustomPageObjects` interface.
@@ -470,7 +470,7 @@ export interface NightwatchKeys {
  * @example
  * // using default types
  * const googlePage = browser.page.google();
- * 
+ *
  * // defining types by extending NightwatchCustomPageObjects interface
  * interface GooglePage
  *   extends EnhancedPageObject<
@@ -664,7 +664,7 @@ export class Element {
   timeout?: number;
 }
 
-type ElementGlobalDefinition = string | SeleniumBy | RelativeBy | {selector: string; locateStrategy?: string} | {using: string, value: string};
+type ElementGlobalDefinition = string | SeleniumBy | RelativeBy | { selector: string; locateStrategy?: string } | { using: string, value: string };
 
 export interface ElementGlobal extends Element {
   /**
@@ -1119,7 +1119,7 @@ declare global {
 }
 
 export interface NightwatchClient extends NightwatchClientObject {
-  argv: {[key: string]: any};
+  argv: { [key: string]: any };
   client: NightwatchClientObject;
   configLocateStrategy: "css selector" | "xpath";
   // TODO: Add missing properties, like:
@@ -1205,26 +1205,26 @@ export interface Nightwatch {
    *   output: true,
    *   silent: true, // set to false to enable verbose logging
    *   browserName: 'firefox', // can be either: firefox, chrome, safari, or edge
-   * 
+   *
    *   // set the global timeout to be used with waitFor commands and when retrying assertions/expects
    *   timeout: 10000,
-   * 
+   *
    *   // set the current test environment from the nightwatch config
    *   env: null,
-   * 
+   *
    *   // any additional capabilities needed
    *   desiredCapabilities: {
-   * 
+   *
    *   },
-   * 
-   *   // can define/overwrite test globals here; 
+   *
+   *   // can define/overwrite test globals here;
    *   // when using a third-party test runner only the global hooks onBrowserNavigate/onBrowserQuit are supported
    *   globals: {},
-   * 
-   *   // when the test runner used supports running tests in parallel; 
+   *
+   *   // when the test runner used supports running tests in parallel;
    *   // set to true if you need the webdriver port to be randomly generated
-   *   parallel: false, 
-   * 
+   *   parallel: false,
+   *
    *   // All other Nightwatch config settings can be overwritten here, such as:
    *   disable_colors: false
    * });
@@ -2554,7 +2554,7 @@ export interface ClientCommands extends ChromiumClientCommands {
    *         runOnly: ['color-contrast', 'image-alt'],
    *       });
    *   });
-   * 
+   *
    *   it('accessibility rule subset 2', function (browser) {
    *     browser
    *       .url('https://nightwatchjs.org')
@@ -2581,9 +2581,9 @@ export interface ClientCommands extends ChromiumClientCommands {
     options?: { [key: string]: any },
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<{[key: string]: any}>
+      result: NightwatchCallbackResult<{ [key: string]: any }>
     ) => void
-  ): Awaitable<this, {[key: string]: any}>;
+  ): Awaitable<this, { [key: string]: any }>;
 }
 
 export interface ElementCommands {
@@ -4659,6 +4659,30 @@ export interface AppiumCommands<ReturnType = unknown> {
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
+   * Reset the current session (run delete and create session).
+   *
+   * More info here: https://appium.io/docs/en/2.3/commands/base-driver/#reset
+   *
+   * @example
+   * module.exports = {
+   *   'start an android activity': function (app) {
+   *     app
+   *       .appium.resetApp();
+   *   },
+   *
+   *   'reset the app activity and wait for onboarding activity to start': function (app) {
+   *     app
+   *       .appium.resetApp();
+   *   }
+   * };
+   */
+  resetApp(
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
+  /**
    * Start an Android activity by providing package name, activity name and other optional parameters.
    *
    * More info here: https://appium.io/docs/en/commands/device/activity/start-activity/
@@ -4951,8 +4975,8 @@ export interface CookiesNsCommands<ReturnType = unknown> {
    * };
    */
   get(
-      name: string,
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<Cookie | null>) => void,
+    name: string,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<Cookie | null>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, Cookie | null>;
 
   /**
@@ -4978,7 +5002,7 @@ export interface CookiesNsCommands<ReturnType = unknown> {
    * };
    */
   getAll(
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<Cookie[]>) => void,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<Cookie[]>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, Cookie[]>;
 
   /**
@@ -5010,8 +5034,8 @@ export interface CookiesNsCommands<ReturnType = unknown> {
    * };
    */
   set(
-      cookie: Cookie,
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+    cookie: Cookie,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
@@ -5032,8 +5056,8 @@ export interface CookiesNsCommands<ReturnType = unknown> {
    * };
    */
   delete(
-      cookieName: string,
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+    cookieName: string,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
@@ -5054,7 +5078,7 @@ export interface CookiesNsCommands<ReturnType = unknown> {
    * };
    */
   deleteAll(
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 }
 
@@ -5062,9 +5086,9 @@ type FirefoxContext = 'content' | 'chrome';
 export interface FirefoxNsCommands<ReturnType = unknown> {
   getContext(): Awaitable<IfUnknown<ReturnType, this>, FirefoxContext>;
   setContext(ctx: FirefoxContext | PromiseLike<FirefoxContext>): Awaitable<IfUnknown<ReturnType, this>, null>;
-  installAddon(path:string, temporary?: boolean): Awaitable<IfUnknown<ReturnType, this>, string>;
+  installAddon(path: string, temporary?: boolean): Awaitable<IfUnknown<ReturnType, this>, string>;
   uninstallAddon(addonId: string | PromiseLike<string>): Awaitable<IfUnknown<ReturnType, this>, null>;
-} 
+}
 
 type NetworkConditionsSpec = {
   offline: boolean,
@@ -5073,14 +5097,14 @@ type NetworkConditionsSpec = {
   upload_throughput: number
 };
 
-export interface ChromeNsCommands<ReturnType = unknown>{
+export interface ChromeNsCommands<ReturnType = unknown> {
   /**
    * Launch Chrome App with given ID.
    * @param id ID of the App to launch.
    */
   launchApp(
     id: string
-  ): Awaitable<IfUnknown<ReturnType, this>, null>; 
+  ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
    * Get Chromium network emulation settings.
@@ -5124,8 +5148,8 @@ export interface ChromeNsCommands<ReturnType = unknown>{
    * @see <https://chromedevtools.github.io/devtools-protocol/>
    */
   sendDevToolsCommand(
-    cmd: string, 
-    params?: {[key: string]: any}
+    cmd: string,
+    params?: { [key: string]: any }
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
@@ -5136,8 +5160,8 @@ export interface ChromeNsCommands<ReturnType = unknown>{
    * @see <https://chromedevtools.github.io/devtools-protocol/>
    */
   sendAndGetDevToolsCommand(
-    cmd: string, 
-    params?: {[key: string]: any}
+    cmd: string,
+    params?: { [key: string]: any }
   ): Awaitable<IfUnknown<ReturnType, this>, unknown>;
 
   /**
@@ -5148,7 +5172,7 @@ export interface ChromeNsCommands<ReturnType = unknown>{
    * @see <https://w3c.github.io/permissions/#permission-registry> for valid names
    */
   setPermission(
-    name: string, 
+    name: string,
     state: 'granted' | 'denied' | 'prompt'
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
@@ -5313,7 +5337,7 @@ export interface AlertsNsCommands<ReturnType = unknown> {
    * };
    */
   accept(
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
@@ -5337,7 +5361,7 @@ export interface AlertsNsCommands<ReturnType = unknown> {
    * };
    */
   dismiss(
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
@@ -5359,7 +5383,7 @@ export interface AlertsNsCommands<ReturnType = unknown> {
    * };
    */
   getText(
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, string>;
 
   /**
@@ -5380,8 +5404,8 @@ export interface AlertsNsCommands<ReturnType = unknown> {
    * };
    */
   setText(
-      value: string,
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+    value: string,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 }
 
@@ -5403,13 +5427,13 @@ export interface DocumentNsCommands<ReturnType = unknown> {
    * };
    */
   injectScript(
-      scriptUrl: string,
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WebElement>) => void,
+    scriptUrl: string,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WebElement>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, WebElement>;
   injectScript(
-      scriptUrl: string,
-      id: string,
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WebElement>) => void,
+    scriptUrl: string,
+    id: string,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WebElement>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, WebElement>;
 
   /**
@@ -5432,7 +5456,7 @@ export interface DocumentNsCommands<ReturnType = unknown> {
    * @alias document.pageSource
    */
   source(
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, string>;
 
   /**
@@ -5455,7 +5479,7 @@ export interface DocumentNsCommands<ReturnType = unknown> {
    * @alias document.source
    */
   pageSource(
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, string>;
 }
 
@@ -5509,7 +5533,7 @@ export interface LogsNsCommands<ReturnType = unknown> {
    *         const logTypes = result.value;
    *         console.log('Log types available:', logTypes);
    *       }
-   *     });  
+   *     });
    *   });
    *
    *   it('get log types with ES6 async/await', async function(browser) {
@@ -5543,7 +5567,7 @@ export interface LogsNsCommands<ReturnType = unknown> {
    *           // do something more in here
    *         }
    *       }
-   *     });  
+   *     });
    *   });
    *
    *   it('test driver log type with ES6 async/await', async function(browser) {
@@ -5648,7 +5672,7 @@ export interface WindowNsCommands<ReturnType = unknown> {
    * };
    */
   close(
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
@@ -5682,11 +5706,11 @@ export interface WindowNsCommands<ReturnType = unknown> {
    * @alias window.openNew
    */
   open(
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
   open(
-      type: "window" | "tab",
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+    type: "window" | "tab",
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
@@ -5720,11 +5744,11 @@ export interface WindowNsCommands<ReturnType = unknown> {
    * @alias window.open
    */
   openNew(
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
   openNew(
-      type: "window" | "tab",
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+    type: "window" | "tab",
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
@@ -5747,7 +5771,7 @@ export interface WindowNsCommands<ReturnType = unknown> {
    * };
    */
   getHandle(
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, string>;
 
   /**
@@ -5768,7 +5792,7 @@ export interface WindowNsCommands<ReturnType = unknown> {
    * };
    */
   getAllHandles(
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string[]>) => void,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string[]>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, string[]>;
 
   /**
@@ -5837,12 +5861,12 @@ export interface WindowNsCommands<ReturnType = unknown> {
    * @alias window.switch
    */
   switchTo(
-      windowHandle: string,
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+    windowHandle: string,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
   switch(
-      windowHandle: string,
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+    windowHandle: string,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
@@ -5862,7 +5886,7 @@ export interface WindowNsCommands<ReturnType = unknown> {
    * };
    */
   maximize(
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
@@ -5883,7 +5907,7 @@ export interface WindowNsCommands<ReturnType = unknown> {
    * };
    */
   minimize(
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
@@ -5903,7 +5927,7 @@ export interface WindowNsCommands<ReturnType = unknown> {
    * };
    */
   fullscreen(
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
@@ -5924,7 +5948,7 @@ export interface WindowNsCommands<ReturnType = unknown> {
    * };
    */
   getPosition(
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WindowPosition>) => void,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WindowPosition>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, WindowPosition>;
 
   /**
@@ -5945,7 +5969,7 @@ export interface WindowNsCommands<ReturnType = unknown> {
    * };
    */
   getSize(
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WindowSize>) => void,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WindowSize>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, WindowSize>;
 
   /**
@@ -5976,7 +6000,7 @@ export interface WindowNsCommands<ReturnType = unknown> {
    * };
    */
   getRect(
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WindowSizeAndPosition>) => void,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<WindowSizeAndPosition>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, WindowSizeAndPosition>;
 
   /**
@@ -5998,9 +6022,9 @@ export interface WindowNsCommands<ReturnType = unknown> {
    * };
    */
   setPosition(
-      x: number,
-      y: number,
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+    x: number,
+    y: number,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
@@ -6022,9 +6046,9 @@ export interface WindowNsCommands<ReturnType = unknown> {
    * @alias window.resize
    */
   setSize(
-      width: number,
-      height: number,
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+    width: number,
+    height: number,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
@@ -6046,9 +6070,9 @@ export interface WindowNsCommands<ReturnType = unknown> {
    * @alias window.setSize
    */
   resize(
-      width: number,
-      height: number,
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+    width: number,
+    height: number,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 
   /**
@@ -6086,8 +6110,8 @@ export interface WindowNsCommands<ReturnType = unknown> {
    * };
    */
   setRect(
-      options: WindowSize | WindowPosition | WindowSizeAndPosition,
-      callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+    options: WindowSize | WindowPosition | WindowSizeAndPosition,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
 }
 
@@ -6104,7 +6128,7 @@ export interface WebDriverProtocol
   WebDriverProtocolUserActions,
   WebDriverProtocolUserPrompts,
   WebDriverProtocolScreenCapture,
-  WebDriverProtocolMobileRelated {}
+  WebDriverProtocolMobileRelated { }
 
 export interface NightwatchServerStatusResult {
   build: { version: string; revision: string; time: string };
@@ -6196,9 +6220,9 @@ export interface WebDriverProtocolSessions {
   timeouts(
     callback?: (
       this: NightwatchAPI,
-      result: NightwatchCallbackResult<{script: number, implicit: number, pageLoad: number}>
+      result: NightwatchCallbackResult<{ script: number, implicit: number, pageLoad: number }>
     ) => void
-  ): Awaitable<this, {script: number, implicit: number, pageLoad: number}>;
+  ): Awaitable<this, { script: number, implicit: number, pageLoad: number }>;
 
   /**
    * Set the amount of time, in milliseconds, that asynchronous scripts executed by `.executeAsync` are permitted to run before they are aborted and a |Timeout| error is returned to the client.
@@ -6647,7 +6671,7 @@ export interface WebDriverProtocolElements {
    *     const button2 = browser.element.find('button.submit-form');
    *     // Searching for the icon element inside the .submit-form button.
    *     const icon = button2.find('i');
-   * 
+   *
    *     // Use an object to customise locating behaviour.
    *     const main = browser.element({ selector: 'main', locateStrategy: 'css selector' });
    *   },

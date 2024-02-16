@@ -17,7 +17,8 @@ describe('appium api demo', function () {
     'isKeyboardShown',
     'getContexts',
     'getContext',
-    'setContext'
+    'setContext',
+    'resetApp'
   ];
 
   it('test appium available API commands', async function () {
@@ -29,7 +30,7 @@ describe('appium api demo', function () {
     });
   });
 
-  it('Search for Nightwatch', async function() {
+  it('Search for Nightwatch', async function () {
     app  // available globally
       .waitForElementPresent({selector: 'Search Wikipedia', locateStrategy: 'accessibility id'})
       .click('accessibility id', 'Search Wikipedia')

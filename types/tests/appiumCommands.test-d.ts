@@ -218,4 +218,9 @@ describe('keyboard interaction commands', function () {
     const result4 = await app.appium.isKeyboardShown();
     expectType<boolean>(result4);
   });
+
+  it('test reset app commands', async function (app: NightwatchAPI) {
+    const result = await app.appium.resetApp();
+    expectType<null>(result);
+  });
 });
