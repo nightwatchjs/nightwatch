@@ -188,6 +188,29 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
   rightClick(): Promise<WebElement>;
 
   waitUntil(signalOrOptions: WaitUntilActions | WaitUntilOptions, waitOptions?: WaitUntilOptions): Promise<WebElement>;
+
+  isEnabled(): Promise<boolean>;
+
+  isSelected(): Promise<boolean>;
+
+  isDisplayed(): Promise<boolean>;
+
+  // Aliases
+  findElement: ScopedElement['find'];
+  get: ScopedElement['find'];
+  element: ScopedElement['find'];
+  findElements: ScopedElement['findAll'];
+  tagName: ScopedElement['getTagName'];
+  getCssValue: ScopedElement['getCssProperty'];
+  css: ScopedElement['getCssProperty'];
+  attr: ScopedElement['getAttribute'];
+  attribute: ScopedElement['getAttribute'];
+  prop: ScopedElement['getProperty'];
+  property: ScopedElement['getProperty'];
+  text: ScopedElement['getText'];
+  ariaRole: ScopedElement['getAriaRole'];
+  accessibleName: ScopedElement['getAccessibleName'];
+  rect: ScopedElement['getRect'];
 }
 
 type WaitUntilOptions = {
