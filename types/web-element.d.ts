@@ -5,8 +5,8 @@ import {
   WebElementPromise
 } from 'selenium-webdriver';
 
-import { ElementProperties } from './page-object';
-import { Element, LocateStrategy, NightwatchClient } from './index';
+import {ElementProperties} from './page-object';
+import {Element, LocateStrategy, NightwatchClient} from './index';
 
 export interface ScopedElement extends Element, PromiseLike<WebElement> {
   assert: ElementAssertions;

@@ -1,6 +1,6 @@
 import { expectAssignable, expectError, expectType } from "tsd";
 import { Element, ElementAssertions, ElementValue, Elements, ScopedElement, ScopedElementRect, ValueAssertions } from "..";
-import { WebElement, WebElementPromise } from "selenium-webdriver";
+import {WebElement, WebElementPromise} from "selenium-webdriver";
 
 describe('new element() api', function () {
   test('test element()', async function () {
