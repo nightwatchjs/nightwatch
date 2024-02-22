@@ -5,8 +5,8 @@ import {
   WebElementPromise
 } from 'selenium-webdriver';
 
-import {ElementProperties} from './page-object';
-import {Element, LocateStrategy, NightwatchClient} from './index';
+import { ElementProperties } from './page-object';
+import { Element, LocateStrategy, NightwatchClient } from './index';
 
 export interface ScopedElement extends Element, PromiseLike<WebElement> {
   assert: ElementAssertions;
@@ -45,28 +45,28 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
       readonly expanded?: boolean;
     }
   ): ScopedElement;
-  
+
   findByPlaceholderText(
     text: string,
     options?: Omit<ScopedSelectorObject, 'selector'> & {
       readonly exact?: boolean;
     }
   ): ScopedElement;
-  
+
   findByLabelText(
     text: string,
     options?: Omit<ScopedSelectorObject, 'selector'> & {
       readonly exact?: boolean;
     }
   ): ScopedElement;
-  
+
   findByAltText(
     text: string,
     options?: Omit<ScopedSelectorObject, 'selector'> & {
       readonly exact?: boolean;
     }
   ): ScopedElement;
-  
+
   findAll(selector: ScopedSelector | Promise<ScopedSelector>): Elements;
   getAll(selector: ScopedSelector | Promise<ScopedSelector>): Elements;
 
@@ -188,6 +188,8 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
   rightClick(): Promise<WebElement>;
 
   waitUntil(signalOrOptions: WaitUntilActions | WaitUntilOptions, waitOptions?: WaitUntilOptions): Promise<WebElement>;
+
+  isEnabled(): Promise<string | null>;
 }
 
 type WaitUntilOptions = {
