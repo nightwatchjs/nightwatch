@@ -129,7 +129,6 @@ describe('new element() api', function () {
     expectType<ScopedElement>(elem.getLastElementChild());
     expectType<ScopedElement>(elem.getNextElementSibling());
     expectType<ScopedElement>(elem.getPreviousElementSibling());
-    expectType<ScopedElement>(elem.isEnabled());
 
     expectType<Omit<ScopedElement, 'then'> & PromiseLike<ShadowRoot>>(elem.getShadowRoot());
     expectType<ShadowRoot>(await elem.getShadowRoot());
@@ -141,6 +140,7 @@ describe('new element() api', function () {
     expectType<ElementValue<string | null>>(elem.getProperty('property-name'));
     expectType<ElementValue<string | null>>(elem.getAttribute('attrib-name'));
     expectType<ElementValue<string | null>>(elem.getValue());
+    expectType<ElementValue<string | null>>(elem.isEnabled());
 
     expectType<ElementValue<ScopedElementRect>>(elem.getRect());
     expectType<ElementValue<ScopedElementRect>>(elem.getSize());
