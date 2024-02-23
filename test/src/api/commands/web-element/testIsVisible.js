@@ -20,7 +20,7 @@ describe('element().isVisible() command', function() {
       })
     });
 
-    this.client.api.element('#weblogin').isSelected(function (result) {
+    this.client.api.element('#weblogin').isVisible(function (result) {
       this.assert.equal(result.value, true);
     });
   });
@@ -34,7 +34,7 @@ describe('element().isVisible() command', function() {
       })
     });
 
-    const resultPromise = this.client.api.element('#weblogin').isSelected();
+    const resultPromise = this.client.api.element('#weblogin').isVisible();
     const result = await resultPromise;
     assert.equal(result, true);
   });
