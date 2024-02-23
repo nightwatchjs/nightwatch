@@ -16,7 +16,7 @@ describe('element().isEnabled() command', function () {
 
   it('test .element().isEnabled()', async function() {
     MockServer.addMock({
-      url: '/session/13521-10219-202/element/0/text',
+      url: '/session/13521-10219-202/element/0/enabled',
       method: 'GET',
       response: JSON.stringify({
         value: 'Signup'
@@ -40,7 +40,7 @@ describe('element().isEnabled() command', function () {
 
   it('test .element().find().isEnabled()', async function() {
     MockServer.addMock({
-      url: '/session/13521-10219-202/element/1/text',
+      url: '/session/13521-10219-202/element/1/enabled',
       method: 'GET',
       response: JSON.stringify({
         value: 'Help'
@@ -64,7 +64,7 @@ describe('element().isEnabled() command', function () {
 
   it('test .element.find().isEnabled()', async function() {
     MockServer.addMock({
-      url: '/session/13521-10219-202/element/0/text',
+      url: '/session/13521-10219-202/element/0/enabled',
       method: 'GET',
       response: JSON.stringify({
         value: 'Signup'
@@ -88,7 +88,7 @@ describe('element().isEnabled() command', function () {
 
   it('test .element().isEnabled() assert', async function() {
     MockServer.addMock({
-      url: '/session/13521-10219-202/element/0/text',
+      url: '/session/13521-10219-202/element/0/enabled',
       method: 'GET',
       response: JSON.stringify({
         value: 'Signup'
