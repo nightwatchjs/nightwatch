@@ -20,7 +20,7 @@ describe('element().isEnabled() command', function() {
       })
     });
 
-    this.client.api.element('#weblogin').isSelected(function (result) {
+    this.client.api.element('#weblogin').isEnabled(function (result) {
       this.assert.equal(result.value, true);
     });
   });
