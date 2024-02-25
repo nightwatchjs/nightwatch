@@ -119,7 +119,7 @@ describe('clearValue', function() {
     });
   });
  
-  it('client.clearValue() with webdriver protocol - ensuring working of sendKeys()', function (done) {
+  it('client.clearValue() with webdriver protocol - ensuring that fallback is working', function (done) {
     Nightwatch.initClient({
       selenium: {
         version2: false,
@@ -146,7 +146,7 @@ describe('clearValue', function() {
         // ensures working of clearValue
         const sentValue = MockServer.getLastRequestData().data.value;
         if (sentValue !== '') {
-          assert.strictEqual(
+          assert.deepStrictEqual(
             sentValue,
             Array(sentValue.length).fill(Key.BACK_SPACE)
             //ensures that Keys were sent
