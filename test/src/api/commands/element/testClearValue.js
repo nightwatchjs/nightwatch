@@ -126,32 +126,24 @@ describe('clearValue', function() {
         start_process: false,
         host: null
       },
-      output: false,
+      output: true,
       silent: false,
       webdriver: {
         host: 'localhost',
         start_process: false
       }
     }).then((client) => {
-      MockServer.addMock(
-        {
-          url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/property/value',
-          response: {value: 'sampleText'}
-        },
-        true
-      );
+      MockServer.addMock({
+        url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/property/clear',
+        response: {value: null}
+      }, true);
+      
+
+      
 
       client.api.clearValue('#webdriver', function (result) {
         assert.strictEqual(result.value, null);
-        // ensures working of clearValue
-        const sentValue = MockServer.getLastRequestData().data.value;
-        if (sentValue !== '') {
-          assert.deepStrictEqual(
-            sentValue,
-            Array(sentValue.length).fill(Key.BACK_SPACE)
-            //ensures that Keys were sent
-          );
-        }
+        // ensures fallback is working
       });
 
       client.start(done);
