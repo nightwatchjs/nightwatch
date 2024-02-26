@@ -36,6 +36,27 @@ describe('element().isSelected() command', function() {
 
   });
 
+  it('test .element().isSelected() not selected', async function() {
+    MockServer.addMock({
+      url: '/session/13521-10219-202/element/0/selected',
+      method: 'GET',
+      response: JSON.stringify({
+        value: false
+      })
+    }, true);
+
+    const resultPromise = this.client.api.element('#signupSection').isSelected();
+    assert.strictEqual(resultPromise instanceof Element, false);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+
+    const result = await resultPromise;
+    assert.strictEqual(result instanceof WebElement, false);
+    assert.strictEqual(result, false);
+  });
+
   it('test .element().find().isSelected()', async function() {
     MockServer.addMock({
       url: '/session/13521-10219-202/element/1/selected',
@@ -57,12 +78,33 @@ describe('element().isSelected() command', function() {
     assert.strictEqual(result, true);
   });
 
-  it('test .element().isSelected() not selected', async function() {
+  it('test .element().find().isSelected() not selected', async function() {
     MockServer.addMock({
       url: '/session/13521-10219-202/element/0/selected',
       method: 'GET',
       response: JSON.stringify({
         value: false
+      })
+    }, true);
+
+    const resultPromise = this.client.api.element.find('#signupSection').isSelected();
+    assert.strictEqual(resultPromise instanceof Element, false);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+
+    const result = await resultPromise;
+    assert.strictEqual(result instanceof WebElement, false);
+    assert.strictEqual(result, false);
+  });
+
+  it('test .element().isSelected() assert', async function() {
+    MockServer.addMock({
+      url: '/session/13521-10219-202/element/0/selected',
+      method: 'GET',
+      response: JSON.stringify({
+        value: true
       })
     }, true);
 
@@ -73,9 +115,8 @@ describe('element().isSelected() command', function() {
     assert.strictEqual(resultPromise instanceof Promise, false);
     assert.strictEqual(typeof resultPromise.then, 'function');
 
-    const result = await resultPromise;
-    assert.strictEqual(result instanceof WebElement, false);
-    assert.strictEqual(result, false);
+    assert.strictEqual(await resultPromise.assert.equals(true), true);
+    assert.strictEqual(await resultPromise.assert.not.equals(false), true);
   });
 
 });
