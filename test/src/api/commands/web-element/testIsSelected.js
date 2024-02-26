@@ -78,7 +78,7 @@ describe('element().isSelected() command', function() {
     assert.strictEqual(result, true);
   });
 
-  it('test .element().find().isSelected() not selected', async function() {
+  it('test .element.find().isSelected() not selected', async function() {
     MockServer.addMock({
       url: '/session/13521-10219-202/element/0/selected',
       method: 'GET',
