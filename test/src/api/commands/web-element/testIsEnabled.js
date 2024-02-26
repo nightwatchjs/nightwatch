@@ -36,6 +36,6 @@ describe('element().isEnabled() command', function() {
 
     const resultPromise = this.client.api.element('#search').isEnabled();
     const result = await resultPromise;
-    assert.equal(result, null);
+    assert.equal(result, true);
   });
 });
