@@ -13,7 +13,7 @@ describe('element().isEnabled() command', function() {
 
   it('test .element().isEnabled()', function() {
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/element/0/visible',
+      url: '/wd/hub/session/1352110219202/element/0/enabled',
       method: 'GET',
       response: JSON.stringify({
         value: true
@@ -27,7 +27,7 @@ describe('element().isEnabled() command', function() {
 
   it('async test .element().isEnabled()', async function() {
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/element/0/visible',
+      url: '/wd/hub/session/1352110219202/element/0/enabled',
       method: 'GET',
       response: JSON.stringify({
         value: true
