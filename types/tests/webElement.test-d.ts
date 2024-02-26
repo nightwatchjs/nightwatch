@@ -102,6 +102,7 @@ describe('new element() api', function () {
 
     expectType<ScopedElement>(elem.find('selector'));
     expectType<ScopedElement>(elem.get('selector'));
+    expectType<ScopedElement>(elem.findElement('selector'));
 
     expectType<ScopedElement>(elem.findByText('some-text', {exact: true, abortOnFailure: false}));
 

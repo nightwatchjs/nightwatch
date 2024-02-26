@@ -14,6 +14,7 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
   webElement: WebElementPromise;
 
   find(selector: ScopedElementSelector): ScopedElement;
+  findElement(selector: ScopedElementSelector): ScopedElement;
   get(selector: ScopedElementSelector): ScopedElement;
 
   findByText(
