@@ -148,6 +148,7 @@ describe('new element() api', function () {
     expectType<ElementValue<string>>(elem.getAriaRole());
     expectType<ElementValue<string>>(elem.getCssProperty('height'));
     expectType<ElementValue<string>>(elem.takeScreenshot());
+    expectType<ElementValue<boolean>>(elem.isPresent());
 
     expectType<Promise<WebElement>>(elem.click());
     expectType<Promise<WebElement>>(elem.clear());
