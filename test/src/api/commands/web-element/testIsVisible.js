@@ -36,6 +36,6 @@ describe('element().isVisible() command', function() {
 
     const resultPromise = this.client.api.element('#search').isVisible();
     const result = await resultPromise;
-    assert.equal(result, null);
+    assert.equal(result, true);
   });
 });
