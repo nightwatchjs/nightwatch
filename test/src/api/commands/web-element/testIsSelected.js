@@ -36,6 +36,27 @@ describe('element().isSelected() command', function() {
 
   });
 
+  it('test .element().find().isSelected()', async function() {
+    MockServer.addMock({
+      url: '/session/13521-10219-202/element/1/selected',
+      method: 'GET',
+      response: JSON.stringify({
+        value: true
+      })
+    }, true);
+
+    const resultPromise = this.client.api.element('#signupSection').find('#helpBtn').isSelected();
+    assert.strictEqual(resultPromise instanceof Element, false);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+
+    const result = await resultPromise;
+    assert.strictEqual(result instanceof WebElement, false);
+    assert.strictEqual(result, true);
+  });
+
   it('test .element().isSelected() not selected', async function() {
     MockServer.addMock({
       url: '/session/13521-10219-202/element/0/selected',
