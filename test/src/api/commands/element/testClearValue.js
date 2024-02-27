@@ -1,7 +1,7 @@
 const assert = require('assert');
 const MockServer = require('../../../../lib/mockserver.js');
 const Nightwatch = require('../../../../lib/nightwatch.js');
-const { Key } = require('selenium-webdriver');
+const {Key} = require('selenium-webdriver');
 
 describe('clearValue', function () {
   before(function (done) {
@@ -16,14 +16,14 @@ describe('clearValue', function () {
   it('client.clearValue()', function (done) {
     Nightwatch.initClient({
       output: false,
-      silent: false,
+      silent: false
     }).then((client) => {
       MockServer.addMock({
         url: '/wd/hub/session/1352110219202/element/0/clear',
         response: {
           sessionId: '1352110219202',
-          status: 0,
-        },
+          status: 0
+        }
       });
 
       client.api
@@ -42,7 +42,7 @@ describe('clearValue', function () {
   it('client.clearValue() with invalid locate strategy', function (done) {
     Nightwatch.initClient({
       output: false,
-      silent: false,
+      silent: false
     }).then((client) => {
       client.api.clearValue(
         'invalid strategy',
@@ -57,7 +57,7 @@ describe('clearValue', function () {
           assert.ok(err instanceof Error);
           assert.ok(
             err.message.includes(
-              `Provided locating strategy 'invalid strategy' is not supported for .clearValue()`
+              'Provided locating strategy \'invalid strategy\' is not supported for .clearValue()'
             )
           );
           done();
@@ -71,14 +71,14 @@ describe('clearValue', function () {
   it('client.clearValue() with no callback', function (done) {
     Nightwatch.initClient({
       output: false,
-      silent: false,
+      silent: false
     }).then((client) => {
       MockServer.addMock({
         url: '/wd/hub/session/1352110219202/element/0/clear',
         response: {
           sessionId: '1352110219202',
-          status: 0,
-        },
+          status: 0
+        }
       });
 
       client.api.elements('css selector', 'body', (res) => {
@@ -94,19 +94,19 @@ describe('clearValue', function () {
       selenium: {
         version2: false,
         start_process: false,
-        host: null,
+        host: null
       },
       output: false,
       silent: false,
       webdriver: {
         host: 'localhost',
-        start_process: false,
-      },
+        start_process: false
+      }
     }).then((client) => {
       MockServer.addMock(
         {
           url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/clear',
-          response: { value: null },
+          response: {value: null}
         },
         true
       );
@@ -114,7 +114,7 @@ describe('clearValue', function () {
       MockServer.addMock(
         {
           url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/clear',
-          response: { value: null },
+          response: {value: null}
         },
         true
       );
@@ -136,14 +136,14 @@ describe('clearValue', function () {
       selenium: {
         version2: false,
         start_process: false,
-        host: null,
+        host: null
       },
       output: true,
       silent: false,
       webdriver: {
         host: 'localhost',
-        start_process: false,
-      },
+        start_process: false
+      }
     }).then((client) => {
       const bArr = Array(6).fill(Key.BACK_SPACE);
       const str = bArr.join('');
@@ -151,23 +151,23 @@ describe('clearValue', function () {
       MockServer.addMock(
         {
           url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/clear',
-          response: { value: 'sample' },
+          response: {value: 'sample'}
         },
         true
       );
 
       MockServer.addMock(
         {
-          url: `/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/value`,
+          url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/value',
           method: 'POST',
           postdata: {
             str,
-            value: bArr,
+            value: bArr
           },
           response: {
-            value: null,
+            value: null
           },
-          statusCode: 200,
+          statusCode: 200
         },
         true
       );
@@ -186,23 +186,23 @@ describe('clearValue', function () {
       selenium: {
         version2: false,
         start_process: false,
-        host: null,
+        host: null
       },
       webdriver: {
         host: 'localhost',
-        start_process: false,
+        start_process: false
       },
       silent: false,
       output: false,
       globals: {
-        waitForConditionPollInterval: 5,
-      },
+        waitForConditionPollInterval: 5
+      }
     }).then((client) => {
       let retries = 0;
       MockServer.addMock({
         statusCode: 404,
         url: '/session/13521-10219-202/elements',
-        postdata: { using: 'css selector', value: '#webdriver-notfound' },
+        postdata: {using: 'css selector', value: '#webdriver-notfound'},
         times: 2,
         onResponse() {
           retries++;
@@ -212,13 +212,13 @@ describe('clearValue', function () {
             error: 'no such element',
             message: 'Unable to locate element: #webdriver-notfound',
             stacktrace:
-              'WebDriverError@chrome://marionette/content/error.js:172:5\nNoSuchElementError@chrome://marionette/content/error.js:400:5',
-          },
-        },
+              'WebDriverError@chrome://marionette/content/error.js:172:5\nNoSuchElementError@chrome://marionette/content/error.js:400:5'
+          }
+        }
       });
 
       client.api.clearValue(
-        { selector: '#webdriver-notfound', timeout: 11 },
+        {selector: '#webdriver-notfound', timeout: 11},
         function (result) {
           assert.strictEqual(result.status, -1);
           assert.strictEqual(retries, 2);
