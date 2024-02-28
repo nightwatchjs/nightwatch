@@ -14,55 +14,75 @@ describe('element().isPresent() command', function() {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('should return true if element is present', async function() {
+  it('test .element().isPresent() for element present', async function() {
     MockServer.addMock({
-      url: '/session/13521-10219-202/element/0/displayed',
-      method: 'GET',
+      url: '/session/13521-10219-202/element',
+      method: 'POST',
       response: JSON.stringify({
-        value: true
+        value: {ELEMENT: '0'} // Simulate element found
       })
     }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').isPresent();
+    const resultPromise = this.client.api.element('#existingElement').isPresent();
     assert.strictEqual(resultPromise instanceof Element, false);
-    assert.strictEqual(resultPromise instanceof Promise, true);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
 
     const result = await resultPromise;
-    assert.strictEqual(result, true);
+    assert.strictEqual(result, true, 'Expected element to be present in the DOM');
   });
 
-  it('should return false if element is not present', async function() {
+  it('test .element().isPresent() for element not present', async function() {
     MockServer.addMock({
-      url: '/session/13521-10219-202/element/0/displayed',
-      method: 'GET',
+      url: '/session/13521-10219-202/element',
+      method: 'POST',
       response: JSON.stringify({
-        value: false
+        value: null // Simulate element not found
       })
     }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').isPresent();
+    const resultPromise = this.client.api.element('#nonexistentElement').isPresent();
     assert.strictEqual(resultPromise instanceof Element, false);
-    assert.strictEqual(resultPromise instanceof Promise, true);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
 
     const result = await resultPromise;
-    assert.strictEqual(result, false);
+    assert.strictEqual(result, false, 'Expected element not to be present in the DOM');
   });
 
-  it('should handle element not found error', async function() {
+  // Example of a test for an async scenario using .isPresent()
+  it('test async .element().isPresent() for element present', async function() {
     MockServer.addMock({
-      url: '/session/13521-10219-202/element/0/displayed',
-      method: 'GET',
+      url: '/session/13521-10219-202/element',
+      method: 'POST',
       response: JSON.stringify({
-        value: false
-      }),
-      status: 404
+        value: {ELEMENT: '0'} // Again, simulate element found
+      })
     }, true);
 
-    try {
-      await this.client.api.element('#signupSection').isPresent();
-      assert.fail('Expected error to be thrown');
-    } catch (err) {
-      assert.strictEqual(err.name, 'NoSuchElementError');
-    }
+    const result = await this.client.api.element('#asyncElement').isPresent();
+    assert.strictEqual(result, true, 'Expected element to be present in the DOM using async/await');
+  });
+
+  // Test to ensure .isPresent() correctly handles WebDriver errors
+  it('test .element().isPresent() handles errors', async function() {
+    MockServer.addMock({
+      url: '/session/13521-10219-202/element',
+      method: 'POST',
+      response: {
+        statusCode: 404,
+        body: JSON.stringify({
+          value: {error: 'no such element', message: 'An element could not be located on the page using the given search parameters.'}
+        })
+      }
+    }, true);
+
+    const resultPromise = this.client.api.element('#errorElement').isPresent();
+    const result = await resultPromise;
+    assert.strictEqual(result, false, 'Expected .isPresent() to gracefully handle WebDriver errors');
   });
 });
