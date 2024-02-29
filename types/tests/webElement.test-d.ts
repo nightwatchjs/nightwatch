@@ -162,6 +162,7 @@ describe('new element() api', function () {
     expectType<Promise<WebElement>>(elem.clickAndHold());
     expectType<Promise<WebElement>>(elem.doubleClick());
     expectType<Promise<WebElement>>(elem.rightClick());
+    expectType<ElementValue<boolean>>(elem.isPresent());
     expectType<Promise<WebElement>>(elem.waitUntil('visible', {timeout: 5000}));
   });
 
