@@ -17,8 +17,8 @@ describe('setPassword', function() {
       url: '/wd/hub/session/1352110219202/element/0/value',
       method: 'POST',
       postdata: {
-        text: 'password',
-        value: ['p', 'a', 's', 's', 'w', 'o', 'r', 'd']
+        text: 'password',
+        value: ['', 'p', 'a', 's', 's', 'w', 'o', 'r', 'd']
       },
       response: {
         sessionId: '1352110219202',
