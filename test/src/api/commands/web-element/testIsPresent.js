@@ -23,7 +23,7 @@ describe('element().isPresent() command', function() {
       })
     }, true);
 
-    const resultPromise = this.client.api.element('#existingElement').isPresent();
+    const resultPromise = this.client.api.element('#signupSection').isPresent();
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
 
@@ -43,7 +43,7 @@ describe('element().isPresent() command', function() {
       })
     }, true);
 
-    const resultPromise = this.client.api.element('#nonexistentElement').isPresent();
+    const resultPromise = this.client.api.element('#signupSection').isPresent();
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
 
@@ -64,7 +64,7 @@ describe('element().isPresent() command', function() {
       })
     }, true);
 
-    const result = await this.client.api.element('#asyncElement').isPresent();
+    const result = await this.client.api.element('#signupSection').isPresent();
     assert.strictEqual(result, true, 'Expected element to be present in the DOM using async/await');
   });
 
@@ -81,7 +81,7 @@ describe('element().isPresent() command', function() {
       }
     }, true);
 
-    const resultPromise = this.client.api.element('#errorElement').isPresent();
+    const resultPromise = this.client.api.element('#signupSection').isPresent();
     const result = await resultPromise;
     assert.strictEqual(result, false, 'Expected .isPresent() to gracefully handle WebDriver errors');
   });
