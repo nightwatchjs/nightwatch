@@ -4,6 +4,7 @@ const MockServer  = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands-w3c.js');
 const common = require('../../../../common.js');
 const Element = common.require('element/index.js');
+
 describe('element().isVisible() command', function() {
   before(function (done) {
     CommandGlobals.beforeEach.call(this, done);
@@ -40,6 +41,7 @@ describe('element().isVisible() command', function() {
       this.assert.equal(result.value, false);
     });
   });
+
   it('test .element().find().isVisible() not visible', async function () {
     MockServer.addMock({
       url: '/session/13521-10219-202/element/0/displayed',
@@ -57,6 +59,6 @@ describe('element().isVisible() command', function() {
     assert.strictEqual(typeof resultPromise.then, 'function');
 
     const result = await resultPromise;
-    assert.strictEqual(result, null);
+    assert.strictEqual(result, false);
   });
 });
