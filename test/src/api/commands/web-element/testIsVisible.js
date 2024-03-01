@@ -51,14 +51,8 @@ describe('element().isVisible() command', function() {
       })
     }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').find('#helpBtn').isVisible();
-    assert.strictEqual(resultPromise instanceof Element, false);
-    assert.strictEqual(typeof resultPromise.find, 'undefined');
-
-    assert.strictEqual(resultPromise instanceof Promise, false);
-    assert.strictEqual(typeof resultPromise.then, 'function');
-
-    const result = await resultPromise;
-    assert.strictEqual(result, false);
+    this.client.api.element('#signupSection').find('#helpBtn').isVisible(function(result) {
+      this.assert.equal(result.value, true);
+    });
   });
 });
