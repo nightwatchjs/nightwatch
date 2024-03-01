@@ -140,6 +140,8 @@ describe('new element() api', function () {
     expectType<ElementValue<string | null>>(elem.getProperty('property-name'));
     expectType<ElementValue<string | null>>(elem.getAttribute('attrib-name'));
     expectType<ElementValue<string | null>>(elem.getValue());
+    expectType<ElementValue<boolean>>(elem.isEnabled());
+    expectType<ElementValue<boolean>>(elem.isPresent());
 
     expectType<ElementValue<ScopedElementRect>>(elem.getRect());
     expectType<ElementValue<ScopedElementRect>>(elem.getSize());
@@ -148,7 +150,6 @@ describe('new element() api', function () {
     expectType<ElementValue<string>>(elem.getAriaRole());
     expectType<ElementValue<string>>(elem.getCssProperty('height'));
     expectType<ElementValue<string>>(elem.takeScreenshot());
-    expectType<ElementValue<boolean>>(elem.isPresent());
 
     expectType<Promise<WebElement>>(elem.click());
     expectType<Promise<WebElement>>(elem.clear());
@@ -164,6 +165,7 @@ describe('new element() api', function () {
     expectType<Promise<WebElement>>(elem.doubleClick());
     expectType<Promise<WebElement>>(elem.rightClick());
     expectType<Promise<WebElement>>(elem.waitUntil('visible', {timeout: 5000}));
+    expectType<ElementValue<boolean>>(elem.isSelected());
   });
 
   test('test element assertions', async function () {

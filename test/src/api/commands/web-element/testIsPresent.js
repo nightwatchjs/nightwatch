@@ -1,15 +1,15 @@
 const assert = require('assert');
 const {WebElement} = require('selenium-webdriver');
-const MockServer  = require('../../../../lib/mockserver.js');
+const MockServer = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands-w3c.js');
 const common = require('../../../../common.js');
 const Element = common.require('element/index.js');
 describe('element().isPresent() command', function() {
-  before(function (done) {
+  before(function(done) {
     CommandGlobals.beforeEach.call(this, done);
   });
 
-  after(function (done) {
+  after(function(done) {
     CommandGlobals.afterEach.call(this, done);
   });
 
@@ -22,7 +22,7 @@ describe('element().isPresent() command', function() {
       })
     }, true);
 
-    this.client.api.element('#search').isPresent(function (result) {
+    this.client.api.element('#search').isPresent(function(result) {
       this.assert.equal(result.value, true);
     });
   });
@@ -36,11 +36,11 @@ describe('element().isPresent() command', function() {
       })
     }, true);
 
-    this.client.api.element('#search').isPresent(function (result) {
+    this.client.api.element('#search').isPresent(function(result) {
       this.assert.equal(result.value, false);
     });
   });
-  it('test .element().find().isPresent() not present', async function () {
+  it('test .element().find().isPresent() not present', async function() {
     MockServer.addMock({
       url: '/session/13521-10219-202/element/0/present',
       method: 'GET',
