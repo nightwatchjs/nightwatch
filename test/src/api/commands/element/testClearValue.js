@@ -159,7 +159,7 @@ describe('clearValue', function() {
           url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/value',
           method: 'POST',
           postdata: {
-            text : str,
+            text: str,
             value: bArr
           },
           response: {
@@ -177,7 +177,7 @@ describe('clearValue', function() {
   
       client.api.sendKeys('css selector', '#webdriver', bArr, function callback(result) {
         assert.strictEqual(sendKeysMockCalled, true);
-      }).clearValue('css selector','#webdriver', function (result) {
+      }).clearValue('css selector', '#webdriver', function (result) {
         assert.strictEqual(result.value, null);
         // ensures fallback is working
       });
