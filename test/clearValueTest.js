@@ -13,4 +13,5 @@ describe('clearValue Demo', function() {
   });
   
   after(browser => browser.end());
+  
 });

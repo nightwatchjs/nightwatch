@@ -39,7 +39,6 @@
     "minimatch": "3.1.2",
     "minimist": "1.2.6",
     "mocha": "10.2.0",
-    "nightwatch": "^3.4.1",
     "nightwatch-axe-verbose": "^2.3.0",
     "open": "8.4.2",
     "ora": "5.4.1",
