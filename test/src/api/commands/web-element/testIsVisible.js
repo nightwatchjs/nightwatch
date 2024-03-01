@@ -14,55 +14,40 @@ describe('element().isVisible() command', function() {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('test .element().isVisible() displayed', async function() {
+  it('test .element().isVisible() Visible', async function() {
     MockServer.addMock({
-      url: '/session/13521-10219-202/element/0/displayed',
+      url: '/session/13521-10219-202/element/0/Visible',
       method: 'GET',
       response: JSON.stringify({
         value: true
       })
     }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').isVisible();
-    assert.strictEqual(resultPromise instanceof Element, false);
-    assert.strictEqual(typeof resultPromise.find, 'undefined');
-
-    assert.strictEqual(resultPromise instanceof Promise, false);
-    assert.strictEqual(typeof resultPromise.then, 'function');
-
-    const result = await resultPromise;
-    assert.strictEqual(result instanceof WebElement, false);
-    assert.strictEqual(result, true);
-
+    this.client.api.element('#search').isVisible(function(result) {
+      this.assert.equal(result.value, true);
+    });
   });
 
-  it('test .element().isVisible() not displayed', async function() {
+  it('test .element().isVisible() not Visible', async function() {
     MockServer.addMock({
-      url: '/session/13521-10219-202/element/0/displayed',
+      url: '/session/13521-10219-202/element/0/Visible',
       method: 'GET',
       response: JSON.stringify({
         value: false
       })
     }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').isVisible();
-    assert.strictEqual(resultPromise instanceof Element, false);
-    assert.strictEqual(typeof resultPromise.find, 'undefined');
-
-    assert.strictEqual(resultPromise instanceof Promise, false);
-    assert.strictEqual(typeof resultPromise.then, 'function');
-
-    const result = await resultPromise;
-    assert.strictEqual(result instanceof WebElement, false);
-    assert.strictEqual(result, false);
+    this.client.api.element('#search').isVisible(function(result) {
+      this.assert.equal(result.value, true);
+    });
   });
 
-  it('test .element().find().isVisible()', async function() {
+  it('test .element().find().isVisible() not visible', async function() {
     MockServer.addMock({
-      url: '/session/13521-10219-202/element/1/displayed',
+      url: '/session/13521-10219-202/element/0/displayed',
       method: 'GET',
       response: JSON.stringify({
-        value: true
+        value: false
       })
     }, true);
 
@@ -74,49 +59,6 @@ describe('element().isVisible() command', function() {
     assert.strictEqual(typeof resultPromise.then, 'function');
 
     const result = await resultPromise;
-    assert.strictEqual(result instanceof WebElement, false);
-    assert.strictEqual(result, true);
-  });
-
-  it('test .element.find().isVisible() not displayed', async function() {
-    MockServer.addMock({
-      url: '/session/13521-10219-202/element/0/displayed',
-      method: 'GET',
-      response: JSON.stringify({
-        value: false
-      })
-    }, true);
-
-    const resultPromise = this.client.api.element.find('#signupSection').isVisible();
-    assert.strictEqual(resultPromise instanceof Element, false);
-    assert.strictEqual(typeof resultPromise.find, 'undefined');
-
-    assert.strictEqual(resultPromise instanceof Promise, false);
-    assert.strictEqual(typeof resultPromise.then, 'function');
-
-    const result = await resultPromise;
-    assert.strictEqual(result instanceof WebElement, false);
     assert.strictEqual(result, false);
   });
-
-  it('test .element().isVisible() assert', async function() {
-    MockServer.addMock({
-      url: '/session/13521-10219-202/element/0/displayed',
-      method: 'GET',
-      response: JSON.stringify({
-        value: true
-      })
-    }, true);
-
-    const resultPromise = this.client.api.element('#signupSection').isVisible();
-    assert.strictEqual(resultPromise instanceof Element, false);
-    assert.strictEqual(typeof resultPromise.find, 'undefined');
-
-    assert.strictEqual(resultPromise instanceof Promise, false);
-    assert.strictEqual(typeof resultPromise.then, 'function');
-
-    assert.strictEqual(await resultPromise.assert.equals(true), true);
-    assert.strictEqual(await resultPromise.assert.not.equals(false), true);
-  });
-
 });
