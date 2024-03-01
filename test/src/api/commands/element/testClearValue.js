@@ -135,32 +135,49 @@ describe('clearValue', function() {
     }).then((client) => {
       const bArr = Array(6).fill(Key.BACK_SPACE);
       const str = bArr.join('');
+      let sendKeysMockCalled = false;
   
       MockServer.addMock(
         {
           url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/clear',
+          response: {value: null}
+        },
+        true
+      );
+
+      MockServer.addMock(
+        {
+          url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/property/value',
           response: {value: 'sample'}
         },
         true
       );
+
   
       MockServer.addMock(
         {
           url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/value',
           method: 'POST',
           postdata: {
-            str,
+            text : str,
             value: bArr
           },
           response: {
-            value: null
+            sessionId: '13521-10219-202',
+            status: 0
+          },
+          onRequest() {
+            sendKeysMockCalled = true;
           },
           statusCode: 200
         },
         true
       );
+      
   
-      client.api.clearValue('#webdriver', function (result) {
+      client.api.sendKeys('css selector', '#webdriver', bArr, function callback(result) {
+        assert.strictEqual(sendKeysMockCalled, true);
+      }).clearValue('css selector','#webdriver', function (result) {
         assert.strictEqual(result.value, null);
         // ensures fallback is working
       });
