@@ -45,28 +45,28 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
       readonly expanded?: boolean;
     }
   ): ScopedElement;
-
+  
   findByPlaceholderText(
     text: string,
     options?: Omit<ScopedSelectorObject, 'selector'> & {
       readonly exact?: boolean;
     }
   ): ScopedElement;
-
+  
   findByLabelText(
     text: string,
     options?: Omit<ScopedSelectorObject, 'selector'> & {
       readonly exact?: boolean;
     }
   ): ScopedElement;
-
+  
   findByAltText(
     text: string,
     options?: Omit<ScopedSelectorObject, 'selector'> & {
       readonly exact?: boolean;
     }
   ): ScopedElement;
-
+  
   findAll(selector: ScopedSelector | Promise<ScopedSelector>): Elements;
   getAll(selector: ScopedSelector | Promise<ScopedSelector>): Elements;
 

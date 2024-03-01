@@ -1,6 +1,6 @@
 import {expectAssignable, expectError, expectType} from "tsd";
-import {Element, ElementAssertions, ElementValue, Elements, ScopedElement, ScopedElementRect, ValueAssertions} from "..";
-import {WebElement, WebElementPromise} from "selenium-webdriver";
+import { Element, ElementAssertions, ElementValue, Elements, ScopedElement, ScopedElementRect, ValueAssertions } from "..";
+import { WebElement, WebElementPromise } from "selenium-webdriver";
 
 describe('new element() api', function () {
   test('test element()', async function () {
@@ -92,7 +92,7 @@ describe('new element() api', function () {
     expectType<string | undefined>(elem.selector);
     expectType<number>(elem.index);
     expectType<string | null>(elem.resolvedElement);
-});
+  });
 
   test('test properties/methods in ScopedElement', async function () {
     const elem = browser.element('selector');
@@ -165,9 +165,8 @@ describe('new element() api', function () {
     expectType<Promise<WebElement>>(elem.doubleClick());
     expectType<Promise<WebElement>>(elem.rightClick());
     expectType<Promise<WebElement>>(elem.waitUntil('visible', {timeout: 5000}));
-    expectType<Promise<WebElement>>(elem.waitUntil('visible', {timeout: 5000}));
     expectType<ElementValue<boolean>>(elem.isSelected());
-});
+ });
 
   test('test element assertions', async function () {
     const elem = browser.element('selector');
@@ -195,7 +194,7 @@ describe('new element() api', function () {
 
     expectType<Promise<WebElement>>(elem.assert.hasDescendants());
     expectType<WebElement>(await elem.assert.not.hasDescendants('some message'));
-});
+  });
 
   test('test ElementValue methods/properties', async function () {
     const elem = browser.element('selector');
@@ -210,7 +209,7 @@ describe('new element() api', function () {
 
     expectType<ValueAssertions<string>>(elemId.assert);
     expectType<Promise<string>>(elemId.assert.equals('elem-id'));
-});
+  });
 
   test('test ValueAssertions methods/properties', async function () {
     const elem = browser.element('selector');
@@ -228,5 +227,5 @@ describe('new element() api', function () {
 
     expectType<Promise<string>>(elemId.assert.matches(/^some text/, 'some message'));
     expectType<string>(await elemId.assert.not.matches(/some t[a-z]{3}$/));
-});
+  });
 });
