@@ -187,9 +187,13 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   rightClick(): Promise<WebElement>;
 
+  isSelected(): ElementValue<boolean>;
+
   waitUntil(signalOrOptions: WaitUntilActions | WaitUntilOptions, waitOptions?: WaitUntilOptions): Promise<WebElement>;
 
   isVisible(): Promise<boolean>
+
+  isEnabled(): ElementValue<boolean>;
 }
 
 type WaitUntilOptions = {

@@ -140,6 +140,7 @@ describe('new element() api', function () {
     expectType<ElementValue<string | null>>(elem.getProperty('property-name'));
     expectType<ElementValue<string | null>>(elem.getAttribute('attrib-name'));
     expectType<ElementValue<string | null>>(elem.getValue());
+    expectType<ElementValue<boolean>>(elem.isEnabled());
 
     expectType<ElementValue<ScopedElementRect>>(elem.getRect());
     expectType<ElementValue<ScopedElementRect>>(elem.getSize());
@@ -164,6 +165,8 @@ describe('new element() api', function () {
     expectType<Promise<WebElement>>(elem.rightClick());
     expectType<Promise<WebElement>>(elem.waitUntil('visible', { timeout: 5000 }));
     expectType<Promise<boolean>>(elem.isVisible());
+    expectType<Promise<WebElement>>(elem.waitUntil('visible', {timeout: 5000}));
+    expectType<ElementValue<boolean>>(elem.isSelected());
   });
 
   test('test element assertions', async function () {
