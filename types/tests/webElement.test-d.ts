@@ -32,8 +32,8 @@ describe('new element() api', function () {
     // backward compatibility
     expectType<ScopedElement>(browser.element('css selector', 'selector', function (result) {
       expectType<never>(result);
-  }));
-});
+    }));
+  });
 
   test('test element.methodName()', async function () {
     const elementActive = browser.element.findActive();
@@ -81,7 +81,7 @@ describe('new element() api', function () {
 
     const elementFindAllByAltText = browser.element.findAllByAltText('some-text', {exact: false, abortOnFailure: false});
     expectType<Elements>(elementFindAllByAltText);
-});
+  });
 
   test('test ScopedElement has Element class properties', async function () {
     const elem = browser.element('selector');
