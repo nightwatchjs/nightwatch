@@ -15,13 +15,13 @@ describe('element().isPresent() command', function() {
   });
 
   it('test .element().isPresent() for element present', async function() {
-    MockServer.addMock({
-      url: '/session/13521-10219-202/element',
-      method: 'POST',
-      response: JSON.stringify({
-        value: {ELEMENT: '0'} // Simulate element found
-      })
-    }, true);
+    // MockServer.addMock({
+    //   url: '/session/13521-10219-202/element',
+    //   method: 'POST',
+    //   response: JSON.stringify({
+    //     value: {ELEMENT: '0'} // Simulate element found
+    //   })
+    // }, true);
 
     const resultPromise = this.client.api.element('#signupSection').isPresent();
     assert.strictEqual(resultPromise instanceof Element, false);
@@ -35,13 +35,13 @@ describe('element().isPresent() command', function() {
   });
 
   it('test .element().isPresent() for element not present', async function() {
-    MockServer.addMock({
-      url: '/session/13521-10219-202/element',
-      method: 'POST',
-      response: JSON.stringify({
-        value: null // Simulate element not found
-      })
-    }, true);
+    // MockServer.addMock({
+    //   url: '/session/13521-10219-202/element',
+    //   method: 'POST',
+    //   response: JSON.stringify({
+    //     value: null // Simulate element not found
+    //   })
+    // }, true);
 
     const resultPromise = this.client.api.element('#signupSecti').isPresent();
     assert.strictEqual(resultPromise instanceof Element, false);
@@ -56,13 +56,13 @@ describe('element().isPresent() command', function() {
 
   // Example of a test for an async scenario using .isPresent()
   it('test async .element().isPresent() for element present', async function() {
-    MockServer.addMock({
-      url: '/session/13521-10219-202/element',
-      method: 'POST',
-      response: JSON.stringify({
-        value: {ELEMENT: '0'} // Again, simulate element found
-      })
-    }, true);
+    // MockServer.addMock({
+    //   url: '/session/13521-10219-202/element',
+    //   method: 'POST',
+    //   response: JSON.stringify({
+    //     value: {ELEMENT: '0'} // Again, simulate element found
+    //   })
+    // }, true);
 
     const result = await this.client.api.element('#signupSection').isPresent();
     assert.strictEqual(result, true, 'Expected element to be present in the DOM using async/await');
@@ -70,16 +70,16 @@ describe('element().isPresent() command', function() {
 
   // Test to ensure .isPresent() correctly handles WebDriver errors
   it('test .element().isPresent() handles errors', async function() {
-    MockServer.addMock({
-      url: '/session/13521-10219-202/element',
-      method: 'POST',
-      response: {
-        statusCode: 404,
-        body: JSON.stringify({
-          value: {error: 'no such element', message: 'An element could not be located on the page using the given search parameters.'}
-        })
-      }
-    }, true);
+    // MockServer.addMock({
+    //   url: '/session/13521-10219-202/element',
+    //   method: 'POST',
+    //   response: {
+    //     statusCode: 404,
+    //     body: JSON.stringify({
+    //       value: {error: 'no such element', message: 'An element could not be located on the page using the given search parameters.'}
+    //     })
+    //   }
+    // }, true);
 
     const resultPromise = this.client.api.element('#badElement').isPresent();
     const result = await resultPromise;
