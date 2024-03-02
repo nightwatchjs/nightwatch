@@ -6,8 +6,7 @@ module.exports = {
   demoTest(client) {
     client
       .url('http://localhost')
-      .setPassword('#weblogin', 'password')
-      .end();
+      .setPassword('#weblogin', 'password');
   },
 
   after(client, callback) {

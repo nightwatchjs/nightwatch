@@ -1,5 +1,4 @@
 const path = require('path');
-const assert = require('assert');
 const {Key} = require('selenium-webdriver');
 const common = require('../../../../common.js');
 const {settings} = common;
@@ -17,7 +16,8 @@ describe('setPassword', function() {
     CommandGlobals.afterEach.call(this, done);
   });
 
-  it('client.setPassword()', function(done) {
+  it('client.setPassword() value redacted in rawHttpOutput', async function() {
+
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element/0/value',
       method: 'POST',
@@ -40,26 +40,23 @@ describe('setPassword', function() {
       }
     });
 
-    this.client.api
-      .setPassword('css selector', '#weblogin', 'password', function callback(result) {
-        assert.strictEqual(result.status, 0);
-      })
-      .setPassword('css selector', {
-        selector: '#weblogin',
-        timeout: 100
-      }, 'password', function callback(result) {
-        assert.strictEqual(result.status, 0);
-      })
-      .setPassword({
-        selector: '#weblogin',
-        timeout: 100
-      }, 'password', function callback(result) {
-        assert.strictEqual(result.status, 0);
-      })
-      .setPassword('#weblogin', 'password', function callback(result) {
-        assert.strictEqual(result.status, 0);
-      });
+    const testsPath = [
+      path.join(__dirname, '../../../../sampletests/checkValueRedacted/passwordValueRedacted.js')
+    ];
 
-    this.client.start(done);
+    const globals = {
+      calls: 0,
+      waitForConditionTimeout: 10,
+      waitForConditionPollInterval: 10,
+      reporter(results) {
+        const output = results.modules.passwordValueRedacted.rawHttpOutput;
+        console.log({output});
+      }
+    };
+
+    await NightwatchClient.runTests(testsPath, settings({
+      globals
+    }));
+
   });
 });
