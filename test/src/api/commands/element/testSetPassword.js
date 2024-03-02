@@ -63,7 +63,7 @@ describe('setPassword', function() {
     this.client.start(done);
   });
 
-  it('client.setPassword() value hidden', async function() {
+  it('client.setPassword() value redacted in rawHttpOutput', async function() {
     MockServer.addMock({
       url: '/wd/hub/session/1352110219202/element/0/value',
       method: 'POST',
