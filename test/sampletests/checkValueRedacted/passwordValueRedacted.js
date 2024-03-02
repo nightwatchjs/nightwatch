@@ -6,7 +6,9 @@ module.exports = {
   demoTest(client) {
     client
       .url('http://localhost')
-      .setPassword('#weblogin', 'password');
+      .setPassword('#weblogin', 'redacted_text')
+      .setValue('#weblogin', 'non_redacted')
+      .end();
   },
 
   after(client, callback) {

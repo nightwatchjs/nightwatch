@@ -1,3 +1,4 @@
+const assert = require('assert');
 const path = require('path');
 const {Key} = require('selenium-webdriver');
 const common = require('../../../../common.js');
@@ -6,14 +7,17 @@ const NightwatchClient = common.require('index.js');
 const MockServer  = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 
-describe('setPassword', function() {
+describe('setPassword check', function() {
 
   before(function(done) {
-    CommandGlobals.beforeEach.call(this, done);
+    this.server = MockServer.init();
+    this.server.on('listening', () => done());
   });
 
   after(function(done) {
-    CommandGlobals.afterEach.call(this, done);
+    this.server.close(function() {
+      done();
+    });
   });
 
   it('client.setPassword() value redacted in rawHttpOutput', async function() {
@@ -49,13 +53,27 @@ describe('setPassword', function() {
       waitForConditionTimeout: 10,
       waitForConditionPollInterval: 10,
       reporter(results) {
-        const output = results.modules.passwordValueRedacted.rawHttpOutput;
-        console.log({output});
+        const rawHttpOutput = results.modules.passwordValueRedacted.rawHttpOutput;
+        const requests = rawHttpOutput.filter((req) => req[1].includes('/element/0/value') && req[1].includes('Request POST'));
+        let foundRedactedText = false;
+        let didNotFindNonRedactedText = true;
+        for (var request of requests) {
+          if (request[2].includes('redacted_text')) {
+            foundRedactedText = true;
+          }
+          if (request[2].includes('non_redacted')) {
+            didNotFindNonRedactedText = false;
+          }
+        }
+        assert.strictEqual(foundRedactedText, false);
+        assert.strictEqual(didNotFindNonRedactedText, false);
+        
       }
     };
 
     await NightwatchClient.runTests(testsPath, settings({
-      globals
+      globals,
+      output_folder: 'output'
     }));
 
   });
