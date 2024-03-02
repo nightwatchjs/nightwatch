@@ -43,7 +43,7 @@ describe('element().isPresent() command', function() {
       })
     }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').isPresent();
+    const resultPromise = this.client.api.element('#signupSecti').isPresent();
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
 
@@ -81,7 +81,7 @@ describe('element().isPresent() command', function() {
       }
     }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').isPresent();
+    const resultPromise = this.client.api.element('#badElement').isPresent();
     const result = await resultPromise;
     assert.strictEqual(result, false, 'Expected .isPresent() to gracefully handle WebDriver errors');
   });
