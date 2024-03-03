@@ -101,4 +101,4 @@ class ClientCommand {
   }
 }
 
-export = ClientCommand
+export default ClientCommand;
