@@ -100,7 +100,7 @@ The tests for Nightwatch are written using Mocha.
    # clone the project
    git clone https://github.com/nightwatchjs/nightwatch.git
 
-   # change the directory
+   # change directory
    cd nightwatch
 
    # install the dependencies
