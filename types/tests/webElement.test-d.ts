@@ -140,6 +140,7 @@ describe('new element() api', function () {
     expectType<ElementValue<string | null>>(elem.getProperty('property-name'));
     expectType<ElementValue<string | null>>(elem.getAttribute('attrib-name'));
     expectType<ElementValue<string | null>>(elem.getValue());
+    expectType<ElementValue<boolean>>(elem.isPresent());
     expectType<ElementValue<boolean>>(elem.isEnabled());
 
     expectType<ElementValue<ScopedElementRect>>(elem.getRect());

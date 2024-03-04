@@ -183,9 +183,12 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   clickAndHold(): Promise<WebElement>;
 
+
   doubleClick(): Promise<WebElement>;
 
   rightClick(): Promise<WebElement>;
+  
+  isPresent(): ElementValue<boolean>;
 
   isSelected(): ElementValue<boolean>;
 
