@@ -1,9 +1,7 @@
-module.exports = {
-  demoTest(client) {
-    client
-      .url('http://localhost')
-      .setPassword('#weblogin', 'redacted_text')
-      .setValue('#weblogin', 'non_redacted')
-      .end();
-  }
-};
+describe('Aniket', function() { 
+  test('test setpassword', async browser => {
+    browser
+      .setPassword('#weblogin', 'password')
+      .setValue('#weblogin', 'simpletext');
+  });
+});
