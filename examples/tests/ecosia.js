@@ -13,7 +13,11 @@ describe('Ecosia.org Demo', function() {
       .setValue('input[type=search]', 'nightwatch')
       .assert.visible('button[type=submit]')
       .click('button[type=submit]')
-      .assert.textContains('.layout__content', 'Nightwatch.js');
+      .assert.textContains('.layout__content', 'Nightwatch.js')
+      .element('input[type=search]').isPresent(result => {
+        // You can add assertions based on the result
+        browser.assert.equal(result, true, 'The search input is present');
+      });
   });
 
   after(browser => browser.end());
