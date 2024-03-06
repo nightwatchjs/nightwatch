@@ -1,9 +1,5 @@
-const path = require('path');
 const assert = require('assert');
 const {Key} = require('selenium-webdriver');
-const common = require('../../../../common.js');
-const {settings} = common;
-const NightwatchClient = common.require('index.js');
 const MockServer  = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 
