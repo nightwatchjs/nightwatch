@@ -22,25 +22,27 @@ describe('setPassword check', function() {
 
   it('client.setPassword() value redacted in rawHttpOutput', async function() {
 
+    let sendKeysRedactedMockCalled = false;
+    let globalReporterCalled = false;
+
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/element/0/value',
+      url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/clear',
       method: 'POST',
-      postdata: {
-        text: Key.NULL + 'password',
-        value: [Key.NULL, 'p', 'a', 's', 's', 'w', 'o', 'r', 'd']
-      },
+      statusCode: 200,
       response: {
-        sessionId: '1352110219202',
-        status: 0
+        value: null
       }
     });
 
     MockServer.addMock({
-      url: '/wd/hub/session/1352110219202/element/0/clear',
+      url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/value',
       method: 'POST',
+      postdata: {text: 'password', value: ['p', 'a', 's', 's', 'w', 'o', 'r', 'd']},
       response: {
-        sessionId: '1352110219202',
-        status: 0
+        value: null
+      },
+      onRequest: () => {
+        sendKeysRedactedMockCalled = true;
       }
     });
 
@@ -53,10 +55,17 @@ describe('setPassword check', function() {
       waitForConditionTimeout: 10,
       waitForConditionPollInterval: 10,
       reporter(results) {
+        globalReporterCalled = true;
+
+        assert.strictEqual(sendKeysRedactedMockCalled, true);
+        assert.strictEqual(results.errmessages, []);
+
         const rawHttpOutput = results.modules.passwordValueRedacted.rawHttpOutput;
         const requests = rawHttpOutput.filter((req) => req[1].includes('/element/0/value') && req[1].includes('Request POST'));
+
         let foundRedactedText = false;
         let didNotFindNonRedactedText = true;
+
         for (var request of requests) {
           if (request[2].includes('redacted_text')) {
             foundRedactedText = true;
@@ -73,8 +82,11 @@ describe('setPassword check', function() {
 
     await NightwatchClient.runTests(testsPath, settings({
       globals,
-      output_folder: 'output'
+      output_folder: 'output',
+      selenium_host: null,
+      output: true
     }));
 
+    assert.strictEqual(globalReporterCalled, true);
   });
 });
