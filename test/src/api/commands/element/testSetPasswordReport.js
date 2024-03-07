@@ -7,8 +7,7 @@ const {settings} = common;
 const NightwatchClient = common.require('index.js');
 const MockServer  = require('../../../../lib/mockserver.js');
 
-describe('setPassword check', function() {
-
+describe('setPassword report check', function() {
   before(function(done) {
     this.server = MockServer.init();
     this.server.on('listening', () => done());
@@ -21,8 +20,8 @@ describe('setPassword check', function() {
   });
 
   it('client.setPassword() value redacted in rawHttpOutput', async function() {
-
-    let sendKeysRedactedMockCalled = false;
+    let sendKeysPasswordMockCalled = false;
+    let sendKeysNormalMockCalled = false;
     let globalReporterCalled = false;
 
     Mocks.createNewW3CSession({
@@ -35,7 +34,8 @@ describe('setPassword check', function() {
       statusCode: 200,
       response: {
         value: null
-      }
+      },
+      times: 2
     });
 
     MockServer.addMock({
@@ -46,18 +46,9 @@ describe('setPassword check', function() {
         value: null
       },
       onRequest: () => {
-        sendKeysRedactedMockCalled = true;
+        sendKeysPasswordMockCalled = true;
       }
-    });
-
-    MockServer.addMock({
-      url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/clear',
-      method: 'POST',
-      statusCode: 200,
-      response: {
-        value: null
-      }
-    });
+    }, true);
 
     MockServer.addMock({
       url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/value',
@@ -67,47 +58,38 @@ describe('setPassword check', function() {
         value: null
       },
       onRequest: () => {
-        sendKeysRedactedMockCalled = true;
+        sendKeysNormalMockCalled = true;
       }
-    });
+    }, true);
 
     const testsPath = [
-      path.join(__dirname, '../../../../sampletests/checkValueRedacted/passwordValueRedacted.js')
+      path.join(__dirname, '../../../../sampletests/passwordvalueRedacted/passwordValueRedacted.js')
     ];
 
     const globals = {
-      calls: 0,
-      waitForConditionTimeout: 10,
-      waitForConditionPollInterval: 10,
       reporter(results) {
         globalReporterCalled = true;
 
-        assert.strictEqual(sendKeysRedactedMockCalled, true);
+        assert.strictEqual(sendKeysPasswordMockCalled, true);
+        assert.strictEqual(sendKeysNormalMockCalled, true);
         assert.strictEqual(results.errmessages.length, 0);
 
         const rawHttpOutput = results.modules.passwordValueRedacted.rawHttpOutput;
-        const requests = rawHttpOutput.filter((req) => req[1].includes('element/5cc459b8-36a8-3042-8b4a-258883ea642b/value') && req[1].includes('Request POST'));
+        const requests = rawHttpOutput
+          .filter((req) => {
+            return req[1].includes('element/5cc459b8-36a8-3042-8b4a-258883ea642b/value') &&
+              req[1].includes('Request POST');
+          });
 
-        // There are two calls in passwordValueRedacted.js test, setPassword('password') & setValue('simpletext')
-        // We first filter out the https requests that can contain these values as logs. Then we check these logs for our values.
-        // There are two flags:
-        // `foundRedactedText` which tracks if any redacted text is present in the log. So the value should be false only.
-        // `foundNonRedactedText` tracks that the non redacted values SHOULD be present in the logs. So the value should become true.
+        assert.strictEqual(requests.length, 2);
 
-        let foundRedactedText = false;
-        let foundNonRedactedText = false;
+        // First request (setPassword) should contain redacted value
+        assert.strictEqual(requests[0][2].includes('password'), false);
+        assert.strictEqual(requests[0][2].includes('*******'), true);
 
-        for (var request of requests) {
-          if (request[2].includes('password')) {
-            foundRedactedText = true;
-          }
-          if (request[2].includes('simpletext')) {
-            foundNonRedactedText = true;
-          }
-        }
-        assert.strictEqual(foundRedactedText, false);
-        assert.strictEqual(foundNonRedactedText, true);
-        
+        // Second request (setValue) should NOT contain redacted value
+        assert.strictEqual(requests[1][2].includes('simpletext'), true);
+        assert.strictEqual(requests[1][2].includes('*******'), false);
       }
     };
 
