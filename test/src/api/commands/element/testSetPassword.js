@@ -1,4 +1,5 @@
 const assert = require('assert');
+const {Key} = require('selenium-webdriver');
 const MockServer  = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 
@@ -17,8 +18,8 @@ describe('setPassword', function() {
       url: '/wd/hub/session/1352110219202/element/0/value',
       method: 'POST',
       postdata: {
-        text: 'password',
-        value: ['p', 'a', 's', 's', 'w', 'o', 'r', 'd']
+        text: Key.NULL + 'password',
+        value: [Key.NULL, 'p', 'a', 's', 's', 'w', 'o', 'r', 'd']
       },
       response: {
         sessionId: '1352110219202',
