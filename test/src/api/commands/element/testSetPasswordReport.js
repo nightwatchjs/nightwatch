@@ -63,7 +63,7 @@ describe('setPassword report check', function() {
     }, true);
 
     const testsPath = [
-      path.join(__dirname, '../../../../sampletests/passwordvalueRedacted/passwordValueRedacted.js')
+      path.join(__dirname, '../../../../sampletests/passwordValueRedacted/passwordValueRedacted.js')
     ];
 
     const globals = {
