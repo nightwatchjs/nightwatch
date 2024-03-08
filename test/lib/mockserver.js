@@ -61,7 +61,13 @@ class MockServer {
           res.writeHead(Number(item.statusCode), headers);
 
           if (item.onRequest) {
-            item.onRequest(item);
+            let requestData = '';
+            try {
+              requestData = JSON.parse(postdata);
+              // eslint-disable-next-line no-empty
+            } catch (e) {}
+
+            item.onRequest(item, requestData);
           }
 
           if (item.onResponse) {
