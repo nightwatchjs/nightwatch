@@ -137,4 +137,44 @@ describe('isVisible', function () {
 
     this.client.start(done);
   });
+
+  it('client.isDisplayed() [visible]', function (done) {
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/execute/sync',
+      method: 'POST',
+      response: JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0,
+        value: true
+      })
+    });
+
+    this.client.api.isDisplayed('css selector', '#weblogin', function callback(result) {
+      assert.strictEqual(result.value, true);
+    }).isDisplayed('#weblogin', function callback(result) {
+      assert.strictEqual(result.value, true);
+    });
+
+    this.client.start(done);
+  });
+
+  it('client.isDisplayed() [not visible]', function (done) {
+    MockServer.addMock({
+      url: '/wd/hub/session/1352110219202/execute/sync',
+      method: 'POST',
+      response: JSON.stringify({
+        sessionId: '1352110219202',
+        status: 0,
+        value: false
+      })
+    });
+
+    this.client.api.isDisplayed('css selector', '#weblogin', function callback(result) {
+      assert.strictEqual(result.value, false);
+    }).isDisplayed('#weblogin', function callback(result) {
+      assert.strictEqual(result.value, false);
+    });
+
+    this.client.start(done);
+  });
 });
