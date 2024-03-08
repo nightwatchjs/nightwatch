@@ -7,6 +7,7 @@ describe('Ecosia.org Demo', function() {
 
   it('Demo test ecosia.org', function(browser) {
     browser
+      .element('input[name=q]').isDisplayed()
       .waitForElementVisible('body')
       .assert.titleContains('Ecosia')
       .assert.visible('input[type=search]')
