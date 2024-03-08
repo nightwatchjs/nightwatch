@@ -97,9 +97,13 @@ The tests for Nightwatch are written using Mocha.
 1. **Clone the project**
 
    ```bash
-   $ git clone https://github.com/nightwatchjs/nightwatch.git
-   $ cd nightwatch
-   $ npm install
+   git clone https://github.com/nightwatchjs/nightwatch.git
+
+   # change directory
+   cd nightwatch
+
+   # install the dependencies
+   npm install
    ```
 
 2. **Run tests**
@@ -107,13 +111,13 @@ The tests for Nightwatch are written using Mocha.
    To run the complete test suite:
 
    ```bash
-   $ npm test
+   npm test
    ```
 
    To check test coverage, run the command:
 
    ```bash
-   $ npm run mocha-coverage
+   npm run mocha-coverage
    ```
 
    and then open the generated coverage/index.html file in your browser.
