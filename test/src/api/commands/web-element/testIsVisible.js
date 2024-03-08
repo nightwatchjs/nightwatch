@@ -147,4 +147,57 @@ describe('element().isVisible() command', function() {
     assert.strictEqual(await resultPromise.assert.not.equals(false), true);
     assert.strictEqual(elementId, '0');
   });
+  it('test .element().isDisplayed() displayed', async function() {
+    let elementId;
+
+    MockServer.addMock({
+      url: '/session/13521-10219-202/execute/sync',
+      method: 'POST',
+      response: JSON.stringify({
+        value: true
+      }),
+      onRequest(_, requestData) {
+        elementId = requestData.args[0]['element-6066-11e4-a52e-4f735466cecf'];
+      }
+    }, true);
+
+    const resultPromise = this.client.api.element('#signupSection').isDisplayed();
+    assert.strictEqual(resultPromise instanceof Element, false);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+
+    const result = await resultPromise;
+    assert.strictEqual(result instanceof WebElement, false);
+    assert.strictEqual(result, true);
+    assert.strictEqual(elementId, '0');
+  });
+
+  it('test .element().isDisplayed() not displayed', async function() {
+    let elementId;
+
+    MockServer.addMock({
+      url: '/session/13521-10219-202/execute/sync',
+      method: 'POST',
+      response: JSON.stringify({
+        value: false
+      }),
+      onRequest(_, requestData) {
+        elementId = requestData.args[0]['element-6066-11e4-a52e-4f735466cecf'];
+      }
+    }, true);
+
+    const resultPromise = this.client.api.element('#signupSection').isDisplayed();
+    assert.strictEqual(resultPromise instanceof Element, false);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+
+    const result = await resultPromise;
+    assert.strictEqual(result instanceof WebElement, false);
+    assert.strictEqual(result, false);
+    assert.strictEqual(elementId, '0');
+  });
 });
