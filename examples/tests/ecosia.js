@@ -1,3 +1,6 @@
+browser.addCommand('isDisplayed', function(selector, callback) {
+  return this.isVisible(selector, callback);
+});
 describe('Ecosia.org Demo', function() {
 
   before(browser => {
@@ -15,6 +18,18 @@ describe('Ecosia.org Demo', function() {
       .click('button[type=submit]')
       .assert.textContains('.layout__content', 'Nightwatch.js');
   });
+  it('Check if input field is displayed', function(browser) {
+    browser
+      .isDisplayed('input[type=search]', function(result) {
+        this.assert.equal(result.value, true, 'Input field should be displayed');
+      });
+  });
 
+  it('Check if search button is displayed', function(browser) {
+    browser
+      .isDisplayed('button[type=submit]', function(result) {
+        this.assert.equal(result.value, true, 'Search button should be displayed');
+      });
+  });
   after(browser => browser.end());
 });
