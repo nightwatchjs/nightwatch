@@ -11,7 +11,7 @@ module.exports = {
 
   demoTest(client) {
     client.url('http://localhost')
-      .assert.elementPresent('#weblogin')
+      .assert.elementPresent('#weblogin').click('#weblogin')
       .assert.elementPresent('#badElement')
       .assert.elementPresent('#webLogin')
       .end();
