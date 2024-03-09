@@ -55,7 +55,7 @@ describe('element().isVisible() command', function () {
       }
     }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').isVisible();
+    const resultPromise = this.client.api.element('#signupSection').isDisplayed();
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
 
@@ -109,7 +109,7 @@ describe('element().isVisible() command', function () {
       }
     }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').isVisible();
+    const resultPromise = this.client.api.element('#signupSection').isDisplayed();
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
 
@@ -163,7 +163,7 @@ describe('element().isVisible() command', function () {
       }
     }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').find('#helpBtn').isVisible();
+    const resultPromise = this.client.api.element('#signupSection').find('#helpBtn').isDisplayed();
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
 
@@ -217,7 +217,7 @@ describe('element().isVisible() command', function () {
       }
     }, true);
 
-    const resultPromise = this.client.api.element.find('#signupSection').isVisible();
+    const resultPromise = this.client.api.element.find('#signupSection').isDisplayed();
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
 
@@ -270,7 +270,7 @@ describe('element().isVisible() command', function () {
       }
     }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').isVisible();
+    const resultPromise = this.client.api.element('#signupSection').isDisplayed();
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
 
