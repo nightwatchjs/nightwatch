@@ -166,6 +166,7 @@ describe('new element() api', function () {
     expectType<Promise<WebElement>>(elem.rightClick());
     expectType<Promise<WebElement>>(elem.waitUntil('visible', {timeout: 5000}));
     expectType<ElementValue<boolean>>(elem.isSelected());
+    expectType<ElementValue<boolean>>(elem.isPresent());
   });
 
   test('test element assertions', async function () {
