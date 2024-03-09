@@ -10,6 +10,7 @@ describe('duckduckgo example', function() {
       .sendKeys('input[name="q"]', ['Nightwatch.js'])
       .assert.visible('button[type=submit]')
       .click('button[type=submit]')
-      .assert.textContains('.react-results--main', 'Nightwatch.js');
+      .assert.textContains('.react-results--main', 'Nightwatch.js')
+      .element('input[name=q]').isDisplayed();
   });
 });

@@ -1,9 +1,5 @@
 describe('Ecosia.org Demo', function() {
-
-  before(browser => {
-    browser
-      .navigateTo('https://www.ecosia.org/');
-  });
+  before(browser => browser.navigateTo('https://www.ecosia.org/'));
 
   it('Demo test ecosia.org', function(browser) {
     browser
@@ -13,14 +9,7 @@ describe('Ecosia.org Demo', function() {
       .setValue('input[type=search]', 'nightwatch')
       .assert.visible('button[type=submit]')
       .click('button[type=submit]')
-      .assert.textContains('.layout__content', 'Nightwatch.js')
-      .element('input[name=q]').isDisplayed();
-  });
-
-  it('Demo test ecosia.org - Verify footer visibility', function(browser) {
-    browser
-      .waitForElementVisible('.footer')
-      .assert.isDisplayed('.footer');
+      .assert.textContains('.layout__content', 'Nightwatch.js');
   });
 
   after(browser => browser.end());

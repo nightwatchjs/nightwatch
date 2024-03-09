@@ -194,6 +194,8 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
   isEnabled(): ElementValue<boolean>;
 
   isVisible(): ElementValue<boolean>;
+
+  isDisplayed(): ElementValue<boolean>;
 }
 
 type WaitUntilOptions = {
