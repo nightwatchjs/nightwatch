@@ -41,7 +41,7 @@ describe('Cucumber integration - parallel running single formatter', function() 
       });
   });
 
-  it.only('testCucumberSampleTests in parallel with multiple step definition files', function() {
+  it('testCucumberSampleTests in parallel with multiple step definition files', function() {
 
     commandMocks.elementText('5cc459b8-36a8-3042-8b4a-258883ea642b', 'xx');
 
