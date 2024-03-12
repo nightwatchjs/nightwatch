@@ -1,5 +1,8 @@
 const util = require('util');
-const menuXpath = '//div[contains(@class, "hdtb-mitem")][contains(., "%s")]';
+
+// starting xpath with './/' tells browser to begin search from the current element,
+// while starting with '//' tells browser to begin search from the start of html document.
+const menuXpath = './/span[contains(text(), "%s")]';
 
 const menuCommands = {
   productIsSelected: function (product, callback) {
