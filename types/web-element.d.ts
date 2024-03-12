@@ -2,11 +2,11 @@ import {
   By,
   RelativeBy,
   WebElement,
-  WebElementPromise
+  WebElementPromise,
 } from 'selenium-webdriver';
 
-import {ElementProperties} from './page-object';
-import {Element, LocateStrategy, NightwatchClient} from './index';
+import { ElementProperties } from './page-object';
+import { Element, LocateStrategy, NightwatchClient } from './index';
 
 export interface ScopedElement extends Element, PromiseLike<WebElement> {
   assert: ElementAssertions;
@@ -14,7 +14,10 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
   webElement: WebElementPromise;
 
   find(selector: ScopedElementSelector): ScopedElement;
+
   get(selector: ScopedElementSelector): ScopedElement;
+
+  findElement(selector: ScopedElementSelector): ScopedElement;
 
   findByText(
     text: string,
@@ -45,30 +48,33 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
       readonly expanded?: boolean;
     }
   ): ScopedElement;
-  
+
   findByPlaceholderText(
     text: string,
     options?: Omit<ScopedSelectorObject, 'selector'> & {
       readonly exact?: boolean;
     }
   ): ScopedElement;
-  
+
   findByLabelText(
     text: string,
     options?: Omit<ScopedSelectorObject, 'selector'> & {
       readonly exact?: boolean;
     }
   ): ScopedElement;
-  
+
   findByAltText(
     text: string,
     options?: Omit<ScopedSelectorObject, 'selector'> & {
       readonly exact?: boolean;
     }
   ): ScopedElement;
-  
+
   findAll(selector: ScopedSelector | Promise<ScopedSelector>): Elements;
+
   getAll(selector: ScopedSelector | Promise<ScopedSelector>): Elements;
+  
+  findElements(selector: ScopedSelector | Promise<ScopedSelector>): Elements;
 
   findAllByText(
     text: string,
@@ -192,8 +198,9 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
   waitUntil(signalOrOptions: WaitUntilActions | WaitUntilOptions, waitOptions?: WaitUntilOptions): Promise<WebElement>;
 
   isEnabled(): ElementValue<boolean>;
-
+  
   isVisible(): ElementValue<boolean>;
+  
 }
 
 type WaitUntilOptions = {
@@ -205,7 +212,16 @@ type WaitUntilOptions = {
   abortOnFailure?: boolean;
 };
 
-type WaitUntilActions = 'selected' | 'visible' | 'disabled' | 'enabled' | 'not.selected' | 'not.visible' | 'not.enabled' | 'present' | 'not.present';
+type WaitUntilActions =
+  | 'selected'
+  | 'visible'
+  | 'disabled'
+  | 'enabled'
+  | 'not.selected'
+  | 'not.visible'
+  | 'not.enabled'
+  | 'present'
+  | 'not.present';
 
 export class Elements implements PromiseLike<WebElement[]> {
   constructor(
@@ -254,7 +270,6 @@ export class ElementsAssertions {
   constructor(elements: Elements, options: ElementsAssertionsOptions);
 
   get not(): ElementsAssertions;
-
 }
 
 export type ElementAssertionsOptions = {
@@ -342,8 +357,21 @@ export type DragAndDropDestination = {
 export interface ElementFunction
   extends Pick<
     ScopedElement,
-    'find' | 'findByText' | 'findByRole' | 'findByPlaceholderText' | 'findByLabelText' | 'findByAltText' |
-    'findAll' | 'findAllByText' | 'findAllByRole' | 'findAllByPlaceholderText' | 'findAllByAltText'
+    | 'find'
+    | 'findByText'
+    | 'findByRole'
+    | 'findByPlaceholderText'
+    | 'findByLabelText'
+    | 'findByAltText'
+    | 'findAll'
+    | 'findAllByText'
+    | 'findAllByRole'
+    | 'findAllByPlaceholderText'
+    | 'findAllByAltText'
+    | 'findElement'
+    | 'findElements'
+    | 'get'
+    | 'getAll'
   > {
   (selector: ScopedElementSelector): ScopedElement;
   (
