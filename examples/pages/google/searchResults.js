@@ -18,7 +18,7 @@ module.exports = {
   },
   sections: {
     menu: {
-      selector: '#hdtb-msb',
+      selector: 'div[role="navigation"] div[data-st-cnt="mode"]',
       commands: [menuCommands],
       elements: {
         all: {
