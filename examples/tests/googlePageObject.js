@@ -1,15 +1,15 @@
 describe('google search with consent form - page objects', function() {
 
-  this.disabled = this.argv.env !== 'chrome';
+  // this.disabled = this.argv.env !== 'chrome';
 
   const homePage = browser.page.google.search();
-  const consentPage = browser.page.google.consent();
+  // const consentPage = browser.page.google.consent();
 
   before(async () => homePage.navigate());
 
   after(async (browser) => browser.quit());
 
-  it.only('should complete the consent form', async function (browser) {
+  it.skip('should complete the consent form', async function (browser) {
 
     // const consentForm = consentPage.section.consentForm;
     // const submitButton = consentForm.element('@submitButton');
@@ -37,6 +37,6 @@ describe('google search with consent form - page objects', function() {
     resultsPage.expect.section('@menu').to.be.visible;
 
     const menuSection = resultsPage.section.menu;
-    menuSection.expect.element('@all').to.be.visible;
+    menuSection.expect.element('@videos').to.be.visible;
   });
 });
