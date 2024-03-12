@@ -21,12 +21,12 @@ module.exports = {
       selector: 'div[role="navigation"] div[data-st-cnt="mode"]',
       commands: [menuCommands],
       elements: {
-        all: {
-          selector: util.format(menuXpath, 'All'),
+        maps: {
+          selector: util.format(menuXpath, 'Maps'),
           locateStrategy: 'xpath',
           index: 0
         },
-        video: {
+        videos: {
           selector: util.format(menuXpath, 'Videos'),
           locateStrategy: 'xpath',
           index: 0
