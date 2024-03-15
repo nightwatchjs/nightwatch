@@ -9,13 +9,26 @@ const searchCommands = {
   }
 };
 
+const consentModal = '[aria-modal="true"]';
+
 module.exports = {
   url: 'https://google.no',
   commands: [
     searchCommands
   ],
 
+  sections: {
+    consentModal: {
+      selector: consentModal,
+      elements: {
+        rejectAllButton: '.GzLjMd button:nth-child(1)'
+      }
+    }
+  },
+
   elements: {
+    consentModal,
+
     searchBar: {
       selector: 'textarea[name=q]'
     },
