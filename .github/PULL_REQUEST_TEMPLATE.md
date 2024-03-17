@@ -1,5 +1,6 @@
 Thanks in advance for your contribution. Please follow the below steps in submitting a pull request, as it will help us with reviewing it quicker.
 
+- [ ] Before marking your PR for review, please test and verify your changes by making appropriate modifications to any of the Nightwatch example tests (present in `examples/tests` directory of the project) and running them. `ecosia.js` and `duckDuckGo.js` are good examples to work with.
 - [ ] Create a new branch from master (e.g. `features/my-new-feature` or `issue/123-my-bugfix`);
 - [ ] If you're fixing a bug also create an issue if one doesn't exist yet;
 - [ ] If it's a new feature explain why do you think it's necessary. Please check with the maintainers beforehand to make sure it is something that we will accept. Usually we only accept new features if we feel that they will benefit the entire community;
