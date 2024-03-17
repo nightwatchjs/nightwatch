@@ -177,6 +177,8 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   getSize(): ElementValue<ScopedElementRect>;
 
+  rect(): ElementValue<ScopedElementRect>;
+
   getValue(): ElementValue<string | null>;
 
   setValue<E extends readonly unknown[]>(...keys: E): Promise<WebElement>;

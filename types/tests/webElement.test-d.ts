@@ -146,6 +146,7 @@ describe('new element() api', function () {
 
     expectType<ElementValue<ScopedElementRect>>(elem.getRect());
     expectType<ElementValue<ScopedElementRect>>(elem.getSize());
+    expectType<ElementValue<ScopedElementRect>>(elem.rect());
 
     expectType<ElementValue<string>>(elem.getAccessibleName());
     expectType<ElementValue<string>>(elem.getAriaRole());
