@@ -100,7 +100,8 @@ describe('new element() api', function () {
 
     expectType<WebElementPromise>(elem.webElement);
 
-    expectType<ScopedElement>(elem.find('selector'));
+    expectType<ScopedElement>(elem.find('selector')); 
+    expectType<ScopedElement>(elem.findElement('selector')); 
     expectType<ScopedElement>(elem.get('selector'));
 
     expectType<ScopedElement>(elem.findByText('some-text', {exact: true, abortOnFailure: false}));
@@ -114,6 +115,7 @@ describe('new element() api', function () {
     expectType<ScopedElement>(elem.findByAltText('some-text', {exact: true, abortOnFailure: false}));
 
     expectType<Elements>(elem.findAll('selector'));
+    expectType<Elements>(elem.findElements('selector'));
     expectType<Elements>(elem.getAll('selector'));
 
     expectType<Elements>(elem.findAllByText('some-text', {exact: true, abortOnFailure: false}));

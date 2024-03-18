@@ -5,8 +5,8 @@ import {
   WebElementPromise
 } from 'selenium-webdriver';
 
-import {ElementProperties} from './page-object';
-import {Element, LocateStrategy, NightwatchClient} from './index';
+import { ElementProperties } from './page-object';
+import { Element, LocateStrategy, NightwatchClient } from './index';
 
 export interface ScopedElement extends Element, PromiseLike<WebElement> {
   assert: ElementAssertions;
@@ -15,6 +15,9 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   find(selector: ScopedElementSelector): ScopedElement;
   get(selector: ScopedElementSelector): ScopedElement;
+
+  findElement(selector: ScopedElementSelector): ScopedElement;
+  findElements(selector: ScopedSelector | Promise<ScopedSelector>): Elements;
 
   findByText(
     text: string,
@@ -45,28 +48,28 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
       readonly expanded?: boolean;
     }
   ): ScopedElement;
-  
+
   findByPlaceholderText(
     text: string,
     options?: Omit<ScopedSelectorObject, 'selector'> & {
       readonly exact?: boolean;
     }
   ): ScopedElement;
-  
+
   findByLabelText(
     text: string,
     options?: Omit<ScopedSelectorObject, 'selector'> & {
       readonly exact?: boolean;
     }
   ): ScopedElement;
-  
+
   findByAltText(
     text: string,
     options?: Omit<ScopedSelectorObject, 'selector'> & {
       readonly exact?: boolean;
     }
   ): ScopedElement;
-  
+
   findAll(selector: ScopedSelector | Promise<ScopedSelector>): Elements;
   getAll(selector: ScopedSelector | Promise<ScopedSelector>): Elements;
 
@@ -344,7 +347,7 @@ export interface ElementFunction
   extends Pick<
     ScopedElement,
     'find' | 'findByText' | 'findByRole' | 'findByPlaceholderText' | 'findByLabelText' | 'findByAltText' |
-    'findAll' | 'findAllByText' | 'findAllByRole' | 'findAllByPlaceholderText' | 'findAllByAltText'
+    'findAll' | 'findAllByText' | 'findAllByRole' | 'findAllByPlaceholderText' | 'findAllByAltText' | 'findElement' | 'findElements' | 'get' | 'getAll'
   > {
   (selector: ScopedElementSelector): ScopedElement;
   (
