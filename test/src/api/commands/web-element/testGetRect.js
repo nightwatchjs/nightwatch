@@ -38,6 +38,30 @@ describe('element().getRect() command', function () {
     assert.deepStrictEqual(resultValue, {height: 34, width: 443, x: 356, y: 381.5});
   });
 
+  it('test .element().rect()', async function() {
+    MockServer.addMock({
+      url: '/session/13521-10219-202/element/0/rect',
+      method: 'GET',
+      response: JSON.stringify({
+        value: {height: 34, width: 443, x: 356, y: 381.5}
+      })
+    }, true);
+
+    const resultPromise = this.client.api.element('#signupSection').rect();
+    assert.strictEqual(resultPromise instanceof Element, false);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+
+    const result = await resultPromise;
+    assert.strictEqual(result instanceof WebElement, false);
+    assert.deepStrictEqual(result, {height: 34, width: 443, x: 356, y: 381.5});
+
+    const resultValue = await resultPromise.value;
+    assert.deepStrictEqual(resultValue, {height: 34, width: 443, x: 356, y: 381.5});
+  });
+
   it('test .element().getSize()', async function() {
     MockServer.addMock({
       url: '/session/13521-10219-202/element/0/rect',
@@ -133,4 +157,5 @@ describe('element().getRect() command', function () {
     const resultValue = await resultPromise.value;
     assert.deepStrictEqual(resultValue, {height: 34, width: 443, x: 356, y: 381.5});
   });
+
 });
