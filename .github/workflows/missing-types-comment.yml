@@ -1,0 +1,101 @@
+name: Add comment for missing types
+
+on:
+  workflow_run:
+    workflows: ["Check missing types"]
+    types:
+      - completed
+
+jobs:
+  add_comment:
+    runs-on: ubuntu-latest
+    if: >
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success'
+    steps:
+      - name: 'Download artifact'
+        uses: actions/github-script@v3.1.0
+        with:
+          script: |
+            var artifacts = await github.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: ${{github.event.workflow_run.id }},
+            });
+            var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
+              return artifact.name == "pr"
+            })[0];
+            var download = await github.actions.downloadArtifact({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              artifact_id: matchArtifact.id,
+              archive_format: 'zip',
+            });
+            var fs = require('fs');
+            fs.writeFileSync('${{github.workspace}}/pr.zip', Buffer.from(download.data));
+
+      - name: 'Read artifact'
+        id: modified-files
+        run: |
+          unzip pr.zip
+          cat files_changed
+          echo "modified=$(cat files_changed)" >> "$GITHUB_OUTPUT"
+
+      - name: Comment on PR
+        if: steps.modified-files.outputs.modified == ''
+        id: comment-on-pr
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const issue_number = Number(fs.readFileSync('./NR'));
+            const comment = `
+            ## Status
+            * ❌ No modified files found in the **types** directory.
+            Please make sure to include types for any changes you have made. Thank you!.`;
+            const pullRequest = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: issue_number
+            });
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number
+            });
+            const existingComment = comments.data.find(comment => comment.user.login === 'github-actions[bot]' && comment.body.includes('No modified files found in the **types** director'));
+            if (existingComment) {
+              console.log('Comment already exists');
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue_number,
+                body: comment
+              });
+            }
+
+      - name: Edit comment on PR
+        if: steps.modified-files.outputs.modified != ''
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const issue_number = Number(fs.readFileSync('./NR'));
+            const comment = `
+            ## Status
+            * :white_check_mark: Type files updated!`;
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number
+            });
+            const existingComment = comments.data.find(comment => comment.user.login === 'github-actions[bot]' && comment.body.includes('No modified files found in the **types** director'));
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body: comment
+              });
+            }

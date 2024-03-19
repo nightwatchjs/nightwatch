@@ -1,0 +1,42 @@
+name: Nightly
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Nightly version
+        required: false
+        type: string
+        default: ''
+      ref:
+        description: Branch, tag, or SHA to release
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  nightly:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.ref }}
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Install dependencies
+        run: npm install
+      - name: Build Nightwatch
+        run: npm run build
+      - name: Create publishable package 📦
+        run: npm pack
+      - name: Release Nightly
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "nightly-${{ inputs.version }}"
+          title: "Nightly ${{ inputs.version }}"
+          prerelease: true
+          files: '*.tgz'

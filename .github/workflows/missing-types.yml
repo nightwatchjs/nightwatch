@@ -1,0 +1,25 @@
+name: Check missing types
+
+on: pull_request
+
+jobs:
+  detect-modified-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get modified files
+        id: modified-files
+        run: |
+          echo $(git diff --name-only origin/$GITHUB_BASE_REF $GITHUB_SHA types/ | tr '\n' ',')
+          mkdir -p ./pr
+          echo $(git diff --name-only origin/$GITHUB_BASE_REF $GITHUB_SHA types/ | tr '\n' ',') > ./pr/files_changed
+          echo ${{ github.event.number }} > ./pr/NR
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: pr
+          path: pr/

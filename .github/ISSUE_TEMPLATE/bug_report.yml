@@ -1,0 +1,135 @@
+name: "Bug Report"
+description: "File a bug report to help us improve Nightwatch."
+body:
+  - type: "markdown"
+    attributes:
+      value: |
+        Thanks in advance for your contribution. Before submitting a new issue, try searching for a similar one here: https://github.com/nightwatchjs/nightwatch/search?type=Issues.
+  - type: "textarea"
+    id: "description"
+    attributes:
+      label: "Description of the bug/issue"
+      description: "A brief description of the issue, how to reproduce it, and the expected behavior."
+      placeholder: |
+        When I ____, I expected ____ to happen but ____ happened instead.
+    validations:
+      required: true
+  - type: "textarea"
+    id: "steps"
+    attributes:
+      label: "Steps to reproduce"
+      description: |
+        Explain how to cause the issue in the provided reproduction.
+      value: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
+  - type: textarea
+    id: "sample-test"
+    attributes:
+      label: "Sample test"
+      description:
+        Include a sample test that reproduces the problem you're experiencing. If possible, the test should be against a public URL.
+
+        Please add the test and other info inline, not as attachments or screenshots.
+      placeholder: |
+        // Please add the sample test here
+
+        module.exports = {
+          sampleTest: function() {
+            browser
+              .navigateTo('<URL here>')
+              .click('<selector>')
+              .end();
+          }
+        }
+      render: node
+  - type: textarea
+    id: "run-with-command"
+    attributes:
+      label: "Command to run"
+      description: "Include the command used to run the test."
+      placeholder: |
+        nightwatch test/sampleTest.js --your-other-arguments-here
+      render: bash
+  - type: textarea
+    id: "verbose-output"
+    attributes:
+      label: "Verbose Output"
+      description: |
+        "Extended nightwatch command logging during the session. 
+        Please use nightwatch --verbose and paste the output here"
+      placeholder: |
+        [Sample Test] Test Suite
+        ────────────────────────────────────────────────────────
+        ⠋ Starting ChromeDriver on port 9515...
+          Request POST /session
+          {
+            desiredCapabilities: {
+              browserName: 'chrome',
+              'goog:chromeOptions': { w3c: true, args: [] },
+              name: 'Sample Test'
+            },
+            capabilities: {
+              alwaysMatch: {
+                browserName: 'chrome',
+                'goog:chromeOptions': { w3c: true, args: [] }
+              }
+            }
+      render: fundamental
+  - type: textarea
+    id: "configuration"
+    attributes:
+      label: "Nightwatch Configuration"
+      description: "Add your nightwatch.json or nightwatch.conf.js here; Make sure to leave out any sensitive details."
+      placeholder: |
+        module.exports = {
+          src_folders: [],
+          page_objects_path: [],
+          custom_commands_path: [],
+          custom_assertions_path: '',
+          plugins: [],
+          globals_path: '',
+          webdriver: {},
+          test_settings: {}
+        }
+      render: node
+  - type: "markdown"
+    attributes:
+      value: |
+        ## Your Environment
+        Include the relevant details related to your environment.
+  - type: "input"
+    id: "nightwatch-version"
+    attributes:
+      label: "Nightwatch.js Version"
+      description: "The version of Nightwatch you are using. Run: nightwatch --version"
+      placeholder: "2.3.0"
+    validations:
+      required: true
+  - type: "input"
+    id: "node-version"
+    attributes:
+      label: "Node Version"
+      description: "The version of Node you are using."
+      placeholder: "14.0.0"
+  - type: "input"
+    id: "browser"
+    attributes:
+      label: "Browser"
+      description: "The browser(s) this issue occurred with."
+      placeholder: "Firefox 102.0.1; Chrome 104.0.0"
+  - type: "input"
+    id: "operating-system"
+    attributes:
+      label: "Operating System"
+      description: "The operating system(s) this issue occurred with."
+      placeholder: "MacOs Monterey 12.5"
+  - type: "textarea"
+    id: "additional-information"
+    attributes:
+      label: "Additional Information"
+      description: |
+        Use this section to provide any additional information you might have
+        like screenshots, notes, or links to ideas.
