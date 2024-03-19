@@ -142,6 +142,12 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   getRect(): ElementValue<ScopedElementRect>;
 
+  rect(): ElementValue<ScopedElementRect>;
+
+  getSize(): ElementValue<ScopedElementRect>;
+
+  getLocation(): ElementValue<ScopedElementRect>;
+
   getTagName(): ElementValue<string>;
 
   getText(): ElementValue<string>;
@@ -177,8 +183,6 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
   getAriaRole(): ElementValue<string>;
 
   getCssProperty(name: string): ElementValue<string>;
-
-  getSize(): ElementValue<ScopedElementRect>;
 
   getValue(): ElementValue<string | null>;
 
