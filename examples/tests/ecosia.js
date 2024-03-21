@@ -16,5 +16,11 @@ describe('Ecosia.org Demo', function() {
       .assert.textContains('.layout__content', 'Nightwatch.js');
   });
 
+  it('Demo test ecosia.org whether the element is not present', function(browser) {
+    browser
+      .waitForElementVisible('body')
+      .element('.main-nav').find('.btn');
+  });
+
   after(browser => browser.end());
 });
