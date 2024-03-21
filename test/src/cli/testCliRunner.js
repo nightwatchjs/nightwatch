@@ -455,7 +455,6 @@ describe('Test CLI Runner', function() {
 
     done();
   });
-    
 
   it('testReadSettingsDeprecated', function(done) {
     mockery.registerMock('fs', {
@@ -497,8 +496,6 @@ describe('Test CLI Runner', function() {
     done();
   });
 
-   
-
   it('testCustomSettingsFileAndEnvironment', function() {
     mockery.registerMock('fs', {
       existsSync() {
@@ -537,7 +534,7 @@ describe('Test CLI Runner', function() {
   it('testGetTestSourceSingle', function() {
     let statCalled = false;
     let statSyncCalled = false;
-      
+
     mockery.registerMock('fs', {
       existsSync() {
         return false;
@@ -559,7 +556,6 @@ describe('Test CLI Runner', function() {
 
         throw new Error('Does not exist');
       },
-        
 
       stat(file, cb) {
         if (file === 'demoTest') {
@@ -1435,13 +1431,13 @@ describe('Test CLI Runner', function() {
       const listFileOutput = JSON.stringify({
         default: testsPath
       });
-    
+
       const origConsoleLog = console.log;
     
       console.log = function (data) {
         consoleData.push(data);
       };
-    
+
       mockery.registerMock('./runner/cli/argv-setup.js', {
         argv: {
           _: testsPath,
@@ -1460,13 +1456,13 @@ describe('Test CLI Runner', function() {
       const listFileOutput = JSON.stringify({
         chrome: testsPath
       });
-    
+
       const origConsoleLog = console.log;
     
       console.log = function (data) {
         consoleData.push(data);
       };
-    
+
       mockery.registerMock('./runner/cli/argv-setup.js', {
         argv: {
           _: testsPath,
