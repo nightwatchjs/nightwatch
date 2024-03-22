@@ -14,6 +14,7 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
   webElement: WebElementPromise;
 
   find(selector: ScopedElementSelector): ScopedElement;
+  findElement(selector: ScopedElementSelector): ScopedElement;
   get(selector: ScopedElementSelector): ScopedElement;
 
   findByText(
@@ -68,6 +69,7 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
   ): ScopedElement;
   
   findAll(selector: ScopedSelector | Promise<ScopedSelector>): Elements;
+  findElements(selector: ScopedSelector | Promise<ScopedSelector>): Elements;
   getAll(selector: ScopedSelector | Promise<ScopedSelector>): Elements;
 
   findAllByText(
