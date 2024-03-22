@@ -68,6 +68,7 @@
     "mochawesome-merge": "^4.2.1",
     "mochawesome-report-generator": "^6.2.0",
     "mockery": "~2.1.0",
+    "nightwatch": "^3.4.1",
     "nock": "^13.2.9",
     "nyc": "^15.1.0",
     "react": "^18.2.0",

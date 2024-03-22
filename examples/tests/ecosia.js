@@ -16,5 +16,12 @@ describe('Ecosia.org Demo', function() {
       .assert.textContains('.layout__content', 'Nightwatch.js');
   });
 
+  describe('isPresent Demo', function() {
+    it('test isPresent', async function(browser) {
+      const result = await browser.element('input[name=q]').isPresent();
+      browser.assert.equal(result, true);
+    });
+  });
+
   after(browser => browser.end());
 });
