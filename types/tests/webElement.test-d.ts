@@ -115,6 +115,7 @@ describe('new element() api', function () {
 
     expectType<Elements>(elem.findAll('selector'));
     expectType<Elements>(elem.getAll('selector'));
+    expectType<Elements>(elem.findElements('selector'));
 
     expectType<Elements>(elem.findAllByText('some-text', {exact: true, abortOnFailure: false}));
 
