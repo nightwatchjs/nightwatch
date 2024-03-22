@@ -1,0 +1,149 @@
+{
+  "root": true,
+  "extends": [
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 13,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": false
+    }
+  },
+  "env": {
+    "mocha": true,
+    "node": true
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/*.ts"
+      ],
+      "excludedFiles": [
+        "test/**/*.ts"
+      ],
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+      ],
+      "parser": "@typescript-eslint/parser",
+      "plugins": [
+        "@typescript-eslint"
+      ],
+      "parserOptions": {
+        "ecmaVersion": 2020,
+        "sourceType": "module",
+        "ecmaFeatures": {
+          "jsx": false
+        },
+        "project": "./tsconfig.json"
+      }
+    }
+  ],
+  "rules": {
+    "eqeqeq": [
+      "error",
+      "smart"
+    ],
+    "no-extra-boolean-cast": 0,
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "curly": [
+      "error",
+      "all"
+    ],
+    "no-console": [
+      "error",
+      {
+        "allow": [
+          "error"
+        ]
+      }
+    ],
+    "no-debugger": 1,
+    "semi": [
+      "error",
+      "always",
+      {
+        "omitLastInOneLineBlock": true
+      }
+    ],
+    "no-trailing-spaces": 1,
+    "no-else-return": 2,
+    "no-extra-bind": 0,
+    "no-implicit-coercion": 0,
+    "no-useless-call": 0,
+    "no-return-assign": 0,
+    "eol-last": 1,
+    "no-unused-vars": 0,
+    "no-extra-semi": 0,
+    "comma-dangle": 2,
+    "no-underscore-dangle": 0,
+    "no-lone-blocks": 0,
+    "array-bracket-spacing": 2,
+    "object-curly-spacing": 2,
+    "brace-style": [
+      2,
+      "1tbs",
+      {
+        "allowSingleLine": true
+      }
+    ],
+    "comma-spacing": 2,
+    "comma-style": 2,
+    "key-spacing": 2,
+    "one-var": [
+      "error",
+      "never"
+    ],
+    "semi-style": [
+      "error",
+      "last"
+    ],
+    "space-in-parens": [
+      "error",
+      "never"
+    ],
+    "keyword-spacing": [
+      2,
+      {
+        "before": true,
+        "after": true
+      }
+    ],
+    "space-infix-ops": 1,
+    "padding-line-between-statements": [
+      "error",
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": "return"
+      }
+    ],
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "prefer-const": [
+      "warn"
+    ]
+  },
+  "globals": {
+    "Promise": true,
+    "Proxy": true,
+    "Set": true,
+    "Reflect": true,
+    "element": "readonly",
+    "by": "readonly",
+    "expect": "readonly",
+    "browser": "readonly",
+    "app": "readonly",
+    "Key": "readonly"
+  }
+}

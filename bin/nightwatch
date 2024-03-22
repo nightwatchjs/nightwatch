@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+
+const semver = require('semver');
+const {Logger} = require('../lib/utils');
+const requiredVersion = require('../package.json').engines.node;
+
+function checkNodeVersion (wanted, id) {
+  if (!semver.satisfies(process.version, wanted)) {
+    Logger.error('You are using Node ' + process.version + ', but this version of ' + id +
+      ' requires Node ' + wanted + '.\nPlease upgrade your Node version.'
+    );
+    process.exit(1);
+  }
+}
+
+checkNodeVersion(requiredVersion, 'nightwatch');
+
+require('./runner.js');
+

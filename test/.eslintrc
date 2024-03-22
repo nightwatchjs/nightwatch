@@ -1,0 +1,77 @@
+{
+  "extends": [
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": false
+    }
+  },
+  "env": {
+    "browser": false,
+    "mocha": true,
+    "node": true,
+    "es6": true
+  },
+  "rules": {
+    "eqeqeq": ["error", "smart"],
+    "no-extra-boolean-cast": 0,
+    "quotes": ["error", "single"],
+    "curly": ["error", "all"],
+    "no-console": [
+      "warn",
+      {
+        "allow": [
+          "error"
+        ]
+      }
+    ],
+    "no-debugger": 1,
+    "semi": [
+      "warn",
+      "always",
+      {
+        "omitLastInOneLineBlock": true
+      }
+    ],
+    "no-trailing-spaces": 0,
+    "no-else-return": 0,
+    "no-extra-bind": 0,
+    "no-empty": 1,
+    "no-implicit-coercion": 0,
+    "no-useless-call": 0,
+    "no-return-assign": 0,
+    "eol-last": 0,
+    "no-unused-vars": 0,
+    "no-extra-semi": 0,
+    "no-underscore-dangle": 0,
+    "no-lone-blocks": 0,
+    "array-bracket-spacing": 1,
+    "brace-style": [1, "1tbs", {"allowSingleLine": true}],
+    "comma-spacing": 1,
+    "comma-style": 1,
+    "key-spacing": 1,
+    "one-var": ["error", "never"],
+    "semi-style": ["warn", "last"],
+    "space-in-parens": ["warn", "never"],
+    "keyword-spacing": [1, {"before": true, "after": true}],
+    "padding-line-between-statements": [
+      "warn",
+      { "blankLine": "always", "prev": "*", "next": "return" }
+    ],
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ]
+  },
+  "globals": {
+    "Promise": true,
+    "Proxy": true,
+    "Reflect": true
+  }
+}

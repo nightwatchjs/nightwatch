@@ -1,0 +1,419 @@
+{
+  "mocks": [
+    {
+      "url": "/wd/hub/session",
+      "postdata": {
+        "desiredCapabilities": {
+          "browserName": "firefox"
+        }
+      },
+      "response": {
+        "status": 0,
+        "sessionId": "1352110219202",
+        "value": {
+          "browserName": "firefox",
+          "browserVersion": "TEST",
+          "platformVersion": "TEST"
+        },
+        "state": null
+      },
+      "responseHeaders": {
+      },
+      "statusCode": 201,
+      "method": "POST"
+    },
+
+    {
+      "url": "/session",
+      "postdata": {
+        "capabilities": {
+          "browserName": "firefox"
+        },
+        "desiredCapabilities": {
+          "browserName": "firefox"
+        }
+      },
+
+      "response": {
+        "value": {
+          "sessionId": "13521-10219-202",
+          "capabilities": {
+            "acceptInsecureCerts": false,
+            "browserName": "firefox",
+            "browserVersion": "65.0.1",
+            "platformName": "linux",
+            "platformVersion": "4.9.125-linuxkit",
+            "setWindowRect": true,
+            "strictFileInteractability": false,
+            "timeouts": {
+              "implicit": 0,
+              "pageLoad": 300000,
+              "script": 30000
+            },
+            "unhandledPromptBehavior": "dismiss and notify"
+          }
+        }
+      },
+      "responseHeaders": {
+      },
+      "statusCode": 201,
+      "method": "POST"
+    },
+
+    {
+      "url": "/wd/hub/session",
+      "postdata": "",
+      "response": {
+        "status": 0,
+        "sessionId": "1352110219202",
+        "value": {
+          "browserName": "firefox",
+          "version": "TEST",
+          "platform": "TEST"
+        },
+        "state": null
+      },
+      "responseHeaders": {
+      },
+      "statusCode": 201,
+      "method": "POST"
+    },
+    {
+      "url": "/wd/hub/session/1352110219202",
+      "method": "DELETE",
+      "response": {
+        "status": 0,
+        "state": "success"
+      }
+    },
+    {
+      "url": "/wd/hub/session/1352110219202/url",
+      "postdata": {
+        "url": "http://localhost"
+      }
+    },
+    {
+      "url": "/wd/hub/test",
+      "response": {
+        "status": 0
+      }
+    },
+    {
+      "url": "/wd/hub/test_error",
+      "response": {
+        "status": 7,
+        "value": {
+          "screen": "screenshot_data"
+        }
+      },
+      "statusCode": 500
+    },
+    {
+      "url": "/wd/hub/session/1352110219202/element",
+      "postdata": {
+        "using": "css selector",
+        "value": "#weblogin"
+      },
+      "response": {
+        "sessionId": "1352110219202",
+        "status": 0,
+        "value": {
+          "ELEMENT": "0"
+        },
+        "class": "org.openqa.selenium.remote.Response",
+        "hCode": 604376696
+      }
+    },
+    {
+      "url": "/wd/hub/session/1352110219202/element",
+      "postdata": {
+        "using": "css selector",
+        "value": "#webdriver"
+      },
+      "response": {
+        "sessionId": "1352110219202",
+        "status": 0,
+        "value": {
+          "element-6066-11e4-a52e-4f735466cecf": "5cc459b8-36a8-3042-8b4a-258883ea642b"
+        }
+      }
+    },
+    {
+      "url": "/session/13521-10219-202/element",
+      "postdata": {
+        "using": "css selector",
+        "value": "#webdriver"
+      },
+      "response": {
+        "value": {
+          "element-6066-11e4-a52e-4f735466cecf": "5cc459b8-36a8-3042-8b4a-258883ea642b"
+        }
+      }
+    },
+    {
+      "url": "/wd/hub/session/1352110219202/element",
+      "postdata": {
+        "using": "css selector",
+        "value": "#signupSection"
+      },
+      "response": {
+        "sessionId": "1352110219202",
+        "status": 0,
+        "value": {
+          "ELEMENT": "0"
+        },
+        "class": "org.openqa.selenium.remote.Response",
+        "hCode": 604376696
+      }
+    },
+    {
+      "url": "/wd/hub/session/1352110219202/element",
+      "postdata": {
+        "using": "xpath",
+        "value": "//weblogin"
+      },
+      "response": {
+        "sessionId": "1352110219202",
+        "status": 0,
+        "value": {
+          "ELEMENT": "0"
+        },
+        "class": "org.openqa.selenium.remote.Response",
+        "hCode": 604376696
+      }
+    },
+
+    {
+      "url": "/wd/hub/session/1352110219202/element/0/element",
+      "postdata": {
+        "using": "css selector",
+        "value": "#helpBtn"
+      },
+      "response": {
+        "sessionId": "1352110219202",
+        "status": 0,
+        "value": {
+          "ELEMENT": "1"
+        },
+        "class": "org.openqa.selenium.remote.Response",
+        "hCode": 604376696
+      }
+    },
+    {
+      "url": "/wd/hub/session/1352110219202/elements",
+      "postdata": {
+        "using": "css selector",
+        "value": ".weblogin"
+      },
+      "response": {
+        "sessionId": "1352110219202",
+        "status": 0,
+        "value": [],
+        "class": "org.openqa.selenium.remote.Response",
+        "hCode": 604376696
+      }
+    },
+    {
+      "url": "/wd/hub/session/1352110219202/elements",
+      "postdata": {
+        "using": "css selector",
+        "value": "#badElement"
+      },
+      "response": {
+        "sessionId": "1352110219202",
+        "status": 0,
+        "value": [],
+        "class": "org.openqa.selenium.remote.Response",
+        "hCode": 604376696
+      }
+    },
+    {
+      "url": "/wd/hub/session/1352110219202/elements",
+      "postdata": {
+        "using": "css selector",
+        "value": "#weblogin"
+      },
+      "response": {
+        "sessionId": "1352110219202",
+        "status": 0,
+        "value": [
+          {
+            "ELEMENT": "0"
+          }
+        ],
+        "class": "org.openqa.selenium.remote.Response",
+        "hCode": 604376696
+      }
+    },
+    {
+      "url": "/wd/hub/session/1352110219202/elements",
+      "postdata": {
+        "using": "css selector",
+        "value": "#webdriver"
+      },
+      "response": {
+        "sessionId": "1352110219202",
+        "status": 0,
+        "value": [
+          {
+            "element-6066-11e4-a52e-4f735466cecf": "5cc459b8-36a8-3042-8b4a-258883ea642b"
+          }
+        ]
+      }
+    },
+    {
+      "url": "/wd/hub/session/1352110219202/elements",
+      "postdata": {
+        "using": "css selector",
+        "value": "#weblogin-multiple"
+      },
+      "response": {
+        "sessionId": "1352110219202",
+        "status": 0,
+        "value": [
+          {
+            "ELEMENT": "0"
+          },
+          {
+            "ELEMENT": "1"
+          }
+        ],
+        "class": "org.openqa.selenium.remote.Response",
+        "hCode": 604376696
+      }
+    },
+    {
+      "url": "/wd/hub/session/1352110219202/elements",
+      "postdata": {
+        "using": "xpath",
+        "value": "//weblogin"
+      },
+      "response": {
+        "sessionId": "1352110219202",
+        "status": 0,
+        "value": [
+          {
+            "ELEMENT": "0"
+          }
+        ],
+        "class": "org.openqa.selenium.remote.Response",
+        "hCode": 604376696
+      }
+    },
+    {
+      "url": "/wd/hub/session/1352110219202/elements",
+      "postdata": {
+        "using": "css selector",
+        "value": "#signupSection"
+      },
+      "response": {
+        "sessionId": "1352110219202",
+        "status": 0,
+        "value": [
+          {
+            "ELEMENT": "0"
+          },
+          {
+            "ELEMENT": "1"
+          }
+        ],
+        "class": "org.openqa.selenium.remote.Response",
+        "hCode": 604376696
+      }
+    },
+    {
+      "url": "/wd/hub/session/1352110219202/element/0/elements",
+      "postdata": {
+        "using": "css selector",
+        "value": "#helpBtn"
+      },
+      "response": {
+        "sessionId": "1352110219202",
+        "status": 0,
+        "value": [
+          {
+            "ELEMENT": "1"
+          }
+        ],
+        "class": "org.openqa.selenium.remote.Response",
+        "hCode": 604376696
+      }
+    },
+    {
+      "url": "/wd/hub/session/1352110219202/element/0/elements",
+      "postdata": {
+        "using": "css selector",
+        "value": ".btn"
+      },
+      "response": {
+        "sessionId": "1352110219202",
+        "status": 0,
+        "value": [
+          {
+            "ELEMENT": "1"
+          },
+          {
+            "ELEMENT": "2"
+          },
+          {
+            "ELEMENT": "3"
+          }
+        ],
+        "class": "org.openqa.selenium.remote.Response",
+        "hCode": 604376696
+      }
+    },
+    {
+      "url": "/wd/hub/session/1352110219202/buttondown",
+      "postdata": {
+        "button": 0
+      },
+      "response": {
+        "sessionId": "1352110219202",
+        "status": 0,
+        "class": "org.openqa.selenium.remote.Response",
+        "hCode": 604376696
+      }
+    },
+    {
+      "url": "/wd/hub/session/1352110219202/window",
+      "response": {
+        "sessionId": "1352110219202",
+        "status": 0
+      },
+      "method": "DELETE"
+    },
+    {
+      "url": "/wd/hub/session/1352110219202/window",
+      "method": "POST",
+      "response": {
+        "sessionId": "1352110219202",
+        "status": 0
+      }
+    },
+    {
+      "url": "/wd/hub/session/1352110219202/buttondown",
+      "postdata": {
+        "button": 1
+      },
+      "response": {
+        "sessionId": "1352110219202",
+        "status": 0,
+        "class": "org.openqa.selenium.remote.Response",
+        "hCode": 604376696
+      }
+    },
+    {
+      "url": "/wd/hub/session/1352110219202/buttonup",
+      "postdata": {
+        "button": 2
+      },
+      "response": {
+        "sessionId": "1352110219202",
+        "status": 0,
+        "class": "org.openqa.selenium.remote.Response",
+        "hCode": 604376696
+      }
+    }
+  ]
+}

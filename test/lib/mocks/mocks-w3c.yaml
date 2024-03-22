@@ -1,0 +1,218 @@
+---
+mocks:
+#
+# Webdriver session request without Selenium
+# -------------------------------------------------------
+- url: '/session'
+  postdata:
+    capabilities:
+      firstMatch: [{}]
+      alwaysMatch:
+        browserName: firefox
+  response:
+    value:
+      sessionId: &webdriverSessionId '13521-10219-202'
+      capabilities:
+        acceptInsecureCerts: false
+        browserName: firefox
+        browserVersion: 65.0.1
+        platformName: linux
+        platformVersion: 4.9.125-linuxkit
+        setWindowRect: true
+        strictFileInteractability: false
+        timeouts:
+          implicit: 0
+          pageLoad: 300000
+          script: 30000
+        unhandledPromptBehavior: 'dismiss and notify'
+  responseHeaders: {}
+  statusCode: 201
+  method: POST
+
+- url: '/session'
+  postdata:
+    capabilities:
+      firstMatch: [{}]
+      alwaysMatch:
+        browserName: firefox
+  response:
+    value:
+      sessionId: '13521-10219-202'
+      capabilities:
+        acceptInsecureCerts: false
+        browserName: firefox
+        browserVersion: 65.0.1
+        platformName: linux
+        platformVersion: 4.9.125-linuxkit
+        setWindowRect: true
+        strictFileInteractability: false
+        timeouts:
+          implicit: 0
+          pageLoad: 300000
+          script: 30000
+        unhandledPromptBehavior: 'dismiss and notify'
+  responseHeaders: {}
+  statusCode: 201
+  method: POST
+
+- url: '/session'
+  postdata:
+    capabilities:
+      firstMatch: [{}]
+      alwaysMatch:
+        browserName: firefox
+  response:
+    value:
+      sessionId: '13521-10219-202'
+      capabilities:
+        browserName: firefox
+        browserVersion: 65.0.1
+        platformName: linux
+        platformVersion: 4.9.125-linuxkit
+  responseHeaders: {}
+  statusCode: 201
+  method: POST
+
+- url: '/session'
+  postdata:
+    desiredCapabilities:
+      browserName: safari
+      platformName: iOS
+      safari:useSimulator: true
+      safari.options: {}
+    capabilities:
+      alwaysMatch:
+        browserName: safari
+        platformName: iOS
+        safari:useSimulator: true
+  response:
+    value:
+      sessionId: '13521-10219-202'
+      capabilities:
+        browserName: safari
+        platformName: iOS
+        safari:useSimulator: true
+        safari:platformVersion: 15.6.1
+  responseHeaders: {}
+  statusCode: 201
+  method: POST
+
+- url: '/wd/hub/session'
+  postdata:
+    capabilities:
+      firstMatch: [{}]
+      alwaysMatch:
+        appium:automationName: "XCUITest"
+        appium:appPackage: "org.wikimedia.wikipedia"
+        platformName: "iOS"
+        appium:deviceName: "iPhone 13"
+        appium:platformVersion: "15.5"
+  response:
+    value:
+      sessionId: '13521-10219-202'
+      capabilities:
+        appium:automationName: "XCUITest"
+        appium:appPackage: "org.wikimedia.wikipedia"
+        platformName: "iOS"
+        appium:deviceName: "iPhone 13"
+        appium:platformVersion: "15.5"
+  responseHeaders: {}
+  statusCode: 201
+  method: POST
+
+- url: '/wd/hub/session/1352110219202/element'
+  postdata:
+    using: 'css selector'
+    value: '#webdriver'
+  response:
+    sessionId: '1352110219202'
+    status: 0
+    value:
+      element-6066-11e4-a52e-4f735466cecf: 5cc459b8-36a8-3042-8b4a-258883ea642b
+
+- url: '/session/13521-10219-202/element'
+  postdata:
+    using: 'css selector'
+    value: '#webdriver'
+  response:
+    value:
+      element-6066-11e4-a52e-4f735466cecf: 5cc459b8-36a8-3042-8b4a-258883ea642b
+
+- url: '/wd/hub/session/1352110219202/elements'
+  postdata:
+    using: 'css selector'
+    value: '#webdriver'
+  response:
+    sessionId: '1352110219202'
+    status: 0
+    value:
+    - element-6066-11e4-a52e-4f735466cecf: 5cc459b8-36a8-3042-8b4a-258883ea642b
+
+- url: '/session/13521-10219-202/elements'
+  postdata:
+    using: 'css selector'
+    value: '#webdriver'
+  response:
+    value:
+    - element-6066-11e4-a52e-4f735466cecf: 5cc459b8-36a8-3042-8b4a-258883ea642b
+    - element-6066-11e4-a52e-4f735466cecf: 3783b042-7001-0740-a2c0-afdaac732e9f
+
+- url: '/session/13521-10219-202/elements'
+  postdata:
+    using: 'css selector'
+    value: '#weblogin'
+  response: 
+    value: 
+    - element-6066-11e4-a52e-4f735466cecf: 5cc459b8-36a8-3042-8b4a-258883ea642b
+    - element-6066-11e4-a52e-4f735466cecf: 3783b042-7001-0740-a2c0-afdaac732e9f
+
+- url: '/session/13521-10219-202/elements'
+  postdata:
+    using: 'xpath'
+    value: '//weblogin'
+  response: 
+    value: 
+    - element-6066-11e4-a52e-4f735466cecf: 5cc459b8-36a8-3042-8b4a-258883ea642b
+    - element-6066-11e4-a52e-4f735466cecf: 3783b042-7001-0740-a2c0-afdaac732e9f
+
+- url: '/session/13521-10219-202/elements'
+  postdata:
+    using: 'css selector'
+    value: 'html'
+  response:
+    value:
+    - element-6066-11e4-a52e-4f735466cecf: '00'
+
+- url: '/session/13521-10219-202/element/00/elements'
+  postdata:
+    using: 'css selector'
+    value: '#signupSection'
+  response:
+    value:
+    - element-6066-11e4-a52e-4f735466cecf: '0'
+
+- url: '/session/13521-10219-202/elements'
+  postdata:
+    using: 'css selector'
+    value: '#signupSection'
+  response:
+    value:
+    - element-6066-11e4-a52e-4f735466cecf: '0'
+
+- url: '/session/13521-10219-202/element/0/elements'
+  postdata:
+    using: 'css selector'
+    value: '#helpBtn'
+  response:
+    value:
+    - element-6066-11e4-a52e-4f735466cecf: '1'
+
+- url: '/session/13521-10219-202/element/0/elements'
+  postdata:
+    using: 'css selector'
+    value: '.btn'
+  response:
+    value:
+    - element-6066-11e4-a52e-4f735466cecf: '1'
+    - element-6066-11e4-a52e-4f735466cecf: '2'
+    - element-6066-11e4-a52e-4f735466cecf: '3'
