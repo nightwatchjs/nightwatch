@@ -1,8 +1,23 @@
-const path = require('path');
-const uuid = require('uuid');
+import { isError } from 'lodash';
+import path from 'path';
+import uuid from 'uuid'
 
-const filename_format = function ({testSuite = '', testCase = '', isError = false, dateObject = new Date()} = {}) {
-  const fileName = [];
+interface SnapshotFileFormat{
+  testSuite: string,
+   testCase: string, 
+   commandName: string, 
+   dateObject: Date;
+
+}
+interface FileFormat{
+   testSuite?: string;
+   testCase?: string;
+   isError?: boolean;
+   dateObject?: Date;
+
+}
+const filename_format = function ({testSuite = '', testCase = '', isError = false, dateObject = new Date()}: FileFormat) {
+  const fileName: string[]= [];
   const dateParts = dateObject.toString().replace(/:/g, '').split(' ');
   dateParts.shift();
 
@@ -17,8 +32,8 @@ const filename_format = function ({testSuite = '', testCase = '', isError = fals
   return `${fileName.join(path.sep)}${isError ? '_ERROR' : '_FAILED'}_${dateStamp}.png`;
 };
 
-const snapshot_file_format = function({testSuite = '', testCase = '', commandName, dateObject = new Date()} = {}) {
-  const fileName = [];
+const snapshot_file_format = function({testSuite = '', testCase = '', commandName, dateObject = new Date()}:SnapshotFileFormat) {
+  const fileName: string[]= [];
   const dateParts = dateObject.toString().replace(/:/g, '').split(' ');
   dateParts.shift();
 

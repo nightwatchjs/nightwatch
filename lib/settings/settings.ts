@@ -1,14 +1,17 @@
-const dotenv = require('dotenv');
-const path = require('path');
-const defaultsDeep = require('lodash/defaultsDeep');
-const lodashCloneDeep = require('lodash/cloneDeep');
-const lodashMerge = require('lodash/merge');
-const CI_Info = require('ci-info');
-const Defaults = require('./defaults.js');
-const Utils = require('../utils');
+import  dotenv from 'dotenv';
+import path from 'path';
+import defaultsDeep from 'lodash/defaultsDeep';
+import lodashCloneDeep from 'lodash/cloneDeep';
+import lodashMerge from 'lodash/merge';
+import CI_Info from 'ci-info';
+import Defaults from './defaults';
+import Utils from '../utils';
 const {isObject, isUndefined, isDefined, isNumber, singleSourceFile} = Utils;
 
 class Settings {
+  settings: any;
+  argv: { serial: any; debug: any; parallel: any; };
+  testEnv: string;
 
   static get DEFAULT_ENV() {
     return 'default';
@@ -123,8 +126,8 @@ class Settings {
    * @param {Object} [argv] the cli arguments object
    * @param {String} [testEnv] the current test env
    */
-  constructor(argv = {}, testEnv = '') {
-    this.baseSettings = null;
+  constructor(argv: object = {}, testEnv: string = '') {
+    this.settings = null;
     this.argv = argv;
     this.testEnv = testEnv || '';
 

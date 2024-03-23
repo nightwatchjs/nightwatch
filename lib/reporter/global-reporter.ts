@@ -3,11 +3,11 @@ const Convert = require('ansi-to-html');
 const stripAnsi = require('strip-ansi');
 
 const Concurrency = require('../runner/concurrency');
-const DefaultSettings = require('../settings/defaults.js');
+const DefaultSettings = require('../settings/defaults');
 const Utils = require('../utils');
 const {Logger, isFunction} = Utils;
 const Results = require('./results.js');
-const AxeReport = require('./axe-report.js');
+const AxeReport = require('./axe-report.js')
 const Summary = require('./summary.js');
 const PluginLoader = require('../api/_loaders/plugin.js');
 

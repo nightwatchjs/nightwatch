@@ -1,9 +1,11 @@
 const fs = require('fs');
-const stripAnsi = require('strip-ansi');
+import stripAnsi from 'strip-ansi';
 const Utils = require('../utils');
 const Results = require('./results.js');
 
 module.exports = class BaseReporter {
+  results: any;
+  options: {};
   constructor(results, opts = {}) {
     this.results = results;
     this.options = opts;
@@ -67,7 +69,7 @@ module.exports = class BaseReporter {
   writeReportFile(filename, rendered, shouldCreateFolder, output_folder) {
     return (shouldCreateFolder ? Utils.createFolder(output_folder) : Promise.resolve())
       .then(() => {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
           fs.writeFile(filename, rendered, function(err) {
             if (err) {
               return reject(err);

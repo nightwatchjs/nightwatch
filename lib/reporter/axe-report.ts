@@ -1,6 +1,6 @@
 const CliTable = require('cli-table3');
 
-const Utils = require('../utils');
+import Utils from '../utils';
 const {Logger} = Utils;
 
 
