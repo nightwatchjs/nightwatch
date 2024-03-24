@@ -13,8 +13,7 @@ describe('Ecosia.org Demo', function() {
       .setValue('input[type=search]', 'nightwatch')
       .assert.visible('button[type=submit]')
       .click('button[type=submit]')
-      // .assert.textContains('.layout__content', 'Nightwatch.js')
-      .element.findElements('.layout__content').count().assert.equals(1);
+      .assert.textContains('.layout__content', 'Nightwatch.js');
   });
 
   after(browser => browser.end());
