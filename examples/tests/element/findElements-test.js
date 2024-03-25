@@ -1,5 +1,5 @@
 
-describe('GetAll test', function() {
+describe('FindElements test', function() {
 
   before(browser => {
     browser
