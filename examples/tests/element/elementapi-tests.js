@@ -39,6 +39,15 @@ describe('queries tests', function() {
     await element.findAll('section').count().assert.equals(9);
   });
 
+
+  it('findElements', async function({element}) {
+    await element.findElements('section').count().assert.equals(9);
+  });
+
+  it('getAll', async function({element}) {
+    await element.getAll('section').count().assert.equals(9);
+  });
+
   it('Button click works', async function(browser) {
     const button = await browser.element.findByText('Unique Button Text');
 
