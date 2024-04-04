@@ -181,6 +181,10 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   getCssProperty(name: string): ElementValue<string>;
 
+  css(name: string): ElementValue<string>;
+
+  getCssValue(name: string): ElementValue<string>;
+
   getValue(): ElementValue<string | null>;
 
   setValue<E extends readonly unknown[]>(...keys: E): Promise<WebElement>;
