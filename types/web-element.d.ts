@@ -163,6 +163,10 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   getAttribute(name: string): ElementValue<string | null>;
 
+  attr(name: string): ElementValue<string | null>;
+
+  attribute(name: string): ElementValue<string | null>;
+
   setAttribute(name: string, value: string | null): Promise<WebElement>;
 
   takeScreenshot(): ElementValue<string>;

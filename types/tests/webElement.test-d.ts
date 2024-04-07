@@ -139,6 +139,8 @@ describe('new element() api', function () {
 
     expectType<ElementValue<string | null>>(elem.getProperty('property-name'));
     expectType<ElementValue<string | null>>(elem.getAttribute('attrib-name'));
+    expectType<ElementValue<string | null>>(elem.attr('attrib-name'));
+    expectType<ElementValue<string | null>>(elem.attribute('attrib-name'));
     expectType<ElementValue<string | null>>(elem.getValue());
     expectType<ElementValue<boolean>>(elem.isEnabled());
     expectType<ElementValue<boolean>>(elem.isVisible());
