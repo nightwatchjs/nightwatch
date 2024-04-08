@@ -135,6 +135,7 @@ describe('new element() api', function () {
 
     expectType<ElementValue<string>>(elem.getId());
     expectType<ElementValue<string>>(elem.getTagName());
+    expectType<ElementValue<string>>(elem.tagName());
     expectType<ElementValue<string>>(elem.getText());
 
     expectType<ElementValue<string | null>>(elem.getProperty('property-name'));

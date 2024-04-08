@@ -147,6 +147,8 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   getTagName(): ElementValue<string>;
 
+  tagName(): ElementValue<string>;
+
   getText(): ElementValue<string>;
 
   click(): Promise<WebElement>;
