@@ -141,9 +141,13 @@ describe('new element() api', function () {
     expectType<ElementValue<string | null>>(elem.getAttribute('attrib-name'));
     expectType<ElementValue<string | null>>(elem.getValue());
     expectType<ElementValue<boolean>>(elem.isEnabled());
+    expectType<ElementValue<boolean>>(elem.isVisible());
+    expectType<ElementValue<boolean>>(elem.isDisplayed());
 
     expectType<ElementValue<ScopedElementRect>>(elem.getRect());
+    expectType<ElementValue<ScopedElementRect>>(elem.rect());
     expectType<ElementValue<ScopedElementRect>>(elem.getSize());
+    expectType<ElementValue<ScopedElementRect>>(elem.getLocation());
 
     expectType<ElementValue<string>>(elem.getAccessibleName());
     expectType<ElementValue<string>>(elem.getAriaRole());

@@ -1,5 +1,8 @@
 const util = require('util');
-const menuXpath = '//div[contains(@class, "hdtb-mitem")][contains(., "%s")]';
+
+// starting xpath with './/' tells browser to begin search from the current element,
+// while starting with '//' tells browser to begin search from the start of html document.
+const menuXpath = './/span[contains(text(), "%s")]';
 
 const menuCommands = {
   productIsSelected: function (product, callback) {
@@ -18,15 +21,15 @@ module.exports = {
   },
   sections: {
     menu: {
-      selector: '#hdtb-msb',
+      selector: 'div[role="navigation"] div[data-st-cnt="mode"]',
       commands: [menuCommands],
       elements: {
-        all: {
-          selector: util.format(menuXpath, 'All'),
+        maps: {
+          selector: util.format(menuXpath, 'Maps'),
           locateStrategy: 'xpath',
           index: 0
         },
-        video: {
+        videos: {
           selector: util.format(menuXpath, 'Videos'),
           locateStrategy: 'xpath',
           index: 0

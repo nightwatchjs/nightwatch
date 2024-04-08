@@ -139,6 +139,12 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   getRect(): ElementValue<ScopedElementRect>;
 
+  rect(): ElementValue<ScopedElementRect>;
+
+  getSize(): ElementValue<ScopedElementRect>;
+
+  getLocation(): ElementValue<ScopedElementRect>;
+
   getTagName(): ElementValue<string>;
 
   getText(): ElementValue<string>;
@@ -175,8 +181,6 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   getCssProperty(name: string): ElementValue<string>;
 
-  getSize(): ElementValue<ScopedElementRect>;
-
   getValue(): ElementValue<string | null>;
 
   setValue<E extends readonly unknown[]>(...keys: E): Promise<WebElement>;
@@ -192,6 +196,9 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
   waitUntil(signalOrOptions: WaitUntilActions | WaitUntilOptions, waitOptions?: WaitUntilOptions): Promise<WebElement>;
 
   isEnabled(): ElementValue<boolean>;
+
+  isVisible(): ElementValue<boolean>;
+  isDisplayed(): ElementValue<boolean>;
 }
 
 type WaitUntilOptions = {
