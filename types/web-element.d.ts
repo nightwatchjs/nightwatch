@@ -178,7 +178,6 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
   getAccessibleName(): ElementValue<string>;
 
   getAriaRole(): ElementValue<string>;
-
   ariaRole(): ElementValue<string>;
 
   getCssProperty(name: string): ElementValue<string>;
