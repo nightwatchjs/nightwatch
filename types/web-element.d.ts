@@ -176,7 +176,6 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
   upload(file: string): Promise<WebElement>;
 
   getAccessibleName(): ElementValue<string>;
-
   accessibleName(): ElementValue<string>;
 
   getAriaRole(): ElementValue<string>;
