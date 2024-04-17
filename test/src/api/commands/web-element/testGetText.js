@@ -38,6 +38,30 @@ describe('element().getText() command', function () {
     assert.strictEqual(resultValue, 'Signup');
   });
 
+  it('test .element().text() alias', async function() {
+    MockServer.addMock({
+      url: '/session/13521-10219-202/element/0/text',
+      method: 'GET',
+      response: JSON.stringify({
+        value: 'Signup'
+      })
+    }, true);
+
+    const resultPromise = this.client.api.element('#signupSection').text();
+    assert.strictEqual(resultPromise instanceof Element, false);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+
+    const result = await resultPromise;
+    assert.strictEqual(result instanceof WebElement, false);
+    assert.strictEqual(result, 'Signup');
+
+    const resultValue = await resultPromise.value;
+    assert.strictEqual(resultValue, 'Signup');
+  });
+
   it('test .element().find().getText()', async function() {
     MockServer.addMock({
       url: '/session/13521-10219-202/element/1/text',
@@ -109,31 +133,6 @@ describe('element().getText() command', function () {
     assert.strictEqual(await resultPromise.assert.not.equals('Signupx'), 'Signup');
     assert.strictEqual(await resultPromise.assert.not.contains('Signupx'), 'Signup');
     assert.strictEqual(await resultPromise.assert.not.matches(/Si[a-z]{2}upx/), 'Signup');
-  });
-
-  it('test .element().find().text() assert', async function(){
-    MockServer.addMock({
-      url: '/session/13521-10219-202/element/1/text',
-      method: 'GET',
-      response: JSON.stringify({
-        value: 'Help'
-      })
-    }, true);
-
-    const resultPromise = this.client.api.element('#signupSection').find('#helpBtn').text();
-    assert.strictEqual(resultPromise instanceof Element, false);
-    assert.strictEqual(typeof resultPromise.find, 'undefined');
-
-    assert.strictEqual(resultPromise instanceof Promise, false);
-    assert.strictEqual(typeof resultPromise.then, 'function');
-
-    assert.strictEqual(await resultPromise.assert.equals('Help'), 'Help');
-    assert.strictEqual(await resultPromise.assert.contains('He'), 'Help');
-    assert.strictEqual(await resultPromise.assert.matches(/He[a-z]{1}/), 'Help');
-
-    assert.strictEqual(await resultPromise.assert.not.equals('Helpx'), 'Help');
-    assert.strictEqual(await resultPromise.assert.not.contains('Helpx'), 'Help');
-    assert.strictEqual(await resultPromise.assert.not.matches(/He[a-z]{1}x/), 'Help');
   });
 
 });
