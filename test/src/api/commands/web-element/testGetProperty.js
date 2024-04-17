@@ -62,7 +62,7 @@ describe('element().getProperty() command', function () {
     assert.deepStrictEqual(resultValue, ['.signup']);
   });
 
-  it('test .element.find().prop()', async function() {
+  it('test .element().prop() alias', async function() {
     MockServer.addMock({
       url: '/session/13521-10219-202/element/0/property/classList',
       method: 'GET',
@@ -71,7 +71,7 @@ describe('element().getProperty() command', function () {
       })
     }, true);
 
-    const resultPromise = this.client.api.element.find('#signupSection').prop('classList');
+    const resultPromise = this.client.api.element('#signupSection').prop('classList');
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
 
