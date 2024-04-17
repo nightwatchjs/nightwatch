@@ -40,7 +40,7 @@ describe('element().getAccessibleName() command', function () {
     assert.strictEqual(resultValue, 'Signup');
   });
 
-  it('test .element().accessible() alias', async function() {
+  it('test .element().accessibleName() alias', async function() {
     MockServer.addMock({
       url: '/session/13521-10219-202/element/0/computedlabel',
       method: 'GET',
@@ -49,7 +49,7 @@ describe('element().getAccessibleName() command', function () {
       })
     }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').accessible();
+    const resultPromise = this.client.api.element('#signupSection').accessibleName();
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
 
