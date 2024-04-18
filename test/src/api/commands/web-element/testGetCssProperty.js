@@ -63,6 +63,30 @@ describe('element().getCssProperty() command', function () {
     assert.strictEqual(resultValue, '150px');
   });
 
+  it('test .element().getCssValue() alias', async function() {
+    MockServer.addMock({
+      url: '/session/13521-10219-202/element/0/css/height',
+      method: 'GET',
+      response: JSON.stringify({
+        value: '150px'
+      })
+    }, true);
+
+    const resultPromise = this.client.api.element('#signupSection').getCssValue('height');
+    assert.strictEqual(resultPromise instanceof Element, false);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+    
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+
+    const result = await resultPromise;
+    assert.strictEqual(result instanceof WebElement, false);
+    assert.strictEqual(result, '150px');
+
+    const resultValue = await resultPromise.value;
+    assert.strictEqual(resultValue, '150px');
+  });
+
   it('test .element().find().getCssProperty()', async function() {
     MockServer.addMock({
       url: '/session/13521-10219-202/element/1/css/height',
@@ -135,40 +159,5 @@ describe('element().getCssProperty() command', function () {
     assert.strictEqual(await resultPromise.assert.not.contains('150x'), '150px');
     assert.strictEqual(await resultPromise.assert.not.matches(/150[a-z]{2}x/), '150px');
   });
-
-  // Extra tests 
-  it('test browser.element().css()', async function () {
-   
-
-    const resultPromise = this.client.api.element('#signupSection').css('height');
-    assert.strictEqual(resultPromise instanceof Element, false);
-    assert.strictEqual(typeof resultPromise.find, 'undefined');
-
-    assert.strictEqual(resultPromise instanceof Promise, false);
-    assert.strictEqual(typeof resultPromise.then, 'function');
-
-    const result = await resultPromise;
-    assert.strictEqual(result instanceof WebElement, false);
-    assert.strictEqual(result, '150px');
-
-    const resultValue = await resultPromise.value;
-    assert.strictEqual(resultValue, '150px');
-  });
-
-  it('test browser.element().getCssValue()', async function () {
-    const resultPromise = this.client.api.element('#signupSection').getCssValue('height');
-    assert.strictEqual(resultPromise instanceof Element, false);
-    assert.strictEqual(typeof resultPromise.find, 'undefined');
-
-    assert.strictEqual(resultPromise instanceof Promise, false);
-    assert.strictEqual(typeof resultPromise.then, 'function');
-
-    const result = await resultPromise;
-    assert.strictEqual(result instanceof WebElement, false);
-    assert.strictEqual(result, '150px');
-
-    const resultValue = await resultPromise.value;
-    assert.strictEqual(resultValue, '150px');
-  }) ;
   
 });
