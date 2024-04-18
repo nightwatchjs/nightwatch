@@ -183,16 +183,12 @@ describe('clearValue', function() {
       },
       output: false,
       silent: false,
-      globals: {
-        reporter(results) {
-          console.log('reporter results', results);
-        }
-      },
       webdriver: {
         host: 'localhost',
         start_process: false
       }
     }).then((client) => {
+      let sendKeysMockCalled = false;
       let callbackResultValue;
   
       MockServer
@@ -204,6 +200,14 @@ describe('clearValue', function() {
           url: '/session/13521-10219-202/element/0/property/value',
           method: 'GET',
           response: {value: ''}
+        }, true)
+        .addMock({
+          url: '/session/13521-10219-202/element/0/value',
+          method: 'POST',
+          response: {value: null},
+          onRequest() {
+            sendKeysMockCalled = true;
+          }
         }, true);
 
       client.api.clearValue('css selector', '#signupSection', function (result) {
@@ -214,6 +218,7 @@ describe('clearValue', function() {
         try {
           assert.strictEqual(err, undefined);
           assert.strictEqual(callbackResultValue, null);
+          assert.strictEqual(sendKeysMockCalled, false);
           done();
         } catch (e) {
           done(e);
