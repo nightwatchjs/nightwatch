@@ -119,70 +119,106 @@ describe('clearValue', function() {
     });
   });
 
-  it('client.clearValue() with webdriver protocol - ensuring that fallback is working', function (done) {
+  it('client.clearValue() with webdriver protocol - fallback sending backspace keys', function (done) {
     Nightwatch.initClient({
       selenium: {
         version2: false,
         start_process: false,
         host: null
       },
-      output: true,
+      output: false,
       silent: false,
       webdriver: {
         host: 'localhost',
         start_process: false
       }
     }).then((client) => {
-      const bArr = Array(6).fill(Key.BACK_SPACE);
-      const str = bArr.join('');
       let sendKeysMockCalled = false;
+      let callbackResultValue;
   
-      MockServer.addMock(
-        {
+      MockServer
+        .addMock({
           url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/clear',
           response: {value: null}
-        },
-        true
-      );
-
-      MockServer.addMock(
-        {
+        }, true)
+        .addMock({
           url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/property/value',
+          method: 'GET',
           response: {value: 'sample'}
-        },
-        true
-      );
-
-  
-      MockServer.addMock(
-        {
+        }, true)
+        .addMock({
           url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/value',
           method: 'POST',
-          postdata: {
-            text: str,
-            value: bArr
-          },
-          response: {
-            sessionId: '13521-10219-202',
-            status: 0
-          },
-          onRequest() {
+          response: {value: null},
+          onRequest(_, requestData) {
+            assert.strictEqual(requestData.text, Array(6).fill(Key.BACK_SPACE).join(''));
             sendKeysMockCalled = true;
-          },
-          statusCode: 200
-        },
-        true
-      );
-      
-  
-      client.api.sendKeys('css selector', '#webdriver', bArr, function callback(result) {
-        assert.strictEqual(sendKeysMockCalled, true);
-      }).clearValue('css selector', '#webdriver', function (result) {
-        assert.strictEqual(result.value, null);
-        // ensures fallback is working
+          }
+        }, true);
+
+      client.api.clearValue('css selector', '#webdriver', function (result) {
+        callbackResultValue = result.value;
       });
   
-      client.start(done);
+      client.start(function (err) {
+        try {
+          assert.strictEqual(err, undefined);
+          assert.strictEqual(callbackResultValue, null);
+          // ensure fallback is working (backspaces are sent to element)
+          assert.strictEqual(sendKeysMockCalled, true);
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+    });
+  });
+
+  it('client.clearValue() with webdriver protocol - fallback sending nothing when element cleared correctly', function (done) {
+    Nightwatch.initClient({
+      selenium: {
+        version2: false,
+        start_process: false,
+        host: null
+      },
+      output: false,
+      silent: false,
+      globals: {
+        reporter(results) {
+          console.log('reporter results', results);
+        }
+      },
+      webdriver: {
+        host: 'localhost',
+        start_process: false
+      }
+    }).then((client) => {
+      let callbackResultValue;
+  
+      MockServer
+        .addMock({
+          url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/clear',
+          response: {value: null}
+        }, true)
+        .addMock({
+          url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/property/value',
+          method: 'GET',
+          response: {value: ''}
+        }, true);
+
+      client.api.clearValue('css selector', '#webdriver', function (result) {
+        callbackResultValue = result.value;
+      });
+  
+      client.start(function (err) {
+        try {
+          assert.strictEqual(err, undefined);
+          assert.strictEqual(callbackResultValue, null);
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
     });
   });
 
