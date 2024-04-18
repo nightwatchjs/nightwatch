@@ -44,6 +44,9 @@ describe('new element() api', function () {
     expectType<ScopedElement>(elementFind);
     expectType<WebElement>(await elementFind);
 
+    expectType<ScopedElement>(browser.element.get('selector'));
+    expectType<ScopedElement>(browser.element.findElement('selector'));
+
     const elementFindByText = browser.element.findByText('some-text', {exact: true, abortOnFailure: false});
     expectType<ScopedElement>(elementFindByText);
 
@@ -65,8 +68,12 @@ describe('new element() api', function () {
     const elementFindAll = browser.element.findAll('selector');
     expectType<Elements>(elementFindAll);
     expectType<WebElement[]>(await elementFindAll);
+
     expectType<ScopedElement>(elementFindAll.nth(2));
     expectType<number>(await elementFindAll.count());
+
+    expectType<Elements>(browser.element.getAll('selector'));
+    expectType<Elements>(browser.element.findElements('selector'));
 
     const elementFindAllByText = browser.element.findAllByText('some-text', {exact: true, abortOnFailure: false});
     expectType<Elements>(elementFindAllByText);
@@ -102,6 +109,7 @@ describe('new element() api', function () {
 
     expectType<ScopedElement>(elem.find('selector'));
     expectType<ScopedElement>(elem.get('selector'));
+    expectType<ScopedElement>(elem.findElement('selector'));
 
     expectType<ScopedElement>(elem.findByText('some-text', {exact: true, abortOnFailure: false}));
 
@@ -114,6 +122,7 @@ describe('new element() api', function () {
     expectType<ScopedElement>(elem.findByAltText('some-text', {exact: true, abortOnFailure: false}));
 
     expectType<Elements>(elem.findAll('selector'));
+    expectType<Elements>(elem.findElements('selector'));
     expectType<Elements>(elem.getAll('selector'));
 
     expectType<Elements>(elem.findAllByText('some-text', {exact: true, abortOnFailure: false}));
