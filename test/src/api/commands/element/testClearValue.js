@@ -138,16 +138,16 @@ describe('clearValue', function() {
   
       MockServer
         .addMock({
-          url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/clear',
+          url: '/session/13521-10219-202/element/0/clear',
           response: {value: null}
         }, true)
         .addMock({
-          url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/property/value',
+          url: '/session/13521-10219-202/element/0/property/value',
           method: 'GET',
           response: {value: 'sample'}
         }, true)
         .addMock({
-          url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/value',
+          url: '/session/13521-10219-202/element/0/value',
           method: 'POST',
           response: {value: null},
           onRequest(_, requestData) {
@@ -156,7 +156,7 @@ describe('clearValue', function() {
           }
         }, true);
 
-      client.api.clearValue('css selector', '#webdriver', function (result) {
+      client.api.clearValue('css selector', '#signupSection', function (result) {
         callbackResultValue = result.value;
       });
   
@@ -197,16 +197,16 @@ describe('clearValue', function() {
   
       MockServer
         .addMock({
-          url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/clear',
+          url: '/session/13521-10219-202/element/0/clear',
           response: {value: null}
         }, true)
         .addMock({
-          url: '/session/13521-10219-202/element/5cc459b8-36a8-3042-8b4a-258883ea642b/property/value',
+          url: '/session/13521-10219-202/element/0/property/value',
           method: 'GET',
           response: {value: ''}
         }, true);
 
-      client.api.clearValue('css selector', '#webdriver', function (result) {
+      client.api.clearValue('css selector', '#signupSection', function (result) {
         callbackResultValue = result.value;
       });
   
