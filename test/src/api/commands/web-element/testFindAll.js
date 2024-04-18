@@ -115,6 +115,40 @@ describe('element().findAll() commands', function () {
     assert.strictEqual(await btnWEbElements[0].getId(), '5cc459b8-36a8-3042-8b4a-258883ea642b');
   });
 
+  it('test .element.getAll()', async function() {
+    const webLoginElements = this.client.api.element.getAll('#weblogin');
+    assert.strictEqual(webLoginElements instanceof Element, false);
+    assert.strictEqual(typeof webLoginElements.find, 'undefined');
+    assert.strictEqual(typeof webLoginElements.click, 'undefined');
+
+    assert.strictEqual(webLoginElements instanceof Promise, false);
+    assert.strictEqual(typeof webLoginElements.then, 'function');
+    assert.strictEqual(typeof webLoginElements.nth, 'function');
+    assert.strictEqual(typeof webLoginElements.count, 'function');
+
+    const btnWEbElements = await webLoginElements;
+    assert.strictEqual(btnWEbElements.length, 2);
+    assert.strictEqual(btnWEbElements[0] instanceof WebElement, true);
+    assert.strictEqual(await btnWEbElements[0].getId(), '5cc459b8-36a8-3042-8b4a-258883ea642b');
+  });
+
+  it('test .element.findElements()', async function() {
+    const webLoginElements = this.client.api.element.findElements('#weblogin');
+    assert.strictEqual(webLoginElements instanceof Element, false);
+    assert.strictEqual(typeof webLoginElements.find, 'undefined');
+    assert.strictEqual(typeof webLoginElements.click, 'undefined');
+
+    assert.strictEqual(webLoginElements instanceof Promise, false);
+    assert.strictEqual(typeof webLoginElements.then, 'function');
+    assert.strictEqual(typeof webLoginElements.nth, 'function');
+    assert.strictEqual(typeof webLoginElements.count, 'function');
+
+    const btnWEbElements = await webLoginElements;
+    assert.strictEqual(btnWEbElements.length, 2);
+    assert.strictEqual(btnWEbElements[0] instanceof WebElement, true);
+    assert.strictEqual(await btnWEbElements[0].getId(), '5cc459b8-36a8-3042-8b4a-258883ea642b');
+  });
+
   it('test .element().findAll().count()', async function() {
     const resultPromise = this.client.api.element('#signupSection').findAll('.btn').count();
     assert.strictEqual(resultPromise instanceof Element, false);

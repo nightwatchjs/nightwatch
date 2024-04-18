@@ -76,4 +76,24 @@ describe('element().find() commands', function () {
     assert.strictEqual(signupWebElement instanceof WebElement, true);
     assert.strictEqual(await signupWebElement.getId(), '0');
   });
+
+  it('test .element.get()', async function() {
+    const signupElement = this.client.api.element.get('#signupSection');
+    assert.strictEqual(signupElement instanceof Element, true);
+    assert.strictEqual(await signupElement.getId(), '0');
+
+    const signupWebElement = await signupElement;
+    assert.strictEqual(signupWebElement instanceof WebElement, true);
+    assert.strictEqual(await signupWebElement.getId(), '0');
+  });
+
+  it('test .element.findElement()', async function() {
+    const signupElement = this.client.api.element.findElement('#signupSection');
+    assert.strictEqual(signupElement instanceof Element, true);
+    assert.strictEqual(await signupElement.getId(), '0');
+
+    const signupWebElement = await signupElement;
+    assert.strictEqual(signupWebElement instanceof WebElement, true);
+    assert.strictEqual(await signupWebElement.getId(), '0');
+  });
 });
