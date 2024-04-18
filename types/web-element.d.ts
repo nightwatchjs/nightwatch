@@ -15,6 +15,7 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   find(selector: ScopedElementSelector): ScopedElement;
   get(selector: ScopedElementSelector): ScopedElement;
+  findElement(selector: ScopedElementSelector): ScopedElement;
 
   findByText(
     text: string,
@@ -45,30 +46,31 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
       readonly expanded?: boolean;
     }
   ): ScopedElement;
-  
+
   findByPlaceholderText(
     text: string,
     options?: Omit<ScopedSelectorObject, 'selector'> & {
       readonly exact?: boolean;
     }
   ): ScopedElement;
-  
+
   findByLabelText(
     text: string,
     options?: Omit<ScopedSelectorObject, 'selector'> & {
       readonly exact?: boolean;
     }
   ): ScopedElement;
-  
+
   findByAltText(
     text: string,
     options?: Omit<ScopedSelectorObject, 'selector'> & {
       readonly exact?: boolean;
     }
   ): ScopedElement;
-  
+
   findAll(selector: ScopedSelector | Promise<ScopedSelector>): Elements;
   getAll(selector: ScopedSelector | Promise<ScopedSelector>): Elements;
+  findElements(selector: ScopedSelector | Promise<ScopedSelector>): Elements;
 
   findAllByText(
     text: string,
@@ -139,9 +141,17 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   getRect(): ElementValue<ScopedElementRect>;
 
+  rect(): ElementValue<ScopedElementRect>;
+
+  getSize(): ElementValue<ScopedElementRect>;
+
+  getLocation(): ElementValue<ScopedElementRect>;
+
   getTagName(): ElementValue<string>;
+  tagName(): ElementValue<string>;
 
   getText(): ElementValue<string>;
+  text(): ElementValue<string>;
 
   click(): Promise<WebElement>;
 
@@ -152,6 +162,8 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
   submit(): Promise<WebElement>;
 
   getProperty(name: string): ElementValue<string | null>;
+  prop(name: string): ElementValue<string | null>;
+  property(name: string): ElementValue<string | null>;
 
   setProperty(name: string, value: unknown): Promise<WebElement>;
 
@@ -170,12 +182,12 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
   upload(file: string): Promise<WebElement>;
 
   getAccessibleName(): ElementValue<string>;
+  accessibleName(): ElementValue<string>;
 
   getAriaRole(): ElementValue<string>;
+  ariaRole(): ElementValue<string>;
 
   getCssProperty(name: string): ElementValue<string>;
-
-  getSize(): ElementValue<ScopedElementRect>;
 
   getValue(): ElementValue<string | null>;
 
@@ -187,7 +199,14 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   rightClick(): Promise<WebElement>;
 
+  isSelected(): ElementValue<boolean>;
+
   waitUntil(signalOrOptions: WaitUntilActions | WaitUntilOptions, waitOptions?: WaitUntilOptions): Promise<WebElement>;
+
+  isEnabled(): ElementValue<boolean>;
+
+  isVisible(): ElementValue<boolean>;
+  isDisplayed(): ElementValue<boolean>;
 }
 
 type WaitUntilOptions = {
@@ -336,8 +355,8 @@ export type DragAndDropDestination = {
 export interface ElementFunction
   extends Pick<
     ScopedElement,
-    'find' | 'findByText' | 'findByRole' | 'findByPlaceholderText' | 'findByLabelText' | 'findByAltText' |
-    'findAll' | 'findAllByText' | 'findAllByRole' | 'findAllByPlaceholderText' | 'findAllByAltText'
+    'find' | 'get' | 'findElement' | 'findByText' | 'findByRole' | 'findByPlaceholderText' | 'findByLabelText' | 'findByAltText' |
+    'findAll' | 'getAll' | 'findElements' | 'findAllByText' | 'findAllByRole' | 'findAllByPlaceholderText' | 'findAllByAltText'
   > {
   (selector: ScopedElementSelector): ScopedElement;
   (

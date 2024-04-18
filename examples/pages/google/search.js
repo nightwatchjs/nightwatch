@@ -30,7 +30,7 @@ module.exports = {
     consentModal,
 
     searchBar: {
-      selector: 'input[name=q]'
+      selector: 'textarea[name=q]'
     },
 
     submitButton: {

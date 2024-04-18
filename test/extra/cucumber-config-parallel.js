@@ -26,6 +26,19 @@ module.exports = {
       feature_path: path.join(__dirname, '../cucumber-integration-tests/sample_cucumber_tests/parallel/sample.feature')
     }
   },
+
+  test_settings: {
+    chrome: {
+      desiredCapabilities: {
+        browserName: 'chrome'
+      }
+    },
+    firefox: {
+      desiredCapabilities: {
+        browserName: 'firefox'
+      }
+    }
+  },
   output: false,
   silent: false
-}
+};

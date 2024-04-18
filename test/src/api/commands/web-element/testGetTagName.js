@@ -38,6 +38,30 @@ describe('element().getTagName() command', function () {
     assert.strictEqual(resultValue, 'div');
   });
 
+  it('test .element().tagName() alias', async function() {
+    MockServer.addMock({
+      url: '/session/13521-10219-202/element/0/name',
+      method: 'GET',
+      response: JSON.stringify({
+        value: 'div'
+      })
+    }, true);
+
+    const resultPromise = this.client.api.element('#signupSection').tagName();
+    assert.strictEqual(resultPromise instanceof Element, false);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+
+    const result = await resultPromise;
+    assert.strictEqual(result instanceof WebElement, false);
+    assert.strictEqual(result, 'div');
+
+    const resultValue = await resultPromise.value;
+    assert.strictEqual(resultValue, 'div');
+  });
+
   it('test .element().find().getTagName()', async function() {
     MockServer.addMock({
       url: '/session/13521-10219-202/element/1/name',
@@ -110,4 +134,5 @@ describe('element().getTagName() command', function () {
     assert.strictEqual(await resultPromise.assert.not.contains('dx'), 'div');
     assert.strictEqual(await resultPromise.assert.not.matches(/di[a-z]{2}x/), 'div');
   });
+
 });

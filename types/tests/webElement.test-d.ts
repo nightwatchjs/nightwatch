@@ -44,6 +44,9 @@ describe('new element() api', function () {
     expectType<ScopedElement>(elementFind);
     expectType<WebElement>(await elementFind);
 
+    expectType<ScopedElement>(browser.element.get('selector'));
+    expectType<ScopedElement>(browser.element.findElement('selector'));
+
     const elementFindByText = browser.element.findByText('some-text', {exact: true, abortOnFailure: false});
     expectType<ScopedElement>(elementFindByText);
 
@@ -65,8 +68,12 @@ describe('new element() api', function () {
     const elementFindAll = browser.element.findAll('selector');
     expectType<Elements>(elementFindAll);
     expectType<WebElement[]>(await elementFindAll);
+
     expectType<ScopedElement>(elementFindAll.nth(2));
     expectType<number>(await elementFindAll.count());
+
+    expectType<Elements>(browser.element.getAll('selector'));
+    expectType<Elements>(browser.element.findElements('selector'));
 
     const elementFindAllByText = browser.element.findAllByText('some-text', {exact: true, abortOnFailure: false});
     expectType<Elements>(elementFindAllByText);
@@ -102,6 +109,7 @@ describe('new element() api', function () {
 
     expectType<ScopedElement>(elem.find('selector'));
     expectType<ScopedElement>(elem.get('selector'));
+    expectType<ScopedElement>(elem.findElement('selector'));
 
     expectType<ScopedElement>(elem.findByText('some-text', {exact: true, abortOnFailure: false}));
 
@@ -114,6 +122,7 @@ describe('new element() api', function () {
     expectType<ScopedElement>(elem.findByAltText('some-text', {exact: true, abortOnFailure: false}));
 
     expectType<Elements>(elem.findAll('selector'));
+    expectType<Elements>(elem.findElements('selector'));
     expectType<Elements>(elem.getAll('selector'));
 
     expectType<Elements>(elem.findAllByText('some-text', {exact: true, abortOnFailure: false}));
@@ -135,17 +144,28 @@ describe('new element() api', function () {
 
     expectType<ElementValue<string>>(elem.getId());
     expectType<ElementValue<string>>(elem.getTagName());
+    expectType<ElementValue<string>>(elem.tagName());
     expectType<ElementValue<string>>(elem.getText());
+    expectType<ElementValue<string>>(elem.text());
 
     expectType<ElementValue<string | null>>(elem.getProperty('property-name'));
+    expectType<ElementValue<string | null>>(elem.prop('property-name'));
+    expectType<ElementValue<string | null>>(elem.property('property-name'));
     expectType<ElementValue<string | null>>(elem.getAttribute('attrib-name'));
     expectType<ElementValue<string | null>>(elem.getValue());
+    expectType<ElementValue<boolean>>(elem.isEnabled());
+    expectType<ElementValue<boolean>>(elem.isVisible());
+    expectType<ElementValue<boolean>>(elem.isDisplayed());
 
     expectType<ElementValue<ScopedElementRect>>(elem.getRect());
+    expectType<ElementValue<ScopedElementRect>>(elem.rect());
     expectType<ElementValue<ScopedElementRect>>(elem.getSize());
+    expectType<ElementValue<ScopedElementRect>>(elem.getLocation());
 
     expectType<ElementValue<string>>(elem.getAccessibleName());
+    expectType<ElementValue<string>>(elem.accessibleName());
     expectType<ElementValue<string>>(elem.getAriaRole());
+    expectType<ElementValue<string>>(elem.ariaRole());
     expectType<ElementValue<string>>(elem.getCssProperty('height'));
     expectType<ElementValue<string>>(elem.takeScreenshot());
 
@@ -163,6 +183,7 @@ describe('new element() api', function () {
     expectType<Promise<WebElement>>(elem.doubleClick());
     expectType<Promise<WebElement>>(elem.rightClick());
     expectType<Promise<WebElement>>(elem.waitUntil('visible', {timeout: 5000}));
+    expectType<ElementValue<boolean>>(elem.isSelected());
   });
 
   test('test element assertions', async function () {
