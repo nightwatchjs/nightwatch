@@ -1,6 +1,7 @@
 const assert = require('assert');
 const MockServer  = require('../../../../lib/mockserver.js');
 const Nightwatch = require('../../../../lib/nightwatch.js');
+const {Key} = require('selenium-webdriver');
 
 describe('clearValue', function() {
 
@@ -115,6 +116,114 @@ describe('clearValue', function() {
       });
 
       client.start(done);
+    });
+  });
+
+  it('client.clearValue() with webdriver protocol - fallback sending backspace keys', function (done) {
+    Nightwatch.initClient({
+      selenium: {
+        version2: false,
+        start_process: false,
+        host: null
+      },
+      output: false,
+      silent: false,
+      webdriver: {
+        host: 'localhost',
+        start_process: false
+      }
+    }).then((client) => {
+      let sendKeysMockCalled = false;
+      let callbackResultValue;
+  
+      MockServer
+        .addMock({
+          url: '/session/13521-10219-202/element/0/clear',
+          response: {value: null}
+        }, true)
+        .addMock({
+          url: '/session/13521-10219-202/element/0/property/value',
+          method: 'GET',
+          response: {value: 'sample'}
+        }, true)
+        .addMock({
+          url: '/session/13521-10219-202/element/0/value',
+          method: 'POST',
+          response: {value: null},
+          onRequest(_, requestData) {
+            assert.strictEqual(requestData.text, Array(6).fill(Key.BACK_SPACE).join(''));
+            sendKeysMockCalled = true;
+          }
+        }, true);
+
+      client.api.clearValue('css selector', '#signupSection', function (result) {
+        callbackResultValue = result.value;
+      });
+  
+      client.start(function (err) {
+        try {
+          assert.strictEqual(err, undefined);
+          assert.strictEqual(callbackResultValue, null);
+          // ensure fallback is working (backspaces are sent to element)
+          assert.strictEqual(sendKeysMockCalled, true);
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+    });
+  });
+
+  it('client.clearValue() with webdriver protocol - fallback sending nothing when element cleared correctly', function (done) {
+    Nightwatch.initClient({
+      selenium: {
+        version2: false,
+        start_process: false,
+        host: null
+      },
+      output: false,
+      silent: false,
+      webdriver: {
+        host: 'localhost',
+        start_process: false
+      }
+    }).then((client) => {
+      let sendKeysMockCalled = false;
+      let callbackResultValue;
+  
+      MockServer
+        .addMock({
+          url: '/session/13521-10219-202/element/0/clear',
+          response: {value: null}
+        }, true)
+        .addMock({
+          url: '/session/13521-10219-202/element/0/property/value',
+          method: 'GET',
+          response: {value: ''}
+        }, true)
+        .addMock({
+          url: '/session/13521-10219-202/element/0/value',
+          method: 'POST',
+          response: {value: null},
+          onRequest() {
+            sendKeysMockCalled = true;
+          }
+        }, true);
+
+      client.api.clearValue('css selector', '#signupSection', function (result) {
+        callbackResultValue = result.value;
+      });
+  
+      client.start(function (err) {
+        try {
+          assert.strictEqual(err, undefined);
+          assert.strictEqual(callbackResultValue, null);
+          assert.strictEqual(sendKeysMockCalled, false);
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
     });
   });
 

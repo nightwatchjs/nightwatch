@@ -512,13 +512,20 @@ describe('element actions', function () {
         },
         commandName: 'elementIdValue',
         args: ['TEST_ELEMENT', 'test', function(result) {
+          // accounting for fallback for clearElement as well.
+          assert.strictEqual(assertions.length, 4);
+
           assert.strictEqual(assertions[0].command, 'clearElement');
           assert.ok(assertions[0].args.id instanceof WebElement);
 
-          assert.strictEqual(assertions[1].command, 'sendKeysToElement');
-          assert.strictEqual(assertions[1].args.text, 'test');
-          assert.deepStrictEqual(assertions[1].args.value, ['t', 'e', 's', 't']);
-          assert.ok(assertions[1].args.id instanceof WebElement);
+          // fallback for clearElement
+          assert.strictEqual(assertions[1].command, 'getElementProperty');
+          assert.strictEqual(assertions[2].command, 'sendKeysToElement');
+
+          assert.strictEqual(assertions[3].command, 'sendKeysToElement');
+          assert.strictEqual(assertions[3].args.text, 'test');
+          assert.deepStrictEqual(assertions[3].args.value, ['t', 'e', 's', 't']);
+          assert.ok(assertions[3].args.id instanceof WebElement);
 
           assert.deepStrictEqual(result, {value: null, status: 0});
         }]
