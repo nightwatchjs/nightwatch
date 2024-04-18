@@ -62,7 +62,7 @@ describe('element().getAttribute() command', function () {
     assert.strictEqual(resultValue, 'text');
   });
 
-  it('test .element().attribute()', async function() {
+  it('test .element().attribute() alias', async function() {
     MockServer.addMock({
       url: '/session/13521-10219-202/execute/sync',
       method: 'POST',
