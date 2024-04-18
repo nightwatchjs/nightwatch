@@ -77,67 +77,23 @@ describe('element().find() commands', function () {
     assert.strictEqual(await signupWebElement.getId(), '0');
   });
 
-  // extra tests
+  it('test .element.get()', async function() {
+    const signupElement = this.client.api.element.get('#signupSection');
+    assert.strictEqual(signupElement instanceof Element, true);
+    assert.strictEqual(await signupElement.getId(), '0');
 
+    const signupWebElement = await signupElement;
+    assert.strictEqual(signupWebElement instanceof WebElement, true);
+    assert.strictEqual(await signupWebElement.getId(), '0');
+  });
 
-  it('test browser.element.find()', async function() {
-    const element = this.client.api.element.find('#signupSection');
-    assert.strictEqual(element instanceof Element, true);
-    assert.strictEqual(await element.getId(), '0');
-  
-    const webElement = await element;
-    assert.strictEqual(webElement instanceof WebElement, true);
-    assert.strictEqual(await webElement.getId(), '0');
+  it('test .element.findElement()', async function() {
+    const signupElement = this.client.api.element.findElement('#signupSection');
+    assert.strictEqual(signupElement instanceof Element, true);
+    assert.strictEqual(await signupElement.getId(), '0');
+
+    const signupWebElement = await signupElement;
+    assert.strictEqual(signupWebElement instanceof WebElement, true);
+    assert.strictEqual(await signupWebElement.getId(), '0');
   });
-  
-  it('test browser.element.get()', async function() {
-    const element = this.client.api.element.get('#signupSection');
-    assert.strictEqual(element instanceof Element, true);
-    assert.strictEqual(await element.getId(), '0');
-  
-    const webElement = await element;
-    assert.strictEqual(webElement instanceof WebElement, true);
-    assert.strictEqual(await webElement.getId(), '0');
-  });
-  
-  it('test browser.element.findElement()', async function() {
-    const element = this.client.api.element.findElement('#signupSection');
-    assert.strictEqual(element instanceof Element, true);
-    assert.strictEqual(await element.getId(), '0');
-  
-    const webElement = await element;
-    assert.strictEqual(webElement instanceof WebElement, true);
-    assert.strictEqual(await webElement.getId(), '0');
-  });
-  
-  it('test browser.element().find()', async function() {
-    const element = this.client.api.element('#signupSection').find('#helpBtn');
-    assert.strictEqual(element instanceof Element, true);
-    assert.strictEqual(await element.getId(), '1');
-  
-    const webElement = await element;
-    assert.strictEqual(webElement instanceof WebElement, true);
-    assert.strictEqual(await webElement.getId(), '1');
-  });
-  
-  it('test browser.element().get()', async function() {
-    const element = this.client.api.element('#signupSection').get('#helpBtn');
-    assert.strictEqual(element instanceof Element, true);
-    assert.strictEqual(await element.getId(), '1');
-  
-    const webElement = await element;
-    assert.strictEqual(webElement instanceof WebElement, true);
-    assert.strictEqual(await webElement.getId(), '1');
-  });
-  
-  it('test browser.element().findElement()', async function() {
-    const element = this.client.api.element('#signupSection').findElement('#helpBtn');
-    assert.strictEqual(element instanceof Element, true);
-    assert.strictEqual(await element.getId(), '1');
-  
-    const webElement = await element;
-    assert.strictEqual(webElement instanceof WebElement, true);
-    assert.strictEqual(await webElement.getId(), '1');
-  });
-  
 });
