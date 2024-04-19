@@ -157,6 +157,5 @@ describe('element().getAttribute() command', function () {
     assert.strictEqual(await resultPromise.assert.not.equals('texxt'), 'text');
     assert.strictEqual(await resultPromise.assert.not.contains('texx'), 'text');
     assert.strictEqual(await resultPromise.assert.not.matches(/te[a-z]{2}x/), 'text');
-  }); 
-
+  });
 });
