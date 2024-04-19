@@ -47,7 +47,7 @@ describe('element().getAttribute() command', function () {
       })
     }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').find('#helpBtn').attr('type');
+    const resultPromise = this.client.api.element('#signupSection').attr('type');
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
 
@@ -71,7 +71,7 @@ describe('element().getAttribute() command', function () {
       })
     }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').find('#helpBtn').attribute('type');
+    const resultPromise = this.client.api.element('#signupSection').attribute('type');
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
 
