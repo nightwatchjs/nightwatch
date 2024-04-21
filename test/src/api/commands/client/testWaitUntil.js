@@ -1,4 +1,5 @@
 const assert = require('assert');
+const MockServer = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands.js');
 
 describe('.waitUntil()', function () {
@@ -284,6 +285,28 @@ describe('.waitUntil()', function () {
           done(err);
         }
       });
+    });
+
+    it('client.waitUntil() function returns promise for async Nightwatch commands in callback', function (done) {
+      MockServer.addMock({
+        url: '/wd/hub/session/1352110219202/title',
+        method: 'GET',
+        response: JSON.stringify({
+          sessionId: '1352110219202',
+          status: 0,
+          value: 'sample Title'
+        })
+      });
+
+      this.client.api.waitUntil(async function () {
+        const title = await this.client.api.getTitle();
+
+        return title === 'sample Title';
+      }, function (result) {
+        assert.strictEqual(result.status, 0);
+      });
+
+      this.client.start(done);
     });
   });
 });
