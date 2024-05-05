@@ -324,7 +324,7 @@ describe('testReporter', function() {
             assert.ok(Object.keys(command).includes('endTime'));
             assert.ok(Object.keys(command).includes('elapsedTime'));
             assert.ok(Object.keys(command).includes('result'));
-            assert.deepEqual(command.args, ['http://localhost']);
+            assert.deepEqual(command.args, ['"http://localhost"']);
             assert.strictEqual(command.status, 'pass');
           }
         },
