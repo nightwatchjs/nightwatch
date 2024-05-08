@@ -6,7 +6,7 @@ describe('Test edge option', function(){
   
   it('Edge option object with headless', function(){
     const edgeoptions = new EdgeOptions();
-    edgeoptions.headless();
+    edgeoptions.addArguments('headless=new');
 
     const client = Nightwatch.createClient({
       capabilities: edgeoptions
@@ -75,7 +75,7 @@ describe('Test edge option', function(){
     const options = client.transport.createSessionOptions({headless: true});
 
     assert.strictEqual(options instanceof EdgeOptions, true);
-    assert.deepStrictEqual(options.options_.args, ['headless']);
+    assert.deepStrictEqual(options.options_.args, ['headless=new']);
   });
 
   it('window size option', function(){
