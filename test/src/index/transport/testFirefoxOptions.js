@@ -6,7 +6,8 @@ describe('Firefox driver options', function(){
 
   it('Firefox option object with headless', function(){
     const firefoxOptions =  new FirefoxOptions();
-    firefoxOptions.headless();
+    firefoxOptions.addArguments('-headless');
+
     const client = Nightwatch.createClient({
       capabilities: firefoxOptions
     });

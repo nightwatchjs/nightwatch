@@ -157,7 +157,7 @@ describe('test Request With Credentials', function () {
         headless: true
       }
     });
-
+    
     assert.deepStrictEqual(session, {
       sessionId: '1352110219202',
       host: 'localhost',
@@ -255,7 +255,7 @@ describe('test Request With Credentials', function () {
       capabilities: {browserName: 'MicrosoftEdge', version: 'TEST', platform: 'TEST'}
     });
 
-    assert.deepStrictEqual(sessionOptions.get('ms:edgeOptions'), {args: ['headless']});
+    assert.deepStrictEqual(sessionOptions.get('ms:edgeOptions'), {args: ['headless=new']});
   });
 
   it('Test create session with headless mode in Chrome with existing args', async function () {
@@ -347,7 +347,7 @@ describe('test Request With Credentials', function () {
     assert.deepStrictEqual(sessionOptions.get('ms:edgeOptions'), {
       args: [
         '--no-sandbox',
-        'headless'
+        'headless=new'
       ]
     });
   });
