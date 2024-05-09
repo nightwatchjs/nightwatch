@@ -38,6 +38,54 @@ describe('element().getAttribute() command', function () {
     assert.strictEqual(resultValue, 'text');
   });
 
+  it('test .element.attr() alias', async function() {
+    MockServer.addMock({
+      url: '/session/13521-10219-202/execute/sync',
+      method: 'POST',
+      response: JSON.stringify({
+        value: 'text'
+      })
+    }, true);
+
+    const resultPromise = this.client.api.element('#signupSection').attr('type');
+    assert.strictEqual(resultPromise instanceof Element, false);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+
+    const result = await resultPromise;
+    assert.strictEqual(result instanceof WebElement, false);
+    assert.strictEqual(result, 'text');
+
+    const resultValue = await resultPromise.value;
+    assert.strictEqual(resultValue, 'text');
+  });
+
+  it('test .element().attribute() alias', async function() {
+    MockServer.addMock({
+      url: '/session/13521-10219-202/execute/sync',
+      method: 'POST',
+      response: JSON.stringify({
+        value: 'text'
+      })
+    }, true);
+
+    const resultPromise = this.client.api.element('#signupSection').attribute('type');
+    assert.strictEqual(resultPromise instanceof Element, false);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+
+    const result = await resultPromise;
+    assert.strictEqual(result instanceof WebElement, false);
+    assert.strictEqual(result, 'text');
+
+    const resultValue = await resultPromise.value;
+    assert.strictEqual(resultValue, 'text');
+  });
+
   it('test .element().find().getAttribute()', async function() {
     MockServer.addMock({
       url: '/session/13521-10219-202/execute/sync',

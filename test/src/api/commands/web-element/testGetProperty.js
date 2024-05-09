@@ -62,6 +62,30 @@ describe('element().getProperty() command', function () {
     assert.deepStrictEqual(resultValue, ['.signup']);
   });
 
+  it('test .element().prop() alias', async function() {
+    MockServer.addMock({
+      url: '/session/13521-10219-202/element/0/property/classList',
+      method: 'GET',
+      response: JSON.stringify({
+        value: ['.signup']
+      })
+    }, true);
+
+    const resultPromise = this.client.api.element('#signupSection').prop('classList');
+    assert.strictEqual(resultPromise instanceof Element, false);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+
+    const result = await resultPromise;
+    assert.strictEqual(result instanceof WebElement, false);
+    assert.deepStrictEqual(result, ['.signup']);
+
+    const resultValue = await resultPromise.value;
+    assert.deepStrictEqual(resultValue, ['.signup']);
+  });
+  
   it('test .element().find().getProperty()', async function() {
     MockServer.addMock({
       url: '/session/13521-10219-202/element/1/property/classList',
@@ -109,4 +133,5 @@ describe('element().getProperty() command', function () {
     const resultValue = await resultPromise.value;
     assert.deepStrictEqual(resultValue, ['.signup']);
   });
+
 });

@@ -3,10 +3,10 @@ const Nightwatch = require('../../../lib/nightwatch.js');
 const ChromeOptions = require('selenium-webdriver/chrome').Options;
 
 describe('Test chrome options', function () {
-
   it('Chrome option object with headless', function(){
     const capabilities = new ChromeOptions();
-    capabilities.headless();
+    capabilities.addArguments('headless=new');
+
     const client = Nightwatch.createClient({
       capabilities
     });
