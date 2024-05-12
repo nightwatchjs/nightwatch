@@ -1,35 +1,16 @@
 const assert = require('assert');
 const path = require('path');
-const mockery = require('mockery');
 const common = require('../../../common.js');
 const CucumberRunner = common.require('runner/test-runners/cucumber.js');
 
 describe('Cucumber cli arguments', function(){
-  let cliArgs;
-
-  before(function() {
-    mockery.enable();
-    mockery.registerMock('@cucumber/cucumber/lib/cli/index', {
-      default: class CucumberCli {
-        constructor({argv, cwd, stdout}) {
-          cliArgs = argv;
-        }
-      }
-    });
-  });
-
-  after(function(){
-    mockery.deregisterAll();
-    mockery.disable();
-  });
-
   it('Cucumber cli args --require-modules', function(){
     const runner =  new CucumberRunner({test_runner: {
       type: 'cucumber',
       options: {}
     }}, {'require-module': ['coffeescript/register', 'ts-node/register']});
 
-    runner.createTestSuite({
+    const testSuite = runner.createTestSuite({
       modules: [
         path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')
       ],
@@ -37,6 +18,7 @@ describe('Cucumber cli arguments', function(){
         path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')
       ]
     });
+    const cliArgs = testSuite.cucumberOptions.provided;
 
     assert.ok(cliArgs.includes('--require-module'));
     let index = cliArgs.indexOf('--require-module') + 1;
@@ -52,12 +34,13 @@ describe('Cucumber cli arguments', function(){
       options: {}
     }}, {'no-strict': true, retries: 2, profile: 'local', 'fail-fast': true, parallel: 3, name: 'sample', 'retry-tag-filter': '@nightwatch'}, {});
 
-    runner.createTestSuite({
+    const testSuite = runner.createTestSuite({
       modules: [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')],
       modulePath: [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')]
     });
+    const cliArgs = testSuite.cucumberOptions.provided;
 
-    assert.strictEqual(cliArgs.length, 21);
+    assert.strictEqual(cliArgs.length, 18);
     assert.ok(cliArgs.includes('--name'));
     assert.strictEqual(cliArgs[cliArgs.indexOf('--name') + 1], 'sample');
     assert.ok(cliArgs.includes('--fail-fast'));
@@ -83,10 +66,11 @@ describe('Cucumber cli arguments', function(){
       'dry-run': true
     }, {});
 
-    runner.createTestSuite({
+    const testSuite = runner.createTestSuite({
       modules: [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')],
       modulePath: [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')]
     });
+    const cliArgs = testSuite.cucumberOptions.provided;
 
     assert.ok(cliArgs.includes('--dry-run'));
   });
@@ -101,10 +85,11 @@ describe('Cucumber cli arguments', function(){
       }
     }, {}, {});
 
-    runner.createTestSuite({
+    const testSuite = runner.createTestSuite({
       modules: [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')],
       modulePath: [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')]
     });
+    const cliArgs = testSuite.cucumberOptions.provided;
 
     assert.ok(cliArgs.includes('--retry'));
   });
@@ -120,10 +105,11 @@ describe('Cucumber cli arguments', function(){
       }
     }, {}, {});
 
-    runner.createTestSuite({
+    const testSuite = runner.createTestSuite({
       modules: [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')],
       modulePath: [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')]
     });
+    const cliArgs = testSuite.cucumberOptions.provided;
 
     assert.ok(cliArgs.includes('--retry'));
     assert.ok(cliArgs.includes('--format'));
@@ -141,10 +127,11 @@ describe('Cucumber cli arguments', function(){
       'enable-esm': true
     }, {});
 
-    runner.createTestSuite({
+    const testSuite = runner.createTestSuite({
       modules: [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')],
       modulePath: [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')]
     });
+    const cliArgs = testSuite.cucumberOptions.provided;
 
     assert.ok(cliArgs.includes('--import'));
     assert.ok(!cliArgs.includes('--require'));
@@ -162,10 +149,11 @@ describe('Cucumber cli arguments', function(){
 
     const testModulePath = path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js');
 
-    runner.createTestSuite({
+    const testSuite = runner.createTestSuite({
       modules: [testModulePath],
       modulePath: [testModulePath]
     });
+    const cliArgs = testSuite.cucumberOptions.provided;
 
     assert.ok(cliArgs.includes('--import'));
     assert.ok(!cliArgs.includes('--require'));

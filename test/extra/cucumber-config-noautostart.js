@@ -11,7 +11,8 @@ const settings = lodashMerge(configCopy, {
   test_runner: {
     options: {
       auto_start_session: false,
-      feature_path: path.join(__dirname, '../cucumber-integration-tests/sample_cucumber_tests/with-extra-setup/sample.feature')
+      feature_path: path.join(__dirname, '../cucumber-integration-tests/sample_cucumber_tests/with-extra-setup/sample.feature'),
+      integrationStrategy: process.env.CUCUMBER_INTEGRATION_STRATEGY
     }
   }
 });
