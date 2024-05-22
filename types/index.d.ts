@@ -6719,7 +6719,7 @@ export interface WebDriverProtocolElements {
    *        .navigate()
    *        .assert.titleContains('Nightwatch.js');
    *
-   *      nightwatch.elements('@featuresList', function(result) {
+   *      nightwatch.api.elements('@featuresList', function(result) {
    *        console.log(result);
    *      });
    *
