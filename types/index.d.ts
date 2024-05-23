@@ -3403,7 +3403,7 @@ export interface ElementCommands {
    *        .navigate()
    *        .assert.titleContains('Nightwatch.js');
    *
-   *      nightwatch.api.waitForElementNotPresent('@dialogContainer', function(result) {
+   *      nightwatch.waitForElementNotPresent('@dialogContainer', function(result) {
    *        console.log(result);
    *      });
    *   }
@@ -3498,7 +3498,7 @@ export interface ElementCommands {
    *        .navigate()
    *        .assert.titleContains('Nightwatch.js');
    *
-   *      nightwatch.api.waitForElementNotVisible('@mainDialog', function(result) {
+   *      nightwatch.waitForElementNotVisible('@mainDialog', function(result) {
    *        console.log(result);
    *      });
    *   }
@@ -3591,7 +3591,7 @@ export interface ElementCommands {
    *        .navigate()
    *        .assert.titleContains('Nightwatch.js');
    *
-   *      nightwatch.api.waitForElementPresent('@featuresList', function(result) {
+   *      nightwatch.waitForElementPresent('@featuresList', function(result) {
    *        console.log(result);
    *      });
    *   }
