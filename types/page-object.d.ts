@@ -495,7 +495,7 @@ export type EnhancedPageObject<
   Elements = {},
   Sections extends Record<string, PageObjectSection> = {},
   Props = {},
-  URL = string
+  URL = string | ((...args: any) => string)
 > = SharedCommands &
   NightwatchCustomCommands &
   EnhancedPageObjectSharedFields<
