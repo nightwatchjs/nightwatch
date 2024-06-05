@@ -42,4 +42,30 @@ describe('element().isPresent() command', function() {
 
   });
 
+  it('test .element().find().isPresent() present', async function() {
+    const resultPromise = this.client.api.element('#signupSection').find('#helpBtn').isPresent();
+    assert.strictEqual(resultPromise instanceof Element, false);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+
+    const result = await resultPromise;
+    assert.strictEqual(result instanceof WebElement, false);
+    assert.strictEqual(result, true);
+  });
+
+  it('test .element().find().isPresent() not present', async function() {
+    const resultPromise = this.client.api.element('#signupSection').find('#wrong').isPresent();
+    assert.strictEqual(resultPromise instanceof Element, false);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+
+    const result = await resultPromise;
+    assert.strictEqual(result instanceof WebElement, false);
+    assert.strictEqual(result, false);
+  });
+
 });
