@@ -1307,6 +1307,16 @@ export type NightwatchLogTypes =
   | 'server'
   | 'performance';
 
+export type VerticalScroll = 
+  | 'down'
+  | 'up'
+
+export type HorizontalScroll = 
+  | 'left'
+  | 'right'
+
+export type ScrollDirection = VerticalScroll | HorizontalScroll
+
 export interface SharedCommands extends ClientCommands, ElementCommands { }
 
 export interface WindowPosition {
