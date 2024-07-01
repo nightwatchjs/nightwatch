@@ -2606,7 +2606,7 @@ export interface ElementCommands {
    *       // with explicit locate strategy
    *       browser.clearValue('css selector', '#login input[type=text]');
    *
-   *       // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *       // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *       browser.clearValue({
    *         selector: '#login input[type=text]',
    *         index: 1,
@@ -2657,7 +2657,7 @@ export interface ElementCommands {
    *     // with explicit locate strategy
    *     browser.click('css selector', '#main ul li a.first');
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.click({
    *       selector: '#main ul li a',
    *       index: 1,
@@ -2710,7 +2710,7 @@ export interface ElementCommands {
    *       console.log('result', result);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.getAttribute({
    *       selector: '#main ul li a.first',
    *       index: 1,
@@ -2761,7 +2761,7 @@ export interface ElementCommands {
    *       console.log('result', result);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.getCssProperty({
    *       selector: '#main ul li a.first',
    *       index: 1,
@@ -2817,7 +2817,7 @@ export interface ElementCommands {
    *       console.log('result', result);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.getElementSize({
    *       selector: '#login',
    *       index: 1,
@@ -2873,7 +2873,7 @@ export interface ElementCommands {
    *       console.log('result', result);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.getLocation({
    *       selector: '#login',
    *       index: 1,
@@ -2955,7 +2955,7 @@ export interface ElementCommands {
    *       console.log('result', result);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.getTagName({
    *       selector: '#login',
    *       index: 1,
@@ -3006,7 +3006,7 @@ export interface ElementCommands {
    *       console.log('getText result', result.value);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.getText({
    *       selector: '#main ul li a',
    *       index: 1
@@ -3061,7 +3061,7 @@ export interface ElementCommands {
    *       console.log('result', result);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.getValue({
    *       selector: '#login input[type=text]',
    *       index: 1,
@@ -3110,7 +3110,7 @@ export interface ElementCommands {
    *     // with explicit locate strategy
    *     browser.isVisible('css selector', '#main ul li a.first');
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.isVisible({
    *       selector: '#main ul li a',
    *       index: 1,
@@ -3162,7 +3162,7 @@ export interface ElementCommands {
    *     // with explicit locate strategy
    *     browser.isPresent('css selector', '#main ul li a.first');
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.isPresent({
    *       selector: '#main ul li a',
    *       index: 1,
@@ -3682,7 +3682,7 @@ export interface ElementCommands {
    *       console.log('getAccessibleName result', result.value);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.getAccessibleName({
    *       selector: '*[name="search"]',
    *       index: 1
@@ -3738,7 +3738,7 @@ export interface ElementCommands {
    *       console.log('getAriaRole result', result.value);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.getAriaRole({
    *       selector: '*[name="search"]',
    *       index: 1
@@ -3798,7 +3798,7 @@ export interface ElementCommands {
    *       console.log('result', result);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.getElementSize({
    *       selector: '#login',
    *       index: 1,
@@ -4234,7 +4234,7 @@ export interface ElementCommands {
    *       console.log('result', result);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.getElementProperty({
    *       selector: '#login input[type=text]',
    *       index: 1,
@@ -4286,7 +4286,7 @@ export interface ElementCommands {
    *     // with explicit locate strategy
    *     browser.isEnabled('css selector', '#main select option.first');
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.isEnabled({
    *       selector: '#main ul li a',
    *       index: 1,
@@ -4338,7 +4338,7 @@ export interface ElementCommands {
    *     // with explicit locate strategy
    *     browser.isSelected('css selector', '#main select option.first');
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.isSelected({
    *       selector: '#main ul li a',
    *       index: 1,
@@ -4391,7 +4391,7 @@ export interface ElementCommands {
    *       console.log('result', result);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.setAttribute({
    *       selector: '#login input[type=text]',
    *       index: 1,
@@ -4487,7 +4487,7 @@ export interface ElementCommands {
    *       });
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.takeElementScreenshot({
    *       selector: '#main ul li a',
    *       index: 1
@@ -7378,7 +7378,7 @@ export interface WebDriverProtocolUserActions {
    *     // with explicit locate strategy
    *     browser.doubleClick('css selector', '#main ul li a.first');
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.doubleClick({
    *       selector: '#main ul li a',
    *       index: 1,
@@ -7430,7 +7430,7 @@ export interface WebDriverProtocolUserActions {
    *     // with explicit locate strategy
    *     browser.clickAndHold('css selector', '#main ul li a.first');
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.clickAndHold({
    *       selector: '#main ul li a',
    *       index: 1,
@@ -7585,7 +7585,7 @@ export interface WebDriverProtocolUserActions {
    *     // with explicit locate strategy
    *     browser.rightClick('css selector', '#main ul li a.first');
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.rightClick({
    *       selector: '#main ul li a',
    *       index: 1,
