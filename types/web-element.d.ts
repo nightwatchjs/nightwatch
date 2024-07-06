@@ -157,6 +157,9 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   clear(): Promise<WebElement>;
 
+  check(): Promise<WebElement>;
+  uncheck(): Promise<WebElement>;
+
   sendKeys<E extends readonly unknown[]>(...keys: E): Promise<WebElement>;
 
   submit(): Promise<WebElement>;
