@@ -2588,6 +2588,57 @@ export interface ClientCommands extends ChromiumClientCommands {
 
 export interface ElementCommands {
   /**
+   * Will check, click, on an unchecked toggleable element such as a checkbox if not already checked.
+   *
+   * @example
+   * module.exports = {
+   *   demoTest(browser) {
+   *     browser.check('input[type=checkbox]:not(:checked)');
+   *
+   *     browser.check('input[type=checkbox]:not(:checked)', function(result) {
+   *       console.log('Check result', result);
+   *     });
+   *
+   *     // with explicit locate strategy
+   *     browser.check('css selector', 'input[type=checkbox]:not(:checked)');
+   *
+   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     browser.check({
+   *       selector: 'input[type=checkbox]:not(:checked)',
+   *       index: 1,
+   *       suppressNotFoundErrors: true
+   *     });
+   *
+   *     browser.check({
+   *       selector: 'input[type=checkbox]:not(:checked)',
+   *       timeout: 2000 // overwrite the default timeout (in ms) to check if the element is present
+   *     });
+   *   },
+   *
+   *   demoTestAsync: async function(browser) {
+   *     const result = await browser.check('input[type=checkbox]:not(:checked)');
+   *     console.log('Check result', result);
+   *   }
+   * }
+   *
+   * @see https://nightwatchjs.org/api/check.html
+   */
+  check(
+    selector: Definition,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
+  check(
+    using: LocateStrategy,
+    selector: Definition,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
+  /**
    * Clear a textarea or a text input element's value.
    * Starting with v1.1 `clearValue()` will wait for the element to be present (until the specified timeout).
    *
@@ -4521,6 +4572,60 @@ export interface ElementCommands {
       result: NightwatchCallbackResult<string>
     ) => void
   ): Awaitable<this, string>;
+
+  /**
+   * Will uncheck, click, on a checked toggleable element such as a checkbox if not already unchecked.
+   *
+   * @example
+   * module.exports = {
+   *   demoTest(browser) {
+   *     browser.uncheck('input[type=checkbox]:checked)');
+   *
+   *     browser.uncheck('input[type=checkbox]:checked)', function(result) {
+   *       console.log('Check result', result);
+   *     });
+   *
+   *     // with explicit locate strategy
+   *     browser.uncheck('css selector', 'input[type=checkbox]:checked)');
+   *
+   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     browser.uncheck({
+   *       selector: 'input[type=checkbox]:checked)',
+   *       index: 1,
+   *       suppressNotFoundErrors: true
+   *     });
+   *
+   *     browser.uncheck({
+   *       selector: 'input[type=checkbox]:checked)',
+   *       timeout: 2000 // overwrite the default timeout (in ms) to check if the element is present
+   *     });
+   *   },
+   *
+   *   demoTestAsync: async function(browser) {
+   *     const result = await browser.uncheck('input[type=checkbox]:checked)');
+   *     console.log('Check result', result);
+   *   }
+   * }
+   * 
+   * Will uncheck, click, on a checked toggleable element such as a checkbox if not already unchecked.
+   *
+   * @see https://nightwatchjs.org/api/uncheck.html
+   */
+  uncheck(
+    selector: Definition,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
+  uncheck(
+    using: LocateStrategy,
+    selector: Definition,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
 }
 
 export interface AppiumCommands<ReturnType = unknown> {
