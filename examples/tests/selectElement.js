@@ -1,13 +1,18 @@
 const {Select} = require('selenium-webdriver');
 
 module.exports = {
+  before(browser) {
+    browser.url('https://www.selenium.dev/selenium/web/formPage.html');
+  },
+
   async demoTest(browser) {
     const selectElement = browser.element('select[name=selectomatic]');
 
     await browser
-      .url('https://www.selenium.dev/selenium/web/formPage.html')
       .perform(async function() {
-        const select = new Select(selectElement);
+        const selectWebElement = await selectElement; // `Select` class expects a WebElement
+
+        const select = new Select(selectWebElement);
 
         await select.selectByVisibleText('Four');
       })
