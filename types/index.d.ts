@@ -2588,7 +2588,7 @@ export interface ClientCommands extends ChromiumClientCommands {
 
 export interface ElementCommands {
   /**
-   * Will check, click, on an unchecked toggleable element such as a checkbox if not already checked.
+   * Will check, click, on an unchecked checkbox or radio input if not already checked.
    *
    * @example
    * module.exports = {
@@ -4574,7 +4574,7 @@ export interface ElementCommands {
   ): Awaitable<this, string>;
 
   /**
-   * Will uncheck, click, on a checked toggleable element such as a checkbox if not already unchecked.
+   * Will uncheck, click, on a checked checkbox or radio input if not already unchecked.
    *
    * @example
    * module.exports = {
