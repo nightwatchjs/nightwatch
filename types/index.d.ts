@@ -4607,7 +4607,7 @@ export interface ElementCommands {
    *   }
    * }
    * 
-   * Will uncheck, click, on a checked toggleable element such as a checkbox if not already unchecked.
+   * Will uncheck, click, on a checked checkbox or radio input if not already unchecked.
    *
    * @see https://nightwatchjs.org/api/uncheck.html
    */
