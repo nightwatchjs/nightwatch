@@ -94,7 +94,7 @@ describe('testRunnerSessionCreate', function () {
         }
       },
       globals,
-      output: true,
+      output: false,
       output_folder: false
     }));
   });
