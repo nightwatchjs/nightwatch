@@ -35,7 +35,11 @@ describe('testRunnerSessionCreate', function () {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'firefox', 'nightwatch:options': {name: 'test-Name'}}}
+        capabilities: {firstMatch: [{}], alwaysMatch: {
+          browserName: 'firefox',
+          'nightwatch:options': {name: 'test-Name'},
+          'moz:firefoxOptions': {prefs: {'remote.active-protocols': 3}}
+        }}
       }),
       response: JSON.stringify({
         value: {
@@ -49,7 +53,11 @@ describe('testRunnerSessionCreate', function () {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'firefox', 'nightwatch:options': {name: 'test-Name'}}}
+        capabilities: {firstMatch: [{}], alwaysMatch: {
+          browserName: 'firefox',
+          'nightwatch:options': {name: 'test-Name'},
+          'moz:firefoxOptions': {prefs: {'remote.active-protocols': 3}}
+        }}
       }),
       response: JSON.stringify({
         value: {
@@ -101,7 +109,11 @@ describe('testRunnerSessionCreate', function () {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'firefox', 'nightwatch:options': {name: 'test-Name'}}}
+        capabilities: {firstMatch: [{}], alwaysMatch: {
+          browserName: 'firefox',
+          'nightwatch:options': {name: 'test-Name'},
+          'moz:firefoxOptions': {prefs: {'remote.active-protocols': 3}}
+        }}
       }),
       response: JSON.stringify({
         value: {
@@ -115,7 +127,11 @@ describe('testRunnerSessionCreate', function () {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'firefox', 'nightwatch:options': {name: 'test-Name'}}}
+        capabilities: {firstMatch: [{}], alwaysMatch: {
+          browserName: 'firefox',
+          'nightwatch:options': {name: 'test-Name'},
+          'moz:firefoxOptions': {prefs: {'remote.active-protocols': 3}}
+        }}
       }),
       response: JSON.stringify({
         value: {
@@ -170,7 +186,11 @@ describe('testRunnerSessionCreate', function () {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'firefox', 'nightwatch:options': {name: 'test-Name'}}}
+        capabilities: {firstMatch: [{}], alwaysMatch: {
+          browserName: 'firefox',
+          'nightwatch:options': {name: 'test-Name'},
+          'moz:firefoxOptions': {prefs: {'remote.active-protocols': 3}}
+        }}
       }),
       response: JSON.stringify({
         value: {
@@ -184,7 +204,11 @@ describe('testRunnerSessionCreate', function () {
       url: '/session',
       statusCode: 500,
       postdata: JSON.stringify({
-        capabilities: {firstMatch: [{}], alwaysMatch: {browserName: 'firefox', 'nightwatch:options': {name: 'test-Name'}}}
+        capabilities: {firstMatch: [{}], alwaysMatch: {
+          browserName: 'firefox',
+          'nightwatch:options': {name: 'test-Name'},
+          'moz:firefoxOptions': {prefs: {'remote.active-protocols': 3}}
+        }}
       }),
       response: JSON.stringify({
         value: {

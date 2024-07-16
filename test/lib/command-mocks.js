@@ -411,6 +411,7 @@ module.exports = {
     const headlessOpt = headless ? '-headless' : '';
     const options = {
       ['moz:firefoxOptions']: {
+        prefs: {'remote.active-protocols': 3},
         args: [headlessOpt]
       }
     };
