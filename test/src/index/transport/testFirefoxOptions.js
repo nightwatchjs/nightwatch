@@ -135,7 +135,8 @@ describe('Firefox driver options', function(){
     assert.ok(options instanceof FirefoxOptions);
     assert.strictEqual(options.get('acceptInsecureCerts'), true);
     assert.deepStrictEqual(options.get('moz:firefoxOptions'), {
-      args: ['--headless']
+      args: ['--headless'],
+      prefs: {'remote.active-protocols': 3}
     });
   });
 

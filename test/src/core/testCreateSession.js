@@ -164,7 +164,12 @@ describe('test Request With Credentials', function () {
       port: 10195,
       capabilities: {browserName: 'firefox', version: 'TEST', platform: 'TEST'}
     });
-    assert.deepStrictEqual(sessionOptions.get('moz:firefoxOptions'), {args: ['-headless']});
+    assert.deepStrictEqual(sessionOptions.get('moz:firefoxOptions'), {
+      args: ['-headless'],
+      prefs: {
+        'remote.active-protocols': 3
+      }
+    });
   });
 
   it('Test create session with headless mode in Chrome', async function () {
@@ -900,6 +905,11 @@ describe('test Request With Credentials', function () {
             firstMatch: [{}],
             alwaysMatch: {
               browserName: 'firefox',
+              'moz:firefoxOptions': {
+                prefs: {
+                  'remote.active-protocols': 3
+                }
+              },
               'bstack:options': {
                 local: 'false',
                 userName: 'test_user',
@@ -984,6 +994,11 @@ describe('test Request With Credentials', function () {
         firstMatch: [{}],
         alwaysMatch: {
           browserName: 'firefox',
+          'moz:firefoxOptions': {
+            prefs: {
+              'remote.active-protocols': 3
+            }
+          },
           'bstack:options': {
             local: 'false',
             userName: 'test_user',
