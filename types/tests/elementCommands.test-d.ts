@@ -2,6 +2,66 @@ import { expectType } from 'tsd';
 import { JSON_WEB_OBJECT, NightwatchSizeAndPosition, ElementResult, NightwatchAPI, NightwatchCallbackResult, ElementGlobal } from '..';
 
 //
+// .check
+//
+describe('check command demo', function () {
+  test('demo test', function () {
+    browser
+      .url('https://www.selenium.dev/selenium/web/formPage.html')
+      .waitForElementVisible('#checkbox-with-label')
+      .check('#checkbox-with-label', function (result) {
+        expectType<NightwatchAPI>(this);
+        expectType<NightwatchCallbackResult<null>>(result);
+      })
+      .expect.element('#checkbox-with-label').to.be.selected;
+    
+    // Should not uncheck the checkbox if .check is rerun on the same element
+    browser
+      .check('#checkbox-with-label')
+      .expect.element('#checkbox-with-label').to.be.selected
+  });
+
+  test('async demo test', async function (browser) {
+    const result = await browser
+      .url('https://www.selenium.dev/selenium/web/formPage.html')
+      .waitForElementVisible('#checkbox-with-label')
+      .check('#checkbox-with-label');
+    expectType<null>(result);
+  });
+});
+
+//
+// .uncheck
+//
+describe('uncheck command demo', function () {
+  test('demo test', function () {
+    browser
+      .url('https://www.selenium.dev/selenium/web/formPage.html')
+      .waitForElementVisible('#checkbox-with-label')
+      .click('#checkbox-with-label')
+      .assert.selected('#checkbox-with-label')
+      .uncheck('#checkbox-with-label', function (result) {
+        expectType<NightwatchAPI>(this);
+        expectType<NightwatchCallbackResult<null>>(result);
+      })
+      .expect.element('#checkbox-with-label').to.not.be.selected;
+    
+    // Should not check the checkbox if .check is rerun on the same element
+    browser
+      .uncheck('#checkbox-with-label')
+      .expect.element('#checkbox-with-label').to.not.be.selected
+  });
+
+  test('async demo test', async function (browser) {
+    const result = await browser
+      .url('https://www.selenium.dev/selenium/web/formPage.html')
+      .waitForElementVisible('#checkbox-with-label')
+      .uncheck('#checkbox-with-label');
+    expectType<null>(result);
+  });
+});
+
+//
 // .clearValue
 //
 describe('clearValue Command demo', function () {
