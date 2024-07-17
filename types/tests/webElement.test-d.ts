@@ -175,6 +175,8 @@ describe('new element() api', function () {
 
     expectType<Promise<WebElement>>(elem.click());
     expectType<Promise<WebElement>>(elem.clear());
+    expectType<Promise<WebElement>>(elem.check());
+    expectType<Promise<WebElement>>(elem.uncheck());
     expectType<Promise<WebElement>>(elem.sendKeys('something', 1));
     expectType<Promise<WebElement>>(elem.update('something', 1));
     expectType<Promise<WebElement>>(elem.setValue('something', 1));
