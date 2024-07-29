@@ -450,7 +450,7 @@ describe('acceptAlert command demo', function () {
   before((browser) => browser.url('https://nightwatchjs.org/__e2e/window/alerts.html/'));
 
   test('demo test', function (browser) {
-    browser.click('#show-alert').acceptAlert(function (result) {
+    browser.click({selector: '#show-alert', locateStrategy: 'accessibility id'}).acceptAlert(function (result) {
       expectType<NightwatchAPI>(this);
       expectType<NightwatchCallbackResult<null>>(result);
     });

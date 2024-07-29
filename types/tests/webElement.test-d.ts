@@ -20,6 +20,9 @@ describe('new element() api', function () {
     // accepts ElementProperties
     expectType<ScopedElement>(browser.element({selector: 'selector', locateStrategy: 'css selector', abortOnFailure: false}));
 
+    // accepts ElementProperties with Appium-specific locate strategies
+    expectType<ScopedElement>(browser.element({selector: 'selector', locateStrategy: '-android uiautomator', abortOnFailure: false}));
+
     // accepts Element (ScopedElement is also assignable to Element)
     expectType<ScopedElement>(browser.element(elem));
 
