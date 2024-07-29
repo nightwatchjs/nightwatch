@@ -1298,7 +1298,12 @@ export type LocateStrategy =
   | 'link text'
   | 'partial link text'
   | 'tag name'
-  | 'xpath';
+  | 'xpath'
+  // Appium-specific strategies
+  | 'accessibility id'
+  | '-android uiautomator'
+  | '-ios predicate string'
+  | '-ios class chain';
 
 export type NightwatchLogTypes =
   | 'client'
