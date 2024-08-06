@@ -1,13 +1,18 @@
 const assert = require('assert');
 const {WebElement} = require('selenium-webdriver');
+const path = require('path');
 const MockServer  = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands-w3c.js');
 const common = require('../../../../common.js');
 const Element = common.require('element/index.js');
+const Utils = common.require('./utils');
+const NightwatchClient = common.require('index.js');
+const {settings} = common;
 
 describe('element().isPresent() command', function() {
   before(function (done) {
     CommandGlobals.beforeEach.call(this, done);
+
   });
 
   after(function (done) {
@@ -66,6 +71,37 @@ describe('element().isPresent() command', function() {
     const result = await resultPromise;
     assert.strictEqual(result instanceof WebElement, false);
     assert.strictEqual(result, false);
+  });
+
+  it('test .element().find().isPresent() suppressNotFoundErrors should not throw NoSuchElementError', async function() {
+
+    MockServer.addMock({
+      url: '/session/13521-10219-202/elements',
+      method: 'POST',
+      postdata: JSON.stringify({using: 'css selector', value: '#wrong'}),
+      response: JSON.stringify({
+        value: []
+      })
+    });
+
+    const globals = {
+      reporter(results) {
+        if (Object.prototype.hasOwnProperty.call(results, 'lastError')) {
+          assert.notStrictEqual(results.lastError.name, 'NoSuchElementError');
+        }
+      },
+      waitForConditionTimeout: 100
+    };
+    const testsPath = [
+      path.join(__dirname, '../../../../sampletests/isPresent/isPresentElementNotPresent.js')
+    ];
+
+    await NightwatchClient.runTests(testsPath, settings({
+      globals,
+      output_folder: 'output',
+      selenium_host: null
+    }));
+
   });
 
 });
