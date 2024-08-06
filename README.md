@@ -38,11 +38,118 @@ The [Nightwatch v3](https://github.com/nightwatchjs/nightwatch/releases/tag/v3.0
 
 ## ⚙️ Get started in 60 seconds
 
+This project is a documentation website for Nightwatch.js, built using PostDoc, a static site generator powered by Vite and EJS. It supports Markdown, EJS, and front matter for content management. The project includes a development server with Hot Module Replacement (HMR) for efficient local development.
+
+## Content Structure
+
+The documentation content is written in Markdown and is located in the docs folder. Individual API command pages are generated from the Nightwatch source code, based on JSDoc comments.
+
+## Running the Website Locally
+
+To set up the website locally, follow these steps:
+
+1. Clone the Repository and Install Dependencies
+First, clone the repository and install the required dependencies:
+```
+git clone https://github.com/nightwatchjs/nightwatch-docs.git
+cd nightwatch-docs
+npm install
+```
+
+2. Clone the Nightwatch Repository
+The API documentation is generated directly from the Nightwatch source code. To set this up, clone the Nightwatch repository:
+
+```
+git clone https://github.com/nightwatchjs/nightwatch.git
+cd nightwatch
+npm install
+```
+
+3. Configure the Path to the Nightwatch Repository
+Specify the path to the Nightwatch API commands in the postdoc.config.js file. You can also set the API_DOCS_FOLDER environment variable.
+```
+// postdoc.config.js
+export default {
+  apidocs: {
+    source: '/path/to/nightwatch/lib/api/' // Adjust this path as necessary
+  }
+}
+```
+
+4. Run the Development Server
+Start the development server with the following command:
+
+```
+npm start
+```
+
+The website will be available at http://127.0.0.1:5173/.
+
+To automatically open the website in a specific browser, use:
+```
+npm start -- --open [chrome|firefox|edge|safari]
+```
+
+## PostDoc CLI
+
+To view the available options for the PostDoc CLI, run:
+
+```
+npx postdoc --help
+```
+
+## Building and Previewing the Website
+
+To build the website, run:
+```
+npm run build
+```
+
+The generated files will be located in the out folder. To quickly serve these files and preview the built website, use:
+
+```
+npx postdoc preview
+```
+
+## Customization and Advanced Usage
+
+### Customizing the Website
+
+You can customize the website's appearance and layout using EJS templates. Refer to the postdoc.config.js file and the templates directory for customization options. Additional configuration options for styling and layout can be explored based on your project's needs.
+
+## Advanced Configuration Options
+
+The postdoc.config.js file supports various configuration options. Explore the available settings to further customize the site’s behavior, such as enabling/disabling specific features or modifying build settings.
+
+## Contribution Guidelines
+
+If you wish to contribute to the project, please follow these guidelines:
+
+1. Fork the Repository: Start by forking the repository on GitHub.
+
+2. Create a Feature Branch: Create a new branch for your feature or bug fix.
+
+3. Submit a Pull Request: Once your changes are complete, submit a pull request for review.
+
+Please make sure to adhere to the project's coding standards and include appropriate documentation for your changes.
+
+
+## Troubleshooting and Common Issues
+
+1. Missing Dependencies: Ensure all dependencies are installed by running:
+```
+npm install
+```
+
+2. Configuration Errors: Double-check the paths specified in the postdoc.config.js file.
+
+3. Build Failures: Review the build output for error messages and adjust configurations as necessary.
+
 #### 1. Install Nightwatch from NPM
 
 From your existing project's root dir:
 
-```sh
+```
 npm init nightwatch@latest
 ```
 
