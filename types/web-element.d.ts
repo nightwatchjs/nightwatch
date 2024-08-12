@@ -153,7 +153,7 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
   getText(): ElementValue<string>;
   text(): ElementValue<string>;
 
-  click(): Promise<WebElement>;
+  click({force: boolean}): Promise<WebElement>;
 
   clear(): Promise<WebElement>;
 
