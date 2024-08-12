@@ -73,8 +73,7 @@ describe('element().isPresent() command', function() {
     assert.strictEqual(result, false);
   });
 
-  it('test .element().find().isPresent() suppressNotFoundErrors should not throw NoSuchElementError', async function() {
-
+  it('test .element().isPresent() suppresses NoSuchElementError', async function() {
     MockServer.addMock({
       url: '/session/13521-10219-202/elements',
       method: 'POST',
@@ -84,8 +83,11 @@ describe('element().isPresent() command', function() {
       })
     });
 
+    let globalReporterCalled = false;
+
     const globals = {
       reporter(results) {
+        globalReporterCalled = true;
         if (Object.prototype.hasOwnProperty.call(results, 'lastError')) {
           assert.notStrictEqual(results.lastError.name, 'NoSuchElementError');
         }
@@ -93,7 +95,7 @@ describe('element().isPresent() command', function() {
       waitForConditionTimeout: 100
     };
     const testsPath = [
-      path.join(__dirname, '../../../../sampletests/isPresent/isPresentElementNotPresent.js')
+      path.join(__dirname, '../../../../sampletests/isPresent/elementNotPresent.js')
     ];
 
     await NightwatchClient.runTests(testsPath, settings({
@@ -102,6 +104,6 @@ describe('element().isPresent() command', function() {
       selenium_host: null
     }));
 
+    assert.strictEqual(globalReporterCalled, true);
   });
-
 });
