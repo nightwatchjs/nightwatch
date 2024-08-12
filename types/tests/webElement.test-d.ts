@@ -159,6 +159,8 @@ describe('new element() api', function () {
     expectType<ElementValue<string | null>>(elem.attribute('attrib-name'));
     expectType<ElementValue<string | null>>(elem.getValue());
     expectType<ElementValue<boolean>>(elem.isEnabled());
+    expectType<ElementValue<boolean>>(elem.isPresent());
+    expectType<ElementValue<boolean>>(elem.isSelected());
     expectType<ElementValue<boolean>>(elem.isVisible());
     expectType<ElementValue<boolean>>(elem.isDisplayed());
 
@@ -192,7 +194,6 @@ describe('new element() api', function () {
     expectType<Promise<WebElement>>(elem.doubleClick());
     expectType<Promise<WebElement>>(elem.rightClick());
     expectType<Promise<WebElement>>(elem.waitUntil('visible', {timeout: 5000}));
-    expectType<ElementValue<boolean>>(elem.isSelected());
   });
 
   test('test element assertions', async function () {
