@@ -21,11 +21,13 @@ describe('assert.titleContains', function () {
         assert.strictEqual(args.length, 1);
         assert.strictEqual(typeof args[0], 'function');
       },
-      assertion({reporter, instance, failure}) {
+      assertion({ reporter, instance, failure }) {
         assert.strictEqual(failure, false);
         assert.strictEqual(instance.getActual(), 'Test Title - ');
         assert.strictEqual(instance.hasFailure(), false);
       }
+    }).catch(err => {
+      assert.fail(`Test failed with error: ${err.message}`);
     });
   });
 
@@ -36,13 +38,15 @@ describe('assert.titleContains', function () {
       commandResult: {
         status: -1
       },
-      assertion({instance, failure, err}) {
+      assertion({ instance, failure, err }) {
         assert.strictEqual(instance.getActual(), '');
         assert.strictEqual(instance.expected(), 'contains \'Test Title\'');
         assert.strictEqual(instance.getValue(), null);
         assert.strictEqual(failure, 'Expected "contains \'Test Title\'" but got: ""');
         assert.strictEqual(err.message, `Testing if the page title contains 'Test Title' in 5ms - expected "contains 'Test Title'" but got: "" (${instance.elapsedTime}ms)`);
       }
+    }).catch(err => {
+      assert.fail(`Test failed with error: ${err.message}`);
     });
   });
 
@@ -51,13 +55,15 @@ describe('assert.titleContains', function () {
       args: ['Test Title'],
       assertError: true,
       commandResult: '',
-      assertion({instance, failure, err}) {
+      assertion({ instance, failure, err }) {
         assert.strictEqual(instance.getActual(), '');
         assert.strictEqual(instance.expected(), 'contains \'Test Title\'');
         assert.strictEqual(instance.getValue(), '');
         assert.strictEqual(failure, 'Expected "contains \'Test Title\'" but got: ""');
         assert.strictEqual(err.message, `Testing if the page title contains 'Test Title' in 5ms - expected "contains 'Test Title'" but got: "" (${instance.elapsedTime}ms)`);
       }
+    }).catch(err => {
+      assert.fail(`Test failed with error: ${err.message}`);
     });
   });
 
@@ -68,13 +74,15 @@ describe('assert.titleContains', function () {
       commandResult: {
         value: 'Wrong Title'
       },
-      assertion({instance, failure, err}) {
+      assertion({ instance, failure, err }) {
         assert.strictEqual(instance.getActual(), 'Wrong Title');
         assert.strictEqual(instance.expected(), 'contains \'Test Title\'');
         assert.strictEqual(instance.getValue(), 'Wrong Title');
         assert.strictEqual(failure, 'Expected "contains \'Test Title\'" but got: "Wrong Title"');
         assert.strictEqual(err.message, `Testing if the page title contains 'Test Title' in 5ms - expected "contains 'Test Title'" but got: "Wrong Title" (${instance.elapsedTime}ms)`);
       }
+    }).catch(err => {
+      assert.fail(`Test failed with error: ${err.message}`);
     });
   });
 
@@ -90,11 +98,13 @@ describe('assert.titleContains', function () {
         assert.strictEqual(args.length, 1);
         assert.strictEqual(typeof args[0], 'function');
       },
-      assertion({reporter, instance, failure}) {
+      assertion({ reporter, instance, failure }) {
         assert.strictEqual(failure, false);
         assert.strictEqual(instance.getActual(), 'Other Title');
         assert.strictEqual(instance.hasFailure(), false);
       }
+    }).catch(err => {
+      assert.fail(`Test failed with error: ${err.message}`);
     });
   });
 
@@ -107,11 +117,13 @@ describe('assert.titleContains', function () {
         value: 'Test Title'
       },
       assertError: true,
-      assertion({reporter, instance, failure}) {
+      assertion({ reporter, instance, failure }) {
         assert.strictEqual(failure, 'Expected "not contains \'Test Title\'" but got: "Test Title"');
         assert.strictEqual(instance.getActual(), 'Test Title');
         assert.strictEqual(instance.hasFailure(), false);
       }
+    }).catch(err => {
+      assert.fail(`Test failed with error: ${err.message}`);
     });
   });
 });
