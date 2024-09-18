@@ -62,9 +62,9 @@ module.exports = {
   },
 
   deleteSession() {
-    nock('/wd/hub/session/1352110219202')
-      .delete()
-      .reply(200, {});
+    // nock('/wd/hub/session/1352110219202')
+    //   .delete()
+    //   .reply(200, {});
 
     nock('http://localhost:10195')
       .delete('/wd/hub/session/1352110219202')
