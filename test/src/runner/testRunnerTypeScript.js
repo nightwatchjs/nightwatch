@@ -10,7 +10,14 @@ describe('testRunnerTypeScript', function() {
   let tsNode;
 
   before(function(done) {
-    tsNode = require('ts-node').register();
+    tsNode = require('ts-node').register({
+      esm: false,
+      // Always compile and execute .ts files as CommonJS,
+      // even in ESM projects.
+      moduleTypes: {
+        '**/*.ts': 'cjs'
+      }
+    });
 
     this.server = MockServer.init();
     this.server.on('listening', () => {
@@ -35,8 +42,8 @@ describe('testRunnerTypeScript', function() {
   this.timeout(5000);
 
   it('testRunSimple', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/typescript');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/typescript');
+    const globals = {
       reporter({lastError, errmessages, modules}) {
         if (lastError) {
           throw lastError;
