@@ -30,14 +30,14 @@
     "cli-table3": "^0.6.3",
     "devtools-protocol": "^0.0.1140464",
     "didyoumean": "^1.2.2",
-    "dotenv": "16.3.1",
+    "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "envinfo": "7.11.0",
     "glob": "7.2.3",
     "jsdom": "^24.1.0",
     "lodash": "^4.17.21",
     "minimatch": "3.1.2",
-    "minimist": "1.2.6",
+    "minimist": "^1.2.8",
     "mocha": "^10.7.3",
     "nightwatch-axe-verbose": "^2.3.0",
     "open": "8.4.2",
@@ -49,7 +49,7 @@
     "strip-ansi": "6.0.1",
     "typescript-eslint": "^8.7.0",
     "untildify": "4.0.0",
-    "uuid": "8.3.2"
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^11.0.1",
