@@ -20,6 +20,9 @@ describe('new element() api', function () {
     // accepts ElementProperties
     expectType<ScopedElement>(browser.element({selector: 'selector', locateStrategy: 'css selector', abortOnFailure: false}));
 
+    // accepts ElementProperties with Appium-specific locate strategies
+    expectType<ScopedElement>(browser.element({selector: 'selector', locateStrategy: '-android uiautomator', abortOnFailure: false}));
+
     // accepts Element (ScopedElement is also assignable to Element)
     expectType<ScopedElement>(browser.element(elem));
 
@@ -156,6 +159,8 @@ describe('new element() api', function () {
     expectType<ElementValue<string | null>>(elem.attribute('attrib-name'));
     expectType<ElementValue<string | null>>(elem.getValue());
     expectType<ElementValue<boolean>>(elem.isEnabled());
+    expectType<ElementValue<boolean>>(elem.isPresent());
+    expectType<ElementValue<boolean>>(elem.isSelected());
     expectType<ElementValue<boolean>>(elem.isVisible());
     expectType<ElementValue<boolean>>(elem.isDisplayed());
 
@@ -175,6 +180,8 @@ describe('new element() api', function () {
 
     expectType<Promise<WebElement>>(elem.click());
     expectType<Promise<WebElement>>(elem.clear());
+    expectType<Promise<WebElement>>(elem.check());
+    expectType<Promise<WebElement>>(elem.uncheck());
     expectType<Promise<WebElement>>(elem.sendKeys('something', 1));
     expectType<Promise<WebElement>>(elem.update('something', 1));
     expectType<Promise<WebElement>>(elem.setValue('something', 1));
@@ -187,7 +194,6 @@ describe('new element() api', function () {
     expectType<Promise<WebElement>>(elem.doubleClick());
     expectType<Promise<WebElement>>(elem.rightClick());
     expectType<Promise<WebElement>>(elem.waitUntil('visible', {timeout: 5000}));
-    expectType<ElementValue<boolean>>(elem.isSelected());
   });
 
   test('test element assertions', async function () {

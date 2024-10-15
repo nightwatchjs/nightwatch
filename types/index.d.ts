@@ -1298,7 +1298,12 @@ export type LocateStrategy =
   | 'link text'
   | 'partial link text'
   | 'tag name'
-  | 'xpath';
+  | 'xpath'
+  // Appium-specific strategies
+  | 'accessibility id'
+  | '-android uiautomator'
+  | '-ios predicate string'
+  | '-ios class chain';
 
 export type NightwatchLogTypes =
   | 'client'
@@ -2598,6 +2603,57 @@ export interface ClientCommands extends ChromiumClientCommands {
 
 export interface ElementCommands {
   /**
+   * Will check, click, on an unchecked checkbox or radio input if not already checked.
+   *
+   * @example
+   * module.exports = {
+   *   demoTest(browser) {
+   *     browser.check('input[type=checkbox]:not(:checked)');
+   *
+   *     browser.check('input[type=checkbox]:not(:checked)', function(result) {
+   *       console.log('Check result', result);
+   *     });
+   *
+   *     // with explicit locate strategy
+   *     browser.check('css selector', 'input[type=checkbox]:not(:checked)');
+   *
+   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     browser.check({
+   *       selector: 'input[type=checkbox]:not(:checked)',
+   *       index: 1,
+   *       suppressNotFoundErrors: true
+   *     });
+   *
+   *     browser.check({
+   *       selector: 'input[type=checkbox]:not(:checked)',
+   *       timeout: 2000 // overwrite the default timeout (in ms) to check if the element is present
+   *     });
+   *   },
+   *
+   *   demoTestAsync: async function(browser) {
+   *     const result = await browser.check('input[type=checkbox]:not(:checked)');
+   *     console.log('Check result', result);
+   *   }
+   * }
+   *
+   * @see https://nightwatchjs.org/api/check.html
+   */
+  check(
+    selector: Definition,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
+  check(
+    using: LocateStrategy,
+    selector: Definition,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
+  /**
    * Clear a textarea or a text input element's value.
    * Starting with v1.1 `clearValue()` will wait for the element to be present (until the specified timeout).
    *
@@ -2616,7 +2672,7 @@ export interface ElementCommands {
    *       // with explicit locate strategy
    *       browser.clearValue('css selector', '#login input[type=text]');
    *
-   *       // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *       // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *       browser.clearValue({
    *         selector: '#login input[type=text]',
    *         index: 1,
@@ -2667,7 +2723,7 @@ export interface ElementCommands {
    *     // with explicit locate strategy
    *     browser.click('css selector', '#main ul li a.first');
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.click({
    *       selector: '#main ul li a',
    *       index: 1,
@@ -2722,7 +2778,7 @@ export interface ElementCommands {
    *       console.log('result', result);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.getAttribute({
    *       selector: '#main ul li a.first',
    *       index: 1,
@@ -2773,7 +2829,7 @@ export interface ElementCommands {
    *       console.log('result', result);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.getCssProperty({
    *       selector: '#main ul li a.first',
    *       index: 1,
@@ -2829,7 +2885,7 @@ export interface ElementCommands {
    *       console.log('result', result);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.getElementSize({
    *       selector: '#login',
    *       index: 1,
@@ -2885,7 +2941,7 @@ export interface ElementCommands {
    *       console.log('result', result);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.getLocation({
    *       selector: '#login',
    *       index: 1,
@@ -2967,7 +3023,7 @@ export interface ElementCommands {
    *       console.log('result', result);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.getTagName({
    *       selector: '#login',
    *       index: 1,
@@ -3018,7 +3074,7 @@ export interface ElementCommands {
    *       console.log('getText result', result.value);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.getText({
    *       selector: '#main ul li a',
    *       index: 1
@@ -3073,7 +3129,7 @@ export interface ElementCommands {
    *       console.log('result', result);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.getValue({
    *       selector: '#login input[type=text]',
    *       index: 1,
@@ -3122,7 +3178,7 @@ export interface ElementCommands {
    *     // with explicit locate strategy
    *     browser.isVisible('css selector', '#main ul li a.first');
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.isVisible({
    *       selector: '#main ul li a',
    *       index: 1,
@@ -3174,7 +3230,7 @@ export interface ElementCommands {
    *     // with explicit locate strategy
    *     browser.isPresent('css selector', '#main ul li a.first');
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.isPresent({
    *       selector: '#main ul li a',
    *       index: 1,
@@ -3696,7 +3752,7 @@ export interface ElementCommands {
    *       console.log('getAccessibleName result', result.value);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.getAccessibleName({
    *       selector: '*[name="search"]',
    *       index: 1
@@ -3752,7 +3808,7 @@ export interface ElementCommands {
    *       console.log('getAriaRole result', result.value);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.getAriaRole({
    *       selector: '*[name="search"]',
    *       index: 1
@@ -3812,7 +3868,7 @@ export interface ElementCommands {
    *       console.log('result', result);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.getElementSize({
    *       selector: '#login',
    *       index: 1,
@@ -4248,7 +4304,7 @@ export interface ElementCommands {
    *       console.log('result', result);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.getElementProperty({
    *       selector: '#login input[type=text]',
    *       index: 1,
@@ -4300,7 +4356,7 @@ export interface ElementCommands {
    *     // with explicit locate strategy
    *     browser.isEnabled('css selector', '#main select option.first');
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.isEnabled({
    *       selector: '#main ul li a',
    *       index: 1,
@@ -4352,7 +4408,7 @@ export interface ElementCommands {
    *     // with explicit locate strategy
    *     browser.isSelected('css selector', '#main select option.first');
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.isSelected({
    *       selector: '#main ul li a',
    *       index: 1,
@@ -4405,7 +4461,7 @@ export interface ElementCommands {
    *       console.log('result', result);
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.setAttribute({
    *       selector: '#login input[type=text]',
    *       index: 1,
@@ -4501,7 +4557,7 @@ export interface ElementCommands {
    *       });
    *     });
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.takeElementScreenshot({
    *       selector: '#main ul li a',
    *       index: 1
@@ -4535,6 +4591,60 @@ export interface ElementCommands {
       result: NightwatchCallbackResult<string>
     ) => void
   ): Awaitable<this, string>;
+
+  /**
+   * Will uncheck, click, on a checked checkbox or radio input if not already unchecked.
+   *
+   * @example
+   * module.exports = {
+   *   demoTest(browser) {
+   *     browser.uncheck('input[type=checkbox]:checked)');
+   *
+   *     browser.uncheck('input[type=checkbox]:checked)', function(result) {
+   *       console.log('Check result', result);
+   *     });
+   *
+   *     // with explicit locate strategy
+   *     browser.uncheck('css selector', 'input[type=checkbox]:checked)');
+   *
+   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     browser.uncheck({
+   *       selector: 'input[type=checkbox]:checked)',
+   *       index: 1,
+   *       suppressNotFoundErrors: true
+   *     });
+   *
+   *     browser.uncheck({
+   *       selector: 'input[type=checkbox]:checked)',
+   *       timeout: 2000 // overwrite the default timeout (in ms) to check if the element is present
+   *     });
+   *   },
+   *
+   *   demoTestAsync: async function(browser) {
+   *     const result = await browser.uncheck('input[type=checkbox]:checked)');
+   *     console.log('Check result', result);
+   *   }
+   * }
+   * 
+   * Will uncheck, click, on a checked checkbox or radio input if not already unchecked.
+   *
+   * @see https://nightwatchjs.org/api/uncheck.html
+   */
+  uncheck(
+    selector: Definition,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
+  uncheck(
+    using: LocateStrategy,
+    selector: Definition,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
 }
 
 export interface AppiumCommands<ReturnType = unknown> {
@@ -7392,7 +7502,7 @@ export interface WebDriverProtocolUserActions {
    *     // with explicit locate strategy
    *     browser.doubleClick('css selector', '#main ul li a.first');
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.doubleClick({
    *       selector: '#main ul li a',
    *       index: 1,
@@ -7444,7 +7554,7 @@ export interface WebDriverProtocolUserActions {
    *     // with explicit locate strategy
    *     browser.clickAndHold('css selector', '#main ul li a.first');
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.clickAndHold({
    *       selector: '#main ul li a',
    *       index: 1,
@@ -7599,7 +7709,7 @@ export interface WebDriverProtocolUserActions {
    *     // with explicit locate strategy
    *     browser.rightClick('css selector', '#main ul li a.first');
    *
-   *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
    *     browser.rightClick({
    *       selector: '#main ul li a',
    *       index: 1,

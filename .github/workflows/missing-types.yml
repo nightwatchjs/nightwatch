@@ -19,7 +19,7 @@ jobs:
           echo $(git diff --name-only origin/$GITHUB_BASE_REF $GITHUB_SHA types/ | tr '\n' ',') > ./pr/files_changed
           echo ${{ github.event.number }} > ./pr/NR
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: pr
           path: pr/
