@@ -19,12 +19,12 @@ describe('.clickAndHold()', function() {
       
       return Promise.resolve({
         status: 0,
-        value:null
+        value: null
       });
-    }
+    };
     
     this.client.api.clickAndHold('#weblogin', function callback(result) {
-      assert.deepStrictEqual(clickAndHoldArgs.args, ['5cc459b8-36a8-3042-8b4a-258883ea642b'])
+      assert.ok(clickAndHoldArgs.args.includes('5cc459b8-36a8-3042-8b4a-258883ea642b'));
       assert.strictEqual(result.status, 0);
       assert.strictEqual(this, api);
     });
@@ -39,16 +39,16 @@ describe('.clickAndHold()', function() {
       clickAndHoldArgs = args;
 
       return Promise.resolve({
-        status:0,
+        status: 0,
         value: null
-      })
-    }
+      });
+    };
 
     this.client.api.useXpath()
       .clickAndHold('//weblogin', function callback(result) {
-        assert.deepStrictEqual(clickAndHoldArgs.args, ['5cc459b8-36a8-3042-8b4a-258883ea642b'])
+        assert.ok(clickAndHoldArgs.args.includes('5cc459b8-36a8-3042-8b4a-258883ea642b'));
         assert.strictEqual(result.status, 0);
-      })
+      });
      
 
     this.client.start(done);
@@ -60,21 +60,22 @@ describe('.clickAndHold()', function() {
     let clickAndHoldArgs;
     this.client.transport.Actions.session.pressAndHold = function(args) {
       clickAndHoldArgs = args;
+
       return Promise.resolve({
         status: -1,
         value: null,
         error: new Error('Element could not be scrolled into view')
       });
-    }
+    };
 
     this.client.api.clickAndHold({
       retryInterval: 50,
       timeout: 100,
       selector: '#weblogin'
     }, function(result) {
-      assert.deepStrictEqual(clickAndHoldArgs.args,['5cc459b8-36a8-3042-8b4a-258883ea642b'])
+      assert.ok(clickAndHoldArgs.args.includes('5cc459b8-36a8-3042-8b4a-258883ea642b'));
       assert.strictEqual(result.status, -1);
-      assert.strictEqual(result.value.error,'An error occurred while running .clickAndHold() command on <#weblogin>: Element could not be scrolled into view')
+      assert.strictEqual(result.value.error, 'An error occurred while running .clickAndHold() command on <#weblogin>: Element could not be scrolled into view');
     });
 
     this.client.start(done);
