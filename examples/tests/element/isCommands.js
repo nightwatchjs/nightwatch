@@ -1,12 +1,9 @@
 describe('Element "is" commands Demo', function () {
   before((browser) => {
-    browser.navigateTo(
-      'https://www.ecosia.org/settings'
-    );
+    browser.navigateTo('https://www.ecosia.org/settings');
   });
 
   it('Demo', async function (browser) {
-
     // accepting cookies to remove modal
     browser.element('.cookie-consent__actions').getLastElementChild().click();
 
