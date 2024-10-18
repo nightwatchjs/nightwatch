@@ -22,7 +22,7 @@ describe('Element Drag & Drop Demo', function () {
     // pause to see the initial state
     browser.pause(1000);
 
-    // drag src element 80 pixels below.
+    // drag src element to dest element.
     srcCopyElem.dragAndDrop(destCopyWebElem);
   });
 
