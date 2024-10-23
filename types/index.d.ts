@@ -23,6 +23,7 @@ import {
   Actions,
   Capabilities,
   WebElement,
+  WebDriver,
   RelativeBy,
   locateWith as seleniumLocateWith
 } from 'selenium-webdriver';
@@ -559,6 +560,11 @@ export interface NightwatchAPI
   currentTest: NightwatchTestSuite;
 
   globals: NightwatchGlobals;
+
+  /**
+   * https://www.selenium.dev/selenium/docs/api/javascript/WebDriver.html
+   */
+  driver: WebDriver;
 
   launchUrl: string;
   launch_url: string;
