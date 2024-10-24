@@ -1,0 +1,61 @@
+const assert = require('assert');
+const {WebElement} = require('selenium-webdriver');
+const MockServer  = require('../../../../lib/mockserver.js');
+const CommandGlobals = require('../../../../lib/globals/commands-w3c.js');
+const common = require('../../../../common.js');
+const Element = common.require('element/index.js');
+
+describe('element().getComputedRole() command', function() {
+  before(function (done) {
+    CommandGlobals.beforeEach.call(this, done);
+
+  });
+
+  after(function (done) {
+    CommandGlobals.afterEach.call(this, done);
+  });
+
+  it('test .element().getComputedRole() success', async function() {
+    MockServer.addMock({
+      url: '/session/13521-10219-202/element/0/computedrole',
+      method: 'GET',
+      response: JSON.stringify({
+        value: 'signup-heading'
+      })
+    });
+
+    const resultPromise = this.client.api.element('#signupSection').getComputedRole();
+    assert.strictEqual(resultPromise instanceof Element, false);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+
+    const result = await resultPromise;
+    assert.strictEqual(result instanceof WebElement, false);
+    assert.strictEqual(result, 'signup-heading');
+
+  });
+
+  it('test .element().getComputedRole() via find', async function() {
+    MockServer.addMock({
+      url: '/session/13521-10219-202/element/1/computedrole',
+      method: 'GET',
+      response: JSON.stringify({
+        value: 'help-button'
+      })
+    });
+
+    const resultPromise = this.client.api.element('#signupSection').find('#helpBtn').getComputedRole();
+    assert.strictEqual(resultPromise instanceof Element, false);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+
+    const result = await resultPromise;
+    assert.strictEqual(result instanceof WebElement, false);
+    assert.strictEqual(result, 'help-button');
+
+  });
+});
