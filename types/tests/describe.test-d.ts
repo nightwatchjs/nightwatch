@@ -1,4 +1,5 @@
 import { ExtendDescribeThis } from '..';
+import {FileDetector} from 'selenium-webdriver/remote';
 
 describe('Ecosia', () => {
   before((browser) => browser.url('https://www.ecosia.org/'));
@@ -11,6 +12,9 @@ describe('Ecosia', () => {
       download_throughput: 500 * 1024, // Maximal aggregated download throughput.
       upload_throughput: 500 * 1024, // Maximal aggregated upload throughput.
     });
+
+    // https://www.selenium.dev/selenium/docs/api/javascript/WebDriver.html#setFileDetector
+    browser.driver.setFileDetector(new FileDetector());
 
     browser
       .waitForElementVisible('body')
