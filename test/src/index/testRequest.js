@@ -320,6 +320,69 @@ describe('test HttpRequest', function() {
     assert.strictEqual(secondRequest.reqOptions.agent, opts.agent);
   });
 
+  it.only('keep alive user agent changes when request protocol changes',  function() {
+    const optionsHttp = {
+      path: '/session',
+      method: 'POST',
+      port: 4444,
+      data: {
+        desiredCapabilities: {
+          browserName: 'firefox'
+        }
+      }
+    };
+
+    const optionsHttps = {
+      path: '/session',
+      method: 'POST',
+      port: 443,
+      data: {
+        desiredCapabilities: {
+          browserName: 'chrome'
+        }
+      }
+    };
+
+    HttpRequest.globalSettings = {
+      default_path: '/wd/hub',
+      port: 4444,
+      keep_alive: {
+        keepAliveMsecs: 1000,
+        enabled: true
+      }
+    };
+
+    const httpRequest = new HttpRequest(optionsHttp);
+    const secondHttpRequest = new HttpRequest(optionsHttp);
+    const httpsRequest = new HttpRequest(optionsHttps);
+    const secondHttpsRequest = new HttpRequest(optionsHttps);
+    const thirdHttpRequest = new HttpRequest(optionsHttp);
+
+    const optsHttp = httpRequest.reqOptions;
+    assert.ok('agent' in optsHttp);
+    assert.ok(optsHttp.agent.protocol === 'http:');
+    assert.strictEqual(optsHttp.agent.keepAliveMsecs, 1000);
+
+    // first and second HTTP requests should share the same agent
+    assert.strictEqual(secondHttpRequest.reqOptions.agent, optsHttp.agent);
+
+    const optsHttps = httpsRequest.reqOptions;
+    assert.ok('agent' in optsHttps);
+    assert.ok(optsHttps.agent.protocol === 'https:');
+    // HTTPS agent should be different from HTTP agent
+    assert.notStrictEqual(optsHttps.agent, optsHttp.agent);
+
+    // first and second HTTPS requests should share the same agent
+    assert.strictEqual(secondHttpsRequest.reqOptions.agent, optsHttps.agent);
+    assert.notStrictEqual(secondHttpsRequest.reqOptions.agent, optsHttp.agent);
+
+    // while making HTTP request again after HTTPS request, it does
+    // not re-use the old HTTP agent (probably it should?)
+    assert.notStrictEqual(thirdHttpRequest.reqOptions.agent, optsHttp.agent);
+    assert.ok('agent' in thirdHttpRequest.reqOptions);
+    assert.ok(thirdHttpRequest.reqOptions.agent.protocol === 'http:');
+  });
+
   it('test send post request with keep alive extended - disabled', function (done) {
     const options = {
       path: '/session',
