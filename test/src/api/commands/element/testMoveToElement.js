@@ -21,24 +21,16 @@ describe('moveToElement', function() {
     };
 
     this.client.api.moveToElement('css selector', '#weblogin', null, null, function(result) {
-      assert.deepStrictEqual(moveToArgs[0], '0');
-      assert.deepStrictEqual(moveToArgs[1], null);
-      assert.deepStrictEqual(moveToArgs[2], null);
+      assert.deepStrictEqual(moveToArgs, ['0', null, null]);
       assert.strictEqual(result.status, 0);
     }).moveToElement('#weblogin', null, null, function(result) {
-      assert.deepStrictEqual(moveToArgs[0], '0');
-      assert.deepStrictEqual(moveToArgs[1], null);
-      assert.deepStrictEqual(moveToArgs[2], null);
+      assert.deepStrictEqual(moveToArgs, ['0', null, null]);
       assert.strictEqual(result.status, 0);
     }).moveTo('0', null, null, function(result) {
-      assert.deepStrictEqual(moveToArgs[0], '0');
-      assert.deepStrictEqual(moveToArgs[1], 0);
-      assert.deepStrictEqual(moveToArgs[2], 0);
+      assert.deepStrictEqual(moveToArgs, ['0', 0, 0]);
       assert.strictEqual(result.status, 0);
     }).moveToElement('#weblogin', 1, 1, function(result) {
-      assert.deepStrictEqual(moveToArgs[0], '0');
-      assert.deepStrictEqual(moveToArgs[1], 1);
-      assert.deepStrictEqual(moveToArgs[2], 1);
+      assert.deepStrictEqual(moveToArgs, ['0', 1, 1]);
       assert.strictEqual(result.status, 0);
     });
 
