@@ -21,8 +21,7 @@ describe('moveToElement', function() {
     };
 
     this.client.api.dragAndDrop('css selector', '#weblogin', {x: 10, y: 10}, function(result) {
-      assert.deepEqual(dragArgs[0], '0');
-      assert.deepEqual(dragArgs[1], {x: 10, y: 10});
+      assert.deepStrictEqual(dragArgs, ['0', {x: 10, y: 10}]);
       assert.strictEqual(result.status, 0);
     });
 
@@ -40,8 +39,7 @@ describe('moveToElement', function() {
     };
 
     this.client.api.dragAndDrop('css selector', '#weblogin', '0', function(result) {
-      assert.deepEqual(dragArgs[0], '0');
-      assert.deepEqual(dragArgs[1], '0');
+      assert.deepStrictEqual(dragArgs, ['0', '0']);
       assert.strictEqual(result.status, 0);
     });
 
