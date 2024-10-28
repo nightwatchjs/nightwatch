@@ -1,5 +1,7 @@
 module.exports = {
-  url: 'http://localhost.com',
+  url: function() {
+    return 'http://localhost.com';
+  },
   elements: {
     xpathElement: '//div',
     xpathElement2: {selector: '//div[@class="example"]'},
