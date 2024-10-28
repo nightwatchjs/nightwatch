@@ -218,10 +218,6 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
   isDisplayed(): ElementValue<boolean>;
 
   isActive(): ElementValue<boolean>;
-
-  getComputedLabel(): ElementValue<string>;
-
-  getComputedRole(): ElementValue<string>;
 }
 
 type WaitUntilOptions = {
