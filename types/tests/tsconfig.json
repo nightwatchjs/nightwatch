@@ -1,4 +1,8 @@
 {
-    "extends": "../../tsconfig",
-    "include": ["."]
-}
+    "extends": "../../tsconfig.json",  
+    "include": ["**/*.ts"],            // Include all TypeScript files in this directory and subdirectories
+    "compilerOptions": {
+      // You can add or override specific options here if needed
+    }
+  }
+  
