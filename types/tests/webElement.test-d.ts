@@ -163,6 +163,7 @@ describe('new element() api', function () {
     expectType<ElementValue<boolean>>(elem.isSelected());
     expectType<ElementValue<boolean>>(elem.isVisible());
     expectType<ElementValue<boolean>>(elem.isDisplayed());
+    expectType<ElementValue<boolean>>(elem.isActive());
 
     expectType<ElementValue<ScopedElementRect>>(elem.getRect());
     expectType<ElementValue<ScopedElementRect>>(elem.rect());
