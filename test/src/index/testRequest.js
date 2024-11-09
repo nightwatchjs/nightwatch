@@ -320,7 +320,7 @@ describe('test HttpRequest', function() {
     assert.strictEqual(secondRequest.reqOptions.agent, opts.agent);
   });
 
-  it.only('keep alive user agent changes when request protocol changes',  function() {
+  it('keep alive user agent changes when request protocol changes',  function() {
     const optionsHttp = {
       path: '/session',
       method: 'POST',
