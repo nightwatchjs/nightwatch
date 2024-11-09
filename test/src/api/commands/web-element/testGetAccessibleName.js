@@ -65,6 +65,31 @@ describe('element().getAccessibleName() command', function () {
     assert.strictEqual(resultValue, 'Signup');
   });
 
+  it('test .element().getComputedLabel() alias', async function() {
+    MockServer.addMock({
+      url: '/session/13521-10219-202/element/0/computedlabel',
+      method: 'GET',
+      response: JSON.stringify({
+        value: 'Signup'
+      })
+    }, true);
+
+    const resultPromise = this.client.api.element('#signupSection').getComputedLabel();
+    assert.strictEqual(resultPromise instanceof Element, false);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+    assert.strictEqual(typeof resultPromise.value, 'object');
+
+    const result = await resultPromise;
+    assert.strictEqual(result instanceof WebElement, false);
+    assert.strictEqual(result, 'Signup');
+
+    const resultValue = await resultPromise.value;
+    assert.strictEqual(resultValue, 'Signup');
+  });
+
   it('test .element().find().getAccessibleName()', async function() {
     MockServer.addMock({
       url: '/session/13521-10219-202/element/1/computedlabel',
