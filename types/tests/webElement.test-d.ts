@@ -172,8 +172,10 @@ describe('new element() api', function () {
 
     expectType<ElementValue<string>>(elem.getAccessibleName());
     expectType<ElementValue<string>>(elem.accessibleName());
+    expectType<ElementValue<string>>(elem.getComputedLabel());
     expectType<ElementValue<string>>(elem.getAriaRole());
     expectType<ElementValue<string>>(elem.ariaRole());
+    expectType<ElementValue<string>>(elem.getComputedRole());
     expectType<ElementValue<string>>(elem.getCssProperty('height'));
     expectType<ElementValue<string>>(elem.css('height'));
     expectType<ElementValue<string>>(elem.getCssValue('height'));
