@@ -507,7 +507,19 @@ export type EnhancedPageObject<
   > &
   Required<MergeObjectsArray<Commands>> & {
     /**
-     * A url or function returning a url to be used in a url() command when the page's navigate() method is called.
+     * A url or a function returning a url. This is also used internally when the page's navigate() method is called.
+     *
+     * By default, the url property is set to a string type. To set it to a function type instead, the fifth type parameter
+     * of the `EnhancedPageObject` interface can be used:
+     *
+     * ```
+     * export interface MyPage extends
+     *   EnhancedPageObject<{}, typeof elements, {}, {}, () => string> {}
+     * ```
+     *
+     * See the usage of the `EnhancedPageObject` interface
+     * [here](https://github.com/nightwatchjs-community/nightwatch-typescript-boilerplate/blob/0bf15a6e8735b576b82bce9a7bb5c6beddb14de4/nightwatch/pages/FileUpload.ts#L17)
+     * for reference.
      *
      * @example
      * const homePageObject = browser.page.homePage();
