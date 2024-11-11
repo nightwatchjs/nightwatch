@@ -68,6 +68,10 @@ export type NightwatchGenericCallback<T> = (
 
 export type Awaitable<T, V> = Omit<T, 'then'> & PromiseLike<V>;
 
+export type KeysFilter<T, U> = {
+  [K in keyof T]-?: T[K] extends U ? K : never;
+}[keyof T];
+
 // tslint:disable-next-line
 type VoidToNull<T> = T extends void ? null : T;
 
