@@ -9,8 +9,8 @@ import {
   ElementCommands,
   ElementFunction,
   Expect,
+  KeysFilter,
   LocateStrategy,
-  NamespacedApi,
   NightwatchAPI,
   NightwatchClient,
   NightwatchComponentTestingCommands,
@@ -147,6 +147,7 @@ export type EnhancedSectionInstance<
   Commands &
   ElementCommands &
   ChromiumClientCommands &
+  Pick<NightwatchCustomCommands, KeysFilter<NightwatchCustomCommands, Function>> & // eslint-disable-line @typescript-eslint/ban-types
   Pick<
     NightwatchComponentTestingCommands,
     'importScript' | 'launchComponentRenderer' | 'mountComponent'
