@@ -61,7 +61,7 @@ describe('new element() api', function () {
     const elementFindByPlaceholderText = browser.element.findByPlaceholderText('some-text', {exact: true, abortOnFailure: false});
     expectType<ScopedElement>(elementFindByPlaceholderText);
 
-    const elementFindByLabelText = browser.element.findByLabelText('some-text', {exact: true, abortOnFailure: false});
+    const elementFindByLabelText = browser.element.findByLabelText('some-text', 'input', {exact: true, abortOnFailure: false});
     expectType<ScopedElement>(elementFindByLabelText);
 
     const elementFindByAltText = browser.element.findByAltText('some-text', {exact: false, abortOnFailure: false});
@@ -121,7 +121,7 @@ describe('new element() api', function () {
     expectError(elem.findByRole('button', {level: 2, expanded: true, retryInterval: 100}));
 
     expectType<ScopedElement>(elem.findByPlaceholderText('some-text', {exact: true, abortOnFailure: false}));
-    expectType<ScopedElement>(elem.findByLabelText('some-text', {exact: true, abortOnFailure: false}));
+    expectType<ScopedElement>(elem.findByLabelText('some-text', 'input', {exact: true, abortOnFailure: false}));
     expectType<ScopedElement>(elem.findByAltText('some-text', {exact: true, abortOnFailure: false}));
 
     expectType<Elements>(elem.findAll('selector'));
