@@ -5,14 +5,14 @@ export interface NightwatchCustomCommandsModel {
    * @example
    * class LogMessage implements NightwatchCustomCommandsModel {
    *   command() {
-   *     
+   *
    *     return Promise.resolve();
    *   }
    * }
    *
    * @see https://nightwatchjs.org/guide/extending-nightwatch/adding-custom-commands.html#define-a-custom-command
    */
-  command: (...args: any) => unknown | Promise<unknown>;
+  command: (...args: any[]) => unknown | Promise<unknown>;
 }
 
 /**
