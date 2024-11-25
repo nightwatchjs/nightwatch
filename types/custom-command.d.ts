@@ -1,3 +1,7 @@
+import {CommandInstance} from './index';
+
+export interface CustomCommandInstance extends CommandInstance {}
+
 export interface NightwatchCustomCommandsModel {
   /**
    * Define a custom command

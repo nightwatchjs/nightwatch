@@ -1221,7 +1221,7 @@ export interface CommandInstance {
   httpRequest(options: HttpRequestOptions): Promise<unknown>;
 
   toString(): string;
-  complete(...args: unknown[]): void; // test the args are working fine.
+  complete(...args: unknown[]): void;
 }
 
 export interface CreateClientParams {

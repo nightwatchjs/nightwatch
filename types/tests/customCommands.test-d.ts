@@ -1,8 +1,8 @@
 import {expectType} from 'tsd';
-import {CommandInstance, NightwatchCallbackResult, NightwatchCustomCommandsModel} from '..';
+import {CustomCommandInstance, NightwatchCallbackResult, NightwatchCustomCommandsModel} from '..';
 
 export class AngularCommand implements NightwatchCustomCommandsModel {
-  async command(this: CommandInstance, listName: string, cb = function<T>(r: T) {return r}) {
+  async command(this: CustomCommandInstance, listName: string, cb = function<T>(r: T) {return r}) {
     // Script to be executed in the browser
     const script = function(listName: string) {
       // executed in the browser context
