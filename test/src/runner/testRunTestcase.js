@@ -267,7 +267,7 @@ describe('testRunTestcase', function() {
   });
 
   it('testRunner with duplicated testcases', function() {
-    const testsPath = path.join(__dirname, '../../sampletests/withdescribe/skipped/duplicateTestCases.js');
+    const testsPath = path.join(__dirname, '../../sampletests/withdescribe/skipped/duplicateTestcases.js');
     const globals = {
       calls: 0,
       reporter(results, cb) {
