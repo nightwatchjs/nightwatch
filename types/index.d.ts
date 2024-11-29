@@ -1393,6 +1393,16 @@ export type NightwatchLogTypes =
   | 'server'
   | 'performance';
 
+export type VerticalScroll = 
+  | 'down'
+  | 'up'
+
+export type HorizontalScroll = 
+  | 'left'
+  | 'right'
+
+export type ScrollDirection = VerticalScroll | HorizontalScroll
+
 export interface SharedCommands extends ClientCommands, ElementCommands { }
 
 export interface WindowPosition {
@@ -2818,6 +2828,7 @@ export interface ElementCommands {
    */
   click(
     selector: Definition,
+    force: boolean,
     callback?: (
       this: NightwatchAPI,
       result: NightwatchCallbackResult<null>
@@ -2826,6 +2837,7 @@ export interface ElementCommands {
   click(
     using: LocateStrategy,
     selector: Definition,
+    force: boolean,
     callback?: (
       this: NightwatchAPI,
       result: NightwatchCallbackResult<null>
@@ -3431,6 +3443,7 @@ export interface ElementCommands {
   sendKeys(
     selector: Definition,
     inputValue: string | string[],
+    force: boolean,
     callback?: (
       this: NightwatchAPI,
       result: NightwatchCallbackResult<null>
@@ -3440,6 +3453,7 @@ export interface ElementCommands {
     using: LocateStrategy,
     selector: Definition,
     inputValue: string | string[],
+    force: boolean,
     callback?: (
       this: NightwatchAPI,
       result: NightwatchCallbackResult<null>
