@@ -59,7 +59,7 @@
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "eslint": "^9.16.0",
-    "husky": "^9.1.7",
+    "husky": "^8.0.0",
     "is-ci": "^3.0.1",
     "js-yaml": "^4.1.0",
     "lint-staged": "^15.2.10",
