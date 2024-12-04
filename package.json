@@ -17,7 +17,7 @@
   "dependencies": {
     "@nightwatch/chai": "5.0.3",
     "@nightwatch/html-reporter-template": "^0.3.0",
-    "@nightwatch/nightwatch-inspector": "^3.1.0",
+    "@nightwatch/nightwatch-inspector": "^1.0.1",
     "@types/chai": "^4.3.5",
     "@types/selenium-webdriver": "^4.1.14",
     "ansi-to-html": "0.7.2",
