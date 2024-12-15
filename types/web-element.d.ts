@@ -360,10 +360,13 @@ export type ScopedElementRect = {
   readonly height: number;
 };
 
-export type DragAndDropDestination = {
+export type DragAndDropDestination = 
+{
   readonly xOffset: number;
   readonly yOffset: number;
-};
+}
+|{readonly x: number; readonly y: number;}
+|WebElement
 
 export interface ElementFunction
   extends Pick<
