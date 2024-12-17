@@ -361,8 +361,8 @@ export type ScopedElementRect = {
 };
 
 export type DragAndDropDestination = {
-  readonly xOffset: number;
-  readonly yOffset: number;
+  readonly x: number;
+  readonly y: number;
 };
 
 export interface ElementFunction
