@@ -191,7 +191,7 @@ describe('new element() api', function () {
     expectType<Promise<WebElement>>(elem.submit());
     expectType<Promise<WebElement>>(elem.setProperty('type', 'text'));
     expectType<Promise<WebElement>>(elem.setAttribute('role', 'button'));
-    expectType<Promise<WebElement>>(elem.dragAndDrop({xOffset: 150, yOffset: 500}));
+    expectType<Promise<WebElement>>(elem.dragAndDrop({x: 150, y: 500}));
     expectType<Promise<WebElement>>(elem.moveTo(100, 100));
     expectType<Promise<WebElement>>(elem.clickAndHold());
     expectType<Promise<WebElement>>(elem.doubleClick());
