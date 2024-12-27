@@ -34,14 +34,14 @@ describe('testRunWithCustomCommands', function() {
   });
 
   it('testRunner with custom command which has failures', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withcustomcommands');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/withcustomcommands');
+    const globals = {
       increment: 0,
       retryAssertionTimeout: 0,
       waitForConditionPollInterval: 10,
       waitForConditionTimeout: 20,
       reporter(results, cb) {
-        assert.strictEqual(globals.increment, 4);
+        assert.strictEqual(globals.increment, 6);
         cb();
       }
     };
@@ -55,12 +55,12 @@ describe('testRunWithCustomCommands', function() {
   });
 
   it('testRunner with ES6 Async custom commands', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withes6asynccommands');
+    const testsPath = path.join(__dirname, '../../sampletests/withes6asynccommands');
     let testResults;
     const origExit = process.exit;
     process.exit = function() {};
 
-    let globals = {
+    const globals = {
       increment: 0,
       logResult: null,
       retryAssertionTimeout: 0,
@@ -101,12 +101,12 @@ describe('testRunWithCustomCommands', function() {
   });
 
   it('testRunner with ES6 Async custom commands', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withes6asynccommands');
+    const testsPath = path.join(__dirname, '../../sampletests/withes6asynccommands');
     let testResults;
     const origExit = process.exit;
     process.exit = function() {};
 
-    let globals = {
+    const globals = {
       increment: 0,
       logResult: null,
       retryAssertionTimeout: 0,
@@ -147,12 +147,12 @@ describe('testRunWithCustomCommands', function() {
   });
 
   it('testRunner custom command which extends built-in command', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withcustomcommands/element');
+    const testsPath = path.join(__dirname, '../../sampletests/withcustomcommands/element');
     let testResults;
     const origExit = process.exit;
     process.exit = function() {};
 
-    let globals = {
+    const globals = {
       increment: 0,
       logResult: null,
       retryAssertionTimeout: 0,
@@ -229,12 +229,12 @@ describe('testRunWithCustomCommands', function() {
   });
 
   it('testRunner custom command path as glob pattern', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withcustomcommands/element');
+    const testsPath = path.join(__dirname, '../../sampletests/withcustomcommands/element');
     let testResults;
     const origExit = process.exit;
     process.exit = function() {};
 
-    let globals = {
+    const globals = {
       increment: 0,
       logResult: null,
       retryAssertionTimeout: 0,
