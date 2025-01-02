@@ -5,7 +5,6 @@ const MockServer  = require('../../../../lib/mockserver.js');
 const CommandGlobals = require('../../../../lib/globals/commands-w3c.js');
 const common = require('../../../../common.js');
 const Element = common.require('element/index.js');
-const Utils = common.require('./utils');
 const NightwatchClient = common.require('index.js');
 const {settings} = common;
 

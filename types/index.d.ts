@@ -23,6 +23,7 @@ import {
   Actions,
   Capabilities,
   WebElement,
+  WebDriver,
   RelativeBy,
   locateWith as seleniumLocateWith
 } from 'selenium-webdriver';
@@ -66,6 +67,10 @@ export type NightwatchGenericCallback<T> = (
 ) => void
 
 export type Awaitable<T, V> = Omit<T, 'then'> & PromiseLike<V>;
+
+export type KeysFilter<T, U> = {
+  [K in keyof T]-?: T[K] extends U ? K : never;
+}[keyof T];
 
 // tslint:disable-next-line
 type VoidToNull<T> = T extends void ? null : T;
@@ -559,6 +564,11 @@ export interface NightwatchAPI
   currentTest: NightwatchTestSuite;
 
   globals: NightwatchGlobals;
+
+  /**
+   * https://www.selenium.dev/selenium/docs/api/javascript/WebDriver.html
+   */
+  driver: WebDriver;
 
   launchUrl: string;
   launch_url: string;
@@ -1141,6 +1151,77 @@ export interface NightwatchClientObject {
   // reporter: reporter
   // elementLocator
   sessionId: string | null;
+}
+
+export interface HttpRequestOptions {
+  /**
+   * The pathname of the endpoint to call. Ex: `'/session/:sessionId/url'`.
+   *
+   * Alternatively, url property could be provided with the full URL.
+   */
+  path?: string;
+  data?: unknown;
+
+  /**
+   * For custom-commands, set to `this.api.sessionId`.
+   */
+  sessionId: string;
+
+  method: 'POST' | 'GET' | 'DELETE' | 'PUT';
+  use_ssl?: boolean;
+  host?: string;
+  port?: number;
+
+  /**
+   * The full URL to call. Ex: `http://localhost:4444/session/:sessionId/url`.
+   */
+  url?: string;
+
+  auth?: {
+    user: string;
+    pass: string;
+  }
+}
+
+export interface CommandInstance {
+  get api(): NightwatchAPI;
+  get client(): NightwatchClient;
+  get commandArgs(): unknown[];
+  get commandFileName(): string;
+  get driver(): WebDriver;
+  get isES6AsyncCommand(): boolean;
+  get reuseBrowser(): boolean;
+
+  /**
+   * Direct access to methods present in the `lib/transport/selenium-webdriver/method-mappings.js` file
+   * of Nightwatch code.
+   *
+   * TODO: complete the type definition.
+   *
+   * For now, you would need to create custom interface to use this property, like below:
+   * ```ts
+   * interface TransportActions {
+   *   getCurrentUrl(): Promise<NightwatchCallbackResult<string>>;
+   * }
+   * ```
+   * then use it inside your custom command like:
+   * ```ts
+   * const currentUrl = await (this.transportActions as TransportActions).getCurrentUrl();
+   * ```
+   */
+  get transportActions(): unknown;
+
+  /**
+   * Directly call the HTTP endpoints of the Selenium/WebDriver server.
+   *
+   * This is useful when you need to call a command that is not directly supported by Nightwatch API.
+   *
+   * @see https://nightwatchjs.org/guide/extending-nightwatch/adding-custom-commands.html#postdoc-directly-calling-seleniumwebdriver-endpoints
+   */
+  httpRequest(options: HttpRequestOptions): Promise<unknown>;
+
+  toString(): string;
+  complete(...args: unknown[]): void;
 }
 
 export interface CreateClientParams {

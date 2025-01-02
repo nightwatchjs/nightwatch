@@ -188,9 +188,11 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   getAccessibleName(): ElementValue<string>;
   accessibleName(): ElementValue<string>;
+  getComputedLabel(): ElementValue<string>;
 
   getAriaRole(): ElementValue<string>;
   ariaRole(): ElementValue<string>;
+  getComputedRole(): ElementValue<string>;
 
   getCssProperty(name: string): ElementValue<string>;
   css(name: string): ElementValue<string>;
@@ -216,6 +218,8 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   isVisible(): ElementValue<boolean>;
   isDisplayed(): ElementValue<boolean>;
+
+  isActive(): ElementValue<boolean>;
 }
 
 type WaitUntilOptions = {
@@ -356,10 +360,9 @@ export type ScopedElementRect = {
   readonly height: number;
 };
 
-export type DragAndDropDestination = {
-  readonly xOffset: number;
-  readonly yOffset: number;
-};
+export type DragAndDropDestination = 
+  | {readonly x: number; readonly y: number;}
+  | WebElement
 
 export interface ElementFunction
   extends Pick<

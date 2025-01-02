@@ -896,7 +896,7 @@ describe('test Request With Credentials', function () {
   });
 
   it('Test create session with browserstack and when buildName is not set', async function () {
-    nock('https://hub.browserstack.com')
+    nock('http://hub.browserstack.com:4444')
       .post('/wd/hub/session')
       .reply(201, function (uri, requestBody) {
 
@@ -967,7 +967,7 @@ describe('test Request With Credentials', function () {
       },
       selenium: {
         host: 'hub.browserstack.com',
-        port: 443
+        port: 4444
       },
       desiredCapabilities: {
         'bstack:options': {
@@ -989,7 +989,7 @@ describe('test Request With Credentials', function () {
     assert.deepStrictEqual(result, {
       sessionId: '1352110219202',
       host: 'hub.browserstack.com',
-      port: 443,
+      port: 4444,
       capabilities: {
         firstMatch: [{}],
         alwaysMatch: {
