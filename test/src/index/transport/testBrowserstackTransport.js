@@ -16,6 +16,7 @@ describe('BrowserstackTransport', function () {
   });
 
   afterEach(function() {
+    nock.cleanAll();
     nock.restore();
   });
 
