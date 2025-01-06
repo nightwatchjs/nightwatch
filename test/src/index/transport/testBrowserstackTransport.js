@@ -5,7 +5,7 @@ const NightwatchClient = common.require('index.js');
 const SeleniumRemote = common.require('transport/selenium-webdriver/selenium.js');
 const Automate = common.require('transport/selenium-webdriver/browserstack/automate.js');
 const AppAutomate = common.require('transport/selenium-webdriver/browserstack/appAutomate.js');
-
+const AutomateTurboScale = common.require('transport/selenium-webdriver/browserstack/automateTurboScale.js');
 describe('BrowserstackTransport', function () {
   beforeEach(function() {
     try {
@@ -380,7 +380,7 @@ describe('BrowserstackTransport', function () {
           }
         ]
       });
-    assert.ok(client.transport instanceof Automate);
+    assert.ok(client.transport instanceof AutomateTurboScale);
     assert.strictEqual(client.settings.webdriver.host, 'hub-cloud.browserstack-ats.com');
     assert.strictEqual(client.settings.webdriver.default_path_prefix, '/wd/hub');
     assert.strictEqual(client.settings.webdriver.ssl, true);
