@@ -380,7 +380,6 @@ describe('BrowserstackTransport', function () {
           }
         ]
       });
-
     assert.ok(client.transport instanceof Automate);
     assert.strictEqual(client.settings.webdriver.host, 'hub-cloud.browserstack-ats.com');
     assert.strictEqual(client.settings.webdriver.default_path_prefix, '/wd/hub');
