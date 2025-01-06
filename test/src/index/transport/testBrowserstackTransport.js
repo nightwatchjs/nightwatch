@@ -355,7 +355,6 @@ describe('BrowserstackTransport', function () {
         browserName: 'chrome'
       }
     });
-
     nock('https://hub-cloud.browserstack-ats.com')
       .post('/wd/hub/session')
       .reply(201, function (uri, requestBody) {
@@ -389,29 +388,36 @@ describe('BrowserstackTransport', function () {
     assert.ok(transport instanceof SeleniumRemote);
 
     let result = await transport.createSession({argv: undefined, moduleKey: ''});
-    result.sessionId = '1234567';
+    assert.strictEqual(result.sessionId, '1352110219202');
     client.emit('nightwatch:session.create', result);
 
     assert.strictEqual(transport.username, 'test-access-user');
     assert.strictEqual(transport.accessKey, 'test-access-key');
     assert.strictEqual(client.settings.webdriver.start_process, false);
+    let sessionNockCalled = 0;
       
     nock('https://api.browserstack.com')
-      .get('/automate-turboscale/v1/sessions/1234567')
-      .reply(200, {
-        status: 'done'
+      .get('/automate-turboscale/v1/sessions/1352110219202')
+      .reply(200, function(){
+        sessionNockCalled++;
+
+        return {status: 'done'};
       });
     nock('https://api.browserstack.com')
-      .patch('/automate-turboscale/v1/sessions/1234567', {
+      .patch('/automate-turboscale/v1/sessions/1352110219202', {
         status: 'passed',
         reason: ''  
       })
-      .reply(200, {});
+      .reply(200, function(){
+        sessionNockCalled++;
+
+        return {};
+      });
 
     result = await transport.testSuiteFinished(false);
     assert.strictEqual(result, true);
     assert.strictEqual(transport.sessionId, null);
-
+    assert.strictEqual(sessionNockCalled, 2);
     assert.strictEqual(transport.buildId, '123-567-89');
 
   });
