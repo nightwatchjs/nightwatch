@@ -1,0 +1,33 @@
+# Nightwatch API Assertions
+
+This file contains the list of all assertions available in Nightwatch.
+
+## Element assertions:
+  - [attributeContains](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/attributeContains.js)
+  - [attributeEquals](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/attributeEquals.js)
+  - [attributeMatches](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/attributeMatches.js)
+  - [contains](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/contains.js)
+  - [containsText](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/containsText.js)
+  - [cssClassNotPresent](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/cssClassNotPresent.js)
+  - [cssClassPresent](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/cssClassPresent.js)
+  - [cssProperty](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/cssProperty.js)
+  - [domPropertyContains](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/domPropertyContains.js)
+  - [domPropertyEquals](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/domPropertyEquals.js)
+  - [domPropertyMatches](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/domPropertyMatches.js)
+  - [elementNotPresent](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/elementNotPresent.js)
+  - [elementPresent](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/elementPresent.js)
+  - [elementsCount](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/elementsCount.js)
+  - [enabled](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/enabled.js)
+  - [hasAttribute](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/hasAttribute.js)
+  - [hasClass](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/hasClass.js)
+  - [hasDescendants](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/hasDescendants.js)
+  - [hidden](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/hidden.js)
+  - [promisedValue](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/promisedValue.js)
+  - [selected](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/selected.js)
+  - [textContains](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/textContains.js)
+  - [textEquals](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/textEquals.js)
+  - [textMatches](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/textMatches.js)
+  - [value](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/value.js)
+  - [valueContains](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/valueContains.js)
+  - [valueEquals](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/valueEquals.js)
+  - [visible](https://github.com/nightwatchjs/nightwatch/blob/main/lib/api/assertions/visible.js)
