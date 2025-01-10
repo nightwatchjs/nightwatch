@@ -3,7 +3,9 @@ Public commands api exported by Nightwatch in order to be extended upon from out
 
 **Example:**
 
-```js
+<div class="code-example">
+  <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+  <pre><code>
 const {Quit: quit} = require('nightwatch/api');
 
 module.exports = CustomQuit extends Quit {
@@ -13,7 +15,8 @@ module.exports = CustomQuit extends Quit {
     await super.command(cb);
   }
 }
-```
+  </code></pre>
+</div>
 
 **This is a work in progress.** 
 
@@ -56,5 +59,34 @@ module.exports = CustomQuit extends Quit {
 
 ## Utilities & Debugging:
 
+<script>
+  function copyToClipboard(button) {
+    const code = button.nextElementSibling.innerText;
+    navigator.clipboard.writeText(code).then(() => {
+      button.innerText = 'Copied!';
+      setTimeout(() => {
+        button.innerText = 'Copy';
+      }, 2000);
+    });
+  }
+</script>
 
+<style>
+  .code-example {
+    position: relative;
+  }
 
+  .copy-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
+  .copy-button:hover {
+    background-color: #e0e0e0;
+  }
+</style>

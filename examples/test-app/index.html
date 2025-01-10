@@ -17,6 +17,24 @@
     section {
       padding: 10px;
     }
+
+    .code-example {
+      position: relative;
+    }
+
+    .copy-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #f5f5f5;
+      border: 1px solid #ccc;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .copy-button:hover {
+      background-color: #e0e0e0;
+    }
   </style>
 
 </head>
@@ -74,10 +92,28 @@
     <a href="page2.html">Go to Page 2</a>
   </section>
 
+  <section class="code-example">
+    <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+    <pre><code>
+const exampleCode = 'This is an example code snippet.';
+console.log(exampleCode);
+    </code></pre>
+  </section>
+
   <script>
     document
       .querySelector('[data-testid="image-with-random-alt-tag"]')
       .setAttribute("alt", "Image Random Alt Text " + Math.random());
+
+    function copyToClipboard(button) {
+      const code = button.nextElementSibling.innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        button.innerText = 'Copied!';
+        setTimeout(() => {
+          button.innerText = 'Copy';
+        }, 2000);
+      });
+    }
   </script>
 </body>
 
