@@ -143,7 +143,7 @@ export type EnhancedSectionInstance<
   Elements = {},
   Sections extends Record<string, PageObjectSection> = {},
   Props = {},
-  Parent = null
+  Parent = unknown
 > = EnhancedPageObjectSections<Commands, Elements, Sections, Props, Parent> &
   Commands &
   ElementCommands &
@@ -204,7 +204,7 @@ export interface EnhancedPageObjectSections<
   Elements = {},
   Sections extends Record<string, PageObjectSection> = {},
   Props = {},
-  Parent = null
+  Parent = unknown
 > extends EnhancedPageObjectSharedFields<
   Commands,
   Elements,
