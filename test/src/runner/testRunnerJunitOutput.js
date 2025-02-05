@@ -383,10 +383,10 @@ describe('testRunnerJUnitOutput', function() {
       })
       .then(data => {
         const content = data.toString();
-        assert.match(content, /<testsuite[\s]+name="sample"[\s]/,
+        assert.match(content, /<testsuite[\s]+name="basic describe test"[\s]/,
           'Report does not contain correct testsuite name.');
 
-        assert.match(content, /<testcase[\s]+name="demoTest"[\s]+classname="sample"/,
+        assert.match(content, /<testcase[\s]+name="demoTest"[\s]+classname="basic describe test"/,
           'Report does not contain the correct testcase classname.');
       });
   });
