@@ -363,6 +363,33 @@ describe('testRunnerJUnitOutput', function() {
           'Report does not contain the correct testcase element.');
       });
   });
+
+  it('testRun with jUnit output and describe', function() {
+    const testsPath = [
+      path.join(__dirname, '../../sampletests/withdescribe/basic')
+    ];
+
+    return runTests(testsPath, settings({
+      output_folder: 'output',
+      silent: true,
+      globals: {reporter: function() {}}
+    }))
+      .then(_ => {
+        const basicReportFile = 'output/FIREFOX_TEST_firefox__sample.xml';
+
+        assert.ok(fileExistsSync(basicReportFile), 'The basic report file was not created.');
+
+        return readFilePromise(basicReportFile);
+      })
+      .then(data => {
+        const content = data.toString();
+        assert.match(content, /<testsuite[\s]+name="sample"[\s]/,
+          'Report does not contain correct testsuite name.');
+
+        assert.match(content, /<testcase[\s]+name="demoTest"[\s]+classname="sample"/,
+          'Report does not contain the correct testcase classname.');
+      });
+  });
 });
 
 // util to replace deprecated fs.existsSync
