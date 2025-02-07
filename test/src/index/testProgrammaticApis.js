@@ -882,4 +882,85 @@ describe('test programmatic apis', function () {
     CliRunner.createDefaultConfig = createDefaultConfig;
     CliRunner.prototype.loadConfig = loadConfig;
   });
+
+  it('test multiple calls to launchBrowser() on same client', async function() {
+    const CliRunner = common.require('runner/cli/cli.js');
+    const Nightwatch = common.require('index.js');
+    MockServer.createChromeSession({sessionId: '12345678'});
+    MockServer.createChromeSession({sessionId: '87654321'});
+
+    const defaultConfig = {
+      test_settings: {
+        default: {
+          launchUrl: 'http://localhost'
+        },
+
+        chrome: {
+          desiredCapabilities: {
+            browserName: 'chrome'
+          }
+        }
+      },
+      selenium: {
+        port: 10195,
+        start_process: false
+      },
+      selenium_host: 'localhost'
+    };
+
+    const createDefaultConfig = CliRunner.createDefaultConfig;
+    const loadConfig = CliRunner.prototype.loadConfig;
+
+    CliRunner.createDefaultConfig = function(destFileName) {
+      return defaultConfig;
+    };
+
+    CliRunner.prototype.loadConfig = function () {
+      return defaultConfig;
+    };
+
+    const clientChrome = Nightwatch.createClient({
+      browserName: 'chrome',
+      headless: true
+    });
+
+    const session = await clientChrome.launchBrowser();
+
+    assert.strictEqual(session.sessionId, '12345678');
+    assert.strictEqual(session.options.webdriver.port, 10195);
+    assert.deepStrictEqual(session.capabilities, {
+      acceptInsecureCerts: false,
+      browserName: 'chrome',
+      browserVersion: '90'
+    });
+
+    await session.end();
+    assert.strictEqual(session.sessionId, null);
+
+    let launchBrowserError;
+    try {
+      await clientChrome.launchBrowser();
+    } catch (err) {
+      launchBrowserError = err;
+    }
+    assert.notStrictEqual(launchBrowserError, undefined);
+    assert.strictEqual(launchBrowserError.message.includes('Error while loading the API commands'), true);
+
+    const session2 = await clientChrome.launchBrowser({loadNightwatchApis: false});
+
+    assert.strictEqual(session2.sessionId, '87654321');
+    assert.strictEqual(session2.options.webdriver.port, 10195);
+    assert.deepStrictEqual(session2.capabilities, {
+      acceptInsecureCerts: false,
+      browserName: 'chrome',
+      browserVersion: '90'
+    });
+
+    await session2.quit();
+    // TODO: calling `.quit()` does not clear the sessionId
+    assert.notStrictEqual(session2.sessionId, null);
+
+    CliRunner.createDefaultConfig = createDefaultConfig;
+    CliRunner.prototype.loadConfig = loadConfig;
+  });
 });
