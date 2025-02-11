@@ -831,3 +831,32 @@ describe('sample with relative locators', () => {
     browser.expect.element(passwordElement).attribute('type').equal('password');
   });
 });
+
+describe('Right Click Functionality Test', function() {
+  before(browser => browser.url('https://example.com'));
+
+  it('should perform a right click on the specified element', function(browser) {
+    // Using the rightClick method directly
+    browser.rightClick('#main ul li a.first', function(result) {
+      console.log('Right click result', result);
+    });
+
+    // Using rightClick with explicit locate strategy
+    browser.rightClick('css selector', '#main ul li a.first');
+
+    // Using rightClick with a selector object
+    browser.rightClick({
+      selector: '#main ul li a',
+      index: 1,
+      suppressNotFoundErrors: true
+    });
+
+    // Using rightClick with a timeout
+    browser.rightClick({
+      selector: '#main ul li a.first',
+      timeout: 2000
+    });
+  });
+
+  after(browser => browser.end());
+});

@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "esModuleInterop": true,
+    "outDir": "./built",
+    "baseUrl": "./",
+    "typeRoots": ["./types"],
+    "types": []
+  },
+  "include": [
+    "types/**/*.d.ts",
+    "test/**/*.ts"
+  ]
+} 
