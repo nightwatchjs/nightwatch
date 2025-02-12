@@ -142,8 +142,9 @@ export type EnhancedSectionInstance<
   Commands = {},
   Elements = {},
   Sections extends Record<string, PageObjectSection> = {},
-  Props = {}
-> = EnhancedPageObjectSections<Commands, Elements, Sections, Props> &
+  Props = {},
+  Parent = unknown
+> = EnhancedPageObjectSections<Commands, Elements, Sections, Props, Parent> &
   Commands &
   ElementCommands &
   ChromiumClientCommands &
@@ -202,7 +203,8 @@ export interface EnhancedPageObjectSections<
   Commands = {},
   Elements = {},
   Sections extends Record<string, PageObjectSection> = {},
-  Props = {}
+  Props = {},
+  Parent = unknown
 > extends EnhancedPageObjectSharedFields<
   Commands,
   Elements,
@@ -229,6 +231,11 @@ export interface EnhancedPageObjectSections<
    * 'css selector'
    */
   locateStrategy: LocateStrategy;
+
+  /**
+   * Parent of the section.
+   */
+  parent: Parent;
 }
 
 interface EnhancedPageObjectSharedFields<
@@ -258,7 +265,8 @@ interface EnhancedPageObjectSharedFields<
       Required<MergeObjectsArray<Sections[Key]['commands']>>,
       Required<MergeObjectsArray<Sections[Key]['elements']>>,
       Required<Sections[Key]['sections']>,
-      Required<Sections[Key]['props']>
+      Required<Sections[Key]['props']>,
+      this
     >;
   };
 

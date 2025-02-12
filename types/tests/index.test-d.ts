@@ -538,6 +538,11 @@ const testPage = {
     appSection.expect.element('@myAccount').to.be.visible;
     appSection.expect.element('@youtube').to.be.visible;
 
+    // test for parent property
+    expectType<typeof menuSection>(appSection.parent);
+    expectType<GooglePage>(appSection.parent.parent);
+    expectError(appSection.parent.parent.parent);
+
     const youtubeElement = appSection.elements.youtube;
     expectNotType<any>(youtubeElement);
 
