@@ -53,7 +53,7 @@ export interface PageObjectClientCommands
     | 'useCss'
     | 'useXpath'
     // | 'within' // missing from NightwatchAPI
-  > {};
+  > {}
 
 export interface SectionProperties {
   /**
