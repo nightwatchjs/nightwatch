@@ -13,9 +13,47 @@ import {
   LocateStrategy,
   NightwatchAPI,
   NightwatchClient,
-  NightwatchComponentTestingCommands,
-  SharedCommands
+  NightwatchComponentTestingCommands
 } from './index';
+
+export interface PageObjectClientCommands
+  extends ChromiumClientCommands,
+  Pick<
+    NightwatchAPI,
+    | 'axeInject'
+    | 'axeRun'
+    | 'debug'
+    | 'deleteCookie'
+    | 'deleteCookies'
+    | 'end'
+    | 'getCookie'
+    | 'getCookies'
+    | 'getLog'
+    | 'getLogTypes'
+    | 'getTitle'
+    | 'getWindowPosition'
+    | 'getWindowRect'
+    | 'getWindowSize'
+    | 'init'
+    | 'injectScript'
+    | 'isLogAvailable'
+    | 'maximizeWindow'
+    | 'pageSource'
+    | 'pause'
+    | 'perform'
+    | 'registerBasicAuth'
+    | 'resizeWindow'
+    | 'saveScreenshot'
+    // | 'saveSnapshot' // missing from NightwatchAPI
+    | 'setCookie'
+    | 'setWindowPosition'
+    | 'setWindowRect'
+    | 'setWindowSize'
+    | 'urlHash'
+    | 'useCss'
+    | 'useXpath'
+    // | 'within' // missing from NightwatchAPI
+  > {}
 
 export interface SectionProperties {
   /**
@@ -147,48 +185,11 @@ export type EnhancedSectionInstance<
 > = EnhancedPageObjectSections<Commands, Elements, Sections, Props, Parent> &
   Commands &
   ElementCommands &
-  ChromiumClientCommands &
+  PageObjectClientCommands &
   Pick<NightwatchCustomCommands, KeysFilter<NightwatchCustomCommands, Function>> & // eslint-disable-line @typescript-eslint/ban-types
   Pick<
     NightwatchComponentTestingCommands,
     'importScript' | 'launchComponentRenderer' | 'mountComponent'
-  > &
-  Pick<
-    NightwatchAPI,
-    | 'axeInject'
-    | 'axeRun'
-    | 'debug'
-    | 'deleteCookie'
-    | 'deleteCookies'
-    | 'end'
-    | 'getCookie'
-    | 'getCookies'
-    | 'getLog'
-    | 'getLogTypes'
-    | 'getTitle'
-    | 'getWindowPosition'
-    | 'getWindowRect'
-    | 'getWindowSize'
-    | 'init'
-    | 'injectScript'
-    | 'isLogAvailable'
-    | 'maximizeWindow'
-    | 'pause'
-    | 'perform'
-    | 'resizeWindow'
-    | 'saveScreenshot'
-    | 'setCookie'
-    | 'setWindowPosition'
-    | 'setWindowRect'
-    | 'setWindowSize'
-    | 'urlHash'
-    | 'useCss'
-    | 'useXpath'
-    | 'registerBasicAuth'
-    | 'setNetworkConditions'
-    | 'clickAndHold'
-    | 'doubleClick'
-    | 'rightClick'
   >;
 
 interface PageObjectSection {
@@ -505,7 +506,8 @@ export type EnhancedPageObject<
   Sections extends Record<string, PageObjectSection> = {},
   Props = {},
   URL = string
-> = SharedCommands &
+> = PageObjectClientCommands &
+  ElementCommands &
   NightwatchCustomCommands &
   EnhancedPageObjectSharedFields<
     Required<MergeObjectsArray<Commands>>,
