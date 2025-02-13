@@ -173,10 +173,13 @@ export type EnhancedSectionInstance<
     | 'injectScript'
     | 'isLogAvailable'
     | 'maximizeWindow'
+    | 'pageSource'
     | 'pause'
     | 'perform'
+    | 'registerBasicAuth'
     | 'resizeWindow'
     | 'saveScreenshot'
+    // | 'saveSnapshot' // missing from NightwatchAPI
     | 'setCookie'
     | 'setWindowPosition'
     | 'setWindowRect'
@@ -184,11 +187,7 @@ export type EnhancedSectionInstance<
     | 'urlHash'
     | 'useCss'
     | 'useXpath'
-    | 'registerBasicAuth'
-    | 'setNetworkConditions'
-    | 'clickAndHold'
-    | 'doubleClick'
-    | 'rightClick'
+    // | 'within' // missing from NightwatchAPI
   >;
 
 interface PageObjectSection {
