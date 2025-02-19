@@ -3,8 +3,8 @@ const assert = require('assert');
 const common = require('../../common.js');
 const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
-const {settings} = common;
-const {runTests} = common.require('index.js');
+const { settings } = common;
+const { runTests } = common.require('index.js');
 
 describe('testRunWithTags', function() {
   before(function(done) {
@@ -46,11 +46,13 @@ describe('testRunWithTags', function() {
           assert.ok('demoTagTest' in results.modules[`tagswithbrowserobject${path.sep}sample`].completed);
         }
       }
-    }));
+    })).catch(err => {
+      assert.fail(`Test failed with error: ${err.message}`);
+    });
   });
 
   it('testRunWithTags', function() {
-    let testsPath = path.join(__dirname, '../../sampletests');
+    const testsPath = path.join(__dirname, '../../sampletests');
 
     return runTests(testsPath, settings({
       output: false,
@@ -67,26 +69,26 @@ describe('testRunWithTags', function() {
         }
       },
       tag_filter: ['login']
-    }));
+    })).catch(err => {
+      assert.fail(`Test failed with error: ${err.message}`);
+    });
   });
 
   it('testRunWithTagsAndFilterEmpty', function() {
-    let testsPath = path.join(__dirname, '../../sampletests');
+    const testsPath = path.join(__dirname, '../../sampletests');
 
     return runTests(testsPath, settings({
-      globals: {
-      },
+      globals: {},
       filter: 'syncnames/*',
       tag_filter: ['login']
-    }))
-      .catch(err => {
-        assert.ok(err instanceof Error);
-        assert.ok(err.message.includes('No tests defined!'));
-      });
+    })).catch(err => {
+      assert.ok(err instanceof Error);
+      assert.ok(err.message.includes('No tests defined!'));
+    });
   });
 
   it('testRunWithTagsAndFilterNotEmpty', function() {
-    let testsPath = path.join(__dirname, '../../sampletests');
+    const testsPath = path.join(__dirname, '../../sampletests');
 
     return runTests(testsPath, settings({
       globals: {
@@ -97,11 +99,13 @@ describe('testRunWithTags', function() {
       },
       filter: 'tags/*',
       tag_filter: ['login']
-    }));
+    })).catch(err => {
+      assert.fail(`Test failed with error: ${err.message}`);
+    });
   });
 
   it('testRunWithSkipTagsAndFilterNotEmpty', function() {
-    let testsPath = path.join(__dirname, '../../sampletests');
+    const testsPath = path.join(__dirname, '../../sampletests');
 
     return runTests({
       _source: [testsPath],
@@ -114,24 +118,23 @@ describe('testRunWithTags', function() {
         }
       },
       filter: '**/tags/*'
-    }));
+    })).catch(err => {
+      assert.fail(`Test failed with error: ${err.message}`);
+    });
   });
 
   it('testRun with filter and skiptags no matches', function() {
-    let testsPath = path.join(__dirname, '../../sampletests');
+    const testsPath = path.join(__dirname, '../../sampletests');
 
     return runTests({
       _source: [testsPath],
       skiptags: ['logout', 'login']
     }, settings({
       globals: {
-        reporter(results) {
-        }
+        reporter(results) {}
       },
       filter: '**/tags/*'
     })).catch(err => {
-      return err;
-    }).then(err => {
       assert.ok(err instanceof Error);
       assert.ok(err.message.includes('No tests defined! using source folder'), err.message + '\n' + err.stack);
       assert.ok(err.detailedErr.includes('- using path filter: **/tags/*'));
@@ -140,7 +143,7 @@ describe('testRunWithTags', function() {
   });
 
   it('testRunWithTagsAndSkipTags', function() {
-    let testsPath = path.join(__dirname, '../../sampletests');
+    const testsPath = path.join(__dirname, '../../sampletests');
 
     return runTests({
       _source: [testsPath],
@@ -155,11 +158,13 @@ describe('testRunWithTags', function() {
         }
       },
       tag_filter: ['login']
-    }));
+    })).catch(err => {
+      assert.fail(`Test failed with error: ${err.message}`);
+    });
   });
 
   it('testRunner with tags and skip tags no matches', function() {
-    let testsPath = path.join(__dirname, '../../sampletests');
+    const testsPath = path.join(__dirname, '../../sampletests');
 
     return runTests({
       _source: [testsPath],
@@ -169,8 +174,6 @@ describe('testRunWithTags', function() {
       output: false,
       tag_filter: ['other']
     })).catch(err => {
-      return err;
-    }).then(err => {
       assert.ok(err instanceof Error);
       assert.ok(err.message.includes('No tests defined! using source folder'), err.message + '\n' + err.stack);
       assert.ok(err.detailedErr.includes('- using tags filter: other'));
