@@ -356,10 +356,10 @@ describe('testRunnerJUnitOutput', function() {
       })
       .then(data => {
         const content = data.toString();
-        assert.ok(/<testsuite[\s]+name="Simple\/Sample"[\s]+key="simple\.sample"[\s]+errors="0"[\s]+failures="0"[\s]+hostname=""[\s]+id=""[\s]+package="simple"[\s]+skipped="0"[\s]+tests="1"/.test(content),
+        assert.ok(/<testsuite[\s]+name="simple\.sample"[\s]+id="simple\.sample"[\s]+errors="0"[\s]+failures="0"[\s]+hostname=""[\s]+id=""[\s]+package="simple"[\s]+skipped="0"[\s]+tests="1"/.test(content),
           'Report does not contain correct testsuite information.');
 
-        assert.ok(/<testcase[\s]+name="simpleDemoTest"[\s]+classname="Simple\/Sample"[\s]+time="[.\d]+"[\s]+assertions="1">/.test(content),
+        assert.ok(/<testcase[\s]+name="simpleDemoTest"[\s]+classname="simple\.sample"[\s]+time="[.\d]+"[\s]+assertions="1">/.test(content),
           'Report does not contain the correct testcase element.');
       });
   });
@@ -370,12 +370,13 @@ describe('testRunnerJUnitOutput', function() {
     ];
 
     return runTests(testsPath, settings({
+      src_folders: ['test/sampletests/withdescribe'],
       output_folder: 'output',
       silent: true,
       globals: {reporter: function() {}}
     }))
       .then(_ => {
-        const basicReportFile = 'output/FIREFOX_TEST_firefox__sample.xml';
+        const basicReportFile = 'output/basic/FIREFOX_TEST_firefox__sample.xml';
 
         assert.ok(fileExistsSync(basicReportFile), 'The basic report file was not created.');
 
@@ -383,7 +384,7 @@ describe('testRunnerJUnitOutput', function() {
       })
       .then(data => {
         const content = data.toString();
-        assert.match(content, /<testsuite[\s]+name="basic describe test"[\s]+key="sample"[\s]+/,
+        assert.match(content, /<testsuite[\s]+name="basic describe test"[\s]+id="basic.sample"[\s]+/,
           'Report does not contain correct testsuite name.');
 
         assert.match(content, /<testcase[\s]+name="demoTest"[\s]+classname="basic describe test"/,
