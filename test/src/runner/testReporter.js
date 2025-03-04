@@ -274,9 +274,9 @@ describe('testReporter', function() {
 
   });
 
-  it('Check reporter output for commands', async function () {
+  it('Check reporter output for completedSections', async function () {
     let possibleError = null;
-    const testsPath = [path.join(__dirname, '../../sampletests/simple/test/sample.js')];
+    const testsPath = [path.join(__dirname, '../../sampletests/sampleforreport/sample.js')];
 
     try {
       await runTests({
@@ -305,6 +305,7 @@ describe('testReporter', function() {
               assert.ok(Object.keys(sectionData).includes('startTimestamp'));
               assert.ok(Object.keys(sectionData).includes('endTimestamp'));
               assert.ok(Object.keys(sectionData).includes('httpOutput'));
+              assert.strictEqual(sectionData['status'], 'pass');
             });
             
             assert.strictEqual(completedSections['__after_hook']['commands'].length, 1);
@@ -314,10 +315,17 @@ describe('testReporter', function() {
             const test = completedSections['demoTest'];
             assert.ok(Object.keys(test).includes('status'));
             assert.ok(Object.keys(test).includes('commands'));
-            assert.strictEqual(test.commands.length, 3);
+
+            assert.strictEqual(test.status, 'pass');
+            assert.strictEqual(test.passed, 3);
+            assert.strictEqual(test.failed, 0);
+            assert.strictEqual(test.errors, 0);
+
+            assert.strictEqual(test.commands.length, 4);
             assert.strictEqual(test.commands[0].name, 'assert.equal');
             assert.strictEqual(test.commands[1].name, 'url');
             assert.strictEqual(test.commands[2].name, 'assert.elementPresent');
+            assert.strictEqual(test.commands[3].name, 'assert.equal');
 
             const command = test.commands[1];
             assert.ok(Object.keys(command).includes('startTime'));
@@ -326,6 +334,124 @@ describe('testReporter', function() {
             assert.ok(Object.keys(command).includes('result'));
             assert.deepEqual(command.args, ['"http://localhost"']);
             assert.strictEqual(command.status, 'pass');
+
+            const beforeEach = test.beforeEach;
+            assert.strictEqual(beforeEach.commands.length, 0);
+            assert.strictEqual(beforeEach.status, 'pass');
+
+            const testcase = test.testcase;
+            assert.strictEqual(testcase.commands.length, 3);
+            assert.deepStrictEqual(testcase.commands.map(comm => comm.name), ['assert.equal', 'url', 'assert.elementPresent']);
+            assert.strictEqual(testcase.status, 'pass');
+            assert.strictEqual(testcase.passed, 2);
+            assert.strictEqual(testcase.failed, 0);
+            assert.strictEqual(testcase.errors, 0);
+
+            const afterEach = test.afterEach;
+            assert.strictEqual(afterEach.commands.length, 1);
+            assert.strictEqual(afterEach.commands[0].name, 'assert.equal');
+            assert.strictEqual(afterEach.status, 'pass');
+            assert.strictEqual(afterEach.passed, 1);
+            assert.strictEqual(afterEach.failed, 0);
+            assert.strictEqual(afterEach.errors, 0);
+          }
+        },
+        silent: true,
+        output: false
+      }));
+
+    } catch (error) {
+      possibleError = error;
+    }
+    assert.strictEqual(possibleError, null);
+
+  });
+
+  it('Check reporter output for completedSections with failures', async function () {
+    let possibleError = null;
+    const testsPath = [path.join(__dirname, '../../sampletests/sampleforreport/sampleWithFailure.js')];
+
+    try {
+      await runTests({
+        source: testsPath
+      },
+      settings({
+        output_folder: 'output',
+        globals: {
+          waitForConditionPollInterval: 20,
+          waitForConditionTimeout: 50,
+          retryAssertionTimeout: 50,
+          reporter: function (results) {
+            const module = results.modules['sampleWithFailure'];
+
+            assert.ok(Object.keys(module).includes('completedSections'));
+
+            const completedSections = module['completedSections'];
+
+            // check module properties all for hooks
+            const hooks = ['__after_hook', '__before_hook', '__global_afterEach_hook', '__global_beforeEach_hook', 'demoTest'];
+
+            hooks.forEach(hook => {
+              assert.ok(Object.keys(completedSections).includes(hook));
+
+              const sectionData = completedSections[hook];
+              assert.ok(Object.keys(sectionData).includes('startTimestamp'));
+              assert.ok(Object.keys(sectionData).includes('endTimestamp'));
+              assert.ok(Object.keys(sectionData).includes('httpOutput'));
+            });
+            
+            const afterHook = completedSections['__after_hook'];
+            assert.strictEqual(afterHook['commands'].length, 2);
+            assert.strictEqual(afterHook['commands'][0].name, 'assert.equal');
+            assert.strictEqual(afterHook['commands'][1].name, 'end');
+            assert.strictEqual(afterHook.status, 'pass');
+            assert.strictEqual(afterHook.passed, 1);
+            assert.strictEqual(afterHook.failed, 0);
+            assert.strictEqual(afterHook.errors, 0);
+
+            // check for individual test properties
+            const test = completedSections['demoTest'];
+            assert.ok(Object.keys(test).includes('status'));
+            assert.ok(Object.keys(test).includes('commands'));
+
+            assert.strictEqual(test.status, 'fail');
+            assert.strictEqual(test.passed, 2);
+            assert.strictEqual(test.failed, 1);
+            assert.strictEqual(test.errors, 0);
+
+            assert.strictEqual(test.commands.length, 4);
+            assert.strictEqual(test.commands[0].name, 'assert.equal');
+            assert.strictEqual(test.commands[1].name, 'url');
+            assert.strictEqual(test.commands[2].name, 'assert.elementPresent');
+            assert.strictEqual(test.commands[3].name, 'assert.equal');
+
+            const command = test.commands[1];
+            assert.ok(Object.keys(command).includes('startTime'));
+            assert.ok(Object.keys(command).includes('endTime'));
+            assert.ok(Object.keys(command).includes('elapsedTime'));
+            assert.ok(Object.keys(command).includes('result'));
+            assert.deepEqual(command.args, ['"http://localhost"']);
+            assert.strictEqual(command.status, 'pass');
+
+            const beforeEach = test.beforeEach;
+            assert.strictEqual(beforeEach.commands.length, 0);
+            assert.strictEqual(beforeEach.status, 'pass');
+
+            const testcase = test.testcase;
+            assert.strictEqual(testcase.commands.length, 3);
+            assert.deepStrictEqual(testcase.commands.map(comm => comm.name), ['assert.equal', 'url', 'assert.elementPresent']);
+            assert.strictEqual(testcase.status, 'fail');
+            assert.strictEqual(testcase.passed, 1);
+            assert.strictEqual(testcase.failed, 1);
+            assert.strictEqual(testcase.errors, 0);
+
+            const afterEach = test.afterEach;
+            assert.strictEqual(afterEach.commands.length, 1);
+            assert.strictEqual(afterEach.commands[0].name, 'assert.equal');
+            assert.strictEqual(afterEach.status, 'pass');
+            assert.strictEqual(afterEach.passed, 1);
+            assert.strictEqual(afterEach.failed, 0);
+            assert.strictEqual(afterEach.errors, 0);
           }
         },
         silent: true,
