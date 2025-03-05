@@ -13,9 +13,47 @@ import {
   LocateStrategy,
   NightwatchAPI,
   NightwatchClient,
-  NightwatchComponentTestingCommands,
-  SharedCommands
+  NightwatchComponentTestingCommands
 } from './index';
+
+export interface PageObjectClientCommands
+  extends ChromiumClientCommands,
+  Pick<
+    NightwatchAPI,
+    | 'axeInject'
+    | 'axeRun'
+    | 'debug'
+    | 'deleteCookie'
+    | 'deleteCookies'
+    | 'end'
+    | 'getCookie'
+    | 'getCookies'
+    | 'getLog'
+    | 'getLogTypes'
+    | 'getTitle'
+    | 'getWindowPosition'
+    | 'getWindowRect'
+    | 'getWindowSize'
+    | 'init'
+    | 'injectScript'
+    | 'isLogAvailable'
+    | 'maximizeWindow'
+    | 'pageSource'
+    | 'pause'
+    | 'perform'
+    | 'registerBasicAuth'
+    | 'resizeWindow'
+    | 'saveScreenshot'
+    // | 'saveSnapshot' // missing from NightwatchAPI
+    | 'setCookie'
+    | 'setWindowPosition'
+    | 'setWindowRect'
+    | 'setWindowSize'
+    | 'urlHash'
+    | 'useCss'
+    | 'useXpath'
+    // | 'within' // missing from NightwatchAPI
+  > {}
 
 export interface SectionProperties {
   /**
@@ -142,52 +180,16 @@ export type EnhancedSectionInstance<
   Commands = {},
   Elements = {},
   Sections extends Record<string, PageObjectSection> = {},
-  Props = {}
-> = EnhancedPageObjectSections<Commands, Elements, Sections, Props> &
+  Props = {},
+  Parent = unknown
+> = EnhancedPageObjectSections<Commands, Elements, Sections, Props, Parent> &
   Commands &
   ElementCommands &
-  ChromiumClientCommands &
+  PageObjectClientCommands &
   Pick<NightwatchCustomCommands, KeysFilter<NightwatchCustomCommands, Function>> & // eslint-disable-line @typescript-eslint/ban-types
   Pick<
     NightwatchComponentTestingCommands,
     'importScript' | 'launchComponentRenderer' | 'mountComponent'
-  > &
-  Pick<
-    NightwatchAPI,
-    | 'axeInject'
-    | 'axeRun'
-    | 'debug'
-    | 'deleteCookie'
-    | 'deleteCookies'
-    | 'end'
-    | 'getCookie'
-    | 'getCookies'
-    | 'getLog'
-    | 'getLogTypes'
-    | 'getTitle'
-    | 'getWindowPosition'
-    | 'getWindowRect'
-    | 'getWindowSize'
-    | 'init'
-    | 'injectScript'
-    | 'isLogAvailable'
-    | 'maximizeWindow'
-    | 'pause'
-    | 'perform'
-    | 'resizeWindow'
-    | 'saveScreenshot'
-    | 'setCookie'
-    | 'setWindowPosition'
-    | 'setWindowRect'
-    | 'setWindowSize'
-    | 'urlHash'
-    | 'useCss'
-    | 'useXpath'
-    | 'registerBasicAuth'
-    | 'setNetworkConditions'
-    | 'clickAndHold'
-    | 'doubleClick'
-    | 'rightClick'
   >;
 
 interface PageObjectSection {
@@ -202,7 +204,8 @@ export interface EnhancedPageObjectSections<
   Commands = {},
   Elements = {},
   Sections extends Record<string, PageObjectSection> = {},
-  Props = {}
+  Props = {},
+  Parent = unknown
 > extends EnhancedPageObjectSharedFields<
   Commands,
   Elements,
@@ -229,6 +232,11 @@ export interface EnhancedPageObjectSections<
    * 'css selector'
    */
   locateStrategy: LocateStrategy;
+
+  /**
+   * Parent of the section.
+   */
+  parent: Parent;
 }
 
 interface EnhancedPageObjectSharedFields<
@@ -258,7 +266,8 @@ interface EnhancedPageObjectSharedFields<
       Required<MergeObjectsArray<Sections[Key]['commands']>>,
       Required<MergeObjectsArray<Sections[Key]['elements']>>,
       Required<Sections[Key]['sections']>,
-      Required<Sections[Key]['props']>
+      Required<Sections[Key]['props']>,
+      this
     >;
   };
 
@@ -497,7 +506,8 @@ export type EnhancedPageObject<
   Sections extends Record<string, PageObjectSection> = {},
   Props = {},
   URL = string
-> = SharedCommands &
+> = PageObjectClientCommands &
+  ElementCommands &
   NightwatchCustomCommands &
   EnhancedPageObjectSharedFields<
     Required<MergeObjectsArray<Commands>>,

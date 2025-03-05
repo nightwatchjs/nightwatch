@@ -77,3 +77,28 @@ describe('File Upload', function() {
     browser.end();
   });
 });
+
+
+/**************************
+ * OTHER TESTS
+ *************************/
+describe('File Upload 2', function() {
+  it('File Upload test', function() {
+    const fileUploadPage = browser.page.FileUpload();
+
+    // user actions element commands work on page objects
+    fileUploadPage.rightClick('@fileUploadInput');
+    fileUploadPage.doubleClick('@fileUploadInput');
+    fileUploadPage.clickAndHold('@fileUploadInput');
+    expectError(fileUploadPage.navigateTo('https://google.com'));
+    expectType<string>(fileUploadPage.url());
+
+    // user actions element commands work on sections
+    const menuSection = fileUploadPage.section.menu;
+    menuSection.rightClick('@fileUploadInput');
+    menuSection.doubleClick('@fileUploadInput');
+    menuSection.clickAndHold('@fileUploadInput');
+    expectError(menuSection.navigateTo('https://google.com'));
+    expectError(menuSection.url());
+  });
+});
