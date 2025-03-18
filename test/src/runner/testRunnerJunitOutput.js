@@ -356,7 +356,7 @@ describe('testRunnerJUnitOutput', function() {
       })
       .then(data => {
         const content = data.toString();
-        assert.ok(/<testsuite[\s]+name="simple\.sample"[\s]+id="simple\.sample"[\s]+errors="0"[\s]+failures="0"[\s]+hostname=""[\s]+id=""[\s]+package="simple"[\s]+skipped="0"[\s]+tests="1"/.test(content),
+        assert.ok(/<testsuite[\s]+name="simple\.sample"[\s]+id="simple\.sample"[\s]+errors="0"[\s]+failures="0"[\s]+hostname=""[\s]+package="simple"[\s]+skipped="0"[\s]+tests="1"/.test(content),
           'Report does not contain correct testsuite information.');
 
         assert.ok(/<testcase[\s]+name="simpleDemoTest"[\s]+classname="simple\.sample"[\s]+time="[.\d]+"[\s]+assertions="1">/.test(content),
