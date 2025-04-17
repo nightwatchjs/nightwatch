@@ -38,7 +38,7 @@ describe('element().getAriaRole() command', function () {
     assert.strictEqual(resultValue, 'signupSection');
   });
 
-  it('test .element().ariaRole()', async function() {
+  it('test .element().ariaRole() alias', async function() {
     MockServer.addMock({
       url: '/session/13521-10219-202/element/0/computedrole',
       method: 'GET',
@@ -48,6 +48,30 @@ describe('element().getAriaRole() command', function () {
     }, true);
 
     const resultPromise = this.client.api.element('#signupSection').ariaRole();
+    assert.strictEqual(resultPromise instanceof Element, false);
+    assert.strictEqual(typeof resultPromise.find, 'undefined');
+
+    assert.strictEqual(resultPromise instanceof Promise, false);
+    assert.strictEqual(typeof resultPromise.then, 'function');
+
+    const result = await resultPromise;
+    assert.strictEqual(result instanceof WebElement, false);
+    assert.strictEqual(result, 'signupSection');
+
+    const resultValue = await resultPromise.value;
+    assert.strictEqual(resultValue, 'signupSection');
+  });
+
+  it('test .element().getComputedRole() alias', async function() {
+    MockServer.addMock({
+      url: '/session/13521-10219-202/element/0/computedrole',
+      method: 'GET',
+      response: JSON.stringify({
+        value: 'signupSection'
+      })
+    }, true);
+
+    const resultPromise = this.client.api.element('#signupSection').getComputedRole();
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(typeof resultPromise.find, 'undefined');
 

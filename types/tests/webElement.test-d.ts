@@ -159,8 +159,11 @@ describe('new element() api', function () {
     expectType<ElementValue<string | null>>(elem.attribute('attrib-name'));
     expectType<ElementValue<string | null>>(elem.getValue());
     expectType<ElementValue<boolean>>(elem.isEnabled());
+    expectType<ElementValue<boolean>>(elem.isPresent());
+    expectType<ElementValue<boolean>>(elem.isSelected());
     expectType<ElementValue<boolean>>(elem.isVisible());
     expectType<ElementValue<boolean>>(elem.isDisplayed());
+    expectType<ElementValue<boolean>>(elem.isActive());
 
     expectType<ElementValue<ScopedElementRect>>(elem.getRect());
     expectType<ElementValue<ScopedElementRect>>(elem.rect());
@@ -169,8 +172,10 @@ describe('new element() api', function () {
 
     expectType<ElementValue<string>>(elem.getAccessibleName());
     expectType<ElementValue<string>>(elem.accessibleName());
+    expectType<ElementValue<string>>(elem.getComputedLabel());
     expectType<ElementValue<string>>(elem.getAriaRole());
     expectType<ElementValue<string>>(elem.ariaRole());
+    expectType<ElementValue<string>>(elem.getComputedRole());
     expectType<ElementValue<string>>(elem.getCssProperty('height'));
     expectType<ElementValue<string>>(elem.css('height'));
     expectType<ElementValue<string>>(elem.getCssValue('height'));
@@ -186,13 +191,13 @@ describe('new element() api', function () {
     expectType<Promise<WebElement>>(elem.submit());
     expectType<Promise<WebElement>>(elem.setProperty('type', 'text'));
     expectType<Promise<WebElement>>(elem.setAttribute('role', 'button'));
-    expectType<Promise<WebElement>>(elem.dragAndDrop({xOffset: 150, yOffset: 500}));
+    expectType<Promise<WebElement>>(elem.dragAndDrop({x: 150, y: 500}));
+    expectType<Promise<WebElement>>(elem.dragAndDrop(elem.webElement));
     expectType<Promise<WebElement>>(elem.moveTo(100, 100));
     expectType<Promise<WebElement>>(elem.clickAndHold());
     expectType<Promise<WebElement>>(elem.doubleClick());
     expectType<Promise<WebElement>>(elem.rightClick());
     expectType<Promise<WebElement>>(elem.waitUntil('visible', {timeout: 5000}));
-    expectType<ElementValue<boolean>>(elem.isSelected());
   });
 
   test('test element assertions', async function () {

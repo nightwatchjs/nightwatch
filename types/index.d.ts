@@ -23,6 +23,7 @@ import {
   Actions,
   Capabilities,
   WebElement,
+  WebDriver,
   RelativeBy,
   locateWith as seleniumLocateWith
 } from 'selenium-webdriver';
@@ -66,6 +67,10 @@ export type NightwatchGenericCallback<T> = (
 ) => void
 
 export type Awaitable<T, V> = Omit<T, 'then'> & PromiseLike<V>;
+
+export type KeysFilter<T, U> = {
+  [K in keyof T]-?: T[K] extends U ? K : never;
+}[keyof T];
 
 // tslint:disable-next-line
 type VoidToNull<T> = T extends void ? null : T;
@@ -559,6 +564,11 @@ export interface NightwatchAPI
   currentTest: NightwatchTestSuite;
 
   globals: NightwatchGlobals;
+
+  /**
+   * https://www.selenium.dev/selenium/docs/api/javascript/WebDriver.html
+   */
+  driver: WebDriver;
 
   launchUrl: string;
   launch_url: string;
@@ -1141,6 +1151,77 @@ export interface NightwatchClientObject {
   // reporter: reporter
   // elementLocator
   sessionId: string | null;
+}
+
+export interface HttpRequestOptions {
+  /**
+   * The pathname of the endpoint to call. Ex: `'/session/:sessionId/url'`.
+   *
+   * Alternatively, url property could be provided with the full URL.
+   */
+  path?: string;
+  data?: unknown;
+
+  /**
+   * For custom-commands, set to `this.api.sessionId`.
+   */
+  sessionId: string;
+
+  method: 'POST' | 'GET' | 'DELETE' | 'PUT';
+  use_ssl?: boolean;
+  host?: string;
+  port?: number;
+
+  /**
+   * The full URL to call. Ex: `http://localhost:4444/session/:sessionId/url`.
+   */
+  url?: string;
+
+  auth?: {
+    user: string;
+    pass: string;
+  }
+}
+
+export interface CommandInstance {
+  get api(): NightwatchAPI;
+  get client(): NightwatchClient;
+  get commandArgs(): unknown[];
+  get commandFileName(): string;
+  get driver(): WebDriver;
+  get isES6AsyncCommand(): boolean;
+  get reuseBrowser(): boolean;
+
+  /**
+   * Direct access to methods present in the `lib/transport/selenium-webdriver/method-mappings.js` file
+   * of Nightwatch code.
+   *
+   * TODO: complete the type definition.
+   *
+   * For now, you would need to create custom interface to use this property, like below:
+   * ```ts
+   * interface TransportActions {
+   *   getCurrentUrl(): Promise<NightwatchCallbackResult<string>>;
+   * }
+   * ```
+   * then use it inside your custom command like:
+   * ```ts
+   * const currentUrl = await (this.transportActions as TransportActions).getCurrentUrl();
+   * ```
+   */
+  get transportActions(): unknown;
+
+  /**
+   * Directly call the HTTP endpoints of the Selenium/WebDriver server.
+   *
+   * This is useful when you need to call a command that is not directly supported by Nightwatch API.
+   *
+   * @see https://nightwatchjs.org/guide/extending-nightwatch/adding-custom-commands.html#postdoc-directly-calling-seleniumwebdriver-endpoints
+   */
+  httpRequest(options: HttpRequestOptions): Promise<unknown>;
+
+  toString(): string;
+  complete(...args: unknown[]): void;
 }
 
 export interface CreateClientParams {
@@ -2752,6 +2833,110 @@ export interface ElementCommands {
   ): Awaitable<this, null>;
 
   /**
+   * Move to the element and click (without releasing) in the middle of the given element.
+   *
+   * @example
+   * module.exports = {
+   *   demoTest() {
+   *     browser.clickAndHold('#main ul li a.first');
+   *
+   *     browser.clickAndHold('#main ul li a.first', function(result) {
+   *       console.log('Click result', result);
+   *     });
+   *
+   *     // with explicit locate strategy
+   *     browser.clickAndHold('css selector', '#main ul li a.first');
+   *
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
+   *     browser.clickAndHold({
+   *       selector: '#main ul li a',
+   *       index: 1,
+   *       suppressNotFoundErrors: true
+   *     });
+   *
+   *     browser.clickAndHold({
+   *       selector: '#main ul li a.first',
+   *       timeout: 2000 // overwrite the default timeout (in ms) to check if the element is present
+   *     });
+   *   },
+   *
+   *   demoTestAsync: async function() {
+   *     const result = await browser.clickAndHold('#main ul li a.first');
+   *     console.log('Right click result', result);
+   *   }
+   * }
+   *
+   * @see https://nightwatchjs.org/api/clickAndHold.html#apimethod-container
+   */
+  clickAndHold(
+    selector: string,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
+  clickAndHold(
+    using: LocateStrategy,
+    selector: string,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
+
+  /**
+   * Move to the element and peforms a double-click in the middle of the element.
+   *
+   * @example
+   * module.exports = {
+   *   demoTest() {
+   *     browser.doubleClick('#main ul li a.first');
+   *
+   *     browser.doubleClick('#main ul li a.first', function(result) {
+   *       console.log('double click result', result);
+   *     });
+   *
+   *     // with explicit locate strategy
+   *     browser.doubleClick('css selector', '#main ul li a.first');
+   *
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
+   *     browser.doubleClick({
+   *       selector: '#main ul li a',
+   *       index: 1,
+   *       suppressNotFoundErrors: true
+   *     });
+   *
+   *     browser.doubleClick({
+   *       selector: '#main ul li a.first',
+   *       timeout: 2000 // overwrite the default timeout (in ms) to check if the element is present
+   *     });
+   *   },
+   *
+   *   demoTestAsync: async function() {
+   *     const result = await browser.doubleClick('#main ul li a.first');
+   *     console.log('double click result', result);
+   *   }
+   * }
+   *
+   * @see https://nightwatchjs.org/api/doubleClick.html#apimethod-container
+   */
+  doubleClick(
+    selector: string,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
+  doubleClick(
+    using: LocateStrategy,
+    selector: string,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
+
+  /**
    * Retrieve the value of an attribute for a given DOM element.
    *
    * @example
@@ -3279,6 +3464,60 @@ export interface ElementCommands {
     selector: Definition,
     xoffset: number,
     yoffset: number,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
+
+  /**
+   * Simulates a context-click(right click) event on the given DOM element.
+   * The element is scrolled into view if it is not already pointer-interactable.
+   * See the WebDriver specification for element [interactability](https://www.w3.org/TR/webdriver/#element-interactability).
+   *
+   * @example
+   * module.exports = {
+   *   demoTest() {
+   *     browser.rightClick('#main ul li a.first');
+   *
+   *     browser.rightClick('#main ul li a.first', function(result) {
+   *       console.log('Click result', result);
+   *     });
+   *
+   *     // with explicit locate strategy
+   *     browser.rightClick('css selector', '#main ul li a.first');
+   *
+   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
+   *     browser.rightClick({
+   *       selector: '#main ul li a',
+   *       index: 1,
+   *       suppressNotFoundErrors: true
+   *     });
+   *
+   *     browser.rightClick({
+   *       selector: '#main ul li a.first',
+   *       timeout: 2000 // overwrite the default timeout (in ms) to check if the element is present
+   *     });
+   *   },
+   *
+   *   demoTestAsync: async function() {
+   *     const result = await browser.rightClick('#main ul li a.first');
+   *     console.log('Right click result', result);
+   *   }
+   * }
+   *
+   * @see https://nightwatchjs.org/api/rightClick.html#apimethod-container
+   */
+  rightClick(
+    selector: Definition,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
+  rightClick(
+    using: LocateStrategy,
+    selector: Definition,
     callback?: (
       this: NightwatchAPI,
       result: NightwatchCallbackResult<null>
@@ -7474,110 +7713,6 @@ export interface WebDriverProtocolCookies {
 
 export interface WebDriverProtocolUserActions {
   /**
-   * Move to the element and peforms a double-click in the middle of the element.
-   *
-   * @example
-   * module.exports = {
-   *   demoTest() {
-   *     browser.doubleClick('#main ul li a.first');
-   *
-   *     browser.doubleClick('#main ul li a.first', function(result) {
-   *       console.log('double click result', result);
-   *     });
-   *
-   *     // with explicit locate strategy
-   *     browser.doubleClick('css selector', '#main ul li a.first');
-   *
-   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
-   *     browser.doubleClick({
-   *       selector: '#main ul li a',
-   *       index: 1,
-   *       suppressNotFoundErrors: true
-   *     });
-   *
-   *     browser.doubleClick({
-   *       selector: '#main ul li a.first',
-   *       timeout: 2000 // overwrite the default timeout (in ms) to check if the element is present
-   *     });
-   *   },
-   *
-   *   demoTestAsync: async function() {
-   *     const result = await browser.doubleClick('#main ul li a.first');
-   *     console.log('double click result', result);
-   *   }
-   * }
-   *
-   * @see https://nightwatchjs.org/api/doubleClick.html#apimethod-container
-   */
-  doubleClick(
-    selector: string,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
-  doubleClick(
-    using: LocateStrategy,
-    selector: string,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
-
-  /**
-   * Move to the element and click (without releasing) in the middle of the given element.
-   *
-   * @example
-   * module.exports = {
-   *   demoTest() {
-   *     browser.clickAndHold('#main ul li a.first');
-   *
-   *     browser.clickAndHold('#main ul li a.first', function(result) {
-   *       console.log('Click result', result);
-   *     });
-   *
-   *     // with explicit locate strategy
-   *     browser.clickAndHold('css selector', '#main ul li a.first');
-   *
-   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
-   *     browser.clickAndHold({
-   *       selector: '#main ul li a',
-   *       index: 1,
-   *       suppressNotFoundErrors: true
-   *     });
-   *
-   *     browser.clickAndHold({
-   *       selector: '#main ul li a.first',
-   *       timeout: 2000 // overwrite the default timeout (in ms) to check if the element is present
-   *     });
-   *   },
-   *
-   *   demoTestAsync: async function() {
-   *     const result = await browser.clickAndHold('#main ul li a.first');
-   *     console.log('Right click result', result);
-   *   }
-   * }
-   *
-   * @see https://nightwatchjs.org/api/clickAndHold.html#apimethod-container
-   */
-  clickAndHold(
-    selector: string,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
-  clickAndHold(
-    using: LocateStrategy,
-    selector: string,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
-
-  /**
    * Release the depressed left mouse button at the current mouse coordinates (set by `.moveTo()`).
    *
    * @see https://nightwatchjs.org/api/releaseMouseButton.html#apimethod-container
@@ -7676,60 +7811,6 @@ export interface WebDriverProtocolUserActions {
     xoffset: number,
     yoffset: number,
     callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<this, null>;
-
-  /**
-   * Simulates a context-click(right click) event on the given DOM element.
-   * The element is scrolled into view if it is not already pointer-interactable.
-   * See the WebDriver specification for element [interactability](https://www.w3.org/TR/webdriver/#element-interactability).
-   *
-   * @example
-   * module.exports = {
-   *   demoTest() {
-   *     browser.rightClick('#main ul li a.first');
-   *
-   *     browser.rightClick('#main ul li a.first', function(result) {
-   *       console.log('Click result', result);
-   *     });
-   *
-   *     // with explicit locate strategy
-   *     browser.rightClick('css selector', '#main ul li a.first');
-   *
-   *     // with selector object - see https://nightwatchjs.org/guide/writing-tests/finding-interacting-with-dom-elements.html#postdoc-element-properties
-   *     browser.rightClick({
-   *       selector: '#main ul li a',
-   *       index: 1,
-   *       suppressNotFoundErrors: true
-   *     });
-   *
-   *     browser.rightClick({
-   *       selector: '#main ul li a.first',
-   *       timeout: 2000 // overwrite the default timeout (in ms) to check if the element is present
-   *     });
-   *   },
-   *
-   *   demoTestAsync: async function() {
-   *     const result = await browser.rightClick('#main ul li a.first');
-   *     console.log('Right click result', result);
-   *   }
-   * }
-   *
-   * @see https://nightwatchjs.org/api/rightClick.html#apimethod-container
-   */
-  rightClick(
-    selector: Definition,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
-  rightClick(
-    using: LocateStrategy,
-    selector: Definition,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
   ): Awaitable<this, null>;
 }
 

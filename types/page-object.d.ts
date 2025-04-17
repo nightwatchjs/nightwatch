@@ -9,13 +9,51 @@ import {
   ElementCommands,
   ElementFunction,
   Expect,
+  KeysFilter,
   LocateStrategy,
-  NamespacedApi,
   NightwatchAPI,
   NightwatchClient,
-  NightwatchComponentTestingCommands,
-  SharedCommands
+  NightwatchComponentTestingCommands
 } from './index';
+
+export interface PageObjectClientCommands
+  extends ChromiumClientCommands,
+  Pick<
+    NightwatchAPI,
+    | 'axeInject'
+    | 'axeRun'
+    | 'debug'
+    | 'deleteCookie'
+    | 'deleteCookies'
+    | 'end'
+    | 'getCookie'
+    | 'getCookies'
+    | 'getLog'
+    | 'getLogTypes'
+    | 'getTitle'
+    | 'getWindowPosition'
+    | 'getWindowRect'
+    | 'getWindowSize'
+    | 'init'
+    | 'injectScript'
+    | 'isLogAvailable'
+    | 'maximizeWindow'
+    | 'pageSource'
+    | 'pause'
+    | 'perform'
+    | 'registerBasicAuth'
+    | 'resizeWindow'
+    | 'saveScreenshot'
+    // | 'saveSnapshot' // missing from NightwatchAPI
+    | 'setCookie'
+    | 'setWindowPosition'
+    | 'setWindowRect'
+    | 'setWindowSize'
+    | 'urlHash'
+    | 'useCss'
+    | 'useXpath'
+    // | 'within' // missing from NightwatchAPI
+  > {}
 
 export interface SectionProperties {
   /**
@@ -142,51 +180,16 @@ export type EnhancedSectionInstance<
   Commands = {},
   Elements = {},
   Sections extends Record<string, PageObjectSection> = {},
-  Props = {}
-> = EnhancedPageObjectSections<Commands, Elements, Sections, Props> &
+  Props = {},
+  Parent = unknown
+> = EnhancedPageObjectSections<Commands, Elements, Sections, Props, Parent> &
   Commands &
   ElementCommands &
-  ChromiumClientCommands &
+  PageObjectClientCommands &
+  Pick<NightwatchCustomCommands, KeysFilter<NightwatchCustomCommands, Function>> & // eslint-disable-line @typescript-eslint/ban-types
   Pick<
     NightwatchComponentTestingCommands,
     'importScript' | 'launchComponentRenderer' | 'mountComponent'
-  > &
-  Pick<
-    NightwatchAPI,
-    | 'axeInject'
-    | 'axeRun'
-    | 'debug'
-    | 'deleteCookie'
-    | 'deleteCookies'
-    | 'end'
-    | 'getCookie'
-    | 'getCookies'
-    | 'getLog'
-    | 'getLogTypes'
-    | 'getTitle'
-    | 'getWindowPosition'
-    | 'getWindowRect'
-    | 'getWindowSize'
-    | 'init'
-    | 'injectScript'
-    | 'isLogAvailable'
-    | 'maximizeWindow'
-    | 'pause'
-    | 'perform'
-    | 'resizeWindow'
-    | 'saveScreenshot'
-    | 'setCookie'
-    | 'setWindowPosition'
-    | 'setWindowRect'
-    | 'setWindowSize'
-    | 'urlHash'
-    | 'useCss'
-    | 'useXpath'
-    | 'registerBasicAuth'
-    | 'setNetworkConditions'
-    | 'clickAndHold'
-    | 'doubleClick'
-    | 'rightClick'
   >;
 
 interface PageObjectSection {
@@ -201,7 +204,8 @@ export interface EnhancedPageObjectSections<
   Commands = {},
   Elements = {},
   Sections extends Record<string, PageObjectSection> = {},
-  Props = {}
+  Props = {},
+  Parent = unknown
 > extends EnhancedPageObjectSharedFields<
   Commands,
   Elements,
@@ -228,6 +232,11 @@ export interface EnhancedPageObjectSections<
    * 'css selector'
    */
   locateStrategy: LocateStrategy;
+
+  /**
+   * Parent of the section.
+   */
+  parent: Parent;
 }
 
 interface EnhancedPageObjectSharedFields<
@@ -257,7 +266,8 @@ interface EnhancedPageObjectSharedFields<
       Required<MergeObjectsArray<Sections[Key]['commands']>>,
       Required<MergeObjectsArray<Sections[Key]['elements']>>,
       Required<Sections[Key]['sections']>,
-      Required<Sections[Key]['props']>
+      Required<Sections[Key]['props']>,
+      this
     >;
   };
 
@@ -496,7 +506,8 @@ export type EnhancedPageObject<
   Sections extends Record<string, PageObjectSection> = {},
   Props = {},
   URL = string
-> = SharedCommands &
+> = PageObjectClientCommands &
+  ElementCommands &
   NightwatchCustomCommands &
   EnhancedPageObjectSharedFields<
     Required<MergeObjectsArray<Commands>>,
@@ -507,7 +518,19 @@ export type EnhancedPageObject<
   > &
   Required<MergeObjectsArray<Commands>> & {
     /**
-     * A url or function returning a url to be used in a url() command when the page's navigate() method is called.
+     * A url or a function returning a url. This is also used internally when the page's navigate() method is called.
+     *
+     * By default, the url property is set to a string type. To set it to a function type instead, the fifth type parameter
+     * of the `EnhancedPageObject` interface can be used:
+     *
+     * ```
+     * export interface MyPage extends
+     *   EnhancedPageObject<{}, typeof elements, {}, {}, () => string> {}
+     * ```
+     *
+     * See the usage of the `EnhancedPageObject` interface
+     * [here](https://github.com/nightwatchjs-community/nightwatch-typescript-boilerplate/blob/0bf15a6e8735b576b82bce9a7bb5c6beddb14de4/nightwatch/pages/FileUpload.ts#L17)
+     * for reference.
      *
      * @example
      * const homePageObject = browser.page.homePage();
