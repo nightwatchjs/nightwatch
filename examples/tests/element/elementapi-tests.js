@@ -62,7 +62,7 @@ describe('queries tests', function() {
 
 
   it('findByLabelText', async function ({element}) {
-    const input = await element.findByLabelText('Label For Input Labelled By Id').sendKeys('Hello Input Labelled by Id');
+    const input = await element.findByLabelText('Label For Input Labelled By Id', 'input').sendKeys('Hello Input Labelled by Id');
 
     expect(input).value.toEqual('Hello Input Labelled by Id');
   });
