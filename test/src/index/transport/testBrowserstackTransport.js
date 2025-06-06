@@ -455,7 +455,7 @@ describe('BrowserstackTransport', function () {
       });
 
     nock('https://api.browserstack.com')
-      .get('/automate/builds.json?status=running')
+      .get('/automate/builds.json?status=running&limit=20&offset=0')
       .reply(200, [
         {
           automation_build: {
