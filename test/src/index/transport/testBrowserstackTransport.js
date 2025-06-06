@@ -596,4 +596,71 @@ describe('BrowserstackTransport', function () {
     assert.strictEqual(transport.buildId, '123-567-89');
 
   });
+
+  it('test create Transport for Browserstack - Automate and return empty array', async function() {
+    const client = NightwatchClient.client({
+      webdriver: {
+        host: 'hub-cloud.browserstack.com',
+        port: 443,
+        start_process: true
+      },
+      desiredCapabilities: {
+        'browserstack.user': 'test-access-user',
+        'browserstack.key': 'test-access-key',
+        browserName: 'chrome'
+      }
+    });
+
+    nock('https://hub-cloud.browserstack.com')
+      .post('/wd/hub/session')
+      .reply(201, function (uri, requestBody) {
+        return {
+          value: {
+            sessionId: '1352110219202',
+            capabilities: requestBody.capabilities
+          }
+        };
+      });
+
+    nock('https://api.browserstack.com')
+      .get('/automate/builds.json?status=running&limit=20&offset=0')
+      .reply(200, [
+
+      ]);
+
+    assert.ok(client.transport instanceof Automate);
+    assert.strictEqual(client.settings.webdriver.host, 'hub-cloud.browserstack.com');
+    assert.strictEqual(client.settings.webdriver.default_path_prefix, '/wd/hub');
+    assert.strictEqual(client.settings.webdriver.ssl, true);
+
+    const {transport} = client;
+    assert.ok(transport instanceof SeleniumRemote);
+
+    let result = await transport.createSession({argv: undefined, moduleKey: ''});
+    result.sessionId = '1234567';
+    client.emit('nightwatch:session.create', result);
+
+    assert.strictEqual(transport.username, 'test-access-user');
+    assert.strictEqual(transport.accessKey, 'test-access-key');
+    assert.strictEqual(client.settings.webdriver.start_process, false);
+
+    nock('https://api.browserstack.com')
+      .get('/automate/sessions/1234567.json')
+      .reply(200, {
+        automation_session: {status: 'done'}
+      });
+    nock('https://api.browserstack.com')
+      .put('/automate/sessions/1234567.json', {
+        status: 'passed',
+        reason: ''
+      })
+      .reply(200, {});
+
+    result = await transport.testSuiteFinished(false);
+    assert.strictEqual(result, true);
+    assert.strictEqual(transport.sessionId, null);
+
+    assert.strictEqual(transport.buildId, undefined);
+
+  });
 });
