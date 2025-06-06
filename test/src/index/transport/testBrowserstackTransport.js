@@ -131,7 +131,7 @@ describe('BrowserstackTransport', function () {
       });
     
     nock('https://api.browserstack.com')
-      .get('/automate/builds.json?status=running')
+      .get('/automate/builds.json?status=running&limit=20&offset=0')
       .reply(200, [
         {
           automation_build: {
@@ -208,7 +208,7 @@ describe('BrowserstackTransport', function () {
       });
     
     nock('https://api.browserstack.com')
-      .get('/automate/builds.json?status=running')
+      .get('/automate/builds.json?status=running&limit=20&offset=0')
       .reply(200, [
         {
           automation_build: {
@@ -293,7 +293,7 @@ describe('BrowserstackTransport', function () {
       });
 
     nock('https://api.browserstack.com')
-      .get('/app-automate/builds.json?status=running')
+      .get('/app-automate/builds.json?status=running&limit=20&offset=0')
       .reply(200, [
         {
           automation_build: {
@@ -369,7 +369,7 @@ describe('BrowserstackTransport', function () {
       });
     
     nock('https://api.browserstack.com')
-      .get('/automate-turboscale/v1/builds?status=running')
+      .get('/automate-turboscale/v1/builds?status=running&limit=20&offset=0')
       .reply(200, {
         'builds': [
           {
