@@ -610,6 +610,7 @@ describe('BrowserstackTransport', function () {
         browserName: 'chrome'
       }
     });
+    let buildsMockCalled = 0;
 
     nock('https://hub-cloud.browserstack.com')
       .post('/wd/hub/session')
@@ -624,9 +625,18 @@ describe('BrowserstackTransport', function () {
 
     nock('https://api.browserstack.com')
       .get('/automate/builds.json?status=running&limit=20&offset=0')
-      .reply(200, [
+      .reply(200, function() {
+        buildsMockCalled++;
 
-      ]);
+        return [];
+      });
+    nock('https://api.browserstack.com')
+      .get('/automate/builds.json?status=running&limit=20&offset=20')
+      .reply(200, function() {
+        buildsMockCalled++;
+
+        return [];
+      });
 
     assert.ok(client.transport instanceof Automate);
     assert.strictEqual(client.settings.webdriver.host, 'hub-cloud.browserstack.com');
@@ -660,6 +670,7 @@ describe('BrowserstackTransport', function () {
     assert.strictEqual(result, true);
     assert.strictEqual(transport.sessionId, null);
 
+    assert.strictEqual(buildsMockCalled, 1);
     assert.strictEqual(transport.buildId, undefined);
 
   });
@@ -775,6 +786,7 @@ describe('BrowserstackTransport', function () {
         browserName: 'chrome'
       }
     });
+    let buildsMockCalled = 0;
 
     nock('https://hub-cloud.browserstack-ats.com')
       .post('/wd/hub/session')
@@ -789,9 +801,17 @@ describe('BrowserstackTransport', function () {
 
     nock('https://api.browserstack.com')
       .get('/automate-turboscale/v1/builds?status=running&limit=20&offset=0')
-      .reply(200, {
-        'builds': [
-        ]
+      .reply(200, function() {
+        buildsMockCalled++;
+
+        return {'builds': []};
+      });
+    nock('https://api.browserstack.com')
+      .get('/automate-turboscale/v1/builds?status=running&limit=20&offset=20')
+      .reply(200, function() {
+        buildsMockCalled++;
+
+        return {'builds': []};
       });
 
     assert.ok(client.transport instanceof AutomateTurboScale);
@@ -836,6 +856,7 @@ describe('BrowserstackTransport', function () {
     assert.strictEqual(transport.sessionId, null);
 
     assert.strictEqual(sessionNockCalled, 2);
+    assert.strictEqual(buildsMockCalled, 1);
     assert.strictEqual(transport.buildId, undefined);
   });
 
