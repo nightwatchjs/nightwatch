@@ -9,6 +9,9 @@ describe('Cucumber cli arguments', function(){
 
   before(function() {
     mockery.enable();
+    mockery.registerMock('@cucumber/cucumber', {
+      version: '11.0.0'
+    });
     mockery.registerMock('@cucumber/cucumber/lib/cli/index', {
       default: class CucumberCli {
         constructor({argv, cwd, stdout}) {
@@ -26,7 +29,9 @@ describe('Cucumber cli arguments', function(){
   it('Cucumber cli args --require-modules', function(){
     const runner =  new CucumberRunner({test_runner: {
       type: 'cucumber',
-      options: {}
+      options: {
+        integrationStrategy: 'CLI'
+      }
     }}, {'require-module': ['coffeescript/register', 'ts-node/register']});
 
     runner.createTestSuite({
@@ -49,7 +54,9 @@ describe('Cucumber cli arguments', function(){
   it('Cucumber cli args', function(){
     const runner =  new CucumberRunner({test_runner: {
       type: 'cucumber',
-      options: {}
+      options: {
+        integrationStrategy: 'CLI'
+      }
     }}, {'no-strict': true, retries: 2, profile: 'local', 'fail-fast': true, parallel: 3, name: 'sample', 'retry-tag-filter': '@nightwatch'}, {});
 
     runner.createTestSuite({
@@ -57,7 +64,7 @@ describe('Cucumber cli arguments', function(){
       modulePath: [path.join(__dirname, '../../../cucumber-integration-tests/sample_cucumber_tests/integration/testSample.js')]
     });
 
-    assert.strictEqual(cliArgs.length, 21);
+    assert.strictEqual(cliArgs.length, 20);
     assert.ok(cliArgs.includes('--name'));
     assert.strictEqual(cliArgs[cliArgs.indexOf('--name') + 1], 'sample');
     assert.ok(cliArgs.includes('--fail-fast'));
@@ -70,6 +77,8 @@ describe('Cucumber cli arguments', function(){
     assert.ok(cliArgs.includes('--no-strict'));
     assert.ok(cliArgs.includes('--parallel'));
     assert.strictEqual(cliArgs[cliArgs.indexOf('--parallel') + 1], 3);
+    assert.ok(cliArgs.includes('--world-parameters'));
+    assert.ok(JSON.parse(cliArgs[cliArgs.indexOf('--world-parameters') + 1]));
     assert.ok(cliArgs.includes('--require'));
   });
 
@@ -77,7 +86,9 @@ describe('Cucumber cli arguments', function(){
     const runner = new CucumberRunner({
       test_runner: {
         type: 'cucumber',
-        options: {}
+        options: {
+          integrationStrategy: 'CLI'
+        }
       }
     }, {
       'dry-run': true
@@ -96,6 +107,7 @@ describe('Cucumber cli arguments', function(){
       test_runner: {
         type: 'cucumber',
         options: {
+          integrationStrategy: 'CLI',
           retries: 3
         }
       }
@@ -114,6 +126,7 @@ describe('Cucumber cli arguments', function(){
       test_runner: {
         type: 'cucumber',
         options: {
+          integrationStrategy: 'CLI',
           retries: 3,
           format: '@cucumber/pretty-formatter'
         }
@@ -135,7 +148,9 @@ describe('Cucumber cli arguments', function(){
     const runner = new CucumberRunner({
       test_runner: {
         type: 'cucumber',
-        options: {}
+        options: {
+          integrationStrategy: 'CLI'
+        }
       }
     }, {
       'enable-esm': true
@@ -155,6 +170,7 @@ describe('Cucumber cli arguments', function(){
       test_runner: {
         type: 'cucumber',
         options: {
+          integrationStrategy: 'CLI',
           enable_esm: true
         }
       }
