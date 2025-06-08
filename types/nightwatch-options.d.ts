@@ -10,6 +10,7 @@ export interface NightwatchTestRunner {
     parallel?: number;
     reporter?: string;
     reporterOptions?: { [key: string]: any };
+    integrationStrategy?: 'API' | 'CLI';
   };
 }
 
@@ -314,9 +315,9 @@ export interface NightwatchTestSettingGeneric {
 
 		/**
 		 * The name of the parent folder to save the HTML report in.
-		 * 
+		 *
 		 * This can be used to retain the HTML reports for all the test runs, by making the `folder_format` dynamic.
-		 * 
+		 *
 		 * @example
 		 * folder_format: () => Date.now().toString()
 		 */
@@ -448,7 +449,7 @@ export interface NightwatchOptions extends NightwatchTestSettingGeneric {
 	/**
 	 * Set this to true to use the v1.x response format for commands in v2.x when using ES6 async/await.
 	 * Can also be used to retain the older functionality of `browser.element()` in v3.x.
-	 * 
+	 *
 	 * @default false
 	 */
 	backwards_compatibility_mode?: boolean;
@@ -525,7 +526,7 @@ export interface TimeoutOptions {
 	 * @default 2
 	 */
 	retry_attempts: number;
-}  
+}
 
 export interface WebdriverOptions {
 	/**

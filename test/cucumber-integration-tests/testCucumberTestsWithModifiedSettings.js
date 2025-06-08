@@ -44,7 +44,7 @@ describe('Cucumber integration - with modified settings in plugin', function() {
     return runTests({
       source,
       tags: ['@pass'],
-      verbose: false, 
+      verbose: false,
       config: path.join(__dirname, '../extra/cucumber-config.js')
     }, {
       plugins: pluginPath
