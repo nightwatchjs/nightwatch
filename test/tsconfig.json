@@ -19,10 +19,6 @@
     "skipLibCheck": true
     /* Skip type checking all .d.ts files. */
   },
-  "include": [
-    "."
-  ],
-  "files": [
-    "./types/index.d.ts"
-  ]
+  "include": ["."],
+  "files": ["./types/index.d.ts"]
 }
