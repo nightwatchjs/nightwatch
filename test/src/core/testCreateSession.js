@@ -157,7 +157,7 @@ describe('test Request With Credentials', function () {
         headless: true
       }
     });
-
+    
     assert.deepStrictEqual(session, {
       sessionId: '1352110219202',
       host: 'localhost',
@@ -548,7 +548,7 @@ describe('test Request With Credentials', function () {
       });
 
     nock('https://api.browserstack.com')
-      .get('/automate/builds.json?status=running&limit=20&offset=0')
+      .get('/automate/builds.json?status=running')
       .times(2)
       .reply(200, [
         {
@@ -676,7 +676,7 @@ describe('test Request With Credentials', function () {
       });
 
     nock('https://api.browserstack.com')
-      .get('/app-automate/builds.json?status=running&limit=20&offset=0')
+      .get('/app-automate/builds.json?status=running')
       .times(2)
       .reply(200, [
         {
@@ -746,7 +746,7 @@ describe('test Request With Credentials', function () {
 
     const buildId = await client.transport.getBuildId();
     assert.strictEqual(buildId, undefined);
-
+  
     assert.strictEqual(client.transport.uploadedAppUrl, 'bs://878bdf21505f0004ce');
 
     assert.strictEqual(client.settings.selenium.use_appium, undefined);
@@ -809,7 +809,7 @@ describe('test Request With Credentials', function () {
       });
 
     nock('https://api.browserstack.com')
-      .get('/app-automate/builds.json?status=running&limit=20&offset=0')
+      .get('/app-automate/builds.json?status=running')
       .times(2)
       .reply(200, [
         {
@@ -931,7 +931,7 @@ describe('test Request With Credentials', function () {
       });
 
     nock('https://api.browserstack.com')
-      .get('/automate/builds.json?status=running&limit=20&offset=0')
+      .get('/automate/builds.json?status=running')
       .times(2)
       .reply(200, [
         {
@@ -1046,7 +1046,7 @@ describe('test Request With Credentials', function () {
       });
 
     nock('https://api.browserstack.com')
-      .get('/automate/builds.json?status=running&limit=20&offset=0')
+      .get('/automate/builds.json?status=running')
       .times(2)
       .reply(200, [
         {
