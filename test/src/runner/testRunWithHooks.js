@@ -5,6 +5,7 @@ const CommandGlobals = require('../../lib/globals/commands.js');
 const MockServer = require('../../lib/mockserver.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
+const mockery = require('mockery');
 
 describe('testRunWithHooks', function() {
   before(function(done) {
@@ -48,10 +49,10 @@ describe('testRunWithHooks', function() {
     'afterWithClient'
   ].forEach(function(hook) {
     it(`testRunner with ${hook} hook and explicit callback error`, function() {
-      let provideErrorTestPath = path.join(__dirname, '../../asynchookstests/async-provide-error/' + hook + '.js');
-      let expectedErrorMessage = 'Provided error ' + hook;
+      const provideErrorTestPath = path.join(__dirname, '../../asynchookstests/async-provide-error/' + hook + '.js');
+      const expectedErrorMessage = 'Provided error ' + hook;
 
-      let globals = {
+      const globals = {
         calls: 0,
         asyncHookTimeout: 50,
 
@@ -89,12 +90,12 @@ describe('testRunWithHooks', function() {
     'afterWithClient'
   ].forEach(function(hook) {
     it(`testRunner with ${hook} hook and explicit callback error with --fail-fast argument`, function() {
-      let source = [
+      const source = [
         path.join(__dirname, '../../asynchookstests/async-provide-error/' + hook + '.js'),
         path.join(__dirname, '../../sampletests/async/test/sample.js')
       ];
 
-      let globals = {
+      const globals = {
         calls: 0,
         asyncHookTimeout: 50,
 
@@ -136,12 +137,12 @@ describe('testRunWithHooks', function() {
     'afterWithClient'
   ].forEach(function(hook) {
     it(`testRunner with ${hook} hook and explicit callback error without fail-fast argument`, function() {
-      let source = [
+      const source = [
         path.join(__dirname, '../../asynchookstests/async-provide-error/' + hook + '.js'),
         path.join(__dirname, '../../sampletests/async/test/sample.js')
       ];
 
-      let globals = {
+      const globals = {
         calls: 0,
         asyncHookTimeout: 50,
 
@@ -159,7 +160,7 @@ describe('testRunWithHooks', function() {
   });
 
   it('test run with async before and after', function() {
-    let globals = {
+    const globals = {
       calls: 0,
       reporter(results) {
         assert.strictEqual(globals.calls, 2);
@@ -168,7 +169,7 @@ describe('testRunWithHooks', function() {
       }
     };
 
-    let testsPath = path.join(__dirname, '../../sampletests/async');
+    const testsPath = path.join(__dirname, '../../sampletests/async');
 
     return runTests(testsPath, settings({
       globals
@@ -176,10 +177,10 @@ describe('testRunWithHooks', function() {
   });
 
   it('test run with async afterEach', function() {
-    let origExit = process.exit;
+    const origExit = process.exit;
     process.exit = function() {};
 
-    let globals = {
+    const globals = {
       calls: 0,
       reporter(results) {
         if (results.lastError) {
@@ -191,7 +192,7 @@ describe('testRunWithHooks', function() {
       }
     };
 
-    let testsPath = path.join(__dirname, '../../sampletests/mixed');
+    const testsPath = path.join(__dirname, '../../sampletests/mixed');
 
     return runTests(testsPath, settings({
       seleniumPort: 10195,
@@ -200,8 +201,8 @@ describe('testRunWithHooks', function() {
   });
 
   it('testRunner async with before and after', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/before-after');
+    const globals = {
       calls: 0,
       reporter(results) {
         if (results.lastError) {
@@ -210,7 +211,7 @@ describe('testRunWithHooks', function() {
         assert.strictEqual(globals.calls, 19);
         assert.ok('sampleWithBeforeAndAfter' in results.modules);
 
-        let result = results.modules.sampleWithBeforeAndAfter.completed;
+        const result = results.modules.sampleWithBeforeAndAfter.completed;
         assert.ok('demoTestAsyncOne' in result);
         assert.ok('demoTestAsyncTwo' in result);
         assert.ok(!('beforeEach' in result));
@@ -234,8 +235,8 @@ describe('testRunWithHooks', function() {
   });
 
   it('testRunner before and after without callback', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after/sampleWithBeforeAndAfterNoCallback.js');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/before-after/sampleWithBeforeAndAfterNoCallback.js');
+    const globals = {
       calls: 0,
       reporter(results) {
         if (results.lastError) {
@@ -253,8 +254,8 @@ describe('testRunWithHooks', function() {
   });
 
   it('testRunner with assertion failed in after hook', function() {
-    let testsPath = path.join(__dirname, '../../asynchookstests/sampleWithAssertionFailedInAfter.js');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../asynchookstests/sampleWithAssertionFailedInAfter.js');
+    const globals = {
       calls: 0,
       reporter(results) {
         assert.ok(results.lastError instanceof Error);
@@ -271,8 +272,8 @@ describe('testRunWithHooks', function() {
   });
 
   it('testRunner with --testcase and before and after', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/before-after/syncBeforeAndAfter.js');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/before-after/syncBeforeAndAfter.js');
+    const globals = {
       calls: 0,
       reporter(results) {
         if (results.lastError) {
@@ -280,7 +281,7 @@ describe('testRunWithHooks', function() {
         }
 
         assert.strictEqual(globals.calls, 4);
-        let result = results.modules.syncBeforeAndAfter.completed;
+        const result = results.modules.syncBeforeAndAfter.completed;
         assert.ok('demoTestSyncOne' in result);
         assert.ok(!('beforeEach' in result));
         assert.ok(!('before' in result));
@@ -301,14 +302,14 @@ describe('testRunWithHooks', function() {
   });
 
   it('testRunner with command inside before', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/beforewithcommand/commandInsideBefore.js');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/beforewithcommand/commandInsideBefore.js');
+    const globals = {
       calls: 0,
       reporter(results) {
         assert.ok(results.lastError instanceof Error);
 
         assert.strictEqual(globals.calls, 6);
-        let result = results.modules.commandInsideBefore.completed;
+        const result = results.modules.commandInsideBefore.completed;
         // assert.ok('demoTestSyncOne' in result);
         assert.ok(!('beforeEach' in result));
         assert.ok(!('before' in result));
@@ -328,14 +329,14 @@ describe('testRunWithHooks', function() {
   });
 
   it('testRunner with command inside before with 0 parameters', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/beforewithcommand/commandInsideBeforeWithNoParams.js');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/beforewithcommand/commandInsideBeforeWithNoParams.js');
+    const globals = {
       calls: 0,
       reporter(results) {
         assert.ok(results.lastError instanceof Error);
 
         assert.strictEqual(globals.calls, 6);
-        let result = results.modules.commandInsideBeforeWithNoParams.completed;
+        const result = results.modules.commandInsideBeforeWithNoParams.completed;
         // assert.ok('demoTestSyncOne' in result);
         assert.ok(!('beforeEach' in result));
         assert.ok(!('before' in result));
@@ -355,8 +356,8 @@ describe('testRunWithHooks', function() {
   });
 
   it('testRunWithAsyncHooks', function() {
-    let testsPath = path.join(__dirname, '../../sampletests/withasynchooks');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../sampletests/withasynchooks');
+    const globals = {
       calls: 0,
       reporter(results) {
         if (results.lastError) {
@@ -374,8 +375,8 @@ describe('testRunWithHooks', function() {
   });
 
   it('test async afterEach hook timeout error', function() {
-    let testsPath = path.join(__dirname, '../../asynchookstests/afterEach-timeout');
-    let globals = {
+    const testsPath = path.join(__dirname, '../../asynchookstests/afterEach-timeout');
+    const globals = {
       calls: 0,
       asyncHookTimeout: 10,
       reporter(results) {
@@ -388,6 +389,78 @@ describe('testRunWithHooks', function() {
     return runTests(testsPath, settings({
       globals
     }));
+  });
+
+  it('testRunner passes testEnvSettings to global before hook', function() {
+    // Mock analytics to prevent cleanup errors
+    mockery.enable({useCleanCache: true, warnOnUnregistered: false});
+    mockery.registerMock('../../utils/analytics.js', {
+      updateSettings: () => {},
+      updateLogger: () => {},
+      collectEvent: () => {},
+      __flush: () => Promise.resolve()
+    });
+
+    try {
+      const CliRunner = common.require('runner/cli/cli.js');
+      
+      let beforeHookCalled = false;
+      let beforeHookArgs = null;
+      
+      // Create a minimal CliRunner instance
+      const runner = Object.create(CliRunner.prototype);
+      
+      // Set up required properties
+      runner.test_settings = { 
+        globals: {},
+        test_runner: {type: 'mocha'},
+        desiredCapabilities: {real_mobile: false, avd: null},
+        usage_analytics: {enabled: false}
+      };
+      
+      // Mock testEnvSettings property 
+      const mockTestEnvSettings = { 
+        default: {selenium: {port: 4444}, globals: {}}
+      };
+      
+      Object.defineProperty(runner, 'testEnvSettings', {
+        get: function() { return mockTestEnvSettings }
+      });
+      
+      // Mock runGlobalHook to capture arguments
+      runner.runGlobalHook = function(hookName, args) {
+        if (hookName === 'before') {
+          beforeHookCalled = true;
+          beforeHookArgs = args;
+          
+          // Verify the enhancement: both test_settings and testEnvSettings are passed
+          assert.ok(Array.isArray(args), 'before hook should receive an array of arguments');
+          assert.strictEqual(args.length, 2, 'before hook should receive exactly 2 arguments');
+          assert.strictEqual(args[0], runner.test_settings, 'first argument should be test_settings');
+          assert.strictEqual(args[1], mockTestEnvSettings, 'second argument should be testEnvSettings');
+        }
+
+        return Promise.resolve();
+      };
+      
+      // Mock other required methods
+      runner.getTestsFiles = () => Promise.resolve({});
+      runner.createTestRunner = () => Promise.resolve();
+      runner.setExitCode = () => {};
+      runner.testRunner = {run: () => Promise.resolve({})};
+      
+      // Call the runTests method
+      return runner.runTests().then(() => {
+        assert.ok(beforeHookCalled, 'before hook should have been called');
+        assert.ok(beforeHookArgs, 'before hook arguments should have been captured');
+        assert.deepEqual(beforeHookArgs[0], runner.test_settings, 'before hook arguments contains test_settings');
+        assert.deepEqual(beforeHookArgs[1], mockTestEnvSettings, 'before hook arguments contains testEnvSettings');
+      });
+    } finally {
+      mockery.deregisterAll();
+      mockery.resetCache();
+      mockery.disable();
+    }
   });
 });
 
