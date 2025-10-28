@@ -6,6 +6,7 @@ const MockServer = require('../../lib/mockserver.js');
 const {settings} = common;
 const {runTests} = common.require('index.js');
 const mockery = require('mockery');
+
 describe('testRunWithHooks', function() {
   before(function(done) {
     this.server = MockServer.init();
@@ -452,6 +453,8 @@ describe('testRunWithHooks', function() {
       return runner.runTests().then(() => {
         assert.ok(beforeHookCalled, 'before hook should have been called');
         assert.ok(beforeHookArgs, 'before hook arguments should have been captured');
+        assert.deepEqual(beforeHookArgs[0], runner.test_settings, 'before hook arguments contains test_settings');
+        assert.deepEqual(beforeHookArgs[1], mockTestEnvSettings, 'before hook arguments contains testEnvSettings');
       });
     } finally {
       mockery.deregisterAll();
