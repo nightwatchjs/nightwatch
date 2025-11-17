@@ -93,12 +93,12 @@ describe('testNightwatchEventReporter', function() {
             });
             
             eventBroadcaster.on('TestRunStarted', (args) => {
-              assert.deepStrictEqual(Object.keys(args), ['envelope', 'metadata', 'testcase']);
+              assert.deepStrictEqual(Object.keys(args), ['envelope', 'metadata', 'testcase', 'settings', 'testCaseData']);
               eventExecuted.TestRunStarted = true;
             });
             
             eventBroadcaster.on('TestRunFinished', (args) => {
-              assert.deepStrictEqual(Object.keys(args), ['envelope', 'metadata', 'testcase']);
+              assert.deepStrictEqual(Object.keys(args), ['envelope', 'metadata', 'testcase', 'settings', 'testResults', 'testCaseData']);
               eventExecuted.TestRunFinished = true;
             });
             
