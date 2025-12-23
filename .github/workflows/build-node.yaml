@@ -29,6 +29,8 @@ jobs:
     - run: npm ci
     - run: npm run eslint
     - run: npm test
+      env:
+        NODE_OPTIONS: --no-warnings
 
   windows:
     runs-on: windows-latest
