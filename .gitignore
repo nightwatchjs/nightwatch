@@ -31,3 +31,4 @@ html-report/
 test-results.xml
 chromedriver-mobile/
 *.sw[po]
+snpashot.html
