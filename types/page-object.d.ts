@@ -393,7 +393,35 @@ export interface EnhancedElementInstance<T> {
  *
  * @see https://nightwatchjs.org/api/pageobject/#overview
  *
- * @remarks Use satisfies to preserve types!
+ * @remarks
+ * **Important:** Use `satisfies PageObjectModel` instead of `: PageObjectModel` to preserve literal types!
+ *
+ * **What are literal types?**
+ * Literal types are specific, exact values rather than broad types. For example:
+ * - `"#searchBar"` (literal string) vs `string` (broad type)
+ * - `{ selector: "#btn" }` (literal object) vs `ElementProperties` (broad interface)
+ *
+ * **Why does this matter?**
+ * When you use `const myPage: PageObjectModel = {...}`, TypeScript widens your specific values to match
+ * the interface's broad types. This loses the exact string literals and object shapes you defined.
+ *
+ * When you use `const myPage = {...} satisfies PageObjectModel`, TypeScript:
+ * 1. Validates that your object matches PageObjectModel (type safety)
+ * 2. Preserves the exact literal types of your element selectors, section names, etc.
+ * 3. Enables better autocomplete and type inference in EnhancedPageObject
+ *
+ * **Example of the difference:**
+ * ```typescript
+ * // ❌ BAD: Loses literal types
+ * const page1: PageObjectModel = {
+ *   elements: { searchBar: "#search" }  // Type becomes: { [key: string]: string | ElementProperties }
+ * };
+ *
+ * // ✅ GOOD: Preserves literal types
+ * const page2 = {
+ *   elements: { searchBar: "#search" }  // Type becomes: { searchBar: "#search" }
+ * } satisfies PageObjectModel;
+ * ```
  *
  * @example
  * const homePage = {
