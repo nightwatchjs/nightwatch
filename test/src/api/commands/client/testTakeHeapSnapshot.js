@@ -7,6 +7,8 @@ const fs = require('fs');
 const cdp = common.require('transport/selenium-webdriver/cdp.js');
 
 describe('.takeHeapSnapshot()', function(done) {
+  const origFsWriteFileSync = fs.writeFileSync;
+
   beforeEach(function(done) {
     this.server = MockServer.init();
 
@@ -16,7 +18,7 @@ describe('.takeHeapSnapshot()', function(done) {
   });
 
   afterEach(function(done) {
-    delete require.cache['fs'];
+    fs.writeFileSync = origFsWriteFileSync;
     CommandGlobals.afterEach.call(this, done);
   });
 
