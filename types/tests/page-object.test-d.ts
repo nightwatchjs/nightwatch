@@ -298,7 +298,10 @@ describe('Page Object - Custom Command Chaining', function() {
 
     // Chain multiple custom commands (uploadFile3 returns 'this', preserves page object type)
     // uploadFile3 returns FileUploadPage, so chaining multiple returns FileUploadPage
-    expectType<FileUploadPage>(fileUploadPage.uploadFile3('@fileUploadInput', 'test.txt').uploadFile3('@fileUploadInput', 'test2.txt'));
+    expectType<FileUploadPage>(fileUploadPage.uploadFile3('@fileUploadInput', 'test.txt'));
+    expectType<Awaitable<FileUploadPage, null>>(fileUploadPage.uploadFile4('@fileUploadInput', 'test.txt'));
+    expectType<FileUploadPage>(fileUploadPage.uploadFile4('@fileUploadInput', 'test.txt').uploadFile3('@fileUploadInput', 'test2.txt'));
+    expectType<Awaitable<FileUploadPage, null>>(fileUploadPage.uploadFile3('@fileUploadInput', 'test.txt').uploadFile4('@fileUploadInput', 'test2.txt'));
     // When chained with pause, pause returns Awaitable
     expectType<Awaitable<FileUploadPage, undefined>>(fileUploadPage.uploadFile3('@fileUploadInput', 'test.txt').uploadFile3('@fileUploadInput', 'test2.txt').pause(1000));
 
