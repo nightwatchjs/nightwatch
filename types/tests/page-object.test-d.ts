@@ -1,5 +1,5 @@
 import {expectError, expectType} from 'tsd';
-import {EnhancedPageObject, PageObjectModel, Awaitable, NightwatchAPI, Cookie, NightwatchLogEntry, NightwatchLogTypes} from '..';
+import {EnhancedPageObject, PageObjectModel, Awaitable, NightwatchAPI, Cookie, NightwatchLogEntry, NightwatchLogTypes, WindowSizeAndPosition} from '..';
 import {WebElement} from 'selenium-webdriver';
 
 // Page object file
@@ -139,15 +139,16 @@ describe('Page Object - SharedClientCommands', function() {
     expectType<Awaitable<FileUploadPage, NightwatchLogTypes[]>>(fileUploadPage.getLogTypes());
     expectType<Awaitable<FileUploadPage, string>>(fileUploadPage.getTitle());
     expectType<Awaitable<FileUploadPage, { x: number; y: number }>>(fileUploadPage.getWindowPosition());
-    expectType<Awaitable<FileUploadPage, { x: number; y: number; width: number; height: number }>>(fileUploadPage.getWindowRect());
-    expectType<Awaitable<FileUploadPage, { width: number; height: number }>>(fileUploadPage.getWindowSize());
+    expectType<Awaitable<FileUploadPage, WindowSizeAndPosition>>(fileUploadPage.getWindowRect());
+    expectType<Awaitable<FileUploadPage, WindowSizeAndPosition>>(fileUploadPage.getWindowSize());
     expectType<Awaitable<FileUploadPage, null>>(fileUploadPage.init());
     expectType<Awaitable<FileUploadPage, WebElement>>(fileUploadPage.injectScript('script.js'));
     expectType<Awaitable<FileUploadPage, boolean>>(fileUploadPage.isLogAvailable('browser'));
     expectType<Awaitable<FileUploadPage, null>>(fileUploadPage.maximizeWindow());
     expectType<Awaitable<FileUploadPage, string>>(fileUploadPage.pageSource());
     expectType<Awaitable<FileUploadPage, undefined>>(fileUploadPage.pause(1000));
-    expectType<Awaitable<FileUploadPage, any>>(fileUploadPage.perform(() => {}));
+    expectType<Awaitable<FileUploadPage, void>>(fileUploadPage.perform(() => {}));
+    expectType<Awaitable<FileUploadPage, string>>(fileUploadPage.perform<string>(() => {}));
     expectType<Awaitable<FileUploadPage, null>>(fileUploadPage.resizeWindow(1000, 800));
     expectType<Awaitable<FileUploadPage, string>>(fileUploadPage.saveScreenshot('test.png'));
     expectType<Awaitable<FileUploadPage, null>>(fileUploadPage.setCookie({name: 'test', value: 'value'}));
@@ -171,15 +172,16 @@ describe('Page Object - SharedClientCommands', function() {
     expectType<Awaitable<typeof menuSection, NightwatchLogTypes[]>>(menuSection.getLogTypes());
     expectType<Awaitable<typeof menuSection, string>>(menuSection.getTitle());
     expectType<Awaitable<typeof menuSection, { x: number; y: number }>>(menuSection.getWindowPosition());
-    expectType<Awaitable<typeof menuSection, { x: number; y: number; width: number; height: number }>>(menuSection.getWindowRect());
-    expectType<Awaitable<typeof menuSection, { width: number; height: number }>>(menuSection.getWindowSize());
+    expectType<Awaitable<typeof menuSection, WindowSizeAndPosition>>(menuSection.getWindowRect());
+    expectType<Awaitable<typeof menuSection, WindowSizeAndPosition>>(menuSection.getWindowSize());
     expectType<Awaitable<typeof menuSection, null>>(menuSection.init());
     expectType<Awaitable<typeof menuSection, WebElement>>(menuSection.injectScript('script.js'));
     expectType<Awaitable<typeof menuSection, boolean>>(menuSection.isLogAvailable('browser'));
     expectType<Awaitable<typeof menuSection, null>>(menuSection.maximizeWindow());
     expectType<Awaitable<typeof menuSection, string>>(menuSection.pageSource());
     expectType<Awaitable<typeof menuSection, undefined>>(menuSection.pause(1000));
-    expectType<Awaitable<typeof menuSection, any>>(menuSection.perform(() => {}));
+    expectType<Awaitable<typeof menuSection, void>>(menuSection.perform(() => {}));
+    expectType<Awaitable<typeof menuSection, string>>(menuSection.perform<string>(() => {}));
     expectType<Awaitable<typeof menuSection, null>>(menuSection.resizeWindow(1000, 800));
     expectType<Awaitable<typeof menuSection, string>>(menuSection.saveScreenshot('test.png'));
     expectType<Awaitable<typeof menuSection, null>>(menuSection.setCookie({name: 'test', value: 'value'}));
