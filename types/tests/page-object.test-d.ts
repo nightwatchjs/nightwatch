@@ -141,6 +141,7 @@ describe('Page Object - SharedClientCommands', function() {
     expectType<Awaitable<FileUploadPage, undefined>>(fileUploadPage.useCss());
     expectType<Awaitable<FileUploadPage, undefined>>(fileUploadPage.useXpath());
 
+    expectError(fileUploadPage.registerBasicAuth('test-user', 'test-pass'));
     // These should also work on sections with correct return types
     expectType<Awaitable<typeof menuSection, undefined>>(menuSection.pause(1000));
     expectType<Awaitable<typeof menuSection, undefined>>(menuSection.debug());
