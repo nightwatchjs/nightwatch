@@ -140,8 +140,8 @@ describe('Page Object - SharedClientCommands', function() {
     expectType<Awaitable<FileUploadPage, null>>(fileUploadPage.urlHash('#test'));
     expectType<Awaitable<FileUploadPage, undefined>>(fileUploadPage.useCss());
     expectType<Awaitable<FileUploadPage, undefined>>(fileUploadPage.useXpath());
+    expectType<Awaitable<FileUploadPage, null>>(fileUploadPage.registerBasicAuth('test-user', 'test-pass'));
 
-    expectError(fileUploadPage.registerBasicAuth('test-user', 'test-pass'));
     // These should also work on sections with correct return types
     expectType<Awaitable<typeof menuSection, undefined>>(menuSection.pause(1000));
     expectType<Awaitable<typeof menuSection, undefined>>(menuSection.debug());
@@ -160,6 +160,8 @@ describe('Page Object - SharedClientCommands', function() {
     expectType<Awaitable<typeof menuSection, null>>(menuSection.urlHash('#test'));
     expectType<Awaitable<typeof menuSection, undefined>>(menuSection.useCss());
     expectType<Awaitable<typeof menuSection, undefined>>(menuSection.useXpath());
+    expectType<Awaitable<typeof menuSection, null>>(menuSection.registerBasicAuth('test-user', 'test-pass'));
+    
   });
 });
 
