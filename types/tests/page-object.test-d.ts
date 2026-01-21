@@ -186,6 +186,7 @@ describe('Page Object - ChromiumClientCommands', function() {
     expectType<Awaitable<FileUploadPage, null>>(fileUploadPage.setNetworkConditions({ offline: false, latency: 3000, download_throughput: 500 * 1024, upload_throughput: 500 * 1024 }));
     expectType<Awaitable<FileUploadPage, null>>(fileUploadPage.captureBrowserConsoleLogs(() => {}));
     expectType<Awaitable<FileUploadPage, null>>(fileUploadPage.captureBrowserExceptions(() => {}));
+    expectType<Awaitable<FileUploadPage, null>>(fileUploadPage.registerBasicAuth('test-user', 'test-pass'));
 
     // These should also work on sections with correct return types
     expectType<Awaitable<typeof menuSection, null>>(menuSection.setGeolocation({ latitude: 35.689487, longitude: 139.691706, accuracy: 100 }));
@@ -202,6 +203,7 @@ describe('Page Object - ChromiumClientCommands', function() {
     expectType<Awaitable<typeof menuSection, null>>(menuSection.setNetworkConditions({ offline: false, latency: 3000, download_throughput: 500 * 1024, upload_throughput: 500 * 1024 }));
     expectType<Awaitable<typeof menuSection, null>>(menuSection.captureBrowserConsoleLogs(() => {}));
     expectType<Awaitable<typeof menuSection, null>>(menuSection.captureBrowserExceptions(() => {}));
+    expectType<Awaitable<typeof menuSection, null>>(menuSection.registerBasicAuth('test-user', 'test-pass'));
   });
 });
 
