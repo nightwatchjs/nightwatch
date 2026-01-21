@@ -1591,14 +1591,14 @@ export interface ChromiumClientCommands {
    *
    * @see https://nightwatchjs.org/api/registerBasicAuth.html#apimethod-container
    */
-    registerBasicAuth(
-      username: string,
-      password: string,
-      callback?: (
-        this: NightwatchAPI,
-        result: NightwatchCallbackResult<null>
-      ) => void
-    ): Awaitable<this, null>;
+  registerBasicAuth(
+    username: string,
+    password: string,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
 
   captureNetworkRequests: NetworkNsCommands<this>['captureRequests'];
 
@@ -1610,6 +1610,7 @@ export interface ChromiumClientCommands {
 
   captureBrowserExceptions: LogsNsCommands<this>['captureBrowserExceptions'];
 }
+
 export interface SharedClientCommands {
   /**
    * Delete the cookie with the given name. This command is a no-op if there is no such cookie visible to the current page.
@@ -1985,7 +1986,6 @@ export interface SharedClientCommands {
     callback: (this: NightwatchAPI, done: (result?: ReturnValue) => void) => void
   ): Awaitable<this, ReturnValue>;
 
-
   /**
    * Resizes the current window.
    *
@@ -2145,7 +2145,6 @@ export interface SharedClientCommands {
       result: NightwatchCallbackResult<null>
     ) => void
   ): Awaitable<this, null>;
-
 
   /**
    * Change or get the [window rect](https://w3c.github.io/webdriver/#dfn-window-rect).
@@ -2388,6 +2387,7 @@ export interface SharedClientCommands {
     ) => void
   ): Awaitable<this, { [key: string]: any }>;
 }
+
 export interface ClientCommands extends ChromiumClientCommands, SharedClientCommands {
   /**
    * Close the current window. This can be useful when you're working with multiple windows open (e.g. an OAuth login).
@@ -2693,7 +2693,6 @@ export interface ClientCommands extends ChromiumClientCommands, SharedClientComm
       result: NightwatchCallbackResult<null>
     ) => void
   ): Awaitable<this, null>;
-
 }
 
 export interface ElementCommands {
