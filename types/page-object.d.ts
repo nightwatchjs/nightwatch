@@ -13,47 +13,13 @@ import {
   LocateStrategy,
   NightwatchAPI,
   NightwatchClient,
-  NightwatchComponentTestingCommands
+  NightwatchComponentTestingCommands,
+  SharedClientCommands
 } from './index';
 
 export interface PageObjectClientCommands
   extends ChromiumClientCommands,
-  Pick<
-    NightwatchAPI,
-    | 'axeInject'
-    | 'axeRun'
-    | 'debug'
-    | 'deleteCookie'
-    | 'deleteCookies'
-    | 'end'
-    | 'getCookie'
-    | 'getCookies'
-    | 'getLog'
-    | 'getLogTypes'
-    | 'getTitle'
-    | 'getWindowPosition'
-    | 'getWindowRect'
-    | 'getWindowSize'
-    | 'init'
-    | 'injectScript'
-    | 'isLogAvailable'
-    | 'maximizeWindow'
-    | 'pageSource'
-    | 'pause'
-    | 'perform'
-    | 'registerBasicAuth'
-    | 'resizeWindow'
-    | 'saveScreenshot'
-    // | 'saveSnapshot' // missing from NightwatchAPI
-    | 'setCookie'
-    | 'setWindowPosition'
-    | 'setWindowRect'
-    | 'setWindowSize'
-    | 'urlHash'
-    | 'useCss'
-    | 'useXpath'
-    // | 'within' // missing from NightwatchAPI
-  > {}
+    SharedClientCommands {}
 
 export interface SectionProperties {
   /**

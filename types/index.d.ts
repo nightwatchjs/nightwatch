@@ -1579,6 +1579,27 @@ export interface ChromiumClientCommands {
     ) => void
   ): Awaitable<this, string>;
 
+  /**
+   * Automate the input of basic auth credentials whenever they arise.
+   *
+   * @example
+   *  this.demoTest = function (browser) {
+   *    browser
+   *      .registerBasicAuth('test-username', 'test-password')
+   *      .navigateTo('http://browserspy.dk/password-ok.php');
+   *  };
+   *
+   * @see https://nightwatchjs.org/api/registerBasicAuth.html#apimethod-container
+   */
+  registerBasicAuth(
+    username: string,
+    password: string,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
+
   captureNetworkRequests: NetworkNsCommands<this>['captureRequests'];
 
   mockNetworkResponse: NetworkNsCommands<this>['mockResponse'];
@@ -1590,119 +1611,7 @@ export interface ChromiumClientCommands {
   captureBrowserExceptions: LogsNsCommands<this>['captureBrowserExceptions'];
 }
 
-export interface ClientCommands extends ChromiumClientCommands {
-  /**
-   * Close the current window. This can be useful when you're working with multiple windows open (e.g. an OAuth login).
-   * Uses `window` protocol command.
-   *
-   * @example
-   * describe('closeWindow command demo' , function (result) {
-   *   test('demo test', function () {
-   *     browser.closeWindow();
-   *   });
-   * });
-   * @see https://nightwatchjs.org/api/closeWindow.html
-   *
-   * @deprecated In favour of `.window.close()`.
-   */
-  closeWindow(
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
-
-  /**
-   * Sets the current window state to fullscreen.
-   *
-   * @example
-   * module.exports = {
-   *  'demo Test': function(browser) {
-   *     browser.fullscreenWindow(function(result) {
-   *       console.log(result);
-   *     });
-   *   },
-   *
-   *   'ES6 async demo Test': async function(browser) {
-   *     const result = await browser.fullscreenWindow();
-   *     console.log('result value is:', result.value);
-   *   }
-   * }
-   * @see https://nightwatchjs.org/api/fullscreenWindow.html
-   *
-   * @deprecated In favour of `.window.fullscreen()`.
-   */
-  fullscreenWindow(
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
-
-  /**
-   * Hides the window in the system tray. If the window happens to be in fullscreen mode,
-   * it is restored the normal state then it will be "iconified" - minimize or hide the window from the visible screen.
-   *
-   * @example
-   * module.exports = {
-   *  'demo Test': function(browser) {
-   *     browser.minimizeWindow(function(result) {
-   *       console.log(result);
-   *     });
-   *   },
-   *
-   *   'ES6 async demo Test': async function(browser) {
-   *     const result = await browser.minimizeWindow();
-   *     console.log('result value is:', result.value);
-   *   }
-   * }
-   * @see https://nightwatchjs.org/api/minimizeWindow.html
-   *
-   * @deprecated In favour of `.window.minimize()`.
-   */
-  minimizeWindow(
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
-
-  /**
-   * Opens a new top-level browser window, which can be either a tab (default) or a separate new window.
-   *
-   * This command is only available for W3C Webdriver compatible browsers.
-   *
-   * @example
-   * module.exports = {
-   *  'demo Test': function(browser) {
-   *     // open a new window tab (default)
-   *     browser.openNewWindow(function(result) {
-   *       console.log(result);
-   *     });
-   *
-   *     // open a new window
-   *     browser.openNewWindow('window', function(result) {
-   *       console.log(result);
-   *     });
-   *   },
-   *
-   *   'ES6 async demo Test': async function(browser) {
-   *     const result = await browser.openNewWindow();
-   *     console.log('result value is:', result.value);
-   *   }
-   * }
-   * @see https://nightwatchjs.org/api/openNewWindow.html
-   *
-   * @deprecated In favour of `.window.open()`.
-   */
-  openNewWindow(
-    type?: WindowType,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
-
+export interface SharedClientCommands {
   /**
    * Delete the cookie with the given name. This command is a no-op if there is no such cookie visible to the current page.
    *
@@ -1857,37 +1766,6 @@ export interface ClientCommands extends ChromiumClientCommands {
   >;
 
   /**
-   * Retrieve the URL of the current page.
-   *
-   * @example
-   * describe('Navigation commands demo', function() {
-   *   test('demoTest', function(browser) {
-   *     // navigate to new url:
-   *     browser.navigateTo('https://nightwatchjs.org');
-   *
-   *     // Retrieve to url with callback:
-   *     browser.getCurrentUrl(function(result) {
-   *       console.log(result.value);
-   *     });
-   *   });
-   *
-   *   test('demoTestAsync', async function(browser) {
-   *     const currentUrl = await browser.navigateTo('https://nightwatchjs.org').getCurrentUrl();
-   *     console.log('currentUrl:', currentUrl); // will print 'https://nightwatchjs.org'
-   *   });
-   *
-   * });
-   *
-   *  @see https://nightwatchjs.org/api/getCurrentUrl.html
-   */
-  getCurrentUrl(
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<string>
-    ) => void
-  ): Awaitable<this, string>;
-
-  /**
    * Returns the title of the current page. Uses title protocol command.
    *
    * @example
@@ -1903,60 +1781,6 @@ export interface ClientCommands extends ChromiumClientCommands {
   getTitle(
     callback?: (this: NightwatchAPI, result: string) => void
   ): Awaitable<this, string>;
-
-  /**
-   * Navigate to a new URL. This method will also call the `onBrowserNavigate()` test global,
-   * right after the page is loaded.
-   *
-   * @example
-   *  describe('Navigation commands demo', function() {
-   *    test('demoTest', function(browser) {
-   *      // navigate to new url:
-   *      browser.navigateTo('https://nightwatchjs.org');
-   *
-   *      // Retrieve to url with callback:
-   *      browser.getCurrentUrl(function(result) {
-   *        console.log(result.value);
-   *      });
-   *    });
-   *
-   *    test('demoTestAsync', async function(browser) {
-   *      const currentUrl = await browser.navigateTo('https://nightwatchjs.org').getCurrentUrl();
-   *      console.log('currentUrl:', currentUrl); // will print 'https://nightwatchjs.org'
-   *    });
-   *  });
-   *
-   *  @see https://nightwatchjs.org/api/navigateTo.html
-   */
-  navigateTo(
-    url: string,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
-
-  /**
-   * Ends the session and closes down the test WebDriver server, if one is running.
-   * This is similar to calling the .end() command, but the former doesn't quit the WebDriver session.
-   *
-   * This command will also execute the `onBrowserQuit()` global, if one is defined.
-   *
-   * @example
-   * this.demoTest = function (browser) {
-   *   browser.quit(function(result) {
-   *     console.log(result.value);
-   *   });
-   * }
-   *
-   * @see https://nightwatchjs.org/api/quit.html
-   */
-  quit(
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
 
   /**
    * This command is an alias to url and also a convenience method when called without any arguments in the sense
@@ -2163,50 +1987,6 @@ export interface ClientCommands extends ChromiumClientCommands {
   ): Awaitable<this, ReturnValue>;
 
   /**
-   * Waits for a condition to evaluate to a "truthy" value. The condition may be specified by any function which
-   * returns the value to be evaluated or a Promise to wait for.
-   *
-   * An optional wait time can be specified, otherwise the global waitForConditionTimeout value will be used.
-   *
-   * @example
-   * describe('waitUntil Example', function() {
-   *   it('demo Test', function(browser) {
-   *     browser
-   *       .url('https://nightwatchjs.org')
-   *       .waitUntil(async function() {
-   *         const title = await this.execute(function() {
-   *           return document.title;
-   *         });
-   *
-   *         return title === 'Nightwatch.js';
-   *       }, 1000);
-   *   });
-   * });
-   */
-  waitUntil(
-    conditionFn: (this: NightwatchAPI) => void,
-    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<this, null>;
-  waitUntil(
-    conditionFn: (this: NightwatchAPI) => void,
-    waitTimeMs: number,
-    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<this, null>;
-  waitUntil(
-    conditionFn: (this: NightwatchAPI) => void,
-    waitTimeMs: number,
-    retryInterval: number,
-    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<this, null>;
-  waitUntil(
-    conditionFn: (this: NightwatchAPI) => void,
-    waitTimeMs: number,
-    retryInterval: number,
-    message: string,
-    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
-  ): Awaitable<this, null>;
-
-  /**
    * Resizes the current window.
    *
    * @example
@@ -2360,70 +2140,6 @@ export interface ClientCommands extends ChromiumClientCommands {
   setWindowSize(
     width: number,
     height: number,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
-
-  /**
-   * Change focus to another window. The window to change focus to may be specified by its server assigned window handle, or by the value of its name attribute.
-   *
-   * To find out the window handle use `windowHandles` command
-   *
-   * @example
-   *  this.demoTest = function () {
-   *    browser.windowHandles(function(result) {
-   *      const handle = result.value[0];
-   *      browser.switchWindow(handle);
-   *    });
-   *  };
-   *
-   *  this.demoTestAsync = async function () {
-   *    const result = await browser.windowHandles();
-   *    const handle = result[0];
-   *    browser.switchWindow(handle);
-   *  };
-   *
-   * @alias switchToWindow
-   *
-   * @see https://nightwatchjs.org/api/switchWindow.html
-   *
-   * @deprecated In favour of `.window.switch()`.
-   */
-  switchWindow(
-    handleOrName: string,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
-
-  /**
-   * Change focus to another window. The window to change focus to may be specified by its server assigned window handle, or by the value of its name attribute.
-   *
-   * To find out the window handle use `windowHandles` command
-   *
-   * @example
-   *  this.demoTest = function () {
-   *    browser.windowHandles(function(result) {
-   *      const handle = result.value[0];
-   *      browser.switchToWindow(handle);
-   *    });
-   *  };
-   *
-   *  this.demoTestAsync = async function () {
-   *    const result = await browser.windowHandles();
-   *    const handle = result[0];
-   *    browser.switchToWindow(handle);
-   *  };
-   *
-   * @see https://nightwatchjs.org/api/switchToWindow.html
-   *
-   * @deprecated In favour of `.window.switchTo()`.
-   */
-  switchToWindow(
-    handleOrName: string,
     callback?: (
       this: NightwatchAPI,
       result: NightwatchCallbackResult<null>
@@ -2670,6 +2386,313 @@ export interface ClientCommands extends ChromiumClientCommands {
       result: NightwatchCallbackResult<{ [key: string]: any }>
     ) => void
   ): Awaitable<this, { [key: string]: any }>;
+}
+
+export interface ClientCommands extends ChromiumClientCommands, SharedClientCommands {
+  /**
+   * Close the current window. This can be useful when you're working with multiple windows open (e.g. an OAuth login).
+   * Uses `window` protocol command.
+   *
+   * @example
+   * describe('closeWindow command demo' , function (result) {
+   *   test('demo test', function () {
+   *     browser.closeWindow();
+   *   });
+   * });
+   * @see https://nightwatchjs.org/api/closeWindow.html
+   *
+   * @deprecated In favour of `.window.close()`.
+   */
+  closeWindow(
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
+
+  /**
+   * Sets the current window state to fullscreen.
+   *
+   * @example
+   * module.exports = {
+   *  'demo Test': function(browser) {
+   *     browser.fullscreenWindow(function(result) {
+   *       console.log(result);
+   *     });
+   *   },
+   *
+   *   'ES6 async demo Test': async function(browser) {
+   *     const result = await browser.fullscreenWindow();
+   *     console.log('result value is:', result.value);
+   *   }
+   * }
+   * @see https://nightwatchjs.org/api/fullscreenWindow.html
+   *
+   * @deprecated In favour of `.window.fullscreen()`.
+   */
+  fullscreenWindow(
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
+
+  /**
+   * Hides the window in the system tray. If the window happens to be in fullscreen mode,
+   * it is restored the normal state then it will be "iconified" - minimize or hide the window from the visible screen.
+   *
+   * @example
+   * module.exports = {
+   *  'demo Test': function(browser) {
+   *     browser.minimizeWindow(function(result) {
+   *       console.log(result);
+   *     });
+   *   },
+   *
+   *   'ES6 async demo Test': async function(browser) {
+   *     const result = await browser.minimizeWindow();
+   *     console.log('result value is:', result.value);
+   *   }
+   * }
+   * @see https://nightwatchjs.org/api/minimizeWindow.html
+   *
+   * @deprecated In favour of `.window.minimize()`.
+   */
+  minimizeWindow(
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
+
+  /**
+   * Opens a new top-level browser window, which can be either a tab (default) or a separate new window.
+   *
+   * This command is only available for W3C Webdriver compatible browsers.
+   *
+   * @example
+   * module.exports = {
+   *  'demo Test': function(browser) {
+   *     // open a new window tab (default)
+   *     browser.openNewWindow(function(result) {
+   *       console.log(result);
+   *     });
+   *
+   *     // open a new window
+   *     browser.openNewWindow('window', function(result) {
+   *       console.log(result);
+   *     });
+   *   },
+   *
+   *   'ES6 async demo Test': async function(browser) {
+   *     const result = await browser.openNewWindow();
+   *     console.log('result value is:', result.value);
+   *   }
+   * }
+   * @see https://nightwatchjs.org/api/openNewWindow.html
+   *
+   * @deprecated In favour of `.window.open()`.
+   */
+  openNewWindow(
+    type?: WindowType,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
+
+  /**
+   * Retrieve the URL of the current page.
+   *
+   * @example
+   * describe('Navigation commands demo', function() {
+   *   test('demoTest', function(browser) {
+   *     // navigate to new url:
+   *     browser.navigateTo('https://nightwatchjs.org');
+   *
+   *     // Retrieve to url with callback:
+   *     browser.getCurrentUrl(function(result) {
+   *       console.log(result.value);
+   *     });
+   *   });
+   *
+   *   test('demoTestAsync', async function(browser) {
+   *     const currentUrl = await browser.navigateTo('https://nightwatchjs.org').getCurrentUrl();
+   *     console.log('currentUrl:', currentUrl); // will print 'https://nightwatchjs.org'
+   *   });
+   *
+   * });
+   *
+   *  @see https://nightwatchjs.org/api/getCurrentUrl.html
+   */
+  getCurrentUrl(
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<string>
+    ) => void
+  ): Awaitable<this, string>;
+
+  /**
+   * Navigate to a new URL. This method will also call the `onBrowserNavigate()` test global,
+   * right after the page is loaded.
+   *
+   * @example
+   *  describe('Navigation commands demo', function() {
+   *    test('demoTest', function(browser) {
+   *      // navigate to new url:
+   *      browser.navigateTo('https://nightwatchjs.org');
+   *
+   *      // Retrieve to url with callback:
+   *      browser.getCurrentUrl(function(result) {
+   *        console.log(result.value);
+   *      });
+   *    });
+   *
+   *    test('demoTestAsync', async function(browser) {
+   *      const currentUrl = await browser.navigateTo('https://nightwatchjs.org').getCurrentUrl();
+   *      console.log('currentUrl:', currentUrl); // will print 'https://nightwatchjs.org'
+   *    });
+   *  });
+   *
+   *  @see https://nightwatchjs.org/api/navigateTo.html
+   */
+  navigateTo(
+    url: string,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
+
+  /**
+   * Ends the session and closes down the test WebDriver server, if one is running.
+   * This is similar to calling the .end() command, but the former doesn't quit the WebDriver session.
+   *
+   * This command will also execute the `onBrowserQuit()` global, if one is defined.
+   *
+   * @example
+   * this.demoTest = function (browser) {
+   *   browser.quit(function(result) {
+   *     console.log(result.value);
+   *   });
+   * }
+   *
+   * @see https://nightwatchjs.org/api/quit.html
+   */
+  quit(
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
+
+  /**
+   * Waits for a condition to evaluate to a "truthy" value. The condition may be specified by any function which
+   * returns the value to be evaluated or a Promise to wait for.
+   *
+   * An optional wait time can be specified, otherwise the global waitForConditionTimeout value will be used.
+   *
+   * @example
+   * describe('waitUntil Example', function() {
+   *   it('demo Test', function(browser) {
+   *     browser
+   *       .url('https://nightwatchjs.org')
+   *       .waitUntil(async function() {
+   *         const title = await this.execute(function() {
+   *           return document.title;
+   *         });
+   *
+   *         return title === 'Nightwatch.js';
+   *       }, 1000);
+   *   });
+   * });
+   */
+  waitUntil(
+    conditionFn: (this: NightwatchAPI) => void,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<this, null>;
+  waitUntil(
+    conditionFn: (this: NightwatchAPI) => void,
+    waitTimeMs: number,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<this, null>;
+  waitUntil(
+    conditionFn: (this: NightwatchAPI) => void,
+    waitTimeMs: number,
+    retryInterval: number,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<this, null>;
+  waitUntil(
+    conditionFn: (this: NightwatchAPI) => void,
+    waitTimeMs: number,
+    retryInterval: number,
+    message: string,
+    callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
+  ): Awaitable<this, null>;
+
+  /**
+   * Change focus to another window. The window to change focus to may be specified by its server assigned window handle, or by the value of its name attribute.
+   *
+   * To find out the window handle use `windowHandles` command
+   *
+   * @example
+   *  this.demoTest = function () {
+   *    browser.windowHandles(function(result) {
+   *      const handle = result.value[0];
+   *      browser.switchWindow(handle);
+   *    });
+   *  };
+   *
+   *  this.demoTestAsync = async function () {
+   *    const result = await browser.windowHandles();
+   *    const handle = result[0];
+   *    browser.switchWindow(handle);
+   *  };
+   *
+   * @alias switchToWindow
+   *
+   * @see https://nightwatchjs.org/api/switchWindow.html
+   *
+   * @deprecated In favour of `.window.switch()`.
+   */
+  switchWindow(
+    handleOrName: string,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
+
+  /**
+   * Change focus to another window. The window to change focus to may be specified by its server assigned window handle, or by the value of its name attribute.
+   *
+   * To find out the window handle use `windowHandles` command
+   *
+   * @example
+   *  this.demoTest = function () {
+   *    browser.windowHandles(function(result) {
+   *      const handle = result.value[0];
+   *      browser.switchToWindow(handle);
+   *    });
+   *  };
+   *
+   *  this.demoTestAsync = async function () {
+   *    const result = await browser.windowHandles();
+   *    const handle = result[0];
+   *    browser.switchToWindow(handle);
+   *  };
+   *
+   * @see https://nightwatchjs.org/api/switchToWindow.html
+   *
+   * @deprecated In favour of `.window.switchTo()`.
+   */
+  switchToWindow(
+    handleOrName: string,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<null>
+    ) => void
+  ): Awaitable<this, null>;
 }
 
 export interface ElementCommands {
@@ -7880,27 +7903,6 @@ export interface WebDriverProtocolUserPrompts {
    */
   setAlertText(
     value: string,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
-
-  /**
-   * Automate the input of basic auth credentials whenever they arise.
-   *
-   * @example
-   *  this.demoTest = function (browser) {
-   *    browser
-   *      .registerBasicAuth('test-username', 'test-password')
-   *      .navigateTo('http://browserspy.dk/password-ok.php');
-   *  };
-   *
-   * @see https://nightwatchjs.org/api/registerBasicAuth.html#apimethod-container
-   */
-  registerBasicAuth(
-    username: string,
-    password: string,
     callback?: (
       this: NightwatchAPI,
       result: NightwatchCallbackResult<null>
