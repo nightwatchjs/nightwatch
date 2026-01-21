@@ -1782,17 +1782,17 @@ export interface SharedClientCommands {
   ): Awaitable<this, string>;
 
   /**
-  * This command is an alias to url and also a convenience method when called without any arguments in the sense
-  * that it performs a call to .url() with passing the value of `launch_url` field from the settings file.
-  * Uses `url` protocol command.
-  *
-  * @example
-  * this.demoTest = function () {
-  *   browser.init();
-  * };
-  *
-  * @see https://nightwatchjs.org/api/init.html
-  */
+   * This command is an alias to url and also a convenience method when called without any arguments in the sense
+   * that it performs a call to .url() with passing the value of `launch_url` field from the settings file.
+   * Uses `url` protocol command.
+   *
+   * @example
+   * this.demoTest = function () {
+   *   browser.init();
+   * };
+   *
+   * @see https://nightwatchjs.org/api/init.html
+   */
   init(
     url?: string,
     callback?: (
