@@ -1579,6 +1579,27 @@ export interface ChromiumClientCommands {
     ) => void
   ): Awaitable<this, string>;
 
+  /**
+   * Automate the input of basic auth credentials whenever they arise.
+   *
+   * @example
+   *  this.demoTest = function (browser) {
+   *    browser
+   *      .registerBasicAuth('test-username', 'test-password')
+   *      .navigateTo('http://browserspy.dk/password-ok.php');
+   *  };
+   *
+   * @see https://nightwatchjs.org/api/registerBasicAuth.html#apimethod-container
+   */
+    registerBasicAuth(
+      username: string,
+      password: string,
+      callback?: (
+        this: NightwatchAPI,
+        result: NightwatchCallbackResult<null>
+      ) => void
+    ): Awaitable<this, null>;
+
   captureNetworkRequests: NetworkNsCommands<this>['captureRequests'];
 
   mockNetworkResponse: NetworkNsCommands<this>['mockResponse'];
@@ -7883,27 +7904,6 @@ export interface WebDriverProtocolUserPrompts {
    */
   setAlertText(
     value: string,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<null>
-    ) => void
-  ): Awaitable<this, null>;
-
-  /**
-   * Automate the input of basic auth credentials whenever they arise.
-   *
-   * @example
-   *  this.demoTest = function (browser) {
-   *    browser
-   *      .registerBasicAuth('test-username', 'test-password')
-   *      .navigateTo('http://browserspy.dk/password-ok.php');
-   *  };
-   *
-   * @see https://nightwatchjs.org/api/registerBasicAuth.html#apimethod-container
-   */
-  registerBasicAuth(
-    username: string,
-    password: string,
     callback?: (
       this: NightwatchAPI,
       result: NightwatchCallbackResult<null>
