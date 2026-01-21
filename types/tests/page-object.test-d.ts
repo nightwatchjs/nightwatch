@@ -255,7 +255,7 @@ describe('Page Object - ClientCommands', function() {
     expectError(fileUploadPage.getCurrentUrl());
     expectError(fileUploadPage.navigateTo('https://example.com'));
     expectError(fileUploadPage.quit());
-    expectError(fileUploadPage.waitUntil(function() { return true; }));
+    expectError(fileUploadPage.waitUntil(function() { return true }));
     expectError(fileUploadPage.switchWindow('handle'));
     expectError(fileUploadPage.switchToWindow('handle'));
 
@@ -267,7 +267,7 @@ describe('Page Object - ClientCommands', function() {
     expectError(menuSection.getCurrentUrl());
     expectError(menuSection.navigateTo('https://example.com'));
     expectError(menuSection.quit());
-    expectError(menuSection.waitUntil(function() { return true; }));
+    expectError(menuSection.waitUntil(function() { return true }));
     expectError(menuSection.switchWindow('handle'));
     expectError(menuSection.switchToWindow('handle'));
   });
@@ -353,14 +353,14 @@ describe('Page Object - Custom Command Chaining', function() {
     expectType<Awaitable<FileUploadPage, null>>(fileUploadPage.uploadFile3('@fileUploadInput', 'test.txt').setDeviceDimensions({ width: 400, height: 600 }));
 
     // Chain ChromiumClientCommands -> custom command (uploadFile1 returns NightwatchAPI)
-    expectType<NightwatchAPI>(fileUploadPage.setGeolocation({ latitude: 35.689487, longitude: 139.691706 }).uploadFile1('@fileUploadInput', 'test.txt'));
-    expectType<NightwatchAPI>(fileUploadPage.setDeviceDimensions({ width: 400, height: 600 }).uploadFile1('@fileUploadInput', 'test.txt'));
+    expectType<NightwatchAPI>(fileUploadPage.setGeolocation({latitude: 35.689487, longitude: 139.691706}).uploadFile1('@fileUploadInput', 'test.txt'));
+    expectType<NightwatchAPI>(fileUploadPage.setDeviceDimensions({width: 400, height: 600}).uploadFile1('@fileUploadInput', 'test.txt'));
 
     // Chain ChromiumClientCommands -> custom command (uploadFile3 returns 'this', preserves page object type)
     // Note: When chaining from Awaitable, TypeScript may not properly resolve 'this' type
     // These tests verify that uploadFile3 can be called, but type resolution may be limited
-    fileUploadPage.setGeolocation({ latitude: 35.689487, longitude: 139.691706 }).uploadFile3('@fileUploadInput', 'test.txt');
-    fileUploadPage.setDeviceDimensions({ width: 400, height: 600 }).uploadFile3('@fileUploadInput', 'test.txt');
+    fileUploadPage.setGeolocation({latitude: 35.689487, longitude: 139.691706}).uploadFile3('@fileUploadInput', 'test.txt');
+    fileUploadPage.setDeviceDimensions({width: 400, height: 600}).uploadFile3('@fileUploadInput', 'test.txt');
   });
 
 });
