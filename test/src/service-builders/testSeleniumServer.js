@@ -3,6 +3,7 @@ const mockery = require('mockery');
 const common = require('../../common.js');
 const NightwatchClient = common.require('index.js');
 const Settings = common.require('settings/settings.js');
+const Concurrency = common.require('runner/concurrency/');
 
 describe('SeleniumServer Transport Tests', function () {
   beforeEach(function() {
@@ -216,7 +217,8 @@ describe('SeleniumServer Transport Tests', function () {
       session,
       serverPath,
       serverPort,
-      options
+      options,
+      client
     };
   }
 
@@ -258,6 +260,48 @@ describe('SeleniumServer Transport Tests', function () {
     assert.deepStrictEqual(options.jvmArgs, []);
     assert.deepStrictEqual(options.stdio, ['pipe', undefined, undefined]);
     assert.ok(logFilePath.endsWith('testModuleKey_selenium-server.log'));
+  });
+
+  it.only('test per-worker log file name when running in worker', async function() {
+    const originalIsWorker = Concurrency.isWorker;
+    Concurrency.isWorker = function() {
+      return true;
+    };
+
+    mockery.registerMock('geckodriver', {
+      path: ''
+    });
+
+    mockery.registerMock('chromedriver', {
+      path: ''
+    });
+
+    mockery.registerMock('@nightwatch/selenium-server', {
+      path: '/path/to/selenium-server-standalone.3.0.jar'
+    });
+
+    let logFilePath;
+    try {
+      const {client} = await SeleniumServerTestSetup({
+        desiredCapabilities: {
+          browserName: 'chrome'
+        },
+        selenium: {
+          port: 9999,
+          start_process: true
+        }
+      }, {
+        onLogFile(filePath) {
+          logFilePath = filePath;
+        }
+      });
+
+      assert.ok(/testModuleKey_[0-9]+n_selenium-server\.log$/.test(logFilePath));
+      const {log_file_name} = client.settings.webdriver;
+      assert.ok(/^testModuleKey_[0-9]+n$/.test(log_file_name));
+    } finally {
+      Concurrency.isWorker = originalIsWorker;
+    }
   });
 
   it('test create session with selenium server 3 -- with drivers', async function() {
