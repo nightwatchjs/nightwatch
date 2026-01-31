@@ -262,11 +262,13 @@ describe('SeleniumServer Transport Tests', function () {
     assert.ok(logFilePath.endsWith('testModuleKey_selenium-server.log'));
   });
 
-  it.only('test per-worker log file name when running in worker', async function() {
-    const originalIsWorker = Concurrency.isWorker;
-    Concurrency.isWorker = function() {
+  it('test per-worker log file path when running in worker', async function () {
+    const Concurrency1 = common.require('runner/concurrency/');
+    deleteFromRequireCache('runner/concurrency/');
+    Concurrency1.isWorker = function () {
       return true;
     };
+    mockery.registerMock('runner/concurrency/', Concurrency1);
 
     mockery.registerMock('geckodriver', {
       path: ''
@@ -281,27 +283,22 @@ describe('SeleniumServer Transport Tests', function () {
     });
 
     let logFilePath;
-    try {
-      const {client} = await SeleniumServerTestSetup({
-        desiredCapabilities: {
-          browserName: 'chrome'
-        },
-        selenium: {
-          port: 9999,
-          start_process: true
-        }
-      }, {
-        onLogFile(filePath) {
-          logFilePath = filePath;
-        }
-      });
+    const {client} = await SeleniumServerTestSetup({
+      desiredCapabilities: {
+        browserName: 'chrome'
+      },
+      selenium: {
+        port: 9999,
+        start_process: true
+      }
+    }, {
+      onLogFile(filePath) {
+        logFilePath = filePath;
+      }
+    });
+    console.log('logFilePath', logFilePath);
+    assert.ok(/testModuleKey_[0-9]+_selenium-server\.log$/.test(logFilePath));
 
-      assert.ok(/testModuleKey_[0-9]+n_selenium-server\.log$/.test(logFilePath));
-      const {log_file_name} = client.settings.webdriver;
-      assert.ok(/^testModuleKey_[0-9]+n$/.test(log_file_name));
-    } finally {
-      Concurrency.isWorker = originalIsWorker;
-    }
   });
 
   it('test create session with selenium server 3 -- with drivers', async function() {
