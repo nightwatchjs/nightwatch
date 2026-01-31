@@ -76,9 +76,13 @@ describe('BaseService concurrency behaviour', function () {
     assert.strictEqual(service.needsSinkProcess(), true);
 
     await service.createService({});
-
-    assert.strictEqual(service.sinkCreated, true);
-    assert.strictEqual(service.settings.webdriver.log_path, 'logs');
+    if (process.platform === 'win32') {
+      assert.strictEqual(service.sinkCreated, undefined);
+      assert.strictEqual(service.settings.webdriver.log_path, false);
+    } else {
+      assert.strictEqual(service.sinkCreated, true);
+      assert.strictEqual(service.settings.webdriver.log_path, 'logs');
+    }
   });
 
   it('does not create sink and disables log_path for workers by default', async function () {
@@ -98,9 +102,13 @@ describe('BaseService concurrency behaviour', function () {
     assert.strictEqual(service.needsSinkProcess(), true);
 
     await service.createService({});
-
-    assert.strictEqual(service.sinkCreated, true);
-    assert.strictEqual(service.settings.webdriver.log_path, 'logs');
+    if (process.platform === 'win32') {
+      assert.strictEqual(service.sinkCreated, undefined);
+      assert.strictEqual(service.settings.webdriver.log_path, false);
+    } else {
+      assert.strictEqual(service.sinkCreated, true);
+      assert.strictEqual(service.settings.webdriver.log_path, 'logs');
+    }
   });
 });
 
