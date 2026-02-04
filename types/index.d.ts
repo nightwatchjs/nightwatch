@@ -1893,18 +1893,36 @@ export interface SharedClientCommands {
    * This can be used to debug why a certain command in not working as expected, find the correct
    * locators for your assertions or just play around with the available Nightwatch commands.
    *
+   * You can also expose local variables and helper functions from your test to the REPL by passing
+   * them via the `config.context` option; they will then be available in the debug prompt alongside
+   * the `browser` object.
+   * 
    * @example
    * // async function is required while using the debug
    * // command to get the correct result as output.
    * this.demoTest = async function (browser) {
-   *   browser.debug();
+   *   it('debug example', async function(browser) {
+   *     const someLocalVariable = 'something random';
+   *     function someLocalFunction() {
+   *       return 'local function result';
+   *     }
    *
-   *   // with no auto-complete
-   *   browser.debug({preview: false});
+   *     // start a debug REPL with default options
+   *     browser.debug();
    *
-   *   // with a timeout of 6000 ms (time for which the interface
-   *   // would wait for a result).
-   *   browser.debug({timeout: 6000})
+   *     // with no auto-complete
+   *     browser.debug({preview: false});
+   *
+   *     // with a timeout of 6000 ms (time for which the interface
+   *     // would wait for a result).
+   *     browser.debug({timeout: 6000});
+   *
+   *     // expose local variables/functions to the debug REPL
+   *     browser.debug({
+   *       // both values below will be directly available in the debug REPL
+   *       context: {someLocalVariable, someLocalFunction}
+   *     });
+   *   });
    * };
    *
    * @see https://nightwatchjs.org/api/debug.html
