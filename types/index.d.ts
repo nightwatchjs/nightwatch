@@ -1900,7 +1900,7 @@ export interface SharedClientCommands {
    * @example
    * // async function is required while using the debug
    * // command to get the correct result as output.
-   * it('demo test', async function (browser) {
+   * it('demos debug command', async function (browser) {
    *   const someLocalVariable = 'something random';
    *   function someLocalFunction() {
    *     return 'local function result';
