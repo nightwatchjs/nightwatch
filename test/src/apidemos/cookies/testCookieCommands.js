@@ -21,7 +21,8 @@ describe('cookie demos', function() {
 
   it('run cookie api demo tests basic', function() {
     const testsPath = path.join(__dirname, '../../../apidemos/cookies/cookieTests.js');
-    Mocks.cookiesFound({times: 6});
+    Mocks.cookiesFound({times: 4});
+    Mocks.cookieFound('test_cookie', '123456', {times: 2});
 
     const globals = {
       waitForConditionPollInterval: 50,
