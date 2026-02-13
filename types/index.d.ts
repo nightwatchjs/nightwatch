@@ -1900,7 +1900,7 @@ export interface SharedClientCommands {
    * @example
    * // async function is required while using the debug
    * // command to get the correct result as output.
-   * this.demoTest = async function (browser) {
+   * it('demo test', async function (browser) {
    *   const someLocalVariable = 'something random';
    *   function someLocalFunction() {
    *     return 'local function result';
@@ -1921,12 +1921,12 @@ export interface SharedClientCommands {
    *     // both values below will be directly available in the debug REPL
    *     context: {someLocalVariable, someLocalFunction}
    *   });
-   * };
+   * });
    *
    * @see https://nightwatchjs.org/api/debug.html
    */
   debug(
-    config?: { preview?: boolean; timeout?: number; context?: Record<string, any> },
+    config?: { useGlobal?: boolean; preview?: boolean; timeout?: number; context?: Record<string, any> },
     callback?: (this: NightwatchAPI) => void
   ): Awaitable<this, undefined>;
 
