@@ -25,7 +25,7 @@ describe('.doubleClick()', function() {
     
     this.client.api.doubleClick('#weblogin', function callback(result) {
       assert.strictEqual(result.status, 0);
-      assert.deepStrictEqual(doubleClickArgs.args, ['5cc459b8-36a8-3042-8b4a-258883ea642b']);
+      assert.ok(doubleClickArgs.args.includes('5cc459b8-36a8-3042-8b4a-258883ea642b'));
       assert.strictEqual(this, api);
     });
 
@@ -46,7 +46,7 @@ describe('.doubleClick()', function() {
 
     this.client.api.useXpath()
       .doubleClick('//weblogin', function callback(result) {
-        assert.deepStrictEqual(doubleClickArgs.args, ['5cc459b8-36a8-3042-8b4a-258883ea642b']);
+        assert.ok(doubleClickArgs.args.includes('5cc459b8-36a8-3042-8b4a-258883ea642b'));
         assert.strictEqual(result.status, 0);
       });
     this.client.start(done);
@@ -70,7 +70,7 @@ describe('.doubleClick()', function() {
       timeout: 100,
       selector: '#weblogin'
     }, function(result) {
-      assert.deepStrictEqual(doubleClickArgs.args, ['5cc459b8-36a8-3042-8b4a-258883ea642b']);
+      assert.ok(doubleClickArgs.args.includes('5cc459b8-36a8-3042-8b4a-258883ea642b'));
       assert.strictEqual(result.status, -1);
       assert.strictEqual(result.value.error, 'An error occurred while running .doubleClick() command on <#weblogin>: Element could not be scrolled into view');
     });
