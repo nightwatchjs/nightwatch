@@ -5869,6 +5869,243 @@ export interface DocumentNsCommands<ReturnType = unknown> {
   pageSource(
     callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, string>;
+
+  /**
+   * Inject a snippet of JavaScript into the page for execution in the context of the currently selected frame. The executed script is assumed to be synchronous.
+   * The script argument defines the script to execute in the form of a function body. The value returned by that function will be returned to the client.
+   *
+   * The function will be invoked with the provided args array and the values may be accessed via the arguments object in the order specified.
+   *
+   * Under the hood, if the `body` param is a function it is converted to a string with `<function>.toString()`. Any references to your current scope are ignored.
+   *
+   * To ensure cross-browser compatibility, the specified function should not be in ES6 format (i.e. `() => {}`).
+   * If the execution of the function fails, the first argument of the callback contains error information.
+   *
+   * @alias executeScript
+   * @alias document.executeScript
+   *
+   * @example
+   * describe('execute script', function() {
+   *   it('executes a script in browser', function(browser) {
+   *     browser.execute(function(imageData: string) {
+   *       // resize operation
+   *       return true;
+   *     }, [imageData], function(result) {
+   *       // whatever is returned by the script passed above will be available
+   *       // as result.value
+   *       console.log(result.value); // true
+   *     });
+   *
+   *     // scroll to the bottom of the page.
+   *     browser.execute('window.scrollTo(0,document.body.scrollHeight);');
+   *   });
+   *
+   *   it('executes a script with ES6 async/await', async function(browser) {
+   *     const result = await browser
+   *       .document.execute(function(imageData: string) {
+   *         // resize operation
+   *         return true;
+   *       }, [imageData]);
+   *
+   *     console.log(result); // true (type: boolean)
+   *   });
+   * });
+   *
+   * @see https://nightwatchjs.org/api/execute.html
+   */
+  execute<ReturnValue>(
+    body: ExecuteScriptFunction<[], ReturnValue> | string,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<VoidToNull<ReturnValue>>
+    ) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, VoidToNull<ReturnValue>>;
+  execute<ArgType extends any[], ReturnValue>(
+    body: ExecuteScriptFunction<ArgType, ReturnValue> | string,
+    args: ArgType,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<VoidToNull<ReturnValue>>
+    ) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, VoidToNull<ReturnValue>>;
+
+  /**
+   * Inject a snippet of JavaScript into the page for execution in the context of the currently selected frame. The executed script is assumed to be synchronous.
+   * The script argument defines the script to execute in the form of a function body. The value returned by that function will be returned to the client.
+   *
+   * The function will be invoked with the provided args array and the values may be accessed via the arguments object in the order specified.
+   *
+   * Under the hood, if the `body` param is a function it is converted to a string with `<function>.toString()`. Any references to your current scope are ignored.
+   *
+   * To ensure cross-browser compatibility, the specified function should not be in ES6 format (i.e. `() => {}`).
+   * If the execution of the function fails, the first argument of the callback contains error information.
+   *
+   * @alias execute
+   * @alias document.execute
+   *
+   * @example
+   * describe('execute script', function() {
+   *   it('executes a script in browser', function(browser) {
+   *     browser.executeScript(function(imageData: string) {
+   *       // resize operation
+   *       return true;
+   *     }, [imageData], function(result) {
+   *       // whatever is returned by the script passed above will be available
+   *       // as result.value
+   *       console.log(result.value); // true
+   *     });
+   *
+   *     // scroll to the bottom of the page.
+   *     browser.executeScript('window.scrollTo(0,document.body.scrollHeight);');
+   *   });
+   *
+   *   it('executes a script with ES6 async/await', async function(browser) {
+   *     const result = await browser
+   *       .document.executeScript(function(imageData: string) {
+   *         // resize operation
+   *         return true;
+   *       }, [imageData]);
+   *
+   *     console.log(result); // true (type: boolean)
+   *   });
+   * });
+   *
+   * @see https://nightwatchjs.org/api/execute.html
+   */
+  executeScript<ReturnValue>(
+    body: ExecuteScriptFunction<[], ReturnValue> | string,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<VoidToNull<ReturnValue>>
+    ) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, VoidToNull<ReturnValue>>;
+  executeScript<ArgType extends any[], ReturnValue>(
+    body: ExecuteScriptFunction<ArgType, ReturnValue> | string,
+    args: ArgType,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<VoidToNull<ReturnValue>>
+    ) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, VoidToNull<ReturnValue>>;
+
+  /**
+   * Inject a snippet of JavaScript into the page for execution in the context of the currently selected frame.
+   * The executed script is assumed to be asynchronous.
+   *
+   * The function to be injected receives the `done` callback as argument which needs to be called
+   * when the asynchronous operation finishes. The value passed to the `done` callback is returned to the client.
+   * Additional arguments for the injected function may be passed as a non-empty array which
+   * will be passed before the `done` callback.
+   *
+   * Asynchronous script commands may not span page loads. If an unload event is fired
+   * while waiting for the script result, an error will be returned.
+   *
+   * @alias executeAsync
+   * @alias document.executeAsync
+   *
+   * @example
+   * describe('execute async script', function() {
+   *   it('executes async script in browser', function(browser) {
+   *     browser.executeAsyncScript(function(done: (result: boolean) => void) {
+   *       setTimeout(function() {
+   *         done(true);
+   *       }, 500);
+   *     }, function(result) {
+   *       // whatever is passed to the `done` callback in the script above
+   *       // will be available as result.value
+   *       console.log(result.value); // true
+   *     });
+   *   });
+   *
+   *   it('executes a script with ES6 async/await', async function(browser) {
+   *     const result = await browser
+   *       .document.executeAsyncScript(function(arg1: string, arg2: number, done: (result: string) => void) {
+   *         setTimeout(function() {
+   *           done(arg1);
+   *         }, 500);
+   *       }, [arg1, arg2]);
+   *
+   *     // whatever is passed to the `done` callback in the script above
+   *     // will be returned by the command when used with `await`.
+   *     console.log(result); // arg1 (type: string)
+   *   });
+   * });
+   *
+   * @see https://nightwatchjs.org/api/executeAsyncScript.html
+   */
+  executeAsyncScript<ReturnValue>(
+    script: ExecuteAsyncScriptFunction<[], ReturnValue> | string,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<ReturnValue>
+    ) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, ReturnValue>;
+  executeAsyncScript<ArgType extends any[], ReturnValue>(
+    script: ExecuteAsyncScriptFunction<ArgType, ReturnValue> | string,
+    args: ArgType,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<ReturnValue>
+    ) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, ReturnValue>;
+
+  /**
+   * Inject a snippet of JavaScript into the page for execution in the context of the currently selected frame. The executed script is assumed to be asynchronous.
+   *
+   * The function to be injected receives the `done` callback as argument which needs to be called when the asynchronous operation finishes.
+   * The value passed to the `done` callback is returned to the client.
+   * Additional arguments for the injected function may be passed as a non-empty array which will be passed before the `done` callback.
+   *
+   * Asynchronous script commands may not span page loads. If an unload event is fired while waiting for the script result, an error will be returned.
+   *
+   * @alias executeAsyncScript
+   * @alias document.executeAsyncScript
+   *
+   * @example
+   * describe('execute async script', function() {
+   *   it('executes async script in browser', function(browser) {
+   *     browser.executeAsync(function(done: (result: boolean) => void) {
+   *       setTimeout(function() {
+   *         done(true);
+   *       }, 500);
+   *     }, function(result) {
+   *       // whatever is passed to the `done` callback in the script above
+   *       // will be available as result.value
+   *       console.log(result.value); // true
+   *     });
+   *   });
+   *
+   *   it('executes a script with ES6 async/await', async function(browser) {
+   *     const result = await browser
+   *       .document.executeAsync(function(arg1: string, arg2: number, done: (result: string) => void) {
+   *         setTimeout(function() {
+   *           done(arg1);
+   *         }, 500);
+   *       }, [arg1, arg2]);
+   *
+   *     // whatever is passed to the `done` callback in the script above
+   *     // will be returned by the command when used with `await`.
+   *     console.log(result); // arg1 (type: string)
+   *   });
+   * });
+   *
+   * @see https://nightwatchjs.org/api/executeAsyncScript.html
+   */
+  executeAsync<ReturnValue>(
+    script: ExecuteAsyncScriptFunction<[], ReturnValue> | string,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<ReturnValue>
+    ) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, ReturnValue>;
+  executeAsync<ArgType extends any[], ReturnValue>(
+    script: ExecuteAsyncScriptFunction<ArgType, ReturnValue> | string,
+    args: ArgType,
+    callback?: (
+      this: NightwatchAPI,
+      result: NightwatchCallbackResult<ReturnValue>
+    ) => void,
+  ): Awaitable<IfUnknown<ReturnType, this>, ReturnValue>;
 }
 
 export interface LogsNsCommands<ReturnType = unknown> {
@@ -7538,187 +7775,10 @@ export interface WebDriverProtocolDocumentHandling {
     ) => void
   ): Awaitable<this, string>;
 
-  /**
-   * Inject a snippet of JavaScript into the page for execution in the context of the currently selected frame. The executed script is assumed to be synchronous.
-   * The script argument defines the script to execute in the form of a function body. The value returned by that function will be returned to the client.
-   *
-   * The function will be invoked with the provided args array and the values may be accessed via the arguments object in the order specified.
-   *
-   * Under the hood, if the `body` param is a function it is converted to a string with `<function>.toString()`. Any references to your current scope are ignored.
-   *
-   * To ensure cross-browser compatibility, the specified function should not be in ES6 format (i.e. `() => {}`).
-   * If the execution of the function fails, the first argument of the callback contains error information.
-   *
-   * @example
-   *  this.demoTest = function (browser) {
-   *    browser.execute(function(imageData: string) {
-   *      // resize operation
-   *      return true;
-   *    }, [imageData], function(result) {
-   *      // result.value === true
-   *    });
-   * }
-   *
-   * @see https://nightwatchjs.org/api/execute.html#apimethod-container
-   *
-   * @alias executeScript
-   */
-  execute<ReturnValue>(
-    body: ExecuteScriptFunction<[], ReturnValue> | string,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<VoidToNull<ReturnValue>>
-    ) => void,
-  ): Awaitable<this, VoidToNull<ReturnValue>>;
-  execute<ArgType extends any[], ReturnValue>(
-    body: ExecuteScriptFunction<ArgType, ReturnValue> | string,
-    args: ArgType,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<VoidToNull<ReturnValue>>
-    ) => void,
-  ): Awaitable<this, VoidToNull<ReturnValue>>;
-
-  /**
-   * Inject a snippet of JavaScript into the page for execution in the context of the currently selected frame. The executed script is assumed to be synchronous.
-   * The script argument defines the script to execute in the form of a function body. The value returned by that function will be returned to the client.
-   *
-   * The function will be invoked with the provided args array and the values may be accessed via the arguments object in the order specified.
-   *
-   * Under the hood, if the `body` param is a function it is converted to a string with `<function>.toString()`. Any references to your current scope are ignored.
-   *
-   * To ensure cross-browser compatibility, the specified function should not be in ES6 format (i.e. `() => {}`).
-   * If the execution of the function fails, the first argument of the callback contains error information.
-   *
-   * @example
-   *  this.demoTest = function (browser) {
-   *    browser.executeScript(function(imageData: string) {
-   *      // resize operation
-   *      return true;
-   *    }, [imageData], function(result) {
-   *      // result.value === true
-   *    });
-   * }
-   *
-   * @see https://nightwatchjs.org/api/execute.html#apimethod-container
-   *
-   * @alias execute
-   */
-  executeScript<ReturnValue>(
-    body: ExecuteScriptFunction<[], ReturnValue> | string,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<VoidToNull<ReturnValue>>
-    ) => void,
-  ): Awaitable<this, VoidToNull<ReturnValue>>;
-  executeScript<ArgType extends any[], ReturnValue>(
-    body: ExecuteScriptFunction<ArgType, ReturnValue> | string,
-    args: ArgType,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<VoidToNull<ReturnValue>>
-    ) => void,
-  ): Awaitable<this, VoidToNull<ReturnValue>>;
-
-  /**
-   *
-   * Inject a snippet of JavaScript into the page for execution in the context of the currently selected frame.
-   * The executed script is assumed to be asynchronous.
-   *
-   * The function to be injected receives the `done` callback as argument which needs to be called
-   * when the asynchronous operation finishes. The value passed to the `done` callback is returned to the client.
-   * Additional arguments for the injected function may be passed as a non-empty array which
-   * will be passed before the `done` callback.
-   *
-   * Asynchronous script commands may not span page loads. If an unload event is fired
-   *  while waiting for the script result, an error will be returned.
-   *
-   * @example
-   *  this.demoTest = function (browser) {
-   *    browser.executeAsyncScript(function(done: (result: true) => void) {
-   *      setTimeout(function() {
-   *        done(true);
-   *      }, 500);
-   *    }, function(result) {
-   *      // result.value === true
-   *    });
-   *
-   *    browser.executeAsyncScript(function(arg1: string, arg2: number, done: (result: string) => void) {
-   *      setTimeout(function() {
-   *        done(arg1);
-   *      }, 500);
-   *    }, [arg1, arg2], function(result) {
-   *      // result.value === arg1
-   *    });
-   * }
-   *
-   * @see https://nightwatchjs.org/api/executeAsyncScript.html
-   *
-   * @alias executeAsync
-   */
-  executeAsyncScript<ReturnValue>(
-    script: ExecuteAsyncScriptFunction<[], ReturnValue> | string,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<ReturnValue>
-    ) => void,
-  ): Awaitable<this, ReturnValue>;
-  executeAsyncScript<ArgType extends any[], ReturnValue>(
-    script: ExecuteAsyncScriptFunction<ArgType, ReturnValue> | string,
-    args: ArgType,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<ReturnValue>
-    ) => void,
-  ): Awaitable<this, ReturnValue>;
-
-  /**
-   * Inject a snippet of JavaScript into the page for execution in the context of the currently selected frame. The executed script is assumed to be asynchronous.
-   *
-   * The function to be injected receives the `done` callback as argument which needs to be called when the asynchronous operation finishes.
-   * The value passed to the `done` callback is returned to the client.
-   * Additional arguments for the injected function may be passed as a non-empty array which will be passed before the `done` callback.
-   *
-   * Asynchronous script commands may not span page loads. If an unload event is fired while waiting for the script result, an error will be returned.
-   *
-   * @example
-   *  this.demoTest = function (browser) {
-   *    browser.executeAsync(function(done: (result: true) => void) {
-   *      setTimeout(function() {
-   *        done(true);
-   *      }, 500);
-   *    }, function(result) {
-   *      // result.value === true
-   *    });
-   *
-   *    browser.executeAsync(function(arg1: string, arg2: number, done: (result: string) => void) {
-   *      setTimeout(function() {
-   *        done(arg1);
-   *      }, 500);
-   *    }, [arg1, arg2], function(result) {
-   *      // result.value === arg1
-   *    });
-   * }
-   *
-   * @see https://nightwatchjs.org/api/executeAsyncScript.html
-   *
-   * @alias executeAsyncScript
-   */
-  executeAsync<ReturnValue>(
-    script: ExecuteAsyncScriptFunction<[], ReturnValue> | string,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<ReturnValue>
-    ) => void,
-  ): Awaitable<this, ReturnValue>;
-  executeAsync<ArgType extends any[], ReturnValue>(
-    script: ExecuteAsyncScriptFunction<ArgType, ReturnValue> | string,
-    args: ArgType,
-    callback?: (
-      this: NightwatchAPI,
-      result: NightwatchCallbackResult<ReturnValue>
-    ) => void,
-  ): Awaitable<this, ReturnValue>;
+  execute: DocumentNsCommands<this>['execute'];
+  executeScript: DocumentNsCommands<this>['executeScript'];
+  executeAsync: DocumentNsCommands<this>['executeAsync'];
+  executeAsyncScript: DocumentNsCommands<this>['executeAsyncScript'];
 }
 
 export interface WebDriverProtocolCookies {
