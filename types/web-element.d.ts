@@ -56,6 +56,7 @@ export interface ScopedElement extends Element, PromiseLike<WebElement> {
 
   findByLabelText(
     text: string,
+    tagName: string,
     options?: Omit<ScopedSelectorObject, 'selector'> & {
       readonly exact?: boolean;
     }
