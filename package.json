@@ -36,9 +36,9 @@
     "glob": "7.2.3",
     "jsdom": "^24.1.0",
     "lodash": "^4.17.21",
-    "minimatch": "3.1.2",
+    "minimatch": "^3.1.5",
     "minimist": "1.2.6",
-    "mocha": "10.8.2",
+    "mocha": "^7.2.0",
     "nightwatch-axe-verbose": "^2.3.0",
     "open": "8.4.2",
     "ora": "5.4.1",
@@ -51,7 +51,7 @@
     "uuid": "8.3.2"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "^8.2.1",
+    "@cucumber/cucumber": "^12.7.0",
     "@swc/core": "^1.3.67",
     "@types/node": "^18.17.3",
     "@typescript-eslint/eslint-plugin": "^6.3.0",
