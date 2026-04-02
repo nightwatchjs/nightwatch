@@ -10,16 +10,6 @@ describe('BaseService concurrency behaviour', function () {
     mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
   });
 
-  function deleteFromRequireCache(location) {
-    const entry = Object.keys(require.cache).filter(item => {
-      return item.includes(location);
-    });
-
-    entry.forEach(item => {
-      delete require.cache[item];
-    });
-  }
-
   after(function () {
     mockery.deregisterAll();
     mockery.disable();
@@ -28,12 +18,11 @@ describe('BaseService concurrency behaviour', function () {
   });
 
   function createService({isWorker, retainLogsInWorker} = {}) {
-    const Concurrency1 = common.require('runner/concurrency/');
-    deleteFromRequireCache('runner/concurrency/');
-    Concurrency1.isWorker = function () {
-      return !!isWorker;
-    };
-    mockery.registerMock('runner/concurrency/', Concurrency1);
+    mockery.registerMock('runner/concurrency/', {
+      isWorker: function () {
+        return true;
+      }
+    });
 
     const BaseService = common.require('transport/selenium-webdriver/service-builders/base-service.js');
 
@@ -111,9 +100,3 @@ describe('BaseService concurrency behaviour', function () {
     }
   });
 });
-
-
-
-
-
-

@@ -3,7 +3,6 @@ const mockery = require('mockery');
 const common = require('../../common.js');
 const NightwatchClient = common.require('index.js');
 const Settings = common.require('settings/settings.js');
-const Concurrency = common.require('runner/concurrency/');
 
 describe('SeleniumServer Transport Tests', function () {
   beforeEach(function() {
@@ -263,12 +262,12 @@ describe('SeleniumServer Transport Tests', function () {
   });
 
   it('test per-worker log file path when running in worker', async function () {
-    const Concurrency1 = common.require('runner/concurrency/');
-    deleteFromRequireCache('runner/concurrency/');
-    Concurrency1.isWorker = function () {
-      return true;
-    };
-    mockery.registerMock('runner/concurrency/', Concurrency1);
+    mockery.registerMock('runner/concurrency/', {
+      isWorker: function () {
+        return true;
+      }
+    });
+    
 
     mockery.registerMock('geckodriver', {
       path: ''
@@ -283,7 +282,7 @@ describe('SeleniumServer Transport Tests', function () {
     });
 
     let logFilePath;
-    const {client} = await SeleniumServerTestSetup({
+    await SeleniumServerTestSetup({
       desiredCapabilities: {
         browserName: 'chrome'
       },
@@ -296,7 +295,6 @@ describe('SeleniumServer Transport Tests', function () {
         logFilePath = filePath;
       }
     });
-    console.log('logFilePath', logFilePath);
     assert.ok(/testModuleKey_[0-9]+_selenium-server\.log$/.test(logFilePath));
 
   });
