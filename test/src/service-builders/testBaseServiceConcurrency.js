@@ -1,24 +1,24 @@
 const assert = require('assert');
-const mockery = require('mockery');
 const common = require('../../common.js');
 
 describe('BaseService concurrency behaviour', function () {
-  before(function () {
-    mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
-  });
+  const originalParallelEnv = process.env.__NIGHTWATCH_PARALLEL_MODE;
 
   after(function () {
-    mockery.deregisterAll();
-    mockery.disable();
-    mockery.resetCache();
+    if (originalParallelEnv === undefined) {
+      delete process.env.__NIGHTWATCH_PARALLEL_MODE;
+    } else {
+      process.env.__NIGHTWATCH_PARALLEL_MODE = originalParallelEnv;
+    }
   });
 
   function createService({isWorker, retainLogsInParallelRun} = {}) {
-    mockery.registerMock('../../../runner/concurrency', {
-      isWorker: function () {
-        return Boolean(isWorker);
-      }
-    });
+    // Concurrency.isWorker() reads this on each call (see lib/runner/concurrency/index.js)
+    if (isWorker) {
+      process.env.__NIGHTWATCH_PARALLEL_MODE = '1';
+    } else {
+      delete process.env.__NIGHTWATCH_PARALLEL_MODE;
+    }
 
     const BaseService = common.require('transport/selenium-webdriver/service-builders/base-service.js');
 
