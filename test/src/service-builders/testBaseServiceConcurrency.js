@@ -3,18 +3,9 @@ const mockery = require('mockery');
 const common = require('../../common.js');
 
 describe('BaseService concurrency behaviour', function () {
-  const Concurrency = common.require('runner/concurrency/');
-  const originalIsWorker = Concurrency.isWorker;
 
   before(function () {
     mockery.enable({useCleanCache: true, warnOnReplace: false, warnOnUnregistered: false});
-  });
-
-  after(function () {
-    mockery.deregisterAll();
-    mockery.disable();
-    mockery.resetCache();
-    Concurrency.isWorker = originalIsWorker;
   });
 
   function createService({isWorker, retainLogsInParallelRun} = {}) {
