@@ -17,7 +17,7 @@ describe('BaseService concurrency behaviour', function () {
     Concurrency.isWorker = originalIsWorker;
   });
 
-  function createService({isWorker, retainLogsInWorker} = {}) {
+  function createService({isWorker, retainLogsInParallelRun} = {}) {
     mockery.registerMock('runner/concurrency/', {
       isWorker: function () {
         return true;
@@ -50,7 +50,7 @@ describe('BaseService concurrency behaviour', function () {
     const settings = {
       webdriver: {
         log_path: 'logs',
-        retain_logs_in_worker: retainLogsInWorker
+        retain_logs_in_parallel_run: retainLogsInParallelRun
       }
     };
 
@@ -75,7 +75,7 @@ describe('BaseService concurrency behaviour', function () {
   });
 
   it('does not create sink and disables log_path for workers by default', async function () {
-    const service = createService({isWorker: true, retainLogsInWorker: false});
+    const service = createService({isWorker: true, retainLogsInParallelRun: false});
 
     assert.strictEqual(service.needsSinkProcess(), false);
 
@@ -85,8 +85,8 @@ describe('BaseService concurrency behaviour', function () {
     assert.strictEqual(service.settings.webdriver.log_path, false);
   });
 
-  it('creates sink and keeps log_path when retain_logs_in_worker is true', async function () {
-    const service = createService({isWorker: true, retainLogsInWorker: true});
+  it('creates sink and keeps log_path when retain_logs_in_parallel_run is true', async function () {
+    const service = createService({isWorker: true, retainLogsInParallelRun: true});
 
     assert.strictEqual(service.needsSinkProcess(), true);
 
