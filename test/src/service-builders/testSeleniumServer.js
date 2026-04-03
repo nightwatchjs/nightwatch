@@ -262,12 +262,11 @@ describe('SeleniumServer Transport Tests', function () {
   });
 
   it('test per-worker log file path when running in worker', async function () {
-    mockery.registerMock('runner/concurrency/', {
+    mockery.registerMock('../../runner/concurrency/index.js', {
       isWorker: function () {
         return true;
       }
     });
-    
 
     mockery.registerMock('geckodriver', {
       path: ''
@@ -297,6 +296,79 @@ describe('SeleniumServer Transport Tests', function () {
     });
     assert.ok(/testModuleKey_[0-9]+_selenium-server\.log$/.test(logFilePath));
 
+  });
+
+  it('test log file path when not running in worker with log_file_name set', async function () {
+    mockery.registerMock('geckodriver', {
+      path: ''
+    });
+
+    mockery.registerMock('chromedriver', {
+      path: ''
+    });
+
+    mockery.registerMock('@nightwatch/selenium-server', {
+      path: '/path/to/selenium-server-standalone.3.0.jar'
+    });
+
+    let logFilePath;
+    await SeleniumServerTestSetup({
+      desiredCapabilities: {
+        browserName: 'chrome'
+      },
+      selenium: {
+        port: 9999,
+        start_process: true
+      },
+      webdriver: {
+        log_file_name: 'customModuleKey'
+      }
+    }, {
+      onLogFile(filePath) {
+        logFilePath = filePath;
+      }
+    });
+
+    assert.ok(logFilePath.endsWith('customModuleKey_selenium-server.log'));
+  });
+
+  it('test per-worker log file path when running in worker with log_file_name set', async function () {
+    mockery.registerMock('../../runner/concurrency/index.js', {
+      isWorker: function () {
+        return true;
+      }
+    });
+
+    mockery.registerMock('geckodriver', {
+      path: ''
+    });
+
+    mockery.registerMock('chromedriver', {
+      path: ''
+    });
+
+    mockery.registerMock('@nightwatch/selenium-server', {
+      path: '/path/to/selenium-server-standalone.3.0.jar'
+    });
+
+    let logFilePath;
+    await SeleniumServerTestSetup({
+      desiredCapabilities: {
+        browserName: 'chrome'
+      },
+      selenium: {
+        port: 9999,
+        start_process: true
+      },
+      webdriver: {
+        log_file_name: 'customModuleKey'
+      }
+    }, {
+      onLogFile(filePath) {
+        logFilePath = filePath;
+      }
+    });
+    assert.ok(/customModuleKey_[0-9]+_selenium-server\.log$/.test(logFilePath));
   });
 
   it('test create session with selenium server 3 -- with drivers', async function() {
