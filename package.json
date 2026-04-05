@@ -36,7 +36,7 @@
     "glob": "7.2.3",
     "jsdom": "^24.1.0",
     "lodash": "^4.17.21",
-    "minimatch": "3.1.2",
+    "minimatch": "3.1.5",
     "minimist": "1.2.6",
     "mocha": "10.8.2",
     "nightwatch-axe-verbose": "^2.3.0",
@@ -73,7 +73,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rimraf": "^3.0.2",
-    "serve": "^14.2.0",
+    "serve": "^14.2.6",
     "ts-node": "^10.9.1",
     "tsd": "^0.31.2",
     "wait-on": "^7.2.0"
@@ -91,6 +91,9 @@
     "@cucumber/cucumber": {
       "optional": true
     }
+  },
+  "overrides": {
+    "minimatch@^5.0.0": "^5.1.7"
   },
   "bin": {
     "nightwatch": "./bin/nightwatch"
