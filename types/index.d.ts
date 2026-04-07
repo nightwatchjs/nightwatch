@@ -4117,8 +4117,8 @@ export interface ElementCommands {
    * the dimensions and coordinates of the given element:
    * - x: X axis position of the top-left corner of the element, in CSS pixels
    * - y: Y axis position of the top-left corner of the element, in CSS pixels
-   * - height: Height of the element’s bounding rectangle in CSS pixels;
-   * - width: Width of the web element’s bounding rectangle in CSS pixels.
+   * - height: Height of the element's bounding rectangle in CSS pixels;
+   * - width: Width of the web element's bounding rectangle in CSS pixels.
    *
    * @example
    * module.exports = {
@@ -6501,6 +6501,29 @@ export interface WindowNsCommands<ReturnType = unknown> {
     options: WindowSize | WindowPosition | WindowSizeAndPosition,
     callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<null>) => void,
   ): Awaitable<IfUnknown<ReturnType, this>, null>;
+
+  /**
+   * Scrolls the page to the bottom. Works for both web and native apps.
+   */
+  scrollToBottom(): ReturnType;
+
+  /**
+   * Scrolls the page to the top. Works for both web and native apps.
+   */
+  scrollToTop(): ReturnType;
+
+  /**
+   * Scrolls an element into view. Works for both web and native apps.
+   * @param {string} selector - The CSS/XPath selector used to locate the element.
+   * @param {string} [using] - The locator strategy to use.
+   */
+  scrollIntoView(selector: string, using?: string): ReturnType;
+
+  /**
+   * Scrolls the page until the specified text is visible. Works for both web and native apps.
+   * @param {string} text - The text to scroll until visible.
+   */
+  scrollUntilText(text: string): ReturnType;
 }
 
 export interface WebDriverProtocol
