@@ -261,7 +261,7 @@ describe('SeleniumServer Transport Tests', function () {
     assert.ok(logFilePath.endsWith('testModuleKey_selenium-server.log'));
   });
 
-  it('test per-worker log file path when running in worker', async function () {
+  it('test per-worker log file path when running in worker without log_file_name set', async function () {
     mockery.registerMock('../../runner/concurrency/index.js', {
       isWorker: function () {
         return true;
@@ -281,7 +281,7 @@ describe('SeleniumServer Transport Tests', function () {
     });
 
     let logFilePath;
-    await SeleniumServerTestSetup({
+    const {client} = await SeleniumServerTestSetup({
       desiredCapabilities: {
         browserName: 'chrome'
       },
@@ -294,8 +294,11 @@ describe('SeleniumServer Transport Tests', function () {
         logFilePath = filePath;
       }
     });
-    assert.ok(/testModuleKey_[0-9]+_selenium-server\.log$/.test(logFilePath));
 
+    // The log file name should include the moduleKey, timestamp and end with _selenium-server.log
+    assert.ok(/testModuleKey_[0-9]{15}_selenium-server\.log$/.test(logFilePath));
+    // The log_file_name should be unchanged
+    assert.strictEqual(client.settings.webdriver.log_file_name, '');
   });
 
   it('test log file path when not running in worker with log_file_name set', async function () {
@@ -312,7 +315,7 @@ describe('SeleniumServer Transport Tests', function () {
     });
 
     let logFilePath;
-    await SeleniumServerTestSetup({
+    const {client} = await SeleniumServerTestSetup({
       desiredCapabilities: {
         browserName: 'chrome'
       },
@@ -329,7 +332,10 @@ describe('SeleniumServer Transport Tests', function () {
       }
     });
 
+    // The log file should include the customModuleKey without the timestamp.
     assert.ok(logFilePath.endsWith('customModuleKey_selenium-server.log'));
+    // No change in the log_file_name value as we're not running in worker
+    assert.strictEqual(client.settings.webdriver.log_file_name, 'customModuleKey');
   });
 
   it('test per-worker log file path when running in worker with log_file_name set', async function () {
@@ -352,7 +358,7 @@ describe('SeleniumServer Transport Tests', function () {
     });
 
     let logFilePath;
-    await SeleniumServerTestSetup({
+    const {client} = await SeleniumServerTestSetup({
       desiredCapabilities: {
         browserName: 'chrome'
       },
@@ -368,7 +374,11 @@ describe('SeleniumServer Transport Tests', function () {
         logFilePath = filePath;
       }
     });
-    assert.ok(/customModuleKey_[0-9]+_selenium-server\.log$/.test(logFilePath));
+
+    // The log file name should include the customModuleKey, timestamp and end with _selenium-server.log
+    assert.ok(/customModuleKey_[0-9]{15}_selenium-server\.log$/.test(logFilePath));
+    // The log_file_name should also be updated to include the timestamp when running in worker
+    assert.ok(/^customModuleKey_[0-9]{15}$/.test(client.settings.webdriver.log_file_name));
   });
 
   it('test create session with selenium server 3 -- with drivers', async function() {
