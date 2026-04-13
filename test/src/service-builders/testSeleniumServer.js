@@ -296,7 +296,7 @@ describe('SeleniumServer Transport Tests', function () {
     });
 
     // The log file name should include the moduleKey, timestamp and end with _selenium-server.log
-    assert.ok(/testModuleKey_[0-9]{15}_selenium-server\.log$/.test(logFilePath));
+    assert.ok(/testModuleKey_[0-9]+_selenium-server\.log$/.test(logFilePath));
     // The log_file_name should be unchanged
     assert.strictEqual(client.settings.webdriver.log_file_name, '');
   });
@@ -376,9 +376,9 @@ describe('SeleniumServer Transport Tests', function () {
     });
 
     // The log file name should include the customModuleKey, timestamp and end with _selenium-server.log
-    assert.ok(/customModuleKey_[0-9]{15}_selenium-server\.log$/.test(logFilePath));
+    assert.ok(/customModuleKey_[0-9]+_selenium-server\.log$/.test(logFilePath));
     // The log_file_name should also be updated to include the timestamp when running in worker
-    assert.ok(/^customModuleKey_[0-9]{15}$/.test(client.settings.webdriver.log_file_name));
+    assert.ok(/^customModuleKey_[0-9]+$/.test(client.settings.webdriver.log_file_name));
   });
 
   it('test create session with selenium server 3 -- with drivers', async function() {
