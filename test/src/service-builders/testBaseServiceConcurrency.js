@@ -46,7 +46,7 @@ describe('BaseService concurrency behaviour', function () {
     const settings = {
       webdriver: {
         log_path: 'logs',
-        retain_logs_in_parallel_run: retainLogsInParallelRun
+        ...(retainLogsInParallelRun ? {retain_logs_in_parallel_run: retainLogsInParallelRun} : {})
       }
     };
 
@@ -71,7 +71,7 @@ describe('BaseService concurrency behaviour', function () {
   });
 
   it('does not create sink and disables log_path for workers by default', async function () {
-    const service = createService({isWorker: true, retainLogsInParallelRun: false});
+    const service = createService({isWorker: true});
 
     assert.strictEqual(service.needsSinkProcess(), false);
 
