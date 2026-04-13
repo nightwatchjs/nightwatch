@@ -216,7 +216,8 @@ describe('SeleniumServer Transport Tests', function () {
       session,
       serverPath,
       serverPort,
-      options
+      options,
+      client
     };
   }
 
@@ -258,6 +259,126 @@ describe('SeleniumServer Transport Tests', function () {
     assert.deepStrictEqual(options.jvmArgs, []);
     assert.deepStrictEqual(options.stdio, ['pipe', undefined, undefined]);
     assert.ok(logFilePath.endsWith('testModuleKey_selenium-server.log'));
+  });
+
+  it('test per-worker log file path when running in worker without log_file_name set', async function () {
+    mockery.registerMock('../../runner/concurrency/index.js', {
+      isWorker: function () {
+        return true;
+      }
+    });
+
+    mockery.registerMock('geckodriver', {
+      path: ''
+    });
+
+    mockery.registerMock('chromedriver', {
+      path: ''
+    });
+
+    mockery.registerMock('@nightwatch/selenium-server', {
+      path: '/path/to/selenium-server-standalone.3.0.jar'
+    });
+
+    let logFilePath;
+    const {client} = await SeleniumServerTestSetup({
+      desiredCapabilities: {
+        browserName: 'chrome'
+      },
+      selenium: {
+        port: 9999,
+        start_process: true
+      }
+    }, {
+      onLogFile(filePath) {
+        logFilePath = filePath;
+      }
+    });
+
+    // The log file name should include the moduleKey, timestamp and end with _selenium-server.log
+    assert.ok(/testModuleKey_[0-9]+_selenium-server\.log$/.test(logFilePath));
+    // The log_file_name should be unchanged
+    assert.strictEqual(client.settings.webdriver.log_file_name, '');
+  });
+
+  it('test log file path when not running in worker with log_file_name set', async function () {
+    mockery.registerMock('geckodriver', {
+      path: ''
+    });
+
+    mockery.registerMock('chromedriver', {
+      path: ''
+    });
+
+    mockery.registerMock('@nightwatch/selenium-server', {
+      path: '/path/to/selenium-server-standalone.3.0.jar'
+    });
+
+    let logFilePath;
+    const {client} = await SeleniumServerTestSetup({
+      desiredCapabilities: {
+        browserName: 'chrome'
+      },
+      selenium: {
+        port: 9999,
+        start_process: true
+      },
+      webdriver: {
+        log_file_name: 'customModuleKey'
+      }
+    }, {
+      onLogFile(filePath) {
+        logFilePath = filePath;
+      }
+    });
+
+    // The log file should include the customModuleKey without the timestamp.
+    assert.ok(logFilePath.endsWith('customModuleKey_selenium-server.log'));
+    // No change in the log_file_name value as we're not running in worker
+    assert.strictEqual(client.settings.webdriver.log_file_name, 'customModuleKey');
+  });
+
+  it('test per-worker log file path when running in worker with log_file_name set', async function () {
+    mockery.registerMock('../../runner/concurrency/index.js', {
+      isWorker: function () {
+        return true;
+      }
+    });
+
+    mockery.registerMock('geckodriver', {
+      path: ''
+    });
+
+    mockery.registerMock('chromedriver', {
+      path: ''
+    });
+
+    mockery.registerMock('@nightwatch/selenium-server', {
+      path: '/path/to/selenium-server-standalone.3.0.jar'
+    });
+
+    let logFilePath;
+    const {client} = await SeleniumServerTestSetup({
+      desiredCapabilities: {
+        browserName: 'chrome'
+      },
+      selenium: {
+        port: 9999,
+        start_process: true
+      },
+      webdriver: {
+        log_file_name: 'customModuleKey'
+      }
+    }, {
+      onLogFile(filePath) {
+        logFilePath = filePath;
+      }
+    });
+
+    // The log file name should include the customModuleKey, timestamp and end with _selenium-server.log
+    assert.ok(/customModuleKey_[0-9]+_selenium-server\.log$/.test(logFilePath));
+    // The log_file_name should also be updated to include the timestamp when running in worker
+    assert.ok(/^customModuleKey_[0-9]+$/.test(client.settings.webdriver.log_file_name));
   });
 
   it('test create session with selenium server 3 -- with drivers', async function() {
