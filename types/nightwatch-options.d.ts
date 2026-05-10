@@ -574,6 +574,15 @@ export interface WebdriverOptions {
 	log_file_name?: string;
 
 	/**
+	 * When running tests in parallel (test workers), each worker spawns its own webdriver process but
+	 * their logs are not written to disk by default. Set this to true to retain webdriver server logs
+	 * from worker processes when running in parallel mode.
+	 *
+	 * @default false
+	 */
+	retain_logs_in_parallel_run?: boolean;
+
+	/**
 	 * List of cli arguments to be passed to the Webdriver process. This varies for each Webdriver implementation.
 	 *
 	 * @default none
