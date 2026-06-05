@@ -115,7 +115,7 @@ describe('test index in element selectors', function() {
       .text(0, 'first')
       .text(1, 'second');
 
-    let page = Nightwatch.api().page.simplePageObj();
+    const page = Nightwatch.api().page.simplePageObj();
 
     page
       .getText('@loginIndexed', function callback(result) {
@@ -152,9 +152,9 @@ describe('test index in element selectors', function() {
       .elementId(10, '#getStartedStart', null, {ELEMENT: '11'})
       .text(11, 'start-first');
 
-    let page = Nightwatch.api().page.simplePageObj();
-    let section = page.section.signUp;
-    let sectionChild = section.section.getStarted;
+    const page = Nightwatch.api().page.simplePageObj();
+    const section = page.section.signUp;
+    const sectionChild = section.section.getStarted;
 
     section
       .getText({selector: '@help'}, function callback(result) {
@@ -200,13 +200,13 @@ describe('test index in element selectors', function() {
       .elementsId(0, '#helpBtn', [{ELEMENT: '0'}])
       .elementsByXpath();
 
-    let api = Nightwatch.api();
+    const api = Nightwatch.api();
     api.globals.abortOnAssertionFailure = false;
 
-    let page = api.page.simplePageObj();
-    let section = page.section.signUp;
+    const page = api.page.simplePageObj();
+    const section = page.section.signUp;
 
-    let passingAssertions = [
+    const passingAssertions = [
       api.expect.element({selector: '.nock', index: 2}).to.be.present.before(1),
       page.expect.section({selector: '@signUp', locateStrategy: 'css selector', index: 0}).to.be.present.before(1),
       section.expect.element({selector: '@help', index: 0}).to.be.present.before(1)
@@ -224,8 +224,8 @@ describe('test index in element selectors', function() {
   it('using expect selectors with index - failing .nock', function (done) {
     nocks.elementsFound();
 
-    let api = Nightwatch.api();
-    let expect = api.expect.element({selector: '.nock', index: 999}).to.be.present.before(1);
+    const api = Nightwatch.api();
+    const expect = api.expect.element({selector: '.nock', index: 999}).to.be.present.before(1);
 
     Nightwatch.start(function(err) {
       try {
@@ -245,12 +245,12 @@ describe('test index in element selectors', function() {
       .elementsFound('#signupSection', [{ELEMENT: '0'}])
       .elementsId(0, '#helpBtn', [{ELEMENT: '0'}]);
 
-    let api = Nightwatch.api();
+    const api = Nightwatch.api();
     api.globals.abortOnAssertionFailure = true;
-    let page = api.page.simplePageObj();
-    let section = page.section.signUp;
+    const page = api.page.simplePageObj();
+    const section = page.section.signUp;
 
-    let expect = section.expect.element({selector: '@help', index: 999}).to.be.present.before(1);
+    const expect = section.expect.element({selector: '@help', index: 999}).to.be.present.before(1);
 
     Nightwatch.start(function(err) {
 
@@ -258,6 +258,30 @@ describe('test index in element selectors', function() {
         assert.strictEqual(expect.assertion.passed, false);
         assert.ok(expect.assertion.message.includes('element was not found'));
         assert.ok(err instanceof Error);
+        nocks.checkIfMocksDone();
+        done();
+      } catch (ex) {
+        done(ex);
+      }
+    });
+  });
+
+  it('using expect selectors with wrong index - passing .nock', function (done) {
+    nocks
+      .elementsFound()
+      .elementsFound('#signupSection', [{ELEMENT: '0'}])
+      .elementsId(0, '#helpBtn', [{ELEMENT: '0'}])
+      .elementsByXpath();
+
+    const api = Nightwatch.api();
+    api.globals.abortOnAssertionFailure = false;
+
+    const expect = api.expect.element({selector: '.nock', index: 3}).to.not.be.present.before(1);
+
+    Nightwatch.start(function(err) {
+
+      try {
+        assert.strictEqual(expect.assertion.passed, true);
         nocks.checkIfMocksDone();
         done();
       } catch (ex) {
