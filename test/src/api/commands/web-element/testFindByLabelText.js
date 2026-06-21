@@ -46,7 +46,7 @@ describe('.findByLabelText() commands', function () {
         })
       }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').findByLabelText('Email');
+    const resultPromise = this.client.api.element('#signupSection').findByLabelText('Email', 'input');
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(resultPromise instanceof Promise, true);
     assert.strictEqual(typeof resultPromise.find, 'function');
@@ -92,7 +92,7 @@ describe('.findByLabelText() commands', function () {
         })
       }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').getByLabelText('Email', {exact: false});
+    const resultPromise = this.client.api.element('#signupSection').getByLabelText('Email', 'input', {exact: false});
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(resultPromise instanceof Promise, true);
     assert.strictEqual(typeof resultPromise.find, 'function');
@@ -144,7 +144,7 @@ describe('.findByLabelText() commands', function () {
         })
       }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').findByLabelText('Email');
+    const resultPromise = this.client.api.element('#signupSection').findByLabelText('Email', 'input');
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(resultPromise instanceof Promise, true);
     assert.strictEqual(typeof resultPromise.find, 'function');
@@ -189,7 +189,7 @@ describe('.findByLabelText() commands', function () {
         })
       }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').findByLabelText('Email');
+    const resultPromise = this.client.api.element('#signupSection').findByLabelText('Email', 'input');
     assert.strictEqual(resultPromise instanceof Element, false);
     assert.strictEqual(resultPromise instanceof Promise, true);
     assert.strictEqual(typeof resultPromise.find, 'function');
@@ -239,7 +239,7 @@ describe('.findByLabelText() commands', function () {
         })
       }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').findByLabelText('Email', {
+    const resultPromise = this.client.api.element('#signupSection').findByLabelText('Email', 'input', {
       timeout: 200,
       retryInterval: 100
     });
@@ -296,7 +296,7 @@ describe('.findByLabelText() commands', function () {
         })
       }, true);
 
-    const resultPromise = this.client.api.element('#signupSection').findByLabelText('Email', {
+    const resultPromise = this.client.api.element('#signupSection').findByLabelText('Email', 'input', {
       timeout: 200,
       retryInterval: 100
     });
