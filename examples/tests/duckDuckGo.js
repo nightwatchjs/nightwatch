@@ -6,10 +6,16 @@ describe('duckduckgo example', function() {
     browser
       .navigateTo('https://duckduckgo.com')
       .waitForElementVisible('body')
-      .assert.visible('input[name="q"]')
-      .sendKeys('input[name="q"]', ['Nightwatch.js'])
-      .assert.visible('button[type=submit]')
-      .click('button[type=submit]')
-      .assert.textContains('.react-results--main', 'Nightwatch.js');
+      .assert.visible('input[name="q"]');
+
+    const input = browser.element('input[name="q"]');
+    const submitButton = browser.element('button[type=submit]');
+
+    input.sendKeys(['Nightwatch.js']);
+    submitButton.isVisible().assert.equals(true);
+    submitButton.click();
+
+    browser.assert.textContains('.react-results--main', 'Nightwatch.js');
   });
 });
+
