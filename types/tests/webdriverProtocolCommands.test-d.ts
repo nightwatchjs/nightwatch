@@ -1000,6 +1000,26 @@ describe('execute command demo', function () {
     expectType<unknown>(result4)
   });
 
+  test('demo test on document ns', async function (browser) {
+    const result1 = await browser.document.execute(function () {});
+    expectType<null>(result1);
+
+    const result2 = await browser.document.execute(function () {
+      return 'nightwatch';
+    });
+    expectType<string>(result2);
+
+    expectError(await browser.document.execute(
+      function (arg1: string) {
+        return 'nightwatch';
+      },
+      [123]
+    ));
+    
+    const result4 = await browser.document.execute('something', ['something', 5]);
+    expectType<unknown>(result4);
+  });
+
   after((browser) => browser.end());
 });
 
@@ -1051,11 +1071,31 @@ describe('executeScript command demo', function () {
       ['js', 123]
     ))
 
-    const result4 = await browser.execute('something');
+    const result4 = await browser.executeScript('something');
     expectType<unknown>(result4)
 
-    const result5 = await browser.execute('something', ['something', 5]);
+    const result5 = await browser.executeScript('something', ['something', 5]);
     expectType<unknown>(result5)
+  });
+
+  test('demo test on document ns', async function (browser) {
+    const result1 = await browser.document.executeScript(function () {});
+    expectType<null>(result1);
+
+    const result2 = await browser.document.executeScript(function () {
+      return 'nightwatch';
+    });
+    expectType<string>(result2);
+
+    expectError(await browser.document.executeScript(
+      function (arg1: string) {
+        return 'nightwatch';
+      },
+      [123]
+    ));
+    
+    const result4 = await browser.document.executeScript('something', ['something', 5]);
+    expectType<unknown>(result4);
   });
 
   after((browser) => browser.end());
@@ -1117,6 +1157,43 @@ describe('executeAsyncScript command demo', function () {
     expectType<unknown>(result5)
   });
 
+  test('demo test using document ns', async function (browser) {
+    const result = await browser.document.executeAsyncScript(
+      function (arg1: string, arg2: number, done: (arg: string) => void) {
+        return 'nightwatch';
+      },
+      ['js', 1]
+    );
+    expectType<string>(result);
+
+    const result1 = await browser.document.executeAsyncScript(function (done: () => void) {
+      return 'nightwatch';
+    });
+    expectType<unknown>(result1)
+
+    const result3 = await browser.document.executeAsyncScript(
+      function (arg1: number, done) {
+        return 'nightwatch';
+      },
+      [2]
+    );
+    expectType<unknown>(result3)
+
+    expectError(await browser.document.executeAsyncScript(function (arg1: string) {
+      return 'nightwatch';
+    }))
+
+    expectError(await browser.document.executeAsyncScript(
+      function (arg1: string, done) {
+        return 'nightwatch';
+      },
+      ['js', 123]
+    ));
+
+    const result5 = await browser.document.executeAsyncScript('something', ['something', 5]);
+    expectType<unknown>(result5);
+  });
+
   after((browser) => browser.end());
 });
 
@@ -1174,6 +1251,43 @@ describe('executeAsync command demo', function () {
 
     const result5 = await browser.executeAsync('something', ['something', 5]);
     expectType<unknown>(result5)
+  });
+
+  test('demo test using document ns', async function (browser) {
+    const result = await browser.document.executeAsync(
+      function (arg1: string, arg2: number, done: (arg: string) => void) {
+        return 'nightwatch';
+      },
+      ['js', 1]
+    );
+    expectType<string>(result);
+
+    const result1 = await browser.document.executeAsync(function (done: () => void) {
+      return 'nightwatch';
+    });
+    expectType<unknown>(result1)
+
+    const result3 = await browser.document.executeAsync(
+      function (arg1: number, done) {
+        return 'nightwatch';
+      },
+      [2]
+    );
+    expectType<unknown>(result3)
+
+    expectError(await browser.document.executeAsync(function (arg1: string) {
+      return 'nightwatch';
+    }))
+
+    expectError(await browser.document.executeAsync(
+      function (arg1: string, done) {
+        return 'nightwatch';
+      },
+      ['js', 123]
+    ));
+
+    const result5 = await browser.document.executeAsync('something', ['something', 5]);
+    expectType<unknown>(result5);
   });
 
   after((browser) => browser.end());
