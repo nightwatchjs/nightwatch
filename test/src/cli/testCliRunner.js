@@ -455,7 +455,6 @@ describe('Test CLI Runner', function() {
 
     done();
   });
-  
 
   it('testReadSettingsDeprecated', function(done) {
     mockery.registerMock('fs', {
@@ -497,8 +496,6 @@ describe('Test CLI Runner', function() {
     done();
   });
 
- 
-
   it('testCustomSettingsFileAndEnvironment', function() {
     mockery.registerMock('fs', {
       existsSync() {
@@ -537,7 +534,7 @@ describe('Test CLI Runner', function() {
   it('testGetTestSourceSingle', function() {
     let statCalled = false;
     let statSyncCalled = false;
-    
+
     mockery.registerMock('fs', {
       existsSync() {
         return false;
@@ -559,7 +556,6 @@ describe('Test CLI Runner', function() {
 
         throw new Error('Does not exist');
       },
-      
 
       stat(file, cb) {
         if (file === 'demoTest') {
@@ -1054,9 +1050,32 @@ describe('Test CLI Runner', function() {
             }
           };
         }
+      },  
+      readFileSync: (file, encoding) => {
+        return 'TypeScript file content'; // Mocking the readFileSync function
       },
       constants,
       rmdirSync
+    });
+
+    mockery.registerMock('typescript', {
+      ScriptTarget: {
+        ES5: 'ES5' // Mocking only the properties used in the transpileTStoJS function
+      },
+      ModuleKind: {
+        CommonJS: 'CommonJS' // Mocking only the properties used in the transpileTStoJS function
+      },
+      transpileModule: (code, options) => {
+        return {outputText: ''}; // Mocking the transpileModule function
+      }
+    });
+
+    mockery.registerMock('module', {
+      constructor: function Module() {
+        this._compile = (code, filename) => {
+          // Mocking the _compile function
+        };
+      }
     });
 
     const CliRunner = common.require('runner/cli/cli.js');
@@ -1412,13 +1431,13 @@ describe('Test CLI Runner', function() {
       const listFileOutput = JSON.stringify({
         default: testsPath
       });
-  
+
       const origConsoleLog = console.log;
-  
+    
       console.log = function (data) {
         consoleData.push(data);
       };
-  
+
       mockery.registerMock('./runner/cli/argv-setup.js', {
         argv: {
           _: testsPath,
@@ -1437,13 +1456,13 @@ describe('Test CLI Runner', function() {
       const listFileOutput = JSON.stringify({
         chrome: testsPath
       });
-  
+
       const origConsoleLog = console.log;
-  
+    
       console.log = function (data) {
         consoleData.push(data);
       };
-  
+
       mockery.registerMock('./runner/cli/argv-setup.js', {
         argv: {
           _: testsPath,
