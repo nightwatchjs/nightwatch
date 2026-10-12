@@ -185,6 +185,7 @@ describe('test Utils', function() {
 
   it('selectorToString for relative locators', function() {
     const {By, WebElement, locateWith} = require('selenium-webdriver');
+    const Utils = common.require('utils');
     const Element = common.require('element/index.js');
 
     assert.strictEqual(
@@ -211,6 +212,10 @@ describe('test Utils', function() {
       Element.createFromSelector(locateWith(By.css('input')).below(By.css('label'))).toString(),
       'By.css(\'input\') below By.css(\'label\')'
     );
+
+    const {NoSuchElementError} = common.require('element/locator.js');
+    const element = Element.createFromSelector(locateWith(By.css('input')).below(new WebElement({}, 'element-id')));
+    assert.ok(new NoSuchElementError({element, ms: 100}).message.startsWith('Timed out while waiting for element "By.css(\'input\') below <element>"'));
 
     const by = By.css('input');
     assert.strictEqual(Utils.selectorToString('#main'), '#main');
