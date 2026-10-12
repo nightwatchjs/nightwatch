@@ -183,6 +183,40 @@ describe('test Utils', function() {
     assert.strictEqual(Utils.SafeJSON.stringify(proxyObj), '"[Error]"');
   });
 
+  it('selectorToString for relative locators', function() {
+    const {By, WebElement, locateWith} = require('selenium-webdriver');
+    const Element = common.require('element/index.js');
+
+    assert.strictEqual(
+      Utils.selectorToString(locateWith(By.css('input')).below(By.css('label'))),
+      'By.css(\'input\') below By.css(\'label\')'
+    );
+
+    assert.strictEqual(
+      Utils.selectorToString(locateWith(By.xpath('//a')).above(By.id('footer')).toLeftOf(By.css('.b')).toRightOf(By.css('.c')).near(By.css('.d'))),
+      'By.xpath(\'//a\') above By.css(\'*[id="footer"]\') left of By.css(\'.b\') right of By.css(\'.c\') near By.css(\'.d\')'
+    );
+
+    assert.strictEqual(
+      Utils.selectorToString(locateWith(By.tagName('input')).below(By.linkText('Sign in'))),
+      'By.tagName(\'input\') below By.linkText(\'Sign in\')'
+    );
+
+    assert.strictEqual(
+      Utils.selectorToString(locateWith(By.css('input')).below(new WebElement({}, 'element-id'))),
+      'By.css(\'input\') below <element>'
+    );
+
+    assert.strictEqual(
+      Element.createFromSelector(locateWith(By.css('input')).below(By.css('label'))).toString(),
+      'By.css(\'input\') below By.css(\'label\')'
+    );
+
+    const by = By.css('input');
+    assert.strictEqual(Utils.selectorToString('#main'), '#main');
+    assert.strictEqual(Utils.selectorToString(by), by);
+  });
+
   it('test printVersionInfo', function() {
     const semVerRegex = /([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?/;
 
