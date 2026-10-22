@@ -168,4 +168,44 @@ describe('element().isPresent() command', function() {
 
     assert.strictEqual(globalReporterCalled, true);
   });
+
+  it('test .element.find() with relative locator prints readable selector in NoSuchElementError', async function() {
+    const {By, locateWith} = require('selenium-webdriver');
+
+    Mocks.createNewW3CSession();
+    MockServer.addMock({
+      url: '/session/13521-10219-202/execute/sync',
+      method: 'POST',
+      response: JSON.stringify({
+        value: []
+      })
+    });
+
+    let globalReporterCalled = false;
+
+    const globals = {
+      reporter(results) {
+        globalReporterCalled = true;
+        assert.strictEqual(results.lastError.name, 'NoSuchElementError');
+        assert.strictEqual(
+          results.lastError.message,
+          'Timed out while waiting for element "By.css(\'input\') below By.css(\'label\')" to be present for 100 milliseconds.'
+        );
+      },
+      waitForConditionTimeout: 100,
+      selector: locateWith(By.css('input')).below(By.css('label')),
+      suppressNotFoundErrors: false
+    };
+    const testsPath = [
+      path.join(__dirname, '../../../../sampletests/webelement/findWithSuppressNotFoundErrors.js')
+    ];
+
+    await NightwatchClient.runTests(testsPath, settings({
+      globals,
+      output_folder: 'output',
+      selenium_host: null
+    }));
+
+    assert.strictEqual(globalReporterCalled, true);
+  });
 });
