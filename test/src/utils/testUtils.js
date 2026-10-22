@@ -2,7 +2,11 @@ const assert = require('assert');
 const path = require('path');
 const common = require('../../common.js');
 const Utils = common.require('utils');
+const Element = common.require('element/index.js');
+const {NoSuchElementError} = common.require('element/locator.js');
 const mockery = require('mockery');
+// Loaded at file load time so it is the same instance lib/ uses; some tests later evict selenium-webdriver from the require cache.
+const {By, WebElement, locateWith} = require('selenium-webdriver');
 
 delete require.cache['fs'];
 delete require.cache['path'];
@@ -181,6 +185,40 @@ describe('test Utils', function() {
     });
 
     assert.strictEqual(Utils.SafeJSON.stringify(proxyObj), '"[Error]"');
+  });
+
+  it('selectorToString for relative locators', function() {
+    assert.strictEqual(
+      Utils.selectorToString(locateWith(By.css('input')).below(By.css('label'))),
+      'By.css(\'input\') below By.css(\'label\')'
+    );
+
+    assert.strictEqual(
+      Utils.selectorToString(locateWith(By.xpath('//a')).above(By.id('footer')).toLeftOf(By.css('.b')).toRightOf(By.css('.c')).near(By.css('.d'))),
+      'By.xpath(\'//a\') above By.css(\'*[id="footer"]\') left of By.css(\'.b\') right of By.css(\'.c\') near By.css(\'.d\')'
+    );
+
+    assert.strictEqual(
+      Utils.selectorToString(locateWith(By.tagName('input')).below(By.linkText('Sign in'))),
+      'By.tagName(\'input\') below By.linkText(\'Sign in\')'
+    );
+
+    assert.strictEqual(
+      Utils.selectorToString(locateWith(By.css('input')).below(new WebElement({}, 'element-id'))),
+      'By.css(\'input\') below <element>'
+    );
+
+    assert.strictEqual(
+      Element.createFromSelector(locateWith(By.css('input')).below(By.css('label'))).toString(),
+      'By.css(\'input\') below By.css(\'label\')'
+    );
+
+    const element = Element.createFromSelector(locateWith(By.css('input')).below(new WebElement({}, 'element-id')));
+    assert.ok(new NoSuchElementError({element, ms: 100}).message.startsWith('Timed out while waiting for element "By.css(\'input\') below <element>"'));
+
+    const by = By.css('input');
+    assert.strictEqual(Utils.selectorToString('#main'), '#main');
+    assert.strictEqual(Utils.selectorToString(by), by);
   });
 
   it('test printVersionInfo', function() {
